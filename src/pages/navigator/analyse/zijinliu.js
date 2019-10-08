@@ -62,51 +62,64 @@ class ZiJinLiuPage extends BasePage {
             count: 0,
             selectBuilding: this.props.selectBuilding || {},
             statistics: [],
+            res:{
+                option:null,
+            }
         };
     }
 
     componentDidMount(): void {
-        NavigatorService.getFeeStatistics(1,this.state.selectBuilding.key,100000).then(statistics=>{
-            console.log(1,statistics)
-            this.setState({statistics:statistics.data || []});
-        })
-        this.getStatustics();
+        this.initData();
     }
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
         const nextSelectBuilding = nextProps.selectBuilding;
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
-            this.setState({selectBuilding: nextProps.selectBuilding}, () => {
-                this.onRefresh();
+            this.setState({selectBuilding: nextProps.selectBuilding,estateId: nextProps.selectBuilding.key,index:0}, () => {
+                this.initData();
             });
         }
-
     }
+
+    initData = () => {
+        NavigatorService.getFeeStatistics(1, this.state.selectBuilding.key, 100000).then(statistics => {
+            this.setState({statistics: statistics.data || []}, () => {
+                this.getStatustics();
+            });
+        });
+    };
+
     getStatustics = () => {
-
-    }
-
-    onRefresh = () => {
-
+        const {estateId, type} = this.state;
+        NavigatorService.collectionRate(2, estateId, type).then(res => {
+            this.setState({res});
+        });
     };
+
+
     titleChange = (index) => {
-        // this.getStatustics();
         const {statistics} = this.state;
-        let item = statistics[index-1];
+        console.log(this.state);
+        let estateId;
+        if (index === 0) {
+            estateId = this.state.selectBuilding.key;
+        }else {
+            estateId = statistics[index - 1].id;
+        }
         this.setState({
-            estateId: item.id
-        },()=>{
+            index,
+            estateId,
+        }, () => {
             this.getStatustics();
-        })
-
+        });
     };
-    typeChange = (title,index) => {
+    typeChange = (title, index) => {
         this.setState({
-            type: index+1
-        },()=>{
+            type: index + 1,
+        }, () => {
             this.getStatustics();
-        })
+        });
     };
 
 
@@ -114,65 +127,7 @@ class ZiJinLiuPage extends BasePage {
         const {statistics, dataInfo} = this.state;
         const titles = [...['全部'],...statistics.map(item=>item.name)];
         console.log('t',titles)
-        const option = {
-            title: {
-                text: '',
-                left: 'center',
-            },
-            tooltip: {
-                trigger: 'axis',
-                // formatter: '{a} <br/>{b} : {c}'
-            },
-            legend: {
-                left: 'center',
-                data: ['收本年', '收往年', '预收下年度','实收合计'],
-            },
-            xAxis: {
-                type: 'category',
-                name: 'x',
-                splitLine: {show: false},
-                data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-            },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true,
-            },
-            yAxis: {
-                type: 'value',
-                name: 'y',
-                data: ['0', '20', '40', '60', '80', '100'],
-
-            },
-            series: [
-                {
-                    name: '收本年',
-                    type: 'line',
-
-                    data: [12, 13, 10, 14, 9, 23, 21, 12, 3, 4, 6, 80],
-                },
-                {
-                    name: '收往年',
-                    type: 'line',
-
-                    data: [22, 18, 19, 23, 29, 33, 31, 68, 12, 34, 55, 67],
-                },
-                {
-                    name: '预收下年度',
-                    type: 'line',
-
-                    data: [15, 23, 20, 15, 19, 30, 10, 55, 66, 89, 12, 46],
-                },
-                {
-                    name: '实收合计',
-                    type: 'line',
-
-                    data: [34, 68, 79, 80, 30, 60, 60, 20, 12, 30, 45, 90],
-                },
-            ],
-            color: ['blue','#f0a825','green','#666']
-        };
+        const {option,area,rooms,rate } = this.state.res;
         return (
 
             <SafeAreaView style={{flex: 1}}>
@@ -181,17 +136,15 @@ class ZiJinLiuPage extends BasePage {
                     <DashLine style={{marginTop: 10, marginLeft: 15, marginRight: 15}}/>
                     <Flex direction={'column'} style={{width: ScreenUtil.deviceWidth(), marginTop: 15}}>
                         <Flex justify={'between'} style={{width: ScreenUtil.deviceWidth() - 30, paddingBottom: 20}}>
-                            <Text style={styles.name}>管理面积：7.8万{Macro.meter_square}</Text>
+                            <Text style={styles.name}>管理面积：{area}万{Macro.meter_square}</Text>
 
-                            <Text style={styles.name}>房屋套数：930套</Text>
+                            <Text style={styles.name}>房屋套数：{rooms}套</Text>
 
 
                         </Flex>
                         <Flex justify={'between'} style={{width: ScreenUtil.deviceWidth() - 30}}>
-                            <Text style={styles.name}>入住率：75%</Text>
+                            <Text style={styles.name}>入住率：{rate}</Text>
                             <MyPopover textStyle={{fontSize:14}} onChange={this.typeChange} titles={['全部', '收费项目类别', '不是收费项目']} visible={true}/>
-
-
                         </Flex>
                     </Flex>
                     <DashLine style={{marginTop: 15, marginLeft: 15, marginRight: 15}}/>

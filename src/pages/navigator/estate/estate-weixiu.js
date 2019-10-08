@@ -21,6 +21,7 @@ import LoadImage from '../../../components/load-image';
 import ScrollTitle from '../../../components/scroll-title';
 import MyPopover from '../../../components/my-popover';
 import NavigatorService from '../navigator-service';
+import NoDataView from '../../../components/no-data-view';
 
 class EstateWeixiuPage extends BasePage {
     static navigationOptions = ({navigation}) => {
@@ -68,7 +69,17 @@ class EstateWeixiuPage extends BasePage {
     }
 
     componentDidMount(): void {
-        this.onRefresh();
+        this.viewDidAppear = this.props.navigation.addListener(
+            'didFocus',
+            (obj) => {
+                this.onRefresh();
+            },
+        );
+
+    }
+
+    componentWillUnmount(): void {
+        this.viewDidAppear.remove();
     }
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
@@ -267,6 +278,7 @@ class EstateWeixiuPage extends BasePage {
                         onScrollEndDrag={() => this.canAction = false}
                         onMomentumScrollBegin={() => this.canAction = true}
                         onMomentumScrollEnd={() => this.canAction = false}
+                        ListEmptyComponent={<NoDataView/>}
                     />
                 </SafeAreaView>
             </View>

@@ -21,6 +21,7 @@ import LoadImage from '../../../components/load-image';
 import ScrollTitle from '../../../components/scroll-title';
 import WorkService from '../work-service';
 import ListJianYanHeader from '../../../components/list-jianyan-header';
+import NoDataView from '../../../components/no-data-view';
 
 class TaskListPage extends BasePage {
     static navigationOptions = ({navigation}) => {
@@ -139,32 +140,32 @@ class TaskListPage extends BasePage {
             <TouchableWithoutFeedback onPress={() => {
                 const {type} = this.props;
                 if (type === 'fuwu') {
-                    this.props.navigation.push('service', {data: item});
+                    this.props.navigation.navigate('service', {data: item});
 
                 } else {
                     switch (item.statusName) {
                         case '待派单': {
-                            this.props.navigation.push('paidan', {data: item});
+                            this.props.navigation.navigate('paidan', {data: item});
                             break;
                         }
                         case '待接单': {
-                            this.props.navigation.push('jiedan', {data: item});
+                            this.props.navigation.navigate('jiedan', {data: item});
                             break;
                         }
                         case '待开工': {
-                            this.props.navigation.push('kaigong', {data: item});
+                            this.props.navigation.navigate('kaigong', {data: item});
                             break;
                         }
                         case '待完成': {
-                            this.props.navigation.push('wancheng', {data: item});
+                            this.props.navigation.navigate('wancheng', {data: item});
                             break;
                         }
                         case '待检验': {
-                            this.props.navigation.push('jianyan', {data: item});
+                            this.props.navigation.navigate('jianyan', {data: item});
                             break;
                         }
                         case '待回访': {
-                            this.props.navigation.push('huifang', {data: item});
+                            this.props.navigation.navigate('huifang', {data: item});
                             break;
                         }
                         default:
@@ -238,6 +239,7 @@ class TaskListPage extends BasePage {
                     onScrollEndDrag={() => this.canAction = false}
                     onMomentumScrollBegin={() => this.canAction = true}
                     onMomentumScrollEnd={() => this.canAction = false}
+                    ListEmptyComponent={<NoDataView/>}
                 />
 
 

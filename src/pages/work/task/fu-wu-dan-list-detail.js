@@ -25,6 +25,7 @@ import UDToast from '../../../utils/UDToast';
 import DashLine from '../../../components/dash-line';
 import WorkService from '../work-service';
 import Communicates from '../../../components/communicates';
+import ListImages from '../../../components/list-images';
 
 
 const Item = List.Item;
@@ -57,8 +58,7 @@ export default class FuWuDanListDetailPage extends BasePage {
             //     {icon: 'https://os.alipayobjects.com/rmsportal/IptWdCkrtkAUfjE.png'},
             //     {icon: 'https://os.alipayobjects.com/rmsportal/IptWdCkrtkAUfjE.png'},
             // ],
-            item: {
-                data: {},
+            detail: {
             },
             communicates: [],
         };
@@ -76,7 +76,11 @@ export default class FuWuDanListDetailPage extends BasePage {
         WorkService.serviceDetail(type, fuwu.id).then(item => {
             console.log('detail', item);
             this.setState({
-                item,
+                detail:{
+                    ...item.data,
+                    businessId: item.businessId,
+                    statusName: item.statusName
+                },
             });
         });
         WorkService.serviceCommunicates(fuwu.id).then(res => {
@@ -114,9 +118,7 @@ export default class FuWuDanListDetailPage extends BasePage {
 
 
     render() {
-        const {images, item, communicates} = this.state;
-        console.log(1122, item);
-        const detail = item.data;
+        const {images, detail, communicates} = this.state;
 
 
         return (
@@ -128,31 +130,12 @@ export default class FuWuDanListDetailPage extends BasePage {
                     </Flex>
                     <Flex style={[styles.every]} justify='between'>
                         <Text style={styles.left}>{detail.address}</Text>
-                        <Text style={styles.right}>{common.getServiceStatus(detail.billStatus)}</Text>
+                        <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
                     <DashLine/>
                     <Text style={styles.desc}>{detail.contents}</Text>
                     <DashLine/>
-                    <Flex justify={'start'} align={'start'}
-                          style={{width: ScreenUtil.deviceWidth() - 15, marginTop: 10}}>
-                        <Flex wrap={'wrap'}>
-                            {images.map((item, index) => {
-                                return (
-                                    <View style={{
-                                        paddingLeft: 15,
-                                        paddingRight: 5,
-                                        paddingBottom: 10,
-                                        paddingTop: 10,
-                                    }}>
-                                        <Image style={{
-                                            width: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
-                                            height: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
-                                        }} source={{uri: item.icon}}/>
-                                    </View>
-                                );
-                            })}
-                        </Flex>
-                    </Flex>
+                    <ListImages image={images}/>
 
                         <Flex style={[styles.every2]} justify='between'>
                             <Text style={styles.left}>报单人：{detail.contactName} {detail.createDate}</Text>
@@ -161,12 +144,21 @@ export default class FuWuDanListDetailPage extends BasePage {
                             </TouchableWithoutFeedback>
                         </Flex>
 
-                    <TouchableWithoutFeedback>
-                        <Flex style={[styles.every]}>
-                            <Text style={styles.left}>关联单：</Text>
-                            <Text style={styles.right}>FWD-201909100001</Text>
-                        </Flex>
-                    </TouchableWithoutFeedback>
+                    {detail.businessCode ? (
+                        <TouchableWithoutFeedback>
+                            <Flex style={[styles.every]}>
+                                <Text style={styles.left}>关联单：</Text>
+                                <Text onPress={()=>{
+                                    // if (detail.billType === '报修') {
+                                    //     this.props.navigation.navigate('weixiuD', {data: {id:detail.businessId}})
+                                    // }
+                                    // if ( detail.billType === '投诉') {
+                                    //     this.props.navigation.navigate('tousuD', {data: {id:detail.businessId}})
+                                    // }
+                                }} style={[styles.right,{color:'blue'}]}>{detail.businessCode}</Text>
+                            </Flex>
+                        </TouchableWithoutFeedback>
+                    ):null}
                     <DashLine/>
                     <View style={{
                         margin: 15,

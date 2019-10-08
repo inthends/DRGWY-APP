@@ -11,6 +11,7 @@ import ScreenUtil from '../../../utils/screen-util';
 import {connect} from 'react-redux';
 import common from '../../../utils/common';
 import BackTitleNavigationBar from '../../../components/back-title-navigation-bar';
+import NoDataView from '../../../components/no-data-view';
 
 class BuildingsPage extends BasePage {
     static navigationOptions = ({navigation}) => {
@@ -26,6 +27,7 @@ class BuildingsPage extends BasePage {
         super(props);
         let item = common.getValueFromProps(this.props);
         console.log(item);
+        console.log(this.props);
         this.state = {
             data: [],
             item,
@@ -61,6 +63,7 @@ class BuildingsPage extends BasePage {
                         renderItem={this._renderItem}
                         style={styles.list}
                         keyExtractor={(item, index) => item.id}
+                        ListEmptyComponent={<NoDataView/>}
                         // refreshing={this.state.refreshing}
                         // onRefresh={() => this.onRefresh()}
                         // onEndReached={() => this.loadMore()}

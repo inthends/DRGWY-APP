@@ -128,6 +128,22 @@ export default {
         }
         return api.postData(url, {estateId, type});
     },
+    createOrder(linkId) {
+        return new Promise((resolve)=>{
+            api.postData('/api/MobileMethod/WFTCreateTradeno', {linkId}).then(res=>{
+                resolve(res);
+            }).catch(err=>{
+                resolve(null);
+            })
+        });
+    },
+    scanPay(auth_code,tbout_trade_no) {
+        return api.postData('/api/MobileMethod/WFTScanPay', {auth_code,tbout_trade_no});
+    },
+    qrcodePay(tbout_trade_no) {
+        return api.postData('/api/MobileMethod/WFTPay', {tbout_trade_no});
+    }
+
 
 
 };

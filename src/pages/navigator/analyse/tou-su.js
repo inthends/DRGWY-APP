@@ -33,6 +33,7 @@ import DashLine from '../../../components/dash-line';
 import NavigatorService from '../navigator-service';
 import ScrollTitleChange from '../../../components/scroll-title-change';
 import {Row, Rows, Table} from 'react-native-table-component';
+import MyPopover from '../../../components/my-popover';
 
 
 class TouSuPage extends BasePage {
@@ -62,167 +63,91 @@ class TouSuPage extends BasePage {
             count: 0,
             selectBuilding: this.props.selectBuilding || {},
             statistics: [],
+            res:{
+                tableData:[],
+            }
         };
     }
 
     componentDidMount(): void {
-        this.getStatustics();
+        this.initData();
     }
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
         const nextSelectBuilding = nextProps.selectBuilding;
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
-            this.setState({selectBuilding: nextProps.selectBuilding}, () => {
-                this.onRefresh();
+            this.setState({selectBuilding: nextProps.selectBuilding,estateId: nextProps.selectBuilding.key,index:0}, () => {
+                this.initData();
             });
         }
-
     }
+
+    initData = () => {
+        NavigatorService.getFeeStatistics(1, this.state.selectBuilding.key, 100000).then(statistics => {
+            this.setState({statistics: statistics.data || []}, () => {
+                this.getStatustics();
+            });
+        });
+    };
+
     getStatustics = () => {
-        NavigatorService.getFeeStatistics(1,this.state.selectBuilding.key,100000).then(statistics=>{
-            console.log(1,statistics)
-            this.setState({statistics:statistics.data || []});
-        })
-    }
-
-    onRefresh = () => {
-
+        const {estateId, type} = this.state;
+        NavigatorService.collectionRate(5, estateId, type).then(res => {
+            this.setState({res});
+        });
     };
+
+
     titleChange = (index) => {
-        // this.getStatustics();
         const {statistics} = this.state;
-        let item = statistics[index-1];
+        console.log(this.state);
+        let estateId;
+        if (index === 0) {
+            estateId = this.state.selectBuilding.key;
+        }else {
+            estateId = statistics[index - 1].id;
+        }
         this.setState({
-            estateId: item.id
-        },()=>{
+            index,
+            estateId,
+        }, () => {
             this.getStatustics();
-        })
-
+        });
     };
-    typeChange = (title,index) => {
+    typeChange = (title, index) => {
         this.setState({
-            type: index+1
-        },()=>{
+            type: index + 1,
+        }, () => {
             this.getStatustics();
-        })
+        });
     };
 
 
     render() {
         const {statistics, dataInfo} = this.state;
         const titles = [...['全部'],...statistics.map(item=>item.name)];
-        console.log('t',titles)
-        const option1 = {
-            title: {
-                text: '',
-                left: 'center',
-            },
-            tooltip: {
-                trigger: 'axis',
-                // formatter: '{a} <br/>{b} : {c}'
-            },
-            legend: {
-                left: 'center',
-                data: ['邮件营销'],
-            },
-            xAxis: {
-                type: 'category',
-                name: 'x',
-                splitLine: {show: false},
-                data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-            },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true,
-            },
-            yAxis: {
-                type: 'value',
-                name: 'y',
-                data: ['0', '20', '40', '60', '80', '100'],
+        const {option1,tableData, area,rooms,rate,option2,tableHead } = this.state.res;
 
-            },
-            series: [
-                {
-                    name: '邮件营销',
-                    type: 'line',
-
-                    data: [12, 13, 10, 14, 9, 23, 21, 12, 3, 4, 6, 80],
-                },
-
-            ],
-        };
-        const option2 = {
-            tooltip: {},
-            legend: {
-                data: ['总数量', '完成数量'],
-                left:'left',
-                orient: 'vertical',
-
-            },
-            radar: {
-                // shape: 'circle',
-                name: {
-                    textStyle: {
-                        color: '#666',
-                        backgroundColor: '#999',
-                        borderRadius: 3,
-                        padding: [3, 5]
-                    }
-                },
-                indicator: [
-                    { name: '强电', max: 6500},
-                    { name: '弱电', max: 16000},
-                    { name: '门窗', max: 30000},
-                    { name: '地缘泵', max: 38000},
-                    { name: '管道', max: 52000},
-                    { name: '消防', max: 25000},
-                    { name: '污水泵', max: 25000},
-                    { name: '土建', max: 25000},
-                    { name: '电梯', max: 25000},
-
-                ]
-            },
-            series: [{
-                name: '预算 vs 开销（Budget vs spending）',
-                type: 'radar',
-                // areaStyle: {normal: {}},
-                data : [
-                    {
-                        value : [4300, 10000, 28000, 35000, 50000, 19000,3000,5000],
-                        name : '总数量'
-                    },
-                    {
-                        value : [5000, 14000, 28000, 31000, 42000, 21000,5000,3000],
-                        name : '完成数量'
-                    }
-                ]
-            }]
-        };
-        const tableHead = ['月份', '上月顺延', '本月新增', '本月完成'];
-        const tableData = [
-            ['1','2','12','7'],
-            ['2','2','12','7'],
-            ['3','2','12','7'],
-            ['4','2','12','7'],
-            ['5','2','12','7'],
-            ['6','2','12','7'],
-            ['7','2','12','7'],
-            ['8','2','12','7'],
-            ['9','2','12','7'],
-            ['10','2','12','7'],
-            ['11','2','12','7'],
-            ['12','2','12','7'],
-        ];
         return (
 
             <SafeAreaView style={{flex: 1}}>
                 <ScrollView style={{flex: 1}}>
-                    <ScrollTitleChange titles={titles}/>
+                    <ScrollTitleChange onChange={this.titleChange} titles={titles}/>
                     <DashLine style={{marginTop: 10, marginLeft: 15, marginRight: 15}}/>
-                    <AreaInfo style={{marginTop: 15}}/>
+                    <Flex direction={'column'} style={{width: ScreenUtil.deviceWidth(), marginTop: 15}}>
+                        <Flex justify={'between'} style={{width: ScreenUtil.deviceWidth() - 30, paddingBottom: 20}}>
+                            <Text style={styles.name}>管理面积：{area}万{Macro.meter_square}</Text>
+
+                            <Text style={styles.name}>房屋套数：{rooms}套</Text>
+
+
+                        </Flex>
+                        <Flex justify={'between'} style={{width: ScreenUtil.deviceWidth() - 30}}>
+                            <Text style={styles.name}>入住率：{rate}</Text>
+                            <MyPopover textStyle={{fontSize:14}} onChange={this.typeChange} titles={['全部', '收费项目类别', '不是收费项目']} visible={true}/>
+                        </Flex>
+                    </Flex>
                     <DashLine style={{marginTop: 15, marginLeft: 15, marginRight: 15}}/>
 
 

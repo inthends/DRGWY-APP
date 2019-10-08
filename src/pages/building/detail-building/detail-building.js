@@ -109,48 +109,27 @@ export default class DetailBuildingPage extends BasePage {
             <SafeAreaView style={{flex: 1}}>
                 <View>
                     <BackTitleNavigationBar {...this.props} title={this.state.item?this.state.item.allName:''}/>
-                    {/*<Flex justify='start' style={{height: 44, paddingLeft: 15, paddingRight: 15}}>*/}
-                    {/*    <TouchableOpacity onPress={() => this.props.navigation.goBack()}>*/}
-                    {/*        <Icon name='arrow-left' style={{width: 30}}/>*/}
-                    {/*    </TouchableOpacity>*/}
-                    {/*    <TextInput*/}
-                    {/*        style={{*/}
-                    {/*            paddingLeft: 15,*/}
-                    {/*            marginLeft: 10,*/}
-                    {/*            marginRight: 20,*/}
-                    {/*            height: 30,*/}
-                    {/*            width: ScreenUtil.deviceWidth() - 150,*/}
-                    {/*            backgroundColor: '#f3f3f5',*/}
-                    {/*            borderRadius: 10,*/}
-                    {/*        }}*/}
-                    {/*        onChangeText={(text) => this.setState({text})}*/}
-                    {/*        placeholder='搜索房号及租客'*/}
-                    {/*        value={this.state.text}*/}
-                    {/*        onSubmitEditing={value => this.onSubmit(value)}*/}
-                    {/*    />*/}
-                    {/*   */}
-                    {/*</Flex>*/}
                     <ScrollView style={{height: ScreenUtil.contentHeight()}}>
                         <Flex direction="row" justify='between'
                               style={{paddingTop: 30, paddingBottom: 10, paddingLeft: 15, paddingRight: 15}}>
                             <Text style={styles.name}>{detail.name}</Text>
-                            <Text style={styles.name}>{detail.price}</Text>
+                            <Text style={styles.name}>{detail.rentareasum} / {detail.areasum}{Macro.meter_square}</Text>
                         </Flex>
                         <ScrollView>
                             <Flex direction="row" justify='between'
                                   style={{paddingTop: 20, paddingBottom: 10, paddingLeft: 15, paddingRight: 15}}>
                                 <Text style={styles.leftText}>管理数量：</Text>
-                                <Text style={styles.rightText}>{detail.roomcounts}</Text>
+                                <Text style={styles.rightText}>{detail.areasum}</Text>
                             </Flex>
                             <Flex direction="row" justify='between'
                                   style={{paddingBottom: 10, paddingLeft: 15, paddingRight: 15}}>
                                 <Text style={styles.leftText}>在租数量：</Text>
-                                <Text style={styles.rightText}>{detail.rentingcounts}({common.getPercent(detail.rentingcounts,detail.roomcounts)}%)</Text>
+                                <Text style={styles.rightText}>{detail.rentareasum}{Macro.meter_square}({detail.rentarearate}%)</Text>
                             </Flex>
                             <Flex direction="row" justify='between'
                                   style={{paddingBottom: 10, paddingLeft: 15, paddingRight: 15}}>
                                 <Text style={styles.leftText}>可招商数量：</Text>
-                                <Text style={styles.rightText}>{detail.rentalcounts}({common.getPercent(detail.rentalcounts,detail.roomcounts)}%)</Text>
+                                <Text style={styles.rightText}>{detail.investmentareasum}{Macro.meter_square}({detail.investmentarearate}%)</Text>
                             </Flex>
                             <Flex direction="row" justify='between'
                                   style={{paddingBottom: 10, paddingLeft: 15, paddingRight: 15}}>
@@ -159,7 +138,7 @@ export default class DetailBuildingPage extends BasePage {
                             </Flex>
                             <Flex direction="row" justify='between'
                                   style={{paddingBottom: 10, paddingLeft: 15, paddingRight: 15}}>
-                                <Text style={styles.leftText}>预计完成率：</Text>
+                                <Text style={styles.leftText}>入住率：</Text>
                                 <Text style={styles.rightText}>{detail.completionRate}%</Text>
                             </Flex>
                             <Flex direction="row" style={{paddingTop: 30}}>
@@ -195,10 +174,10 @@ export default class DetailBuildingPage extends BasePage {
                                 </Flex>
                                 <Flex direction="column" style={styles.div}>
                                     <View style={[styles.square, {
-                                        backgroundColor: Macro.color_business,
+                                        // backgroundColor: Macro.color_business,
                                         borderWidth: 1,
                                         borderColor: '#999',
-                                        borderStyle: 'dashed',
+                                        borderStyle: 'dotted',
                                     }]}/>
                                     <Text style={styles.top}>可招商</Text>
                                     <Text style={styles.bottom}>(0)</Text>
@@ -235,30 +214,30 @@ export default class DetailBuildingPage extends BasePage {
                                                                 onPress={() => this.open(sectionIndex, roomIndex, index, false)}>
                                                                 <Flex direction='column' justify='between'
                                                                       align='start'
-                                                                      style={{
+                                                                      style={[{
                                                                           height: 100,
                                                                           backgroundColor: '#f5d14c',
                                                                           paddingRight: 15,
                                                                           paddingLeft: 5,
                                                                           paddingBottom: 5,
-                                                                      }}>
+                                                                      },item.state === 0 ? styles.dash : null]}>
                                                                     <Flex align='start' direction='column'>
                                                                         <Text style={styles.color_top}>北京像天气的我失望的</Text>
                                                                         <Text
                                                                             style={styles.color_top}>20000{Macro.meter_square}/102室</Text>
                                                                     </Flex>
                                                                     <Flex align='start' direction='column'>
-                                                                        <Text style={styles.color_top}>1合同</Text>
-                                                                        <Text style={styles.color_top}>1需求</Text>
+                                                                        {it.ContractCounts ?<Text style={styles.color_top}>{it.ContractCounts}需求</Text> : null}
+                                                                        {it.RequireCounts ?<Text style={styles.color_top}>{it.RequireCounts}需求</Text> : null}
                                                                     </Flex>
                                                                 </Flex>
                                                             </TouchableWithoutFeedback>
                                                             <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('SecondDetail', {data: it})}>
-                                                                <Flex style={{
+                                                                <Flex style={[{
                                                                     backgroundColor: '#f5d14c',
                                                                     marginLeft: 5,
                                                                     height: 100,
-                                                                }}>
+                                                                },item.state === 0 ? styles.dash : null]}>
                                                                     <Text style={{color: 'white'}}> > </Text>
                                                                 </Flex>
                                                             </TouchableWithoutFeedback>
@@ -267,20 +246,20 @@ export default class DetailBuildingPage extends BasePage {
                                                             onPress={() => this.open(sectionIndex, roomIndex, index, true)}>
                                                             <Flex direction='column' justify='between'
                                                                   align='start'
-                                                                  style={{
+                                                                  style={[{
                                                                       height: 100,
                                                                       backgroundColor: '#f5d14c',
                                                                       width: (ScreenUtil.deviceWidth() - 30 - 5 * 4) / 5,
                                                                       paddingLeft: 5,
-                                                                  }}>
+                                                                  },item.state === 0 ? styles.dash : null]}>
                                                                 <Flex align='start' direction='column'>
                                                                     <Text style={styles.color_top}>{it.name}室</Text>
                                                                     <Text
                                                                         style={styles.color_top}>{it.area}{Macro.meter_square}</Text>
                                                                 </Flex>
                                                                 <Flex align='start' direction='column'>
-                                                                    <Text style={styles.color_bottom}>1合同</Text>
-                                                                    <Text style={styles.color_bottom}>1需求</Text>
+                                                                    {it.ContractCounts ?<Text style={styles.color_top}>{it.ContractCounts}需求</Text> : null}
+                                                                    {it.RequireCounts ?<Text style={styles.color_top}>{it.RequireCounts}需求</Text> : null}
                                                                 </Flex>
                                                             </Flex>
                                                         </TouchableWithoutFeedback>)}
@@ -309,6 +288,7 @@ const styles = StyleSheet.create({
     name: {
         fontSize: 18,
         color: '#2d3040',
+        fontWeight: '600',
     },
     leftText: {
         fontSize: 14,
@@ -317,6 +297,7 @@ const styles = StyleSheet.create({
     rightText: {
         fontSize: 14,
         color: '#2b2d31',
+        fontWeight: '600',
     },
     div: {
         width: ScreenUtil.deviceWidth() / 7.0,
@@ -326,7 +307,7 @@ const styles = StyleSheet.create({
 
     },
     square: {
-        backgroundColor: 'red',
+        // backgroundColor: 'red',
         width: 20,
         height: 20,
     },
@@ -359,4 +340,9 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
         marginBottom: 4,
     },
+    dash: {
+        borderColor: '#5c665b',
+        borderWidth: 1,
+        borderStyle: 'dashed',
+    }
 });

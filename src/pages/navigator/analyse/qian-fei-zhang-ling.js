@@ -32,6 +32,7 @@ import ScrollTitle from '../../../components/scroll-title';
 import DashLine from '../../../components/dash-line';
 import NavigatorService from '../navigator-service';
 import ScrollTitleChange from '../../../components/scroll-title-change';
+import MyPopover from '../../../components/my-popover';
 
 
 class QianFeiZhangLingPage extends BasePage {
@@ -65,98 +66,86 @@ class QianFeiZhangLingPage extends BasePage {
     }
 
     componentDidMount(): void {
-        this.getStatustics();
+        this.initData();
     }
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
         const nextSelectBuilding = nextProps.selectBuilding;
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
-            this.setState({selectBuilding: nextProps.selectBuilding}, () => {
-                this.onRefresh();
+            this.setState({selectBuilding: nextProps.selectBuilding,estateId: nextProps.selectBuilding.key,index:0}, () => {
+                this.initData();
             });
         }
-
     }
+
+    initData = () => {
+        NavigatorService.getFeeStatistics(1, this.state.selectBuilding.key, 100000).then(statistics => {
+            this.setState({statistics: statistics.data || []}, () => {
+                this.getStatustics();
+            });
+        });
+    };
+
     getStatustics = () => {
-        NavigatorService.getFeeStatistics(1,this.state.selectBuilding.key,100000).then(statistics=>{
-            console.log(1,statistics)
-            this.setState({statistics:statistics.data || []});
-        })
-    }
-
-    onRefresh = () => {
-
+        const {estateId, type} = this.state;
+        NavigatorService.collectionRate(3, estateId, type).then(res => {
+            this.setState({res});
+        });
     };
+
+
     titleChange = (index) => {
-        // this.getStatustics();
         const {statistics} = this.state;
-        let item = statistics[index-1];
+        console.log(this.state);
+        let estateId;
+        if (index === 0) {
+            estateId = this.state.selectBuilding.key;
+        }else {
+            estateId = statistics[index - 1].id;
+        }
         this.setState({
-            estateId: item.id
-        },()=>{
+            index,
+            estateId,
+        }, () => {
             this.getStatustics();
-        })
-
+        });
     };
-    typeChange = (title,index) => {
+    typeChange = (title, index) => {
         this.setState({
-            type: index+1
-        },()=>{
+            type: index + 1,
+        }, () => {
             this.getStatustics();
-        })
+        });
     };
 
 
     render() {
         const {statistics, dataInfo} = this.state;
         const titles = [...['全部'],...statistics.map(item=>item.name)];
-        console.log('t',titles)
-        const option = {
-            tooltip : {
-                trigger: 'axis',
-                axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-                    type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                }
-            },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
-            },
-            xAxis : [
-                {
-                    type : 'category',
-                    data : ['0-12', '13-24', '24-36', '36以上'],
-                }
-            ],
-            yAxis : [
-                {
-                    type : 'value',
-                }
-            ],
-            series : [
-                {
-                    name:'',
-                    type:'bar',
-                    barWidth: '60%',
-                    data:[350, 450, 200, 50]
-                }
-            ],
-            // color: ['green','#f0a825','blue','#666'],
-            color: ['#3398DB'],
 
-        };
-        const xName = 'x 横轴欠费月数';
-        const yName = 'y 纵轴欠费金额';
+        const {option,xName,yName, area,rooms,rate} = this.state;
+
+
         return (
 
             <SafeAreaView style={{flex: 1}}>
                 <ScrollView style={{flex: 1}}>
-                    <ScrollTitleChange titles={titles}/>
+                    <ScrollTitleChange onChange={this.titleChange} titles={titles}/>
                     <DashLine style={{marginTop: 10, marginLeft: 15, marginRight: 15}}/>
-                    <AreaInfo style={{marginTop: 15}}/>
+                    <Flex direction={'column'} style={{width: ScreenUtil.deviceWidth(), marginTop: 15}}>
+                        <Flex justify={'between'} style={{width: ScreenUtil.deviceWidth() - 30, paddingBottom: 20}}>
+                            <Text style={styles.name}>管理面积：{area}万{Macro.meter_square}</Text>
+
+                            <Text style={styles.name}>房屋套数：{rooms}套</Text>
+
+
+                        </Flex>
+                        <Flex justify={'between'} style={{width: ScreenUtil.deviceWidth() - 30}}>
+                            <Text style={styles.name}>入住率：{rate}</Text>
+                            <MyPopover textStyle={{fontSize:14}} onChange={this.typeChange} titles={['全部', '收费项目类别', '不是收费项目']} visible={true}/>
+                        </Flex>
+                    </Flex>
                     <DashLine style={{marginTop: 15, marginLeft: 15, marginRight: 15}}/>
 
                     <Text style={styles.xx}>{xName}</Text>

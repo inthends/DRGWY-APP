@@ -64,7 +64,6 @@ const BuildingNavigator = createStackNavigator({
     DetailBuilding: DetailBuildingPage,
     Buildings: BuildingsPage,
     Home: HomePage,
-    scan: ScanScreen,
 
 
 });
@@ -102,7 +101,7 @@ const navigatorNavigator = createStackNavigator({
     weixiu_s: WeiXiuRatePage,
     tousu_s: TouSuPage,
     huifang_s: HuiFangRatePage,
-    scana: ScanScreen,
+    scan: ScanScreen,
 
 
 });
@@ -164,17 +163,18 @@ const tabbar = createBottomTabNavigator({
     //     }),
     // },
     //
-    Navigator: {
-        screen: navigatorNavigator,
-        navigationOptions: () => ({
-            title: '导航',
-            headerBackTitle: null,
-        }),
-    },
+
     Building: {
         screen: BuildingNavigator,
         navigationOptions: () => ({
             title: '楼宇',
+            headerBackTitle: null,
+        }),
+    },
+    Navigator: {
+        screen: navigatorNavigator,
+        navigationOptions: () => ({
+            title: '导航',
             headerBackTitle: null,
         }),
     },
@@ -265,6 +265,7 @@ const Drawer = createDrawerNavigator({
         drawerWidth: width * 0.8,
         drawerLockMode: 'locked-closed',
         useNativeAnimations: true,
+        overlayColor:'#000000b3',
         contentComponent: props => {
             return <ManagerBuildingPage {...props}/>;
         },

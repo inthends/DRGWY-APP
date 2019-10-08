@@ -63,6 +63,7 @@ class SecondDetailBuildingPage extends BasePage {
                 room: {
                     ...room.entity,
                     statusName: room.statusName,
+                    investment:room.investment,
                 },
             });
         });
@@ -85,7 +86,6 @@ class SecondDetailBuildingPage extends BasePage {
 
     render() {
         const {item, room} = this.state;
-        console.log('image123', require('../../../static/images/goodsCar/icon_position.png'));
 
         let content;
         if (this.state.index === 0) {
@@ -98,7 +98,7 @@ class SecondDetailBuildingPage extends BasePage {
                 }}>
                     <Flex style={{padding: 10}}>
 
-                        <LoadImage img={require('../../../static/images/goodsCar/icon_position.png')}
+                        <LoadImage img={room.mainPic}
                                    style={{width: 80, height: 60}}/>
                     </Flex>
                     <Flex direction='column' align='start'>
@@ -116,7 +116,7 @@ class SecondDetailBuildingPage extends BasePage {
                 </Flex>
                 <Flex justify='between' style={styles.single}>
                     <Text style={styles.left}>预租单价</Text>
-                    <Text style={styles.right}>{Macro.yuan_meter_day}</Text>
+                    <Text style={styles.right}>{room.averagerentprice}{Macro.yuan_meter_day}</Text>
                 </Flex>
                 <Flex justify='between' style={styles.single}>
                     <Text style={styles.left}>装修</Text>
@@ -236,7 +236,7 @@ class SecondDetailBuildingPage extends BasePage {
         return (
 
             <View>
-                <ImageBackground style={{height: 150}} source={require('../../../static/images/order/path-bg.png')}>
+                <ImageBackground style={{height: 150}} source={room.mainPic ? {uri:room.mainPic} : ''}>
                     <Flex justify='between' align='start' direction='column'
                           style={{height: 90, paddingLeft: 15, paddingRight: 15, marginTop: 44}}>
                         <TouchableWithoutFeedback onPress={() => this.props.navigation.goBack()}>
@@ -286,14 +286,16 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#333',
         paddingBottom: 6,
+        fontWeight: '600',
     },
     right: {
         fontSize: 14,
-        color: '#666',
+        color: '#38393d',
+
     },
     left: {
         fontSize: 14,
-        color: '#999',
+        color: '#848388',
     },
     single: {
         borderBottomWidth: 1,

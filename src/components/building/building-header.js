@@ -35,7 +35,7 @@ export default class BuildingHeader extends BasePage {
                         <TouchableOpacity onPress={() => this.props.navigation.openDrawer()}>
                             <Icon name='bars' color="white"/>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.props.navigation.push('scan')}>
+                        <TouchableOpacity>
                             <Icon name='scan' color="white"/>
                         </TouchableOpacity>
                     </Flex>
@@ -43,25 +43,25 @@ export default class BuildingHeader extends BasePage {
                 <Flex direction="column" style={styles.middle}>
                     <Flex justify="between" style={styles.area}>
                         <Text style={styles.text}>管理数量</Text>
-                        <Text style={styles.text}>在租实时均价 0{Macro.yuan_meter_day}</Text>
+                        <Text style={styles.text}>在租实时均价 {statistics.averagerentprice}{Macro.yuan_meter_day}</Text>
                     </Flex>
                     <Flex justify='start' style={styles.number}>
-                        <Text style={[styles.text, styles.big]}>{statistics.roomsum}</Text>
+                        <Text style={[styles.text, styles.big]}>{statistics.areasum}</Text>
 
                     </Flex>
                 </Flex>
                 <Flex style={styles.bottom}>
                     <Flex.Item style={styles.item}>
-                        <Text size="small" style={styles.topText}>在租{100*statistics.checkarea/statistics.roomsum}%</Text>
-                        <Text size="small" style={styles.bottomText}>{statistics.checkarea}{Macro.meter_square}</Text>
+                        <Text size="small" style={styles.topText}>在租 {statistics.rentarearate}%</Text>
+                        <Text size="small" style={styles.bottomText}>{statistics.rentareasum}{Macro.meter_square}</Text>
                     </Flex.Item>
                     <Flex.Item style={styles.item}>
-                        <Text size="small" style={styles.topText}>可招商{100*(statistics.roomsum-statistics.checkarea)/statistics.roomsum}%</Text>
-                        <Text size="small" style={styles.bottomText}>{statistics.roomsum-statistics.checkarea}{Macro.meter_square}</Text>
+                        <Text size="small" style={styles.topText}>可招商 {statistics.investmentarearate}%</Text>
+                        <Text size="small" style={styles.bottomText}>{statistics.investmentareasum}{Macro.meter_square}</Text>
                     </Flex.Item>
                     <Flex.Item style={styles.item}>
-                        <Text size="small" style={styles.topText}>预计完成率</Text>
-                        <Text size="small" style={styles.bottomText}>0%</Text>
+                        <Text size="small" style={styles.topText}>入住率</Text>
+                        <Text size="small" style={styles.bottomText}>{statistics.checkrate}%</Text>
                     </Flex.Item>
                 </Flex>
 
@@ -74,13 +74,14 @@ const styles = StyleSheet.create({
     content: {
         flexDirection: 'column',
         height: 180,
-        backgroundColor: Macro.color_sky,
+        backgroundColor: Macro.color_sky_dark,
     },
     top: {
         flex: 2,
-        backgroundColor: Macro.color_sky,
+        backgroundColor: Macro.color_sky_dark,
         paddingLeft: Macro.marginLeft_15,
         paddingRight: Macro.marginRight_15,
+        fontSize:14
     },
     title: {
         color: Macro.color_white,
@@ -89,11 +90,13 @@ const styles = StyleSheet.create({
     },
     middle: {
         flex: 3,
-        backgroundColor: Macro.color_sky,
+        backgroundColor: Macro.color_sky_dark,
     },
     bottom: {
         flex: 2,
         backgroundColor: Macro.color_sky_dark,
+        fontSize:14
+
     },
     area: {
         flex: 1,
@@ -118,11 +121,11 @@ const styles = StyleSheet.create({
     },
     topText: {
         color: Macro.color_a0b0f3,
-        fontSize: Macro.font_12,
+        fontSize: Macro.font_14,
     },
     bottomText: {
         color: Macro.color_white,
-        fontSize: Macro.font_14,
+        fontSize: Macro.font_16,
         paddingTop: 5,
     },
 });

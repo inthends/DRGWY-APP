@@ -40,7 +40,7 @@ export default class AddWorkPage extends BasePage {
             index: 0,
             data: ['投诉', '报修', '服务'],
             value: '',
-            images: [{icon: 'https://os.alipayobjects.com/rmsportal/IptWdCkrtkAUfjE.png'}],
+            images: [{icon: ''}],
             image: '',
             recording: false,
             id: common.getGuid(),
@@ -203,12 +203,12 @@ export default class AddWorkPage extends BasePage {
                     }}>
                         <TouchableOpacity onPressIn={() => this.startRecord()} onPressOut={() => this.stopRecord()}>
                             <LoadImage style={{width: 20, height: 20}}
-                                       defaultImg={require('../../static/images/home/search.png')}/>
+                                       defaultImg={require('../../static/images/icon_copy.png')}/>
                         </TouchableOpacity>
                         {fileUrl && fileUrl.length > 0 ?
                             <TouchableOpacity onPress={() => this.play()}>
                                 <LoadImage style={{width: 20, height: 20, marginLeft: 10}}
-                                           defaultImg={require('../../static/images/home/search.png')}/>
+                                           defaultImg={require('../../static/images/icon_s.png')}/>
                             </TouchableOpacity>
                             : null}
 
@@ -228,7 +228,7 @@ export default class AddWorkPage extends BasePage {
                                             paddingBottom: 10,
                                             paddingTop: 10,
                                         }}>
-                                            <Image style={{width: width, height: height}} source={{uri: item.icon}}/>
+                                            <LoadImage style={{width: width, height: height}} defaultImg={require('../../static/images/add_pic.png')} img={item.icon}/>
                                         </View>
                                     </TouchableOpacity>
                                 );

@@ -4,6 +4,7 @@ import BasePage from '../../pages/base/base';
 import Macro from '../../utils/macro';
 import {Button, Flex, WhiteSpace, WingBlank} from '@ant-design/react-native';
 import LoadImage from '../load-image';
+import ScreenUtil from '../../utils/screen-util';
 
 
 export default class BuildingCell extends BasePage {
@@ -28,22 +29,22 @@ export default class BuildingCell extends BasePage {
                 <View style={styles.content}>
                     <Flex direction="row" style={styles.top}>
                         <Flex style={styles.left}>
-                            <LoadImage style={styles.image}/>
+                            <LoadImage img={item.mainpic} style={styles.image}/>
                         </Flex>
                         <Flex direction="column" justify="between" style={styles.right}>
                             <Flex justify="between" style={styles.item}>
                                 <Text style={styles.name}>{item.name}</Text>
-                                <Text style={styles.area}>0{Macro.yuan_meter_day}</Text>
+                                <Text style={styles.area}>{item.averagerentprice}{Macro.yuan_meter_day}</Text>
                             </Flex>
-                            <Flex justify="between" style={styles.item}>
-                                <Text style={styles.complete}>预计完成率 0%</Text>
-                                <Text style={styles.number}>管理数量{item.roomsum}{Macro.meter_square}</Text>
+                            <Flex justify="between" style={[styles.item,{marginTop: 10}]}>
+                                <Text style={styles.complete}>入住率 {item.checkrate}%</Text>
+                                <Text style={styles.number}>管理数量{item.areasum} {Macro.meter_square}</Text>
                             </Flex>
-                            <Flex style={styles.item}>
-                                <Text style={styles.desc}>在租{item.checkarea}{Macro.meter_square}</Text>
+                            <Flex style={[styles.item,{marginTop:15}]}>
+                                <Text style={styles.desc}>在租{item.rentareasum} {Macro.meter_square}</Text>
                                 <View style={styles.line}/>
                                 <Text
-                                    style={styles.desc}>可招商{100 * (item.roomsum - item.checkarea) / item.roomsum}%{item.roomsum - item.checkarea}{Macro.meter_square}</Text>
+                                    style={styles.desc}>可招商{item.investmentarearate} {item.investmentareasum} {Macro.meter_square}</Text>
                             </Flex>
                         </Flex>
                     </Flex>
@@ -56,36 +57,44 @@ export default class BuildingCell extends BasePage {
 const styles = StyleSheet.create({
     content: {
         flexDirection: 'column',
-        height: 120,
         marginLeft: 15,
         marginRight: 15,
         borderBottomColor: Macro.color_f6f5f7,
         borderBottomWidth: 1,
     },
     left: {
-        flex: 1,
+        paddingTop:15,
+        paddingBottom:15,
+
         height: 120,
     },
     right: {
-        flex: 3,
+        width: ScreenUtil.deviceWidth()-90-15-10-15,
         height: 120,
-        paddingTop: 20,
+        paddingTop: 10,
         paddingBottom: 20,
+        marginLeft: 10,
     },
     image: {
         height: 90,
         width: 90,
+        borderRadius: 5
     },
     item: {
+        marginTop:5,
         width: '100%',
     },
     name: {
         fontSize: Macro.font_16,
         fontWeight: '600',
+        color:'#2c2d31',
     },
     area: {
-        color: Macro.color_636470,
+        fontWeight: '600',
         fontSize: Macro.font_14,
+        color:'#343339',
+
+
     },
     complete: {
         color: Macro.color_80aae2,
@@ -102,6 +111,7 @@ const styles = StyleSheet.create({
     desc: {
         color: Macro.color_c2c1c5,
         fontSize: Macro.font_14,
+
     },
     line: {
         width: 1,

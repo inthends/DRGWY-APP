@@ -21,6 +21,7 @@ import LoadImage from '../../../components/load-image';
 import ScrollTitle from '../../../components/scroll-title';
 import MyPopover from '../../../components/my-popover';
 import NavigatorService from '../navigator-service';
+import NoDataView from '../../../components/no-data-view';
 
 class EstateFuwuPage extends BasePage {
     static navigationOptions = ({navigation}) => {
@@ -67,8 +68,19 @@ class EstateFuwuPage extends BasePage {
 
     }
 
+
     componentDidMount(): void {
-        this.onRefresh();
+        this.viewDidAppear = this.props.navigation.addListener(
+            'didFocus',
+            (obj) => {
+                this.onRefresh();
+            },
+        );
+
+    }
+
+    componentWillUnmount(): void {
+        this.viewDidAppear.remove();
     }
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
@@ -148,14 +160,6 @@ class EstateFuwuPage extends BasePage {
         return (
             <TouchableWithoutFeedback onPress={() => {
                 this.props.navigation.push('fuwuD', {data: item, type: this.state.billType});
-                // const {billType} = this.state;
-                // if (billType === '报修') {
-                //     this.props.navigation.push('baoxiuD', {data: item,type:this.state.billType})
-                // }else if (billType === '投诉') {
-                //     this.props.navigation.push('tousuD', {data: item,type:this.state.billType})
-                // }else {
-                //
-                // }
             }}>
                 <Flex direction='column' align={'start'}
                       style={[styles.card, index === 0 ? styles.blue : styles.orange]}>
@@ -254,7 +258,7 @@ class EstateFuwuPage extends BasePage {
                     {/*<Tabs tabs={tabs2} initialPage={1} tabBarPosition="top">*/}
                     {/*    {renderContent}*/}
                     {/*</Tabs>*/}
-                    <Flex justify={'between'} style={{marginTop: 15, paddingRight: 15, height: 30}}>
+                    <Flex justify={'between'} style={{paddingLeft:15,marginTop: 15, paddingRight: 15, height: 30}}>
                         <MyPopover onChange={this.statusChange} titles={['全部', '待处理', '待完成', '待归档', '已归档']}
                                    visible={true}/>
                         <MyPopover onChange={this.timeChange} titles={ym} visible={true}/>
@@ -274,6 +278,7 @@ class EstateFuwuPage extends BasePage {
                         onScrollEndDrag={() => this.canAction = false}
                         onMomentumScrollBegin={() => this.canAction = true}
                         onMomentumScrollEnd={() => this.canAction = false}
+                        ListEmptyComponent={<NoDataView/>}
                     />
                 </SafeAreaView>
             </View>

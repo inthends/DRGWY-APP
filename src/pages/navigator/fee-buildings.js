@@ -124,17 +124,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         paddingTop: 10,
     },
-    card: {
-        borderWidth: 1,
-        borderColor: '#c8c8c8',
-        borderRadius: 5,
-        marginBottom: 15,
-        backgroundColor: 'white',
-        shadowColor: '#00000033',
-        shadowOffset: {h: 10, w: 10},
-        shadowRadius: 5,
-        shadowOpacity: 0.8,
-    },
     blue: {
         borderLeftColor: '#4d8fcc',
         borderLeftWidth: 8,

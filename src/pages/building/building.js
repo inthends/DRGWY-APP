@@ -10,6 +10,7 @@ import BuildingService from './building_service';
 import ScreenUtil from '../../utils/screen-util';
 import {connect} from 'react-redux';
 import {NativeModules} from 'react-native';
+import NoDataView from '../../components/no-data-view';
 
 class BuildingPage extends BasePage {
     static navigationOptions = ({navigation}) => {
@@ -147,6 +148,7 @@ class BuildingPage extends BasePage {
                             onScrollEndDrag={() => this.canAction = false}
                             onMomentumScrollBegin={() => this.canAction = true}
                             onMomentumScrollEnd={() => this.canAction = false}
+                            ListEmptyComponent={<NoDataView/>}
                         />
                     </View>
 
@@ -158,7 +160,7 @@ class BuildingPage extends BasePage {
 
 const styles = StyleSheet.create({
     all: {
-        backgroundColor: Macro.color_sky,
+        backgroundColor: Macro.color_sky_dark,
         flex: 1,
     },
     content: {

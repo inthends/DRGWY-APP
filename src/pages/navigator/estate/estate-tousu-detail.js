@@ -24,6 +24,8 @@ import UDPlayer from '../../../utils/UDPlayer';
 import UDToast from '../../../utils/UDToast';
 import DashLine from '../../../components/dash-line';
 import WorkService from '../../work/work-service';
+import ListImages from '../../../components/list-images';
+import Communicates from '../../../components/communicates';
 
 
 const Item = List.Item;
@@ -101,6 +103,18 @@ export default class EtousuDetailPage extends BasePage {
             console.log(res);
         });
     };
+    communicateClick = (i) => {
+        let c = this.state.communicates;
+        let d = c.map(it => {
+            if (it.id === i.id) {
+                it.show = i.show !== true;
+            }
+            return it;
+        });
+        this.setState({
+            communicates: d,
+        });
+    };
 
 
     render() {
@@ -126,26 +140,7 @@ export default class EtousuDetailPage extends BasePage {
                     <DashLine/>
                     <Text style={styles.desc}>{detail.contents}</Text>
                     <DashLine/>
-                    <Flex justify={'start'} align={'start'}
-                          style={{width: ScreenUtil.deviceWidth() - 15, marginTop: 10}}>
-                        <Flex wrap={'wrap'}>
-                            {images.map((item, index) => {
-                                return (
-                                    <View style={{
-                                        paddingLeft: 15,
-                                        paddingRight: 5,
-                                        paddingBottom: 10,
-                                        paddingTop: 10,
-                                    }}>
-                                        <Image style={{
-                                            width: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
-                                            height: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
-                                        }} source={{uri: item.icon}}/>
-                                    </View>
-                                );
-                            })}
-                        </Flex>
-                    </Flex>
+                    <ListImages image={images}/>
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
                     </Flex>
@@ -153,68 +148,13 @@ export default class EtousuDetailPage extends BasePage {
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every]}>
                             <Text style={styles.left}>关联单：</Text>
-                            <Text onPress={()=>this.props.navigation.push('fuwuD', {data: {id:detail.relationId}})} style={[styles.right, {color: 'blue'}]}>{detail.serviceDeskCode}</Text>
+                            <Text onPress={()=>this.props.navigation.navigate('fuwuD', {data: {id:detail.relationId}})} style={[styles.right, {color: 'blue'}]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
 
 
                     <DashLine/>
-                    <Flex style={[styles.every]} justify='between'>
-                        <Text style={styles.left}>单据动态</Text>
-                    </Flex>
-                    {communicates.map((i, index) => (
-                        <Fragment key={i.id}>
-                            <TouchableWithoutFeedback onPress={() => {
-                                let c = this.state.communicates;
-                                let d = c.map(it => {
-                                    if (it.id === i.id) {
-                                        it.show = i.show !== true;
-                                    }
-                                    return it;
-                                });
-                                this.setState({
-                                    communicates: d,
-                                });
-                            }}>
-                                <Flex style={[styles.every]} justify='between'>
-                                    <LoadImage img={i.avatar} style={{width: 30, height: 30}}/>
-                                    <Text style={styles.left}>{i.author} {i.datetime} 跟进</Text>
-                                    <LoadImage style={{width: 30, height: 30}}/>
-                                </Flex>
-                            </TouchableWithoutFeedback>
-                            {i.show === true ? <View style={{
-                                margin: 15,
-                                marginTop: 0,
-                                borderStyle: 'solid',
-                                borderColor: '#F3F4F2',
-                                borderWidth: 1,
-                                borderRadius: 5,
-                                paddingTop: 15,
-                                paddingBottom: 15,
-                                paddingRight: 10,
-                                paddingLeft: 10,
-                            }}>
-                                <Text>{i.content}</Text>
-                            </View> : null}
-                            {/*<Flex wrap={'wrap'}>*/}
-                            {/*    {images.map((item, index) => {*/}
-                            {/*        return (*/}
-                            {/*            <View style={{*/}
-                            {/*                paddingLeft: 15,*/}
-                            {/*                paddingRight: 5,*/}
-                            {/*                paddingBottom: 10,*/}
-                            {/*                paddingTop: 10,*/}
-                            {/*            }}>*/}
-                            {/*                <Image style={{*/}
-                            {/*                    width: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,*/}
-                            {/*                    height: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,*/}
-                            {/*                }} source={{uri: item.icon}}/>*/}
-                            {/*            </View>*/}
-                            {/*        );*/}
-                            {/*    })}*/}
-                            {/*</Flex>*/}
-                        </Fragment>
-                    ))}
+                    <Communicates communicateClick={this.communicateClick} communicates={communicates}/>
                 </ScrollView>
             </SafeAreaView>
         );

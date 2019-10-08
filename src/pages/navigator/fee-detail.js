@@ -11,7 +11,7 @@ import {
     Linking,
 } from 'react-native';
 import BasePage from '../base/base';
-import {Button, Flex, Icon, List, WhiteSpace} from '@ant-design/react-native';
+import {Button, Flex, Icon, List, WhiteSpace,Checkbox,Modal} from '@ant-design/react-native';
 import Macro from '../../utils/macro';
 import ScreenUtil from '../../utils/screen-util';
 import {connect} from 'react-redux';
@@ -20,6 +20,8 @@ import common from '../../utils/common';
 import LoadImage from '../../components/load-image';
 import TwoChange from '../../components/two-change';
 import NavigatorService from './navigator-service';
+import UDToast from '../../utils/UDToast';
+import QRCode from 'react-native-qrcode-svg';
 
 export default class FeeDetailPage extends BasePage {
     static navigationOptions = ({navigation}) => {
@@ -48,17 +50,81 @@ export default class FeeDetailPage extends BasePage {
                 data: [],
             },
             type: null,
+            tbout_trade_no:null,
+            visible: false,
 
         };
 
     }
 
 
+
+
     componentDidMount(): void {
-        this.onRefresh();
+        this.viewDidAppear = this.props.navigation.addListener(
+            'didFocus',
+            (obj) => {
+                this.onRefresh();
+                // if (obj.state.params) {
+                //     let address = obj.state.params.data;
+                //     NavigatorService.scanPay(address.a,address.b).then(res => {
+                //         alert(JSON.stringify(res));
+                //
+                //         this.setState({
+                //             res: JSON.stringify(res),
+                //         });
+                //     });
+                // }
+
+
+            },
+        );
+
     }
 
-    click = (index) => {
+    componentWillUnmount(): void {
+        this.viewDidAppear.remove();
+    }
+
+
+
+    click = (title) => {
+        const items = this.state.dataInfo.data.filter(item=>item.select === true);
+        if (items.length === 0) {
+            UDToast.showError('请选择');
+        }else {
+            let ids = JSON.stringify((items.map(item=>item.id)));
+
+
+            switch (title) {
+                case '刷卡': {
+                    break;
+                }
+                case '扫码': {
+                    this.props.navigation.push('scan',{data:ids})
+                    break;
+                }
+                case '收款码': {
+                    NavigatorService.createOrder(ids).then(res=>{
+                        if (res) {
+                            NavigatorService.qrcodePay(res).then(code=>{
+                                alert(JSON.stringify(code))
+                                // this.setState({
+                                //     visible:true
+                                // })
+                            })
+                        }
+                    })
+
+                    break;
+                }
+                case '现金': {
+                    break;
+                }
+            }
+
+
+        }
 
     };
 
@@ -80,57 +146,102 @@ export default class FeeDetailPage extends BasePage {
         });
     };
 
+    changeItem = item => {
+        let data = this.state.dataInfo.data;
+        data = data.map(it=>{
+            if (it.id === item.id) {
+                it.select = it.select !== true
+            }
+            return it;
+        })
+        this.setState({ dataInfo:{
+                ...this.state.dataInfo,
+                data
+            } });
+    }
+
+    onClose = () => {
+        this.setState({
+            visible:false
+        },()=>{
+            this.onRefresh();
+        })
+    }
+
 
     render() {
         const {statistics, dataInfo,type,room} = this.state;
         return (
-
 
             <SafeAreaView style={{flex: 1}}>
                 <Text style={{paddingLeft: 15, paddingTop: 15, fontSize: 20}}>{room.allName} {room.tenantName}</Text>
                 <TwoChange onChange={this.typeOnChange}/>
                 <Flex style={{backgroundColor: '#eee', height: 1, marginLeft: 15, marginRight: 15, marginTop: 15}}/>
                 {dataInfo.data.map(item => (
-                    <Flex key={item.id} align={'start'} direction={'column'} style={styles.item}>
-                        <Flex justify={'between'}
-                              style={{paddingLeft: 15, paddingTop: 5, paddingBottom: 5, width: '100%'}}>
-                            <Text>{item.feeName}</Text>
-                            <Flex>
-                                <Text style={{paddingRight: 15}}>{item.amount}</Text>
-                                <LoadImage style={{width: 15, height: 15}}/>
+                    <TouchableWithoutFeedback key={item.id} onPress={()=>this.changeItem(item)}>
+                        <Flex align={'start'} direction={'column'} style={styles.item}>
+
+                            <Flex justify={'between'}
+                                  style={{paddingLeft: 15, paddingTop: 5, paddingBottom: 5, width: '100%'}}>
+                                <Text style={{fontSize:16}}>{item.feeName}</Text>
+                                <Flex>
+                                    <Text style={{paddingRight: 15,fontSize:16}}>{item.amount}</Text>
+                                    <Checkbox
+                                        checked={item.select}
+                                        style={{ color: Macro.color_E67942 }}
+                                        onChange={event => {
+                                            this.changeItem(item);
+                                        }}
+                                    />
+                                </Flex>
                             </Flex>
+                            <Text style={{paddingLeft: 15, paddingTop: 10}}>{item.beginDate}至{item.endDate}</Text>
                         </Flex>
-                        <Text style={{paddingLeft: 15, paddingTop: 10}}>{item.beginDate}至{item.endDate}</Text>
-                    </Flex>
+                    </TouchableWithoutFeedback>
                 ))}
                 {type === '已交' ? null : (
                     <Flex>
-                        <TouchableWithoutFeedback onPress={() => this.click(0)}>
+                        <TouchableWithoutFeedback onPress={() => this.click('刷卡')}>
                             <Flex justify={'center'} style={styles.ii}>
                                 <Text style={styles.word}>刷卡</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => this.click(1)}>
+                        <TouchableWithoutFeedback onPress={() => this.click('扫码')}>
                             <Flex justify={'center'} style={[styles.ii, {backgroundColor: 'blue'}]}>
                                 <Text style={styles.word}>扫码</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => this.click(2)}>
+                        <TouchableWithoutFeedback onPress={() => this.click('收款码')}>
                             <Flex justify={'center'} style={[styles.ii, {backgroundColor: '#f39d39'}]}>
                                 <Text style={styles.word}>收款码</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => this.click(3)}>
+                        <TouchableWithoutFeedback onPress={() => this.click('现金')}>
                             <Flex justify={'center'} style={[styles.ii, {backgroundColor: 'green'}]}>
                                 <Text style={styles.word}>现金</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
-
-
                     </Flex>
                 )}
 
+                <Modal
+                    transparent
+                    onClose={this.onClose}
+                    maskClosable
+                    visible={this.state.visible}
 
+                >
+                    <Flex justify={'center'} style={{margin:30}}>
+                        <QRCode
+                            size={200}
+                            value="https://www.baidu.com"
+                        />
+                    </Flex>
+
+                    {/*<Button type="primary" style={{height:50}} onPress={this.onClose}>*/}
+                    {/*    取消*/}
+                    {/*</Button>*/}
+                </Modal>
             </SafeAreaView>
 
         );
@@ -168,17 +279,6 @@ const styles = StyleSheet.create({
         color: '#868688',
         fontSize: 16,
         paddingTop: 10,
-    },
-    card: {
-        borderWidth: 1,
-        borderColor: '#c8c8c8',
-        borderRadius: 5,
-        marginBottom: 15,
-        backgroundColor: 'white',
-        shadowColor: '#00000033',
-        shadowOffset: {h: 10, w: 10},
-        shadowRadius: 5,
-        shadowOpacity: 0.8,
     },
     blue: {
         borderLeftColor: '#4d8fcc',

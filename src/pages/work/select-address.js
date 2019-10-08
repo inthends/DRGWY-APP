@@ -136,7 +136,7 @@ export default class SelectAddressPage extends BasePage {
 
 
         return (
-            <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+            <SafeAreaView style={{flex: 1, backgroundColor: '#eee'}}>
                 <View style={{flex: 1}}>
 
                     <Item arrow="empty">
@@ -157,7 +157,7 @@ export default class SelectAddressPage extends BasePage {
                                             <Image alt='' style={{width: 24, height: 24}}
                                                    source={selectItem.id === item.id ? require('../../static/images/select.png') : require('../../static/images/no-select.png')}/>
                                         </TouchableWithoutFeedback>
-                                        <Text style={{paddingLeft: 15}}>{item.name}</Text>
+                                        <Text style={{paddingLeft: 15,paddingTop: 5,paddingBottom: 5}}>{item.name}</Text>
                                     </Flex>
                                 </Item>
                             ))}

@@ -1,37 +1,74 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 import {
     StyleSheet,
     Text,
     TouchableOpacity,
     Linking,
+    ScrollView
 } from 'react-native';
 
 import QRCodeScanner from 'react-native-qrcode-scanner';
+import common from '../../utils/common';
+import NavigatorService from './navigator-service';
+import {Flex} from '@ant-design/react-native';
 
 export default class ScanScreen extends Component {
-    onSuccess = (e) => {
-        alert(e.data);
-        console.log(e);
-        // Linking
-        //     .openURL(e.data)
-        //     .catch(err => console.error('An error occured', err));
-        // this.props.navigation.navigate('Building',{scan:e});
+    constructor(props) {
+        super(props);
+        this.state = {
+            res: '',
+            tbout_trade_no:'',
+            code:'',
+        };
     }
+
+    onSuccess = (e) => {
+        let ids = common.getValueFromProps(this.props);
+        NavigatorService.createOrder(ids).then(tbout_trade_no=>{
+            NavigatorService.scanPay(e.data, tbout_trade_no).then(res => {
+                this.props.navigation.goBack();
+            }).catch(()=>{
+                this.scanner.reactivate();
+            });
+
+            // this.props.navigation.navigate('feeDetail', {
+            //     data: {
+            //         b:tbout_trade_no,
+            //         a:e.data,
+            //     }
+            // })
+        })
+
+
+
+    };
+
 
     render() {
         return (
             <QRCodeScanner
+                ref={ref => this.scanner = ref}
                 onRead={this.onSuccess}
-                flashMode={QRCodeScanner.Constants.FlashMode.torch}
                 topContent={
-                    <Text style={styles.centerText}>
-                        Go to <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text> on your computer and scan the QR code.
-                    </Text>
+                    <ScrollView>
+                        <Flex>
+                            <Text style={{paddingLeft:10}}>
+                                {this.state.tbout_trade_no}
+                            </Text>
+                            <Text style={{paddingLeft:10}}>
+                                {this.state.code}
+                            </Text>
+                            <Text style={{paddingLeft:10}}>
+                                {this.state.res}
+                            </Text>
+                        </Flex>
+                    </ScrollView>
+
                 }
                 bottomContent={
-                    <TouchableOpacity style={styles.buttonTouchable}>
-                        <Text style={styles.buttonText}>OK. Got it!</Text>
+                    <TouchableOpacity onPress={()=>this.scanner.reactivate()}>
+                        <Text style={styles.buttonText}>重新扫码</Text>
                     </TouchableOpacity>
                 }
             />
@@ -51,10 +88,23 @@ const styles = StyleSheet.create({
         color: '#000',
     },
     buttonText: {
-        fontSize: 21,
-        color: '#456789',
+        fontSize: 20,
+        color: '#666',
     },
     buttonTouchable: {
         padding: 16,
     },
 });
+
+
+/*
+<Text style={styles.centerText}>
+                    Go to <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text> on your computer and scan the QR code.
+                    </Text>
+
+
+
+                    <TouchableOpacity style={styles.buttonTouchable}>
+                        <Text style={styles.buttonText}>OK. Got it!</Text>
+                    </TouchableOpacity>
+ */

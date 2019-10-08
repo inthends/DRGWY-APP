@@ -26,6 +26,7 @@ import DashLine from '../../../components/dash-line';
 import WorkService from '../work-service';
 import UploadImageView from '../../../components/upload-image-view';
 import Communicates from '../../../components/communicates';
+import ListImages from '../../../components/list-images';
 
 const Item = List.Item;
 
@@ -131,26 +132,7 @@ export default class KaiGongListDetailPage extends BasePage {
                     <DashLine/>
                     <Text style={styles.desc}>{detail.repairContent}</Text>
                     <DashLine/>
-                    <Flex justify={'start'} align={'start'}
-                          style={{width: ScreenUtil.deviceWidth() - 15, marginTop: 10}}>
-                        <Flex wrap={'wrap'}>
-                            {images.map((item, index) => {
-                                return (
-                                    <View style={{
-                                        paddingLeft: 15,
-                                        paddingRight: 5,
-                                        paddingBottom: 10,
-                                        paddingTop: 10,
-                                    }}>
-                                        <Image style={{
-                                            width: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
-                                            height: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
-                                        }} source={{uri: item.icon}}/>
-                                    </View>
-                                );
-                            })}
-                        </Flex>
-                    </Flex>
+                    <ListImages image={images}/>
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
                     </Flex>
@@ -158,7 +140,7 @@ export default class KaiGongListDetailPage extends BasePage {
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every]}>
                             <Text style={styles.left}>关联单：</Text>
-                            <Text onPress={() => this.props.navigation.push('service', {data: {id: detail.relationId}})}
+                            <Text onPress={() => this.props.navigation.navigate('service', {data: {id: detail.relationId}})}
                                   style={[styles.right, {color: 'blue'}]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>

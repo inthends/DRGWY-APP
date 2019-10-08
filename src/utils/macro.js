@@ -11,12 +11,12 @@ export default class Macro {
     static color_white = 'white';
     static color_a0b0f3 = '#a0b0f3';
     static color_636470 = '#636470';
-    static color_c2c1c5 = '#c2c1c5';
-    static color_80aae2 = '#80aae2';
-    static color_9c9ca5 = '#9c9ca5';
-    static color_dae9ff = '#dae9ff';
+    static color_c2c1c5 = '#bcbcbe';
+    static color_80aae2 = '#5f8cdf';
+    static color_9c9ca5 = '#b1afba';
+    static color_dae9ff = '#dbe7ff';
     static color_f6f5f7 = '#f6f5f7';
-    static color_black_trunslent = '#000000CC';
+    static color_black_trunslent = '#000000cc';
 
 
 
@@ -27,6 +27,7 @@ export default class Macro {
     static color_2022 = '#69bfb1';
     static color_free = '#79a2d3';
     static color_business = 'white';
+    static color_E67942 = '#f39d39';
 
 
 

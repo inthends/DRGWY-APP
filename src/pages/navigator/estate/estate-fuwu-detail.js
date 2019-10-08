@@ -24,6 +24,8 @@ import UDPlayer from '../../../utils/UDPlayer';
 import UDToast from '../../../utils/UDToast';
 import DashLine from '../../../components/dash-line';
 import WorkService from '../../work/work-service';
+import Communicates from '../../../components/communicates';
+import ListImages from '../../../components/list-images';
 
 
 const Item = List.Item;
@@ -56,8 +58,7 @@ export default class EfuwuDetailPage extends BasePage {
             //     {icon: 'https://os.alipayobjects.com/rmsportal/IptWdCkrtkAUfjE.png'},
             //     {icon: 'https://os.alipayobjects.com/rmsportal/IptWdCkrtkAUfjE.png'},
             // ],
-            item: {
-                data: {},
+            detail: {
             },
             communicates: [],
         };
@@ -75,7 +76,11 @@ export default class EfuwuDetailPage extends BasePage {
         WorkService.serviceDetail(type, fuwu.id).then(item => {
             console.log('detail', item);
             this.setState({
-                item,
+                detail:{
+                    ...item.data,
+                    businessId: item.businessId,
+                    statusName: item.statusName
+                },
             });
         });
         WorkService.serviceCommunicates(fuwu.id).then(res => {
@@ -86,24 +91,38 @@ export default class EfuwuDetailPage extends BasePage {
         WorkService.serviceExtra(fuwu.id).then(images => {
             console.log(11, images);
             this.setState({
-                images: images.map(item => {
-                    return {icon: item};
-                }),
+                images
             });
         });
     };
     click = (handle) => {
-        const {fuwu, type, value} = this.state;
+        const {fuwu, value} = this.state;
         WorkService.serviceHandle(handle, fuwu.id, value).then(res => {
-            console.log(res);
+            this.props.navigation.goBack();
         });
     };
+    communicateClick = (i) => {
+
+        let c = this.state.communicates;
+        console.log(c);
+        let d = c.map(it => {
+            if (it.id === i.id) {
+                it.show = i.show !== true;
+            }
+            return it;
+        });
+        console.log(d);
+
+        this.setState({
+            communicates: d,
+        });
+    }
 
 
     render() {
-        const {images, item, communicates} = this.state;
-        console.log(1122, item);
-        const detail = item.data;
+        const {images, detail, communicates} = this.state;
+
+
 
 
         return (
@@ -115,31 +134,12 @@ export default class EfuwuDetailPage extends BasePage {
                     </Flex>
                     <Flex style={[styles.every]} justify='between'>
                         <Text style={styles.left}>{detail.address}</Text>
-                        <Text style={styles.right}>{common.getServiceStatus(detail.billStatus)}</Text>
+                        <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
                     <DashLine/>
                     <Text style={styles.desc}>{detail.contents}</Text>
                     <DashLine/>
-                    <Flex justify={'start'} align={'start'}
-                          style={{width: ScreenUtil.deviceWidth() - 15, marginTop: 10}}>
-                        <Flex wrap={'wrap'}>
-                            {images.map((item, index) => {
-                                return (
-                                    <View style={{
-                                        paddingLeft: 15,
-                                        paddingRight: 5,
-                                        paddingBottom: 10,
-                                        paddingTop: 10,
-                                    }}>
-                                        <Image style={{
-                                            width: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
-                                            height: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
-                                        }} source={{uri: item.icon}}/>
-                                    </View>
-                                );
-                            })}
-                        </Flex>
-                    </Flex>
+                    <ListImages images={images}/>
 
                         <Flex style={[styles.every2]} justify='between'>
                             <Text style={styles.left}>报单人：{detail.contactName} {detail.createDate}</Text>
@@ -154,10 +154,10 @@ export default class EfuwuDetailPage extends BasePage {
                                 <Text style={styles.left}>关联单：</Text>
                                 <Text onPress={()=>{
                                     if (detail.billType === '报修') {
-                                        this.props.navigation.push('weixiuD', {data: {id:detail.businessId}})
+                                        this.props.navigation.navigate('weixiuD', {data: {id:detail.businessId}})
                                     }
                                     if ( detail.billType === '投诉') {
-                                        this.props.navigation.push('tousuD', {data: {id:detail.businessId}})
+                                        this.props.navigation.navigate('tousuD', {data: {id:detail.businessId}})
                                     }
                                 }} style={[styles.right,{color:'blue'}]}>{detail.businessCode}</Text>
                             </Flex>
@@ -201,62 +201,8 @@ export default class EfuwuDetailPage extends BasePage {
 
                     </Flex>
                     <DashLine/>
-                    <Flex style={[styles.every]} justify='between'>
-                        <Text style={styles.left}>单据动态</Text>
-                    </Flex>
-                    {communicates.map((i, index) => (
-                        <Fragment key={i.id}>
-                            <TouchableWithoutFeedback onPress={() => {
-                                let c = this.state.communicates;
-                                let d = c.map(it => {
-                                    if (it.id === i.id) {
-                                        it.show = i.show !== true;
-                                    }
-                                    return it;
-                                });
-                                this.setState({
-                                    communicates: d,
-                                });
-                            }}>
-                                <Flex style={[styles.every]} justify='between'>
-                                    <LoadImage img={i.avatar} style={{width: 30, height: 30}}/>
-                                    <Text style={styles.left}>{i.author} {i.datetime} 跟进</Text>
-                                    <LoadImage style={{width: 30, height: 30}}/>
-                                </Flex>
-                            </TouchableWithoutFeedback>
-                            {i.show === true ? <View style={{
-                                margin: 15,
-                                marginTop: 0,
-                                borderStyle: 'solid',
-                                borderColor: '#F3F4F2',
-                                borderWidth: 1,
-                                borderRadius: 5,
-                                paddingTop: 15,
-                                paddingBottom: 15,
-                                paddingRight: 10,
-                                paddingLeft: 10,
-                            }}>
-                                <Text>{i.content}</Text>
-                            </View> : null}
-                            {/*<Flex wrap={'wrap'}>*/}
-                            {/*    {images.map((item, index) => {*/}
-                            {/*        return (*/}
-                            {/*            <View style={{*/}
-                            {/*                paddingLeft: 15,*/}
-                            {/*                paddingRight: 5,*/}
-                            {/*                paddingBottom: 10,*/}
-                            {/*                paddingTop: 10,*/}
-                            {/*            }}>*/}
-                            {/*                <Image style={{*/}
-                            {/*                    width: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,*/}
-                            {/*                    height: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,*/}
-                            {/*                }} source={{uri: item.icon}}/>*/}
-                            {/*            </View>*/}
-                            {/*        );*/}
-                            {/*    })}*/}
-                            {/*</Flex>*/}
-                        </Fragment>
-                    ))}
+                    <Communicates communicateClick={this.communicateClick} communicates={communicates}/>
+
                 </ScrollView>
             </SafeAreaView>
         );

@@ -15,11 +15,15 @@ export default class Communicates extends Component {
 
         return (
             <Fragment>
-                <Flex style={[styles.every]} justify='between'>
+                <Flex style={{
+                    marginLeft: 15,
+                    marginRight: 15,
+                    paddingTop: 15,
+                }} justify='between'>
                     <Text style={styles.left}>单据动态</Text>
                 </Flex>
                 {this.props.communicates.map((i, index) => (
-                    <Fragment key={i.id}>
+                    <Fragment key={index}>
                         <TouchableWithoutFeedback onPress={() => {
                             if (this.props.communicateClick) {
                                 this.props.communicateClick(i);
@@ -43,7 +47,7 @@ export default class Communicates extends Component {
                             paddingRight: 10,
                             paddingLeft: 10,
                         }}>
-                            <Text>{i.content}</Text>
+                            <Text style={styles.content}>{i.content}</Text>
                         </View> : null}
                         {/*<Flex wrap={'wrap'}>*/}
                         {/*    {images.map((item, index) => {*/}
@@ -81,8 +85,8 @@ const styles = StyleSheet.create({
     every: {
         marginLeft: 15,
         marginRight: 15,
-        paddingTop: 15,
-        paddingBottom: 15,
+        paddingTop: 5,
+        paddingBottom: 5,
     },
     every2: {
         marginLeft: 15,
@@ -91,8 +95,8 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
     },
     left: {
-        fontSize: 14,
-        color: '#666',
+        fontSize: 16,
+        color: '#333',
     },
     right: {},
     desc: {
@@ -105,7 +109,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         marginRight: 10,
         width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
-        backgroundColor: '#999',
+        backgroundColor: '#333',
         borderRadius: 6,
         marginBottom: 20,
     },
@@ -115,5 +119,8 @@ const styles = StyleSheet.create({
 
 
     },
+    content: {
+        color:'#999'
+    }
 
 });

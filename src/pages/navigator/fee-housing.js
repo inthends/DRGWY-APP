@@ -19,6 +19,7 @@ import ListHeader from '../../components/list-header';
 import common from '../../utils/common';
 import LoadImage from '../../components/load-image';
 import NavigatorService from './navigator-service';
+import NoDataView from '../../components/no-data-view';
 
 class FeeHousePage extends BasePage {
     static navigationOptions = ({navigation}) => {
@@ -175,6 +176,7 @@ class FeeHousePage extends BasePage {
                     onScrollEndDrag={() => this.canAction = false}
                     onMomentumScrollBegin={() => this.canAction = true}
                     onMomentumScrollEnd={() => this.canAction = false}
+                    ListEmptyComponent={<NoDataView/>}
                 />
 
 
@@ -235,17 +237,6 @@ const styles = StyleSheet.create({
         color: '#868688',
         fontSize: 16,
         paddingTop: 10,
-    },
-    card: {
-        borderWidth: 1,
-        borderColor: '#c8c8c8',
-        borderRadius: 5,
-        marginBottom: 15,
-        backgroundColor: 'white',
-        shadowColor: '#00000033',
-        shadowOffset: {h: 10, w: 10},
-        shadowRadius: 5,
-        shadowOpacity: 0.8,
     },
     blue: {
         borderLeftColor: '#4d8fcc',

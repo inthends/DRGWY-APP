@@ -135,7 +135,7 @@ class ManagerBuildingPage extends BasePage {
     render() {
         const {allData} = this.state;
         let content = allData.map(item => {
-            return <Fragment key={item.key}>
+            return <View key={item.key}>
                 <TouchableOpacity onPress={() => this.clickSectionHeader(item)}>
                     <SectionHeader item={item}/>
                 </TouchableOpacity>
@@ -154,7 +154,7 @@ class ManagerBuildingPage extends BasePage {
                         }) : null}
                     </Fragment>;
                 }) : null}
-            </Fragment>;
+            </View>;
         });
         return (
 
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
 
     },
     item: {
-        fontSize: 14,
+        fontSize: 16,
         paddingTop: 10,
         paddingBottom: 10,
         color: Macro.color_white,
