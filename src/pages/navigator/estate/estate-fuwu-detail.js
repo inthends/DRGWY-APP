@@ -26,6 +26,7 @@ import DashLine from '../../../components/dash-line';
 import WorkService from '../../work/work-service';
 import Communicates from '../../../components/communicates';
 import ListImages from '../../../components/list-images';
+import Macro from '../../../utils/macro';
 
 
 const Item = List.Item;
@@ -159,7 +160,7 @@ export default class EfuwuDetailPage extends BasePage {
                                     if ( detail.billType === '投诉') {
                                         this.props.navigation.navigate('tousuD', {data: {id:detail.businessId}})
                                     }
-                                }} style={[styles.right,{color:'blue'}]}>{detail.businessCode}</Text>
+                                }} style={[styles.right,{color:Macro.color_4d8fcc}]}>{detail.businessCode}</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
                     ):null}
@@ -179,11 +180,16 @@ export default class EfuwuDetailPage extends BasePage {
                             value={this.state.value}
                         />
                     </View>
-                    <Button style={{width: '80%', marginLeft: '10%', marginBottom: 20}} type="primary"
-                            onPress={() => this.click('回复')}>回复</Button>
+
+                        <TouchableWithoutFeedback onPress={() => this.click('回复')}>
+                            <Flex justify={'center'} style={[styles.ii,{width: '80%', marginLeft: '10%',marginRight: '10%', marginBottom: 20}, {backgroundColor: Macro.color_4d8fcc}]}>
+                                <Text style={styles.word}>回复</Text>
+                            </Flex>
+                        </TouchableWithoutFeedback>
+
                     <Flex>
                         <TouchableWithoutFeedback onPress={() => this.click('转维修')}>
-                            <Flex justify={'center'} style={[styles.ii, {backgroundColor: '#f39d39'}]}>
+                            <Flex justify={'center'} style={[styles.ii, {backgroundColor: Macro.color_f39d39}]}>
                                 <Text style={styles.word}>转维修</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
@@ -193,7 +199,7 @@ export default class EfuwuDetailPage extends BasePage {
                             </Flex>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={() => this.click('关闭')}>
-                            <Flex justify={'center'} style={[styles.ii, {backgroundColor: 'blue'}]}>
+                            <Flex justify={'center'} style={[styles.ii, {backgroundColor: Macro.color_4d8fcc}]}>
                                 <Text style={styles.word}>关闭</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
@@ -252,8 +258,6 @@ const styles = StyleSheet.create({
     word: {
         color: 'white',
         fontSize: 16,
-
-
     },
 
 });

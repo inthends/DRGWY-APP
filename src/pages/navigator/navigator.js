@@ -57,7 +57,7 @@ export default class NavigatorPage extends BasePage {
                         <Flex style={{
                             borderStyle: 'solid',
                             borderLeftWidth: 8,
-                            borderLeftColor: '#f39d39',
+                            borderLeftColor: Macro.color_f39d39,
                             paddingTop: 3,
                             paddingBottom: 3,
                         }}>
@@ -88,7 +88,7 @@ export default class NavigatorPage extends BasePage {
                         <Flex style={{
                             borderStyle: 'solid',
                             borderLeftWidth: 8,
-                            borderLeftColor: 'blue',
+                            borderLeftColor: Macro.color_4d8fcc,
                             paddingTop: 3,
                             paddingBottom: 3,
                         }}>

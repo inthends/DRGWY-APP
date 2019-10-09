@@ -104,8 +104,10 @@ class BuildingPage extends BasePage {
     };
     loadMore = () => {
         const {data, total, pageIndex} = this.state.dataInfo;
-        console.log('loadmore');
-        if (this.canAction && data.length < total) {
+        console.log('loadmore',this.canAction);
+
+        if (!this.canAction && data.length < total) {
+            this.canAction = true;
             this.setState({
                 refreshing: true,
                 pageIndex: pageIndex + 1,
@@ -113,6 +115,14 @@ class BuildingPage extends BasePage {
                 this.getList();
             });
         }
+        // if (data.length < total) {
+        //     this.setState({
+        //         refreshing: true,
+        //         pageIndex: pageIndex + 1,
+        //     }, () => {
+        //         this.getList();
+        //     });
+        // }
     };
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
@@ -144,10 +154,7 @@ class BuildingPage extends BasePage {
                             onRefresh={() => this.onRefresh()}
                             onEndReached={() => this.loadMore()}
                             onEndReachedThreshold={0}
-                            onScrollBeginDrag={() => this.canAction = true}
-                            onScrollEndDrag={() => this.canAction = false}
-                            onMomentumScrollBegin={() => this.canAction = true}
-                            onMomentumScrollEnd={() => this.canAction = false}
+                            onMomentumScrollBegin={() => this.canAction = false}
                             ListEmptyComponent={<NoDataView/>}
                         />
                     </View>

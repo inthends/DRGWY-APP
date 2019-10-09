@@ -24,6 +24,8 @@ export default class UploadImageView extends Component {
             }
             console.log(images);
             this.setState({images});
+        }).catch(error=>{
+
         });
     };
 
@@ -39,7 +41,7 @@ export default class UploadImageView extends Component {
                     {images.map((item, index) => {
                         return (
                             <TouchableOpacity key={index} onPress={() => {
-                                if (index === images.length - 1) {
+                                if (index === images.length - 1 && images.length <= 4) {
                                     this.selectImages();
                                 }
                             }}>

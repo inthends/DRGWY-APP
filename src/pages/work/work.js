@@ -14,6 +14,7 @@ import {Flex, Icon} from '@ant-design/react-native';
 import ScreenUtil from '../../utils/screen-util';
 import LoadImage from '../../components/load-image';
 import WorkService from './work-service';
+import Macro from '../../utils/macro';
 
 export default class WorkPage extends BasePage {
     static navigationOptions = ({navigation}) => {
@@ -101,7 +102,7 @@ export default class WorkPage extends BasePage {
                     <Flex direction={'column'} style={{padding: 15, paddingTop: 30}}>
                         <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task',{'data':{'type':'fuwu',title:'服务单列表'}})}>
                             <Flex direction='column' align={'start'}
-                                  style={[styles.card, {borderLeftColor: '#4d8fcc', borderLeftWidth: 8}]}>
+                                  style={[styles.card, {borderLeftColor: Macro.color_4d8fcc, borderLeftWidth: 8}]}>
                                 <Text style={styles.title}>服务单</Text>
                                 <Flex style={styles.line}/>
                                 <Flex>
@@ -126,7 +127,7 @@ export default class WorkPage extends BasePage {
                             </Flex>
                         </TouchableWithoutFeedback>
                         <Flex direction='column' align={'start'}
-                              style={[styles.card, {borderLeftColor: '#f39d39', borderLeftWidth: 8,borderStyle:'solid'}]}>
+                              style={[styles.card, {borderLeftColor: Macro.color_f39d39, borderLeftWidth: 8,borderStyle:'solid'}]}>
                             <Text style={styles.title}>工单任务</Text>
                             <Flex style={styles.line}/>
                             <Flex>
@@ -157,7 +158,7 @@ export default class WorkPage extends BasePage {
                             </Flex>
                         </Flex>
                         <Flex direction='column' align={'start'}
-                              style={[styles.card, {borderLeftColor: '#f39d39', borderLeftWidth: 8}]}>
+                              style={[styles.card, {borderLeftColor: Macro.color_f39d39, borderLeftWidth: 8}]}>
                             <Text style={styles.title}>工单逾期</Text>
                             <Flex style={styles.line}/>
                             <Flex>
@@ -234,12 +235,12 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.8,
     },
     blue: {
-        borderLeftColor: '#4d8fcc',
+        borderLeftColor: Macro.color_4d8fcc,
         borderLeftWidth: 8,
         borderStyle:'solid',
     },
     orange: {
-        borderLeftColor: '#f39d39',
+        borderLeftColor: Macro.color_f39d39,
         borderLeftWidth: 8,
         borderStyle:'solid',
 

@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
         paddingTop: 10,
     },
     blue: {
-        borderLeftColor: '#4d8fcc',
+        borderLeftColor: Macro.color_4d8fcc,
         borderLeftWidth: 8,
     },
 
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     bb: {
         borderStyle: 'solid',
         borderLeftWidth: 4,
-        borderLeftColor: '#f39d39',
+        borderLeftColor: Macro.color_f39d39,
         marginLeft: 15,
         marginTop: 15,
     },
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
         marginRight: 5,
     },
     orange: {
-        backgroundColor: '#f39d39',
+        backgroundColor: Macro.color_f39d39,
         color: '#fff',
     },
 });

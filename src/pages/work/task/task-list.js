@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.8,
     },
     blue: {
-        borderLeftColor: '#4d8fcc',
+        borderLeftColor: Macro.color_4d8fcc,
         borderLeftWidth: 8,
     },
     orange: {

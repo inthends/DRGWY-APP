@@ -20,6 +20,7 @@ import api from '../../utils/api';
 import UDPlayer from '../../utils/UDPlayer';
 import UDToast from '../../utils/UDToast';
 import WorkService from './work-service';
+import {AudioRecorder, AudioUtils} from 'react-native-audio';
 
 export default class AddWorkPage extends BasePage {
     static navigationOptions = ({navigation}) => {
@@ -64,6 +65,10 @@ export default class AddWorkPage extends BasePage {
 
             },
         );
+        // setTimeout(()=>{
+        //
+        // },1000);
+
 
     }
 
@@ -73,18 +78,62 @@ export default class AddWorkPage extends BasePage {
 
 
     startRecord = () => {
-        UDRecord.prepardRecord().then(res => {
-            api.uploadFile(res, this.state.id, false).then(res => {
-                console.log(res);
-                this.setState({fileUrl: res});
-            });
+        AudioRecorder.requestAuthorization().then((isAuthorised) => {
+            if (!isAuthorised) {
+                this.setState({isAuthorised:false});
+            }else {
+                this.setState({isAuthorised:true});
+            }
+            if (!isAuthorised) {
+                UDToast.showInfo('录音功能未授权');
+            }else {
+                if (!this.state.recording) {
+                    let audioPath = AudioUtils.DocumentDirectoryPath + '/test.aac';
+                    AudioRecorder.prepareRecordingAtPath(audioPath, {
+                        SampleRate: 22050,
+                        Channels: 1,
+                        AudioQuality: 'Low',
+                        AudioEncoding: 'aac',
+                    });
 
+                    AudioRecorder.onProgress = (data) => {
+                        console.log(Math.floor(data.currentTime));
+                        // this.setState({currentTime: Math.floor(data.currentTime)});
+                    };
+
+                    AudioRecorder.onFinished = (data) => {
+                        // Android callback comes in the form of a promise instead.
+                        // console.log('finish', data);
+                        // if (common.isIOS()) {
+                        //     resolve(data.audioFileURL);
+                        // }
+                        console.log('recond',data);
+                        api.uploadFile(data.audioFileURL, this.state.id, '/api/MobileMethod/MUploadServiceDesk',false).then(res => {
+                            console.log(res);
+                            this.setState({fileUrl: res});
+                        });
+                    };
+                    this.recordId = UDToast.showLoading('正在录音中...');
+                    this.setState({recording:true},()=>{
+                        UDRecord.startRecord();
+                    })
+                }
+            }
 
         });
-        UDRecord.startRecord();
+
+
+
     };
     stopRecord = () => {
-        UDRecord.stopRecord();
+        if (this.state.isAuthorised && this.state.recording) {
+            setTimeout(()=>{
+                UDToast.hiddenLoading(this.recordId);
+                this.setState({recording:false},()=>{
+                    UDRecord.stopRecord();
+                })
+            },1000);
+        }
 
     };
     play = () => {
@@ -102,6 +151,8 @@ export default class AddWorkPage extends BasePage {
             }
             console.log(images);
             this.setState({images});
+        }).catch(error=>{
+
         });
     };
 
@@ -218,7 +269,7 @@ export default class AddWorkPage extends BasePage {
                             {images.map((item, index) => {
                                 return (
                                     <TouchableOpacity key={index} onPress={() => {
-                                        if (index === images.length - 1) {
+                                        if (index === images.length - 1 && images.length<= 4) {
                                             this.selectImages();
                                         }
                                     }}>

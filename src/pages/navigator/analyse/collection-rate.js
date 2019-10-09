@@ -35,7 +35,7 @@ import ScrollTitleChange from '../../../components/scroll-title-change';
 import {Table, Row, Rows} from 'react-native-table-component';
 import MyPopover from '../../../components/my-popover';
 
-//color: ['#6f99c8','#f39d39','#81c83d'],
+
 class CollectionRatePage extends BasePage {
 
     static navigationOptions = ({navigation}) => {

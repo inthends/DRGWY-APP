@@ -239,11 +239,11 @@ const styles = StyleSheet.create({
         paddingTop: 10,
     },
     blue: {
-        borderLeftColor: '#4d8fcc',
+        borderLeftColor: Macro.color_4d8fcc,
         borderLeftWidth: 8,
     },
     orange: {
-        borderLeftColor: '#f39d39',
+        borderLeftColor: Macro.color_f39d39,
         borderLeftWidth: 8,
     },
 

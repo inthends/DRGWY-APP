@@ -28,6 +28,7 @@ import UploadImageView from '../../../components/upload-image-view';
 import Star from '../../../components/star';
 import Communicates from '../../../components/communicates';
 import ListImages from '../../../components/list-images';
+import Macro from '../../../utils/macro';
 
 const Item = List.Item;
 
@@ -147,7 +148,7 @@ export default class HuiFangDetailPage extends BasePage {
                         <Flex style={[styles.every]}>
                             <Text style={styles.left}>关联单：</Text>
                             <Text onPress={() => this.props.navigation.navigate('service', {data: {id: detail.relationId}})}
-                                  style={[styles.right, {color: 'blue'}]}>{detail.serviceDeskCode}</Text>
+                                  style={[styles.right, {color: Macro.color_4d8fcc}]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
                     <DashLine/>
@@ -168,9 +169,11 @@ export default class HuiFangDetailPage extends BasePage {
                             value={this.state.value}
                         />
                     </View>
-                    <Button style={{width: '80%', marginLeft: '10%', marginBottom: 20}} type="primary"
-                            onPress={() => this.click('完成回访')}>完成回访</Button>
-
+                    <TouchableWithoutFeedback onPress={() => this.click('完成回访')}>
+                        <Flex justify={'center'} style={[styles.ii,{width: '80%', marginLeft: '10%',marginRight: '10%', marginBottom: 20}, {backgroundColor: Macro.color_4d8fcc}]}>
+                            <Text style={styles.word}>完成回访</Text>
+                        </Flex>
+                    </TouchableWithoutFeedback>
                     <Communicates communicateClick={this.communicateClick} communicates={communicates}/>
                 </ScrollView>
             </SafeAreaView>

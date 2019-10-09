@@ -3,7 +3,11 @@ import UDToast from './UDToast';
 import api from './api';
 
 const options = {
-    title: 'Select Avatar',
+    title: '请选择',
+    cancelButtonTitle: '取消',
+takePhotoButtonTitle: '相机',
+chooseFromLibraryButtonTitle: '相册',
+
     storageOptions: {
         skipBackup: true,
         path: 'images',
@@ -29,7 +33,11 @@ export default class SelectImage {
                     // You can also display the image using data:
                     // const source = { uri: 'data:image/jpeg;base64,' + response.data };
                     api.uploadFile(response.uri, id,uploadUrl).then(res => {
-                        resolve(res);
+                        if (res) {
+                            resolve(res);
+                        }else {
+                            reject(null);
+                        }
                     });
 
 

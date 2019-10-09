@@ -26,7 +26,7 @@ import DashLine from '../../../components/dash-line';
 import WorkService from '../../work/work-service';
 import ListImages from '../../../components/list-images';
 import Communicates from '../../../components/communicates';
-
+import Macro from '../../../utils/macro';
 
 const Item = List.Item;
 
@@ -145,7 +145,7 @@ export default class EweixiuDetailPage extends BasePage {
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every]}>
                             <Text style={styles.left}>关联单：</Text>
-                            <Text onPress={()=>this.props.navigation.navigate('fuwuD', {data: {id:detail.relationId}})} style={[styles.right, {color: 'blue'}]}>{detail.serviceDeskCode}</Text>
+                            <Text onPress={()=>this.props.navigation.navigate('fuwuD', {data: {id:detail.relationId}})} style={[styles.right, {color: Macro.color_4d8fcc}]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
 

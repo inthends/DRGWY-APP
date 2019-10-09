@@ -27,7 +27,8 @@ export default class Macro {
     static color_2022 = '#69bfb1';
     static color_free = '#79a2d3';
     static color_business = 'white';
-    static color_E67942 = '#f39d39';
+    static color_f39d39 = '#f39d39';
+    static color_4d8fcc = '#4d8fcc';
 
 
 

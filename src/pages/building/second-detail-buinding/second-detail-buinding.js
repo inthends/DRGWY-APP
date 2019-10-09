@@ -240,7 +240,7 @@ class SecondDetailBuildingPage extends BasePage {
                     <Flex justify='between' align='start' direction='column'
                           style={{height: 90, paddingLeft: 15, paddingRight: 15, marginTop: 44}}>
                         <TouchableWithoutFeedback onPress={() => this.props.navigation.goBack()}>
-                            <Icon name='arrow-left' style={{width: 30}}/>
+                            <Icon name='left' style={{width: 30}}/>
                         </TouchableWithoutFeedback>
                         <Text style={{color: 'white', fontSize: 20}}>{this.state.item.allName}</Text>
                     </Flex>

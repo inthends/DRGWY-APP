@@ -188,7 +188,7 @@ export default class FeeDetailPage extends BasePage {
                                     <Text style={{paddingRight: 15,fontSize:16}}>{item.amount}</Text>
                                     <Checkbox
                                         checked={item.select}
-                                        style={{ color: Macro.color_E67942 }}
+                                        style={{ color: Macro.color_f39d39 }}
                                         onChange={event => {
                                             this.changeItem(item);
                                         }}
@@ -207,12 +207,12 @@ export default class FeeDetailPage extends BasePage {
                             </Flex>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={() => this.click('扫码')}>
-                            <Flex justify={'center'} style={[styles.ii, {backgroundColor: 'blue'}]}>
+                            <Flex justify={'center'} style={[styles.ii, {backgroundColor: Macro.color_4d8fcc}]}>
                                 <Text style={styles.word}>扫码</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={() => this.click('收款码')}>
-                            <Flex justify={'center'} style={[styles.ii, {backgroundColor: '#f39d39'}]}>
+                            <Flex justify={'center'} style={[styles.ii, {backgroundColor: Macro.color_f39d39}]}>
                                 <Text style={styles.word}>收款码</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
@@ -281,11 +281,11 @@ const styles = StyleSheet.create({
         paddingTop: 10,
     },
     blue: {
-        borderLeftColor: '#4d8fcc',
+        borderLeftColor: Macro.color_4d8fcc,
         borderLeftWidth: 8,
     },
     orange: {
-        borderLeftColor: '#f39d39',
+        borderLeftColor: Macro.color_f39d39,
         borderLeftWidth: 8,
     },
 
