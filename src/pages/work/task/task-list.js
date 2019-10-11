@@ -138,7 +138,7 @@ class TaskListPage extends BasePage {
     _renderItem = ({item, index}) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-                const {type} = this.props;
+                const {type} = this.state;
                 if (type === 'fuwu') {
                     this.props.navigation.navigate('service', {data: item});
 

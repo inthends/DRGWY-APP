@@ -8,7 +8,7 @@ import {
     FlatList,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    Linking,
+    Linking, Image,
 } from 'react-native';
 import BasePage from '../base/base';
 import {Button, Flex, Icon, List, WhiteSpace,Checkbox,Modal} from '@ant-design/react-native';
@@ -52,6 +52,7 @@ export default class FeeDetailPage extends BasePage {
             type: null,
             tbout_trade_no:null,
             visible: false,
+            code:'',
 
         };
 
@@ -108,17 +109,21 @@ export default class FeeDetailPage extends BasePage {
                     NavigatorService.createOrder(ids).then(res=>{
                         if (res) {
                             NavigatorService.qrcodePay(res).then(code=>{
-                                alert(JSON.stringify(code))
-                                // this.setState({
-                                //     visible:true
-                                // })
+
+                                this.setState({
+                                    visible:true,
+                                    code,
+                                })
                             })
                         }
-                    })
+                    });
 
                     break;
                 }
                 case '现金': {
+                    NavigatorService.cashPay(ids).then(res=>{
+                        this.onRefresh();
+                    });
                     break;
                 }
             }
@@ -162,7 +167,8 @@ export default class FeeDetailPage extends BasePage {
 
     onClose = () => {
         this.setState({
-            visible:false
+            visible:false,
+            code:'',
         },()=>{
             this.onRefresh();
         })
@@ -186,13 +192,13 @@ export default class FeeDetailPage extends BasePage {
                                 <Text style={{fontSize:16}}>{item.feeName}</Text>
                                 <Flex>
                                     <Text style={{paddingRight: 15,fontSize:16}}>{item.amount}</Text>
-                                    <Checkbox
-                                        checked={item.select}
+                                    {type !== '已交' && <Checkbox
+                                        checked={item.select === true}
                                         style={{ color: Macro.color_f39d39 }}
                                         onChange={event => {
                                             this.changeItem(item);
                                         }}
-                                    />
+                                    />}
                                 </Flex>
                             </Flex>
                             <Text style={{paddingLeft: 15, paddingTop: 10}}>{item.beginDate}至{item.endDate}</Text>
@@ -232,10 +238,11 @@ export default class FeeDetailPage extends BasePage {
 
                 >
                     <Flex justify={'center'} style={{margin:30}}>
-                        <QRCode
-                            size={200}
-                            value="https://www.baidu.com"
-                        />
+                        {/*<QRCode*/}
+                        {/*    size={200}*/}
+                        {/*    value={this.state.code}*/}
+                        {/*/>*/}
+                        <LoadImage style={{width:200,height:200}} img={this.state.code}/>
                     </Flex>
 
                     {/*<Button type="primary" style={{height:50}} onPress={this.onClose}>*/}

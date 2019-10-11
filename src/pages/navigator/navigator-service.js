@@ -23,7 +23,7 @@ export default {
         if (type === '已交') {
             url = '/api/MobileMethod/MGetChargeBillList';
         }
-        return api.postData(url, {pageIndex, pageSize, queryJson: {unitId: id}});
+        return api.postData(url, {pageIndex, pageSize, unitId: id});
     },
     //服务单
     serviceList(pageIndex, billStatus, treeType, treeTypeId, billType, startTime, endTime) {
@@ -37,16 +37,19 @@ export default {
         //     url = '/api/MobileMethod/MGetComplaintPageList';
         // }
 
+
         return api.postData('/api/MobileMethod/MGetServiceDeskPageList', {
             pageIndex,
             pageSize: 10,
-            billStatus,
-            status: billStatus,
-            treeType,
-            treeTypeId,
-            billType,
-            startTime,
-            endTime,
+            queryJson: {
+                billStatus,
+                status: billStatus,
+                treeType,
+                treeTypeId,
+                billType,
+                startTime,
+                endTime,
+            },
         });
     },
     weixiuList(pageIndex, billStatus, treeType, treeTypeId, startTime, endTime, repairArea) {
@@ -63,26 +66,32 @@ export default {
         return api.postData('/api/MobileMethod/MGetRepairPageList', {
             pageIndex,
             pageSize: 10,
-            billStatus,
-            status: billStatus,
-            treeType,
-            treeTypeId,
-            startTime,
-            endTime,
-            repairArea,
+            queryJson: {
+                billStatus,
+                status: billStatus,
+                treeType,
+                treeTypeId,
+                startTime,
+                endTime,
+                repairArea,
+            },
+
         });
     },
     tousuList(pageIndex, billStatus, treeType, treeTypeId, billType, startTime, endTime) {
         return api.postData('/api/MobileMethod/MGetComplaintPageList', {
             pageIndex,
             pageSize: 10,
-            billStatus,
-            status: billStatus,
-            treeType,
-            treeTypeId,
-            billType,
-            startTime,
-            endTime,
+            queryJson: {
+                billStatus,
+                status: billStatus,
+                treeType,
+                treeTypeId,
+                billType,
+                startTime,
+                endTime,
+            },
+
         });
     },
     // //服务单详情
@@ -129,21 +138,23 @@ export default {
         return api.postData(url, {estateId, type});
     },
     createOrder(linkId) {
-        return new Promise((resolve)=>{
-            api.postData('/api/MobileMethod/WFTCreateTradeno', {linkId}).then(res=>{
+        return new Promise((resolve) => {
+            api.postData('/api/MobileMethod/WFTCreateTradeno', {linkId}).then(res => {
                 resolve(res);
-            }).catch(err=>{
+            }).catch(err => {
                 resolve(null);
-            })
+            });
         });
     },
-    scanPay(auth_code,tbout_trade_no) {
-        return api.postData('/api/MobileMethod/WFTScanPay', {auth_code,tbout_trade_no});
+    scanPay(auth_code, tbout_trade_no) {
+        return api.postData('/api/MobileMethod/WFTScanPay', {auth_code, tbout_trade_no});
     },
     qrcodePay(tbout_trade_no) {
         return api.postData('/api/MobileMethod/WFTPay', {tbout_trade_no});
-    }
-
+    },
+    cashPay(linkId) {
+        return api.postData('/api/MobileMethod/MCharge', {linkId});
+    },
 
 
 };

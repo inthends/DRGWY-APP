@@ -32,7 +32,7 @@ export default class ListHeader extends Component {
                 duration: 200,              // 让动画持续一段时间
             },
         ).start();
-        const datas = [{'title': '全部', value: ''}, {'title': '未逾期', value: 0}, {'title': '逾期', value: 1}];
+        const datas = [{'title': '全部', value: ''}, {'title': '未逾期', value: 0}, {'title': '已逾期', value: 1}];
         this.setState({index: index}, () => {
             if (this.props.onChange) {
                 this.props.onChange(datas[index].value);
@@ -41,7 +41,7 @@ export default class ListHeader extends Component {
     };
 
     render() {
-        const datas = [{'title': '全部', select: true}, {'title': '未逾期'}, {'title': '逾期'}];
+        const datas = [{'title': '全部', select: true}, {'title': '未逾期'}, {'title': '已逾期'}];
         return (
             <Fragment>
                 <Flex direction={'column'} align={'start'}>

@@ -42,8 +42,8 @@ export default ({color = '#F3F4F2', backgroundColor = 'white', lineWidth = 1, st
     return (
         <View style={[{ flexDirection: 'row', width: SrceenUtil.deviceWidth() - 30, justifyContent: 'center', overflow: 'hidden' },style]}>
             {
-                dottes.map(() => {
-                    return <Text style={{ color: color, fontSize: 30 }}>-</Text>;
+                dottes.map((item) => {
+                    return <Text key={item} style={{ color: color, fontSize: 30 }}>-</Text>;
                 })
             }
         </View>

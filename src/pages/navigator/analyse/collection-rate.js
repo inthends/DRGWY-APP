@@ -132,14 +132,139 @@ class CollectionRatePage extends BasePage {
         const {statistics, dataInfo,index} = this.state;
         const titles = [...['全部'], ...statistics.map(item => item.name)];
         console.log('t', titles);
-        const {option,tableData, area,rooms,rate } = this.state.res;
+        let {option,tableData, area,rooms,rate } = this.state.res;
+
+        // option = {
+        //     "xAxis":{
+        //         "type":"category",
+        //         "name":"x",
+        //         "splitLine":{
+        //             "show":false
+        //         },
+        //         "data":[
+        //             "1",
+        //             "2",
+        //             "3",
+        //             "4",
+        //             "5",
+        //             "6",
+        //             "7",
+        //             "8",
+        //             "9",
+        //             "10",
+        //             "11",
+        //             "12"
+        //         ]
+        //     },
+        //     "yAxis":{
+        //         "type":"value",
+        //         "name":"y",
+        //         "data":[
+        //             "0",
+        //             "20",
+        //             "40",
+        //             "60",
+        //             "80",
+        //             "100"
+        //         ]
+        //     },
+        //     "title":{
+        //         "text":"",
+        //         "left":"center"
+        //     },
+        //     "series":[
+        //         {
+        //             "name":"本年收缴率",
+        //             "type":"line",
+        //             "data":[
+        //                 12,
+        //                 13,
+        //                 10,
+        //                 14,
+        //                 9,
+        //                 23,
+        //                 21,
+        //                 12,
+        //                 3,
+        //                 4,
+        //                 6,
+        //                 80
+        //             ],
+        //             "barWidth":null
+        //         },
+        //         {
+        //             "name":"往欠清缴率",
+        //             "type":"line",
+        //             "data":[
+        //                 22,
+        //                 18,
+        //                 19,
+        //                 23,
+        //                 29,
+        //                 33,
+        //                 31,
+        //                 68,
+        //                 12,
+        //                 34,
+        //                 55,
+        //                 67
+        //             ],
+        //             "barWidth":null
+        //         },
+        //         {
+        //             "name":"综合收缴率",
+        //             "type":"line",
+        //             "data":[
+        //                 15,
+        //                 23,
+        //                 20,
+        //                 15,
+        //                 19,
+        //                 30,
+        //                 10,
+        //                 55,
+        //                 66,
+        //                 89,
+        //                 12,
+        //                 46
+        //             ],
+        //             "barWidth":null
+        //         }
+        //     ],
+        //     "color":[
+        //         "blue",
+        //         "#f0a825",
+        //         "green"
+        //     ],
+        //     "tooltip":{
+        //         "trigger":"axis",
+        //         "formatter":null,
+        //         "axisPointer":null
+        //     },
+        //     "grid":{
+        //         "left":"3%",
+        //         "right":"6%",
+        //         "bottom":"3%",
+        //         "containLabel":true
+        //     },
+        //     "legend":{
+        //         "left":"center",
+        //
+        //         "data":[
+        //             "本年收缴率",
+        //             "往欠清缴率",
+        //             "综合收缴率"
+        //         ]
+        //     }
+        // }
+
 
         return (
 
             <SafeAreaView style={{flex: 1}}>
                 <ScrollView style={{flex: 1}}>
                     <ScrollTitleChange index={index} onChange={this.titleChange} titles={titles}/>
-                    <DashLine style={{marginTop: 10, marginLeft: 15, marginRight: 15}}/>
+                    <DashLine style={{marginLeft: 15, marginRight: 15}}/>
                     <Flex direction={'column'} style={{width: ScreenUtil.deviceWidth(), marginTop: 15}}>
                         <Flex justify={'between'} style={{width: ScreenUtil.deviceWidth() - 30, paddingBottom: 20}}>
                             <Text style={styles.name}>管理面积：{area}万{Macro.meter_square}</Text>
@@ -155,7 +280,7 @@ class CollectionRatePage extends BasePage {
 
                         </Flex>
                     </Flex>
-                    <DashLine style={{marginTop: 15, marginLeft: 15, marginRight: 15}}/>
+                    <DashLine style={{ marginLeft: 15, marginRight: 15}}/>
 
 
                     <Echarts option={option} height={300}/>

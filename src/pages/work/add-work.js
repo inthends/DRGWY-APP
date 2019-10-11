@@ -39,7 +39,7 @@ export default class AddWorkPage extends BasePage {
         super(props);
         this.state = {
             index: 0,
-            data: ['投诉', '报修', '服务'],
+            data: ['报修', '报事', '巡场'],
             value: '',
             images: [{icon: ''}],
             image: '',

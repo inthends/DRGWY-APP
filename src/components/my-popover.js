@@ -35,7 +35,7 @@ export default class MyPopover extends Component {
         return (
             <View style={[styles.container, this.props.style]}>
                 <TouchableWithoutFeedback ref={ref => this.touchable = ref} onPress={() => this.showPopover()}>
-                    <Flex style={{height:50}}>
+                    <Flex style={{height:40}}>
                         <Flex>
                             <LoadImage style={{width: 15, height: 15}}/>
                         </Flex>
@@ -50,7 +50,7 @@ export default class MyPopover extends Component {
                     isVisible={this.state.isVisible}>
                     <ScrollView style={{maxHeight: 400}}>
                         {titles.map((item, index) => (
-                            <TouchableWithoutFeedback key={item} onPress={() => this.select(index)}>
+                            <TouchableWithoutFeedback key={item + index} onPress={() => this.select(index)}>
                                 <Text style={[{padding: 15, color: '#666', fontSize: 16},this.props.textStyle]}>{item}</Text>
                             </TouchableWithoutFeedback>
                         ))}

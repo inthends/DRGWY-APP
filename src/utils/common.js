@@ -264,6 +264,18 @@ export default {
         // return aaa.getFullYear() + '-' + aaa.getMonth();
         // return (new Date(new_date.getTime()-1000*60*60*24)).getDate();//获取当月最后一天日期
     },
+    objToFormdata(data) {
+        let formData = new FormData();
+        for (let k in data) {
+            let value = data[k] !== undefined ? data[k] : '';
+            if(typeof (value) ==='Object'){
+                formData.append(k, JSON.stringify(value));
+            } else {
+                formData.append(k, value);
+            }
+        }
+        return formData;
+    }
 
 
 };

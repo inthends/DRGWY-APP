@@ -40,12 +40,7 @@ class BuildingPage extends BasePage {
     }
 
     componentDidMount(): void {
-        this.getInitData();
         this.onRefresh();
-        // NativeModules.LHNToast.login("name","key",
-        //     (a,b,c)=>{
-        //         alert(a + ' ' + b + ' ' + c)
-        //     })
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
@@ -95,6 +90,7 @@ class BuildingPage extends BasePage {
         this.drawer && this.drawer.openDrawer();
     };
     onRefresh = () => {
+        this.getInitData();
         this.setState({
             refreshing: true,
             pageIndex: 1,
