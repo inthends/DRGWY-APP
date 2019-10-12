@@ -37,19 +37,28 @@ export default {
                 // let a = url + '?' + qs.stringify(params);
                 let a = url;
 
-                axios.post(a, qs.stringify(params)).then(res => {
+                // axios.post(a, qs.stringify(params)).then(res => {
+                //     UDToast.hiddenLoading(showLoadingNumber);
+                //     this.success(showError, res, resolve, reject);
+                // }).catch(error => {
+                //     UDToast.hiddenLoading(showLoadingNumber);
+                //     this.fail(showError, error, reject);
+                // });
+
+                axios.post(a, params).then(res => {
                     UDToast.hiddenLoading(showLoadingNumber);
                     this.success(showError, res, resolve, reject);
                 }).catch(error => {
                     UDToast.hiddenLoading(showLoadingNumber);
                     this.fail(showError, error, reject);
                 });
+
             }
 
         });
     },
     success(showError, res, resolve, reject) {
-        console.log(123, res);
+        // console.log(123, res);
         const data = res.data;
         if (data.code !== 200) {
             UDToast.showError(data.msg);
