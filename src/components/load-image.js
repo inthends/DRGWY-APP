@@ -15,10 +15,10 @@ export default class LoadImage extends Component {
 
     componentWillReceiveProps(nextProps, nextContext) {
         // console.log('nextProps', nextProps);
-        // if (nextProps.img !== this.state.img) {
-        //     const state = this._handleImg(nextProps);
-        //     this.setState({...state});
-        // }
+        if (nextProps.img !== this.state.img) {
+            const state = this._handleImg(nextProps);
+            this.setState({...state});
+        }
     }
 
     _handleImg = (props) => {

@@ -61,7 +61,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(AppRouter);
 
 
 
-//      https://github.com/awesomejerry/react-native-qrcode-svg
+//
 
 
-//  missingDimensionStrategy 'react-native-camera', 'general'
+

@@ -111,6 +111,8 @@ export default class AddWorkPage extends BasePage {
                         api.uploadFile(data.audioFileURL, this.state.id, '/api/MobileMethod/MUploadServiceDesk',false).then(res => {
                             console.log(res);
                             this.setState({fileUrl: res});
+                        }).catch(error=>{
+
                         });
                     };
                     this.recordId = UDToast.showLoading('正在录音中...');
@@ -145,7 +147,7 @@ export default class AddWorkPage extends BasePage {
         SelectImage.select(this.state.id,'/api/MobileMethod/MUploadServiceDesk').then(res => {
             console.log(1122, res);
             let images = [...this.state.images];
-            images.splice(0, 0, {'icon': res});
+            images.splice(images.length-1, 0, {'icon': res});
             if (images.length > 4) {
                 images = images.filter((item, index) => index !== images.length - 1);
             }
@@ -268,8 +270,8 @@ export default class AddWorkPage extends BasePage {
                         <Flex wrap={'wrap'}>
                             {images.map((item, index) => {
                                 return (
-                                    <TouchableOpacity key={index} onPress={() => {
-                                        if (index === images.length - 1 && images.length<= 4) {
+                                    <TouchableWithoutFeedback key={index} onPress={() => {
+                                        if (index === images.length - 1 && item.icon.length === 0) {
                                             this.selectImages();
                                         }
                                     }}>
@@ -281,7 +283,7 @@ export default class AddWorkPage extends BasePage {
                                         }}>
                                             <LoadImage style={{width: width, height: height}} defaultImg={require('../../static/images/add_pic.png')} img={item.icon}/>
                                         </View>
-                                    </TouchableOpacity>
+                                    </TouchableWithoutFeedback>
                                 );
                             })}
                         </Flex>

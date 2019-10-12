@@ -21,9 +21,9 @@ export default class SelectImage {
                 console.log('Response = ', response);
 
                 if (response.didCancel) {
-                    UDToast.showInfo('已取消选择图片');
+                    // UDToast.showInfo('已取消选择图片');
                 } else if (response.error) {
-                    UDToast.showInfo('获取照片失败');
+                    UDToast.showInfo('没有权限，请在设置中开启权限');
                 } else {
                     console.log(response);
                     // let formData = new FormData();//如果需要上传多张图片,需要遍历数组,把图片的路径数组放入formData中
@@ -33,11 +33,9 @@ export default class SelectImage {
                     // You can also display the image using data:
                     // const source = { uri: 'data:image/jpeg;base64,' + response.data };
                     api.uploadFile(response.uri, id,uploadUrl).then(res => {
-                        if (res) {
-                            resolve(res);
-                        }else {
-                            reject(null);
-                        }
+                        resolve(res);
+                    }).catch(error=>{
+
                     });
 
 

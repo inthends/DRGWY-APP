@@ -18,7 +18,7 @@ export default class UploadImageView extends Component {
         SelectImage.select(this.state.id,this.props.uploadUrl || '/api/MobileMethod/MUploadRepairFile').then(res => {
             console.log(1122, res);
             let images = [...this.state.images];
-            images.splice(0, 0, {'icon': res});
+            images.splice(images.length-1, 0, {'icon': res});
             if (images.length > 4) {
                 images = images.filter((item, index) => index !== images.length - 1);
             }
@@ -40,8 +40,8 @@ export default class UploadImageView extends Component {
                 <Flex wrap={'wrap'}>
                     {images.map((item, index) => {
                         return (
-                            <TouchableOpacity key={index} onPress={() => {
-                                if (index === images.length - 1 && images.length <= 4) {
+                            <TouchableWithoutFeedback key={index} onPress={() => {
+                                if (index === images.length - 1 && item.icon.length === 0) {
                                     this.selectImages();
                                 }
                             }}>
@@ -53,7 +53,7 @@ export default class UploadImageView extends Component {
                                 }}>
                                     <Image style={{width: width, height: height}} source={{uri: item.icon}}/>
                                 </View>
-                            </TouchableOpacity>
+                            </TouchableWithoutFeedback>
                         );
                     })}
                 </Flex>

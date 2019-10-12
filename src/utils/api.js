@@ -121,7 +121,7 @@ export default {
                 console.log(res);
                 if (data.code !== 200) {
                     UDToast.showError(data.msg);
-                    resolve(null);
+                    reject(null);
                 } else {
                     UDToast.showError('上传成功');
                     resolve(data.data.url);
