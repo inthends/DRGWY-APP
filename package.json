@@ -30,7 +30,7 @@
     "react-native-audio": "^4.3.0",
     "react-native-camera": "^3.6.0",
     "react-native-drawer": "^2.5.1",
-    "react-native-echarts-wrapper": "^1.4.5",
+    "react-native-echarts-wrapper": "^2.0.0",
     "react-native-gesture-handler": "^1.4.1",
     "react-native-image-picker": "^1.1.0",
     "react-native-popover-view": "^2.0.5",

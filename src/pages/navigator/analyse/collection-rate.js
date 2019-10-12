@@ -75,7 +75,9 @@ class CollectionRatePage extends BasePage {
 
     componentDidMount(): void {
         this.initData();
+
     }
+
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
@@ -128,11 +130,13 @@ class CollectionRatePage extends BasePage {
     };
 
 
+
     render() {
         const {statistics, dataInfo,index} = this.state;
         const titles = [...['全部'], ...statistics.map(item => item.name)];
         console.log('t', titles);
         let {option,tableData, area,rooms,rate } = this.state.res;
+
 
         // option = {
         //     "xAxis":{
@@ -258,7 +262,6 @@ class CollectionRatePage extends BasePage {
         //     }
         // }
 
-
         return (
 
             <SafeAreaView style={{flex: 1}}>
@@ -341,3 +344,7 @@ const mapStateToProps = ({buildingReducer}) => {
     };
 };
 export default connect(mapStateToProps)(CollectionRatePage);
+
+// native-echarts
+
+// node_modules\native-echarts\src\components\Echarts目录下的index.js  source={{uri:'file:///android_asset/tpl.html'}}
