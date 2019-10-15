@@ -13,19 +13,20 @@ export default class HomePage extends BasePage {
             goods: [{id: '1'}, {id: '2'}, {id: '3'}, {id: '4'}],
         };
         console.log(1)
+        NativeModules.LHNToast.show('22',1000)
 
     }
 
 
      async componentDidMount(): void {
-        HomeService.getKinds().then(kinds => {
-            console.log('kinds',kinds)
-            this.setState({
-                kinds: kinds,
-            });
-        }).catch(error => {
-
-        });
+        // HomeService.getKinds().then(kinds => {
+        //     console.log('kinds',kinds)
+        //     this.setState({
+        //         kinds: kinds,
+        //     });
+        // }).catch(error => {
+        //
+        // });
     }
 
 

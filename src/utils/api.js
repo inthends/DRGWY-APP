@@ -36,7 +36,6 @@ export default {
             } else {
                 // let a = url + '?' + qs.stringify(params);
                 let a = url;
-
                 axios.post(a, qs.stringify(params)).then(res => {
                     UDToast.hiddenLoading(showLoadingNumber);
                     this.success(showError, res, resolve, reject);
@@ -45,13 +44,6 @@ export default {
                     this.fail(showError, error, reject);
                 });
 
-                // axios.post(a, params).then(res => {
-                //     UDToast.hiddenLoading(showLoadingNumber);
-                //     this.success(showError, res, resolve, reject);
-                // }).catch(error => {
-                //     UDToast.hiddenLoading(showLoadingNumber);
-                //     this.fail(showError, error, reject);
-                // });
 
             }
 

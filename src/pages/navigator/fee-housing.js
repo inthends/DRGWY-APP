@@ -124,7 +124,7 @@ class FeeHousePage extends BasePage {
                 <View style={styles.content}>
                     <Flex direction="row" style={styles.top}>
                         <Flex justify={'center'} style={styles.left}>
-                            <LoadImage style={styles.image}/>
+                            <LoadImage img={item.mainpic} style={styles.image}/>
                         </Flex>
                         <Flex direction="column" style={styles.right}>
                             <Flex  style={styles.item}>

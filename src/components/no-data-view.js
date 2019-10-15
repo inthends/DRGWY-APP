@@ -11,7 +11,7 @@ export default class NoDataView extends Component {
         return (
             <Flex direction={'column'} justify={'center'} style={{marginTop:'50%'}}>
                 <LoadImage style={{width:160,height:92}} img={require('../static/images/img-kong.png')}/>
-                <Text style={{fontSize:16,color:'#666',paddingTop:24,paddingBottom:10}}>暂无数据</Text>
+                <Text style={{fontSize:16,color:'#666',paddingTop:24,paddingBottom:15}}>暂无数据</Text>
             </Flex>
         );
     }

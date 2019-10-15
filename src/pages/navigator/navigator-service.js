@@ -41,15 +41,13 @@ export default {
         return api.postData('/api/MobileMethod/MGetServiceDeskPageList', {
             pageIndex,
             pageSize: 10,
-            queryJson: {
-                billStatus,
-                status: billStatus,
-                treeType,
-                treeTypeId,
-                billType,
-                startTime,
-                endTime,
-            },
+            billStatus,
+            status: billStatus,
+            treeType,
+            treeTypeId,
+            billType,
+            startTime,
+            endTime,
         });
     },
     weixiuList(pageIndex, billStatus, treeType, treeTypeId, startTime, endTime, repairArea) {
@@ -66,15 +64,13 @@ export default {
         return api.postData('/api/MobileMethod/MGetRepairPageList', {
             pageIndex,
             pageSize: 10,
-            queryJson: {
-                billStatus,
-                status: billStatus,
-                treeType,
-                treeTypeId,
-                startTime,
-                endTime,
-                repairArea,
-            },
+            billStatus,
+            status: billStatus,
+            treeType,
+            treeTypeId,
+            startTime,
+            endTime,
+            repairArea,
 
         });
     },
@@ -82,15 +78,13 @@ export default {
         return api.postData('/api/MobileMethod/MGetComplaintPageList', {
             pageIndex,
             pageSize: 10,
-            queryJson: {
-                billStatus,
-                status: billStatus,
-                treeType,
-                treeTypeId,
-                billType,
-                startTime,
-                endTime,
-            },
+            billStatus,
+            status: billStatus,
+            treeType,
+            treeTypeId,
+            billType,
+            startTime,
+            endTime,
 
         });
     },
@@ -138,13 +132,7 @@ export default {
         return api.postData(url, {estateId, type});
     },
     createOrder(linkId) {
-        return new Promise((resolve) => {
-            api.postData('/api/MobileMethod/WFTCreateTradeno', {linkId}).then(res => {
-                resolve(res);
-            }).catch(err => {
-                resolve(null);
-            });
-        });
+        return api.postData('/api/MobileMethod/WFTCreateTradeno', {linkId})
     },
     scanPay(auth_code, tbout_trade_no) {
         return api.postData('/api/MobileMethod/WFTScanPay', {auth_code, tbout_trade_no});

@@ -8,7 +8,7 @@ import {
     FlatList,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    Linking, Image,
+    Linking, Image, NativeModules,
 } from 'react-native';
 import BasePage from '../base/base';
 import {Button, Flex, Icon, List, WhiteSpace,Checkbox,Modal} from '@ant-design/react-native';
@@ -99,6 +99,10 @@ export default class FeeDetailPage extends BasePage {
 
             switch (title) {
                 case '刷卡': {
+
+                    NavigatorService.createOrder(ids).then(res=>{
+                        NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity',res);
+                    });
                     break;
                 }
                 case '扫码': {
@@ -107,15 +111,13 @@ export default class FeeDetailPage extends BasePage {
                 }
                 case '收款码': {
                     NavigatorService.createOrder(ids).then(res=>{
-                        if (res) {
-                            NavigatorService.qrcodePay(res).then(code=>{
+                        NavigatorService.qrcodePay(res.out_trade_no).then(code=>{
 
-                                this.setState({
-                                    visible:true,
-                                    code,
-                                })
+                            this.setState({
+                                visible:true,
+                                code,
                             })
-                        }
+                        })
                     });
 
                     break;

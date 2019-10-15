@@ -25,8 +25,8 @@ export default class ScanScreen extends Component {
 
     onSuccess = (e) => {
         let ids = common.getValueFromProps(this.props);
-        NavigatorService.createOrder(ids).then(tbout_trade_no=>{
-            NavigatorService.scanPay(e.data, tbout_trade_no).then(res => {
+        NavigatorService.createOrder(ids).then(res=>{
+            NavigatorService.scanPay(e.data, res.out_trade_no).then(res => {
                 this.props.navigation.goBack();
             }).catch(()=>{
                 this.scanner.reactivate();

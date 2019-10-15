@@ -1,8 +1,14 @@
 package com.statistics;
+import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.os.Bundle;
 import android.widget.Toast;
+
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.JSApplicationIllegalArgumentException;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
@@ -10,6 +16,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.IllegalViewOperationException;
 import com.facebook.react.uimanager.PixelUtil;
 
@@ -19,6 +26,8 @@ import java.util.HashMap;
 import javax.annotation.Nonnull;
 
 public class LHNToast extends ReactContextBaseJavaModule {
+    private static final String APPID = "com.statistics";
+
     public LHNToast(ReactApplicationContext context) {
         super(context);
     }
@@ -38,4 +47,42 @@ public class LHNToast extends ReactContextBaseJavaModule {
     public void login(String userName, String password, Callback successCallback) {
         successCallback.invoke(userName,password,"value");
     }
+
+    @ReactMethod
+    public void startActivityFromJS(String name, ReadableMap order){
+        try{
+            Activity currentActivity = getCurrentActivity();
+            if(null!=currentActivity){
+//                Class toActivity = Class.forName(name);
+                Intent intent = new Intent(currentActivity,LKLPayActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("msg_tp","0200");
+                bundle.putString("pay_tp","0");
+                bundle.putString("proc_tp","00");
+                bundle.putString("proc_cd","000000");
+                bundle.putString("appid",APPID);
+
+                bundle.putString("amt",order.getString("amt"));
+                bundle.putString("order_no",order.getString("order_no"));
+                bundle.putString("notify_url",order.getString("notify_url"));
+                bundle.putString("time_stamp",
+                        DateTimeUtil.getCurrentDate("yyyyMMddhhmmss"));
+
+
+
+                bundle.putString("order_info",order.getString("order_info"));
+                bundle.putString("print_info",order.getString("print_info"));
+//        bundle.putString("return_type","1"); //自动关闭打印页
+
+
+
+                intent.putExtras(bundle);
+                currentActivity.startActivity(intent);
+            }
+        }catch(Exception e){
+            throw new JSApplicationIllegalArgumentException(
+                    "不能打开Activity : "+e.getMessage());
+        }
+    }
+
 }
