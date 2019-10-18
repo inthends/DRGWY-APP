@@ -1,8 +1,10 @@
 # aabc
 
-###### 修改文件：node_modules/native-echarts/src/components/Echarts/index.js
+#注意点：
+1.如果执行了 npm install 操作 需要修改文件：node_modules/native-echarts/src/components/Echarts/index.js
 
 ```
+  
 render() {
     const source = (Platform.OS == 'ios') ? require('./tpl.html') : {'uri':'file:///android_asset/tpl.html'};
     return (
