@@ -2,7 +2,6 @@ import React, {Fragment} from 'react';
 import {
     View,
     Text,
-    SafeAreaView,
     StyleSheet,
     StatusBar,
     FlatList,
@@ -22,6 +21,8 @@ import ScrollTitle from '../../../components/scroll-title';
 import MyPopover from '../../../components/my-popover';
 import NavigatorService from '../navigator-service';
 import NoDataView from '../../../components/no-data-view';
+import CommonView from '../../../components/CommonView';
+
 
 class EstateWeixiuPage extends BasePage {
     static navigationOptions = ({navigation}) => {
@@ -253,7 +254,7 @@ class EstateWeixiuPage extends BasePage {
 
 
             <View style={{flex: 1}}>
-                <SafeAreaView style={{flex: 1}}>
+                <CommonView style={{flex: 1}}>
                     <ScrollTitle onChange={this.statusChange} titles={['全部', '待派单', '待接单', '待完成', '待回访']}/>
                     {/*<Tabs tabs={tabs2} initialPage={1} tabBarPosition="top">*/}
                     {/*    {renderContent}*/}
@@ -280,7 +281,7 @@ class EstateWeixiuPage extends BasePage {
                         onMomentumScrollEnd={() => this.canAction = false}
                         ListEmptyComponent={<NoDataView/>}
                     />
-                </SafeAreaView>
+                </CommonView>
             </View>
 
         );

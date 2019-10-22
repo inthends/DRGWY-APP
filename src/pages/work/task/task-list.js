@@ -2,7 +2,6 @@ import React, {Fragment} from 'react';
 import {
     View,
     Text,
-    SafeAreaView,
     StyleSheet,
     StatusBar,
     FlatList,
@@ -22,6 +21,8 @@ import ScrollTitle from '../../../components/scroll-title';
 import WorkService from '../work-service';
 import ListJianYanHeader from '../../../components/list-jianyan-header';
 import NoDataView from '../../../components/no-data-view';
+import CommonView from '../../../components/CommonView';
+
 
 class TaskListPage extends BasePage {
     static navigationOptions = ({navigation}) => {
@@ -211,7 +212,7 @@ class TaskListPage extends BasePage {
         return (
 
 
-            <SafeAreaView style={{flex: 1}}>
+            <CommonView style={{flex: 1}}>
                 {
                     hiddenHeader ? null :
                         (
@@ -243,7 +244,7 @@ class TaskListPage extends BasePage {
                 />
 
 
-            </SafeAreaView>
+            </CommonView>
 
         );
     }

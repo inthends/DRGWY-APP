@@ -1,32 +1,31 @@
 import React from 'react';
 import {
-    View,
     Text,
-    Button,
     TouchableWithoutFeedback,
-    SafeAreaView,
     StyleSheet,
     ScrollView,
     RefreshControl,
 } from 'react-native';
 import BasePage from '../base/base';
-import {Flex, Icon} from '@ant-design/react-native';
+import {Flex} from '@ant-design/react-native';
 import ScreenUtil from '../../utils/screen-util';
 import LoadImage from '../../components/load-image';
 import WorkService from './work-service';
 import Macro from '../../utils/macro';
+import CommonView from '../../components/CommonView';
+
 
 export default class WorkPage extends BasePage {
-    static navigationOptions = ({navigation}) => {
-        return {
-            title: '工作台',
-            // headerRight: (
-            //     <TouchableWithoutFeedback onPress={() => navigation.push('AddWork')}>
-            //         <Icon name='plus' style={{marginRight: 15}} color="black"/>
-            //     </TouchableWithoutFeedback>
-            // ),
-        };
-    };
+    // static navigationOptions = ({navigation}) => {
+    //     return {
+    //         title: '工作台',
+    //         // headerRight: (
+    //         //     <TouchableWithoutFeedback onPress={() => navigation.push('AddWork')}>
+    //         //         <Icon name='plus' style={{marginRight: 15}} color="black"/>
+    //         //     </TouchableWithoutFeedback>
+    //         // ),
+    //     };
+    // };
 
     constructor(props) {
         super(props);
@@ -66,7 +65,7 @@ export default class WorkPage extends BasePage {
     render() {
         const {data} = this.state;
         return (
-            <SafeAreaView style={{flex: 1, backgroundColor: '#efefef'}}>
+            <CommonView style={{flex: 1, backgroundColor: '#efefef'}}>
                 <Flex style={{paddingTop: 15, paddingBottom: 15, backgroundColor: 'white'}}>
                     <TouchableWithoutFeedback>
                         <Flex direction='column' style={{width: '25%'}}>
@@ -186,7 +185,7 @@ export default class WorkPage extends BasePage {
                         </Flex>
                     </Flex>
                 </ScrollView>
-            </SafeAreaView>
+            </CommonView>
         );
     }
 }

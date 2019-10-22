@@ -2,7 +2,6 @@ import React, {Fragment} from 'react';
 import {
     View,
     Text,
-    SafeAreaView,
     StyleSheet,
     StatusBar,
     ScrollView,
@@ -34,6 +33,7 @@ import NavigatorService from '../navigator-service';
 import ScrollTitleChange from '../../../components/scroll-title-change';
 import {Row, Rows, Table} from 'react-native-table-component';
 import MyPopover from '../../../components/my-popover';
+import CommonView from '../../../components/CommonView';
 
 
 class HuiFangRatePage extends BasePage {
@@ -134,7 +134,7 @@ class HuiFangRatePage extends BasePage {
 
         return (
 
-            <SafeAreaView style={{flex: 1}}>
+            <CommonView style={{flex: 1}}>
                 <ScrollView style={{flex: 1}}>
                     <ScrollTitleChange onChange={this.titleChange} titles={titles}/>
                     <DashLine style={{marginTop: 10, marginLeft: 15, marginRight: 15}}/>
@@ -163,7 +163,7 @@ class HuiFangRatePage extends BasePage {
                 </ScrollView>
 
 
-            </SafeAreaView>
+            </CommonView>
 
         );
     }

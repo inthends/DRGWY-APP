@@ -1,17 +1,13 @@
 import React, {Fragment} from 'react';
-import {View, Text, SafeAreaView, StyleSheet, StatusBar, ScrollView, SectionList, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
 
 import BasePage from '../../base/base';
-import BuildingHeader from '../../../components/building/building-header';
-import BuildingCell from '../../../components/building/build-cell';
-import {Button, Flex, Icon, List, WhiteSpace} from '@ant-design/react-native';
+import {Flex, Icon} from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
-import BuildingService from '../building_service';
-import forge from 'node-forge';
-import LoadImage from '../../../components/load-image';
 import ManagerBuildingService from './manager-building-service';
 import {connect} from 'react-redux';
 import {saveSelectBuilding} from '../../../utils/store/actions/actions';
+import CommonView from '../../../components/CommonView';
 
 
 const SectionHeader = (props) => {
@@ -159,14 +155,14 @@ class ManagerBuildingPage extends BasePage {
         return (
 
             <View style={styles.all}>
-                <SafeAreaView style={{flex: 1}}>
+                <CommonView style={{flex: 1}}>
                     <View style={{flex: 1}}>
                         <Text style={styles.title}>管理处</Text>
                         <ScrollView>
                             {content}
                         </ScrollView>
                     </View>
-                </SafeAreaView>
+                </CommonView>
             </View>
         );
     }

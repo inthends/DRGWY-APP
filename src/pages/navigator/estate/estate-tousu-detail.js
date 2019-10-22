@@ -1,14 +1,10 @@
 import React, {Fragment} from 'react';
 import {
-    View,
     Text,
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    Image,
-    SafeAreaView,
     ScrollView,
-    RefreshControl,
 } from 'react-native';
 import BasePage from '../../base/base';
 import {Icon} from '@ant-design/react-native';
@@ -27,6 +23,8 @@ import WorkService from '../../work/work-service';
 import ListImages from '../../../components/list-images';
 import Communicates from '../../../components/communicates';
 import Macro from '../../../utils/macro';
+import CommonView from '../../../components/CommonView';
+
 
 const Item = List.Item;
 
@@ -124,7 +122,7 @@ export default class EtousuDetailPage extends BasePage {
 
 
         return (
-            <SafeAreaView style={{flex: 1, backgroundColor: '#fff', paddingBottom: 10}}>
+            <CommonView style={{flex: 1, backgroundColor: '#fff', paddingBottom: 10}}>
                 <ScrollView>
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.billCode}</Text>
@@ -157,7 +155,7 @@ export default class EtousuDetailPage extends BasePage {
                     <DashLine/>
                     <Communicates communicateClick={this.communicateClick} communicates={communicates}/>
                 </ScrollView>
-            </SafeAreaView>
+            </CommonView>
         );
     }
 }

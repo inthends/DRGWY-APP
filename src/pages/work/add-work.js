@@ -5,8 +5,6 @@ import {
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    Image,
-    SafeAreaView,
 } from 'react-native';
 import BasePage from '../base/base';
 import {Icon} from '@ant-design/react-native';
@@ -21,6 +19,7 @@ import UDPlayer from '../../utils/UDPlayer';
 import UDToast from '../../utils/UDToast';
 import WorkService from './work-service';
 import {AudioRecorder, AudioUtils} from 'react-native-audio';
+import CommonView from '../../components/CommonView';
 
 export default class AddWorkPage extends BasePage {
     static navigationOptions = ({navigation}) => {
@@ -65,11 +64,6 @@ export default class AddWorkPage extends BasePage {
 
             },
         );
-        // setTimeout(()=>{
-        //
-        // },1000);
-
-
     }
 
     componentWillUnmount(): void {
@@ -200,7 +194,7 @@ export default class AddWorkPage extends BasePage {
         const width = (ScreenUtil.deviceWidth() - 5 * 20) / 4.0;
         const height = (ScreenUtil.deviceWidth() - 5 * 20) / 4.0;
         return (
-            <SafeAreaView style={{flex: 1, backgroundColor: 'F3F4F2'}}>
+            <CommonView style={{flex: 1, backgroundColor: 'F3F4F2'}}>
                 <Flex direction='column'>
                     <Flex justify='between' style={styles.header}>
                         {data.map((item, i) => (
@@ -299,7 +293,7 @@ export default class AddWorkPage extends BasePage {
                 }}>
                     <Button style={{width: '90%'}} type="primary" onPress={() => this.submit()}>确定</Button>
                 </Flex>
-            </SafeAreaView>
+            </CommonView>
         );
     }
 }

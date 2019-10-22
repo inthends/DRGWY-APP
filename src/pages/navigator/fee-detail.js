@@ -2,7 +2,6 @@ import React, {Fragment} from 'react';
 import {
     View,
     Text,
-    SafeAreaView,
     StyleSheet,
     StatusBar,
     FlatList,
@@ -11,7 +10,7 @@ import {
     Linking, Image, NativeModules,
 } from 'react-native';
 import BasePage from '../base/base';
-import {Button, Flex, Icon, List, WhiteSpace,Checkbox,Modal} from '@ant-design/react-native';
+import {Button, Flex, Icon, List, WhiteSpace, Checkbox, Modal} from '@ant-design/react-native';
 import Macro from '../../utils/macro';
 import ScreenUtil from '../../utils/screen-util';
 import {connect} from 'react-redux';
@@ -22,6 +21,8 @@ import TwoChange from '../../components/two-change';
 import NavigatorService from './navigator-service';
 import UDToast from '../../utils/UDToast';
 import QRCode from 'react-native-qrcode-svg';
+import CommonView from '../../components/CommonView';
+
 
 export default class FeeDetailPage extends BasePage {
     static navigationOptions = ({navigation}) => {
@@ -50,15 +51,12 @@ export default class FeeDetailPage extends BasePage {
                 data: [],
             },
             type: null,
-            tbout_trade_no:null,
+            tbout_trade_no: null,
             visible: false,
-            code:'',
-
+            code: '',
         };
 
     }
-
-
 
 
     componentDidMount(): void {
@@ -88,42 +86,48 @@ export default class FeeDetailPage extends BasePage {
     }
 
 
-
     click = (title) => {
-        const items = this.state.dataInfo.data.filter(item=>item.select === true);
+        const items = this.state.dataInfo.data.filter(item => item.select === true);
         if (items.length === 0) {
             UDToast.showError('请选择');
-        }else {
-            let ids = JSON.stringify((items.map(item=>item.id)));
+        } else {
+            let ids = JSON.stringify((items.map(item => item.id)));
 
 
             switch (title) {
                 case '刷卡': {
+                    if (common.isIOS()) {
+                        UDToast.showInfo('功能暂未开放，敬请期待！');
+                    } else {
+                        NavigatorService.createOrder(ids).then(res => {
+                            NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', res);
+                        });
+                    }
 
-                    NavigatorService.createOrder(ids).then(res=>{
-                        NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity',res);
-                    });
                     break;
                 }
                 case '扫码': {
-                    this.props.navigation.push('scan',{data:ids})
+                    this.props.navigation.push('scan', {data: ids});
                     break;
                 }
                 case '收款码': {
-                    NavigatorService.createOrder(ids).then(res=>{
-                        NavigatorService.qrcodePay(res.out_trade_no).then(code=>{
+                    NavigatorService.createOrder(ids).then(res => {
+                        NavigatorService.qrcodePay(res.out_trade_no).then(code => {
 
                             this.setState({
-                                visible:true,
+                                visible: true,
+                                cancel:false,
                                 code,
-                            })
-                        })
+                            }, () => {
+                                this.getOrderStatus(res.out_trade_no);
+                            });
+                        });
                     });
 
                     break;
                 }
                 case '现金': {
-                    NavigatorService.cashPay(ids).then(res=>{
+                    NavigatorService.cashPay(ids).then(res => {
                         this.onRefresh();
                     });
                     break;
@@ -141,62 +145,82 @@ export default class FeeDetailPage extends BasePage {
         NavigatorService.getBillList(type, room.id, pageIndex, 1000).then(dataInfo => {
             this.setState({
                 dataInfo: dataInfo,
-            },()=>{
-                console.log(this.state)
+            }, () => {
+                console.log(this.state);
             });
         });
     };
     typeOnChange = (type) => {
         console.log(type);
-        this.setState({type},()=>{
+        this.setState({type}, () => {
             this.onRefresh();
         });
     };
 
     changeItem = item => {
         let data = this.state.dataInfo.data;
-        data = data.map(it=>{
+        data = data.map(it => {
             if (it.id === item.id) {
-                it.select = it.select !== true
+                it.select = it.select !== true;
             }
             return it;
-        })
-        this.setState({ dataInfo:{
+        });
+        this.setState({
+            dataInfo: {
                 ...this.state.dataInfo,
-                data
-            } });
-    }
+                data,
+            },
+        });
+    };
 
     onClose = () => {
         this.setState({
-            visible:false,
-            code:'',
-        },()=>{
+            visible: false,
+            cancel:true,
+            code: '',
+        }, () => {
             this.onRefresh();
-        })
-    }
+        });
+    };
+
+    getOrderStatus = (out_trade_no) => {
+        clearTimeout(this.timeOut);
+        NavigatorService.orderStatus(out_trade_no).then(res => {
+            if (res) {
+                this.onClose();
+            }else {
+                if (!this.state.cancel) {
+                    this.timeOut = setTimeout(()=>{
+                        this.getOrderStatus(out_trade_no);
+                    },1000);
+                }
+
+            }
+        });
+
+    };
 
 
     render() {
-        const {statistics, dataInfo,type,room} = this.state;
+        const {statistics, dataInfo, type, room} = this.state;
         return (
 
-            <SafeAreaView style={{flex: 1}}>
+            <CommonView style={{flex: 1}}>
                 <Text style={{paddingLeft: 15, paddingTop: 15, fontSize: 20}}>{room.allName} {room.tenantName}</Text>
                 <TwoChange onChange={this.typeOnChange}/>
                 <Flex style={{backgroundColor: '#eee', height: 1, marginLeft: 15, marginRight: 15, marginTop: 15}}/>
                 {dataInfo.data.map(item => (
-                    <TouchableWithoutFeedback key={item.id} onPress={()=>this.changeItem(item)}>
+                    <TouchableWithoutFeedback key={item.id} onPress={() => this.changeItem(item)}>
                         <Flex align={'start'} direction={'column'} style={styles.item}>
 
                             <Flex justify={'between'}
                                   style={{paddingLeft: 15, paddingTop: 5, paddingBottom: 5, width: '100%'}}>
-                                <Text style={{fontSize:16}}>{item.feeName}</Text>
+                                <Text style={{fontSize: 16}}>{item.feeName}</Text>
                                 <Flex>
-                                    <Text style={{paddingRight: 15,fontSize:16}}>{item.amount}</Text>
+                                    <Text style={{paddingRight: 15, fontSize: 16}}>{item.amount}</Text>
                                     {type !== '已交' && <Checkbox
                                         checked={item.select === true}
-                                        style={{ color: Macro.color_f39d39 }}
+                                        style={{color: Macro.color_f39d39}}
                                         onChange={event => {
                                             this.changeItem(item);
                                         }}
@@ -239,19 +263,19 @@ export default class FeeDetailPage extends BasePage {
                     visible={this.state.visible}
 
                 >
-                    <Flex justify={'center'} style={{margin:30}}>
+                    <Flex justify={'center'} style={{margin: 30}}>
                         {/*<QRCode*/}
                         {/*    size={200}*/}
                         {/*    value={this.state.code}*/}
                         {/*/>*/}
-                        <LoadImage style={{width:200,height:200}} img={this.state.code}/>
+                        <LoadImage style={{width: 200, height: 200}} img={this.state.code}/>
                     </Flex>
 
                     {/*<Button type="primary" style={{height:50}} onPress={this.onClose}>*/}
                     {/*    取消*/}
                     {/*</Button>*/}
                 </Modal>
-            </SafeAreaView>
+            </CommonView>
 
         );
     }

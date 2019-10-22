@@ -2,33 +2,27 @@ import React from 'react';
 import {
     View,
     Text,
-    Button,
-    StatusBar,
-    SafeAreaView,
-    FlatList,
     StyleSheet,
     TouchableWithoutFeedback,
     ScrollView,
 } from 'react-native';
 import BasePage from '../base/base';
 import {Flex} from '@ant-design/react-native';
-import BackTitleNavigationBar from '../../components/back-title-navigation-bar';
 import Macro from '../../utils/macro';
 import ScreenUtil from '../../utils/screen-util';
 import LoadImage from '../../components/load-image';
-import SettingPage from './setting';
-import ModifyPsdPage from './modify-psd';
 import MineService from './mine-service';
+import CommonView from '../../components/CommonView';
 
 export default class MinePage extends BasePage {
-    static navigationOptions = ({navigation}) => {
-
-        console.log(1, navigation);
-        return {
-            tabBarVisible: false,
-            header: null,
-        };
-    };
+    // static navigationOptions = ({navigation}) => {
+    //
+    //     console.log(1, navigation);
+    //     return {
+    //         tabBarVisible: false,
+    //         header: null,
+    //     };
+    // };
 
     constructor(props) {
         super(props);
@@ -48,7 +42,7 @@ export default class MinePage extends BasePage {
         const {user} = this.state;
         return (
             <View style={styles.all}>
-                <SafeAreaView>
+                <CommonView>
                     <ScrollView>
                         <View style={styles.content}>
                             <TouchableWithoutFeedback /*onPress={() => this.props.navigation.push('Person')}*/>
@@ -87,7 +81,7 @@ export default class MinePage extends BasePage {
                             </TouchableWithoutFeedback>
                         </View>
                     </ScrollView>
-                </SafeAreaView>
+                </CommonView>
             </View>
         );
     }

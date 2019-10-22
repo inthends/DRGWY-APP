@@ -12,6 +12,7 @@ import {connect} from 'react-redux';
 import common from '../../../utils/common';
 import BackTitleNavigationBar from '../../../components/back-title-navigation-bar';
 import NoDataView from '../../../components/no-data-view';
+import CommonView from '../../../components/CommonView';
 
 class BuildingsPage extends BasePage {
     static navigationOptions = ({navigation}) => {
@@ -54,7 +55,7 @@ class BuildingsPage extends BasePage {
 
     render() {
         return (
-            <SafeAreaView style={{flex: 1}}>
+            <CommonView style={{flex: 1}}>
                 <View style={styles.content}>
                     <BackTitleNavigationBar {...this.props} title={this.state.item.name}/>
                     <FlatList
@@ -75,7 +76,7 @@ class BuildingsPage extends BasePage {
                     />
                 </View>
 
-            </SafeAreaView>
+            </CommonView>
         );
     }
 }

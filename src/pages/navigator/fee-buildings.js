@@ -2,7 +2,6 @@ import React, {Fragment} from 'react';
 import {
     View,
     Text,
-    SafeAreaView,
     StyleSheet,
     StatusBar,
     FlatList,
@@ -20,6 +19,8 @@ import ListHeader from '../../components/list-header';
 import common from '../../utils/common';
 import NavigatorService from './navigator-service';
 import LoadImage from '../../components/load-image';
+import CommonView from '../../components/CommonView';
+
 
 export default class FeeBuildingsPage extends BasePage {
     static navigationOptions = ({navigation}) => {
@@ -69,7 +70,7 @@ export default class FeeBuildingsPage extends BasePage {
         return (
 
 
-            <SafeAreaView style={{flex: 1}}>
+            <CommonView style={{flex: 1}}>
                 <ScrollView style={{flex: 1}}>
                     <Text style={{paddingLeft: 15, paddingTop: 15, fontSize: 20}}>{housing.name}</Text>
                     <Flex wrap='wrap' style={{paddingLeft: 10, paddingRight: 10, marginTop: 15}}>
@@ -86,7 +87,7 @@ export default class FeeBuildingsPage extends BasePage {
                 </ScrollView>
 
 
-            </SafeAreaView>
+            </CommonView>
 
         );
     }

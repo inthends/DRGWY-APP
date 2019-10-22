@@ -2,13 +2,10 @@ import React, {Fragment} from 'react';
 import {
     View,
     Text,
-    SafeAreaView,
     StyleSheet,
-    StatusBar,
-    FlatList,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    Linking,
+    FlatList,
 } from 'react-native';
 import BasePage from '../../base/base';
 import {Button, Flex, Icon, List, WhiteSpace} from '@ant-design/react-native';
@@ -22,6 +19,8 @@ import ScrollTitle from '../../../components/scroll-title';
 import MyPopover from '../../../components/my-popover';
 import NavigatorService from '../navigator-service';
 import NoDataView from '../../../components/no-data-view';
+import CommonView from '../../../components/CommonView';
+
 
 class EstateTousuPage extends BasePage {
     static navigationOptions = ({navigation}) => {
@@ -250,7 +249,7 @@ class EstateTousuPage extends BasePage {
 
 
             <View style={{flex: 1}}>
-                <SafeAreaView style={{flex: 1}}>
+                <CommonView style={{flex: 1}}>
                     <ScrollTitle onChange={this.statusChange} titles={['全部', '待处理', '处理中', '待回访', '待审核', '已归档']}/>
                     {/*<Tabs tabs={tabs2} initialPage={1} tabBarPosition="top">*/}
                     {/*    {renderContent}*/}
@@ -276,7 +275,7 @@ class EstateTousuPage extends BasePage {
                         onMomentumScrollEnd={() => this.canAction = false}
                         ListEmptyComponent={<NoDataView/>}
                     />
-                </SafeAreaView>
+                </CommonView>
             </View>
 
         );

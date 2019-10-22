@@ -26,10 +26,12 @@ import java.util.HashMap;
 import javax.annotation.Nonnull;
 
 public class LHNToast extends ReactContextBaseJavaModule {
-    private static final String APPID = "com.statistics";
+    private String APPID;
 
     public LHNToast(ReactApplicationContext context) {
         super(context);
+        APPID = Tool.getPackageName(context);
+        
     }
 
     @Nonnull
@@ -65,23 +67,17 @@ public class LHNToast extends ReactContextBaseJavaModule {
                 bundle.putString("amt",order.getString("amt"));
                 bundle.putString("order_no",order.getString("order_no"));
                 bundle.putString("notify_url",order.getString("notify_url"));
+                bundle.putString("notify",order.getString("notify"));
                 bundle.putString("time_stamp",
                         DateTimeUtil.getCurrentDate("yyyyMMddhhmmss"));
-
-
-
                 bundle.putString("order_info",order.getString("order_info"));
                 bundle.putString("print_info",order.getString("print_info"));
 //        bundle.putString("return_type","1"); //自动关闭打印页
-
-
-
                 intent.putExtras(bundle);
                 currentActivity.startActivity(intent);
             }
         }catch(Exception e){
-            throw new JSApplicationIllegalArgumentException(
-                    "不能打开Activity : "+e.getMessage());
+            this.show(e.getMessage(),2);
         }
     }
 

@@ -234,9 +234,9 @@ const tabbar = createBottomTabNavigator({
                 }
             } else {
                 if (focused) {
-                    imageUrl = require('../../static/images/tabbar/mine_select.png');
+                    imageUrl = require('../../static/images/tabbar/goods_select.png');
                 } else {
-                    imageUrl = require('../../static/images/tabbar/mine.png');
+                    imageUrl = require('../../static/images/tabbar/goods.png');
                 }
             }
 

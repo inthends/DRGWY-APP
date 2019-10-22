@@ -6,7 +6,6 @@ import {
     TouchableOpacity,
     StyleSheet,
     Image,
-    SafeAreaView,
     ScrollView,
     RefreshControl,
 } from 'react-native';
@@ -28,6 +27,8 @@ import UploadImageView from '../../../components/upload-image-view';
 import Communicates from '../../../components/communicates';
 import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
+import CommonView from '../../../components/CommonView';
+
 
 const Item = List.Item;
 
@@ -118,7 +119,7 @@ export default class WanChengListDetailPage extends BasePage {
 
 
         return (
-            <SafeAreaView style={{flex: 1, backgroundColor: '#fff', paddingBottom: 10}}>
+            <CommonView style={{flex: 1, backgroundColor: '#fff', paddingBottom: 10}}>
                 <ScrollView>
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.billCode}</Text>
@@ -171,7 +172,7 @@ export default class WanChengListDetailPage extends BasePage {
                     </TouchableWithoutFeedback>
                     <Communicates communicateClick={this.communicateClick} communicates={communicates}/>
                 </ScrollView>
-            </SafeAreaView>
+            </CommonView>
         );
     }
 }

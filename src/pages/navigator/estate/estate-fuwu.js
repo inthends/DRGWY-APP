@@ -2,26 +2,24 @@ import React, {Fragment} from 'react';
 import {
     View,
     Text,
-    SafeAreaView,
     StyleSheet,
-    StatusBar,
-    FlatList,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    Linking,
+    FlatList,
 } from 'react-native';
 import BasePage from '../../base/base';
 import {Button, Flex, Icon, List, WhiteSpace} from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
 import {connect} from 'react-redux';
-import ListHeader from '../../../components/list-header';
 import common from '../../../utils/common';
 import LoadImage from '../../../components/load-image';
 import ScrollTitle from '../../../components/scroll-title';
 import MyPopover from '../../../components/my-popover';
 import NavigatorService from '../navigator-service';
 import NoDataView from '../../../components/no-data-view';
+import CommonView from '../../../components/CommonView';
+
 
 class EstateFuwuPage extends BasePage {
     static navigationOptions = ({navigation}) => {
@@ -253,7 +251,7 @@ class EstateFuwuPage extends BasePage {
 
 
             <View style={{flex: 1}}>
-                <SafeAreaView style={{flex: 1}}>
+                <CommonView style={{flex: 1}}>
                     <ScrollTitle onChange={this.billType} titles={['全部', '报修', '投诉', '建议', '咨询']}/>
                     {/*<Tabs tabs={tabs2} initialPage={1} tabBarPosition="top">*/}
                     {/*    {renderContent}*/}
@@ -280,7 +278,7 @@ class EstateFuwuPage extends BasePage {
                         onMomentumScrollEnd={() => this.canAction = false}
                         ListEmptyComponent={<NoDataView/>}
                     />
-                </SafeAreaView>
+                </CommonView>
             </View>
 
         );

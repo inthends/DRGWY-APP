@@ -6,22 +6,16 @@ import {
     TouchableOpacity,
     StyleSheet,
     Image,
-    SafeAreaView,
     ScrollView,
     RefreshControl,
 } from 'react-native';
 import BasePage from '../base/base';
 import {Icon} from '@ant-design/react-native';
-import {List, WhiteSpace, Flex, TextareaItem, Grid, Button} from '@ant-design/react-native';
-import ScreenUtil from '../../utils/screen-util';
-import LoadImage from '../../components/load-image';
-import SelectImage from '../../utils/select-image';
+import {List, Flex, Button} from '@ant-design/react-native';
 import common from '../../utils/common';
-import UDRecord from '../../utils/UDRecord';
-import api from '../../utils/api';
-import UDPlayer from '../../utils/UDPlayer';
 import WorkService from './work-service';
 import UDToast from '../../utils/UDToast';
+import CommonView from '../../components/CommonView';
 
 const Item = List.Item;
 
@@ -136,7 +130,7 @@ export default class SelectAddressPage extends BasePage {
 
 
         return (
-            <SafeAreaView style={{flex: 1, backgroundColor: '#eee'}}>
+            <CommonView style={{flex: 1, backgroundColor: '#eee'}}>
                 <View style={{flex: 1}}>
 
                     <Item arrow="empty">
@@ -168,7 +162,7 @@ export default class SelectAddressPage extends BasePage {
                     </Flex>
 
                 </View>
-            </SafeAreaView>
+            </CommonView>
         );
     }
 }

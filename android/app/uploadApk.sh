@@ -3,8 +3,8 @@
 MAIN_MODULE="/Users/heartlesssoy/statistics/android/app"
 #蒲公英API账号
 
-PGYER_API_KEY="7fee7a2cb6f4eed75187d4d69f548fb0"
-PGYER_USER_KEY="88be4e90e66ff14f995372d1e1507f1c"
+PGYER_API_KEY="7b068367acb8249df56963d00a47df40"
+PGYER_USER_KEY="e8726fd7da317988530522b5726b8542"
 #APK路径
 APK_PATH="${MAIN_MODULE}/build/outputs/apk/release"
 echo "current path: `pwd`"

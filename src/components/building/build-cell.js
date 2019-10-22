@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react';
-import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import BasePage from '../../pages/base/base';
 import Macro from '../../utils/macro';
 import {Button, Flex, WhiteSpace, WingBlank} from '@ant-design/react-native';
@@ -25,7 +25,7 @@ export default class BuildingCell extends BasePage {
     render() {
         const {item} = this.props;
         return (
-            <TouchableOpacity onPress={() => this.props.navigation.navigate(this.props.nextRouteName, {data: item})}>
+            <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate(this.props.nextRouteName, {data: item})}>
                 <View style={styles.content}>
                     <Flex direction="row" style={styles.top}>
                         <Flex style={styles.left}>
@@ -49,7 +49,7 @@ export default class BuildingCell extends BasePage {
                         </Flex>
                     </Flex>
                 </View>
-            </TouchableOpacity>
+            </TouchableWithoutFeedback>
         );
     }
 }

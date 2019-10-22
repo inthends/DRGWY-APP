@@ -2,7 +2,6 @@ import React, {Fragment} from 'react';
 import {
     View,
     Text,
-    SafeAreaView,
     StyleSheet,
     StatusBar,
     FlatList,
@@ -20,6 +19,8 @@ import common from '../../utils/common';
 import LoadImage from '../../components/load-image';
 import NavigatorService from './navigator-service';
 import NoDataView from '../../components/no-data-view';
+import CommonView from '../../components/CommonView';
+
 
 class FeeHousePage extends BasePage {
     static navigationOptions = ({navigation}) => {
@@ -159,7 +160,7 @@ class FeeHousePage extends BasePage {
         return (
 
 
-            <SafeAreaView style={{flex: 1}}>
+            <CommonView style={{flex: 1}}>
 
 
                 <FlatList
@@ -180,7 +181,7 @@ class FeeHousePage extends BasePage {
                 />
 
 
-            </SafeAreaView>
+            </CommonView>
 
         );
     }

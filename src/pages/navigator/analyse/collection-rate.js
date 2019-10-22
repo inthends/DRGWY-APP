@@ -2,7 +2,6 @@ import React, {Fragment} from 'react';
 import {
     View,
     Text,
-    SafeAreaView,
     StyleSheet,
     StatusBar,
     ScrollView,
@@ -34,6 +33,8 @@ import NavigatorService from '../navigator-service';
 import ScrollTitleChange from '../../../components/scroll-title-change';
 import {Table, Row, Rows} from 'react-native-table-component';
 import MyPopover from '../../../components/my-popover';
+import CommonView from '../../../components/CommonView';
+
 
 
 class CollectionRatePage extends BasePage {
@@ -264,7 +265,7 @@ class CollectionRatePage extends BasePage {
 
         return (
 
-            <SafeAreaView style={{flex: 1}}>
+            <CommonView style={{flex: 1}}>
                 <ScrollView style={{flex: 1}}>
                     <ScrollTitleChange index={index} onChange={this.titleChange} titles={titles}/>
                     <DashLine style={{marginLeft: 15, marginRight: 15}}/>
@@ -292,7 +293,7 @@ class CollectionRatePage extends BasePage {
                     </Table>
                 </ScrollView>
 
-            </SafeAreaView>
+            </CommonView>
 
         );
     }

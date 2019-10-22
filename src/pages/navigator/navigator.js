@@ -1,30 +1,17 @@
 import React, {Fragment} from 'react';
 import {
-    View,
     Text,
-    SafeAreaView,
     StyleSheet,
-    StatusBar,
     ScrollView,
-    SectionList,
     TouchableWithoutFeedback,
-    ImageBackground,
-    Animated,
-    FlatList,
-    Image,
 } from 'react-native';
 
 import BasePage from '../base/base';
-import BuildingHeader from '../../components/building/building-header';
-import BuildingCell from '../../components/building/build-cell';
-import {Button, Flex, Icon, List, WhiteSpace, SegmentedControl} from '@ant-design/react-native';
+import {Flex} from '@ant-design/react-native';
 import Macro from '../../utils/macro';
-import forge from 'node-forge';
 import LoadImage from '../../components/load-image';
-import {connect} from 'react-redux';
-import {saveSelectBuilding} from '../../utils/store/actions/actions';
-import ScreenUtil from '../../utils/screen-util';
-import common from '../../utils/common';
+import CommonView from '../../components/CommonView';
+
 
 export default class NavigatorPage extends BasePage {
     static navigationOptions = ({navigation}) => {
@@ -51,7 +38,7 @@ export default class NavigatorPage extends BasePage {
         return (
 
 
-            <SafeAreaView style={{flex: 1}}>
+            <CommonView style={{flex: 1}}>
                 <ScrollView style={{flex: 1}}>
                     <Flex direction={'column'} align={'start'} style={styles.cell}>
                         <Flex style={{
@@ -180,7 +167,7 @@ export default class NavigatorPage extends BasePage {
                         </Flex>
                     </Flex>
                 </ScrollView>
-            </SafeAreaView>
+            </CommonView>
 
         );
     }

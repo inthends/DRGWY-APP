@@ -31,7 +31,7 @@ public class LKLPayActivity extends Activity {
         initData();
         this.bundle = getIntent().getExtras();
         mShow.setText("正在支付中...");
-        pay();
+//        pay();
 
     }
     private void initView() {

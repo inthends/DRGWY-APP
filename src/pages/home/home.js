@@ -13,7 +13,7 @@ export default class HomePage extends BasePage {
             goods: [{id: '1'}, {id: '2'}, {id: '3'}, {id: '4'}],
         };
         console.log(1)
-        NativeModules.LHNToast.show('22',1000)
+        // NativeModules.LHNToast.show('22',1000)
 
     }
 

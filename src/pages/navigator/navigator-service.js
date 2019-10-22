@@ -143,6 +143,10 @@ export default {
     cashPay(linkId) {
         return api.postData('/api/MobileMethod/MCharge', {linkId});
     },
+    orderStatus(out_trade_no) {
+        return api.postData('/api/MobileMethod/WFTPayResult', {out_trade_no});
+
+    }
 
 
 };

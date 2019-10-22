@@ -2,29 +2,25 @@ import React, {Fragment} from 'react';
 import {
     View,
     Text,
-    SafeAreaView,
     StyleSheet,
-    StatusBar,
     ScrollView,
-    SectionList,
     TouchableWithoutFeedback,
     ImageBackground,
     Animated,
 } from 'react-native';
 
 import BasePage from '../../base/base';
-import BuildingHeader from '../../../components/building/building-header';
-import BuildingCell from '../../../components/building/build-cell';
+
 import {Button, Flex, Icon, List, WhiteSpace, SegmentedControl} from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import BuildingService from '../building_service';
-import forge from 'node-forge';
 import LoadImage from '../../../components/load-image';
 import {connect} from 'react-redux';
 import {saveSelectBuilding} from '../../../utils/store/actions/actions';
 import ScreenUtil from '../../../utils/screen-util';
 import common from '../../../utils/common';
-import BuildingServiced from '../building_service';
+import CommonView from '../../../components/CommonView';
+
 
 
 const lineWidth = 30;

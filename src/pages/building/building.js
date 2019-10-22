@@ -1,16 +1,13 @@
 import React, {Fragment} from 'react';
-import {View, Text, SafeAreaView, StyleSheet, StatusBar, FlatList} from 'react-native';
-
+import {View, StyleSheet, FlatList} from 'react-native';
 import BasePage from '../base/base';
 import BuildingHeader from '../../components/building/building-header';
 import BuildingCell from '../../components/building/build-cell';
-import {Button, List, WhiteSpace} from '@ant-design/react-native';
 import Macro from '../../utils/macro';
 import BuildingService from './building_service';
-import ScreenUtil from '../../utils/screen-util';
 import {connect} from 'react-redux';
-import {NativeModules} from 'react-native';
 import NoDataView from '../../components/no-data-view';
+import CommonView from '../../components/CommonView';
 
 class BuildingPage extends BasePage {
     static navigationOptions = ({navigation}) => {
@@ -67,8 +64,8 @@ class BuildingPage extends BasePage {
         });
     };
 
-    getList = () => {
-        BuildingService.getStatistics(this.state.pageIndex, this.selectBuilding.key).then(dataInfo => {
+    getList = (showLoading = true) => {
+        BuildingService.getStatistics(this.state.pageIndex, this.selectBuilding.key, showLoading).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -100,9 +97,10 @@ class BuildingPage extends BasePage {
     };
     loadMore = () => {
         const {data, total, pageIndex} = this.state.dataInfo;
-        console.log('loadmore',this.canAction);
+        console.log('loadmore', this.canAction);
 
         if (!this.canAction && data.length < total) {
+        // if (data.length < total) {
             this.canAction = true;
             this.setState({
                 refreshing: true,
@@ -134,11 +132,10 @@ class BuildingPage extends BasePage {
         const {statistics, dataInfo} = this.state;
         return (
             <View style={styles.all}>
-                <SafeAreaView style={{flex: 1}}>
+                <CommonView style={{flex: 1}}>
                     <View style={styles.content}>
                         <BuildingHeader title={this.selectBuilding.title} statistics={statistics}
                                         openDrawer={this.openDrawer} {...this.props}/>
-                        {/*<BuildingCell {...this.props} item={{}}/>*/}
                         <FlatList
                             data={dataInfo.data}
                             // ListHeaderComponent={}
@@ -149,13 +146,13 @@ class BuildingPage extends BasePage {
                             refreshing={this.state.refreshing}
                             onRefresh={() => this.onRefresh()}
                             onEndReached={() => this.loadMore()}
-                            onEndReachedThreshold={0}
+                            onEndReachedThreshold={0.1}
                             onMomentumScrollBegin={() => this.canAction = false}
                             ListEmptyComponent={<NoDataView/>}
                         />
                     </View>
 
-                </SafeAreaView>
+                </CommonView>
             </View>
         );
     }
@@ -174,6 +171,7 @@ const styles = StyleSheet.create({
     },
     list: {
         backgroundColor: Macro.color_white,
+        flex: 1,
     },
 });
 const mapStateToProps = ({buildingReducer}) => {

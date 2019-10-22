@@ -2,13 +2,8 @@ import React, {Fragment} from 'react';
 import {
     View,
     Text,
-    SafeAreaView,
     StyleSheet,
-    StatusBar,
     ScrollView,
-    SectionList,
-    TextInput,
-    TouchableOpacity,
     TouchableWithoutFeedback,
 } from 'react-native';
 
@@ -19,6 +14,7 @@ import DetailBuildingService from './detail-building-service';
 import ScreenUtil from '../../../utils/screen-util';
 import common from '../../../utils/common';
 import BackTitleNavigationBar from '../../../components/back-title-navigation-bar';
+import CommonView from '../../../components/CommonView';
 
 
 export default class DetailBuildingPage extends BasePage {
@@ -106,7 +102,7 @@ export default class DetailBuildingPage extends BasePage {
     render() {
         const {detail} = this.state;
         return (
-            <SafeAreaView style={{flex: 1}}>
+            <CommonView style={{flex: 1}}>
                 <View>
                     <BackTitleNavigationBar {...this.props} title={this.state.item?this.state.item.allName:''}/>
                     <ScrollView style={{height: ScreenUtil.contentHeight()}}>
@@ -278,7 +274,7 @@ export default class DetailBuildingPage extends BasePage {
                     </ScrollView>
 
                 </View>
-            </SafeAreaView>
+            </CommonView>
 
         );
     }

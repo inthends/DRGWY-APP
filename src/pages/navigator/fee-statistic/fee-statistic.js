@@ -1,33 +1,15 @@
 import React, {Fragment} from 'react';
 import {
     View,
-    Text,
-    SafeAreaView,
     StyleSheet,
     StatusBar,
-    ScrollView,
-    SectionList,
-    TouchableWithoutFeedback,
-    ImageBackground,
-    Animated,
-    FlatList,
-    Image, TouchableOpacity,
 } from 'react-native';
 
 import BasePage from '../../base/base';
-import BuildingHeader from '../../../components/building/building-header';
-import BuildingCell from '../../../components/building/build-cell';
-import {Button, Flex, Icon, List, WhiteSpace, SegmentedControl} from '@ant-design/react-native';
-import Macro from '../../../utils/macro';
-import forge from 'node-forge';
-import LoadImage from '../../../components/load-image';
-import {connect} from 'react-redux';
-import {saveSelectBuilding} from '../../../utils/store/actions/actions';
-import ScreenUtil from '../../../utils/screen-util';
-import common from '../../../utils/common';
 import SelectHeader from '../../../components/select-header';
-// import { ECharts } from "react-native-echarts-wrapper";
 import Echarts from 'native-echarts';
+import CommonView from '../../../components/CommonView';
+
 
 
 export default class FeeStatisticPage extends BasePage {
@@ -94,10 +76,10 @@ export default class FeeStatisticPage extends BasePage {
                     translucent={false}//指定状态栏是否透明。设置为true时，应用会在状态栏之下绘制（即所谓“沉浸式”——被状态栏遮住一部分）。常和带有半透明背景色的状态栏搭配使用。
                     // barStyle={'light-content'} // enum('default', 'light-content', 'dark-content')
                 />
-                <SafeAreaView>
+                <CommonView>
                     <SelectHeader/>
                     <Echarts option={option} height={300} />
-                </SafeAreaView>
+                </CommonView>
             </View>
         );
     }
