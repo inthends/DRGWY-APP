@@ -68,6 +68,7 @@ export default class AddWorkPage extends BasePage {
 
     componentWillUnmount(): void {
         this.viewDidAppear.remove();
+        UDToast.hiddenLoading(this.recordId);
     }
 
 

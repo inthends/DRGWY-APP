@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Text} from 'react-native';
 import BasePage from '../base/base';
 import {Button, InputItem, List} from '@ant-design/react-native';
 import LoginService from './login-service';
-import {saveToken} from '../../utils/store/actions/actions';
+import {saveToken,saveUrl} from '../../utils/store/actions/actions';
 import {connect} from 'react-redux';
+import LoadImage from '../../components/load-image';
+import ScreenUtil from '../../utils/screen-util';
 
 class LoginPage extends BasePage {
 
@@ -14,24 +16,32 @@ class LoginPage extends BasePage {
         this.state = {
             username: 'system',
             password: '111111',
+            usercode: '1001',
         };
 
     }
 
 
     componentDidMount(): void {
-        // this.login()
+
     }
 
     login = () => {
-        const {username, password} = this.state;
+        const {username, password, usercode} = this.state;
 
-        LoginService.login(username, password).then(res => {
-            console.log(1, res);
-            this.props.saveToken(res);
-        }).catch(error =>{
-            console.log(error)
+        LoginService.getServiceUrl(usercode).then(res=>{
+            this.props.saveUrl(res);
+            LoginService.login(username, password, usercode).then(res => {
+                console.log(1, res);
+                this.props.saveToken(res);
+            }).catch(error => {
+                console.log(error);
+            });
+        }).catch(err=>{
+
         });
+
+
 
     };
 
@@ -40,9 +50,25 @@ class LoginPage extends BasePage {
         const {goods, kinds} = this.state;
         return (
             <View style={styles.content}>
-                <List>
+                <LoadImage style={{width: 120, height: 120, borderRadius: 5, marginBottom: 50}}
+                           img={require('../../static/images/logo.png')}/>
+                <List style={{width: ScreenUtil.deviceWidth() - 60}}>
                     <InputItem
                         clear
+                        labelNumber='6'
+                        value={this.state.usercode}
+                        onChange={value => {
+                            this.setState({
+                                usercode: value,
+                            });
+                        }}
+                        placeholder="请输入产品编号"
+                    >
+                        产品编号
+                    </InputItem>
+                    <InputItem
+                        clear
+                        labelNumber='6'
                         value={this.state.username}
                         onChange={value => {
                             this.setState({
@@ -55,6 +81,8 @@ class LoginPage extends BasePage {
                     </InputItem>
                     <InputItem
                         clear
+                        labelNumber='6'
+                        secureTextEntry
                         value={this.state.password}
                         onChange={value => {
                             this.setState({
@@ -62,11 +90,12 @@ class LoginPage extends BasePage {
                             });
                         }}
                         placeholder="请输入密码"
+                        last={true}
                     >
                         密码
                     </InputItem>
-                    <Button onPress={() => this.login()} style={styles.login} type="primary">登陆</Button>
                 </List>
+                <Button onPress={() => this.login()} style={styles.login} type="primary">登陆</Button>
             </View>
         );
     }
@@ -75,15 +104,17 @@ class LoginPage extends BasePage {
 const styles = StyleSheet.create({
     content: {
 
-        paddingTop: 300,
-        paddingLeft: 30,
-        paddingRight: 30,
-        // flex: 1,
-        // alignItems: 'center',
-        // justifyContent: 'center',
+
+        // paddingLeft: 30,
+        // paddingRight: 30,
+
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     login: {
         marginTop: 30,
+        width: ScreenUtil.deviceWidth() - 60,
     },
 
 });
@@ -93,6 +124,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         saveToken: (token) => {
             dispatch(saveToken(token));
         },
+        saveUrl:(url)=>{
+            dispatch(saveUrl(url));
+        }
     };
 };
 export default connect(null, mapDispatchToProps)(LoginPage);

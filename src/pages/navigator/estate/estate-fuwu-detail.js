@@ -142,15 +142,16 @@ export default class EfuwuDetailPage extends BasePage {
                     <Text style={styles.desc}>{detail.contents}</Text>
                     <DashLine/>
                     <ListImages images={images}/>
-
-                        <Flex style={[styles.every2]} justify='between'>
-                            <Text style={styles.left}>报单人：{detail.contactName} {detail.createDate}</Text>
-                            <TouchableWithoutFeedback onPress={() => common.call(detail.contactPhone)}>
+                    <Flex style={[styles.every2]} justify='between'>
+                        <Text style={styles.left}>报单人：{detail.contactName} {detail.createDate}</Text>
+                        <TouchableWithoutFeedback onPress={() => common.call(detail.contactPhone)}>
                             <Flex><LoadImage style={{width: 30, height: 30}}/></Flex>
-                            </TouchableWithoutFeedback>
-                        </Flex>
+                        </TouchableWithoutFeedback>
+                    </Flex>
 
-                    {(detail.billType === '报修' || detail.billType === '投诉') ? (
+                    {/*{detail.businessCode && }*/}
+
+                    {detail.businessCode&&(detail.billType === '报修' || detail.billType === '投诉') ? (
                         <TouchableWithoutFeedback>
                             <Flex style={[styles.every]}>
                                 <Text style={styles.left}>关联单：</Text>
@@ -188,7 +189,7 @@ export default class EfuwuDetailPage extends BasePage {
                             </Flex>
                         </TouchableWithoutFeedback>
 
-                    <Flex>
+                    {detail.billStatus === 1&&<Flex>
                         <TouchableWithoutFeedback onPress={() => this.click('转维修')}>
                             <Flex justify={'center'} style={[styles.ii, {backgroundColor: Macro.color_f39d39}]}>
                                 <Text style={styles.word}>转维修</Text>
@@ -206,7 +207,7 @@ export default class EfuwuDetailPage extends BasePage {
                         </TouchableWithoutFeedback>
 
 
-                    </Flex>
+                    </Flex>}
                     <DashLine/>
                     <Communicates communicateClick={this.communicateClick} communicates={communicates}/>
 

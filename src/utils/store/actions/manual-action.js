@@ -8,6 +8,9 @@ export default {
     getTokenBYStore() {
         return store.getState().memberReducer.token;
     },
+    getUrl() {
+        return store.getState().memberReducer.url;
+    }
 };
 
 

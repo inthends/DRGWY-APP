@@ -102,7 +102,7 @@ export default class FuWuDanListDetailPage extends BasePage {
     click = (handle) => {
         const {fuwu, type, value} = this.state;
         WorkService.serviceHandle(handle, fuwu.id, value).then(res => {
-            console.log(res);
+            this.props.navigation.goBack();
         });
     };
     communicateClick = (i) => {
@@ -151,12 +151,40 @@ export default class FuWuDanListDetailPage extends BasePage {
                             <Flex style={[styles.every]}>
                                 <Text style={styles.left}>关联单：</Text>
                                 <Text onPress={()=>{
-                                    // if (detail.billType === '报修') {
-                                    //     this.props.navigation.navigate('weixiuD', {data: {id:detail.businessId}})
-                                    // }
-                                    // if ( detail.billType === '投诉') {
-                                    //     this.props.navigation.navigate('tousuD', {data: {id:detail.businessId}})
-                                    // }
+                                    let item = {
+                                        ...detail,
+                                        id: detail.businessId
+                                    };
+                                    switch (detail.statusName) {
+                                        case '待派单': {
+                                            this.props.navigation.navigate('paidan', {data: item});
+                                            break;
+                                        }
+                                        case '待接单': {
+                                            this.props.navigation.navigate('jiedan', {data: item});
+                                            break;
+                                        }
+                                        case '待开工': {
+                                            this.props.navigation.navigate('kaigong', {data: item});
+                                            break;
+                                        }
+                                        case '待完成': {
+                                            this.props.navigation.navigate('wancheng', {data: item});
+                                            break;
+                                        }
+                                        case '待检验': {
+                                            this.props.navigation.navigate('jianyan', {data: item});
+                                            break;
+                                        }
+                                        case '待回访': {
+                                            this.props.navigation.navigate('huifang', {data: item});
+                                            break;
+                                        }
+                                        default:
+                                            console.log(item);
+                                            break;
+
+                                    }
                                 }} style={[styles.right,{color:Macro.color_4d8fcc}]}>{detail.businessCode}</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
@@ -182,7 +210,7 @@ export default class FuWuDanListDetailPage extends BasePage {
                             <Text style={styles.word}>回复</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-                    <Flex>
+                    {detail.billStatus === 1&&<Flex>
                         <TouchableWithoutFeedback onPress={() => this.click('转维修')}>
                             <Flex justify={'center'} style={[styles.ii, {backgroundColor: '#f0a825'}]}>
                                 <Text style={styles.word}>转维修</Text>
@@ -198,9 +226,7 @@ export default class FuWuDanListDetailPage extends BasePage {
                                 <Text style={styles.word}>关闭</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
-
-
-                    </Flex>
+                    </Flex>}
                     <DashLine/>
                     <Communicates communicateClick={this.communicateClick} communicates={communicates}/>
                 </ScrollView>

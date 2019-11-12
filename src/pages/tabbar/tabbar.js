@@ -48,6 +48,7 @@ import EstateTousuPage from '../navigator/estate/estate-tousu';
 import JianYanListDetailPage from '../work/task/jian-yan-list-detail';
 import HuiFangDetailPage from '../work/task/hui-fang-detail';
 import ScanScreen from '../navigator/qrcode-scanner';
+import ScanOnly from '../navigator/ScanOnly';
 
 
 const BuildingNavigator = createStackNavigator({
@@ -130,6 +131,7 @@ const WorkNavigator = createStackNavigator({
     jiedan: JieDanListDetailPage,
     paidan: PaiDanListDetailPage,
     huifang: HuiFangDetailPage,
+    scanonly:ScanOnly,
 
     Task: TaskListPage,
 

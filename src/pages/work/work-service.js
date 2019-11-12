@@ -86,7 +86,7 @@ export default {
             type = null;
         }
 
-        return api.postData(url, {status: type, pageIndex, pageSize: 100, overdue});
+        return api.postData(url, {status: type, pageIndex, pageSize: 100, overdue,isOverdue:overdue});
     },
 
 };

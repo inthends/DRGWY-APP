@@ -51,7 +51,7 @@ export default class MinePage extends BasePage {
                                         <Text style={styles.name}>{user.showName}</Text>
                                         <Text style={styles.desc}>{user.departmentName}-{user.postName}</Text>
                                     </Flex>
-                                    <LoadImage style={{width: 40, height: 40}}
+                                    <LoadImage style={{width: 60, height: 60,borderRadius:30}}
                                                img={user.headImg}/>
                                 </Flex>
                             </TouchableWithoutFeedback>

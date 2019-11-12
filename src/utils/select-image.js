@@ -1,18 +1,26 @@
 import ImagePicker from 'react-native-image-picker';
 import UDToast from './UDToast';
 import api from './api';
+import {ImagePickerOptions} from 'react-native-image-picker/src/internal/types';
 
-const options = {
+const options: ImagePickerOptions = {
     title: '请选择',
     cancelButtonTitle: '取消',
-takePhotoButtonTitle: '相机',
-chooseFromLibraryButtonTitle: '相册',
-
+    takePhotoButtonTitle: '相机',
+    chooseFromLibraryButtonTitle: '相册',
     storageOptions: {
         skipBackup: true,
         path: 'images',
     },
+    permissionDenied: {
+        title: '暂无权限',
+        text:
+            '请在系统设置中打开拍照或选择图片的权限',
+        reTryTitle: '重试',
+        okTitle: "取消",
+    }
 };
+
 
 export default class SelectImage {
     static select(id,uploadUrl) {
