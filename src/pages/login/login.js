@@ -82,7 +82,7 @@ class LoginPage extends BasePage {
                     <InputItem
                         clear
                         labelNumber='6'
-                        secureTextEntry
+                        type="password"
                         value={this.state.password}
                         onChange={value => {
                             this.setState({

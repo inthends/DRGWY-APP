@@ -219,12 +219,12 @@ const styles = StyleSheet.create({
     },
     bottom: {
         color: '#868688',
-        fontSize: 18,
+        fontSize: 14,
         paddingBottom: 20,
     },
     button: {
         color: '#868688',
-        fontSize: 16,
+        fontSize: 14,
         paddingTop: 10,
     },
     card: {

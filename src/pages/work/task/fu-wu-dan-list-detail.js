@@ -210,7 +210,7 @@ export default class FuWuDanListDetailPage extends BasePage {
                             <Text style={styles.word}>回复</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-                    {detail.billStatus === 1&&<Flex>
+                    {detail.status === 1&&<Flex>
                         <TouchableWithoutFeedback onPress={() => this.click('转维修')}>
                             <Flex justify={'center'} style={[styles.ii, {backgroundColor: '#f0a825'}]}>
                                 <Text style={styles.word}>转维修</Text>

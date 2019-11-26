@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     },
     content: {
         color: '#404145',
-        fontSize: 16,
+        fontSize: 14,
         paddingLeft: 15,
     },
     left: {

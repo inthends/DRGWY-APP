@@ -189,7 +189,7 @@ export default class EfuwuDetailPage extends BasePage {
                             </Flex>
                         </TouchableWithoutFeedback>
 
-                    {detail.billStatus === 1&&<Flex>
+                    {detail.status === 1&&<Flex>
                         <TouchableWithoutFeedback onPress={() => this.click('转维修')}>
                             <Flex justify={'center'} style={[styles.ii, {backgroundColor: Macro.color_f39d39}]}>
                                 <Text style={styles.word}>转维修</Text>

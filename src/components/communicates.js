@@ -18,9 +18,10 @@ export default class Communicates extends Component {
                 <Flex style={{
                     marginLeft: 15,
                     marginRight: 15,
+                    marginBottom: 15,
                     paddingTop: 15,
                 }} justify='between'>
-                    <Text style={styles.left}>单据动态</Text>
+                    <Text style={styles.left}>沟通记录</Text>
                 </Flex>
                 {this.props.communicates.map((i, index) => (
                     <Fragment key={index}>
@@ -31,17 +32,17 @@ export default class Communicates extends Component {
                         }}>
                             <Flex style={[styles.every]} justify='between'>
                                 <LoadImage img={i.avatar} style={{width: 30, height: 30}}/>
-                                <Text style={styles.left}>{i.author} {i.datetime} 跟进</Text>
+                                <Text style={styles.left}>{i.author} {i.datetime}</Text>
                                 <LoadImage style={{width: 30, height: 30}}/>
                             </Flex>
                         </TouchableWithoutFeedback>
                         {i.show === true ? <View style={{
                             margin: 15,
                             marginTop: 0,
-                            borderStyle: 'solid',
-                            borderColor: '#F3F4F2',
-                            borderWidth: 1,
-                            borderRadius: 5,
+                            // borderStyle: 'solid',
+                            // borderColor: '#F3F4F2',
+                            // borderWidth: 1,
+                            // borderRadius: 5,
                             paddingTop: 15,
                             paddingBottom: 15,
                             paddingRight: 10,

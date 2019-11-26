@@ -20,7 +20,7 @@ for APK_FILE in ${APK_PATH}/*; do
     fi
 done
 #curl上传至蒲公英，默认直接发布，不发布到广场
-curl -F "file=@${APK_PATH}/${APK_NAME}" -F "uKey=${PGYER_USER_KEY}" -F "_api_key=${PGYER_API_KEY}" https://www.pgyer.com/apiv2/app/upload
+curl -F "file=@${APK_PATH}/${APK_NAME}" -F "buildInstallType=2" -F "buildPassword=123456" -F "_api_key=${PGYER_API_KEY}" https://www.pgyer.com/apiv2/app/upload
 
 
 
