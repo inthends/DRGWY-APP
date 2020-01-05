@@ -3,22 +3,18 @@ import {View, StyleSheet, Text} from 'react-native';
 import BasePage from '../base/base';
 import {Button, InputItem, List} from '@ant-design/react-native';
 import LoginService from './login-service';
-import {saveToken,saveUrl} from '../../utils/store/actions/actions';
+import {saveToken, saveUrl, saveUserNameAndPsd} from '../../utils/store/actions/actions';
 import {connect} from 'react-redux';
 import LoadImage from '../../components/load-image';
 import ScreenUtil from '../../utils/screen-util';
+import Macro from '../../utils/macro';
 
 class LoginPage extends BasePage {
 
 
     constructor(props) {
         super(props);
-        this.state = {
-            username: 'system',
-            password: '111111',
-            usercode: '1001',
-        };
-
+        this.state = {...this.props.userInfo};
     }
 
 
@@ -29,25 +25,22 @@ class LoginPage extends BasePage {
     login = () => {
         const {username, password, usercode} = this.state;
 
-        LoginService.getServiceUrl(usercode).then(res=>{
+        LoginService.getServiceUrl(usercode).then(res => {
             this.props.saveUrl(res);
             LoginService.login(username, password, usercode).then(res => {
                 console.log(1, res);
+                this.props.saveNameAndPsd({...this.state});
                 this.props.saveToken(res);
             }).catch(error => {
                 console.log(error);
             });
-        }).catch(err=>{
+        }).catch(err => {
 
         });
-
-
-
     };
 
 
     render() {
-        const {goods, kinds} = this.state;
         return (
             <View style={styles.content}>
                 <LoadImage style={{width: 120, height: 120, borderRadius: 5, marginBottom: 50}}
@@ -62,9 +55,9 @@ class LoginPage extends BasePage {
                                 usercode: value,
                             });
                         }}
-                        placeholder="请输入产品编号"
+                        placeholder="请输入编号"
                     >
-                        产品编号
+                        编号
                     </InputItem>
                     <InputItem
                         clear
@@ -115,19 +108,28 @@ const styles = StyleSheet.create({
     login: {
         marginTop: 30,
         width: ScreenUtil.deviceWidth() - 60,
+        backgroundColor: Macro.work_blue,
     },
 
 });
+
+
+const mapStateToProps = ({memberReducer}) => {
+    return {userInfo: memberReducer.userInfo};
+};
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         saveToken: (token) => {
             dispatch(saveToken(token));
         },
-        saveUrl:(url)=>{
+        saveUrl: (url) => {
             dispatch(saveUrl(url));
-        }
+        },
+        saveNameAndPsd: (data) => {
+            dispatch(saveUserNameAndPsd(data));
+        },
     };
 };
-export default connect(null, mapDispatchToProps)(LoginPage);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
 

@@ -224,28 +224,34 @@ const tabbar = createBottomTabNavigator({
             let imageUrl;
             if (routeName === 'Building') {
                 if (focused) {
-                    imageUrl = require('../../static/images/tabbar/home_select.png');
+                    imageUrl = require('../../static/images/tabbar/ly_h.png');
                 } else {
-                    imageUrl = require('../../static/images/tabbar/home.png');
+                    imageUrl = require('../../static/images/tabbar/ly_n.png');
                 }
             } else if (routeName === 'Navigator') {
                 if (focused) {
-                    imageUrl = require('../../static/images/tabbar/goods_select.png');
+                    imageUrl = require('../../static/images/tabbar/dh_h.png');
                 } else {
-                    imageUrl = require('../../static/images/tabbar/goods.png');
+                    imageUrl = require('../../static/images/tabbar/dh_n.png');
+                }
+            } else if (routeName === 'Work'){
+                if (focused) {
+                    imageUrl = require('../../static/images/tabbar/gz_h.png');
+                } else {
+                    imageUrl = require('../../static/images/tabbar/gz_n.png');
                 }
             } else {
                 if (focused) {
-                    imageUrl = require('../../static/images/tabbar/goods_select.png');
+                    imageUrl = require('../../static/images/tabbar/me_h.png');
                 } else {
-                    imageUrl = require('../../static/images/tabbar/goods.png');
+                    imageUrl = require('../../static/images/tabbar/me_n.png');
                 }
             }
 
 
             // You can return any component that you like here!
             return <Image
-                style={{width: 18, height: 21}}
+                style={{width: 15, height: 18}}
                 source={imageUrl}
             />;
         },

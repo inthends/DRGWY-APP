@@ -37,7 +37,7 @@ export default class Star extends Component {
                                 <TouchableWithoutFeedback key={index} onPress={() => this.tap(ele)}>
                                     <Flex key={index} style={{marginLeft: 15}}>
                                         {ele > this.state.num ? <Text style={{color: '#ccc', fontSize: 30}}>☆</Text> :
-                                            <Text style={{color: '#f0a825', fontSize: 30}}>★</Text>}
+                                            <Text style={{color: '#F7A51E', fontSize: 30}}>★</Text>}
                                     </Flex>
                                 </TouchableWithoutFeedback>
                             );

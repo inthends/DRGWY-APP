@@ -33,7 +33,6 @@ class BuildingPage extends BasePage {
             },
             refreshing: true,
         };
-
     }
 
     componentDidMount(): void {

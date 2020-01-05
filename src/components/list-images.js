@@ -20,7 +20,7 @@ export default class ListImages extends Component {
                 <Flex wrap={'wrap'}>
                     {this.props.images && this.props.images.map((item, index) => {
                         return (
-                            <View style={{
+                            <View key={item.uid} style={{
                                 paddingLeft: 15,
                                 paddingRight: 5,
                                 paddingBottom: 10,

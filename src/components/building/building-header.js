@@ -42,7 +42,7 @@ export default class BuildingHeader extends BasePage {
                 </Flex>
                 <Flex direction="column" style={styles.middle}>
                     <Flex justify="between" style={styles.area}>
-                        <Text style={styles.text}>管理数量</Text>
+                        <Text style={styles.text}>管理数量（{Macro.meter_square}）</Text>
                         <Text style={styles.text}>在租实时均价 {statistics.averagerentprice}{Macro.yuan_meter_day}</Text>
                     </Flex>
                     <Flex justify='start' style={styles.number}>
@@ -73,7 +73,7 @@ export default class BuildingHeader extends BasePage {
 const styles = StyleSheet.create({
     content: {
         flexDirection: 'column',
-        height: 180,
+        height: 240,
         backgroundColor: Macro.color_sky_dark,
     },
     top: {
@@ -89,13 +89,14 @@ const styles = StyleSheet.create({
         paddingRight: 5,
     },
     middle: {
-        flex: 3,
+        flex: 4,
         backgroundColor: Macro.color_sky_dark,
     },
     bottom: {
         flex: 2,
         backgroundColor: Macro.color_sky_dark,
-        fontSize:14
+        fontSize:14,
+        marginBottom: 8,
 
     },
     area: {
@@ -106,26 +107,27 @@ const styles = StyleSheet.create({
     },
     text: {
         color: Macro.color_white,
-        fontSize: Macro.font_14,
+        fontSize: 18.5,
     },
     number: {
         flex: 3,
         width: '100%',
     },
     big: {
-        fontSize: Macro.font_40,
+        fontSize: 41.67,
         paddingLeft: Macro.marginLeft_15,
     },
     item: {
         alignItems: 'center',
+
     },
     topText: {
         color: Macro.color_a0b0f3,
-        fontSize: Macro.font_14,
+        fontSize: 17.67,
     },
     bottomText: {
         color: Macro.color_white,
-        fontSize: Macro.font_16,
+        fontSize: 17.67,
         paddingTop: 5,
     },
 });

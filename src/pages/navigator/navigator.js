@@ -11,12 +11,17 @@ import {Flex} from '@ant-design/react-native';
 import Macro from '../../utils/macro';
 import LoadImage from '../../components/load-image';
 import CommonView from '../../components/CommonView';
+import ScreenUtil from '../../utils/screen-util';
 
 
 export default class NavigatorPage extends BasePage {
     static navigationOptions = ({navigation}) => {
         return {
             title: '导航',
+            headerTitleStyle: {
+                flex: 1,
+                textAlign: 'center',
+            },
         };
     };
 
@@ -42,9 +47,6 @@ export default class NavigatorPage extends BasePage {
                 <ScrollView style={{flex: 1}}>
                     <Flex direction={'column'} align={'start'} style={styles.cell}>
                         <Flex style={{
-                            borderStyle: 'solid',
-                            borderLeftWidth: 8,
-                            borderLeftColor: Macro.color_f39d39,
                             paddingTop: 3,
                             paddingBottom: 3,
                         }}>
@@ -55,11 +57,12 @@ export default class NavigatorPage extends BasePage {
                         <Flex justify={'between'} style={styles.cellContnent}>
                             <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('feeHouse')}>
                                 <Flex style={styles.left}>
-                                    <LoadImage style={{width: 22, height: 22}}
-                                               defaultImg={require('../../static/images/home/search.png')}/>
+                                    <LoadImage style={{width: 19, height: 25}}
+                                               defaultImg={require('../../static/images/navigator/shangmen.png')}/>
                                     <Text style={styles.content}>上门收费</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
+
 
                             {/*<TouchableWithoutFeedback onPress={() => alert(1)}>*/}
                             {/*    <Flex style={styles.right}>*/}
@@ -69,13 +72,11 @@ export default class NavigatorPage extends BasePage {
                             {/*    </Flex>*/}
                             {/*</TouchableWithoutFeedback>*/}
                         </Flex>
+                        <Flex style={styles.line}/>
 
                     </Flex>
                     <Flex direction={'column'} align={'start'} style={styles.cell}>
                         <Flex style={{
-                            borderStyle: 'solid',
-                            borderLeftWidth: 8,
-                            borderLeftColor: Macro.color_4d8fcc,
                             paddingTop: 3,
                             paddingBottom: 3,
                         }}>
@@ -85,14 +86,14 @@ export default class NavigatorPage extends BasePage {
                             <TouchableWithoutFeedback onPress={() => this.props.navigation.push('e_fuwu')}>
                                 <Flex style={styles.left}>
                                     <LoadImage style={{width: 22, height: 22}}
-                                               defaultImg={require('../../static/images/home/search.png')}/>
+                                               defaultImg={require('../../static/images/navigator/fuwudan.png')}/>
                                     <Text style={styles.content}>服务单</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
                             <TouchableWithoutFeedback onPress={() => this.props.navigation.push('e_weixiu')}>
                                 <Flex style={styles.right}>
-                                    <LoadImage style={{width: 22, height: 22}}
-                                               defaultImg={require('../../static/images/home/search.png')}/>
+                                    <LoadImage style={{width: 20, height: 22}}
+                                               defaultImg={require('../../static/images/navigator/weixiudan.png')}/>
                                     <Text style={styles.content}>维修单</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
@@ -101,17 +102,15 @@ export default class NavigatorPage extends BasePage {
                             <TouchableWithoutFeedback onPress={() => this.props.navigation.push('e_tousu')}>
                                 <Flex style={styles.left}>
                                     <LoadImage style={{width: 22, height: 22}}
-                                               defaultImg={require('../../static/images/home/search.png')}/>
+                                               defaultImg={require('../../static/images/navigator/tousudan.png')}/>
                                     <Text style={styles.content}>投诉单</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
+                        <Flex style={styles.line}/>
                     </Flex>
                     <Flex direction={'column'} align={'start'} style={styles.cell}>
                         <Flex style={{
-                            borderStyle: 'solid',
-                            borderLeftWidth: 8,
-                            borderLeftColor: '#ccc',
                             paddingTop: 3,
                             paddingBottom: 3,
                         }}>
@@ -121,14 +120,14 @@ export default class NavigatorPage extends BasePage {
                             <TouchableWithoutFeedback onPress={() => this.props.navigation.push('collection')}>
                                 <Flex style={styles.left}>
                                     <LoadImage style={{width: 22, height: 22}}
-                                               defaultImg={require('../../static/images/home/search.png')}/>
+                                               defaultImg={require('../../static/images/navigator/shoujiaolv.png')}/>
                                     <Text style={styles.content}>收缴率</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
                             <TouchableWithoutFeedback onPress={() => this.props.navigation.push('zijinliu')}>
                                 <Flex style={styles.right}>
-                                    <LoadImage style={{width: 22, height: 22}}
-                                               defaultImg={require('../../static/images/home/search.png')}/>
+                                    <LoadImage style={{width: 20, height: 22}}
+                                               defaultImg={require('../../static/images/navigator/zijinliu.png')}/>
                                     <Text style={styles.content}>资金流</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
@@ -136,15 +135,15 @@ export default class NavigatorPage extends BasePage {
                         <Flex justify={'between'} style={styles.cellContnent}>
                             <TouchableWithoutFeedback onPress={() => this.props.navigation.push('qianfei')}>
                                 <Flex style={styles.left}>
-                                    <LoadImage style={{width: 22, height: 22}}
-                                               defaultImg={require('../../static/images/home/search.png')}/>
+                                    <LoadImage style={{width: 20, height: 22}}
+                                               defaultImg={require('../../static/images/navigator/zlfx.png')}/>
                                     <Text style={styles.content}>账龄分析</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
                             <TouchableWithoutFeedback onPress={() => this.props.navigation.push('weixiu_s')}>
                                 <Flex style={styles.right}>
-                                    <LoadImage style={{width: 22, height: 22}}
-                                               defaultImg={require('../../static/images/home/search.png')}/>
+                                    <LoadImage style={{width: 20, height: 20}}
+                                               defaultImg={require('../../static/images/navigator/wanchenglv.png')}/>
                                     <Text style={styles.content}>维修完成率</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
@@ -152,19 +151,20 @@ export default class NavigatorPage extends BasePage {
                         <Flex justify={'between'} style={styles.cellContnent}>
                             <TouchableWithoutFeedback onPress={() => this.props.navigation.push('tousu_s')}>
                                 <Flex style={styles.left}>
-                                    <LoadImage style={{width: 22, height: 22}}
-                                               defaultImg={require('../../static/images/home/search.png')}/>
+                                    <LoadImage style={{width: 20, height: 22}}
+                                               defaultImg={require('../../static/images/navigator/tousu.png')}/>
                                     <Text style={styles.content}>投诉完成率</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
                             <TouchableWithoutFeedback onPress={() => this.props.navigation.push('huifang_s')}>
                                 <Flex style={styles.right}>
-                                    <LoadImage style={{width: 22, height: 22}}
-                                               defaultImg={require('../../static/images/home/search.png')}/>
+                                    <LoadImage style={{width: 20, height: 22}}
+                                               defaultImg={require('../../static/images/navigator/huifang.png')}/>
                                     <Text style={styles.content}>回访满意</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
+                        <Flex style={styles.line}/>
                     </Flex>
                 </ScrollView>
             </CommonView>
@@ -181,16 +181,16 @@ const styles = StyleSheet.create({
     },
     title: {
         color: '#000000',
-        fontSize: 18,
+        fontSize: 19.44,
         paddingLeft: 6,
     },
     cellContnent: {
-        marginLeft: 10,
-        marginRight: 10,
+        marginLeft: 30,
+        marginRight: 30,
     },
     content: {
         color: '#404145',
-        fontSize: 14,
+        fontSize: 17.6,
         paddingLeft: 15,
     },
     left: {
@@ -201,5 +201,13 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingLeft: 25,
         paddingTop: 30,
+    },
+    line: {
+        marginTop:20,
+        marginBottom:10,
+        marginRight:15,
+        width: ScreenUtil.deviceWidth() - 30,
+        backgroundColor: '#E0E0E0',
+        height: 0.5,
     },
 });

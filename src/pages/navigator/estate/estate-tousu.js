@@ -359,12 +359,12 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.8,
     },
     blue: {
-        borderLeftColor: Macro.color_4d8fcc,
-        borderLeftWidth: 8,
+        borderLeftColor: Macro.work_blue,
+        borderLeftWidth: 5,
     },
     orange: {
-        borderLeftColor: Macro.color_f39d39,
-        borderLeftWidth: 8,
+        borderLeftColor: Macro.work_orange,
+        borderLeftWidth: 5,
     },
 
 });

@@ -27,7 +27,7 @@ export default class BuildingCell extends BasePage {
         return (
             <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate(this.props.nextRouteName, {data: item})}>
                 <View style={styles.content}>
-                    <Flex direction="row" style={styles.top}>
+                    <Flex direction="row">
                         <Flex style={styles.left}>
                             <LoadImage img={item.mainpic} style={styles.image}/>
                         </Flex>
@@ -57,27 +57,27 @@ export default class BuildingCell extends BasePage {
 const styles = StyleSheet.create({
     content: {
         flexDirection: 'column',
-        marginLeft: 15,
-        marginRight: 15,
+        marginLeft: 20,
+        marginRight: 20,
         borderBottomColor: Macro.color_f6f5f7,
         borderBottomWidth: 1,
     },
     left: {
-        paddingTop:15,
-        paddingBottom:15,
+        paddingTop:20,
+        paddingBottom:20,
 
-        height: 120,
+        height: 140,
     },
     right: {
-        width: ScreenUtil.deviceWidth()-90-15-10-15,
+        width: ScreenUtil.deviceWidth()-100-20-10-20,
         height: 120,
         paddingTop: 10,
         paddingBottom: 20,
         marginLeft: 10,
     },
     image: {
-        height: 90,
-        width: 90,
+        height: 100,
+        width: 100,
         borderRadius: 5
     },
     item: {
@@ -85,31 +85,31 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     name: {
-        fontSize: Macro.font_16,
-        fontWeight: '600',
-        color:'#2c2d31',
+        fontSize: 17,
+        // fontWeight: '600',
+        color:'#2c2c2c',
     },
     area: {
-        fontWeight: '600',
+        // fontWeight: '600',
         fontSize: Macro.font_14,
-        color:'#343339',
+        color:'#2c2c2c',
 
 
     },
     complete: {
-        color: Macro.color_80aae2,
+        color: 'white',
         fontSize: Macro.font_14,
-        backgroundColor: Macro.color_dae9ff,
+        backgroundColor: '#74BAF1',
         padding: 3,
         paddingLeft: 5,
-        borderRadius: 1,
+        borderRadius: 3,
     },
     number: {
-        color: Macro.color_9c9ca5,
+        color: '#666',
         fontSize: Macro.font_14,
     },
     desc: {
-        color: Macro.color_c2c1c5,
+        color: '#999999',
         fontSize: Macro.font_14,
 
     },
@@ -117,8 +117,8 @@ const styles = StyleSheet.create({
         width: 1,
         height: 15,
         backgroundColor: Macro.color_c2c1c5,
-        marginLeft: 5,
-        marginRight: 5,
+        marginLeft: 25,
+        marginRight: 25,
     },
 
 

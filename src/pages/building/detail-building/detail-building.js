@@ -218,9 +218,9 @@ export default class DetailBuildingPage extends BasePage {
                                                                           paddingBottom: 5,
                                                                       },item.state === 0 ? styles.dash : null]}>
                                                                     <Flex align='start' direction='column'>
-                                                                        <Text style={styles.color_top}>北京像天气的我失望的</Text>
+                                                                        <Text style={styles.color_top}>{item.name}</Text>
                                                                         <Text
-                                                                            style={styles.color_top}>20000{Macro.meter_square}/102室</Text>
+                                                                            style={styles.color_top}>{item.area}{Macro.meter_square}/{item.tenantName}</Text>
                                                                     </Flex>
                                                                     <Flex align='start' direction='column'>
                                                                         {it.ContractCounts ?<Text style={styles.color_top}>{it.ContractCounts}需求</Text> : null}
@@ -251,7 +251,7 @@ export default class DetailBuildingPage extends BasePage {
                                                                 <Flex align='start' direction='column'>
                                                                     <Text style={styles.color_top}>{it.name}室</Text>
                                                                     <Text
-                                                                        style={styles.color_top}>{it.area}{Macro.meter_square}</Text>
+                                                                        style={styles.color_top}>{item.area}{Macro.meter_square}/{item.tenantName}</Text>
                                                                 </Flex>
                                                                 <Flex align='start' direction='column'>
                                                                     {it.ContractCounts ?<Text style={styles.color_top}>{it.ContractCounts}需求</Text> : null}

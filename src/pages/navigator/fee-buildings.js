@@ -77,8 +77,8 @@ export default class FeeBuildingsPage extends BasePage {
                         {items.map(item => (
                             <TouchableWithoutFeedback key={item.id}
                                                       onPress={() => this.props.navigation.push('feeRooms', {data: item})}>
-                                <Flex style={styles.item} justify={'center'}>
-                                    <Text style={styles.title}>{item.name}</Text>
+                                <Flex style={[styles.item,item.isClear === true ? '' : styles.orange2]} justify={'center'}>
+                                    <Text style={[styles.title,item.isClear === true ? '' : styles.orange2]}>{item.name}</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
                         ))}
@@ -194,5 +194,9 @@ const styles = StyleSheet.create({
         backgroundColor: Macro.color_c2c1c5,
         marginLeft: 5,
         marginRight: 5,
+    },
+    orange2: {
+        backgroundColor: Macro.color_f39d39,
+        color: '#fff',
     },
 });

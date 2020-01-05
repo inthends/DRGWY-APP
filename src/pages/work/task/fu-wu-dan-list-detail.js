@@ -212,7 +212,7 @@ export default class FuWuDanListDetailPage extends BasePage {
                     </TouchableWithoutFeedback>
                     {detail.status === 1&&<Flex>
                         <TouchableWithoutFeedback onPress={() => this.click('转维修')}>
-                            <Flex justify={'center'} style={[styles.ii, {backgroundColor: '#f0a825'}]}>
+                            <Flex justify={'center'} style={[styles.ii, {backgroundColor: '#F7A51E'}]}>
                                 <Text style={styles.word}>转维修</Text>
                             </Flex>
                         </TouchableWithoutFeedback>

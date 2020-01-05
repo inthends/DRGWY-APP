@@ -238,7 +238,7 @@ class CollectionRatePage extends BasePage {
         //     ],
         //     "color":[
         //         "blue",
-        //         "#f0a825",
+        //         "#F7A51E",
         //         "green"
         //     ],
         //     "tooltip":{

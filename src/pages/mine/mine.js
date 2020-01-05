@@ -5,6 +5,8 @@ import {
     StyleSheet,
     TouchableWithoutFeedback,
     ScrollView,
+    ImageBackground,
+    StatusBar
 } from 'react-native';
 import BasePage from '../base/base';
 import {Flex} from '@ant-design/react-native';
@@ -15,14 +17,14 @@ import MineService from './mine-service';
 import CommonView from '../../components/CommonView';
 
 export default class MinePage extends BasePage {
-    // static navigationOptions = ({navigation}) => {
-    //
-    //     console.log(1, navigation);
-    //     return {
-    //         tabBarVisible: false,
-    //         header: null,
-    //     };
-    // };
+    static navigationOptions = ({navigation}) => {
+
+        console.log(1, navigation);
+        return {
+            tabBarVisible: false,
+            header: null,
+        };
+    };
 
     constructor(props) {
         super(props);
@@ -33,7 +35,7 @@ export default class MinePage extends BasePage {
 
     componentDidMount(): void {
         MineService.getUserInfo().then(user => {
-            this.setState({user})
+            this.setState({user});
         });
     }
 
@@ -42,40 +44,56 @@ export default class MinePage extends BasePage {
         const {user} = this.state;
         return (
             <View style={styles.all}>
+                {/*<StatusBar backgroundColor="blue"/>*/}
                 <CommonView>
                     <ScrollView>
-                        <View style={styles.content}>
-                            <TouchableWithoutFeedback /*onPress={() => this.props.navigation.push('Person')}*/>
-                                <Flex justify='between' aligen='center' style={styles.header}>
-                                    <Flex direction='column' align='start'>
-                                        <Text style={styles.name}>{user.showName}</Text>
-                                        <Text style={styles.desc}>{user.departmentName}-{user.postName}</Text>
-                                    </Flex>
-                                    <LoadImage style={{width: 60, height: 60,borderRadius:30}}
+                        <View  style={styles.content}>
+                            <ImageBackground source={require('../../static/images/mine_bg.png')} style={styles.headerV}>
+                                <TouchableWithoutFeedback>
+                                    <LoadImage style={{width: 70, height: 70, borderRadius: 35, marginTop: 56}}
                                                img={user.headImg}/>
-                                </Flex>
-                            </TouchableWithoutFeedback>
+                                </TouchableWithoutFeedback>
+                                <TouchableWithoutFeedback>
+                                    <Flex>
+                                        <Text style={styles.name}>{user.showName}</Text>
+                                        <Text style={styles.name2}>{user.departmentName}</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+                                <TouchableWithoutFeedback>
+                                    <Text style={styles.name3}>{user.postName}</Text>
+                                </TouchableWithoutFeedback>
+                            </ImageBackground>
                             <TouchableWithoutFeedback onPress={() => this.props.navigation.push('ModifyPsd')}>
                                 <Flex justify='between'
-                                      style={[{paddingTop: 15, paddingBottom: 20}, ScreenUtil.borderBottom()]}>
+                                      style={[{
+                                          marginTop: 45,
+                                          paddingBottom: 20,
+                                          paddingLeft: 30,
+                                          paddingRight: 25,
+                                      }, ScreenUtil.borderBottom()]}>
                                     <Flex>
-                                        <LoadImage style={{width: 16, height: 18}}
-                                                   defaultImg={require('../../static/images/icon_mima.png')}/>
+                                        <LoadImage style={{width: 18, height: 18}}
+                                                   defaultImg={require('../../static/images/wdgd.png')}/>
                                         <Text style={styles.item}>修改密码</Text>
                                     </Flex>
-                                    <LoadImage style={{width: 6, height: 11}}
+                                    <LoadImage style={{width: 8, height: 15}}
                                                defaultImg={require('../../static/images/address/right.png')}/>
                                 </Flex>
                             </TouchableWithoutFeedback>
                             <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Setting')}>
                                 <Flex justify='between'
-                                      style={[{paddingTop: 15, paddingBottom: 20}, ScreenUtil.borderBottom()]}>
+                                      style={[{
+                                          paddingTop: 30,
+                                          paddingBottom: 20,
+                                          paddingLeft: 30,
+                                          paddingRight: 25,
+                                      }, ScreenUtil.borderBottom()]}>
                                     <Flex>
-                                        <LoadImage style={{width: 18, height: 16.5}}
-                                                   defaultImg={require('../../static/images/icon_mendian.png')}/>
+                                        <LoadImage style={{width: 18, height: 18}}
+                                                   defaultImg={require('../../static/images/setting.png')}/>
                                         <Text style={styles.item}>设置</Text>
                                     </Flex>
-                                    <LoadImage style={{width: 6, height: 11}}
+                                    <LoadImage style={{width: 8, height: 15}}
                                                defaultImg={require('../../static/images/address/right.png')}/>
                                 </Flex>
                             </TouchableWithoutFeedback>
@@ -88,33 +106,43 @@ export default class MinePage extends BasePage {
 }
 const styles = StyleSheet.create({
     all: {
-        backgroundColor: Macro.color_white,
+        backgroundColor: Macro.work_blue,
     },
     content: {
-        backgroundColor: Macro.color_white,
-        paddingLeft: 20,
-        paddingRight: 20,
         height: ScreenUtil.contentHeight(),
-
+        backgroundColor: Macro.color_white,
         // height: ScreenUtil.contentHeightWithNoTabbar(),
+    },
+    headerV: {
+        height: 245,
+        display: 'flex',
+        alignItems: 'center',
+
     },
     header: {
         paddingTop: 30,
         paddingBottom: 30,
     },
     name: {
+        paddingTop: 15,
         fontSize: 20,
-        color: '#333',
+        color: 'white',
 
     },
-    desc: {
-        fontSize: 16,
-        color: '#999',
-        paddingTop: 5,
+    name2: {
+        paddingTop: 30,
+        color: '#DCDCDC',
+        fontSize: 14,
+        paddingLeft: 15,
+        paddingBottom: 14,
+    },
+    name3: {
+        fontSize: 14,
+        color: '#DCDCDC',
     },
     item: {
-        fontSize: 16,
-        color: '#333',
-        paddingLeft: 20,
+        fontSize: 17,
+        color: '#3E3E3E',
+        paddingLeft: 15,
     },
 });

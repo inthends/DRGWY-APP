@@ -327,12 +327,12 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.8,
     },
     blue: {
-        borderLeftColor: Macro.color_4d8fcc,
-        borderLeftWidth: 8,
+        borderLeftColor: Macro.work_blue,
+        borderLeftWidth: 5,
     },
     orange: {
-        borderLeftColor: '#f0a825',
-        borderLeftWidth: 8,
+        borderLeftColor: '#F7A51E',
+        borderLeftWidth: 5,
     },
     aaa: {
         paddingRight: 20,

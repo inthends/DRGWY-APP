@@ -8,7 +8,8 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
     Linking, Image, NativeModules,
-    ScrollView
+    ScrollView,
+    Alert,
 } from 'react-native';
 import BasePage from '../base/base';
 import {Button, Flex, Icon, List, WhiteSpace, Checkbox, Modal} from '@ant-design/react-native';
@@ -117,7 +118,7 @@ export default class FeeDetailPage extends BasePage {
 
                             this.setState({
                                 visible: true,
-                                cancel:false,
+                                cancel: false,
                                 code,
                             }, () => {
                                 this.getOrderStatus(res.out_trade_no);
@@ -128,9 +129,26 @@ export default class FeeDetailPage extends BasePage {
                     break;
                 }
                 case '现金': {
-                    NavigatorService.cashPay(ids).then(res => {
-                        this.onRefresh();
-                    });
+                    Alert.alert(
+                        '确定现金支付？',
+                        '',
+                        [
+                            {
+                                text: '取消',
+                                onPress: () => console.log('Cancel Pressed'),
+                                style: 'cancel',
+                            },
+                            {
+                                text: '确定',
+                                onPress: () => {
+                                    NavigatorService.cashPay(ids).then(res => {
+                                        this.onRefresh();
+                                    });
+                                },
+                            },
+                        ],
+                        {cancelable: false},
+                    );
                     break;
                 }
             }
@@ -177,7 +195,7 @@ export default class FeeDetailPage extends BasePage {
     onClose = () => {
         this.setState({
             visible: false,
-            cancel:true,
+            cancel: true,
             code: '',
         }, () => {
             this.onRefresh();
@@ -189,11 +207,11 @@ export default class FeeDetailPage extends BasePage {
         NavigatorService.orderStatus(out_trade_no).then(res => {
             if (res) {
                 this.onClose();
-            }else {
+            } else {
                 if (!this.state.cancel) {
-                    this.timeOut = setTimeout(()=>{
+                    this.timeOut = setTimeout(() => {
                         this.getOrderStatus(out_trade_no);
-                    },1000);
+                    }, 1000);
                 }
 
             }
@@ -208,7 +226,8 @@ export default class FeeDetailPage extends BasePage {
 
             <CommonView style={{flex: 1}}>
                 <ScrollView>
-                    <Text style={{paddingLeft: 15, paddingTop: 15, fontSize: 20}}>{room.allName} {room.tenantName}</Text>
+                    <Text
+                        style={{paddingLeft: 15, paddingTop: 15, fontSize: 20}}>{room.allName} {room.tenantName}</Text>
                     <TwoChange onChange={this.typeOnChange}/>
                     <Flex style={{backgroundColor: '#eee', height: 1, marginLeft: 15, marginRight: 15, marginTop: 15}}/>
                     {dataInfo.data.map(item => (
@@ -234,30 +253,30 @@ export default class FeeDetailPage extends BasePage {
                         </TouchableWithoutFeedback>
                     ))}
                 </ScrollView>
-                    {type === '已交' ? null : (
-                        <Flex style={{height:40,marginBottom:30}}>
-                            <TouchableWithoutFeedback onPress={() => this.click('刷卡')}>
-                                <Flex justify={'center'} style={styles.ii}>
-                                    <Text style={styles.word}>刷卡</Text>
-                                </Flex>
-                            </TouchableWithoutFeedback>
-                            <TouchableWithoutFeedback onPress={() => this.click('扫码')}>
-                                <Flex justify={'center'} style={[styles.ii, {backgroundColor: Macro.color_4d8fcc}]}>
-                                    <Text style={styles.word}>扫码</Text>
-                                </Flex>
-                            </TouchableWithoutFeedback>
-                            <TouchableWithoutFeedback onPress={() => this.click('收款码')}>
-                                <Flex justify={'center'} style={[styles.ii, {backgroundColor: Macro.color_f39d39}]}>
-                                    <Text style={styles.word}>收款码</Text>
-                                </Flex>
-                            </TouchableWithoutFeedback>
-                            <TouchableWithoutFeedback onPress={() => this.click('现金')}>
-                                <Flex justify={'center'} style={[styles.ii, {backgroundColor: 'green'}]}>
-                                    <Text style={styles.word}>现金</Text>
-                                </Flex>
-                            </TouchableWithoutFeedback>
-                        </Flex>
-                    )}
+                {type === '已交' || dataInfo.data.length === 0 ? null : (
+                    <Flex style={{minHeight: 40, marginBottom: 30}}>
+                        <TouchableWithoutFeedback onPress={() => this.click('刷卡')}>
+                            <Flex justify={'center'} style={styles.ii}>
+                                <Text style={styles.word}>刷卡</Text>
+                            </Flex>
+                        </TouchableWithoutFeedback>
+                        <TouchableWithoutFeedback onPress={() => this.click('扫码')}>
+                            <Flex justify={'center'} style={[styles.ii, {backgroundColor: Macro.color_4d8fcc}]}>
+                                <Text style={styles.word}>扫码</Text>
+                            </Flex>
+                        </TouchableWithoutFeedback>
+                        <TouchableWithoutFeedback onPress={() => this.click('收款码')}>
+                            <Flex justify={'center'} style={[styles.ii, {backgroundColor: Macro.color_f39d39}]}>
+                                <Text style={styles.word}>收款码</Text>
+                            </Flex>
+                        </TouchableWithoutFeedback>
+                        <TouchableWithoutFeedback onPress={() => this.click('现金')}>
+                            <Flex justify={'center'} style={[styles.ii, {backgroundColor: 'green'}]}>
+                                <Text style={styles.word}>现金</Text>
+                            </Flex>
+                        </TouchableWithoutFeedback>
+                    </Flex>
+                )}
 
                 <Modal
                     transparent

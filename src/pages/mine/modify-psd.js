@@ -109,7 +109,7 @@ export default class ModifyPsdPage extends BasePage {
                     />
                 </Flex>
                 <WhiteSpace style={{height: 50}}/>
-                <Button type="primary" onPress={() => this.submit()}>完成</Button>
+                <Button style={styles.button} type="primary" onPress={() => this.submit()}>完成</Button>
 
 
             </View>
@@ -149,5 +149,8 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#333',
         paddingLeft: 20,
+    },
+    button: {
+        backgroundColor: Macro.work_blue,
     },
 });

@@ -7,9 +7,9 @@ export default class Macro {
     static color_FA3951 = '#FA3951';
     static color_backgroundColor_F7FAFE = '#F7FAFE';
     static color_sky = '#5796ce';
-    static color_sky_dark = '#5a75c9';
+    static color_sky_dark = '#1B80D0';
     static color_white = 'white';
-    static color_a0b0f3 = '#a0b0f3';
+    static color_a0b0f3 = '#74BAF1';
     static color_636470 = '#636470';
     static color_c2c1c5 = '#bcbcbe';
     static color_80aae2 = '#5f8cdf';
@@ -39,6 +39,7 @@ export default class Macro {
     static font_14 = 14;
     static font_15 = 15;
     static font_16 = 16;
+    static font_18 = 18;
     static font_20 = 20;
     static font_40 = 35;
 
@@ -58,6 +59,10 @@ export default class Macro {
     //单位
     static yuan_meter_day = '元/m²·天';
     static meter_square = 'm²';
+
+    static work_blue = '#4594F0';
+    static work_green = '#00CC66';
+    static work_orange = '#F7A51E';
 
 
 }

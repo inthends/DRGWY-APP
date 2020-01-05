@@ -32,6 +32,9 @@ export const addTodo = makeActionCreator(ACTIONS.save_goods_list);
 export function saveToken(token) {
     return {type: ACTIONS.token, token: token};
 }
+export function saveUserNameAndPsd(data) {
+    return {type: ACTIONS.nameAndPsd, data};
+}
 export function saveUrl(url) {
     return {type:ACTIONS.url,url:url};
 }
