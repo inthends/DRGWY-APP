@@ -49,6 +49,7 @@ import JianYanListDetailPage from '../work/task/jian-yan-list-detail';
 import HuiFangDetailPage from '../work/task/hui-fang-detail';
 import ScanScreen from '../navigator/qrcode-scanner';
 import ScanOnly from '../navigator/ScanOnly';
+import ScanSS from '../navigator/scan-ss';
 
 
 const BuildingNavigator = createStackNavigator({
@@ -131,7 +132,8 @@ const WorkNavigator = createStackNavigator({
     jiedan: JieDanListDetailPage,
     paidan: PaiDanListDetailPage,
     huifang: HuiFangDetailPage,
-    scanonly:ScanOnly,
+    scanonly: ScanOnly,
+    scandemo: ScanSS,
 
     Task: TaskListPage,
 
@@ -234,7 +236,7 @@ const tabbar = createBottomTabNavigator({
                 } else {
                     imageUrl = require('../../static/images/tabbar/dh_n.png');
                 }
-            } else if (routeName === 'Work'){
+            } else if (routeName === 'Work') {
                 if (focused) {
                     imageUrl = require('../../static/images/tabbar/gz_h.png');
                 } else {
@@ -273,7 +275,7 @@ const Drawer = createDrawerNavigator({
         drawerWidth: width * 0.8,
         drawerLockMode: 'locked-closed',
         useNativeAnimations: true,
-        overlayColor:'#000000b3',
+        overlayColor: '#000000b3',
         contentComponent: props => {
             return <ManagerBuildingPage {...props}/>;
         },

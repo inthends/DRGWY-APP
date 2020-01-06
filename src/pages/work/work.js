@@ -25,7 +25,8 @@ export default class WorkPage extends BasePage {
             },
             headerLeft: (
                 <Fragment>
-                    <TouchableWithoutFeedback onPress={() => navigation.push('scanonly')}>
+                    {/*scanonly*/}
+                    <TouchableWithoutFeedback onPress={() => navigation.push('scandemo')}>
                         <Flex direction='column' style={{marginLeft:20}}>
                             <LoadImage defaultImg={require('../../static/images/scan2.png')} style={{width: 27, height: 20}}/>
                             <Text style={styles.button}>扫一扫</Text>
