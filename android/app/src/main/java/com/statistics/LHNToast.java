@@ -1,4 +1,5 @@
 package com.statistics;
+
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -41,42 +42,70 @@ public class LHNToast extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void show(String message,int duration) {
-        Toast.makeText(getReactApplicationContext(),message,duration).show();
+    public void show(String message, int duration) {
+        Toast.makeText(getReactApplicationContext(), message, duration).show();
     }
 
     @ReactMethod
     public void login(String userName, String password, Callback successCallback) {
-        successCallback.invoke(userName,password,"value");
+        successCallback.invoke(userName, password, "value");
     }
 
     @ReactMethod
-    public void startActivityFromJS(String name, ReadableMap order){
-        try{
+    public void startActivityFromJS(String name, ReadableMap order) {
+        try {
             Activity currentActivity = getCurrentActivity();
-            if(null!=currentActivity){
+            if (null != currentActivity) {
 //                Class toActivity = Class.forName(name);
-                Intent intent = new Intent(currentActivity,LKLPayActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("msg_tp","0200");
-                bundle.putString("pay_tp","0");
-                bundle.putString("proc_tp","00");
-                bundle.putString("proc_cd","000000");
-                bundle.putString("appid",APPID);
 
-                bundle.putString("amt",order.getString("amt"));
-                bundle.putString("order_no",order.getString("order_no"));
-                bundle.putString("notify_url",order.getString("notify_url"));
-                bundle.putString("time_stamp",
-                        DateTimeUtil.getCurrentDate("yyyyMMddhhmmss"));
-                bundle.putString("order_info",order.getString("order_info"));
-                bundle.putString("print_info",order.getString("print_info"));
-//        bundle.putString("return_type","1"); //自动关闭打印页
-                intent.putExtras(bundle);
-                currentActivity.startActivity(intent);
+
+                Intent intent = new Intent(currentActivity, LKLPayActivity.class);
+                Bundle bundle = new Bundle();
+
+                String posType = order.getString("posType");
+                switch (posType) {
+                    case "拉卡拉": {
+                        // bundle是 拉卡拉支付参数
+                        bundle.putString("msg_tp", "0200");
+                        bundle.putString("pay_tp", "0");
+                        bundle.putString("proc_tp", "00");
+                        bundle.putString("proc_cd", "000000");
+                        bundle.putString("appid", APPID);
+                        bundle.putString("amt", order.getString("amt"));
+                        bundle.putString("order_no", order.getString("order_no"));
+                        bundle.putString("notify_url", order.getString("notify_url"));
+                        bundle.putString("time_stamp",
+                                DateTimeUtil.getCurrentDate("yyyyMMddhhmmss"));
+                        bundle.putString("order_info", order.getString("order_info"));
+                        bundle.putString("print_info", order.getString("print_info"));
+
+                        intent.putExtras(bundle);
+                        currentActivity.startActivity(intent);
+                        break;
+                    }
+                    case "银盛": {
+                        // yinshengBundle 银盛支付参数
+                        bundle.putString("amount", order.getString("amount"));
+                        bundle.putString("orderBelongTo", order.getString("orderBelongTo"));
+                        bundle.putString("orderId", order.getString("orderId"));
+                        bundle.putString("createOrderRemark", order.getString("createOrderRemark"));
+                        bundle.putString("notify_url", order.getString("notify_url"));
+
+                        intent.putExtra("yinsheng", bundle);
+                        currentActivity.startActivity(intent);
+
+                        break;
+                    }
+                }
+
+
+
+
+
+
             }
-        }catch(Exception e){
-            this.show(e.getMessage(),2);
+        } catch (Exception e) {
+            this.show(e.getMessage(), 2);
         }
     }
 

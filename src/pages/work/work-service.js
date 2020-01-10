@@ -1,8 +1,8 @@
 import api from '../../utils/api';
 
 export default {
-    workData() {
-        return api.postData('/api/MobileMethod/MGetDeskStatistics');
+    workData(showLoading) {
+        return api.postData('/api/MobileMethod/MGetDeskStatistics',{},showLoading);
     },
 
     //房产类别，1获取小区，获取小区时候keyvalue=0，2获取楼栋，4获取楼层，5获取房间

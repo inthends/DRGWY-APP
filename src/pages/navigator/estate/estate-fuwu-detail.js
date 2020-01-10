@@ -7,7 +7,7 @@ import {
     StyleSheet,
     Image,
     ScrollView,
-    RefreshControl,
+    RefreshControl, Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
 import {Icon} from '@ant-design/react-native';
@@ -27,7 +27,7 @@ import Communicates from '../../../components/communicates';
 import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
-
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 
 const Item = List.Item;
@@ -49,22 +49,18 @@ export default class EfuwuDetailPage extends BasePage {
         super(props);
         let fuwu = common.getValueFromProps(this.props);
         let type = common.getValueFromProps(this.props, 'type');
+        console.log(fuwu,type,11)
         this.state = {
             value: '',
             fuwu,
             type,
             images: [],
-            // images: [{icon: 'https://os.alipayobjects.com/rmsportal/IptWdCkrtkAUfjE.png'},
-            //     {icon: 'https://os.alipayobjects.com/rmsportal/IptWdCkrtkAUfjE.png'},
-            //     {icon: 'https://os.alipayobjects.com/rmsportal/IptWdCkrtkAUfjE.png'},
-            //     {icon: 'https://os.alipayobjects.com/rmsportal/IptWdCkrtkAUfjE.png'},
-            //     {icon: 'https://os.alipayobjects.com/rmsportal/IptWdCkrtkAUfjE.png'},
-            // ],
-            detail: {
-            },
+            detail: {},
             communicates: [],
+            lookImageIndex: 0,
+            visible: false,
+
         };
-        console.log(this.state);
     }
 
     componentDidMount(): void {
@@ -78,27 +74,31 @@ export default class EfuwuDetailPage extends BasePage {
         WorkService.serviceDetail(type, fuwu.id).then(item => {
             console.log('detail', item);
             this.setState({
-                detail:{
+                detail: {
                     ...item.data,
                     businessId: item.businessId,
-                    statusName: item.statusName
+                    statusName: item.statusName,
                 },
             });
         });
         WorkService.serviceCommunicates(fuwu.id).then(res => {
             this.setState({
-                communicates:res,
+                communicates: res,
             });
         });
         WorkService.serviceExtra(fuwu.id).then(images => {
-            console.log(11, images);
             this.setState({
-                images
+                images,
             });
         });
     };
     click = (handle) => {
         const {fuwu, value} = this.state;
+        console.log(11111,value)
+        if (handle === '回复' && !(value&&value.length > 0)) {
+            UDToast.showInfo('请输入文字');
+            return;
+        }
         WorkService.serviceHandle(handle, fuwu.id, value).then(res => {
             this.props.navigation.goBack();
         });
@@ -118,13 +118,23 @@ export default class EfuwuDetailPage extends BasePage {
         this.setState({
             communicates: d,
         });
-    }
+    };
 
+    cancel = () => {
+        this.setState({
+            visible: false,
+        });
+    };
+
+    lookImage = (lookImageIndex) => {
+        this.setState({
+            lookImageIndex,
+            visible: true,
+        });
+    };
 
     render() {
         const {images, detail, communicates} = this.state;
-
-
 
 
         return (
@@ -141,7 +151,7 @@ export default class EfuwuDetailPage extends BasePage {
                     <DashLine/>
                     <Text style={styles.desc}>{detail.contents}</Text>
                     <DashLine/>
-                    <ListImages images={images}/>
+                    <ListImages images={images} lookImage={this.lookImage}/>
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>报单人：{detail.contactName} {detail.createDate}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactPhone)}>
@@ -149,23 +159,21 @@ export default class EfuwuDetailPage extends BasePage {
                         </TouchableWithoutFeedback>
                     </Flex>
 
-                    {/*{detail.businessCode && }*/}
-
-                    {detail.businessCode&&(detail.billType === '报修' || detail.billType === '投诉') ? (
+                    {detail.businessCode && (detail.billType === '报修' || detail.billType === '投诉') ? (
                         <TouchableWithoutFeedback>
                             <Flex style={[styles.every]}>
                                 <Text style={styles.left}>关联单：</Text>
-                                <Text onPress={()=>{
+                                <Text onPress={() => {
                                     if (detail.billType === '报修') {
-                                        this.props.navigation.navigate('weixiuD', {data: {id:detail.businessId}})
+                                        this.props.navigation.navigate('weixiuD', {data: {id: detail.businessId}});
                                     }
-                                    if ( detail.billType === '投诉') {
-                                        this.props.navigation.navigate('tousuD', {data: {id:detail.businessId}})
+                                    if (detail.billType === '投诉') {
+                                        this.props.navigation.navigate('tousuD', {data: {id: detail.businessId}});
                                     }
-                                }} style={[styles.right,{color:Macro.color_4d8fcc}]}>{detail.businessCode}</Text>
+                                }} style={[styles.right, {color: Macro.color_4d8fcc}]}>{detail.businessCode}</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
-                    ):null}
+                    ) : null}
                     <DashLine/>
                     <View style={{
                         margin: 15,
@@ -177,19 +185,24 @@ export default class EfuwuDetailPage extends BasePage {
                         <TextareaItem
                             rows={4}
                             placeholder='请输入'
-                            style={{fontSize:14,paddingTop: 10, height: 100, width: ScreenUtil.deviceWidth() - 32}}
+                            style={{fontSize: 14, paddingTop: 10, height: 100, width: ScreenUtil.deviceWidth() - 32}}
                             onChange={value => this.setState({value})}
                             value={this.state.value}
                         />
                     </View>
 
-                        <TouchableWithoutFeedback onPress={() => this.click('回复')}>
-                            <Flex justify={'center'} style={[styles.ii,{width: '80%', marginLeft: '10%',marginRight: '10%', marginBottom: 20}, {backgroundColor: Macro.color_4d8fcc}]}>
-                                <Text style={styles.word}>回复</Text>
-                            </Flex>
-                        </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={() => this.click('回复')}>
+                        <Flex justify={'center'} style={[styles.ii, {
+                            width: '80%',
+                            marginLeft: '10%',
+                            marginRight: '10%',
+                            marginBottom: 20,
+                        }, {backgroundColor: Macro.color_4d8fcc}]}>
+                            <Text style={styles.word}>回复</Text>
+                        </Flex>
+                    </TouchableWithoutFeedback>
 
-                    {detail.status === 1&&<Flex>
+                    {detail.status === 1 && <Flex>
                         <TouchableWithoutFeedback onPress={() => this.click('转维修')}>
                             <Flex justify={'center'} style={[styles.ii, {backgroundColor: Macro.color_f39d39}]}>
                                 <Text style={styles.word}>转维修</Text>
@@ -212,6 +225,10 @@ export default class EfuwuDetailPage extends BasePage {
                     <Communicates communicateClick={this.communicateClick} communicates={communicates}/>
 
                 </ScrollView>
+                <Modal visible={this.state.visible} transparent={true}>
+                    <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
+                                 imageUrls={this.state.images}/>
+                </Modal>
             </CommonView>
         );
     }

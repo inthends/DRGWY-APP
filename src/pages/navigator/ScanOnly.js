@@ -5,94 +5,122 @@ import {
     Text,
     TouchableOpacity,
     Linking,
-    ScrollView
+    ScrollView,
+    Animated,
+    View,
+    Easing,
 } from 'react-native';
 
-import QRCodeScanner from 'react-native-qrcode-scanner';
+// import QRCodeScanner from 'react-native-qrcode-scanner';
 import common from '../../utils/common';
 import NavigatorService from './navigator-service';
-import {Flex} from '@ant-design/react-native';
+import {Flex, Icon} from '@ant-design/react-native';
+import {RNCamera} from 'react-native-camera';
+import Macro from '../../utils/macro';
 
 export default class ScanOnly extends Component {
+    static navigationOptions = ({navigation}) => {
+        return {
+            title: '扫一扫',
+            headerLeft: (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                </TouchableOpacity>
+            ),
+
+        };
+    };
+
     constructor(props) {
         super(props);
         this.state = {
-            res: '',
-            tbout_trade_no:'',
-            code:'',
+            moveAnim: new Animated.Value(0),
         };
     }
 
-    onSuccess = (e) => {
-        // let ids = common.getValueFromProps(this.props);
-        // NavigatorService.createOrder(ids).then(res=>{
-        //     NavigatorService.scanPay(e.data, res.out_trade_no).then(res => {
-        //         this.props.navigation.goBack();
-        //     }).catch(()=>{
-        //         this.scanner.reactivate();
-        //     });
-        //
-        //     // this.props.navigation.navigate('feeDetail', {
-        //     //     data: {
-        //     //         b:tbout_trade_no,
-        //     //         a:e.data,
-        //     //     }
-        //     // })
-        // })
+    componentDidMount() {
+        this.startAnimation();
+    }
 
-
+    startAnimation = () => {
+        this.state.moveAnim.setValue(0);
+        Animated.timing(
+            this.state.moveAnim,
+            {
+                toValue: -200,
+                duration: 1500,
+                easing: Easing.linear,
+            },
+        ).start(() => this.startAnimation());
+    };
+    //  识别二维码
+    onBarCodeRead = (result) => {
+        const {navigate} = this.props.navigation;
+        const {data, type} = result;
 
     };
 
-
     render() {
         return (
-            <QRCodeScanner
-                ref={ref => this.scanner = ref}
-                onRead={this.onSuccess}
-                topContent={
-                    <ScrollView>
-                        <Flex>
-                            <Text style={{paddingLeft:10}}>
-                                {this.state.tbout_trade_no}
-                            </Text>
-                            <Text style={{paddingLeft:10}}>
-                                {this.state.code}
-                            </Text>
-                            <Text style={{paddingLeft:10}}>
-                                {this.state.res}
-                            </Text>
-                        </Flex>
-                    </ScrollView>
-
-                }
-                // bottomContent={
-                //     <TouchableOpacity onPress={()=>this.scanner.reactivate()}>
-                //         <Text style={styles.buttonText}>重新扫码</Text>
-                //     </TouchableOpacity>
-                // }
-            />
+            <View style={styles.container}>
+                <RNCamera
+                    ref={ref => {
+                        this.camera = ref;
+                    }}
+                    style={styles.preview}
+                    type={RNCamera.Constants.Type.back}
+                    barCodeTypes={[RNCamera.Constants.BarCodeType.qr]}
+                    googleVisionBarcodeType={RNCamera.Constants.GoogleVisionBarcodeDetection.BarcodeType.QR_CODE}
+                    // flashMode={RNCamera.Constants.FlashMode.on}
+                    flashMode={RNCamera.Constants.FlashMode.auto}
+                    onBarCodeRead={this.onBarCodeRead}
+                >
+                    <View style={styles.rectangleContainer}>
+                        <View style={styles.rectangle}/>
+                        <Animated.View style={[
+                            styles.border,
+                            {transform: [{translateY: this.state.moveAnim}]}]}/>
+                        <Text style={styles.rectangleText}>将二维码放入框内，即可自动扫描</Text>
+                    </View>
+                </RNCamera>
+            </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    centerText: {
+    container: {
         flex: 1,
-        fontSize: 18,
-        padding: 32,
-        color: '#777',
+        flexDirection: 'row',
     },
-    textBold: {
-        fontWeight: '500',
-        color: '#000',
+    preview: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
     },
-    buttonText: {
-        fontSize: 20,
-        color: '#666',
+    rectangleContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'transparent',
     },
-    buttonTouchable: {
-        padding: 16,
+    rectangle: {
+        height: 200,
+        width: 200,
+        borderWidth: 1,
+        borderColor: Macro.work_blue,
+        backgroundColor: 'transparent',
+    },
+    rectangleText: {
+        flex: 0,
+        color: '#fff',
+        marginTop: 10,
+    },
+    border: {
+        flex: 0,
+        width: 200,
+        height: 2,
+        backgroundColor: Macro.work_blue,
     },
 });
 

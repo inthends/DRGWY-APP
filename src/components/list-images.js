@@ -1,36 +1,39 @@
 import React, {Component, Fragment} from 'react';
-import {View, Text, Image, StyleSheet, Animated, TouchableWithoutFeedback, ScrollView} from 'react-native';
+import {View, Text, Image, StyleSheet, Animated, TouchableWithoutFeedback, ScrollView, Modal} from 'react-native';
 import {Button, Flex, Icon, List, WhiteSpace, SegmentedControl} from '@ant-design/react-native';
 import ScreenUtil from '../utils/screen-util';
 import LoadImage from './load-image';
 
-
-
-
 export default class ListImages extends Component {
 
+    constructor(props) {
+        super(props);
 
+    }
 
     render() {
-
+        console.log('images', this.props.images);
         return (
-
             <Flex justify={'start'} align={'start'}
                   style={{width: ScreenUtil.deviceWidth() - 15, marginTop: 10}}>
                 <Flex wrap={'wrap'}>
                     {this.props.images && this.props.images.map((item, index) => {
                         return (
-                            <View key={item.uid} style={{
-                                paddingLeft: 15,
-                                paddingRight: 5,
-                                paddingBottom: 10,
-                                paddingTop: 10,
-                            }}>
-                                <LoadImage style={{
-                                    width: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
-                                    height: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
-                                }} img={item.url}/>
-                            </View>
+                            <TouchableWithoutFeedback key={item.uid} onPress={() => this.props.lookImage&&this.props.lookImage(index)}>
+                                <View style={{
+                                    paddingLeft: 15,
+                                    paddingRight: 5,
+                                    paddingBottom: 10,
+                                    paddingTop: 10,
+                                }}>
+                                    <LoadImage style={{
+                                        width: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
+                                        height: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
+                                        borderRadius: 5,
+                                    }} img={item.thumbUrl}/>
+
+                                </View>
+                            </TouchableWithoutFeedback>
                         );
                     })}
                 </Flex>
@@ -86,7 +89,7 @@ const styles = StyleSheet.create({
 
     },
     content: {
-        color:'#999'
-    }
+        color: '#999',
+    },
 
 });

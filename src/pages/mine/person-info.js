@@ -46,7 +46,7 @@ export default class PersonInfoPage extends BasePage {
         ];
         ActionSheet.showActionSheetWithOptions(
             {
-                title: '',
+                title: '是否退出？',
                 message: '退出后将收不到推送消息',
                 options: BUTTONS,
                 cancelButtonIndex: 1,
