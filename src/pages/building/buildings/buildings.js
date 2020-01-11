@@ -44,7 +44,7 @@ class BuildingsPage extends BasePage {
 
     getInitData = () => {
         BuildingsService.getAsynChildBuildings(this.state.item.id, 2).then(res => {
-            this.setState({data: res});
+            this.setState({data: res.data});
         });
     };
     _renderItem = ({item}) => {

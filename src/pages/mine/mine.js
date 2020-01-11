@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {
     View,
     Text,
@@ -6,7 +6,7 @@ import {
     TouchableWithoutFeedback,
     ScrollView,
     ImageBackground,
-    StatusBar
+    StatusBar,
 } from 'react-native';
 import BasePage from '../base/base';
 import {Flex} from '@ant-design/react-native';
@@ -17,14 +17,6 @@ import MineService from './mine-service';
 import CommonView from '../../components/CommonView';
 
 export default class MinePage extends BasePage {
-    static navigationOptions = ({navigation}) => {
-
-        console.log(1, navigation);
-        return {
-            tabBarVisible: false,
-            header: null,
-        };
-    };
 
     constructor(props) {
         super(props);
@@ -43,81 +35,81 @@ export default class MinePage extends BasePage {
     render() {
         const {user} = this.state;
         return (
-            <View style={styles.all}>
-                {/*<StatusBar backgroundColor="blue"/>*/}
-                <CommonView>
-                    <ScrollView>
-                        <View  style={styles.content}>
-                            <ImageBackground source={require('../../static/images/mine_bg.png')} style={styles.headerV}>
-                                <TouchableWithoutFeedback>
-                                    <LoadImage style={{width: 70, height: 70, borderRadius: 35, marginTop: 56}}
-                                               img={user.headImg}/>
-                                </TouchableWithoutFeedback>
-                                <TouchableWithoutFeedback>
-                                    <Flex>
-                                        <Text style={styles.name}>{user.showName}</Text>
-                                        <Text style={styles.name2}>{user.departmentName}</Text>
-                                    </Flex>
-                                </TouchableWithoutFeedback>
-                                <TouchableWithoutFeedback>
-                                    <Text style={styles.name3}>{user.postName}</Text>
-                                </TouchableWithoutFeedback>
-                            </ImageBackground>
-                            <TouchableWithoutFeedback onPress={() => this.props.navigation.push('ModifyPsd')}>
-                                <Flex justify='between'
-                                      style={[{
-                                          marginTop: 45,
-                                          paddingBottom: 20,
-                                          paddingLeft: 30,
-                                          paddingRight: 25,
-                                      }, ScreenUtil.borderBottom()]}>
-                                    <Flex>
-                                        <LoadImage style={{width: 18, height: 18}}
-                                                   defaultImg={require('../../static/images/wdgd.png')}/>
-                                        <Text style={styles.item}>修改密码</Text>
-                                    </Flex>
-                                    <LoadImage style={{width: 8, height: 15}}
-                                               defaultImg={require('../../static/images/address/right.png')}/>
-                                </Flex>
-                            </TouchableWithoutFeedback>
-                            <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Setting')}>
-                                <Flex justify='between'
-                                      style={[{
-                                          paddingTop: 30,
-                                          paddingBottom: 20,
-                                          paddingLeft: 30,
-                                          paddingRight: 25,
-                                      }, ScreenUtil.borderBottom()]}>
-                                    <Flex>
-                                        <LoadImage style={{width: 18, height: 18}}
-                                                   defaultImg={require('../../static/images/setting.png')}/>
-                                        <Text style={styles.item}>设置</Text>
-                                    </Flex>
-                                    <LoadImage style={{width: 8, height: 15}}
-                                               defaultImg={require('../../static/images/address/right.png')}/>
-                                </Flex>
-                            </TouchableWithoutFeedback>
-                        </View>
-                    </ScrollView>
-                </CommonView>
+            <View style={{flex: 1}}>
+                <ScrollView>
+                <View style={styles.content}>
+                    <ImageBackground source={require('../../static/images/mine_bg.png')} style={styles.headerV}>
+                        <TouchableWithoutFeedback>
+                            <LoadImage style={{width: 70, height: 70, borderRadius: 35, marginTop: 56}}
+                                       img={user.headImg}/>
+                        </TouchableWithoutFeedback>
+                        <TouchableWithoutFeedback>
+                            <Flex>
+                                <Text style={styles.name}>{user.showName}</Text>
+                                <Text style={styles.name2}>{user.departmentName}</Text>
+                            </Flex>
+                        </TouchableWithoutFeedback>
+                        <TouchableWithoutFeedback>
+                            <Text style={styles.name3}>{user.postName}</Text>
+                        </TouchableWithoutFeedback>
+                    </ImageBackground>
+
+                    <TouchableWithoutFeedback onPress={() => this.props.navigation.push('ModifyPsd')}>
+                        <Flex justify='between'
+                              style={[{
+                                  marginTop: 45,
+                                  paddingBottom: 20,
+                                  paddingLeft: 30,
+                                  paddingRight: 25,
+                              }, ScreenUtil.borderBottom()]}>
+                            <Flex>
+                                <LoadImage style={{width: 18, height: 18}}
+                                           defaultImg={require('../../static/images/wdgd.png')}/>
+                                <Text style={styles.item}>修改密码</Text>
+                            </Flex>
+                            <LoadImage style={{width: 8, height: 15}}
+                                       defaultImg={require('../../static/images/address/right.png')}/>
+                        </Flex>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Setting')}>
+                        <Flex justify='between'
+                              style={[{
+                                  paddingTop: 30,
+                                  paddingBottom: 20,
+                                  paddingLeft: 30,
+                                  paddingRight: 25,
+                              }, ScreenUtil.borderBottom()]}>
+                            <Flex>
+                                <LoadImage style={{width: 18, height: 18}}
+                                           defaultImg={require('../../static/images/setting.png')}/>
+                                <Text style={styles.item}>设置</Text>
+                            </Flex>
+                            <LoadImage style={{width: 8, height: 15}}
+                                       defaultImg={require('../../static/images/address/right.png')}/>
+                        </Flex>
+                    </TouchableWithoutFeedback>
+                </View>
+                </ScrollView>
             </View>
+
         );
     }
 }
 const styles = StyleSheet.create({
     all: {
-        backgroundColor: Macro.work_blue,
+        flex: 1,
     },
     content: {
-        height: ScreenUtil.contentHeight(),
+        flex: 1,
+
         backgroundColor: Macro.color_white,
+
         // height: ScreenUtil.contentHeightWithNoTabbar(),
     },
     headerV: {
         height: 245,
         display: 'flex',
         alignItems: 'center',
-
     },
     header: {
         paddingTop: 30,

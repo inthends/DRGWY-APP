@@ -38,13 +38,13 @@ export default class BuildingCell extends BasePage {
                             </Flex>
                             <Flex justify="between" style={[styles.item,{marginTop: 10}]}>
                                 <Text style={styles.complete}>入住率 {item.checkrate}%</Text>
-                                <Text style={styles.number}>管理数量{item.areasum} {Macro.meter_square}</Text>
+                                <Text style={styles.number}>管理数量{item.areasum}{Macro.meter_square}</Text>
                             </Flex>
                             <Flex style={[styles.item,{marginTop:15}]}>
-                                <Text style={styles.desc}>在租{item.rentareasum} {Macro.meter_square}</Text>
+                                <Text style={styles.desc}>在租{item.rentareasum}{Macro.meter_square}</Text>
                                 <View style={styles.line}/>
                                 <Text
-                                    style={styles.desc}>可招商{item.investmentarearate} {item.investmentareasum} {Macro.meter_square}</Text>
+                                    style={styles.desc}>可招商{item.investmentareasum}{Macro.meter_square}</Text>
                             </Flex>
                         </Flex>
                     </Flex>

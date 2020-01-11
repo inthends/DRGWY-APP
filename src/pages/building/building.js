@@ -10,13 +10,13 @@ import NoDataView from '../../components/no-data-view';
 import CommonView from '../../components/CommonView';
 
 class BuildingPage extends BasePage {
-    static navigationOptions = ({navigation}) => {
-
-        console.log(1, navigation);
-        return {
-            tabBarVisible: false,
-        };
-    };
+    // static navigationOptions = ({navigation}) => {
+    //
+    //     console.log(1, navigation);
+    //     return {
+    //         tabBarVisible: false,
+    //     };
+    // };
 
     constructor(props) {
         super(props);
@@ -42,7 +42,7 @@ class BuildingPage extends BasePage {
             (obj) => {
                 if (obj.state.params) {
                     let address = obj.state.params;
-                    alert(address);
+
                 }
 
 

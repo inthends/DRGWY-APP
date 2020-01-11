@@ -146,8 +146,8 @@ const MineNavigator = createStackNavigator({
     Mine: {
         screen: MinePage,
         navigationOptions: () => ({
-            title: '我的',
             headerBackTitle: null,
+            header: null,
         }),
     },
     Person: PersonInfoPage,

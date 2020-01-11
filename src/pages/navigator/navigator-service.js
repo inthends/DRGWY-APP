@@ -132,7 +132,7 @@ export default {
         return api.postData(url, {estateId, type});
     },
     createOrder(linkId) {
-        return api.postData('/api/MobileMethod/WFTCreateTradeno', {linkId})
+        return api.postData('/api/MobileMethod/MCreateTradeno', {linkId})
     },
     scanPay(auth_code, tbout_trade_no) {
         return api.postData('/api/MobileMethod/WFTScanPay', {auth_code, tbout_trade_no});

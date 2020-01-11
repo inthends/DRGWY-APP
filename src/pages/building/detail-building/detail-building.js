@@ -216,11 +216,11 @@ export default class DetailBuildingPage extends BasePage {
                                                                           paddingRight: 15,
                                                                           paddingLeft: 5,
                                                                           paddingBottom: 5,
-                                                                      },item.state === 0 ? styles.dash : null]}>
+                                                                      },it.state === 0 ? styles.dash : null]}>
                                                                     <Flex align='start' direction='column'>
-                                                                        <Text style={styles.color_top}>{item.name}</Text>
+                                                                        <Text style={styles.color_top}>{it.name}室</Text>
                                                                         <Text
-                                                                            style={styles.color_top}>{item.area}{Macro.meter_square}/{item.tenantName}</Text>
+                                                                            style={styles.color_top}>{it.area}{Macro.meter_square}/{it.tenantName}</Text>
                                                                     </Flex>
                                                                     <Flex align='start' direction='column'>
                                                                         {it.ContractCounts ?<Text style={styles.color_top}>{it.ContractCounts}需求</Text> : null}
@@ -233,7 +233,7 @@ export default class DetailBuildingPage extends BasePage {
                                                                     backgroundColor: '#f5d14c',
                                                                     marginLeft: 5,
                                                                     height: 100,
-                                                                },item.state === 0 ? styles.dash : null]}>
+                                                                },it.state === 0 ? styles.dash : null]}>
                                                                     <Text style={{color: 'white'}}> > </Text>
                                                                 </Flex>
                                                             </TouchableWithoutFeedback>
@@ -247,11 +247,11 @@ export default class DetailBuildingPage extends BasePage {
                                                                       backgroundColor: '#f5d14c',
                                                                       width: (ScreenUtil.deviceWidth() - 30 - 5 * 4) / 5,
                                                                       paddingLeft: 5,
-                                                                  },item.state === 0 ? styles.dash : null]}>
+                                                                  },it.state === 0 ? styles.dash : null]}>
                                                                 <Flex align='start' direction='column'>
                                                                     <Text style={styles.color_top}>{it.name}室</Text>
                                                                     <Text
-                                                                        style={styles.color_top}>{item.area}{Macro.meter_square}/{item.tenantName}</Text>
+                                                                        style={styles.color_top}>{it.area}{Macro.meter_square}/{it.tenantName}</Text>
                                                                 </Flex>
                                                                 <Flex align='start' direction='column'>
                                                                     {it.ContractCounts ?<Text style={styles.color_top}>{it.ContractCounts}需求</Text> : null}

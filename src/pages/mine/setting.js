@@ -46,7 +46,7 @@ export default class SettingPage extends BasePage {
         ];
         ActionSheet.showActionSheetWithOptions(
             {
-                title: '',
+                title: '是否退出？',
                 message: '退出后将收不到推送消息',
                 options: BUTTONS,
                 cancelButtonIndex: 1,
@@ -65,19 +65,17 @@ export default class SettingPage extends BasePage {
         return (
             <View style={{backgroundColor: '#E8E8E8', flex: 1}}>
                 <List renderHeader={<View style={{height:10}}/>}>
-                    {/*<Flex justify={'between'} style={{backgroundColor:'white',height:50,paddingTop:15,paddingLeft: 20,paddingRight: 20,paddingBottom: 15,width: ScreenUtil.deviceWidth()}}>*/}
-                    {/*    <Text style={styles.item}>设置</Text>*/}
-                    {/*</Flex>*/}
                     <List.Item extra={<Switch color='#447FEA' checked={this.state.checked}
-                                              onChange={checked=>this.setState({checked})}/>}>消息推送</List.Item>
+                                              onChange={checked=>this.setState({checked})}/>}>
+                        <Flex style={{height:40}}>
+                            <Text style={{color:'#666',fontSize:16}}>消息推送</Text>
+                        </Flex>
+                    </List.Item>
                 </List>
                 <List renderHeader={<View style={{height:10}}/>}>
-                    {/*<Flex justify={'between'} style={{backgroundColor:'white',height:50,paddingTop:15,paddingLeft: 20,paddingRight: 20,paddingBottom: 15,width: ScreenUtil.deviceWidth()}}>*/}
-                    {/*    <Text style={styles.item}>设置</Text>*/}
-                    {/*</Flex>*/}
                     <TouchableWithoutFeedback onPress={()=>this.logout()}>
-                        <Flex justify={'center'} style={{height:40}}>
-                            <Text style={{color:'#CC5156',fontSize:16}}>退出登录</Text>
+                        <Flex justify={'center'} style={{height:50}}>
+                            <Text style={{color:Macro.work_blue,fontSize:16}}>退出登录</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
 
@@ -96,8 +94,6 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20,
         height: ScreenUtil.contentHeight(),
-
-        // height: ScreenUtil.contentHeightWithNoTabbar(),
     },
     header: {
         paddingTop: 30,

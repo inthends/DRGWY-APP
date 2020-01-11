@@ -7,7 +7,7 @@ import {
     StyleSheet,
     Image,
     ScrollView,
-    RefreshControl,
+    RefreshControl, Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
 import {Icon} from '@ant-design/react-native/lib/index';
@@ -28,6 +28,7 @@ import Communicates from '../../../components/communicates';
 import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 
 const Item = List.Item;
@@ -56,6 +57,8 @@ export default class WanChengListDetailPage extends BasePage {
             images: [],
             detail: {},
             communicates: [],
+            lookImageIndex: 0,
+            visible: false,
         };
         console.log(this.state);
     }
@@ -85,16 +88,17 @@ export default class WanChengListDetailPage extends BasePage {
             });
         });
         WorkService.serviceExtra(fuwu.id).then(images => {
-            console.log(11, images);
             this.setState({
-                images: images.map(item => {
-                    return {icon: item};
-                }),
+                images,
             });
         });
     };
     click = (handle) => {
         const {fuwu, type, value} = this.state;
+        if (handle === '回复' && !(value&&value.length > 0)) {
+            UDToast.showInfo('请输入文字');
+            return;
+        }
         WorkService.serviceHandle(handle, fuwu.id, value).then(res => {
             console.log(res);
         });
@@ -111,6 +115,18 @@ export default class WanChengListDetailPage extends BasePage {
             communicates: d,
         });
     }
+    cancel = () => {
+        this.setState({
+            visible: false,
+        });
+    };
+
+    lookImage = (lookImageIndex) => {
+        this.setState({
+            lookImageIndex,
+            visible: true,
+        });
+    };
 
 
     render() {
@@ -134,7 +150,7 @@ export default class WanChengListDetailPage extends BasePage {
                     <DashLine/>
                     <Text style={styles.desc}>{detail.repairContent}</Text>
                     <DashLine/>
-                    <ListImages image={images}/>
+                    <ListImages images={images} lookImage={this.lookImage}/>
 
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
@@ -172,6 +188,10 @@ export default class WanChengListDetailPage extends BasePage {
                     </TouchableWithoutFeedback>
                     <Communicates communicateClick={this.communicateClick} communicates={communicates}/>
                 </ScrollView>
+                <Modal visible={this.state.visible} transparent={true}>
+                    <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
+                                 imageUrls={this.state.images}/>
+                </Modal>
             </CommonView>
         );
     }

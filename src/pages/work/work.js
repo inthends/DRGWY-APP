@@ -21,20 +21,21 @@ export default class WorkPage extends BasePage {
             title: '工作台',
             headerTitleStyle: {
                 flex: 1,
-                textAlign: 'center'
+                textAlign: 'center',
             },
             headerLeft: (
                 <Fragment>
-                    {/*scanonly*/}
-                    <TouchableWithoutFeedback onPress={() => navigation.push('scandemo')}>
-                        <Flex direction='column' style={{marginLeft:20}}>
-                            <LoadImage defaultImg={require('../../static/images/scan2.png')} style={{width: 27, height: 20}}/>
+                    <TouchableWithoutFeedback onPress={() => navigation.push('scanonly')}>
+                        <Flex direction='column' style={{marginLeft: 20}}>
+                            <LoadImage defaultImg={require('../../static/images/scan2.png')}
+                                       style={{width: 27, height: 20}}/>
                             <Text style={styles.button}>扫一扫</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback onPress={() => navigation.push('AddWork')}>
-                        <Flex direction='column' style={{marginLeft:20}}>
-                            <LoadImage defaultImg={require('../../static/images/paiyipai.png')} style={{width: 22, height: 20}}/>
+                        <Flex direction='column' style={{marginLeft: 20}}>
+                            <LoadImage defaultImg={require('../../static/images/paiyipai.png')}
+                                       style={{width: 22, height: 20}}/>
                             <Text style={styles.button}>拍一拍</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
@@ -42,8 +43,9 @@ export default class WorkPage extends BasePage {
             ),
             headerRight: (
                 <TouchableWithoutFeedback>
-                    <Flex direction='column' style={{marginRight:20}}>
-                        <LoadImage defaultImg={require('../../static/images/qiandao.png')} style={{width: 19, height: 20}}/>
+                    <Flex direction='column' style={{marginRight: 20}}>
+                        <LoadImage defaultImg={require('../../static/images/qiandao.png')}
+                                   style={{width: 19, height: 20}}/>
                         <Text style={styles.button}>签到</Text>
                     </Flex>
                 </TouchableWithoutFeedback>
@@ -54,6 +56,7 @@ export default class WorkPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
+            showLoading: true,
             count: 0,
             refreshing: false,
             data: {},
@@ -65,9 +68,12 @@ export default class WorkPage extends BasePage {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
-                WorkService.workData().then(data => {
+                WorkService.workData(this.state.showLoading).then(data => {
                     console.log(123, data);
-                    this.setState({data});
+                    this.setState({
+                        data,
+                        showLoading: false,
+                    });
                 });
             },
         );
@@ -279,7 +285,7 @@ const styles = StyleSheet.create({
     button: {
         color: '#2C2C2C',
         fontSize: 8,
-        paddingTop:4,
+        paddingTop: 4,
 
     },
     card: {
