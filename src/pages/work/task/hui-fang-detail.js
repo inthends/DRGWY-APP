@@ -102,7 +102,8 @@ export default class HuiFangDetailPage extends BasePage {
             return;
         }
         WorkService.serviceHandle(handle, fuwu.id, value, {grade: star}).then(res => {
-            console.log(res);
+            UDToast.showInfo('操作成功');
+            this.props.navigation.goBack();
         });
     };
     changeStar = (star) => {

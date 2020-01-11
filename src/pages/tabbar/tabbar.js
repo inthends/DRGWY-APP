@@ -28,6 +28,7 @@ import PaiDanListDetailPage from '../work/task/pai-dan-list-detail';
 import JieDanListDetailPage from '../work/task/jie-dan-list-detail';
 import KaiGongListDetailPage from '../work/task/kai-gong-list-detail';
 import WanChengListDetailPage from '../work/task/wan-cheng-list-detail';
+import SelectPaiDanPerson from '../work/task/select-pai-dan-person';
 import FeeHousePage from '../navigator/fee-housing';
 import FeeBuildingsPage from '../navigator/fee-buildings';
 import FeeRoomsPage from '../navigator/fee-rooms';
@@ -96,6 +97,7 @@ const navigatorNavigator = createStackNavigator({
     tousuD: EtousuDetailPage,
     e_weixiu: EstateWeixiuPage,
     e_tousu: EstateTousuPage,
+    selectPaidanPerson: SelectPaiDanPerson,
 
     collection: CollectionRatePage,
     zijinliu: ZiJinLiuPage,
@@ -104,6 +106,15 @@ const navigatorNavigator = createStackNavigator({
     tousu_s: TouSuPage,
     huifang_s: HuiFangRatePage,
     scan: ScanScreen,
+
+    service: FuWuDanListDetailPage,
+    wancheng: WanChengListDetailPage,
+    jianyan: JianYanListDetailPage,
+    kaigong: KaiGongListDetailPage,
+    jiedan: JieDanListDetailPage,
+    paidan: PaiDanListDetailPage,
+    huifang: HuiFangDetailPage,
+
 
 
 });
@@ -132,6 +143,7 @@ const WorkNavigator = createStackNavigator({
     jiedan: JieDanListDetailPage,
     paidan: PaiDanListDetailPage,
     huifang: HuiFangDetailPage,
+    selectPaidanPerson: SelectPaiDanPerson,
     scanonly: ScanOnly,
     scandemo: ScanSS,
 

@@ -100,6 +100,7 @@ export default class FuWuDanListDetailPage extends BasePage {
             return;
         }
         WorkService.serviceHandle(handle, fuwu.id, value).then(res => {
+            UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
         });
     };

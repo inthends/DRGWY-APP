@@ -56,8 +56,15 @@ export default class PaiDanListDetailPage extends BasePage {
             communicates: [],
             lookImageIndex: 0,
             visible: false,
+            selectPerson: null,
         };
         console.log(this.state);
+    }
+
+    onSelect = ({selectPerson}) => {
+        this.setState({
+            selectPerson,
+        })
     }
 
     componentDidMount(): void {
@@ -91,14 +98,16 @@ export default class PaiDanListDetailPage extends BasePage {
         });
     };
     click = (handle) => {
-        const {fuwu, type, value} = this.state;
-        if (handle === '回复' && !(value&&value.length > 0)) {
-            UDToast.showInfo('请输入文字');
-            return;
+        const {fuwu,selectPerson} = this.state;
+        if (selectPerson) {
+            WorkService.paidan(fuwu.id, selectPerson.name, selectPerson.id).then(res => {
+                UDToast.showInfo('操作成功');
+                this.props.navigation.goBack();
+            })
+        } else {
+            UDToast.showInfo('请选择派单人');
         }
-        WorkService.serviceHandle(handle, fuwu.id, value).then(res => {
-            console.log(res);
-        });
+
     };
     communicateClick = (i) => {
         let c = this.state.communicates;
@@ -127,7 +136,7 @@ export default class PaiDanListDetailPage extends BasePage {
 
 
     render() {
-        const {images, detail, communicates} = this.state;
+        const {images, detail, communicates, selectPerson} = this.state;
         console.log(1122, detail);
 
 
@@ -155,8 +164,20 @@ export default class PaiDanListDetailPage extends BasePage {
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every]}>
                             <Text style={styles.left}>关联单：</Text>
-                            <Text onPress={() => this.props.navigation.navigate('service', {data: {id: detail.relationId}})}
-                                  style={[styles.right, {color: Macro.color_4d8fcc}]}>{detail.serviceDeskCode}</Text>
+                            <Text
+                                onPress={() => this.props.navigation.navigate('service', {data: {id: detail.relationId}})}
+                                style={[styles.right, {color: Macro.color_4d8fcc}]}>{detail.serviceDeskCode}</Text>
+                        </Flex>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback
+                        onPress={() => this.props.navigation.navigate('selectPaidanPerson', {onSelect: this.onSelect})}>
+                        <Flex style={[styles.every]} justify='between'>
+                            <Flex>
+                                <Text style={styles.left}>派单人：</Text>
+                                <Text
+                                    style={[styles.right, {color: Macro.color_4d8fcc}]}>{selectPerson && selectPerson.name}</Text>
+                            </Flex>
+                            <LoadImage style={{width: 15, height: 15}}/>
                         </Flex>
                     </TouchableWithoutFeedback>
                     <DashLine/>
@@ -170,13 +191,18 @@ export default class PaiDanListDetailPage extends BasePage {
                         <TextareaItem
                             rows={4}
                             placeholder='请输入'
-                            style={{fontSize:14,paddingTop: 10, height: 100, width: ScreenUtil.deviceWidth() - 32}}
+                            style={{fontSize: 14, paddingTop: 10, height: 100, width: ScreenUtil.deviceWidth() - 32}}
                             onChange={value => this.setState({value})}
                             value={this.state.value}
                         />
                     </View>
                     <TouchableWithoutFeedback onPress={() => this.click('派单')}>
-                        <Flex justify={'center'} style={[styles.ii,{width: '80%', marginLeft: '10%',marginRight: '10%', marginBottom: 20}, {backgroundColor: Macro.color_4d8fcc}]}>
+                        <Flex justify={'center'} style={[styles.ii, {
+                            width: '80%',
+                            marginLeft: '10%',
+                            marginRight: '10%',
+                            marginBottom: 20
+                        }, {backgroundColor: Macro.color_4d8fcc}]}>
                             <Text style={styles.word}>派单</Text>
                         </Flex>
                     </TouchableWithoutFeedback>

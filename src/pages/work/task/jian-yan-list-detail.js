@@ -101,7 +101,8 @@ export default class JianYanListDetailPage extends BasePage {
             return;
         }
         WorkService.serviceHandle(handle, fuwu.id, value,{result}).then(res => {
-            console.log(res);
+            UDToast.showInfo('操作成功');
+            this.props.navigation.goBack();
         });
     };
     communicateClick = (i) => {

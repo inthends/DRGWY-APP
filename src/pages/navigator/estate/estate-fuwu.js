@@ -157,7 +157,7 @@ class EstateFuwuPage extends BasePage {
     _renderItem = ({item, index}) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.props.navigation.push('fuwuD', {data: item, type: this.state.billType});
+                this.props.navigation.push('service', {data: item, type: this.state.billType});
             }}>
                 <Flex direction='column' align={'start'}
                       style={[styles.card, index === 0 ? styles.blue : styles.orange]}>

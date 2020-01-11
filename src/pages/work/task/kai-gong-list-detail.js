@@ -98,7 +98,8 @@ export default class KaiGongListDetailPage extends BasePage {
             return;
         }
         WorkService.serviceHandle(handle, fuwu.id, value).then(res => {
-            console.log(res);
+            UDToast.showInfo('操作成功');
+            this.props.navigation.goBack();
         });
     };
     communicateClick = (i) => {
