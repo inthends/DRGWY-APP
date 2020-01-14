@@ -50,6 +50,8 @@ import HuiFangDetailPage from '../work/task/hui-fang-detail';
 import ScanScreen from '../navigator/qrcode-scanner';
 import ScanOnly from '../navigator/ScanOnly';
 import ScanSS from '../navigator/scan-ss';
+import XunJianPage from '../navigator/xunjian/xunjian';
+import TashPage from '../navigator/xunjian/task';
 
 
 const BuildingNavigator = createStackNavigator({
@@ -104,6 +106,10 @@ const navigatorNavigator = createStackNavigator({
     tousu_s: TouSuPage,
     huifang_s: HuiFangRatePage,
     scan: ScanScreen,
+
+    xunjian: XunJianPage,
+    xunjiantask:TashPage,
+
 
 
 });

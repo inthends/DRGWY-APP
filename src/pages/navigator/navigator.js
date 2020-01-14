@@ -106,7 +106,15 @@ export default class NavigatorPage extends BasePage {
                                     <Text style={styles.content}>投诉单</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
+                            <TouchableWithoutFeedback onPress={() => this.props.navigation.push('xunjian')}>
+                                <Flex style={styles.right}>
+                                    <LoadImage style={{width: 22, height: 22}}
+                                               defaultImg={require('../../static/images/navigator/zonghexunjian.png')}/>
+                                    <Text style={styles.content}>综合巡检</Text>
+                                </Flex>
+                            </TouchableWithoutFeedback>
                         </Flex>
+
                         <Flex style={styles.line}/>
                     </Flex>
                     <Flex direction={'column'} align={'start'} style={styles.cell}>
