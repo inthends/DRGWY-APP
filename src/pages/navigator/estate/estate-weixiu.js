@@ -79,7 +79,7 @@ class EstateWeixiuPage extends BasePage {
 
     }
 
-    componentWillUnmount(): void {
+    componentWillUnmount() {
         this.viewDidAppear.remove();
     }
 
@@ -159,7 +159,36 @@ class EstateWeixiuPage extends BasePage {
     _renderItem = ({item, index}) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.props.navigation.push('weixiuD', {data: item});
+                switch (item.statusName) {
+                    case '待派单': {
+                        this.props.navigation.navigate('paidan', {data: item});
+                        break;
+                    }
+                    case '待接单': {
+                        this.props.navigation.navigate('jiedan', {data: item});
+                        break;
+                    }
+                    case '待开工': {
+                        this.props.navigation.navigate('kaigong', {data: item});
+                        break;
+                    }
+                    case '待完成': {
+                        this.props.navigation.navigate('wancheng', {data: item});
+                        break;
+                    }
+                    case '待检验': {
+                        this.props.navigation.navigate('jianyan', {data: item});
+                        break;
+                    }
+                    case '待回访': {
+                        this.props.navigation.navigate('huifang', {data: item});
+                        break;
+                    }
+                    default:
+                        console.log(item);
+                        break;
+
+                }
             }}>
                 <Flex direction='column' align={'start'}
                       style={[styles.card, index === 0 ? styles.blue : styles.orange]}>

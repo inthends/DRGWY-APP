@@ -2,7 +2,7 @@ import api from '../../utils/api';
 
 export default {
     workData(showLoading) {
-        return api.postData('/api/MobileMethod/MGetDeskStatistics',{},showLoading);
+        return api.postData('/api/MobileMethod/MGetDeskStatistics', {}, showLoading);
     },
 
     //房产类别，1获取小区，获取小区时候keyvalue=0，2获取楼栋，4获取楼层，5获取房间
@@ -86,7 +86,14 @@ export default {
             type = null;
         }
 
-        return api.postData(url, {status: type, pageIndex, pageSize: 100, overdue,isOverdue:overdue});
+        return api.postData(url, {status: type, pageIndex, pageSize: 100, overdue, isOverdue: overdue});
     },
+
+    paidanPersons(organizeId, keyword = null, type = '员工') {
+        return api.getData('/api/MobileMethod/MGetUserList', {organizeId, keyword, type});
+    },
+    paidan(keyValue, receiverName, receiverId) {
+        return api.postData('/api/MobileMethod/MRepairDispatch', {keyValue, receiverName, receiverId});
+    }
 
 };

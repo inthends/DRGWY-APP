@@ -70,7 +70,7 @@ class HuiFangRatePage extends BasePage {
         };
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         this.initData();
     }
 
