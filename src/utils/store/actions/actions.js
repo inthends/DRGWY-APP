@@ -32,13 +32,19 @@ export const addTodo = makeActionCreator(ACTIONS.save_goods_list);
 export function saveToken(token) {
     return {type: ACTIONS.token, token: token};
 }
+
 export function saveUserNameAndPsd(data) {
     return {type: ACTIONS.nameAndPsd, data};
 }
+
 export function saveUrl(url) {
-    return {type:ACTIONS.url,url:url};
+    return {type: ACTIONS.url, url: url};
 }
 
 export function saveSelectBuilding(selectBuilding) {
     return {type: ACTIONS.selectBuilding, selectBuilding: selectBuilding};
+}
+
+export function saveUser(user) {
+    return {type: ACTIONS.user, user};
 }

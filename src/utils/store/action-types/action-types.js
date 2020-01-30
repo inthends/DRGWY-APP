@@ -5,4 +5,5 @@ export const ACTIONS = {
     token: 'token',
     selectBuilding: 'selectBuilding',
     nameAndPsd: 'nameAndPsd',
+    user: 'user',
 };

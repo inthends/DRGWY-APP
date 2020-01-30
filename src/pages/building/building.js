@@ -8,6 +8,7 @@ import BuildingService from './building_service';
 import {connect} from 'react-redux';
 import NoDataView from '../../components/no-data-view';
 import CommonView from '../../components/CommonView';
+import {saveUser} from '../../utils/store/actions/actions';
 
 class BuildingPage extends BasePage {
     // static navigationOptions = ({navigation}) => {
@@ -36,6 +37,11 @@ class BuildingPage extends BasePage {
     }
 
     componentDidMount(): void {
+
+        BuildingService.getUserInfo().then(res => {
+            this.props.saveUser(res);
+        });
+
         this.onRefresh();
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
@@ -99,7 +105,7 @@ class BuildingPage extends BasePage {
         console.log('loadmore', this.canAction);
 
         if (!this.canAction && data.length < total) {
-        // if (data.length < total) {
+            // if (data.length < total) {
             this.canAction = true;
             this.setState({
                 refreshing: true,
@@ -178,5 +184,12 @@ const mapStateToProps = ({buildingReducer}) => {
         selectBuilding: buildingReducer.selectBuilding,
     };
 };
+const mapDispatchToProps = (dispatch) => {
+    return {
+        saveUser(user) {
+            dispatch(saveUser(user));
+        },
+    };
+};
 
-export default connect(mapStateToProps)(BuildingPage);
+export default connect(mapStateToProps, mapDispatchToProps)(BuildingPage);

@@ -8,6 +8,7 @@ const initialState = {
         password: '',
         usercode: '',
     },
+    user: null,
 };
 
 const memberReducer = (state = initialState, action) => {
@@ -18,6 +19,8 @@ const memberReducer = (state = initialState, action) => {
             return {...state, url: action.url};
         case ACTIONS.nameAndPsd:
             return {...state, userInfo: action.data};
+        case ACTIONS.user:
+            return {...state, user: action.user};
         default:
             return state;
     }

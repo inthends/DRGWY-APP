@@ -22,6 +22,7 @@ export default class TaskPage extends BasePage {
             ),
         };
     };
+
     constructor(props) {
         super(props);
         this.state = {
@@ -37,28 +38,28 @@ export default class TaskPage extends BasePage {
         return (
             <CommonView>
                 <ScrollTitle onChange={this.billType} titles={['今日任务', '待完成', '漏检', '已完成']}/>
-                <Flex direction={'column'} style={{padding: 15, paddingTop: 30}}>
+                <TouchableWithoutFeedback onPress={() => this.props.navigation.push('xunjianDetail', {
+                    'data': {
+                        'type': 'fuwu',
 
-                    <Flex direction='column' align={'start'}
-                          style={[styles.card, {borderLeftColor: Macro.work_blue, borderLeftWidth: 5}]}>
-                        <Text style={styles.title}>第一栋1单元</Text>
-                        <Flex style={styles.line}/>
-                        <Flex>
-                            <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task', {
-                                'data': {
-                                    'type': 'fuwu',
-                                    title: '服务单列表',
-                                },
-                            })}>
+                    },
+                })}>
+                    <Flex direction={'column'} style={{padding: 15, paddingTop: 30}}>
+
+                        <Flex direction='column' align={'start'}
+                              style={[styles.card, {borderLeftColor: Macro.work_blue, borderLeftWidth: 5}]}>
+                            <Text style={styles.title}>第一栋1单元</Text>
+                            <Flex style={styles.line}/>
+                            <Flex>
                                 <Flex style={{width: '100%'}}>
                                     <Text style={styles.top}>09：30 XXXX啊啊啊我打算多少</Text>
                                 </Flex>
-                            </TouchableWithoutFeedback>
 
 
+                            </Flex>
                         </Flex>
                     </Flex>
-                </Flex>
+                </TouchableWithoutFeedback>
             </CommonView>
         );
     }
@@ -138,5 +139,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         paddingBottom: 15,
     },
+
 
 });

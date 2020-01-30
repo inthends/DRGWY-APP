@@ -10,6 +10,9 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.CALL_PRIVILEGED"/>
     <uses-permission android:name="android.permission.BROADCAST_WAP_PUSHWAP PUSH"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
 
 <!--    android:networkSecurityConfig="@xml/network_security_config"    -->
 

@@ -6,9 +6,12 @@ import {StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View} from
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import CommonView from '../../../components/CommonView';
+import RNLocation from 'react-native-location';
+import {connect} from 'react-redux';
+import memberReducer from '../../../utils/store/reducers/member-reducer';
 
 
-export default class XunJianPage extends BasePage {
+class XunJianPage extends BasePage {
     static navigationOptions = ({navigation}) => {
 
         return {
@@ -21,11 +24,35 @@ export default class XunJianPage extends BasePage {
             ),
         };
     };
+
+    onSelect = (person) => {
+        console.log(111,person)
+        this.setState({
+            person,
+        });
+    };
+
     constructor(props) {
         super(props);
+        RNLocation.configure({
+            distanceFilter: 5.0,
+        });
+        RNLocation.requestPermission({
+            ios: 'whenInUse',
+            android: {
+                detail: 'coarse',
+            },
+        }).then(granted => {
+            if (granted) {
+                this.locationSubscription = RNLocation.subscribeToLocationUpdates(locations => {
+                    console.log(111, locations);
+                });
+            }
+        });
 
         this.state = {
             activeSections: [2, 0],
+            person: null,
         };
 
     }
@@ -35,7 +62,15 @@ export default class XunJianPage extends BasePage {
     };
 
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
-        const {data} = this.state;
+        const {data, person} = this.state;
+        const {user} = this.props;
+        let name;
+        if (user) {
+            name = user.showName;
+        }
+        if (person) {
+            name = person.fullName;
+        }
         return (
             <CommonView>
                 <Flex direction='column' align={'start'} style={[styles.card]}>
@@ -86,16 +121,14 @@ export default class XunJianPage extends BasePage {
                 </Flex>
                 <Flex style={styles.line}/>
                 <Text style={styles.location}>当前位置：上海聚音</Text>
-                <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task', {
+                <TouchableWithoutFeedback onPress={() => this.props.navigation.push('selectXunjian', {
                     'data': {
-                        'type': 'fuwu',
-                        overdue: 1,
-                        hiddenHeader: true,
-                        title: '服务单逾期列表',
+                        onSelect: this.onSelect,
+                        person,
                     },
                 })}>
                     <Flex style={styles.person}>
-                        <Text style={styles.personText}>张三</Text>
+                        <Text style={styles.personText}>{name}</Text>
                         <LoadImage style={{width: 20, height: 20}}/>
                     </Flex>
                 </TouchableWithoutFeedback>
@@ -120,10 +153,29 @@ export default class XunJianPage extends BasePage {
                         </Accordion.Panel>
                     </Accordion>
                 </View>
+                <TouchableWithoutFeedback onPress={() => this.click('接单')}>
+                    <Flex justify={'center'} style={[styles.ii, {
+                        width: '80%',
+                        marginLeft: '10%',
+                        marginRight: '10%',
+                        marginBottom: 20,
+                    }, {backgroundColor: Macro.color_4d8fcc}]}>
+                        <Text style={styles.word}>开始巡检</Text>
+                    </Flex>
+                </TouchableWithoutFeedback>
             </CommonView>
         );
     }
 }
+
+
+const mapStateToProps = ({memberReducer}) => {
+    return {
+        user: memberReducer.user,
+    };
+};
+
+export default connect(mapStateToProps)(XunJianPage);
 
 const styles = StyleSheet.create({
     title: {
@@ -195,6 +247,21 @@ const styles = StyleSheet.create({
         width: ScreenUtil.deviceWidth() - 40,
         textAlign: 'center',
         paddingBottom: 15,
+    },
+    ii: {
+        marginTop: 50,
+        paddingTop: 10,
+        paddingBottom: 10,
+        marginLeft: 10,
+        marginRight: 10,
+        width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
+        backgroundColor: '#999',
+        borderRadius: 6,
+        marginBottom: 20,
+    },
+    word: {
+        color: 'white',
+        fontSize: 16,
     },
 
 });

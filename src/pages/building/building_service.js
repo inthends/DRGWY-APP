@@ -18,5 +18,8 @@ export default {
     roomDetail(keyValue) {
         return api.getData('/api/MobileMethod/MGetRoomEntity', {keyValue});
     },
+    getUserInfo() {
+        return api.getData('/api/MobileMethod/MGetUserInfo',{},false);
+    },
 
 };

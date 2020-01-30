@@ -39,8 +39,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME)想要访问摄像头，以完成上传图片、扫码等功能</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+  <key>NSLocationWhenInUseUsageDescription</key>
+  <string>$(PRODUCT_NAME)在您使用中访问您的位置</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>$(PRODUCT_NAME)想要麦克风，以完成录音功能</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
