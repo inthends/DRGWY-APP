@@ -9,6 +9,7 @@ import CommonView from '../../../components/CommonView';
 import RNLocation from 'react-native-location';
 import {connect} from 'react-redux';
 import memberReducer from '../../../utils/store/reducers/member-reducer';
+import XunJianService from './xunjian-service';
 
 
 class XunJianPage extends BasePage {
@@ -26,11 +27,14 @@ class XunJianPage extends BasePage {
     };
 
     onSelect = (person) => {
-        console.log(111,person)
+        console.log(111, person);
         this.setState({
             person,
+        }, () => {
+            this.initUI();
         });
     };
+
 
     constructor(props) {
         super(props);
@@ -53,6 +57,11 @@ class XunJianPage extends BasePage {
         this.state = {
             activeSections: [2, 0],
             person: null,
+            today: '',
+            todo: '',
+            missed: '',
+            finish: '',
+            items: [],
         };
 
     }
@@ -61,15 +70,56 @@ class XunJianPage extends BasePage {
         this.setState({activeSections});
     };
 
+    start = () => {
+        let person = this.state.person || {};
+        this.props.navigation.push('startxunjian',{
+            'data':{
+                person,
+                pointId:322,
+            }
+        });
+    };
+
+    componentDidMount(): void {
+        this.initUI();
+    }
+
+    initUI() {
+        let person = this.state.person || {};
+        XunJianService.xunjianData(person.id).then(res => {
+            this.setState({
+                ...res,
+            });
+
+        });
+        XunJianService.xunjianIndexList(person.id).then(res => {
+            console.log(12, res.data);
+            Promise.all(res.data.map(item => XunJianService.xunjianIndexDetail(item.lineId))).then(all => {
+                let items = res.data.map((item, index) => {
+                    return {
+                        ...item,
+                        items: all[index],
+                    };
+                });
+                this.setState({items}, () => {
+                    console.log(44, this.state);
+                });
+            });
+            // Promise.all()
+        });
+    }
+
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
-        const {data, person} = this.state;
+        const {person, today, todo, missed, finish, items} = this.state;
         const {user} = this.props;
         let name;
+        let userId;
         if (user) {
             name = user.showName;
         }
         if (person) {
             name = person.fullName;
+            userId = person.id;
         }
         return (
             <CommonView>
@@ -77,47 +127,51 @@ class XunJianPage extends BasePage {
                     <Flex>
                         <TouchableWithoutFeedback onPress={() => this.props.navigation.push('xunjiantask', {
                             'data': {
-                                'type': 0,
+                                'status': '',
+                                userId,
                             },
                         })}>
                             <Flex direction='column' style={{width: '25%'}}>
-                                <Text style={styles.top}>10</Text>
+                                <Text style={styles.top}>{today || 0}</Text>
                                 <Text style={styles.bottom}>今日任务</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={() => this.props.navigation.push('xunjiantask', {
                             'data': {
-                                'type': 1,
+                                'status': '0',
+                                userId,
                             },
                         })}>
                             <Flex direction='column' style={{width: '25%'}}>
-                                <Text style={styles.top}>20</Text>
+                                <Text style={styles.top}>{todo || 0}</Text>
                                 <Text style={styles.bottom}>待完成</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={() => this.props.navigation.push('xunjiantask', {
                             'data': {
-                                'type': 2,
+                                'status': '2',
+                                userId,
                             },
                         })}>
                             <Flex direction='column' style={{width: '25%'}}>
-                                <Text style={styles.top}>30</Text>
+                                <Text style={styles.top}>{missed || 0}</Text>
                                 <Text style={styles.bottom}>漏检</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={() => this.props.navigation.push('xunjiantask', {
                             'data': {
-                                'type': 3,
+                                'status': '1',
+                                userId,
 
                             },
                         })}>
                             <Flex direction='column' style={{width: '25%'}}>
-                                <Text style={styles.top}>40</Text>
+                                <Text style={styles.top}>{finish || 0}</Text>
                                 <Text style={styles.bottom}>已完成</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
-
                     </Flex>
+
                 </Flex>
                 <Flex style={styles.line}/>
                 <Text style={styles.location}>当前位置：上海聚音</Text>
@@ -137,23 +191,18 @@ class XunJianPage extends BasePage {
                         onChange={this.onChange}
                         activeSections={this.state.activeSections}
                     >
-                        <Accordion.Panel header="秩序日常巡检">
-                            <List>
-                                <List.Item>Content 1</List.Item>
-                                <List.Item>Content 2</List.Item>
-                                <List.Item>Content 3</List.Item>
-                            </List>
-                        </Accordion.Panel>
-                        <Accordion.Panel header="Title 2">
-                            this is panel content2 or other
-                        </Accordion.Panel>
-                        <Accordion.Panel header="Title 3">
-                            Text text text text text text text text text text text text text
-                            text text
-                        </Accordion.Panel>
+                        {items.map(item => (
+                            <Accordion.Panel key={item.lineId} header={item.name}>
+                                <List>
+                                    {item.items.map((it, index) => (
+                                        <List.Item key={it.name + index}>{it.name}</List.Item>
+                                    ))}
+                                </List>
+                            </Accordion.Panel>
+                        ))}
                     </Accordion>
                 </View>
-                <TouchableWithoutFeedback onPress={() => this.click('接单')}>
+                <TouchableWithoutFeedback onPress={this.start}>
                     <Flex justify={'center'} style={[styles.ii, {
                         width: '80%',
                         marginLeft: '10%',

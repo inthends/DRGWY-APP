@@ -7,6 +7,9 @@ import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import CommonView from '../../../components/CommonView';
 import ScrollTitle from '../../../components/scroll-title';
+import XunJianService from './xunjian-service';
+import common from '../../../utils/common';
+
 
 export default class TaskPage extends BasePage {
     static navigationOptions = ({navigation}) => {
@@ -26,40 +29,95 @@ export default class TaskPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            data: {},
+            ...(common.getValueFromProps(this.props)),
+            res: {
+                data: [],
+            },
+            titles: ['全部', '待完成', '漏检', '已完成'],
         };
+        console.log(this.state);
+    }
 
+    componentDidMount(): void {
+        this.initUI();
+    }
 
+    onChange = (title) => {
+        let status = '';
+        switch (title) {
+            case '全部': {
+                status = '';
+                break;
+            }
+            case '待完成': {
+                status = '0';
+                break;
+            }
+            case '漏检': {
+                status = '2';
+                break;
+            }
+            case '已完成': {
+                status = '1';
+                break;
+            }
+            default: {
+
+            }
+        }
+        this.setState({status}, () => {
+            this.initUI();
+        });
+
+    };
+
+    initUI() {
+        const {status, userId} = this.state;
+        XunJianService.xunjianTaskList(status, userId).then(res => {
+            this.setState({res});
+        });
     }
 
 
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
-        const {data} = this.state;
+        const {status, res, titles} = this.state;
+        let index = 0;
+        if (status === '') {
+            index = 0;
+        } else if (status === '0') {
+            index = 1;
+        } else if (status === '2') {
+            index = 2;
+        } else if (status === '1') {
+            index = 3;
+        }
         return (
             <CommonView>
-                <ScrollTitle onChange={this.billType} titles={['今日任务', '待完成', '漏检', '已完成']}/>
-                <TouchableWithoutFeedback onPress={() => this.props.navigation.push('xunjianDetail', {
-                    'data': {
-                        'type': 'fuwu',
+                <ScrollTitle index={index} onChange={this.onChange} titles={titles}/>
 
-                    },
-                })}>
-                    <Flex direction={'column'} style={{padding: 15, paddingTop: 30}}>
+                <Flex direction={'column'} style={{padding: 15, paddingTop: 30}}>
 
-                        <Flex direction='column' align={'start'}
-                              style={[styles.card, {borderLeftColor: Macro.work_blue, borderLeftWidth: 5}]}>
-                            <Text style={styles.title}>第一栋1单元</Text>
-                            <Flex style={styles.line}/>
-                            <Flex>
-                                <Flex style={{width: '100%'}}>
-                                    <Text style={styles.top}>09：30 XXXX啊啊啊我打算多少</Text>
+                    {res.data.map(item => (
+                        <TouchableWithoutFeedback key={item.id}
+                                                  onPress={() => this.props.navigation.push('xunjianDetail', {
+                                                      'data': {
+                                                          'id': item.id,
+
+                                                      },
+                                                  })}>
+                            <Flex direction='column' align={'start'}
+                                  style={[styles.card, {borderLeftColor: Macro.work_blue, borderLeftWidth: 5}]}>
+                                <Text style={styles.title}>{item.pName}</Text>
+                                <Flex style={styles.line}/>
+                                <Flex>
+                                    <Flex style={{width: '100%'}}>
+                                        <Text style={styles.top}>{item.planTime} {item.tName}</Text>
+                                    </Flex>
                                 </Flex>
-
-
                             </Flex>
-                        </Flex>
-                    </Flex>
-                </TouchableWithoutFeedback>
+                        </TouchableWithoutFeedback>
+                    ))}
+                </Flex>
             </CommonView>
         );
     }

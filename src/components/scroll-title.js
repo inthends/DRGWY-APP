@@ -9,9 +9,10 @@ const single_width = 50;
 export default class ScrollTitle extends Component {
     constructor(props) {
         super(props);
+        let index = this.props.index || 0;
         this.state = {
-            fadeAnim: new Animated.Value((item_width - single_width) / 2.0),
-            index: 0,
+            fadeAnim: new Animated.Value((item_width - single_width) / 2.0 + item_width * index),
+            index,
             titles: this.props.titles || [],
         };
     }
@@ -32,12 +33,15 @@ export default class ScrollTitle extends Component {
                 duration: 200,              // 让动画持续一段时间
             },
         ).start();
-        this.setState({index: index},()=>{
-            const {titles} = this.state;
-            if (this.props.onChange) {
-                this.props.onChange(titles[index]);
-            }
-        });
+        if (this.state.index !== index) {
+            this.setState({index}, () => {
+                const {titles} = this.state;
+                if (this.props.onChange) {
+                    this.props.onChange(titles[index]);
+                }
+            });
+        }
+
     };
 
     render() {

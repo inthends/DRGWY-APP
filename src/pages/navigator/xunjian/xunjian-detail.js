@@ -9,6 +9,8 @@ import CommonView from '../../../components/CommonView';
 import ScrollTitle from '../../../components/scroll-title';
 import XunJianComponent from './xunjian-component';
 import ListImages from '../../../components/list-images';
+import common from '../../../utils/common';
+import XunJianService from './xunjian-service';
 
 export default class XunJianDetailPage extends BasePage {
     static navigationOptions = ({navigation}) => {
@@ -30,6 +32,13 @@ export default class XunJianDetailPage extends BasePage {
         this.state = {
             data: {},
         };
+        let id = common.getValueFromProps(this.props).id;
+        XunJianService.xunjianDetail(id).then(data => {
+            this.setState({data});
+        });
+        XunJianService.xunjianDetailExtraData(id).then(res => {
+
+        });
 
 
     }
@@ -40,8 +49,8 @@ export default class XunJianDetailPage extends BasePage {
         return (
             <CommonView>
                 <Flex direction={'column'} align={'start'} style={styles.content}>
-                    <Text style={styles.title}>第1栋1单元门</Text>
-                    <XunJianComponent/>
+                    <Text style={styles.title}>{data.pointName}</Text>
+                    <XunJianComponent data={data}/>
                     {/*<ListImages images={images} lookImage={this.lookImage}/>*/}
                 </Flex>
             </CommonView>

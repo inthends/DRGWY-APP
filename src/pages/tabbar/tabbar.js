@@ -52,6 +52,12 @@ import ScanScreen from '../navigator/qrcode-scanner';
 import ScanOnly from '../navigator/ScanOnly';
 import ScanSS from '../navigator/scan-ss';
 
+import XunJianPage from '../navigator/xunjian/xunjian';
+import TaskPage from '../navigator/xunjian/task';
+import XunJianDetailPage from '../navigator/xunjian/xunjian-detail';
+import SelectXunJianPerson from '../navigator/xunjian/select-xunjian';
+import StartXunJianPage from '../navigator/xunjian/start-xunjian';
+
 
 const BuildingNavigator = createStackNavigator({
 
@@ -114,7 +120,11 @@ const navigatorNavigator = createStackNavigator({
     jiedan: JieDanListDetailPage,
     paidan: PaiDanListDetailPage,
     huifang: HuiFangDetailPage,
-
+    xunjian: XunJianPage,
+    xunjiantask: TaskPage,
+    xunjianDetail: XunJianDetailPage,
+    selectXunjian: SelectXunJianPerson,
+    startxunjian: StartXunJianPage,
 
 
 });
