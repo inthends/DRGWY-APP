@@ -153,7 +153,7 @@ class HuiFangRatePage extends BasePage {
                     </Flex>
                     <DashLine style={{marginTop: 15, marginLeft: 15, marginRight: 15}}/>
 
-                    <Echarts option={option} height={300}/>
+                    <Echarts option={option || {}} height={300}/>
                     <Table style={{margin:15}} borderStyle={{borderWidth: 2, borderColor: '#eee'}}>
                         <Row data={tableHead} style={styles.head} textStyle={styles.text}/>
                         <Rows data={tableData} textStyle={styles.text}/>

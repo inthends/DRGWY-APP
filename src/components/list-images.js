@@ -19,7 +19,7 @@ export default class ListImages extends Component {
                 <Flex wrap={'wrap'}>
                     {this.props.images && this.props.images.map((item, index) => {
                         return (
-                            <TouchableWithoutFeedback key={item.uid} onPress={() => this.props.lookImage&&this.props.lookImage(index)}>
+                            <TouchableWithoutFeedback key={item.uid} onPress={() => this.props.lookImage&&this.props.lookImage(index,item.uid)}>
                                 <View style={{
                                     paddingLeft: 15,
                                     paddingRight: 5,

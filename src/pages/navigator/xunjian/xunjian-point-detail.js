@@ -13,13 +13,13 @@ import common from '../../../utils/common';
 import XunJianService from './xunjian-service';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
-export default class XunJianDetailPage extends BasePage {
+export default class XunJianPointDetailPage extends BasePage {
     static navigationOptions = ({navigation}) => {
 
 
         return {
             tabBarVisible: false,
-            title: '任务单详情',
+            title: '巡检点详情',
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{width: 30, marginLeft: 15}}/>
@@ -30,25 +30,46 @@ export default class XunJianDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
+        let lineId = common.getValueFromProps(this.props).lineId;
+        let pointId = common.getValueFromProps(this.props).pointId;
         this.state = {
-            data: {},
-            images: [],
+            lineId,
+            pointId,
+            items: [],
             visible: false,
+            images: [],
         };
     }
 
     componentDidMount(): void {
-        let id = common.getValueFromProps(this.props).id;
-        XunJianService.xunjianDetail(id).then(data => {
-            XunJianService.xunjianDetailExtraData(id).then(images => {
-                this.setState({images, data});
+        const {lineId, pointId} = this.state;
+        XunJianService.xunjianPointDetail(lineId, pointId).then(items => {
+            console.log(11, items);
+            this.setState({
+                items,
             });
         });
     }
 
-    lookImage = (lookImageIndex) => {
+    lookImage = (lookImageIndex, image) => {
+
+        let items = this.state.items.map(item => {
+            let images = item.fileList;
+            if (images.length <= lookImageIndex) {
+                return -1;
+            } else {
+                return images[lookImageIndex];
+            }
+        });
+        let index = items.indexOf(image);
+        if (index < 0) {
+            index = 0;
+        }
+        let images = this.state.items[index].fileList;
+
         this.setState({
             lookImageIndex,
+            images,
             visible: true,
         });
     };
@@ -60,14 +81,16 @@ export default class XunJianDetailPage extends BasePage {
 
 
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
-        const {data, images} = this.state;
+        const {items} = this.state;
         return (
             <CommonView>
-                <Flex direction={'column'} align={'start'} style={styles.content}>
-                    <Text style={styles.title}>{data.pointName}</Text>
-                    <XunJianComponent data={data}/>
-                </Flex>
-                <ListImages images={images} lookImage={this.lookImage}/>
+                {items.map((item, index) => (
+                    <Flex key={item.pointName + index} direction={'column'} align={'start'} style={styles.content}>
+                        <Text style={styles.title}>{item.pointName}</Text>
+                        <XunJianComponent data={item}/>
+                        <ListImages images={item.fileList} lookImage={this.lookImage}/>
+                    </Flex>
+                ))}
                 <Modal visible={this.state.visible} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                                  imageUrls={this.state.images}/>
@@ -88,8 +111,5 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         paddingTop: 10,
         paddingBottom: 10,
-
     },
-
-
 });

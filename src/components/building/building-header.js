@@ -21,10 +21,25 @@ export default class BuildingHeader extends BasePage {
     }
 
 
+    scan = () => {
+        this.props.navigation.push('scanForHome', {
+            data: {
+                callBack: (keyValue) => {
+                    this.props.navigation.navigate('yiqing', {
+                        'data': {
+                            keyValue,
+                        },
+                    });
+                },
+
+            },
+        });
+    };
+
 
     render() {
-        const {statistics,title} = this.props;
-        console.log('1',statistics);
+        const {statistics, title} = this.props;
+        console.log('1', statistics);
         return (
             <View style={styles.content}>
                 <Flex direction="row" justify='between' style={styles.top}>
@@ -35,7 +50,7 @@ export default class BuildingHeader extends BasePage {
                         <TouchableOpacity onPress={() => this.props.navigation.openDrawer()}>
                             <Icon name='bars' color="white"/>
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={this.scan}>
                             <Icon name='scan' color="white"/>
                         </TouchableOpacity>
                     </Flex>
@@ -57,7 +72,8 @@ export default class BuildingHeader extends BasePage {
                     </Flex.Item>
                     <Flex.Item style={styles.item}>
                         <Text size="small" style={styles.topText}>可招商 {statistics.investmentarearate}%</Text>
-                        <Text size="small" style={styles.bottomText}>{statistics.investmentareasum}{Macro.meter_square}</Text>
+                        <Text size="small"
+                              style={styles.bottomText}>{statistics.investmentareasum}{Macro.meter_square}</Text>
                     </Flex.Item>
                     <Flex.Item style={styles.item}>
                         <Text size="small" style={styles.topText}>入住率</Text>
@@ -81,7 +97,7 @@ const styles = StyleSheet.create({
         backgroundColor: Macro.color_sky_dark,
         paddingLeft: Macro.marginLeft_15,
         paddingRight: Macro.marginRight_15,
-        fontSize:14
+        fontSize: 14,
     },
     title: {
         color: Macro.color_white,
@@ -95,7 +111,7 @@ const styles = StyleSheet.create({
     bottom: {
         flex: 2,
         backgroundColor: Macro.color_sky_dark,
-        fontSize:14,
+        fontSize: 14,
         marginBottom: 8,
 
     },

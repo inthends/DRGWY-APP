@@ -78,7 +78,7 @@ public class LHNToast extends ReactContextBaseJavaModule {
                                 DateTimeUtil.getCurrentDate("yyyyMMddhhmmss"));
                         bundle.putString("order_info", order.getString("order_info"));
                         bundle.putString("print_info", order.getString("print_info"));
-
+                        bundle.putString("posType", posType);
                         intent.putExtras(bundle);
                         currentActivity.startActivity(intent);
                         break;
@@ -90,17 +90,13 @@ public class LHNToast extends ReactContextBaseJavaModule {
                         bundle.putString("orderId", order.getString("orderId"));
                         bundle.putString("createOrderRemark", order.getString("createOrderRemark"));
                         bundle.putString("notify_url", order.getString("notify_url"));
-
-                        intent.putExtra("yinsheng", bundle);
+                        bundle.putString("posType", posType);
+                        intent.putExtras(bundle);
                         currentActivity.startActivity(intent);
 
                         break;
                     }
                 }
-
-
-
-
 
 
             }

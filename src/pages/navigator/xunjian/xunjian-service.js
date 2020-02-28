@@ -5,8 +5,8 @@ export default {
         return api.getData('/api/MobileMethod/MGetPollingUserList');
     },
 
-    xunjianData(userId) {
-        return api.postData('/api/MobileMethod/MGetPollingStatistics', {userId});
+    xunjianData(userId, showLoading = true) {
+        return api.postData('/api/MobileMethod/MGetPollingStatistics', {userId}, showLoading);
     },
     xunjianIndexList(userId) {
         return api.postData('/api/MobileMethod/MGetPollingLinePageList', {pageIndex: 1, pageSize: 100, userId});
@@ -22,14 +22,30 @@ export default {
             userId,
         });
     },
-    xunjianDetailStart(pointId) {
-        return api.getData('/api/MobileMethod/MGetPollingEntity', {pointId});
+    xunjianDetail(taskId) {
+        return api.getData('/api/MobileMethod/MGetPollingTaskEntity', {taskId});
     },
-    xunjianDetail(pointId) {
-        return api.getData('/api/MobileMethod/MGetPollingTaskEntity', {pointId, taskId: pointId});
+    xunjianDetailExtraData(taskId) {
+        return api.getData('/api/MobileMethod/MGetPollingTaskFilesData', {taskId});
     },
-    xunjianDetailExtraData(pointId) {
-        return api.getData('/api/MobileMethod/MGetPollingTaskFilesData', {pointId, taskId: pointId});
+    xunjianTaskDeletePhoto(taskId) {
+        if (taskId && taskId.length > 0) {
+            return api.postData('/api/MobileMethod/MDeleteTaskFiles', {taskId});
+        } else {
+            Promise.resolve();
+        }
+    },
+    xunjianPointDetail(lineId, pointId) {
+        return api.getData('/api/MobileMethod/MGetPollingPointEntity', {lineId, pointId});
+    },
+    xunjianPointTasks(pointId, showLoading = true) {
+        return api.getData('/api/MobileMethod/MGetPollingPointTasks', {pointId}, showLoading);
+    },
+    xunjianExecute(keyValue, pointStatus, userId, userName) {
+        return api.postData('/api/MobileMethod/MExcutePollingTasck', {keyValue, pointStatus, userId, userName});
+    },
+    xunjianAddress(pointId) {
+        return api.getData('/api/MobileMethod/MGetPollingPointDetail', {pointId});
     },
 
 };

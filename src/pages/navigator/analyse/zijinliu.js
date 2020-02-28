@@ -150,7 +150,7 @@ class ZiJinLiuPage extends BasePage {
                     <DashLine style={{marginTop: 15, marginLeft: 15, marginRight: 15}}/>
 
 
-                    <Echarts option={option} height={300}/>
+                    <Echarts option={option || {}} height={300}/>
                 </ScrollView>
 
 

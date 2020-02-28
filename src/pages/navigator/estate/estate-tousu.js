@@ -156,7 +156,7 @@ class EstateTousuPage extends BasePage {
     _renderItem = ({item, index}) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.props.navigation.navigate('e_tousu', {data: item});
+                this.props.navigation.navigate('tousuD', {data: item});
             }}>
                 <Flex direction='column' align={'start'}
                       style={[styles.card, index === 0 ? styles.blue : styles.orange]}>

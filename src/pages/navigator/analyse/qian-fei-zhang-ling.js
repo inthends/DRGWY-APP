@@ -150,7 +150,7 @@ class QianFeiZhangLingPage extends BasePage {
 
                     <Text style={styles.xx}>{xName}</Text>
                     <Text style={styles.xx}>{yName}</Text>
-                    <Echarts option={option} height={300}/>
+                    <Echarts option={option || {}} height={300}/>
 
                 </ScrollView>
 

@@ -32,7 +32,7 @@ export default class StartXunJianPage extends BasePage {
         this.state = {
             images: [{icon: ''}],
             data: {},
-            ...common.getValueFromProps(this.props), // pointId,person
+            ...common.getValueFromProps(this.props), // lineId,pointId,person
         };
         console.log(this.state);
 
@@ -40,10 +40,26 @@ export default class StartXunJianPage extends BasePage {
     }
 
     componentDidMount(): void {
-
-        XunJianService.xunjianDetailStart(this.state.pointId).then(data => {
-            this.setState(data);
+        const {id, pointId} = this.state;
+        XunJianService.xunjianAddress(pointId).then(address => {
+            XunJianService.xunjianDetail(id).then(data => {
+                this.setState({data, address});
+                XunJianService.xunjianTaskDeletePhoto(data.id);
+            });
         });
+
+        this.viewDidAppear = this.props.navigation.addListener(
+            'didFocus',
+            (obj) => {
+                if (this.needBack === true) {
+                    this.props.navigation.goBack();
+                }
+            },
+        );
+    }
+
+    componentWillUnmount(): void {
+        this.viewDidAppear.remove();
     }
 
     selectImages = () => {
@@ -62,46 +78,66 @@ export default class StartXunJianPage extends BasePage {
     };
 
     success = () => {
-            console.log(1111)
+        this.submit(1);
     };
     fail = () => {
-
+        this.submit(0);
     };
+
+    submit(status) {
+        const {id, person, address} = this.state;
+        XunJianService.xunjianExecute(id, status, person.id, person.name).then(res => {
+            if (status === 1) {
+                this.props.navigation.goBack();
+            } else {
+                this.needBack = true;
+                this.props.navigation.push('addTaskWork', {
+                    data: {
+                        address,
+                    },
+                });
+            }
+        });
+    }
 
 
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
         const {images, data} = this.state;
-        const width = (ScreenUtil.deviceWidth() - 5 * 20) / 4.0;
-        const height = (ScreenUtil.deviceWidth() - 5 * 20) / 4.0;
         return (
             <CommonView>
                 <Flex direction={'column'} align={'start'} style={styles.content}>
                     <Text style={styles.title}>{data.pointName}</Text>
                     <XunJianComponent data={data}/>
-                    <Flex justify={'start'} align={'start'} style={{width: ScreenUtil.deviceWidth()}}>
-                        <Flex wrap={'wrap'}>
-                            {images.map((item, index) => {
-                                return (
-                                    <TouchableWithoutFeedback key={index} onPress={() => {
-                                        if (index === images.length - 1 && item.icon.length === 0) {
-                                            this.selectImages();
-                                        }
+                </Flex>
+                <Flex justify={'start'} align={'start'} style={{width: ScreenUtil.deviceWidth()}}>
+                    <Flex wrap={'wrap'}>
+                        {images.map((item, index) => {
+                            return (
+                                <TouchableWithoutFeedback key={index} onPress={() => {
+                                    if (index === images.length - 1 && item.icon.length === 0) {
+                                        this.selectImages();
+                                    }
+                                }}>
+                                    <View style={{
+                                        paddingLeft: 15,
+                                        paddingRight: 5,
+                                        paddingBottom: 10,
+                                        paddingTop: 10,
                                     }}>
-                                        <View style={{
-
-                                            paddingBottom: 10,
-                                            paddingTop: 10,
-                                        }}>
-                                            <LoadImage style={{width: width, height: height}}
-                                                       defaultImg={require('../../../static/images/add_pic.png')}
-                                                       img={item.icon}/>
-                                        </View>
-                                    </TouchableWithoutFeedback>
-                                );
-                            })}
-                        </Flex>
+                                        <LoadImage style={{
+                                            width: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
+                                            height: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
+                                            borderRadius: 5,
+                                        }}
+                                                   defaultImg={require('../../../static/images/add_pic.png')}
+                                                   img={item.icon}/>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                            );
+                        })}
                     </Flex>
                 </Flex>
+
                 <Flex style={{minHeight: 40, marginBottom: 30}}>
                     <TouchableWithoutFeedback onPress={this.success}>
                         <Flex justify={'center'} style={[styles.ii, {backgroundColor: Macro.color_4d8fcc}]}>

@@ -12,6 +12,7 @@ import Macro from '../../utils/macro';
 import LoadImage from '../../components/load-image';
 import CommonView from '../../components/CommonView';
 import ScreenUtil from '../../utils/screen-util';
+import ChaoBiaoPage from './chao-biao/chao-biao';
 
 
 export default class NavigatorPage extends BasePage {
@@ -53,7 +54,8 @@ export default class NavigatorPage extends BasePage {
                             <Text style={styles.title}>财务管理</Text>
                         </Flex>
 
-
+                        {/*//feeHouse*/}
+                        {/*feeDetail*/}
                         <Flex justify={'between'} style={styles.cellContnent}>
                             <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('feeHouse')}>
                                 <Flex style={styles.left}>
@@ -111,6 +113,15 @@ export default class NavigatorPage extends BasePage {
                                     <LoadImage style={{width: 22, height: 22}}
                                                defaultImg={require('../../static/images/navigator/zonghexunjian.png')}/>
                                     <Text style={styles.content}>综合巡检</Text>
+                                </Flex>
+                            </TouchableWithoutFeedback>
+                        </Flex>
+                        <Flex justify={'between'} style={styles.cellContnent}>
+                            <TouchableWithoutFeedback onPress={() => this.props.navigation.push('chaobiao')}>
+                                <Flex style={styles.left}>
+                                    <LoadImage style={{width: 22, height: 22}}
+                                               defaultImg={require('../../static/images/navigator/zonghexunjian.png')}/>
+                                    <Text style={styles.content}>移动抄表</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
@@ -211,9 +222,9 @@ const styles = StyleSheet.create({
         paddingTop: 30,
     },
     line: {
-        marginTop:20,
-        marginBottom:10,
-        marginRight:15,
+        marginTop: 20,
+        marginBottom: 10,
+        marginRight: 15,
         width: ScreenUtil.deviceWidth() - 30,
         backgroundColor: '#E0E0E0',
         height: 0.5,

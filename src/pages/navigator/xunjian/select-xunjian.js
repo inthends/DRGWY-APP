@@ -81,9 +81,9 @@ class SelectXunJianPerson extends BasePage {
         return (
             <CommonView>
                 {persons.map(item => (
-                    <TouchableWithoutFeedback onPress={() => this.select(item)}>
+                    <TouchableWithoutFeedback key={item.id} onPress={() => this.select(item)}>
                         <Flex key={item.id} justify='between' style={styles.hang}>
-                            <Text style={styles.word}>{item.fullName}</Text>
+                            <Text style={styles.word}>{item.name}</Text>
                             <Text style={styles.word}>{item.orgName}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>

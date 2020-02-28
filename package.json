@@ -15,7 +15,8 @@
     "link": "react-native link",
     "build-ios": "node node_modules/react-native/local-cli/cli.js bundle --entry-file index.js --platform ios --dev false --bundle-output ./ios/bundle/index.jsbundle --assets-dest ./ios/bundle",
     "fix": "npx jetify",
-    "update": "rm -rf node_modules && npm cache clean --force && npm install"
+    "update": "rm -rf node_modules && npm cache clean --force && npm install",
+    "react-devtools": "react-devtools"
   },
   "dependencies": {
     "@ant-design/icons-react-native": "^1.0.2",

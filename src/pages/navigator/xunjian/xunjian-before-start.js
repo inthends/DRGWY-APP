@@ -11,13 +11,13 @@ import XunJianService from './xunjian-service';
 import common from '../../../utils/common';
 
 
-export default class TaskPage extends BasePage {
+export default class XunjianBeforeStart extends BasePage {
     static navigationOptions = ({navigation}) => {
 
 
         return {
             tabBarVisible: false,
-            title: '今日任务',
+            title: '选择任务',
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{width: 30, marginLeft: 15}}/>
@@ -30,94 +30,66 @@ export default class TaskPage extends BasePage {
         super(props);
         this.state = {
             ...(common.getValueFromProps(this.props)),
-            res: {
-                data: [],
-            },
-            titles: ['全部', '待完成', '漏检', '已完成'],
+            items: [],
         };
-        console.log(this.state);
+
     }
 
     componentDidMount(): void {
         this.initUI();
+        this.viewDidAppear = this.props.navigation.addListener(
+            'didFocus',
+            () => {
+                this.initUI(false);
+            },
+        );
     }
 
-    onChange = (title) => {
-        let status = '';
-        switch (title) {
-            case '全部': {
-                status = '';
-                break;
-            }
-            case '待完成': {
-                status = '0';
-                break;
-            }
-            case '漏检': {
-                status = '2';
-                break;
-            }
-            case '已完成': {
-                status = '1';
-                break;
-            }
-            default: {
-
-            }
-        }
-        this.setState({status}, () => {
-            this.initUI();
+    initUI(showLoading = true) {
+        const {pointId} = this.state;
+        console.log(321, this.state);
+        XunJianService.xunjianPointTasks(pointId, showLoading).then(items => {
+            this.setState({items});
         });
+    }
 
-    };
-
-    initUI() {
-        const {status, userId} = this.state;
-        XunJianService.xunjianTaskList(status, userId).then(res => {
-            this.setState({res});
-        });
+    componentWillUnmount(): void {
+        this.viewDidAppear.remove();
     }
 
 
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
-        const {status, res, titles} = this.state;
-        let index = 0;
-        if (status === '') {
-            index = 0;
-        } else if (status === '0') {
-            index = 1;
-        } else if (status === '2') {
-            index = 2;
-        } else if (status === '1') {
-            index = 3;
-        }
+        const {items, person, pointId} = this.state;
+
         return (
             <CommonView>
-                <ScrollTitle index={index} onChange={this.onChange} titles={titles}/>
+                <ScrollView>
+                    <Flex direction={'column'} style={{padding: 15, paddingTop: 30}}>
 
-                <Flex direction={'column'} style={{padding: 15, paddingTop: 30}}>
-
-                    {res.data.map(item => (
-                        <TouchableWithoutFeedback key={item.id}
-                                                  onPress={() => this.props.navigation.push('xunjianDetail', {
-                                                      'data': {
-                                                          'id': item.id,
-
-                                                      },
-                                                  })}>
-                            <Flex direction='column' align={'start'}
-                                  style={[styles.card, {borderLeftColor: Macro.work_blue, borderLeftWidth: 5}]}>
-                                <Text style={styles.title}>{item.tName}</Text>
-                                <Flex style={styles.line}/>
-                                <Flex>
-                                    <Flex style={{width: '100%'}}>
-                                        <Text style={styles.top}>{item.planTime} {item.tName}</Text>
+                        {items.map(item => (
+                            <TouchableWithoutFeedback key={item.id}
+                                                      onPress={() => this.props.navigation.push('startxunjian', {
+                                                          'data': {
+                                                              id: item.id,
+                                                              person,
+                                                              pointId,
+                                                          },
+                                                      })}>
+                                <Flex direction='column' align={'start'}
+                                      style={[styles.card, {borderLeftColor: Macro.work_blue, borderLeftWidth: 5}]}>
+                                    <Text style={styles.title}>{item.tName}</Text>
+                                    <Flex style={styles.line}/>
+                                    <Flex>
+                                        <Flex style={{width: '100%'}}>
+                                            <Text style={styles.top}>{item.planTime} {item.tName}</Text>
+                                        </Flex>
                                     </Flex>
                                 </Flex>
-                            </Flex>
-                        </TouchableWithoutFeedback>
-                    ))}
-                </Flex>
+                            </TouchableWithoutFeedback>
+                        ))}
+                    </Flex>
+
+                </ScrollView>
             </CommonView>
         );
     }

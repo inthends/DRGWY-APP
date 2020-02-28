@@ -287,7 +287,7 @@ class CollectionRatePage extends BasePage {
                     <DashLine style={{ marginLeft: 15, marginRight: 15}}/>
 
 
-                    <Echarts option={option} height={300}/>
+                    <Echarts option={option || {}} height={300}/>
                     <Table style={{margin: 15}} borderStyle={{borderWidth: 2, borderColor: '#eee'}}>
                         <Rows data={tableData} textStyle={styles.text}/>
                     </Table>

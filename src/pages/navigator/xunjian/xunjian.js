@@ -1,8 +1,8 @@
 import React, {Fragment} from 'react';
 import BasePage from '../../base/base';
-import {Flex, Accordion, List, Icon} from '@ant-design/react-native';
+import {Flex, Accordion, List, Icon, WingBlank} from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
-import {StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, ScrollView} from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import CommonView from '../../../components/CommonView';
@@ -38,21 +38,22 @@ class XunJianPage extends BasePage {
 
     constructor(props) {
         super(props);
-        RNLocation.configure({
-            distanceFilter: 5.0,
-        });
-        RNLocation.requestPermission({
-            ios: 'whenInUse',
-            android: {
-                detail: 'coarse',
-            },
-        }).then(granted => {
-            if (granted) {
-                this.locationSubscription = RNLocation.subscribeToLocationUpdates(locations => {
-                    console.log(111, locations);
-                });
-            }
-        });
+        // RNLocation.configure({
+        //     distanceFilter: 5.0,
+        // });
+        //
+        // RNLocation.requestPermission({
+        //     ios: 'whenInUse',
+        //     android: {
+        //         detail: 'coarse',
+        //     },
+        // }).then(granted => {
+        //     if (granted) {
+        //         this.locationSubscription = RNLocation.subscribeToLocationUpdates(locations => {
+        //             console.log(111, locations);
+        //         });
+        //     }
+        // });
 
         this.state = {
             activeSections: [2, 0],
@@ -70,18 +71,47 @@ class XunJianPage extends BasePage {
         this.setState({activeSections});
     };
 
+    callBack = (pointId) => {
+        this.setState({
+            pointId,
+        }, () => {
+            let person = this.state.person || {};
+            this.props.navigation.navigate('xunjianBeforeStart', {
+                'data': {
+                    person,
+                    pointId,
+                },
+            });
+        });
+    };
+
     start = () => {
-        let person = this.state.person || {};
-        this.props.navigation.push('startxunjian',{
-            'data':{
-                person,
-                pointId:322,
-            }
+        this.props.navigation.push('scanForWork', {
+            data: {
+                callBack: this.callBack,
+            },
         });
     };
 
     componentDidMount(): void {
         this.initUI();
+        this.viewDidAppear = this.props.navigation.addListener(
+            'didFocus',
+            () => {
+                let person = this.state.person || {};
+                XunJianService.xunjianData(person.id,false).then(res => {
+                    this.setState({
+                        ...res,
+                    });
+
+                });
+
+            },
+        );
+    }
+
+    componentWillUnmount(): void {
+        this.viewDidAppear.remove();
     }
 
     initUI() {
@@ -101,7 +131,7 @@ class XunJianPage extends BasePage {
                         items: all[index],
                     };
                 });
-                this.setState({items}, () => {
+                this.setState({items: [...items, ...items, ...items, ...items, ...items, ...items, ...items, ...items, ...items, ...items, ...items, ...items]}, () => {
                     console.log(44, this.state);
                 });
             });
@@ -118,7 +148,7 @@ class XunJianPage extends BasePage {
             name = user.showName;
         }
         if (person) {
-            name = person.fullName;
+            name = person.name;
             userId = person.id;
         }
         return (
@@ -174,19 +204,19 @@ class XunJianPage extends BasePage {
 
                 </Flex>
                 <Flex style={styles.line}/>
-                <Text style={styles.location}>当前位置：上海聚音</Text>
+                {/*<Text style={styles.location}>当前位置：xxxx</Text>*/}
                 <TouchableWithoutFeedback onPress={() => this.props.navigation.push('selectXunjian', {
                     'data': {
                         onSelect: this.onSelect,
                         person,
                     },
                 })}>
-                    <Flex style={styles.person}>
+                    <Flex style={styles.person} align={'center'} justify={'center'}>
                         <Text style={styles.personText}>{name}</Text>
                         <LoadImage style={{width: 20, height: 20}}/>
                     </Flex>
                 </TouchableWithoutFeedback>
-                <View>
+                <ScrollView style={{height: ScreenUtil.contentHeight() - 220}}>
                     <Accordion
                         onChange={this.onChange}
                         activeSections={this.state.activeSections}
@@ -195,13 +225,23 @@ class XunJianPage extends BasePage {
                             <Accordion.Panel key={item.lineId} header={item.name}>
                                 <List>
                                     {item.items.map((it, index) => (
-                                        <List.Item key={it.name + index}>{it.name}</List.Item>
+                                        <TouchableWithoutFeedback key={it.name + index}
+                                                                  onPress={() => this.props.navigation.push('xunjianPointDetail', {
+                                                                      'data': {
+                                                                          lineId: item.lineId,
+                                                                          pointId: it.id,
+                                                                      },
+                                                                  })}>
+                                            <WingBlank>
+                                                <List.Item>{it.name}</List.Item>
+                                            </WingBlank>
+                                        </TouchableWithoutFeedback>
                                     ))}
                                 </List>
                             </Accordion.Panel>
                         ))}
                     </Accordion>
-                </View>
+                </ScrollView>
                 <TouchableWithoutFeedback onPress={this.start}>
                     <Flex justify={'center'} style={[styles.ii, {
                         width: '80%',
@@ -241,6 +281,7 @@ const styles = StyleSheet.create({
     line: {
         width: ScreenUtil.deviceWidth() - 30,
         backgroundColor: '#E0E0E0',
+        marginLeft: 15,
         height: 1,
     },
     top: {
@@ -262,7 +303,7 @@ const styles = StyleSheet.create({
     },
     card: {
         borderRadius: 5,
-        marginBottom: 15,
+        // marginBottom: 15,
         backgroundColor: 'white',
         // shadowColor: '#00000033',
         // shadowOffset: {h: 10, w: 10},
@@ -287,15 +328,15 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     person: {
-        marginTop: 10,
+        paddingTop: 15,
         marginRight: 15,
+        paddingBottom: 15,
     },
     personText: {
         color: '#666',
         fontSize: 18,
         width: ScreenUtil.deviceWidth() - 40,
         textAlign: 'center',
-        paddingBottom: 15,
     },
     ii: {
         marginTop: 50,

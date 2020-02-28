@@ -30,7 +30,7 @@ export default class XunJianDetailPage extends BasePage {
                         <Text style={styles.desc}>{data.roleName}</Text>
                     </Flex>
                     <Text style={styles.title}>执行</Text>
-                    <Flex style={{width: ScreenUtil.deviceWidth()-30}} justify={'between'}>
+                    <Flex style={{width: ScreenUtil.deviceWidth()-30,marginBottom:10}} justify={'between'}>
                         <Text style={styles.desc}>{data.exctuteTime}</Text>
                         <Text style={styles.desc}>{data.excuteUserName}</Text>
                     </Flex>
@@ -43,17 +43,17 @@ export default class XunJianDetailPage extends BasePage {
 const styles = StyleSheet.create({
     work: {
         color: Macro.work_blue,
-        fontSize: 14,
+        fontSize: 16,
     },
     title: {
         color: '#333',
-        fontSize: 16,
+        fontSize: 18,
         paddingTop: 15,
 
     },
     desc: {
         color: '#999',
-        fontSize: 14,
+        fontSize: 16,
         paddingTop: 10,
     },
 

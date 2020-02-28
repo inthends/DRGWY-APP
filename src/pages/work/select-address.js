@@ -48,7 +48,7 @@ export default class SelectAddressPage extends BasePage {
     submit = () => {
         const {selectItem} = this.state;
         if (selectItem && selectItem.id) {
-            this.props.navigation.navigate('AddWork', {'data': selectItem});
+            this.props.navigation.navigate('AddWork', {data: {address: selectItem}});
         } else {
             UDToast.showInfo('请先选择');
         }
@@ -151,7 +151,11 @@ export default class SelectAddressPage extends BasePage {
                                             <Image alt='' style={{width: 24, height: 24}}
                                                    source={selectItem.id === item.id ? require('../../static/images/select.png') : require('../../static/images/no-select.png')}/>
                                         </TouchableWithoutFeedback>
-                                        <Text style={{paddingLeft: 15,paddingTop: 5,paddingBottom: 5}}>{item.name}</Text>
+                                        <Text style={{
+                                            paddingLeft: 15,
+                                            paddingTop: 5,
+                                            paddingBottom: 5,
+                                        }}>{item.name}</Text>
                                     </Flex>
                                 </Item>
                             ))}

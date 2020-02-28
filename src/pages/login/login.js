@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import React, {Component,Fragment} from 'react';
+import {View, StyleSheet, Text,TouchableWithoutFeedback,Keyboard} from 'react-native';
 import BasePage from '../base/base';
 import {Button, InputItem, List} from '@ant-design/react-native';
 import LoginService from './login-service';
@@ -22,6 +22,31 @@ class LoginPage extends BasePage {
 
     }
 
+    // componentWillMount() {
+    //     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
+    //     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+    // }
+    //
+    // componentWillUnmount() {
+    //     this.keyboardDidShowListener.remove();
+    //     this.keyboardDidHideListener.remove();
+    // }
+    //
+    // _keyboardDidShow() {
+    //     this.keyBoardIsShow = true;
+    // }
+    //
+    // _keyboardDidHide() {
+    //     this.keyBoardIsShow = false;
+    // }
+    //
+    // lostBlur() {
+    //     //退出软件盘
+    //     if (this.keyBoardIsShow === true) {
+    //         Keyboard.dismiss();
+    //     }
+    // }
+
     login = () => {
         const {username, password, usercode} = this.state;
 
@@ -42,54 +67,58 @@ class LoginPage extends BasePage {
 
     render() {
         return (
-            <View style={styles.content}>
-                <LoadImage style={{width: 120, height: 120, borderRadius: 5, marginBottom: 50}}
-                           img={require('../../static/images/logo.png')}/>
-                <List style={{width: ScreenUtil.deviceWidth() - 60}}>
-                    <InputItem
-                        clear
-                        labelNumber='6'
-                        value={this.state.usercode}
-                        onChange={value => {
-                            this.setState({
-                                usercode: value,
-                            });
-                        }}
-                        placeholder="请输入编号"
-                    >
-                        编号
-                    </InputItem>
-                    <InputItem
-                        clear
-                        labelNumber='6'
-                        value={this.state.username}
-                        onChange={value => {
-                            this.setState({
-                                username: value,
-                            });
-                        }}
-                        placeholder="请输入账号"
-                    >
-                        账号
-                    </InputItem>
-                    <InputItem
-                        clear
-                        labelNumber='6'
-                        type="password"
-                        value={this.state.password}
-                        onChange={value => {
-                            this.setState({
-                                password: value,
-                            });
-                        }}
-                        placeholder="请输入密码"
-                        last={true}
-                    >
-                        密码
-                    </InputItem>
-                </List>
-                <Button onPress={() => this.login()} style={styles.login} type="primary">登陆</Button>
-            </View>
+            <Fragment>
+                <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
+                    <View style={styles.content}>
+                        <LoadImage style={{width: 120, height: 120, borderRadius: 5, marginBottom: 50}}
+                                   img={require('../../static/images/logo.png')}/>
+                        <List style={{width: ScreenUtil.deviceWidth() - 60}}>
+                            <InputItem
+                                clear
+                                labelNumber='6'
+                                value={this.state.usercode}
+                                onChange={value => {
+                                    this.setState({
+                                        usercode: value,
+                                    });
+                                }}
+                                placeholder="请输入编号"
+                            >
+                                编号
+                            </InputItem>
+                            <InputItem
+                                clear
+                                labelNumber='6'
+                                value={this.state.username}
+                                onChange={value => {
+                                    this.setState({
+                                        username: value,
+                                    });
+                                }}
+                                placeholder="请输入账号"
+                            >
+                                账号
+                            </InputItem>
+                            <InputItem
+                                clear
+                                labelNumber='6'
+                                type="password"
+                                value={this.state.password}
+                                onChange={value => {
+                                    this.setState({
+                                        password: value,
+                                    });
+                                }}
+                                placeholder="请输入密码"
+                                last={true}
+                            >
+                                密码
+                            </InputItem>
+                        </List>
+                        <Button onPress={() => this.login()} style={styles.login} type="primary">登陆</Button>
+                    </View>
+                </TouchableWithoutFeedback>
+            </Fragment>
         );
     }
 }

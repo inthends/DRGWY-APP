@@ -7,8 +7,11 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
+
+import java.util.StringTokenizer;
 
 import androidx.annotation.Nullable;
 
@@ -24,6 +27,7 @@ public class LKLPayActivity extends Activity {
     private TextView mShow;
     private Gson gson;
 
+
     // 订单号
 //    private EditText mOrderNo;
     @Override
@@ -32,17 +36,26 @@ public class LKLPayActivity extends Activity {
         setContentView(R.layout.activity_splash);
         initView();
         initData();
-        this.bundle = getIntent().getExtras();
-        this.yinshengBundle = getIntent().getBundleExtra("yinsheng");
 
         mShow.setText("正在支付中...");
 
-        if (bundle != null) {
-            lakalaPay();
-        }
 
-        if (yinshengBundle != null) {
-            yinshengPay();
+        Bundle bu = getIntent().getExtras();
+        String posType = bu.getString("posType");
+
+//
+        switch (posType) {
+            case "拉卡拉": {
+                this.bundle = bu;
+                lakalaPay();
+
+                break;
+            }
+            case "银盛": {
+                this.yinshengBundle = bu;
+                yinshengPay();
+                break;
+            }
         }
 
 
@@ -63,12 +76,20 @@ public class LKLPayActivity extends Activity {
         startActivityForResult(intent, 1);
     }
 
+    public String changeY2F(String amount) {
+        StringTokenizer stringTokenizer = new StringTokenizer(amount, ".");
+
+        return stringTokenizer.nextToken();
+    }
+
     public void yinshengPay() {
+        String amount = this.changeY2F(this.yinshengBundle.getString("amount", "0"));
+
 
         Intent intent = new Intent();
         intent.setAction("com.ys.smartpos.pay.sdk");
         intent.putExtra("transType", 101);
-        intent.putExtra("amount", Long.parseLong(this.yinshengBundle.getString("amount")));
+        intent.putExtra("amount", Long.parseLong(amount));
         intent.putExtra("transAction", 1);
         intent.putExtra("orderBelongTo", this.yinshengBundle.getString("orderBelongTo"));
         intent.putExtra("orderId", this.yinshengBundle.getString("orderId"));

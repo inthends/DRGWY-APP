@@ -57,6 +57,11 @@ import TaskPage from '../navigator/xunjian/task';
 import XunJianDetailPage from '../navigator/xunjian/xunjian-detail';
 import SelectXunJianPerson from '../navigator/xunjian/select-xunjian';
 import StartXunJianPage from '../navigator/xunjian/start-xunjian';
+import XunJianPointDetailPage from '../navigator/xunjian/xunjian-point-detail';
+import XunjianBeforeStart from '../navigator/xunjian/xunjian-before-start';
+import YiQingPage from '../building/yiqing/yiqing';
+import YiQingInfoPage from '../building/yiqing/yiqing-info';
+import ChaoBiaoPage from '../navigator/chao-biao/chao-biao';
 
 
 const BuildingNavigator = createStackNavigator({
@@ -73,6 +78,9 @@ const BuildingNavigator = createStackNavigator({
     DetailBuilding: DetailBuildingPage,
     Buildings: BuildingsPage,
     Home: HomePage,
+    yiqing: YiQingPage,
+    yiqinginfo: YiQingInfoPage,
+    scanForHome: ScanOnly,
 
 
 });
@@ -123,8 +131,15 @@ const navigatorNavigator = createStackNavigator({
     xunjian: XunJianPage,
     xunjiantask: TaskPage,
     xunjianDetail: XunJianDetailPage,
+    xunjianPointDetail: XunJianPointDetailPage,
+    xunjianBeforeStart: XunjianBeforeStart,
+
     selectXunjian: SelectXunJianPerson,
     startxunjian: StartXunJianPage,
+    addTaskWork: AddWorkPage,
+    scanForWork: ScanOnly,
+    chaobiao: ChaoBiaoPage,
+
 
 
 });
@@ -156,7 +171,6 @@ const WorkNavigator = createStackNavigator({
     selectPaidanPerson: SelectPaiDanPerson,
     scanonly: ScanOnly,
     scandemo: ScanSS,
-
     Task: TaskListPage,
 
 

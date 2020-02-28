@@ -44,6 +44,7 @@ export default class FeeDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
+        // let room = common.getValueFromProps(this.props) || {id:'FY-XHF-01-0101'};
         let room = common.getValueFromProps(this.props);
         console.log('room', room);
         this.state = {
