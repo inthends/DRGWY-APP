@@ -9,6 +9,7 @@ import {connect} from 'react-redux';
 import NoDataView from '../../components/no-data-view';
 import CommonView from '../../components/CommonView';
 import {saveUser} from '../../utils/store/actions/actions';
+import JPush from 'jpush-react-native';
 
 class BuildingPage extends BasePage {
     // static navigationOptions = ({navigation}) => {
@@ -50,8 +51,6 @@ class BuildingPage extends BasePage {
                     let address = obj.state.params;
 
                 }
-
-
             },
         );
     }

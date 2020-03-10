@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Image, Dimensions, Text, TouchableOpacity} from 'react-native';
+import {Image, Dimensions, Text, TouchableOpacity, DeviceEventEmitter} from 'react-native';
 import {
     createBottomTabNavigator,
     createAppContainer,
@@ -62,6 +62,8 @@ import XunjianBeforeStart from '../navigator/xunjian/xunjian-before-start';
 import YiQingPage from '../building/yiqing/yiqing';
 import YiQingInfoPage from '../building/yiqing/yiqing-info';
 import ChaoBiaoPage from '../navigator/chao-biao/chao-biao';
+import NewsList from '../work/news-list';
+
 
 
 const BuildingNavigator = createStackNavigator({
@@ -81,8 +83,19 @@ const BuildingNavigator = createStackNavigator({
     yiqing: YiQingPage,
     yiqinginfo: YiQingInfoPage,
     scanForHome: ScanOnly,
+    newsList: NewsList,
+}, {
 
+    containerOptions: (options) => {
+        const {navigation} = options;
 
+        DeviceEventEmitter.emit('currentNavigation',navigation);
+
+        console.log('navigation 对象', navigation);
+        return {
+            options,
+        };
+    },
 });
 BuildingNavigator.navigationOptions = ({navigation}) => ({
     tabBarVisible: navigation.state.index === 0,
@@ -139,7 +152,7 @@ const navigatorNavigator = createStackNavigator({
     addTaskWork: AddWorkPage,
     scanForWork: ScanOnly,
     chaobiao: ChaoBiaoPage,
-
+    newsList: NewsList,
 
 
 });
@@ -172,6 +185,7 @@ const WorkNavigator = createStackNavigator({
     scanonly: ScanOnly,
     scandemo: ScanSS,
     Task: TaskListPage,
+    newsList: NewsList,
 
 
 });
@@ -189,6 +203,7 @@ const MineNavigator = createStackNavigator({
     Person: PersonInfoPage,
     Setting: SettingPage,
     ModifyPsd: ModifyPsdPage,
+    newsList: NewsList,
 });
 MineNavigator.navigationOptions = ({navigation}) => ({
     tabBarVisible: navigation.state.index === 0,
@@ -256,44 +271,52 @@ const tabbar = createBottomTabNavigator({
         },
 
     },
-    defaultNavigationOptions: ({navigation}) => ({
-        tabBarIcon: ({focused, horizontal, tintColor}) => {
-            const {routeName} = navigation.state;
-            let imageUrl;
-            if (routeName === 'Building') {
-                if (focused) {
-                    imageUrl = require('../../static/images/tabbar/ly_h.png');
+    defaultNavigationOptions: ({navigation}) => {
+        if (navigation.isFocused()) {
+            console.log('navigation 对象', navigation);
+            DeviceEventEmitter.emit('currentNavigation',navigation);
+        }
+
+        return {
+
+            tabBarIcon: ({focused, horizontal, tintColor}) => {
+                const {routeName} = navigation.state;
+                let imageUrl;
+                if (routeName === 'Building') {
+                    if (focused) {
+                        imageUrl = require('../../static/images/tabbar/ly_h.png');
+                    } else {
+                        imageUrl = require('../../static/images/tabbar/ly_n.png');
+                    }
+                } else if (routeName === 'Navigator') {
+                    if (focused) {
+                        imageUrl = require('../../static/images/tabbar/dh_h.png');
+                    } else {
+                        imageUrl = require('../../static/images/tabbar/dh_n.png');
+                    }
+                } else if (routeName === 'Work') {
+                    if (focused) {
+                        imageUrl = require('../../static/images/tabbar/gz_h.png');
+                    } else {
+                        imageUrl = require('../../static/images/tabbar/gz_n.png');
+                    }
                 } else {
-                    imageUrl = require('../../static/images/tabbar/ly_n.png');
+                    if (focused) {
+                        imageUrl = require('../../static/images/tabbar/me_h.png');
+                    } else {
+                        imageUrl = require('../../static/images/tabbar/me_n.png');
+                    }
                 }
-            } else if (routeName === 'Navigator') {
-                if (focused) {
-                    imageUrl = require('../../static/images/tabbar/dh_h.png');
-                } else {
-                    imageUrl = require('../../static/images/tabbar/dh_n.png');
-                }
-            } else if (routeName === 'Work') {
-                if (focused) {
-                    imageUrl = require('../../static/images/tabbar/gz_h.png');
-                } else {
-                    imageUrl = require('../../static/images/tabbar/gz_n.png');
-                }
-            } else {
-                if (focused) {
-                    imageUrl = require('../../static/images/tabbar/me_h.png');
-                } else {
-                    imageUrl = require('../../static/images/tabbar/me_n.png');
-                }
-            }
 
 
-            // You can return any component that you like here!
-            return <Image
-                style={{width: 15, height: 18}}
-                source={imageUrl}
-            />;
-        },
-    }),
+                // You can return any component that you like here!
+                return <Image
+                    style={{width: 15, height: 18}}
+                    source={imageUrl}
+                />;
+            },
+        };
+    },
 
 });
 const {width, height} = Dimensions.get('window');

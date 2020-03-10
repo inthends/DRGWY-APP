@@ -10,4 +10,7 @@ export default {
         let oldPassword = common.jiami(old);
         return api.postData('/api/MobileMethod/ChangePassword', {password, oldPassword});
     },
+    logout() {
+        return api.postData('/api/MobileMethod/MLogout', {}, false);
+    },
 };

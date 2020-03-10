@@ -3,6 +3,11 @@ package com.statistics;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+
+import cn.jiguang.plugins.push.JPushModule;
+import cn.jiguang.plugins.push.JPushPackage;
+
+import com.microsoft.codepush.react.CodePush;
 import com.github.reactnativecommunity.location.RNLocationPackage;
 import com.reactnativecommunity.rnpermissions.RNPermissionsPackage;
 
@@ -29,6 +34,7 @@ import java.util.List;
 public class MainApplication extends Application implements ReactApplication {
 
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+
         @Override
         public boolean getUseDeveloperSupport() {
             return BuildConfig.DEBUG;
@@ -38,6 +44,7 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+                    new JPushPackage(),
                     new RNLocationPackage(),
                     new RNPermissionsPackage(),
                     new RNCameraPackage(),
@@ -67,7 +74,8 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        YSSDKManager.login(getApplicationContext(),"95E1926350CD95EF0F1C065190092F23");
+        YSSDKManager.login(getApplicationContext(), "95E1926350CD95EF0F1C065190092F23");
         SoLoader.init(this, /* native exopackage */ false);
+        JPushModule.registerActivityLifecycle(this);
     }
 }

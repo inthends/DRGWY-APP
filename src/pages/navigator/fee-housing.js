@@ -66,7 +66,7 @@ class FeeHousePage extends BasePage {
 
 
     getList = () => {
-        NavigatorService.getFeeStatistics(this.state.pageIndex,this.state.selectBuilding ? this.state.selectBuilding.key : '').then(dataInfo => {
+        NavigatorService.getFeeStatistics(this.state.pageIndex, this.state.selectBuilding ? this.state.selectBuilding.key : '').then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -128,7 +128,7 @@ class FeeHousePage extends BasePage {
                             <LoadImage img={item.mainpic} style={styles.image}/>
                         </Flex>
                         <Flex direction="column" style={styles.right}>
-                            <Flex  style={styles.item}>
+                            <Flex style={styles.item}>
                                 <Text style={styles.name}>{item.name}</Text>
                             </Flex>
                             <Flex justify={'between'} style={{width: '100%', paddingRight: 20}}>
@@ -158,30 +158,30 @@ class FeeHousePage extends BasePage {
         const {selectBuilding} = this.props;
         // console.log('selet', selectBuilding);
         return (
+            <View style={{flex: 1}}>
+                <CommonView style={{flex: 1}}>
+                    <View style={{flex: 1}}>
+                        <FlatList
+                            data={dataInfo.data}
+                            // ListHeaderComponent={}
+                            renderItem={this._renderItem}
+                            keyExtractor={(item, index) => item.id}
+                            refreshing={this.state.refreshing}
+                            onRefresh={() => this.onRefresh()}
+                            onEndReached={() => this.loadMore()}
+                            onEndReachedThreshold={0.1}
+                            ItemSeparatorComponent={() => <View style={{backgroundColor: '#eee', height: 1}}/>}
+                            onScrollBeginDrag={() => this.canAction = true}
+                            onScrollEndDrag={() => this.canAction = false}
+                            onMomentumScrollBegin={() => this.canAction = true}
+                            onMomentumScrollEnd={() => this.canAction = false}
+                            ListEmptyComponent={<NoDataView/>}
+                        />
+                    </View>
+                </CommonView>
 
+            </View>
 
-            <CommonView style={{flex: 1}}>
-
-
-                <FlatList
-                    data={dataInfo.data}
-                    // ListHeaderComponent={}
-                    renderItem={this._renderItem}
-                    keyExtractor={(item, index) => item.id}
-                    refreshing={this.state.refreshing}
-                    onRefresh={() => this.onRefresh()}
-                    onEndReached={() => this.loadMore()}
-                    onEndReachedThreshold={0}
-                    ItemSeparatorComponent={() => <View style={{backgroundColor: '#eee', height: 1}}/>}
-                    onScrollBeginDrag={() => this.canAction = true}
-                    onScrollEndDrag={() => this.canAction = false}
-                    onMomentumScrollBegin={() => this.canAction = true}
-                    onMomentumScrollEnd={() => this.canAction = false}
-                    ListEmptyComponent={<NoDataView/>}
-                />
-
-
-            </CommonView>
 
         );
     }
@@ -250,13 +250,12 @@ const styles = StyleSheet.create({
 
     left: {
         flex: 1,
-        paddingLeft: 15
+        paddingLeft: 15,
 
 
     },
     right: {
         flex: 3,
-
 
 
         marginLeft: 20,
@@ -271,7 +270,7 @@ const styles = StyleSheet.create({
     name: {
         fontSize: 18,
         fontWeight: '600',
-        paddingBottom:15,
+        paddingBottom: 15,
     },
     area: {
         color: Macro.color_636470,

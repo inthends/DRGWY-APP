@@ -2,11 +2,12 @@ import React from 'react';
 import {View, Text, Button, TouchableWithoutFeedback, TouchableOpacity, StyleSheet} from 'react-native';
 import BasePage from '../base/base';
 import {Icon} from '@ant-design/react-native';
-import {List, WhiteSpace, Flex, TextareaItem, Switch,ActionSheet} from '@ant-design/react-native';
+import {List, WhiteSpace, Flex, TextareaItem, Switch, ActionSheet} from '@ant-design/react-native';
 import ScreenUtil from '../../utils/screen-util';
 import LoadImage from '../../components/load-image';
 import Macro from '../../utils/macro';
 import ManualAction from '../../utils/store/actions/manual-action';
+import MineService from './mine-service';
 
 
 export default class SettingPage extends BasePage {
@@ -38,7 +39,7 @@ export default class SettingPage extends BasePage {
     logout = () => {
         this.showActionSheet();
 
-    }
+    };
     showActionSheet = () => {
         const BUTTONS = [
             '确认退出',
@@ -54,9 +55,10 @@ export default class SettingPage extends BasePage {
             },
             buttonIndex => {
                 if (buttonIndex === 0) {
+                    MineService.logout();
                     ManualAction.saveTokenByStore(null);
                 }
-            }
+            },
         );
     };
 
@@ -64,18 +66,18 @@ export default class SettingPage extends BasePage {
         const {data} = this.state;
         return (
             <View style={{backgroundColor: '#E8E8E8', flex: 1}}>
-                <List renderHeader={<View style={{height:10}}/>}>
+                <List renderHeader={<View style={{height: 10}}/>}>
                     <List.Item extra={<Switch color='#447FEA' checked={this.state.checked}
-                                              onChange={checked=>this.setState({checked})}/>}>
-                        <Flex style={{height:40}}>
-                            <Text style={{color:'#666',fontSize:16}}>消息推送</Text>
+                                              onChange={checked => this.setState({checked})}/>}>
+                        <Flex style={{height: 40}}>
+                            <Text style={{color: '#666', fontSize: 16}}>消息推送</Text>
                         </Flex>
                     </List.Item>
                 </List>
-                <List renderHeader={<View style={{height:10}}/>}>
-                    <TouchableWithoutFeedback onPress={()=>this.logout()}>
-                        <Flex justify={'center'} style={{height:50}}>
-                            <Text style={{color:Macro.work_blue,fontSize:16}}>退出登录</Text>
+                <List renderHeader={<View style={{height: 10}}/>}>
+                    <TouchableWithoutFeedback onPress={() => this.logout()}>
+                        <Flex justify={'center'} style={{height: 50}}>
+                            <Text style={{color: Macro.work_blue, fontSize: 16}}>退出登录</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
 

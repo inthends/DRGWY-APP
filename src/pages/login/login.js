@@ -1,5 +1,5 @@
-import React, {Component,Fragment} from 'react';
-import {View, StyleSheet, Text,TouchableWithoutFeedback,Keyboard} from 'react-native';
+import React, {Component, Fragment} from 'react';
+import {View, StyleSheet, Text, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import BasePage from '../base/base';
 import {Button, InputItem, List} from '@ant-design/react-native';
 import LoginService from './login-service';
@@ -8,6 +8,8 @@ import {connect} from 'react-redux';
 import LoadImage from '../../components/load-image';
 import ScreenUtil from '../../utils/screen-util';
 import Macro from '../../utils/macro';
+import JPush from 'jpush-react-native';
+import UDAlert from '../../utils/UDAlert';
 
 class LoginPage extends BasePage {
 
@@ -20,6 +22,12 @@ class LoginPage extends BasePage {
 
     componentDidMount(): void {
 
+        JPush.getRegistrationID(result => {
+                this.setState({
+                    registration_id: result.registerID,
+                });
+            },
+        );
     }
 
     // componentWillMount() {
@@ -48,11 +56,11 @@ class LoginPage extends BasePage {
     // }
 
     login = () => {
-        const {username, password, usercode} = this.state;
+        const {username, password, usercode, registration_id} = this.state;
 
         LoginService.getServiceUrl(usercode).then(res => {
             this.props.saveUrl(res);
-            LoginService.login(username, password, usercode).then(res => {
+            LoginService.login(username, password, registration_id).then(res => {
                 console.log(1, res);
                 this.props.saveNameAndPsd({...this.state});
                 this.props.saveToken(res);
@@ -68,7 +76,7 @@ class LoginPage extends BasePage {
     render() {
         return (
             <Fragment>
-                <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
+                <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                     <View style={styles.content}>
                         <LoadImage style={{width: 120, height: 120, borderRadius: 5, marginBottom: 50}}
                                    img={require('../../static/images/logo.png')}/>

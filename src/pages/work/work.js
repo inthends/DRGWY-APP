@@ -13,10 +13,13 @@ import LoadImage from '../../components/load-image';
 import WorkService from './work-service';
 import Macro from '../../utils/macro';
 import CommonView from '../../components/CommonView';
+import JPush from 'jpush-react-native';
 
 
 export default class WorkPage extends BasePage {
-    static navigationOptions = ({navigation}) => {
+    static navigationOptions = options => {
+        const {navigation} = options;
+        const params = navigation.state.params;
         return {
             title: '工作台',
             headerTitleStyle: {
@@ -42,13 +45,22 @@ export default class WorkPage extends BasePage {
                 </Fragment>
             ),
             headerRight: (
-                <TouchableWithoutFeedback>
-                    <Flex direction='column' style={{marginRight: 20}}>
-                        <LoadImage defaultImg={require('../../static/images/qiandao.png')}
-                                   style={{width: 19, height: 20}}/>
-                        <Text style={styles.button}>签到</Text>
-                    </Flex>
-                </TouchableWithoutFeedback>
+                <Fragment>
+                    <TouchableWithoutFeedback onPress={() => navigation.push('newsList')}>
+                        <Flex direction='column' style={{marginRight: 20}}>
+                            <Text style={styles.buttonInfo}>{params ? params.news : 0}</Text>
+                            <Text style={styles.button}>消息</Text>
+                        </Flex>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback>
+                        <Flex direction='column' style={{marginRight: 20}}>
+                            <LoadImage defaultImg={require('../../static/images/qiandao.png')}
+                                       style={{width: 19, height: 20}}/>
+                            <Text style={styles.button}>签到</Text>
+                        </Flex>
+                    </TouchableWithoutFeedback>
+                </Fragment>
+
             ),
         };
     };
@@ -60,6 +72,7 @@ export default class WorkPage extends BasePage {
             count: 0,
             refreshing: false,
             data: {},
+            news: '0',
         };
     }
 
@@ -73,6 +86,13 @@ export default class WorkPage extends BasePage {
                     this.setState({
                         data,
                         showLoading: false,
+                    });
+                });
+                WorkService.unreadCount().then(news => {
+                    this.props.navigation.setParams({news});
+                    JPush.setBadge({
+                        badge: news,
+                        appBadge: news,
                     });
                 });
             },
@@ -286,6 +306,12 @@ const styles = StyleSheet.create({
         color: '#2C2C2C',
         fontSize: 8,
         paddingTop: 4,
+
+    },
+    buttonInfo: {
+        color: Macro.color_FA3951,
+        fontSize: 16,
+        // paddingTop: 4,
 
     },
     card: {

@@ -16,7 +16,8 @@
     "build-ios": "node node_modules/react-native/local-cli/cli.js bundle --entry-file index.js --platform ios --dev false --bundle-output ./ios/bundle/index.jsbundle --assets-dest ./ios/bundle",
     "fix": "npx jetify",
     "update": "rm -rf node_modules && npm cache clean --force && npm install",
-    "react-devtools": "react-devtools"
+    "react-devtools": "react-devtools",
+    "push": "git add . && git commit -m edit && git push"
   },
   "dependencies": {
     "@ant-design/icons-react-native": "^1.0.2",
@@ -25,13 +26,17 @@
     "@types/react": "^16.9.17",
     "acorn": "^6.0.0",
     "axios": "^0.19.0",
+    "cross-env": "^7.0.0",
     "eslint": "^6.3.0",
+    "jcore-react-native": "^1.7.5",
+    "jpush-react-native": "^2.7.5",
     "native-echarts": "^0.5.0",
     "node-forge": "^0.9.0",
     "react": "^16.8.3",
     "react-native": "0.59.0",
     "react-native-audio": "^4.3.0",
     "react-native-camera": "^3.6.0",
+    "react-native-code-push": "^5.6.0",
     "react-native-drawer": "^2.5.1",
     "react-native-echarts-wrapper": "^2.0.0",
     "react-native-gesture-handler": "^1.4.1",

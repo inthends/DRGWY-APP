@@ -94,6 +94,16 @@ export default {
     },
     paidan(keyValue, receiverName, receiverId) {
         return api.postData('/api/MobileMethod/MRepairDispatch', {keyValue, receiverName, receiverId});
-    }
+    },
+    unreadCount() {
+        return api.getData('/api/MobileMethod/MGetUnReadNewsCount', {}, false);
+    },
+    unreadList(pageIndex, showLoading) {
+        return api.postData('/api/MobileMethod/MGetNewsPageList', {pageIndex, pageSize: 10}, showLoading);
+    },
+    readNews(newsId) {
+        return api.postData('/api/MobileMethod/MReadNews', {newsId});
+    },
+
 
 };

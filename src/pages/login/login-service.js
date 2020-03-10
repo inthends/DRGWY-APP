@@ -3,11 +3,11 @@ import common from '../../utils/common';
 import forge from 'node-forge';
 
 export default {
-    login(username, psd) {
+    login(username, psd, registration_id) {
         let password = common.jiami(psd);
-        return api.postData('/api/MobileMethod/MCheckLogin', {username, password});
+        return api.postData('/api/MobileMethod/MCheckLogin', {username, password, registration_id});
     },
     getServiceUrl(usercode) {
-        return api.getData('/api/Mobile/GetServerUrl',{usercode});
-    }
+        return api.getData('/api/Mobile/GetServerUrl', {usercode});
+    },
 };
