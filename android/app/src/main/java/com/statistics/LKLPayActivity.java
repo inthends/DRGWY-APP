@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -83,23 +82,65 @@ public class LKLPayActivity extends Activity {
     }
 
     public void yinshengPay() {
-        String amount = this.changeY2F(this.yinshengBundle.getString("amount", "0"));
+
+        int transType = this.yinshengBundle.getInt("transType");
+//        mShow.setText(String.valueOf(transType));
+        String amount = this.yinshengBundle.getString("amount", "0");
 
 
-        Intent intent = new Intent();
-        intent.setAction("com.ys.smartpos.pay.sdk");
-        intent.putExtra("transType", 101);
-        intent.putExtra("amount", Long.parseLong(amount));
-        intent.putExtra("transAction", 1);
-        intent.putExtra("orderBelongTo", this.yinshengBundle.getString("orderBelongTo"));
-        intent.putExtra("orderId", this.yinshengBundle.getString("orderId"));
-        intent.putExtra("createOrderRemark", this.yinshengBundle.getString("createOrderRemark"));
-        intent.putExtra("syncFlag", "1");
-        intent.putExtra("notify_url", this.yinshengBundle.getString("notify_url"));
-        startActivityForResult(intent, 0);
+        try {
+            Intent intent = new Intent();
+            intent.setAction("com.ys.smartpos.pay.sdk");
+            intent.putExtra("transType", transType);
+            intent.putExtra("amount", Long.parseLong(amount));
+            intent.putExtra("transAction", 1);
+            intent.putExtra("orderBelongTo", this.yinshengBundle.getString("orderBelongTo"));
+            intent.putExtra("orderId", this.yinshengBundle.getString("orderId"));
+            intent.putExtra("printContent", this.yinshengBundle.getString("createOrderRemark"));
+            intent.putExtra("syncFlag", "1");
+            intent.putExtra("notify_url", this.yinshengBundle.getString("notify_url"));
+            startActivityForResult(intent, transType);
 
+        } catch (Exception e) {
+            mShow.setText(e.getMessage());
+        }
 
+//        String orderBelongTo = this.yinshengBundle.getString("orderBelongTo");
+//        String orderId = this.yinshengBundle.getString("orderId");
+//        Intent intent = this.getCommonIntent(orderBelongTo, orderId);
+//        intent.putExtra("amount", Long.parseLong(amount));
+//        callPay(intent, 1054, amount, orderBelongTo, orderId);
     }
+
+//    private void callPay(Intent intent, int transType, String amount, String orderBelongTo, String orderId) {
+//        intent.setAction("com.ys.smartpos.pay.sdk");
+//        intent.putExtra("transType", transType);
+//        mShow.setText("开始调用银盛支付" + " ___ " + amount + " __ " + orderBelongTo + " __ " + orderId);
+//
+//
+//
+//        startActivityForResult(intent, transType);
+//    }
+//
+//    private Intent getCommonIntent(String orderBelongTo, String getOrderId) {
+//        Intent intent = new Intent();
+////            String imgHexStr = ByteUtils.getHexStr(MainActivity.this, R.drawable.customerlogo);
+////            String imgHexStr_append = "image,300,200,1," + imgHexStr + "|";
+//        String qrcode = "qrCode,300,1,safsfd21423432dfdgf3ds3|";
+//        String barcode = "barCode,0,0,1,12345678|";
+//        String text = "text,0,1,扫码抢红包喽|";
+//        String printContent = "dottedline";
+////            printContent = barcode + qrcode + text + imgHexStr_append + printContent;
+//        intent.putExtra("transAction", 1); // 订单支付模式——必填参数
+//        intent.putExtra("orderBelongTo", orderBelongTo); // 订单支付模式——必填参数
+//        intent.putExtra("orderId", getOrderId); // 订单支付模式——必填参数
+//        intent.putExtra("syncFlag", "1"); // 订单支付模式——新版订单模式的标志位
+//        intent.putExtra("createOrderRemark", "remark");
+//        intent.putExtra("printContent", printContent);// 打印内容
+////            intent.putExtra("receiptLogo", imgHexStr);  // 小票logo
+////        intent.putExtra("bankCardType", "02");  // 借贷记标识
+//        return intent;
+//    }
 
     public Intent setComponent() {
         ComponentName component = new ComponentName(

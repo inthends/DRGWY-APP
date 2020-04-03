@@ -81,12 +81,13 @@ export default class WanChengListDetailPage extends BasePage {
                     statusName: detail.statusName,
                 },
             });
-        });
-        WorkService.serviceCommunicates(fuwu.id).then(res => {
-            this.setState({
-                communicates: res,
+            WorkService.serviceCommunicates(detail.relationId).then(res => {
+                this.setState({
+                    communicates: res,
+                });
             });
         });
+
         WorkService.serviceExtra(fuwu.id).then(images => {
             this.setState({
                 images,
@@ -95,7 +96,7 @@ export default class WanChengListDetailPage extends BasePage {
     };
     click = (handle) => {
         const {fuwu, type, value} = this.state;
-        if (handle === '回复' && !(value&&value.length > 0)) {
+        if (handle === '回复' && !(value && value.length > 0)) {
             UDToast.showInfo('请输入文字');
             return;
         }
@@ -115,7 +116,7 @@ export default class WanChengListDetailPage extends BasePage {
         this.setState({
             communicates: d,
         });
-    }
+    };
     cancel = () => {
         this.setState({
             visible: false,
@@ -160,8 +161,9 @@ export default class WanChengListDetailPage extends BasePage {
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every]}>
                             <Text style={styles.left}>关联单：</Text>
-                            <Text onPress={() => this.props.navigation.navigate('service', {data: {id: detail.relationId}})}
-                                  style={[styles.right, {color: Macro.color_4d8fcc}]}>{detail.serviceDeskCode}</Text>
+                            <Text
+                                onPress={() => this.props.navigation.navigate('service', {data: {id: detail.relationId}})}
+                                style={[styles.right, {color: Macro.color_4d8fcc}]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
                     <DashLine/>
@@ -183,13 +185,18 @@ export default class WanChengListDetailPage extends BasePage {
                     </View>
 
                     <TouchableWithoutFeedback onPress={() => this.click('完成维修')}>
-                        <Flex justify={'center'} style={[styles.ii,{width: '80%', marginLeft: '10%',marginRight: '10%', marginBottom: 20}, {backgroundColor: Macro.color_4d8fcc}]}>
+                        <Flex justify={'center'} style={[styles.ii, {
+                            width: '80%',
+                            marginLeft: '10%',
+                            marginRight: '10%',
+                            marginBottom: 20,
+                        }, {backgroundColor: Macro.color_4d8fcc}]}>
                             <Text style={styles.word}>完成维修</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
                     <Communicates communicateClick={this.communicateClick} communicates={communicates}/>
                 </ScrollView>
-                <Modal visible={this.state.visible} transparent={true}>
+                <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                                  imageUrls={this.state.images}/>
                 </Modal>

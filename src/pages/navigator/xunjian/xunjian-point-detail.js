@@ -91,7 +91,7 @@ export default class XunJianPointDetailPage extends BasePage {
                         <ListImages images={item.fileList} lookImage={this.lookImage}/>
                     </Flex>
                 ))}
-                <Modal visible={this.state.visible} transparent={true}>
+                <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                                  imageUrls={this.state.images}/>
                 </Modal>

@@ -14,13 +14,11 @@ export default {
     },
     //服务单详情
     serviceDetail(type, keyValue) {
-        let url = '/api/MobileMethod/MGetServicedeskEntity';
-        return api.getData(url, {keyValue});
-        // if (type === '报修') {
-        //     url = '/api/MobileMethod/MGetRepairEntity';
-        // } else if (type === '投诉') {
-        //     url = '/api/MobileMethod/MGetComplaintEntity';
-        // }
+        return api.getData('/api/MobileMethod/MGetServicedeskEntity', {keyValue});
+    },
+    //服务单附件
+    serviceExtra(keyValue) {
+        return api.getData('/api/MobileMethod/MGetFilesData', {keyValue});
     },
     //服务单操作
     serviceHandle(handle, keyValue, content, extra = null) {
@@ -53,13 +51,9 @@ export default {
         } else if (handle === '完成检验') {
             url = 'MRepairCheckFinish';
         }
-
         return api.postData(url, params);
     },
-    //服务单附件
-    serviceExtra(keyValue) {
-        return api.getData('/api/MobileMethod/MGetFilesData', {keyValue});
-    },
+
     serviceCommunicates(keyValue) {
         return api.getData('/api/MobileMethod/MGetCommunicates', {keyValue, pageIndex: 1, pageSize: 100});
     },
@@ -67,9 +61,17 @@ export default {
     weixiuDetail(keyValue) {
         return api.getData('/api/MobileMethod/MGetRepairEntity', {keyValue});
     },
+    //维修单附件
+    weixiuExtra(keyValue) {
+        return api.getData('/api/MobileMethod/MGetRepairFilesData', {keyValue});
+    },
     //投诉单详情
     tousuDetail(keyValue) {
         return api.getData('/api/MobileMethod/MGetComplaintEntity', {keyValue});
+    },
+    //投诉单附件
+    tousuExtra(keyValue) {
+        return api.getData('/api/MobileMethod/MGetComplaintFilesData', {keyValue});
     },
 
     //工作台列表

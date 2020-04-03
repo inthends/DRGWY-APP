@@ -41,7 +41,7 @@ export default class UploadImageView extends Component {
                     {images.map((item, index) => {
                         return (
                             <TouchableWithoutFeedback key={index} onPress={() => {
-                                if (index === images.length - 1 && item.icon.length === 0) {
+                                if (index === images.length - 1 && item.icon.includes('os.alipayobjects.com')) {
                                     this.selectImages();
                                 }
                             }}>

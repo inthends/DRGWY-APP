@@ -68,6 +68,10 @@ export default class FeeDetailPage extends BasePage {
             'didFocus',
             (obj) => {
                 this.onRefresh();
+                if (this.state.out_trade_no) {
+                    this.getOrderStatus(this.state.out_trade_no);
+                }
+
                 // if (obj.state.params) {
                 //     let address = obj.state.params.data;
                 //     NavigatorService.scanPay(address.a,address.b).then(res => {
@@ -104,28 +108,57 @@ export default class FeeDetailPage extends BasePage {
                         UDToast.showInfo('功能暂未开放，敬请期待！');
                     } else {
                         NavigatorService.createOrder(ids).then(res => {
-                            NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', res);
+                            NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
+                                ...res,
+                                transType: 101, //消费
+                            });
                         });
                     }
 
                     break;
                 }
                 case '扫码': {
-                    this.props.navigation.push('scan', {data: ids});
+                    NavigatorService.createOrder(ids).then(res => {
+                        let posType = res.posType;
+                        if (posType === '银盛') {
+                            this.setState({
+                                out_trade_no: res.out_trade_no,
+                            });
+                            NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
+                                ...res,
+                                transType: 1070, //pos机扫顾客
+                            });
+                        } else {
+                            this.props.navigation.push('scan', {data: ids});
+                        }
+                    });
                     break;
                 }
                 case '收款码': {
                     NavigatorService.createOrder(ids).then(res => {
-                        NavigatorService.qrcodePay(res.out_trade_no).then(code => {
-
+                        let posType = res.posType;
+                        if (posType === '银盛') {
                             this.setState({
-                                visible: true,
-                                cancel: false,
-                                code,
-                            }, () => {
-                                this.getOrderStatus(res.out_trade_no);
+                                out_trade_no: res.out_trade_no,
                             });
-                        });
+                            NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
+                                ...res,
+                                transType: 1054, //顾客扫pos机
+                            });
+                        } else {
+                            NavigatorService.qrcodePay(res.out_trade_no).then(code => {
+
+                                this.setState({
+                                    visible: true,
+                                    cancel: false,
+                                    code,
+                                }, () => {
+                                    this.getOrderStatus(res.out_trade_no);
+                                });
+                            });
+                        }
+
+
                     });
 
                     break;
@@ -202,6 +235,7 @@ export default class FeeDetailPage extends BasePage {
             visible: false,
             cancel: true,
             code: '',
+            out_trade_no: null,
         }, () => {
             this.onRefresh();
         });
@@ -298,6 +332,7 @@ export default class FeeDetailPage extends BasePage {
                 <Modal
                     transparent
                     onClose={this.onClose}
+                    onRequestClose={this.onClose}
                     maskClosable
                     visible={this.state.visible}
 

@@ -241,7 +241,7 @@ export default class FuWuDanListDetailPage extends BasePage {
                     <DashLine/>
                     <Communicates communicateClick={this.communicateClick} communicates={communicates}/>
                 </ScrollView>
-                <Modal visible={this.state.visible} transparent={true}>
+                <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                                  imageUrls={this.state.images}/>
                 </Modal>

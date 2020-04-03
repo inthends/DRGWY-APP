@@ -82,12 +82,13 @@ export default class JianYanListDetailPage extends BasePage {
                     statusName: detail.statusName,
                 },
             });
-        });
-        WorkService.serviceCommunicates(fuwu.id).then(res => {
-            this.setState({
-                communicates: res,
+            WorkService.serviceCommunicates(detail.relationId).then(res => {
+                this.setState({
+                    communicates: res,
+                });
             });
         });
+
         WorkService.serviceExtra(fuwu.id).then(images => {
             this.setState({
                 images,
@@ -202,7 +203,7 @@ export default class JianYanListDetailPage extends BasePage {
                     </TouchableWithoutFeedback>
                     <Communicates communicateClick={this.communicateClick} communicates={communicates}/>
                 </ScrollView>
-                <Modal visible={this.state.visible} transparent={true}>
+                <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                                  imageUrls={this.state.images}/>
                 </Modal>

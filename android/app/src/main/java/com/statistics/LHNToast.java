@@ -53,6 +53,7 @@ public class LHNToast extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void startActivityFromJS(String name, ReadableMap order) {
+
         try {
             Activity currentActivity = getCurrentActivity();
             if (null != currentActivity) {
@@ -70,6 +71,7 @@ public class LHNToast extends ReactContextBaseJavaModule {
                         bundle.putString("pay_tp", "0");
                         bundle.putString("proc_tp", "00");
                         bundle.putString("proc_cd", "000000");
+                        bundle.putInt("transType",order.getInt("transType"));
                         bundle.putString("appid", APPID);
                         bundle.putString("amt", order.getString("amt"));
                         bundle.putString("order_no", order.getString("order_no"));
@@ -90,6 +92,7 @@ public class LHNToast extends ReactContextBaseJavaModule {
                         bundle.putString("orderId", order.getString("orderId"));
                         bundle.putString("createOrderRemark", order.getString("createOrderRemark"));
                         bundle.putString("notify_url", order.getString("notify_url"));
+                        bundle.putInt("transType",order.getInt("transType"));
                         bundle.putString("posType", posType);
                         intent.putExtras(bundle);
                         currentActivity.startActivity(intent);

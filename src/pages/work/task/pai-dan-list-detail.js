@@ -85,12 +85,13 @@ export default class PaiDanListDetailPage extends BasePage {
                     statusName: detail.statusName,
                 },
             });
-        });
-        WorkService.serviceCommunicates(fuwu.id).then(res => {
-            this.setState({
-                communicates: res,
+            WorkService.serviceCommunicates(detail.relationId).then(res => {
+                this.setState({
+                    communicates: res,
+                });
             });
         });
+
         WorkService.serviceExtra(fuwu.id).then(images => {
             this.setState({
                 images,
@@ -105,7 +106,7 @@ export default class PaiDanListDetailPage extends BasePage {
                 this.props.navigation.goBack();
             })
         } else {
-            UDToast.showInfo('请选择派单人');
+            UDToast.showInfo('请选择接单人');
         }
 
     };
@@ -173,9 +174,9 @@ export default class PaiDanListDetailPage extends BasePage {
                         onPress={() => this.props.navigation.navigate('selectPaidanPerson', {onSelect: this.onSelect})}>
                         <Flex style={[styles.every]} justify='between'>
                             <Flex>
-                                <Text style={styles.left}>派单人：</Text>
+                                <Text style={styles.left}>接单人：</Text>
                                 <Text
-                                    style={[styles.right, {color: Macro.color_4d8fcc}]}>{selectPerson && selectPerson.name}</Text>
+                                    style={[styles.right, selectPerson ?{color: Macro.color_4d8fcc}:{color:'#666'} ]}>{selectPerson ? selectPerson.name : "请选择接单人"}</Text>
                             </Flex>
                             <LoadImage style={{width: 15, height: 15}}/>
                         </Flex>
@@ -208,7 +209,7 @@ export default class PaiDanListDetailPage extends BasePage {
                     </TouchableWithoutFeedback>
                     <Communicates communicateClick={this.communicateClick} communicates={communicates}/>
                 </ScrollView>
-                <Modal visible={this.state.visible} transparent={true}>
+                <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                                  imageUrls={this.state.images}/>
                 </Modal>
