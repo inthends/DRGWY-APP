@@ -14,21 +14,19 @@ import java.util.StringTokenizer;
 
 import androidx.annotation.Nullable;
 
-
 public class LKLPayActivity extends Activity {
     private Bundle bundle;
     private Bundle yinshengBundle;
     // 交易金额
-//    private EditText mMoneyEt;
+    // private EditText mMoneyEt;
     // 调用收单应用
-//    private Button mCall;
+    // private Button mCall;
     // 显示交易信息
     private TextView mShow;
     private Gson gson;
 
-
     // 订单号
-//    private EditText mOrderNo;
+    // private EditText mOrderNo;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,11 +36,10 @@ public class LKLPayActivity extends Activity {
 
         mShow.setText("正在支付中...");
 
-
         Bundle bu = getIntent().getExtras();
         String posType = bu.getString("posType");
 
-//
+        //
         switch (posType) {
             case "拉卡拉": {
                 this.bundle = bu;
@@ -56,7 +53,6 @@ public class LKLPayActivity extends Activity {
                 break;
             }
         }
-
 
     }
 
@@ -81,72 +77,75 @@ public class LKLPayActivity extends Activity {
         return stringTokenizer.nextToken();
     }
 
+    // 银盛正扫和反扫
     public void yinshengPay() {
 
         int transType = this.yinshengBundle.getInt("transType");
-//        mShow.setText(String.valueOf(transType));
-        String amount = this.yinshengBundle.getString("amount", "0");
-
+        // mShow.setText(String.valueOf(transType));
+        // String amount = this.yinshengBundle.getString("amount", "0");
 
         try {
+
             Intent intent = new Intent();
             intent.setAction("com.ys.smartpos.pay.sdk");
             intent.putExtra("transType", transType);
-            intent.putExtra("amount", Long.parseLong(amount));
+            // intent.putExtra("amount", Long.parseLong(amount));
+            intent.putExtra("amount", (long)this.yinshengBundle.getInt("amount"));
             intent.putExtra("transAction", 1);
             intent.putExtra("orderBelongTo", this.yinshengBundle.getString("orderBelongTo"));
-            intent.putExtra("orderId", this.yinshengBundle.getString("orderId"));
-            intent.putExtra("printContent", this.yinshengBundle.getString("createOrderRemark"));
+            intent.putExtra("orderId", this.yinshengBundle.getString("orderId"));// 客户订单号最大长度20
+            // intent.putExtra("printContent",
+            // this.yinshengBundle.getString("createOrderRemark"));
             intent.putExtra("syncFlag", "1");
-            intent.putExtra("notify_url", this.yinshengBundle.getString("notify_url"));
+            // intent.putExtra("notify_url", this.yinshengBundle.getString("notify_url"));
+            //mShow.setText("开始调用银盛支付" + "transType=" + transType + ",amount=" + (long)this.yinshengBundle.getInt("amount")+ ",orderBelongTo=" + this.yinshengBundle.getString("orderBelongTo") + ",orderId=" + this.yinshengBundle.getString("orderId"));
             startActivityForResult(intent, transType);
 
         } catch (Exception e) {
             mShow.setText(e.getMessage());
         }
 
-//        String orderBelongTo = this.yinshengBundle.getString("orderBelongTo");
-//        String orderId = this.yinshengBundle.getString("orderId");
-//        Intent intent = this.getCommonIntent(orderBelongTo, orderId);
-//        intent.putExtra("amount", Long.parseLong(amount));
-//        callPay(intent, 1054, amount, orderBelongTo, orderId);
+        // String orderBelongTo = this.yinshengBundle.getString("orderBelongTo");
+        // String orderId = this.yinshengBundle.getString("orderId");
+        // Intent intent = this.getCommonIntent(orderBelongTo, orderId);
+        // intent.putExtra("amount", Long.parseLong(amount));
+        // callPay(intent, 1054, amount, orderBelongTo, orderId);
     }
 
-//    private void callPay(Intent intent, int transType, String amount, String orderBelongTo, String orderId) {
-//        intent.setAction("com.ys.smartpos.pay.sdk");
-//        intent.putExtra("transType", transType);
-//        mShow.setText("开始调用银盛支付" + " ___ " + amount + " __ " + orderBelongTo + " __ " + orderId);
-//
-//
-//
-//        startActivityForResult(intent, transType);
-//    }
-//
-//    private Intent getCommonIntent(String orderBelongTo, String getOrderId) {
-//        Intent intent = new Intent();
-////            String imgHexStr = ByteUtils.getHexStr(MainActivity.this, R.drawable.customerlogo);
-////            String imgHexStr_append = "image,300,200,1," + imgHexStr + "|";
-//        String qrcode = "qrCode,300,1,safsfd21423432dfdgf3ds3|";
-//        String barcode = "barCode,0,0,1,12345678|";
-//        String text = "text,0,1,扫码抢红包喽|";
-//        String printContent = "dottedline";
-////            printContent = barcode + qrcode + text + imgHexStr_append + printContent;
-//        intent.putExtra("transAction", 1); // 订单支付模式——必填参数
-//        intent.putExtra("orderBelongTo", orderBelongTo); // 订单支付模式——必填参数
-//        intent.putExtra("orderId", getOrderId); // 订单支付模式——必填参数
-//        intent.putExtra("syncFlag", "1"); // 订单支付模式——新版订单模式的标志位
-//        intent.putExtra("createOrderRemark", "remark");
-//        intent.putExtra("printContent", printContent);// 打印内容
-////            intent.putExtra("receiptLogo", imgHexStr);  // 小票logo
-////        intent.putExtra("bankCardType", "02");  // 借贷记标识
-//        return intent;
-//    }
+    // private void callPay(Intent intent, int transType, String amount, String
+    // orderBelongTo, String orderId) {
+    // intent.setAction("com.ys.smartpos.pay.sdk");
+    // intent.putExtra("transType", transType);
+    // mShow.setText("开始调用银盛支付" + " ___ " + amount + " __ " + orderBelongTo + " __ "
+    // + orderId);
+
+    // startActivityForResult(intent, transType);
+    // }
+    //
+    // private Intent getCommonIntent(String orderBelongTo, String getOrderId) {
+    // Intent intent = new Intent();
+    //// String imgHexStr = ByteUtils.getHexStr(MainActivity.this,
+    // R.drawable.customerlogo);
+    //// String imgHexStr_append = "image,300,200,1," + imgHexStr + "|";
+    // String qrcode = "qrCode,300,1,safsfd21423432dfdgf3ds3|";
+    // String barcode = "barCode,0,0,1,12345678|";
+    // String text = "text,0,1,扫码抢红包喽|";
+    // String printContent = "dottedline";
+    //// printContent = barcode + qrcode + text + imgHexStr_append + printContent;
+    // intent.putExtra("transAction", 1); // 订单支付模式——必填参数
+    // intent.putExtra("orderBelongTo", orderBelongTo); // 订单支付模式——必填参数
+    // intent.putExtra("orderId", getOrderId); // 订单支付模式——必填参数
+    // intent.putExtra("syncFlag", "1"); // 订单支付模式——新版订单模式的标志位
+    // intent.putExtra("createOrderRemark", "remark");
+    // intent.putExtra("printContent", printContent);// 打印内容
+    //// intent.putExtra("receiptLogo", imgHexStr); // 小票logo
+    //// intent.putExtra("bankCardType", "02"); // 借贷记标识
+    // return intent;
+    // }
 
     public Intent setComponent() {
-        ComponentName component = new ComponentName(
-                "com.lkl.cloudpos.payment",
-                "com.lkl.cloudpos.payment.activity.MainMenuActivity"
-        );
+        ComponentName component = new ComponentName("com.lkl.cloudpos.payment",
+                "com.lkl.cloudpos.payment.activity.MainMenuActivity");
         Intent intent = new Intent();
         intent.setComponent(component);
         return intent;
@@ -178,14 +177,13 @@ public class LKLPayActivity extends Activity {
             // 附加数据
             String addword = data.getExtras().getString("adddataword");
             // 交易详情
-            TransactionEntity transactionEntity = gson.fromJson(data.getExtras()
-                    .getString("txndetail"), TransactionEntity.class);
+            TransactionEntity transactionEntity = gson.fromJson(data.getExtras().getString("txndetail"),
+                    TransactionEntity.class);
             switch (resultCode) {
                 // 支付成功
                 case Activity.RESULT_OK:
-                    mShow.setText("  应答码：" + msg_tp + "\n\r 检索参考号：" + refernumber
-                            + "\n\r 订单号：" + order_no + "\n\r 批次流水号：" + batchbillno
-                            + "\n\r 时间：" + time + "\n\r 附加数据域：" + addword + "\n\r ");
+                    mShow.setText("  应答码：" + msg_tp + "\n\r 检索参考号：" + refernumber + "\n\r 订单号：" + order_no
+                            + "\n\r 批次流水号：" + batchbillno + "\n\r 时间：" + time + "\n\r 附加数据域：" + addword + "\n\r ");
                     if (null != transactionEntity) {
                         mShow.append(transactionEntity.toString());
                     }
