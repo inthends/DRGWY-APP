@@ -87,7 +87,7 @@ public class LHNToast extends ReactContextBaseJavaModule {
                     }
                     case "银盛": {
                         // yinshengBundle 银盛支付参数
-                        bundle.putString("amount", order.getString("amount"));
+                        bundle.putInt("amount", order.getInt("amount"));
                         bundle.putString("orderBelongTo", order.getString("orderBelongTo"));
                         bundle.putString("orderId", order.getString("orderId"));
                         bundle.putString("createOrderRemark", order.getString("createOrderRemark"));

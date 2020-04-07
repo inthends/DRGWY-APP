@@ -23,7 +23,6 @@ import CommonView from '../../components/CommonView';
 import WorkService from '../work/work-service';
 
 
-
 export default class FeeRoomsPage extends BasePage {
     static navigationOptions = ({navigation}) => {
 
@@ -44,7 +43,7 @@ export default class FeeRoomsPage extends BasePage {
         let building = common.getValueFromProps(this.props);
         this.state = {
             building,
-            floors:[],
+            floors: [],
         };
 
     }
@@ -55,20 +54,20 @@ export default class FeeRoomsPage extends BasePage {
             'didFocus',
             (obj) => {
                 const {building} = this.state;
-                NavigatorService.getFloors(building.id).then(floors=>{
-                    const promises = floors.map(item=>{
-                        return NavigatorService.getRooms(item.id).then(rooms=>{
+                NavigatorService.getFloors(building.id).then(floors => {
+                    const promises = floors.map(item => {
+                        return NavigatorService.getRooms(item.id).then(rooms => {
                             return {
                                 ...item,
                                 rooms,
                             };
                         });
                     });
-                    Promise.all(promises).then(floors=>{
-                        console.log('floors',floors)
-                        this.setState({floors})
-                    })
-                })
+                    Promise.all(promises).then(floors => {
+                        console.log('floors', floors);
+                        this.setState({floors});
+                    });
+                });
             },
         );
     }
@@ -80,7 +79,9 @@ export default class FeeRoomsPage extends BasePage {
 
 
     render() {
-        const {floors,building} = this.state;
+        const {floors, building} = this.state;
+
+
         return (
 
 
@@ -88,19 +89,29 @@ export default class FeeRoomsPage extends BasePage {
                 <ScrollView>
                     <Text style={{paddingLeft: 15, paddingTop: 15, fontSize: 20}}>{building.allName}</Text>
 
-                    {floors.map(floor=>(
-                        <Flex key={floor.id} align={'start'} direction={'column'} >
+                    {floors.map(floor => (
+                        <Flex key={floor.id} align={'start'} direction={'column'}>
                             <Flex style={styles.bb}>
                                 <Text style={styles.se}>{floor.name}</Text>
                             </Flex>
                             <Flex wrap='wrap' style={{paddingLeft: 10, paddingRight: 10, marginTop: 10}}>
-                                {floor.rooms.map(room=>(
-                                    <TouchableWithoutFeedback key={room.id} onPress={() => this.props.navigation.push('feeDetail',{data:room})}>
-                                        <Flex style={[styles.item,room.isClear === true ? '' : styles.orange]} justify={'center'}>
-                                            <Text style={[styles.title,room.isClear === true ? '' : styles.orange]}>{room.name}</Text>
-                                        </Flex>
-                                    </TouchableWithoutFeedback>
-                                ))}
+                                {floor.rooms.map(room => {
+                                        let color = {};
+                                        if (room.color === 2) {
+                                            color = styles.orange;
+                                        } else if (room.color === 3) {
+                                            color = styles.blue74BAF1;
+                                        }
+                                        return (
+                                            <TouchableWithoutFeedback key={room.id}
+                                                                      onPress={() => this.props.navigation.push('feeDetail', {data: room})}>
+                                                <Flex style={[styles.item, color]} justify={'center'}>
+                                                    <Text style={[styles.title, color]}>{room.name}</Text>
+                                                </Flex>
+                                            </TouchableWithoutFeedback>
+                                        );
+                                    },
+                                )}
                             </Flex>
                         </Flex>
                     ))}
@@ -191,7 +202,7 @@ const styles = StyleSheet.create({
         marginRight: 5,
         marginLeft: 5,
         backgroundColor: '#eee',
-        color:'#666'
+        color: '#666',
     },
     name: {
         fontSize: Macro.font_16,
@@ -227,6 +238,10 @@ const styles = StyleSheet.create({
     },
     orange: {
         backgroundColor: Macro.color_f39d39,
+        color: '#fff',
+    },
+    blue74BAF1: {
+        backgroundColor: '#74BAF1',
         color: '#fff',
     },
 });

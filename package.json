@@ -6,7 +6,7 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "ios": "react-native run-ios --simulator \"iPhone XS Max\"",
+    "ios": "react-native run-ios --simulator \"iPhone 11 Pro Max\"",
     "ios6sp": "react-native run-ios --simulator \"iPhone 6s Plus\"",
     "a": "react-native run-android",
     "upload-a-windows": "cd android && gradlew myBuild && cd ..",
