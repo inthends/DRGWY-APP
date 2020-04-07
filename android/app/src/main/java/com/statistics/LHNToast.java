@@ -76,8 +76,7 @@ public class LHNToast extends ReactContextBaseJavaModule {
                         bundle.putString("amt", order.getString("amt"));
                         bundle.putString("order_no", order.getString("order_no"));
                         bundle.putString("notify_url", order.getString("notify_url"));
-                        bundle.putString("time_stamp",
-                                DateTimeUtil.getCurrentDate("yyyyMMddhhmmss"));
+                        bundle.putString("time_stamp",DateTimeUtil.getCurrentDate("yyyyMMddhhmmss"));
                         bundle.putString("order_info", order.getString("order_info"));
                         bundle.putString("print_info", order.getString("print_info"));
                         bundle.putString("posType", posType);
@@ -90,8 +89,8 @@ public class LHNToast extends ReactContextBaseJavaModule {
                         bundle.putInt("amount", order.getInt("amount"));
                         bundle.putString("orderBelongTo", order.getString("orderBelongTo"));
                         bundle.putString("orderId", order.getString("orderId"));
-                        bundle.putString("createOrderRemark", order.getString("createOrderRemark"));
-                        bundle.putString("notify_url", order.getString("notify_url"));
+                        // bundle.putString("createOrderRemark", order.getString("createOrderRemark"));
+                        // bundle.putString("notify_url", order.getString("notify_url"));
                         bundle.putInt("transType",order.getInt("transType"));
                         bundle.putString("posType", posType);
                         intent.putExtras(bundle);
