@@ -28,10 +28,12 @@ import javax.annotation.Nonnull;
 
 public class LHNToast extends ReactContextBaseJavaModule {
     private String APPID;
+    private String versionName;
 
     public LHNToast(ReactApplicationContext context) {
         super(context);
         APPID = Tool.getPackageName(context);
+        versionName = Tool.getPackageName(context);
 
     }
 
@@ -50,6 +52,13 @@ public class LHNToast extends ReactContextBaseJavaModule {
     public void login(String userName, String password, Callback successCallback) {
         successCallback.invoke(userName, password, "value");
     }
+
+    @ReactMethod
+    public void getVersionCode(Callback successCallback) {
+
+        successCallback.invoke(versionName);
+    }
+
 
     @ReactMethod
     public void startActivityFromJS(String name, ReadableMap order) {
@@ -71,12 +80,12 @@ public class LHNToast extends ReactContextBaseJavaModule {
                         bundle.putString("pay_tp", "0");
                         bundle.putString("proc_tp", "00");
                         bundle.putString("proc_cd", "000000");
-                        bundle.putInt("transType",order.getInt("transType"));
+                        bundle.putInt("transType", order.getInt("transType"));
                         bundle.putString("appid", APPID);
                         bundle.putString("amt", order.getString("amt"));
                         bundle.putString("order_no", order.getString("order_no"));
                         bundle.putString("notify_url", order.getString("notify_url"));
-                        bundle.putString("time_stamp",DateTimeUtil.getCurrentDate("yyyyMMddhhmmss"));
+                        bundle.putString("time_stamp", DateTimeUtil.getCurrentDate("yyyyMMddhhmmss"));
                         bundle.putString("order_info", order.getString("order_info"));
                         bundle.putString("print_info", order.getString("print_info"));
                         bundle.putString("posType", posType);
@@ -91,7 +100,7 @@ public class LHNToast extends ReactContextBaseJavaModule {
                         bundle.putString("orderId", order.getString("orderId"));
                         // bundle.putString("createOrderRemark", order.getString("createOrderRemark"));
                         // bundle.putString("notify_url", order.getString("notify_url"));
-                        bundle.putInt("transType",order.getInt("transType"));
+                        bundle.putInt("transType", order.getInt("transType"));
                         bundle.putString("posType", posType);
                         intent.putExtras(bundle);
                         currentActivity.startActivity(intent);

@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react';
-import {View, StyleSheet, FlatList} from 'react-native';
+import {View, StyleSheet, FlatList, NativeModules} from 'react-native';
 import BasePage from '../base/base';
 import BuildingHeader from '../../components/building/building-header';
 import BuildingCell from '../../components/building/build-cell';
@@ -38,7 +38,7 @@ class BuildingPage extends BasePage {
     }
 
     componentDidMount(): void {
-
+        NativeModules.LHNToast.getVersionCode(str => console.log(12, str));
         BuildingService.getUserInfo().then(res => {
             this.props.saveUser(res);
         });
