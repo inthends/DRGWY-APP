@@ -3,6 +3,7 @@ package com.statistics;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.songlcy.rnupgrade.UpgradePackage;
 
 import cn.jiguang.plugins.push.JPushModule;
 import cn.jiguang.plugins.push.JPushPackage;
@@ -44,6 +45,7 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new UpgradePackage(),
                     new JPushPackage(),
                     new RNLocationPackage(),
                     new RNPermissionsPackage(),

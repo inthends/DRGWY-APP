@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import {View, StyleSheet, Text, TouchableWithoutFeedback, Keyboard} from 'react-native';
+import {View, StyleSheet, Text, TouchableWithoutFeedback, Keyboard, NativeModules, Alert, Linking} from 'react-native';
 import BasePage from '../base/base';
 import {Button, InputItem, List} from '@ant-design/react-native';
 import LoginService from './login-service';
@@ -10,6 +10,10 @@ import ScreenUtil from '../../utils/screen-util';
 import Macro from '../../utils/macro';
 import JPush from 'jpush-react-native';
 import UDAlert from '../../utils/UDAlert';
+import {addDownListener, upgrade, checkUpdate} from 'rn-app-upgrade';
+import common from '../../utils/common';
+import UDToast from '../../utils/UDToast';
+import api from '../../utils/api';
 
 class LoginPage extends BasePage {
 
@@ -17,10 +21,18 @@ class LoginPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {...this.props.userInfo};
+        addDownListener((progress) => {
+            if (100 - progress <= 0.0001) {
+                UDToast.hiddenLoading(this.loading);
+                return;
+            }
+            this.loading = UDToast.showLoading('正在下载，已完成：' + progress + '%');
+        });
     }
 
 
     componentDidMount(): void {
+
 
         JPush.getRegistrationID(result => {
                 this.setState({
@@ -28,6 +40,10 @@ class LoginPage extends BasePage {
                 });
             },
         );
+    }
+
+    initUI() {
+
     }
 
     // componentWillMount() {

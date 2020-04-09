@@ -164,6 +164,7 @@ android {
 }
 
 dependencies {
+    implementation project(':rn-app-upgrade')
     implementation project(':jpush-react-native')
     implementation project(':jcore-react-native')
     implementation project(':react-native-code-push')

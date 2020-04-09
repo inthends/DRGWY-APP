@@ -268,14 +268,27 @@ export default {
         let formData = new FormData();
         for (let k in data) {
             let value = data[k] !== undefined ? data[k] : '';
-            if(typeof (value) ==='Object'){
+            if (typeof (value) === 'Object') {
                 formData.append(k, JSON.stringify(value));
             } else {
                 formData.append(k, value);
             }
         }
         return formData;
-    }
+    },
+    handlerVersionString(version) {
+        let versions = version.split('.');
+        let number = 0;
+        if (versions.length === 3) {
+            number = parseInt(versions[0]) * 10000 + parseInt(versions[1]) * 100 + parseInt(versions[2]);
+        } else {
+            number = parseInt(versions[0]) * 10000 + parseInt(versions[1]) * 100;
+        }
+        return number;
+    },
+    appId() {
+        return '1436002627';
+    },
 
 
 };

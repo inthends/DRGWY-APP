@@ -33,7 +33,7 @@ public class LHNToast extends ReactContextBaseJavaModule {
     public LHNToast(ReactApplicationContext context) {
         super(context);
         APPID = Tool.getPackageName(context);
-        versionName = Tool.getPackageName(context);
+        versionName = Tool.getPackageCode(context);
 
     }
 
@@ -58,6 +58,7 @@ public class LHNToast extends ReactContextBaseJavaModule {
 
         successCallback.invoke(versionName);
     }
+
 
 
     @ReactMethod

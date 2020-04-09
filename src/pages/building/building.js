@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react';
-import {View, StyleSheet, FlatList, NativeModules} from 'react-native';
+import {View, StyleSheet, FlatList, NativeModules, Alert, Linking} from 'react-native';
 import BasePage from '../base/base';
 import BuildingHeader from '../../components/building/building-header';
 import BuildingCell from '../../components/building/build-cell';
@@ -10,6 +10,14 @@ import NoDataView from '../../components/no-data-view';
 import CommonView from '../../components/CommonView';
 import {saveUser} from '../../utils/store/actions/actions';
 import JPush from 'jpush-react-native';
+import {
+    upgrade,
+    addDownListener,
+    checkUpdate,
+} from 'rn-app-upgrade';
+import UDToast from '../../utils/UDToast';
+import common from '../../utils/common';
+import api from '../../utils/api';
 
 class BuildingPage extends BasePage {
     // static navigationOptions = ({navigation}) => {
@@ -35,10 +43,85 @@ class BuildingPage extends BasePage {
             },
             refreshing: true,
         };
+        addDownListener((progress) => {
+            if (100 - progress <= 0.0001) {
+                UDToast.hiddenLoading(this.loading);
+                return;
+            }
+            this.loading = UDToast.showLoading('正在下载，已完成：' + progress + '%');
+        });
+        if (!common.isIOS()) {
+            NativeModules.LHNToast.getVersionCode((version) => {
+
+                api.getData('/api/Mobile/GetVersion', {}, true).then(res => {
+                    let netVersion = common.handlerVersionString(res.appVersionName);
+                    let localVersion = common.handlerVersionString(version);
+                    console.log(netVersion);
+                    console.log(localVersion);
+                    if (netVersion > localVersion) {
+                        Alert.alert(
+                            '发现有新版本',
+                            '是否更新？',
+                            [
+                                {
+                                    text: '取消',
+                                    onPress: () => this.initUI(),
+                                    style: 'cancel',
+                                },
+                                {
+                                    text: '确定',
+                                    onPress: () => {
+                                        upgrade(res.versionFile);
+                                    },
+                                },
+                            ],
+                            {cancelable: false},
+                        );
+
+                    } else {
+                        this.initUI();
+                    }
+                }).catch(() => {
+                    this.initUI();
+                });
+
+            });
+
+        } else {
+            this.initUI();
+            NativeModules.LHNToast.getVersionCode((err, version) => {
+                checkUpdate(common.appId(), version).then(IOSUpdateInfo => {
+                    if (IOSUpdateInfo.code === 1) {
+                        Alert.alert(
+                            '发现有新版本',
+                            '是否更新？',
+                            [
+                                {
+                                    text: '取消',
+                                    onPress: () => console.log('Cancel Pressed'),
+                                    style: 'cancel',
+                                },
+                                {
+                                    text: '确定',
+                                    onPress: () => {
+                                        if (Linking.canOpenURL('https://itunes.apple.com/app/id' + common.appId())) {
+                                            Linking.openURL('https://itunes.apple.com/app/id' + common.appId());
+                                        }
+                                    },
+                                },
+                            ],
+                            {cancelable: false},
+                        );
+
+                    }
+                });
+            });
+
+        }
     }
 
-    componentDidMount(): void {
-        NativeModules.LHNToast.getVersionCode(str => console.log(12, str));
+
+    initUI() {
         BuildingService.getUserInfo().then(res => {
             this.props.saveUser(res);
         });

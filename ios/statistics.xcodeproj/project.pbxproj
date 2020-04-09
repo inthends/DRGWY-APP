@@ -56,6 +56,8 @@
 		CEEA1A3A2971426F9DF23D55 /* libRNSound.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EFE8B506EAF44085ACE7F85A /* libRNSound.a */; };
 		D27A73D5FC1F435799FEC61E /* antoutline.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E7A2D59F5BD74A4F8DB1F896 /* antoutline.ttf */; };
 		D7B1DDAC0B5840F3B64AF71F /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98745D47695B4291AD5CC077 /* libRNGestureHandler.a */; };
+		DD160F3C243F1BBC004AEE76 /* ios_upgrade in Resources */ = {isa = PBXBuildFile; fileRef = DD160F04243F1BBB004AEE76 /* ios_upgrade */; };
+		DD160F3F243F1CF3004AEE76 /* LHNToast.m in Sources */ = {isa = PBXBuildFile; fileRef = DD160F3E243F1CF3004AEE76 /* LHNToast.m */; };
 		DD23E96F240E5002008579BA /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DD23E96E240E5002008579BA /* libresolv.tbd */; };
 		DD23E971240E5011008579BA /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD23E970240E5011008579BA /* UserNotifications.framework */; };
 		DD2EFB52233F775D004C2373 /* bundle in Resources */ = {isa = PBXBuildFile; fileRef = DD2EFB51233F775D004C2373 /* bundle */; };
@@ -528,6 +530,9 @@
 		CB2EFD934AD84496944E7CCE /* libRNAudio.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNAudio.a; sourceTree = "<group>"; };
 		CEA7461320464C98861567AF /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		CFB6B21F4D3A4FAE939684C1 /* libRNSVG-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNSVG-tvOS.a"; sourceTree = "<group>"; };
+		DD160F04243F1BBB004AEE76 /* ios_upgrade */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ios_upgrade; path = statistics/ios_upgrade; sourceTree = "<group>"; };
+		DD160F3D243F1CF3004AEE76 /* LHNToast.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LHNToast.h; path = statistics/LHNToast.h; sourceTree = "<group>"; };
+		DD160F3E243F1CF3004AEE76 /* LHNToast.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = LHNToast.m; path = statistics/LHNToast.m; sourceTree = "<group>"; };
 		DD23E96D240E21E8008579BA /* statistics.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = statistics.entitlements; path = statistics/statistics.entitlements; sourceTree = "<group>"; };
 		DD23E96E240E5002008579BA /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		DD23E970240E5011008579BA /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
@@ -706,6 +711,9 @@
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
+				DD160F3D243F1CF3004AEE76 /* LHNToast.h */,
+				DD160F3E243F1CF3004AEE76 /* LHNToast.m */,
+				DD160F04243F1BBB004AEE76 /* ios_upgrade */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
@@ -1644,6 +1652,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DD2EFB52233F775D004C2373 /* bundle in Resources */,
+				DD160F3C243F1BBC004AEE76 /* ios_upgrade in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				49F21772BEE740A593D6E0CA /* antfill.ttf in Resources */,
@@ -1712,6 +1721,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD160F3F243F1CF3004AEE76 /* LHNToast.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
