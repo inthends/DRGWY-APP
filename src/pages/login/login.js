@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import {View, StyleSheet, Text, TouchableWithoutFeedback, Keyboard, NativeModules, Alert, Linking} from 'react-native';
 import BasePage from '../base/base';
-import {Button, InputItem, List} from '@ant-design/react-native';
+import {Button, Flex, InputItem, List} from '@ant-design/react-native';
 import LoginService from './login-service';
 import {saveToken, saveUrl, saveUserNameAndPsd} from '../../utils/store/actions/actions';
 import {connect} from 'react-redux';
@@ -14,6 +14,7 @@ import {addDownListener, upgrade, checkUpdate} from 'rn-app-upgrade';
 import common from '../../utils/common';
 import UDToast from '../../utils/UDToast';
 import api from '../../utils/api';
+import NavigatorService from '../navigator/navigator-service';
 
 class LoginPage extends BasePage {
 
@@ -21,17 +22,12 @@ class LoginPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {...this.props.userInfo};
-        addDownListener((progress) => {
-            if (100 - progress <= 0.0001) {
-                UDToast.hiddenLoading(this.loading);
-                return;
-            }
-            this.loading = UDToast.showLoading('正在下载，已完成：' + progress + '%');
-        });
+
     }
 
 
     componentDidMount(): void {
+
 
 
         JPush.getRegistrationID(result => {
@@ -40,6 +36,18 @@ class LoginPage extends BasePage {
                 });
             },
         );
+
+        if (!common.isIOS()) {
+            NativeModules.LHNToast.getVersionCode((version) => {
+                this.setState({version});
+            });
+
+        } else {
+            NativeModules.LHNToast.getVersionCode((err, version) => {
+                this.setState({version});
+            });
+
+        }
     }
 
     initUI() {
@@ -90,6 +98,9 @@ class LoginPage extends BasePage {
 
 
     render() {
+        const {version} = this.state;
+
+
         return (
             <Fragment>
                 <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -140,6 +151,9 @@ class LoginPage extends BasePage {
                             </InputItem>
                         </List>
                         <Button onPress={() => this.login()} style={styles.login} type="primary">登陆</Button>
+                        <Flex>
+                            <Text style={styles.version}>版本号：{version}</Text>
+                        </Flex>
                     </View>
                 </TouchableWithoutFeedback>
             </Fragment>
@@ -162,6 +176,11 @@ const styles = StyleSheet.create({
         marginTop: 30,
         width: ScreenUtil.deviceWidth() - 60,
         backgroundColor: Macro.work_blue,
+    },
+    version: {
+        color: '#999',
+        fontSize: 12,
+        paddingTop: 60,
     },
 
 });

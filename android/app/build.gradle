@@ -107,7 +107,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "2.0.6"
+        versionName "2.1.2"
         missingDimensionStrategy 'react-native-camera', 'general'
         manifestPlaceholders = [
                 JPUSH_APPKEY : "996f9f0191243d335f473952",         //在此替换你的APPKey
@@ -185,6 +185,8 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation files('libs/gson-2.3.1.jar')
     implementation files('libs/yssdk-v2.0.2.jar')
+    implementation files('libs/LklMdxServiceAidl_V1.0.0.16659.0_20180928.jar')
+    implementation files('libs/LklPOSUtil.jar')
 
 }
 

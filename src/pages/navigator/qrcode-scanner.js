@@ -5,7 +5,7 @@ import {
     Text,
     TouchableOpacity,
     Linking,
-    ScrollView, View, Animated, Easing,
+    ScrollView, View, Animated, Easing, NativeModules,
 } from 'react-native';
 
 import QRCodeScanner from 'react-native-qrcode-scanner';
@@ -71,8 +71,10 @@ export default class ScanScreen extends Component {
             result,
         }, () => {
             let ids = common.getValueFromProps(this.props);
+            let callBack = common.getValueFromProps(this.props,'callBack');
             NavigatorService.createOrder(ids).then(res => {
-                NavigatorService.scanPay(result.data, res.out_trade_no).then(res => {
+                NavigatorService.scanPay(result.data, res.out_trade_no).then(resp => {
+                    callBack(res.out_trade_no);
                     this.props.navigation.goBack();
                 }).catch(() => {
                     this.setState({

@@ -293,18 +293,5 @@ const styles = StyleSheet.create({
         padding: 15,
     },
 });
-const mapStateToProps = ({buildingReducer}) => {
-    return {
-        selectBuilding: buildingReducer.selectBuilding,
-    };
-};
-const mapDispatchToProps = (dispatch) => {
-    return {
-        saveUser(user) {
-            dispatch(saveUser(user));
-        },
-    };
-};
 
-// export default connect(mapStateToProps, mapDispatchToProps)(NewsList);
 export default NewsList;

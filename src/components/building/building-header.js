@@ -1,9 +1,10 @@
 import React, {Fragment} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, NativeModules} from 'react-native';
 import BasePage from '../../pages/base/base';
 import Macro from '../../utils/macro';
 import {Button, Flex, WhiteSpace, WingBlank} from '@ant-design/react-native';
 import {Icon} from '@ant-design/react-native';
+import NavigatorService from '../../pages/navigator/navigator-service';
 
 
 export default class BuildingHeader extends BasePage {
@@ -31,7 +32,6 @@ export default class BuildingHeader extends BasePage {
                         },
                     });
                 },
-
             },
         });
     };

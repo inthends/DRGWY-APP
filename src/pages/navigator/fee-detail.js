@@ -26,7 +26,7 @@ import QRCode from 'react-native-qrcode-svg';
 import CommonView from '../../components/CommonView';
 
 
-export default class FeeDetailPage extends BasePage {
+class FeeDetailPage extends BasePage {
     static navigationOptions = ({navigation}) => {
 
         console.log(1, navigation);
@@ -58,6 +58,7 @@ export default class FeeDetailPage extends BasePage {
             visible: false,
             code: '',
             price: '0.00',
+            needPrint: false,
         };
 
     }
@@ -68,7 +69,7 @@ export default class FeeDetailPage extends BasePage {
             'didFocus',
             (obj) => {
                 this.onRefresh();
-                if (this.state.out_trade_no) {
+                if (this.state.out_trade_no && this.state.visible === false) {
                     this.getOrderStatus(this.state.out_trade_no);
                 }
 
@@ -92,6 +93,15 @@ export default class FeeDetailPage extends BasePage {
     componentWillUnmount(): void {
         this.viewDidAppear.remove();
     }
+
+    callBack = (out_trade_no) => {
+        NavigatorService.printInfo(out_trade_no).then(res => {
+            NativeModules.LHNToast.printTicket({
+                ...res,
+                username: this.props.userInfo && this.props.userInfo.username,
+            });
+        });
+    };
 
 
     click = (title) => {
@@ -129,7 +139,10 @@ export default class FeeDetailPage extends BasePage {
                                 transType: 1070, //pos机扫顾客
                             });
                         } else {
-                            this.props.navigation.push('scan', {data: ids});
+                            this.props.navigation.push('scan', {
+                                data: ids,
+                                callBack: this.callBack,
+                            });
                         }
                     });
                     break;
@@ -147,11 +160,11 @@ export default class FeeDetailPage extends BasePage {
                             });
                         } else {
                             NavigatorService.qrcodePay(res.out_trade_no).then(code => {
-
                                 this.setState({
                                     visible: true,
                                     cancel: false,
                                     code,
+                                    needPrint: true,
                                 }, () => {
                                     this.getOrderStatus(res.out_trade_no);
                                 });
@@ -177,7 +190,13 @@ export default class FeeDetailPage extends BasePage {
                                 text: '确定',
                                 onPress: () => {
                                     NavigatorService.cashPay(ids).then(res => {
-                                        this.onRefresh();
+                                        NavigatorService.cashPayPrint(ids).then(res => {
+                                            NativeModules.LHNToast.printTicket({
+                                                ...res,
+                                                username: this.props.userInfo && this.props.userInfo.username,
+                                            });
+                                        });
+
                                     });
                                 },
                             },
@@ -236,6 +255,7 @@ export default class FeeDetailPage extends BasePage {
             cancel: true,
             code: '',
             out_trade_no: null,
+            needPrint: false,
         }, () => {
             this.onRefresh();
         });
@@ -245,6 +265,15 @@ export default class FeeDetailPage extends BasePage {
         clearTimeout(this.timeOut);
         NavigatorService.orderStatus(out_trade_no).then(res => {
             if (res) {
+                if (this.state.needPrint) {
+                    NavigatorService.printInfo(out_trade_no).then(res => {
+                        NativeModules.LHNToast.printTicket({
+                            ...res,
+                            username: this.props.userInfo && this.props.userInfo.username,
+                        });
+                    });
+                }
+
                 this.onClose();
             } else {
                 if (!this.state.cancel) {
@@ -475,3 +504,9 @@ const styles = StyleSheet.create({
 
     },
 });
+
+const mapStateToProps = ({memberReducer}) => {
+    return {userInfo: memberReducer.userInfo};
+};
+
+export default connect(mapStateToProps)(FeeDetailPage);

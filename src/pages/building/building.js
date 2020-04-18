@@ -18,6 +18,7 @@ import {
 import UDToast from '../../utils/UDToast';
 import common from '../../utils/common';
 import api from '../../utils/api';
+import NavigatorService from '../navigator/navigator-service';
 
 class BuildingPage extends BasePage {
     // static navigationOptions = ({navigation}) => {
@@ -89,33 +90,33 @@ class BuildingPage extends BasePage {
 
         } else {
             this.initUI();
-            NativeModules.LHNToast.getVersionCode((err, version) => {
-                checkUpdate(common.appId(), version).then(IOSUpdateInfo => {
-                    if (IOSUpdateInfo.code === 1) {
-                        Alert.alert(
-                            '发现有新版本',
-                            '是否更新？',
-                            [
-                                {
-                                    text: '取消',
-                                    onPress: () => console.log('Cancel Pressed'),
-                                    style: 'cancel',
-                                },
-                                {
-                                    text: '确定',
-                                    onPress: () => {
-                                        if (Linking.canOpenURL('https://itunes.apple.com/app/id' + common.appId())) {
-                                            Linking.openURL('https://itunes.apple.com/app/id' + common.appId());
-                                        }
-                                    },
-                                },
-                            ],
-                            {cancelable: false},
-                        );
-
-                    }
-                });
-            });
+            // NativeModules.LHNToast.getVersionCode((err, version) => {
+            //     checkUpdate(common.appId(), version).then(IOSUpdateInfo => {
+            //         if (IOSUpdateInfo.code === 1) {
+            //             Alert.alert(
+            //                 '发现有新版本',
+            //                 '是否更新？',
+            //                 [
+            //                     {
+            //                         text: '取消',
+            //                         onPress: () => console.log('Cancel Pressed'),
+            //                         style: 'cancel',
+            //                     },
+            //                     {
+            //                         text: '确定',
+            //                         onPress: () => {
+            //                             if (Linking.canOpenURL('https://itunes.apple.com/app/id' + common.appId())) {
+            //                                 Linking.openURL('https://itunes.apple.com/app/id' + common.appId());
+            //                             }
+            //                         },
+            //                     },
+            //                 ],
+            //                 {cancelable: false},
+            //             );
+            //
+            //         }
+            //     });
+            // });
 
         }
     }

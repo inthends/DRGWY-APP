@@ -132,7 +132,7 @@ export default {
         return api.postData(url, {estateId, type});
     },
     createOrder(linkId) {
-        return api.postData('/api/MobileMethod/MCreateTradeno', {linkId})
+        return api.postData('/api/MobileMethod/MCreateTradeno', {linkId});
     },
     scanPay(auth_code, tbout_trade_no) {
         return api.postData('/api/MobileMethod/WFTScanPay', {auth_code, tbout_trade_no});
@@ -143,10 +143,16 @@ export default {
     cashPay(linkId) {
         return api.postData('/api/MobileMethod/MCharge', {linkId});
     },
+    cashPayPrint(linkId) {
+        return api.postData('/api/MobileMethod/MGetCashPrintInfo', {linkId});
+    },
     orderStatus(out_trade_no) {
-        return api.postData('/api/MobileMethod/WFTPayResult', {out_trade_no},false);
+        return api.postData('/api/MobileMethod/WFTPayResult', {out_trade_no}, false);
+    },
 
-    }
+    printInfo(out_trade_no) {
+        return api.getData('/api/MobileMethod/MGetPrintInfo', {out_trade_no});
+    },
 
 
 };

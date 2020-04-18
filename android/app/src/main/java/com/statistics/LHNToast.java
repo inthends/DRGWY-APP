@@ -16,11 +16,14 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.IllegalViewOperationException;
 import com.facebook.react.uimanager.PixelUtil;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -59,6 +62,67 @@ public class LHNToast extends ReactContextBaseJavaModule {
         successCallback.invoke(versionName);
     }
 
+    @ReactMethod
+    public void printTicket(ReadableMap res) {
+        try {
+            /*
+            {
+        "unitNo": "0/FY-XHF/FY-XHF-01/FY-XHF-01-001/FY-XHF-01-0101",
+        "billDate": "2020-03-26 00:37:39",
+        "amount": "238",
+        "tradeNo": "",
+        "payType": "现金",
+        "transactionId": "",
+        "stampUrl": null,
+        "bills": [
+            {
+                "feeName": "物业费",
+                "amount": 238,
+                "beginDate": "2020-01-01 00:00:00",
+                "endDate": "2020-02-27 00:00:00"
+            },
+            {
+                "feeName": "物业费",
+                "amount": 238,
+                "beginDate": "2020-01-01 00:00:00",
+                "endDate": "2020-02-27 00:00:00"
+            }
+        ]
+    }
+             */
+            Activity currentActivity = getCurrentActivity();
+            if (currentActivity != null) {
+                Intent intent = new Intent(currentActivity, LHNPrintActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("unitNo", res.getString("unitNo"));
+                bundle.putString("billDate", res.getString("billDate"));
+                bundle.putString("amount", res.getString("amount"));
+                bundle.putString("tradeNo", res.getString("tradeNo"));
+                bundle.putString("payType", res.getString("payType"));
+                bundle.putString("username", res.getString("username"));
+                bundle.putString("stampUrl",res.isNull("stampUrl") ? "" : res.getString("stampUrl"));
+                ReadableArray params = res.getArray("bills");
+                ArrayList<ZhangDanObj> list = new ArrayList<ZhangDanObj>();
+                if (params != null && params.size() > 0) {
+                    for (int i = 0; i < params.size(); i++) {
+                        ReadableMap map = params.getMap(i);
+
+                        if (map != null) {
+                            ZhangDanObj obj = new ZhangDanObj(map.getString("feeName"), map.getString("amount"), map.getString("beginDate"), map.getString("endDate"));
+                            list.add(obj);
+                        }
+                    }
+                }
+                bundle.putSerializable("bills", list);
+                intent.putExtras(bundle);
+                currentActivity.startActivity(intent);
+            }
+        } catch (Exception e) {
+
+        }
+
+
+    }
 
 
     @ReactMethod
