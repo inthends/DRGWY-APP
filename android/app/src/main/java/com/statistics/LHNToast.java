@@ -19,6 +19,7 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.IllegalViewOperationException;
 import com.facebook.react.uimanager.PixelUtil;
 
@@ -28,13 +29,17 @@ import java.util.Map;
 import java.util.HashMap;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class LHNToast extends ReactContextBaseJavaModule {
     private String APPID;
     private String versionName;
+    private ReactContext reactContext;
+    private static ReactContext myContext;
 
     public LHNToast(ReactApplicationContext context) {
         super(context);
+        this.reactContext = context;
         APPID = Tool.getPackageName(context);
         versionName = Tool.getPackageCode(context);
 
@@ -94,7 +99,7 @@ public class LHNToast extends ReactContextBaseJavaModule {
             if (currentActivity != null) {
                 Intent intent = new Intent(currentActivity, LHNPrintActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("unitNo", res.getString("unitNo"));
+                bundle.putString("unitNo", res.getString("allName"));
                 bundle.putString("billDate", res.getString("billDate"));
                 bundle.putString("amount", res.getString("amount"));
                 bundle.putString("tradeNo", res.getString("tradeNo"));
@@ -179,6 +184,11 @@ public class LHNToast extends ReactContextBaseJavaModule {
         } catch (Exception e) {
             this.show(e.getMessage(), 2);
         }
+    }
+
+
+    public static void sendEventToRn(String eventName,@Nullable WritableMap paramss) {
+        myContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, paramss);
     }
 
 }

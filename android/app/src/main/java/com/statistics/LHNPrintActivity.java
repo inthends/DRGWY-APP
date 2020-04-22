@@ -8,9 +8,12 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.RemoteException;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.WritableMap;
 import com.lkl.cloudpos.mdx.aidl.AidlDeviceService;
 import com.lkl.cloudpos.mdx.aidl.printer.AidlPrinter;
 import com.lkl.cloudpos.mdx.aidl.printer.AidlPrinterListener;
@@ -31,6 +34,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * 打印机测试工具类
@@ -48,9 +53,14 @@ public class LHNPrintActivity extends BaseLKLActivity {
     private TextView mShow;
     private ImageView imageView;
     public Bitmap bmp;
-    private Integer printCount = 0;
+    public Boolean canPrint;
+    public Button button;
+
     private BlurHandler handler = new BlurHandler(this);
     private Bundle bundle;
+    private Boolean printText = false;
+    private Boolean printImage = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +69,26 @@ public class LHNPrintActivity extends BaseLKLActivity {
         setContentView(R.layout.activity_splash);
         mShow = (TextView) findViewById(R.id.show);
         imageView = (ImageView) findViewById(R.id.imageV);
+        button = (Button) findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                print();
+            }
+        });
         this.bundle = getIntent().getExtras();
-        this.showMessage("开始下载...");
+        this.showMessage("准备打印信息...");
 //
         returnBitMap();
+
+        //  timer.schedule(new TimerTask() {
+        //      @Override
+        //      public void run() {
+        //          getPrintState();
+        //          printBitmap();
+        //      }
+        //   }, 10);
+
 
     }
 
@@ -82,6 +108,7 @@ public class LHNPrintActivity extends BaseLKLActivity {
         try {
             printerDev = AidlPrinter.Stub.asInterface(serviceManager.getPrinter());
             showMessage("绑定打印服务成功");
+            getPrintState();
 
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
@@ -102,8 +129,8 @@ public class LHNPrintActivity extends BaseLKLActivity {
 
             showMessage("获取到的打印机状态为" + printState);
             if (printState == 0) {
-                showMessage("准备打印");
-                print();
+                showMessage("打印机状态可以打印");
+
             } else {
                 showMessage("打印机状态不对");
             }
@@ -115,78 +142,6 @@ public class LHNPrintActivity extends BaseLKLActivity {
         }
     }
 
-    /**
-     * 打印文本
-     *
-     * @param v
-     * @createtor：Administrator
-     * @date:2015-8-4 下午2:19:28
-     */
-    @SuppressWarnings("serial")
-    public void printText(View v) {
-        try {
-            Thread thread = Thread.currentThread();
-
-            printerDev.printText(new ArrayList<PrintItemObj>() {
-                {
-                    //请参考开发文档，定义打印字体对象PrintItemObj相关属性
-                    add(new PrintItemObj("默认打印数据测试"));
-                    add(new PrintItemObj("默认打印数据测试"));
-                    add(new PrintItemObj("默认打印数据测试"));
-//					add(new PrintItemObj("打印数据字体放大",24));
-//					add(new PrintItemObj("打印数据字体放大",24));
-//					add(new PrintItemObj("打印数据字体放大",24));
-//					add(new PrintItemObj("打印数据加粗",8,true));
-//					add(new PrintItemObj("打印数据加粗",8,true));
-//					add(new PrintItemObj("打印数据加粗",8,true));
-//					add(new PrintItemObj("打印数据左对齐测试",8,false, PrintItemObj.ALIGN.LEFT));
-//					add(new PrintItemObj("打印数据左对齐测试",8,false, PrintItemObj.ALIGN.LEFT));
-//					add(new PrintItemObj("打印数据左对齐测试",8,false, PrintItemObj.ALIGN.LEFT));
-//					add(new PrintItemObj("打印数据居中对齐测试",8,false, PrintItemObj.ALIGN.CENTER));
-//					add(new PrintItemObj("打印数据居中对齐测试",8,false, PrintItemObj.ALIGN.CENTER));
-//					add(new PrintItemObj("打印数据居中对齐测试",8,false, PrintItemObj.ALIGN.CENTER));
-//					add(new PrintItemObj("打印数据右对齐测试",8,false, PrintItemObj.ALIGN.RIGHT));
-//					add(new PrintItemObj("打印数据右对齐测试",8,false, PrintItemObj.ALIGN.RIGHT));
-//					add(new PrintItemObj("打印数据右对齐测试",8,false, PrintItemObj.ALIGN.RIGHT));
-//					add(new PrintItemObj("打印数据下划线",8,false, PrintItemObj.ALIGN.LEFT,true));
-//					add(new PrintItemObj("打印数据下划线",8,false, PrintItemObj.ALIGN.CENTER,true));
-//					add(new PrintItemObj("打印数据下划线",8,false, PrintItemObj.ALIGN.RIGHT,true));
-                    add(new PrintItemObj("打印数据不换行测试打印数据不换行测试打印数据不换行测试", 8, false, PrintItemObj.ALIGN.LEFT, false, true));
-                    add(new PrintItemObj("打印数据不换行测试打印数据不换行测试打印数据不换行测试", 8, false, PrintItemObj.ALIGN.CENTER, false, false));
-                    add(new PrintItemObj("打印数据不换行测试打印数据不换行测试打印数据不换行测试", 8, true, PrintItemObj.ALIGN.RIGHT, true, false));
-//					add(new PrintItemObj("打印数据行间距测试",8,false, PrintItemObj.ALIGN.LEFT,false,true,40));
-//					add(new PrintItemObj("打印数据行间距测试",8,false, PrintItemObj.ALIGN.LEFT,false,true,100));
-//					add(new PrintItemObj("打印数据行间距测试",8,false, PrintItemObj.ALIGN.LEFT,false,true,40));
-//					add(new PrintItemObj("打印数据字符间距测试",8,false, PrintItemObj.ALIGN.LEFT,false,true,29,25));
-//					add(new PrintItemObj("打印数据字符间距测试",8,false, PrintItemObj.ALIGN.LEFT,false,true,29,25));
-//					add(new PrintItemObj("打印数据字符间距测试",8,false, PrintItemObj.ALIGN.LEFT,false,true,29,25));
-//					add(new PrintItemObj("打印数据左边距测试",8,false, PrintItemObj.ALIGN.LEFT,false,true,29,0,40));
-//					add(new PrintItemObj("打印数据左边距测试",8,false, PrintItemObj.ALIGN.LEFT,false,true,100,0,40));
-//					add(new PrintItemObj("打印数据左边距测试",8,false, PrintItemObj.ALIGN.LEFT,false,true,29,0,40));
-                }
-            }, new AidlPrinterListener.Stub() {
-
-
-                Thread thread = Thread.currentThread();
-
-                @Override
-                public void onPrintFinish() throws RemoteException {
-                    Thread thread = Thread.currentThread();
-                    showMessage("打印完成");
-
-                }
-
-                @Override
-                public void onError(int arg0) throws RemoteException {
-                    showMessage("打印出错，错误码为：" + arg0);
-                }
-            });
-        } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            showMessage("打印异常");
-        }
-    }
 
     /**
      * 打印位图
@@ -195,24 +150,19 @@ public class LHNPrintActivity extends BaseLKLActivity {
      * @date:2015-8-4 下午2:39:33
      */
     public void printBitmap() {
-//        Bitmap bmp = this.bmp;
-//        imageView.setImageBitmap(bmp);
-        try {
-//            InputStream ins = this.getAssets().open("ziti_store.png");//打印位图对象
-//            Bitmap bmp = BitmapFactory.decodeStream(ins);
-            Bitmap bmp = this.bmp;
-//            imageView.setImageBitmap(bmp);
 
-//            showMessage("宽：" + String.valueOf(bmp.getWidth()));
+        try {
+
+            Bitmap bmp = this.bmp;
+            imageView.setImageBitmap(bmp);
 
             printerDev.printBmp(50, 50, bmp.getHeight() / bmp.getWidth() * 50, bmp, new AidlPrinterListener.Stub() {
 
                 @Override
                 public void onPrintFinish() throws RemoteException {
                     showMessage("打印位图成功");
-                    if (printCount < 2) {
-                        getPrintState();
-                    }
+                    printImage = true;
+
                 }
 
                 @Override
@@ -227,70 +177,6 @@ public class LHNPrintActivity extends BaseLKLActivity {
         }
     }
 
-    public void aaa() {
-        showMessage(String.valueOf(this.bmp.getWidth()));
-    }
-
-    private class PrintStateChangeListener extends AidlPrinterListener.Stub {
-
-        @Override
-        public void onError(int arg0) throws RemoteException {
-            showMessage("数据打印失败,错误码" + arg0);
-        }
-
-        @Override
-        public void onPrintFinish() throws RemoteException {
-            showMessage("数据打印成功");
-        }
-
-    }
-
-    /**
-     * 打印条码
-     *
-     * @createtor：Administrator
-     * @date:2015-8-4 下午3:02:21
-     */
-    public void printBarCode(View v) {
-        try {
-            this.printerDev.printBarCode(-1, 162, 18, 65, "23418753401", new PrintStateChangeListener());
-//			this.printerDev.printBarCode(-1, 162, 18, 66, "03400000471", new PrintStateChangeListener());
-//			this.printerDev.printBarCode(-1, 162, 18, 67, "234187534011", new PrintStateChangeListener());
-//			this.printerDev.printBarCode(-1, 162, 18, 68, "2341875", new PrintStateChangeListener());
-//			this.printerDev.printBarCode(-1, 162, 18, 69, "*23418*", new PrintStateChangeListener());//不支持
-//			this.printerDev.printBarCode(-1, 162, 18, 70, "234187534011", new PrintStateChangeListener());
-//			this.printerDev.printBarCode(-1, 162, 18, 71, "23418", new PrintStateChangeListener());
-//			this.printerDev.printBarCode(-1, 162, 18, 72, "23418", new PrintStateChangeListener());
-//			this.printerDev.printBarCode(-1, 162, 18, 73, "{A23418", new PrintStateChangeListener());//不支持
-        } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            showMessage("打印异常");
-        }
-    }
-
-
-    /**
-     * 设置打印灰度
-     *
-     * @param v
-     * @createtor：Administrator
-     * @date:2015-8-4 下午3:02:27
-     */
-    public void setPrintGray(View v) {
-        try {
-            showMessage("打印灰度设置为4打印");
-            this.printerDev.setPrinterGray(0x04);
-            printText(null);
-            showMessage("打印灰度设置为1打印");
-            this.printerDev.setPrinterGray(0x01);
-            printText(null);
-        } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            showMessage("打印灰度设置异常");
-        }
-    }
 
     public void returnBitMap() {
         String url = this.bundle.getString("stampUrl");
@@ -298,11 +184,13 @@ public class LHNPrintActivity extends BaseLKLActivity {
             return;
         }
 
+
         new Thread(new Runnable() {
             @Override
             public void run() {
                 URL myFileUrl = null;
                 Message message = new Message();
+
 
                 try {
 
@@ -319,8 +207,7 @@ public class LHNPrintActivity extends BaseLKLActivity {
                     if (responseCode == HttpURLConnection.HTTP_OK) {
                         //得到响应流
                         InputStream is = conn.getInputStream();
-                        Bitmap bitmap = BitmapFactory.decodeStream(is);
-                        message.obj = bitmap;
+                        message.obj = BitmapFactory.decodeStream(is);
                         is.close();
                         handler.sendMessage(message);
                     }
@@ -340,8 +227,8 @@ public class LHNPrintActivity extends BaseLKLActivity {
 
     //打印
     @SuppressWarnings("unchecked")
-    public void print() {
-        printCount++;
+    public void printText() {
+
         showMessage("开始打印");
         try {
             Thread thread = Thread.currentThread();
@@ -350,7 +237,7 @@ public class LHNPrintActivity extends BaseLKLActivity {
                 {
                     int big = 16;
                     int medium = 8;
-                    int small = 5;
+                    int small = 4;
                     /*
                     bundle.putString("unitNo",res.getString("unitNo"));
                 bundle.putString("billDate",res.getString("billDate"));
@@ -411,8 +298,8 @@ public class LHNPrintActivity extends BaseLKLActivity {
                 @Override
                 public void onPrintFinish() throws RemoteException {
                     Thread thread = Thread.currentThread();
+                    printText = true;
                     showMessage("打印完成");
-                    printBitmap();
 
                 }
 
@@ -427,5 +314,14 @@ public class LHNPrintActivity extends BaseLKLActivity {
             showMessage("打印异常");
         }
     }
+
+    public void print() {
+        showMessage("开始打印");
+
+        printText();
+        printBitmap();
+
+    }
+
 
 }

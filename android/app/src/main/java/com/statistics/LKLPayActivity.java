@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ import androidx.annotation.Nullable;
 public class LKLPayActivity extends Activity {
     private Bundle bundle;
     private Bundle yinshengBundle;
+    private Button button;
     // 交易金额
     // private EditText mMoneyEt;
     // 调用收单应用
@@ -58,6 +60,8 @@ public class LKLPayActivity extends Activity {
 
     private void initView() {
         mShow = (TextView) findViewById(R.id.show);
+        button = (Button)findViewById(R.id.button);
+        button.setVisibility(View.INVISIBLE);
 
     }
 

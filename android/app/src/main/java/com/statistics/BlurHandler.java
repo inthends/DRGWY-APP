@@ -20,9 +20,13 @@ public class BlurHandler extends Handler {
         if (activity != null) {
             Bitmap bitmap = (Bitmap)msg.obj;
             if (bitmap != null) {
-                activity.showMessage("下载成功");
+//                activity.showMessage("下载成功");
                 activity.bmp = bitmap;
-                activity.getPrintState();
+                activity.canPrint = true;
+                activity.showMessage("打印信息准备完毕");
+                activity.print();
+//                activity.getPrintState();
+//                activity.printBitmap();
             }else {
                 activity.showMessage("下载失败");
             }

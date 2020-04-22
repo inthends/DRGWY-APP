@@ -10,6 +10,7 @@ import {
     Linking, Image, NativeModules,
     ScrollView,
     Alert,
+    DeviceEventEmitter,
 } from 'react-native';
 import BasePage from '../base/base';
 import {Button, Flex, Icon, List, WhiteSpace, Checkbox, Modal} from '@ant-design/react-native';
@@ -59,12 +60,24 @@ class FeeDetailPage extends BasePage {
             code: '',
             price: '0.00',
             needPrint: false,
+            printAgain: false,
         };
 
     }
 
 
     componentDidMount(): void {
+        DeviceEventEmitter.addListener('printAgain', () => {
+            setTimeout(() => {
+                if (!this.state.printAgain) {
+                    this.setState({
+                        printAgain: true,
+                    }, () => {
+                        // this.func(this.params);
+                    });
+                }
+            }, 2000);
+        });
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
@@ -142,6 +155,7 @@ class FeeDetailPage extends BasePage {
                             this.props.navigation.push('scan', {
                                 data: ids,
                                 callBack: this.callBack,
+                                printAgain: false,
                             });
                         }
                     });
@@ -165,6 +179,7 @@ class FeeDetailPage extends BasePage {
                                     cancel: false,
                                     code,
                                     needPrint: true,
+                                    printAgain: false,
                                 }, () => {
                                     this.getOrderStatus(res.out_trade_no);
                                 });
@@ -189,15 +204,9 @@ class FeeDetailPage extends BasePage {
                             {
                                 text: '确定',
                                 onPress: () => {
-                                    NavigatorService.cashPay(ids).then(res => {
-                                        NavigatorService.cashPayPrint(ids).then(res => {
-                                            NativeModules.LHNToast.printTicket({
-                                                ...res,
-                                                username: this.props.userInfo && this.props.userInfo.username,
-                                            });
-                                        });
-
-                                    });
+                                    this.func = this.cashPay;
+                                    this.params = ids;
+                                    this.cashPay(ids);
                                 },
                             },
                         ],
@@ -210,6 +219,18 @@ class FeeDetailPage extends BasePage {
 
         }
 
+    };
+
+    cashPay = (ids) => {
+        NavigatorService.cashPay(ids).then(res => {
+            NavigatorService.cashPayPrint(ids).then(res => {
+                NativeModules.LHNToast.printTicket({
+                    ...res,
+                    username: this.props.userInfo && this.props.userInfo.username,
+                });
+            });
+
+        });
     };
 
 
@@ -266,12 +287,9 @@ class FeeDetailPage extends BasePage {
         NavigatorService.orderStatus(out_trade_no).then(res => {
             if (res) {
                 if (this.state.needPrint) {
-                    NavigatorService.printInfo(out_trade_no).then(res => {
-                        NativeModules.LHNToast.printTicket({
-                            ...res,
-                            username: this.props.userInfo && this.props.userInfo.username,
-                        });
-                    });
+                    this.func = this.printInfo;
+                    this.params = out_trade_no;
+                    this.printInfo(out_trade_no);
                 }
 
                 this.onClose();
@@ -285,6 +303,14 @@ class FeeDetailPage extends BasePage {
             }
         });
 
+    };
+    printInfo = (out_trade_no) => {
+        NavigatorService.printInfo(out_trade_no).then(res => {
+            NativeModules.LHNToast.printTicket({
+                ...res,
+                username: this.props.userInfo && this.props.userInfo.username,
+            });
+        });
     };
 
 
