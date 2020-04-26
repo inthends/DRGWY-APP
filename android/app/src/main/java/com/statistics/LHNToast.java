@@ -72,7 +72,7 @@ public class LHNToast extends ReactContextBaseJavaModule {
         try {
             /*
             {
-        "unitNo": "0/FY-XHF/FY-XHF-01/FY-XHF-01-001/FY-XHF-01-0101",
+        "allName": "0/FY-XHF/FY-XHF-01/FY-XHF-01-001/FY-XHF-01-0101",
         "billDate": "2020-03-26 00:37:39",
         "amount": "238",
         "tradeNo": "",
@@ -99,7 +99,7 @@ public class LHNToast extends ReactContextBaseJavaModule {
             if (currentActivity != null) {
                 Intent intent = new Intent(currentActivity, LHNPrintActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("unitNo", res.getString("allName"));
+                bundle.putString("allName", res.getString("allName"));
                 bundle.putString("billDate", res.getString("billDate"));
                 bundle.putString("amount", res.getString("amount"));
                 bundle.putString("tradeNo", res.getString("tradeNo"));

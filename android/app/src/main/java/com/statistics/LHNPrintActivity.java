@@ -231,14 +231,14 @@ public class LHNPrintActivity extends BaseLKLActivity {
                     int medium = 8;
                     int small = 4;
                     /*
-                    bundle.putString("unitNo",res.getString("unitNo"));
+                    bundle.putString("allName",res.getString("allName"));
                 bundle.putString("billDate",res.getString("billDate"));
                 bundle.putString("amount",res.getString("amount"));
                 bundle.putString("tradeNo",res.getString("tradeNo"));
                 bundle.putString("payType",res.getString("payType"));
                 ReadableArray params = res.getArray("bills");
                      */
-                    String unitNo = bundle.getString("unitNo");
+                    String allName = bundle.getString("allName");
                     String billDate = bundle.getString("billDate");
                     String amount = bundle.getString("amount");
                     String tradeNo = bundle.getString("tradeNo");
@@ -260,7 +260,7 @@ public class LHNPrintActivity extends BaseLKLActivity {
 
 
                     add(new PrintItemObj("POS机收款凭据", big, true, PrintItemObj.ALIGN.CENTER, false, false, 25));
-                    add(new PrintItemObj("房号：" + unitNo, medium));
+                    add(new PrintItemObj("房屋全称：" + allName, medium));
                     add(new PrintItemObj("支付渠道：" + payType, medium));
                     add(new PrintItemObj("订单号：" + tradeNo, medium));
                     add(new PrintItemObj("收款人：" + username, medium));
@@ -319,7 +319,7 @@ public class LHNPrintActivity extends BaseLKLActivity {
                     int medium = 8;
                     int small = 4;
 
-                    String unitNo = bundle.getString("unitNo");
+                    String allName = bundle.getString("allName");
                     String billDate = bundle.getString("billDate");
                     String amount = bundle.getString("amount");
                     String tradeNo = bundle.getString("tradeNo");
