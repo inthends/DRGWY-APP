@@ -78,16 +78,6 @@ public class LHNPrintActivity extends BaseLKLActivity {
         });
         this.bundle = getIntent().getExtras();
         this.showMessage("准备打印信息...");
-//
-        returnBitMap();
-
-        //  timer.schedule(new TimerTask() {
-        //      @Override
-        //      public void run() {
-        //          getPrintState();
-        //          printBitmap();
-        //      }
-        //   }, 10);
 
 
     }
@@ -109,6 +99,8 @@ public class LHNPrintActivity extends BaseLKLActivity {
             printerDev = AidlPrinter.Stub.asInterface(serviceManager.getPrinter());
             showMessage("绑定打印服务成功");
             getPrintState();
+            returnBitMap();
+            printKong();
 
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
@@ -154,9 +146,9 @@ public class LHNPrintActivity extends BaseLKLActivity {
         try {
 
             Bitmap bmp = this.bmp;
-            imageView.setImageBitmap(bmp);
+//            imageView.setImageBitmap(bmp);
 
-            printerDev.printBmp(50, 50, bmp.getHeight() / bmp.getWidth() * 50, bmp, new AidlPrinterListener.Stub() {
+            printerDev.printBmp(50, 30, 30, bmp, new AidlPrinterListener.Stub() {
 
                 @Override
                 public void onPrintFinish() throws RemoteException {
@@ -288,7 +280,7 @@ public class LHNPrintActivity extends BaseLKLActivity {
 
                     add(new PrintItemObj("--------------------------------", medium));
                     add(new PrintItemObj("付款人（签字）", medium, false, PrintItemObj.ALIGN.LEFT, false, false, 40));
-                    add(new PrintItemObj("收款单位（签章）", medium, false, PrintItemObj.ALIGN.LEFT, false, false, 40));
+                    add(new PrintItemObj("收款单位（签章）", medium, false, PrintItemObj.ALIGN.LEFT, false, false));
                 }
             }, new AidlPrinterListener.Stub() {
 
@@ -315,11 +307,73 @@ public class LHNPrintActivity extends BaseLKLActivity {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    public void printKong() {
+
+        try {
+            Thread thread = Thread.currentThread();
+
+            printerDev.printText(new ArrayList<PrintItemObj>() {
+                {
+                    int big = 16;
+                    int medium = 8;
+                    int small = 4;
+
+                    String unitNo = bundle.getString("unitNo");
+                    String billDate = bundle.getString("billDate");
+                    String amount = bundle.getString("amount");
+                    String tradeNo = bundle.getString("tradeNo");
+                    String payType = bundle.getString("payType");
+                    String username = bundle.getString("username");
+                    ArrayList<ZhangDanObj> bills = (ArrayList<ZhangDanObj>) bundle.getSerializable("bills");
+
+                    /*
+                    PrintItemObj(
+                    String text,
+                    int fontSize,
+                    boolean isBold,
+                     PrintItemObj.ALIGN align,
+                      boolean isUnderline,
+                       boolean isWordWrap,
+                        int lineHeight,
+                         int letterSpacing)
+                     */
+
+
+                    add(new PrintItemObj("", big, true, PrintItemObj.ALIGN.CENTER, false, false, 50));
+
+
+
+
+                }
+            }, new AidlPrinterListener.Stub() {
+
+
+
+                @Override
+                public void onPrintFinish() throws RemoteException {
+
+                }
+
+                @Override
+                public void onError(int arg0) throws RemoteException {
+                    showMessage("打印出错，错误码为：" + arg0);
+                }
+            });
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            showMessage("打印异常");
+        }
+    }
+
     public void print() {
         showMessage("开始打印");
 
         printText();
         printBitmap();
+        printKong();
+
 
     }
 

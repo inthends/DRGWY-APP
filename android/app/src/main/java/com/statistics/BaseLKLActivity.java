@@ -32,7 +32,7 @@ import java.util.List;
 public abstract class BaseLKLActivity extends Activity {
 
     public static final String LKL_SERVICE_ACTION = "lkl_cloudpos_mdx_service";
-    private static String TAG  = "PACKAGEINFO";
+    private static String TAG = "PACKAGEINFO";
     private static ArrayList<String> nameList;
     private int showLineNum = 0;
     private LinearLayout linearLayout;
@@ -43,40 +43,45 @@ public abstract class BaseLKLActivity extends Activity {
 //    public NotifyDialogBuilder notifyDialog;
 
     //设别服务连接桥
-    private ServiceConnection conn = new ServiceConnection(){
+    private ServiceConnection conn = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder serviceBinder) {
-            Log.d("aaa","aidlService服务连接成功");
-            if(serviceBinder != null){	//绑定成功
+            Log.d("aaa", "aidlService服务连接成功");
+            if (serviceBinder != null) {    //绑定成功
                 AidlDeviceService serviceManager = AidlDeviceService.Stub.asInterface(serviceBinder);
-                onDeviceConnected(serviceManager);
+                if (serviceManager != null) {
+                    onDeviceConnected(serviceManager);
+                }
 
             }
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            Log.d("aaa","AidlService服务断开了");
+            Log.d("aaa", "AidlService服务断开了");
         }
     };
 
     //绑定服务
-    public void bindService(){
-        try{
+    public void bindService() {
+        try {
             Intent intent = new Intent();
             intent.setAction(LKL_SERVICE_ACTION);
             Intent eintent = new Intent(getExplicitIntent(this, intent));
-            Log.d("packageName",eintent.toString());
-            boolean flag = false;
+            if (eintent != null) {
+                Log.d("packageName", eintent.toString());
+                boolean flag = false;
 
-            flag = bindService(eintent, conn, Context.BIND_AUTO_CREATE);
+                flag = bindService(eintent, conn, Context.BIND_AUTO_CREATE);
 
-            if(flag){
-                Log.d("aaa","服务绑定成功");
-            }else{
-                Log.d("aaa","服务绑定失败");
+                if (flag) {
+                    Log.d("aaa", "服务绑定成功");
+                } else {
+                    Log.d("aaa", "服务绑定失败");
+                }
             }
+
         } catch (Exception e) {
             return;
         }
@@ -85,37 +90,45 @@ public abstract class BaseLKLActivity extends Activity {
 
     public static Intent getExplicitIntent(Context context, Intent implicitIntent) {
         // Retrieve all services that can match the given intent
-        int j=0;
-        PackageManager pm = context.getPackageManager();
-        List<ResolveInfo> resolveInfos = pm.queryIntentServices(implicitIntent, 0);
-        for (ResolveInfo resolveInfo : resolveInfos) {
-            //得到手机上已经安装的应用的名字,即在AndriodMainfest.xml中的app_name。
-            String appName=resolveInfo.loadLabel(pm).toString();
-            //得到应用所在包的名字,即在AndriodMainfest.xml中的package的值。
-            String packageName=resolveInfo.serviceInfo.packageName;
-            Log.i(TAG, "应用的名字:"+appName);
-            Log.i(TAG, "应用的包名字:"+packageName);
-            if("com.lkl.cloudpos.payment".equals(packageName)){
-                nameList.add(appName + ":" + packageName);
-                j++;
+        Intent explicitIntent = null;
+        try {
+            int j = 0;
+            PackageManager pm = context.getPackageManager();
+            List<ResolveInfo> resolveInfos = pm.queryIntentServices(implicitIntent, 0);
+            for (ResolveInfo resolveInfo : resolveInfos) {
+                //得到手机上已经安装的应用的名字,即在AndriodMainfest.xml中的app_name。
+                String appName = resolveInfo.loadLabel(pm).toString();
+                //得到应用所在包的名字,即在AndriodMainfest.xml中的package的值。
+                String packageName = resolveInfo.serviceInfo.packageName;
+                Log.i(TAG, "应用的名字:" + appName);
+                Log.i(TAG, "应用的包名字:" + packageName);
+                if ("com.lkl.cloudpos.payment".equals(packageName)) {
+                    nameList.add(appName + ":" + packageName);
+                    j++;
+                }
             }
-        }
-        // Make sure only one match was found
-        if (resolveInfos == null || resolveInfos.size() != 1) {
+            // Make sure only one match was found
+            if (resolveInfos == null || resolveInfos.size() != 1) {
+                return null;
+            }
+            // Get component info and create ComponentName
+            ResolveInfo serviceInfo = resolveInfos.get(0);
+            Log.d("PackageName", resolveInfos.size() + "");
+            String packageName = serviceInfo.serviceInfo.packageName;
+            String className = serviceInfo.serviceInfo.name;
+
+            ComponentName component = new ComponentName(packageName, className);
+            // Create a new intent. Use the old one for extras and such reuse
+            explicitIntent = new Intent(implicitIntent);
+            // Set the component to be explicit
+            explicitIntent.setComponent(component);
+            return explicitIntent;
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
-        // Get component info and create ComponentName
-        ResolveInfo serviceInfo = resolveInfos.get(0);
-        Log.d("PackageName",resolveInfos.size() + "");
-        String packageName = serviceInfo.serviceInfo.packageName;
-        String className = serviceInfo.serviceInfo.name;
 
-        ComponentName component = new ComponentName(packageName, className);
-        // Create a new intent. Use the old one for extras and such reuse
-        Intent explicitIntent = new Intent(implicitIntent);
-        // Set the component to be explicit
-        explicitIntent.setComponent(component);
-        return explicitIntent;
+
     }
 
 //    private Handler handler = new Handler() {
@@ -143,14 +156,16 @@ public abstract class BaseLKLActivity extends Activity {
 
     /**
      * 清屏操作
+     *
      * @param v
      */
-    public void clean(View v){
-        if(linearLayout !=null && linearLayout.getChildCount()!=0){
+    public void clean(View v) {
+        if (linearLayout != null && linearLayout.getChildCount() != 0) {
             linearLayout.removeAllViews();
         }
 
     }
+
     @Override
     protected void onResume() {
         // TODO Auto-generated method stub
@@ -239,6 +254,7 @@ public abstract class BaseLKLActivity extends Activity {
         super.onDestroy();
         this.unbindService(conn);
     }
+
     /**
      * 服务连接成功时回调
      *
@@ -255,15 +271,16 @@ public abstract class BaseLKLActivity extends Activity {
      * @param duration 重复点击间隔时间 毫秒
      * @return
      */
-    protected long lastClickTime=0;
-    public boolean isCanClick(int duration){
-        long cur= System.currentTimeMillis();
-        long time=cur-lastClickTime;
-        time= Math.abs(time);
-        if(time<duration){
+    protected long lastClickTime = 0;
+
+    public boolean isCanClick(int duration) {
+        long cur = System.currentTimeMillis();
+        long time = cur - lastClickTime;
+        time = Math.abs(time);
+        if (time < duration) {
             return false;
         }
-        lastClickTime=cur;
+        lastClickTime = cur;
         return true;
     }
 
