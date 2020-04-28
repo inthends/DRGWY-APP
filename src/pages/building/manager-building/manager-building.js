@@ -68,11 +68,9 @@ class ManagerBuildingPage extends BasePage {
 
     componentDidMount(): void {
         ManagerBuildingService.getData().then(allData => {
-            console.log(112233, allData);
+            // console.log(112233, allData);
             this.setState({allData});
-        });
-
-
+        });  
     }
 
     clickSectionHeader = (data) => {
@@ -179,7 +177,7 @@ class ManagerBuildingPage extends BasePage {
             }
             return item;
         });
-        console.log(123, allData);
+        // console.log(123, allData);
         this.setState({allData: allData});
 
     };
@@ -188,7 +186,6 @@ class ManagerBuildingPage extends BasePage {
         this.props.saveBuilding(data);
         this.props.navigation.closeDrawer();
     };
-
 
     render() {
         const {allData} = this.state;
