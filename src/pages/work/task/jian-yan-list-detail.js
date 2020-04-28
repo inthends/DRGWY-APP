@@ -97,12 +97,11 @@ export default class JianYanListDetailPage extends BasePage {
     };
     click = (handle) => {
         const { fuwu, type, value, result } = this.state;
-        if (handle === '检验建议' && !(value && value.length > 0)) {
+        if (handle === '完成检验' && !(value && value.length > 0)) {
             UDToast.showInfo('请输入文字');
             return;
         }
-        // WorkService.serviceHandle(handle, fuwu.id, value,{result}).then(res => {
-        WorkService.serviceHandle(handle, fuwu.id, value, result).then(res => {
+        WorkService.serviceHandle(handle, fuwu.id, value, { result }).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
         });
@@ -132,12 +131,8 @@ export default class JianYanListDetailPage extends BasePage {
         });
     };
 
-
     render() {
         const { images, detail, communicates } = this.state;
-        console.log(1122, detail);
-
-
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
@@ -154,12 +149,10 @@ export default class JianYanListDetailPage extends BasePage {
                     <DashLine />
                     <Text style={styles.desc}>{detail.repairContent}</Text>
                     <DashLine />
-                    <ListImages images={images} lookImage={this.lookImage} />
-
+                    <ListImages images={images} lookImage={this.lookImage} /> 
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
-                    </Flex>
-
+                    </Flex> 
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every]}>
                             <Text style={styles.left}>关联单：</Text>

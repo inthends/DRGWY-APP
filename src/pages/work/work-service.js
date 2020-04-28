@@ -21,16 +21,16 @@ export default {
         return api.getData('/api/MobileMethod/MGetFilesData', { keyValue });
     },
     //服务单操作
-    // serviceHandle(handle, keyValue, content, extra = null) {
-    serviceHandle(handle, keyValue, content, result) {
+     serviceHandle(handle, keyValue, content, extra = null) { 
         let url = '';
-        let params = { keyValue, content, result };
-        // if (extra) {
-        //     params = {
-        //         ...params,
-        //         ...extra,
-        //     };
-        // }
+        let params = { keyValue, content };
+        if (extra) {
+            params = {
+                ...params,
+                ...extra,
+            };
+        }
+
         if (handle === '回复') {
             url = '/api/MobileMethod/MSendCommunicate';
         } else if (handle === '转投诉') {
@@ -50,7 +50,7 @@ export default {
         } else if (handle === '完成回访') {
             url = '/api/MobileMethod/MRepairVisitFinish';
         } else if (handle === '完成检验') {
-            url = 'MRepairCheckFinish';
+            url = '/api/MobileMethod/MRepairCheckFinish';
         }
         return api.postData(url, params);
     },
@@ -115,6 +115,4 @@ export default {
     readNews(newsId) {
         return api.postData('/api/MobileMethod/MReadNews', { newsId });
     },
-
-
 };
