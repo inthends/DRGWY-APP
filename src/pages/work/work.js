@@ -82,7 +82,7 @@ export default class WorkPage extends BasePage {
             'didFocus',
             (obj) => {
                 WorkService.workData(this.state.showLoading).then(data => {
-                    console.log(123, data);
+                    // console.log(123, data);
                     this.setState({
                         data,
                         showLoading: false,
@@ -131,7 +131,7 @@ export default class WorkPage extends BasePage {
                             <Flex>
                                 <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task', {
                                     'data': {
-                                        'type': 'fuwu',
+                                        'type': 'unreply',
                                         title: '服务单列表',
                                     },
                                 })}>
@@ -142,15 +142,15 @@ export default class WorkPage extends BasePage {
                                 </TouchableWithoutFeedback>
                                 <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task', {
                                     'data': {
-                                        'type': 'fuwu',
-                                        overdue: 1,
+                                        'type': 'reply',
+                                        // overdue: 1,
                                         hiddenHeader: true,
-                                        title: '服务单逾期列表',
+                                        title: '服务单已回复列表',
                                     },
                                 })}>
                                     <Flex direction='column' style={{width: '25%'}}>
-                                        <Text style={styles.top}>{data.overduereply}</Text>
-                                        <Text style={styles.bottom}>回复逾期</Text>
+                                        <Text style={styles.top}>{data.reply}</Text>
+                                        <Text style={styles.bottom}>已回复</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
 

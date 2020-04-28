@@ -83,8 +83,14 @@ export default {
             url = '/api/MobileMethod/MGetTestAndVisitRepairPageList';
             type = overdue;
             overdue = null;
-        } else if (type === 'fuwu') {
+        } else if (type === 'unreply') {
+            //待回复
             url = '/api/MobileMethod/MGetUnReplyServiceDeskPageList';
+            type = null;
+        }
+        else if (type === 'reply') {
+            //已回复
+            url = '/api/MobileMethod/MGetReplyServiceDeskPageList';
             type = null;
         }
 
