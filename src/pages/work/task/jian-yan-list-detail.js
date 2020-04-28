@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import {
     View,
     Text,
@@ -10,8 +10,8 @@ import {
     RefreshControl, Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
-import {Icon} from '@ant-design/react-native/lib/index';
-import {List, WhiteSpace, Flex, TextareaItem, Grid, Button} from '@ant-design/react-native/lib/index';
+import { Icon } from '@ant-design/react-native/lib/index';
+import { List, WhiteSpace, Flex, TextareaItem, Grid, Button } from '@ant-design/react-native/lib/index';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import SelectImage from '../../../utils/select-image';
@@ -34,12 +34,12 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 const Item = List.Item;
 
 export default class JianYanListDetailPage extends BasePage {
-    static navigationOptions = ({navigation}) => {
+    static navigationOptions = ({ navigation }) => {
         return {
             title: '维修检验',
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
 
@@ -70,7 +70,7 @@ export default class JianYanListDetailPage extends BasePage {
 
 
     getData = () => {
-        const {fuwu, type} = this.state;
+        const { fuwu, type } = this.state;
         console.log('fuw', fuwu);
         WorkService.weixiuDetail(fuwu.id).then(detail => {
             console.log('detail', detail);
@@ -96,12 +96,13 @@ export default class JianYanListDetailPage extends BasePage {
         });
     };
     click = (handle) => {
-        const {fuwu, type, value,result} = this.state;
-        if (handle === '回复' && !(value&&value.length > 0)) {
+        const { fuwu, type, value, result } = this.state;
+        if (handle === '检验建议' && !(value && value.length > 0)) {
             UDToast.showInfo('请输入文字');
             return;
         }
-        WorkService.serviceHandle(handle, fuwu.id, value,{result}).then(res => {
+        // WorkService.serviceHandle(handle, fuwu.id, value,{result}).then(res => {
+        WorkService.serviceHandle(handle, fuwu.id, value, result).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
         });
@@ -133,12 +134,12 @@ export default class JianYanListDetailPage extends BasePage {
 
 
     render() {
-        const {images, detail, communicates} = this.state;
+        const { images, detail, communicates } = this.state;
         console.log(1122, detail);
 
 
         return (
-            <CommonView style={{flex: 1, backgroundColor: '#fff', paddingBottom: 10}}>
+            <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.billCode}</Text>
@@ -147,13 +148,13 @@ export default class JianYanListDetailPage extends BasePage {
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>{detail.address} {detail.contactName}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
-                            <Flex><LoadImage style={{width: 30, height: 30}}/></Flex>
+                            <Flex><LoadImage style={{ width: 30, height: 30 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
-                    <DashLine/>
+                    <DashLine />
                     <Text style={styles.desc}>{detail.repairContent}</Text>
-                    <DashLine/>
-                    <ListImages images={images} lookImage={this.lookImage}/>
+                    <DashLine />
+                    <ListImages images={images} lookImage={this.lookImage} />
 
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
@@ -162,22 +163,22 @@ export default class JianYanListDetailPage extends BasePage {
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every]}>
                             <Text style={styles.left}>关联单：</Text>
-                            <Text onPress={() => this.props.navigation.navigate('service', {data: {id: detail.relationId}})}
-                                  style={[styles.right, {color: Macro.color_4d8fcc}]}>{detail.serviceDeskCode}</Text>
+                            <Text onPress={() => this.props.navigation.navigate('service', { data: { id: detail.relationId } })}
+                                style={[styles.right, { color: Macro.color_4d8fcc }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-                    <DashLine/>
-                    <Flex justify={'between'} style={{margin: 15}}>
-                        <TouchableWithoutFeedback onPress={() => this.setState({result: 1})}>
+                    <DashLine />
+                    <Flex justify={'between'} style={{ margin: 15 }}>
+                        <TouchableWithoutFeedback onPress={() => this.setState({ result: 1 })}>
                             <Flex>
-                                <LoadImage style={{width: 15, height: 15}}/>
-                                <Text style={{color: '#666', fontSize: 15, paddingLeft: 15}}>合格</Text>
+                                <LoadImage style={{ width: 15, height: 15 }} />
+                                <Text style={{ color: '#666', fontSize: 15, paddingLeft: 15 }}>合格</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => this.setState({result: 0})}>
+                        <TouchableWithoutFeedback onPress={() => this.setState({ result: 0 })}>
                             <Flex>
-                                <LoadImage style={{width: 15, height: 15}}/>
-                                <Text style={{color: '#666', fontSize: 15, paddingLeft: 15}}>不合格</Text>
+                                <LoadImage style={{ width: 15, height: 15 }} />
+                                <Text style={{ color: '#666', fontSize: 15, paddingLeft: 15 }}>不合格</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
@@ -191,21 +192,21 @@ export default class JianYanListDetailPage extends BasePage {
                         <TextareaItem
                             rows={4}
                             placeholder='检验建议'
-                            style={{fontSize: 14, paddingTop: 10, height: 100, width: ScreenUtil.deviceWidth() - 32}}
-                            onChange={value => this.setState({value})}
+                            style={{ fontSize: 14, paddingTop: 10, height: 100, width: ScreenUtil.deviceWidth() - 32 }}
+                            onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
                     </View>
                     <TouchableWithoutFeedback onPress={() => this.click('完成检验')}>
-                        <Flex justify={'center'} style={[styles.ii,{width: '80%', marginLeft: '10%',marginRight: '10%', marginBottom: 20}, {backgroundColor: Macro.color_4d8fcc}]}>
+                        <Flex justify={'center'} style={[styles.ii, { width: '80%', marginLeft: '10%', marginRight: '10%', marginBottom: 20 }, { backgroundColor: Macro.color_4d8fcc }]}>
                             <Text style={styles.word}>完成检验</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-                    <Communicates communicateClick={this.communicateClick} communicates={communicates}/>
+                    <Communicates communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
-                                 imageUrls={this.state.images}/>
+                        imageUrls={this.state.images} />
                 </Modal>
             </CommonView>
         );

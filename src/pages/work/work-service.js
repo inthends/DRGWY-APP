@@ -21,15 +21,16 @@ export default {
         return api.getData('/api/MobileMethod/MGetFilesData', { keyValue });
     },
     //服务单操作
-    serviceHandle(handle, keyValue, content, extra = null) {
+    // serviceHandle(handle, keyValue, content, extra = null) {
+    serviceHandle(handle, keyValue, content, result) {
         let url = '';
-        let params = { keyValue, content };
-        if (extra) {
-            params = {
-                ...params,
-                ...extra,
-            };
-        }
+        let params = { keyValue, content, result };
+        // if (extra) {
+        //     params = {
+        //         ...params,
+        //         ...extra,
+        //     };
+        // }
         if (handle === '回复') {
             url = '/api/MobileMethod/MSendCommunicate';
         } else if (handle === '转投诉') {
@@ -93,7 +94,7 @@ export default {
                 //待回复
                 url = '/api/MobileMethod/MGetUnReplyServiceDeskPageList';
                 type = null;
-            } 
+            }
         }
 
         return api.postData(url, { status: type, pageIndex, pageSize: 100, overdue, isOverdue: overdue });
