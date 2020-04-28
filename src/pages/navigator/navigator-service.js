@@ -5,13 +5,17 @@ export default {
     getFeeStatistics(pageIndex, OrganizeId, pageSize = 10) {
         return api.postData('/api/MobileMethod/MGetFeeStatistics', {pageIndex, pageSize, OrganizeId});
     },
-    //楼栋
+    //楼栋或者车库
     getBuildings(keyValue) {
         return api.getData('/api/MobileMethod/MGetPStructs', {keyValue, type: 2});
     },
     //楼层
     getFloors(keyValue) {
         return api.getData('/api/MobileMethod/MGetPStructs', {keyValue, type: 4});
+    },
+     //车位
+     getParkings(keyValue) {
+        return api.getData('/api/MobileMethod/MGetPStructs', {keyValue, type: 9});
     },
     //房间
     getRooms(keyValue) {

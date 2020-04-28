@@ -66,9 +66,9 @@ export default class EweixiuDetailPage extends BasePage {
 
     getData = () => {
         const {fuwu, type} = this.state;
-        console.log('fuw', fuwu);
+        // console.log('fuw', fuwu);
         WorkService.weixiuDetail(fuwu.id).then(detail => {
-            console.log('detail', detail);
+            // console.log('detail', detail);
             this.setState({
                 detail: {
                     ...detail.entity,

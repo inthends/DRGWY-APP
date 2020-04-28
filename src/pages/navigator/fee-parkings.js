@@ -1,4 +1,4 @@
-//房间
+//车位
 import React, { Fragment } from 'react';
 import {
     View,
@@ -24,7 +24,7 @@ import CommonView from '../../components/CommonView';
 import WorkService from '../work/work-service';
 
 
-export default class FeeRoomsPage extends BasePage {
+export default class FeeParkingsPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         // console.log(1, navigation);
         return {
@@ -43,9 +43,8 @@ export default class FeeRoomsPage extends BasePage {
         let building = common.getValueFromProps(this.props);
         this.state = {
             building,
-            floors: [],
+            parkings: [],
         };
-
     }
 
 
@@ -54,20 +53,9 @@ export default class FeeRoomsPage extends BasePage {
             'didFocus',
             (obj) => {
                 const { building } = this.state;
-                //获取房间
-                NavigatorService.getFloors(building.id).then(floors => {
-                    const promises = floors.map(item => {
-                        return NavigatorService.getRooms(item.id).then(rooms => {
-                            return {
-                                ...item,
-                                rooms,
-                            };
-                        });
-                    });
-                    Promise.all(promises).then(floors => {
-                        // console.log('floors', floors);
-                        this.setState({ floors });
-                    });
+                //车库和车位
+                NavigatorService.getParkings(building.id).then(parkings => {
+                    this.setState({ parkings });
                 });
             },
         );
@@ -78,47 +66,33 @@ export default class FeeRoomsPage extends BasePage {
     }
 
     render() {
-        const { floors, building } = this.state;
-
-
+        const { parkings, building } = this.state;
         return (
-
 
             <CommonView style={{ flex: 1 }}>
                 <ScrollView>
                     <Text style={{ paddingLeft: 15, paddingTop: 15, fontSize: 20 }}>{building.allName}</Text>
-
-                    {floors.map(floor => (
-                        <Flex key={floor.id} align={'start'} direction={'column'}>
-                            <Flex style={styles.bb}>
-                                <Text style={styles.se}>{floor.name}</Text>
-                            </Flex>
-                            <Flex wrap='wrap' style={{ paddingLeft: 10, paddingRight: 10, marginTop: 10 }}>
-                                {floor.rooms.map(room => {
-                                    let color = {};
-                                    if (room.color === 2) {
-                                        color = styles.orange;
-                                    } else if (room.color === 3) {
-                                        color = styles.blue74BAF1;
-                                    }
-                                    return (
-                                        <TouchableWithoutFeedback key={room.id}
-                                            onPress={() => this.props.navigation.push('feeDetail', { data: room })}>
-                                            <Flex style={[styles.item, color]} justify={'center'}>
-                                                <Text style={[styles.title, color]}>{room.name}</Text>
-                                            </Flex>
-                                        </TouchableWithoutFeedback>
-                                    );
-                                },
-                                )}
-                            </Flex>
-                        </Flex>
-                    ))}
+                    <Flex wrap='wrap' style={{ paddingLeft: 10, paddingRight: 10, marginTop: 10 }}>
+                        {parkings.map(room => {
+                            let color = {};
+                            if (room.color === 2) {
+                                color = styles.orange;
+                            } else if (room.color === 3) {
+                                color = styles.blue74BAF1;
+                            }
+                            return (
+                                <TouchableWithoutFeedback key={room.id}
+                                    onPress={() => this.props.navigation.push('feeDetail', { data: room })}>
+                                    <Flex style={[styles.item, color]} justify={'center'}>
+                                        <Text style={[styles.title, color]}>{room.name}</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+                            );
+                        },
+                        )}
+                    </Flex>
                 </ScrollView>
-
-
-            </CommonView>
-
+            </CommonView> 
         );
     }
 }

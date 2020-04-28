@@ -109,7 +109,7 @@ class TaskListPage extends BasePage {
                 dataInfo: dataInfo,
                 refreshing: false,
             }, () => {
-                console.log(this.state.dataInfo.data);
+                // console.log(this.state.dataInfo.data);
             });
         });
     };

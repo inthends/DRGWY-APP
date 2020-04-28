@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import {
     View,
     Text,
@@ -11,10 +11,10 @@ import {
     ScrollView,
 } from 'react-native';
 import BasePage from '../base/base';
-import {Button, Flex, Icon, List, WhiteSpace} from '@ant-design/react-native';
+import { Button, Flex, Icon, List, WhiteSpace } from '@ant-design/react-native';
 import Macro from '../../utils/macro';
 import ScreenUtil from '../../utils/screen-util';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import ListHeader from '../../components/list-header';
 import common from '../../utils/common';
 import NavigatorService from './navigator-service';
@@ -23,15 +23,15 @@ import CommonView from '../../components/CommonView';
 
 
 export default class FeeBuildingsPage extends BasePage {
-    static navigationOptions = ({navigation}) => {
+    static navigationOptions = ({ navigation }) => {
 
-        console.log(1, navigation);
+        // console.log(1, navigation);
         return {
             tabBarVisible: false,
             title: '上门收费',
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
         };
@@ -40,7 +40,7 @@ export default class FeeBuildingsPage extends BasePage {
     constructor(props) {
         super(props);
         let housing = common.getValueFromProps(this.props);
-        console.log(11, housing);
+        // console.log(11, housing);
         this.state = {
             housing,
             items: [],
@@ -50,7 +50,7 @@ export default class FeeBuildingsPage extends BasePage {
 
     componentDidMount(): void {
         NavigatorService.getBuildings(this.state.housing.id).then(items => {
-            this.setState({items});
+            this.setState({ items });
         });
     }
 
@@ -66,19 +66,26 @@ export default class FeeBuildingsPage extends BasePage {
 
 
     render() {
-        const {housing, items} = this.state;
+        const { housing, items } = this.state;
         return (
 
 
-            <CommonView style={{flex: 1}}>
-                <ScrollView style={{flex: 1}}>
-                    <Text style={{paddingLeft: 15, paddingTop: 15, fontSize: 20}}>{housing.name}</Text>
-                    <Flex wrap='wrap' style={{paddingLeft: 10, paddingRight: 10, marginTop: 15}}>
+            <CommonView style={{ flex: 1 }}>
+                <ScrollView style={{ flex: 1 }}>
+                    <Text style={{ paddingLeft: 15, paddingTop: 15, fontSize: 20 }}>{housing.name}</Text>
+                    <Flex wrap='wrap' style={{ paddingLeft: 10, paddingRight: 10, marginTop: 15 }}>
                         {items.map(item => (
                             <TouchableWithoutFeedback key={item.id}
-                                                      onPress={() => this.props.navigation.push('feeRooms', {data: item})}>
-                                <Flex style={[styles.item,item.isClear === true ? '' : styles.orange2]} justify={'center'}>
-                                    <Text style={[styles.title,item.isClear === true ? '' : styles.orange2]}>{item.name}</Text>
+                                onPress={() => {
+                                    if (item.type == 2)
+                                        //房间
+                                        this.props.navigation.push('feeRooms', { data: item });
+                                    else
+                                        //车位
+                                        this.props.navigation.push('feeParkings', { data: item });
+                                }}>
+                                <Flex style={[styles.item, item.isClear === true ? '' : styles.orange2]} justify={'center'}>
+                                    <Text style={[styles.title, item.isClear === true ? '' : styles.orange2]}>{item.name}</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
                         ))}
