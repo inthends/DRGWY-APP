@@ -27,7 +27,7 @@ class XunJianPage extends BasePage {
     };
 
     onSelect = (person) => {
-        console.log(111, person);
+        // console.log(111, person);
         this.setState({
             person,
         }, () => {
@@ -123,7 +123,7 @@ class XunJianPage extends BasePage {
 
         });
         XunJianService.xunjianIndexList(person.id).then(res => {
-            console.log(12, res.data);
+            // console.log(12, res.data);
             Promise.all(res.data.map(item => XunJianService.xunjianIndexDetail(item.lineId))).then(all => {
                 let items = res.data.map((item, index) => {
                     return {
@@ -131,8 +131,8 @@ class XunJianPage extends BasePage {
                         items: all[index],
                     };
                 });
-                this.setState({items: [...items, ...items, ...items, ...items, ...items, ...items, ...items, ...items, ...items, ...items, ...items, ...items]}, () => {
-                    console.log(44, this.state);
+                this.setState({items: [...items]}, () => {
+                    // console.log(44, this.state);
                 });
             });
             // Promise.all()
