@@ -95,6 +95,7 @@ export default class JianYanListDetailPage extends BasePage {
             });
         });
     };
+    
     click = (handle) => {
         const { fuwu, type, value, result } = this.state;
         if (handle === '完成检验' && !(value && value.length > 0)) {
@@ -106,6 +107,7 @@ export default class JianYanListDetailPage extends BasePage {
             this.props.navigation.goBack();
         });
     };
+
     communicateClick = (i) => {
         let c = this.state.communicates;
         let d = c.map(it => {

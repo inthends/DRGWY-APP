@@ -85,7 +85,6 @@ export default {
             type = overdue;
             overdue = null;
         } else if (type === 'fuwu') {
-
             if (overdue === -1) {
                 //已回复，已经回复不判断是否逾期
                 url = '/api/MobileMethod/MGetReplyServiceDeskPageList';
@@ -96,7 +95,6 @@ export default {
                 type = null;
             }
         }
-
         return api.postData(url, { status: type, pageIndex, pageSize: 100, overdue, isOverdue: overdue });
     },
 
