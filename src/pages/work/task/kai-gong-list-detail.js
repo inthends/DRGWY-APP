@@ -163,7 +163,7 @@ export default class KaiGongListDetailPage extends BasePage {
                         </Flex>
                     </TouchableWithoutFeedback>
                     <DashLine/>
-                    <UploadImageView style={{marginTop:10}}/>
+                    {/* <UploadImageView style={{marginTop:10}}/> */}
                     <View style={{
                         margin: 15,
                         borderStyle: 'solid',
@@ -173,7 +173,7 @@ export default class KaiGongListDetailPage extends BasePage {
                     }}>
                         <TextareaItem
                             rows={4}
-                            placeholder='请输入'
+                            placeholder='请输入故障判断'
                             style={{fontSize:14,paddingTop: 10, height: 100, width: ScreenUtil.deviceWidth() - 32}}
                             onChange={value => this.setState({value})}
                             value={this.state.value}

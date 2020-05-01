@@ -10,7 +10,7 @@ import {
     RefreshControl, Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Icon } from '@ant-design/react-native/lib/index';
+import { Icon, Radio } from '@ant-design/react-native/lib/index';
 import { List, WhiteSpace, Flex, TextareaItem, Grid, Button } from '@ant-design/react-native/lib/index';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
@@ -71,9 +71,9 @@ export default class JianYanListDetailPage extends BasePage {
 
     getData = () => {
         const { fuwu, type } = this.state;
-        console.log('fuw', fuwu);
+        // console.log('fuw', fuwu);
         WorkService.weixiuDetail(fuwu.id).then(detail => {
-            console.log('detail', detail);
+            // console.log('detail', detail);
             this.setState({
                 detail: {
                     ...detail.entity,
@@ -89,13 +89,14 @@ export default class JianYanListDetailPage extends BasePage {
             });
         });
 
-        WorkService.serviceExtra(fuwu.id).then(images => {
+        // WorkService.serviceExtra(fuwu.id).then(images => {
+        WorkService.weixiuExtra(fuwu.id).then(images => {
             this.setState({
                 images,
             });
         });
     };
-    
+
     click = (handle) => {
         const { fuwu, type, value, result } = this.state;
         if (handle === '完成检验' && !(value && value.length > 0)) {
@@ -151,10 +152,10 @@ export default class JianYanListDetailPage extends BasePage {
                     <DashLine />
                     <Text style={styles.desc}>{detail.repairContent}</Text>
                     <DashLine />
-                    <ListImages images={images} lookImage={this.lookImage} /> 
+                    <ListImages images={images} lookImage={this.lookImage} />
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
-                    </Flex> 
+                    </Flex>
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every]}>
                             <Text style={styles.left}>关联单：</Text>
@@ -166,13 +167,15 @@ export default class JianYanListDetailPage extends BasePage {
                     <Flex justify={'between'} style={{ margin: 15 }}>
                         <TouchableWithoutFeedback onPress={() => this.setState({ result: 1 })}>
                             <Flex>
-                                <LoadImage style={{ width: 15, height: 15 }} />
+                                {/* <LoadImage style={{ width: 15, height: 15 }} /> */}
+                                <Radio style={{ width: 15, height: 15 }}/>
                                 <Text style={{ color: '#666', fontSize: 15, paddingLeft: 15 }}>合格</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={() => this.setState({ result: 0 })}>
                             <Flex>
-                                <LoadImage style={{ width: 15, height: 15 }} />
+                                {/* <LoadImage style={{ width: 15, height: 15 }} /> */}
+                                <Radio style={{ width: 15, height: 15 }} />
                                 <Text style={{ color: '#666', fontSize: 15, paddingLeft: 15 }}>不合格</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
