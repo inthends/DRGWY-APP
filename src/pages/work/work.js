@@ -177,7 +177,7 @@ export default class WorkPage extends BasePage {
                                 <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task', {
                                     'data': {
                                         'type': '1',
-                                        title: '派单列表',
+                                        title: '待派单列表',
                                     },
                                 })}>
                                     <Flex direction='column' style={{ width: '25%' }}>
@@ -188,7 +188,7 @@ export default class WorkPage extends BasePage {
                                 <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task', {
                                     'data': {
                                         'type': '2',
-                                        title: '接单列表',
+                                        title: '待接单列表',
                                     },
                                 })}>
                                     <Flex direction='column' style={{ width: '25%' }}>
@@ -210,7 +210,7 @@ export default class WorkPage extends BasePage {
                                 <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task', {
                                     'data': {
                                         'type': '6',
-                                        title: '检验列表',
+                                        title: '待检验列表',
                                     },
                                 })}>
                                     <Flex direction='column' style={{ width: '25%' }}>
