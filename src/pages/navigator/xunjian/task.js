@@ -101,13 +101,12 @@ export default class TaskPage extends BasePage {
                         <TouchableWithoutFeedback key={item.id}
                                                   onPress={() => this.props.navigation.push('xunjianDetail', {
                                                       'data': {
-                                                          'id': item.id,
-
+                                                          'id': item.id, 
                                                       },
                                                   })}>
                             <Flex direction='column' align={'start'}
                                   style={[styles.card, {borderLeftColor: Macro.work_blue, borderLeftWidth: 5}]}>
-                                <Text style={styles.title}>{item.tName}</Text>
+                                <Text style={styles.title}>{item.pName}</Text>
                                 <Flex style={styles.line}/>
                                 <Flex>
                                     <Flex style={{width: '100%'}}>
