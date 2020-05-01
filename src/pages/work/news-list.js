@@ -75,7 +75,7 @@ class NewsList extends BasePage {
                 refreshing: false,
                 pageIndex: dataInfo.pageIndex,
             }, () => {
-                console.log(this.state.dataInfo.data);
+                // console.log(this.state.dataInfo.data);
             });
         });
     };
@@ -91,7 +91,7 @@ class NewsList extends BasePage {
     };
     loadMore = () => {
         const {data, total, pageIndex} = this.state.dataInfo;
-        console.log('loadmore', this.canAction);
+        // console.log('loadmore', this.canAction);
 
         if (!this.canAction && data.length < total) {
             // if (data.length < total) {
@@ -192,8 +192,8 @@ class NewsList extends BasePage {
                       style={[styles.card, styles.blue]}>
                     <Flex justify='between' style={{width: '100%'}}>
                         <Text style={styles.title}>{item.title}</Text>
-                        <Text
-                            style={item.isRead === 0 ? styles.unread : styles.read}>{item.isRead === 0 ? '未读' : '已读'}</Text>
+                        {/* <Text style={item.isRead === 0 ? styles.unread : styles.read}>{item.isRead ? '已读' : '未读'}</Text> */}
+                        <Text style={styles.unread}>{item.sendUserName}，{item.sendTime}</Text>
                     </Flex>
                     <Flex style={styles.line}/>
                     <Flex align={'start'} direction={'column'}>

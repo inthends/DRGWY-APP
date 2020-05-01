@@ -199,7 +199,7 @@ export default class WorkPage extends BasePage {
                                 <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task', {
                                     'data': {
                                         'type': '3',
-                                        title: '完成维修列表',
+                                        title: '待完成列表',
                                     },
                                 })}>
                                     <Flex direction='column' style={{ width: '25%' }}>
@@ -331,7 +331,6 @@ const styles = StyleSheet.create({
     orange: {
         borderLeftColor: Macro.color_f39d39,
         borderLeftWidth: 8,
-        borderStyle: 'solid',
-
+        borderStyle: 'solid', 
     },
 });
