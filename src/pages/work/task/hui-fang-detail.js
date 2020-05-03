@@ -74,7 +74,7 @@ export default class HuiFangDetailPage extends BasePage {
         const {fuwu, type} = this.state;
         console.log('fuw', fuwu);
         WorkService.weixiuDetail(fuwu.id).then(detail => {
-            console.log('detail', detail);
+            // console.log('detail', detail);
             this.setState({
                 detail: {
                     ...detail.entity,
@@ -90,11 +90,13 @@ export default class HuiFangDetailPage extends BasePage {
             });
         });
 
-        WorkService.serviceExtra(fuwu.id).then(images => {
+        //获取维修单附件
+        WorkService.weixiuExtra(fuwu.id).then(images => {
             this.setState({
                 images,
             });
         });
+        
     };
     click = (handle) => {
         const {fuwu, type, value, star} = this.state;
