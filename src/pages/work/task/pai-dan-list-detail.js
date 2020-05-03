@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import {
     View,
     Text,
@@ -8,8 +8,8 @@ import {
     ScrollView, Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
-import {Icon} from '@ant-design/react-native/lib/index';
-import {List, WhiteSpace, Flex, TextareaItem, Grid, Button} from '@ant-design/react-native/lib/index';
+import { Icon } from '@ant-design/react-native/lib/index';
+import { List, WhiteSpace, Flex, TextareaItem, Grid, Button } from '@ant-design/react-native/lib/index';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import SelectImage from '../../../utils/select-image';
@@ -21,7 +21,8 @@ import UDPlayer from '../../../utils/UDPlayer';
 import UDToast from '../../../utils/UDToast';
 import DashLine from '../../../components/dash-line';
 import WorkService from '../work-service';
-import Communicates from '../../../components/communicates';
+// import Communicates from '../../../components/communicates';
+import OperationRecords from '../../../components/operationrecords';
 import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
@@ -31,12 +32,12 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 const Item = List.Item;
 
 export default class PaiDanListDetailPage extends BasePage {
-    static navigationOptions = ({navigation}) => {
+    static navigationOptions = ({ navigation }) => {
         return {
             title: '派单',
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
 
@@ -61,7 +62,7 @@ export default class PaiDanListDetailPage extends BasePage {
         console.log(this.state);
     }
 
-    onSelect = ({selectPerson}) => {
+    onSelect = ({ selectPerson }) => {
         this.setState({
             selectPerson,
         })
@@ -73,10 +74,8 @@ export default class PaiDanListDetailPage extends BasePage {
 
 
     getData = () => {
-        const {fuwu, type} = this.state;
-        console.log('fuw', fuwu);
-        WorkService.weixiuDetail(fuwu.id).then(detail => {
-            console.log('detail', detail);
+        const { fuwu, type } = this.state; 
+        WorkService.weixiuDetail(fuwu.id).then(detail => { 
             this.setState({
                 detail: {
                     ...detail.entity,
@@ -85,21 +84,24 @@ export default class PaiDanListDetailPage extends BasePage {
                     statusName: detail.statusName,
                 },
             });
-            WorkService.serviceCommunicates(detail.relationId).then(res => {
+
+            //获取维修单的单据动态
+            WorkService.getOperationRecord(fuwu.id).then(res => {
                 this.setState({
                     communicates: res,
                 });
             });
+
         });
 
-        WorkService.serviceExtra(fuwu.id).then(images => {
+        WorkService.weixiuExtra(fuwu.id).then(images => {
             this.setState({
                 images,
             });
         });
     };
     click = (handle) => {
-        const {fuwu,selectPerson} = this.state;
+        const { fuwu, selectPerson } = this.state;
         if (selectPerson) {
             WorkService.paidan(fuwu.id, selectPerson.name, selectPerson.id).then(res => {
                 UDToast.showInfo('操作成功');
@@ -137,12 +139,12 @@ export default class PaiDanListDetailPage extends BasePage {
 
 
     render() {
-        const {images, detail, communicates, selectPerson} = this.state;
+        const { images, detail, communicates, selectPerson } = this.state;
         console.log(1122, detail);
 
 
         return (
-            <CommonView style={{flex: 1, backgroundColor: '#fff', paddingBottom: 10}}>
+            <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.billCode}</Text>
@@ -151,13 +153,13 @@ export default class PaiDanListDetailPage extends BasePage {
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>{detail.address} {detail.contactName}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
-                            <Flex><LoadImage style={{width: 30, height: 30}}/></Flex>
+                            <Flex><LoadImage style={{ width: 30, height: 30 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
-                    <DashLine/>
+                    <DashLine />
                     <Text style={styles.desc}>{detail.repairContent}</Text>
-                    <DashLine/>
-                    <ListImages images={images} lookImage={this.lookImage}/>
+                    <DashLine />
+                    <ListImages images={images} lookImage={this.lookImage} />
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
                     </Flex>
@@ -166,22 +168,22 @@ export default class PaiDanListDetailPage extends BasePage {
                         <Flex style={[styles.every]}>
                             <Text style={styles.left}>关联单：</Text>
                             <Text
-                                onPress={() => this.props.navigation.navigate('service', {data: {id: detail.relationId}})}
-                                style={[styles.right, {color: Macro.color_4d8fcc}]}>{detail.serviceDeskCode}</Text>
+                                onPress={() => this.props.navigation.navigate('service', { data: { id: detail.relationId } })}
+                                style={[styles.right, { color: Macro.color_4d8fcc }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback
-                        onPress={() => this.props.navigation.navigate('selectPaidanPerson', {onSelect: this.onSelect})}>
+                        onPress={() => this.props.navigation.navigate('selectPaidanPerson', { onSelect: this.onSelect })}>
                         <Flex style={[styles.every]} justify='between'>
                             <Flex>
                                 <Text style={styles.left}>接单人：</Text>
                                 <Text
-                                    style={[styles.right, selectPerson ?{color: Macro.color_4d8fcc}:{color:'#666'} ]}>{selectPerson ? selectPerson.name : "请选择接单人"}</Text>
+                                    style={[styles.right, selectPerson ? { color: Macro.color_4d8fcc } : { color: '#666' }]}>{selectPerson ? selectPerson.name : "请选择接单人"}</Text>
                             </Flex>
-                            <LoadImage style={{width: 15, height: 15}}/>
+                            <LoadImage style={{ width: 15, height: 15 }} />
                         </Flex>
                     </TouchableWithoutFeedback>
-                    <DashLine/>
+                    <DashLine />
                     <View style={{
                         margin: 15,
                         borderStyle: 'solid',
@@ -192,8 +194,8 @@ export default class PaiDanListDetailPage extends BasePage {
                         <TextareaItem
                             rows={4}
                             placeholder='请输入'
-                            style={{fontSize: 14, paddingTop: 10, height: 100, width: ScreenUtil.deviceWidth() - 32}}
-                            onChange={value => this.setState({value})}
+                            style={{ fontSize: 14, paddingTop: 10, height: 100, width: ScreenUtil.deviceWidth() - 32 }}
+                            onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
                     </View>
@@ -203,15 +205,15 @@ export default class PaiDanListDetailPage extends BasePage {
                             marginLeft: '10%',
                             marginRight: '10%',
                             marginBottom: 20
-                        }, {backgroundColor: Macro.color_4d8fcc}]}>
+                        }, { backgroundColor: Macro.color_4d8fcc }]}>
                             <Text style={styles.word}>派单</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-                    <Communicates communicateClick={this.communicateClick} communicates={communicates}/>
+                    <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
-                                 imageUrls={this.state.images}/>
+                        imageUrls={this.state.images} />
                 </Modal>
             </CommonView>
         );

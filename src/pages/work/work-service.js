@@ -58,6 +58,12 @@ export default {
     serviceCommunicates(keyValue) {
         return api.getData('/api/MobileMethod/MGetCommunicates', { keyValue, pageIndex: 1, pageSize: 100 });
     },
+
+    //维修单单据动态
+    getOperationRecord(keyValue) {
+        return api.getData('/api/MobileMethod/MGetOperationRecordList', { keyValue, pageIndex: 1, pageSize: 100 });
+    },
+
     //维修单详情
     weixiuDetail(keyValue) {
         return api.getData('/api/MobileMethod/MGetRepairEntity', { keyValue });

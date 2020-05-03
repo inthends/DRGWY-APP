@@ -22,7 +22,8 @@ import UDToast from '../../../utils/UDToast';
 import DashLine from '../../../components/dash-line';
 import WorkService from '../work-service';
 import UploadImageView from '../../../components/upload-image-view';
-import Communicates from '../../../components/communicates';
+// import Communicates from '../../../components/communicates';
+import OperationRecords from '../../../components/operationrecords';
 import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
@@ -79,14 +80,16 @@ export default class KaiGongListDetailPage extends BasePage {
                     statusName: detail.statusName,
                 },
             });
-            WorkService.serviceCommunicates(detail.relationId).then(res => {
+            
+            //获取维修单的单据动态
+            WorkService.getOperationRecord(fuwu.id).then(res => {
                 this.setState({
                     communicates: res,
                 });
             });
         });
 
-        WorkService.serviceExtra(fuwu.id).then(images => {
+        WorkService.weixiuExtra(fuwu.id).then(images => {
             this.setState({
                 images,
             });
@@ -185,7 +188,7 @@ export default class KaiGongListDetailPage extends BasePage {
                             <Text style={styles.word}>开始维修</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-                    <Communicates communicateClick={this.communicateClick} communicates={communicates}/>
+                    <OperationRecords communicateClick={this.communicateClick} communicates={communicates}/>
 
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>

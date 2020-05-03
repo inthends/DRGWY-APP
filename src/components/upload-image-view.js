@@ -16,7 +16,7 @@ export default class UploadImageView extends Component {
 
     selectImages = () => {
         SelectImage.select(this.state.id,this.props.uploadUrl || '/api/MobileMethod/MUploadRepairFile').then(res => {
-            console.log(1122, res);
+            // console.log(1122, res);
             let images = [...this.state.images];
             images.splice(images.length-1, 0, {'icon': res});
             if (images.length > 4) {
