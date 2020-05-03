@@ -73,7 +73,7 @@ class SelectPaiDanPerson extends BasePage {
         return (
             <CommonView>
                 <ScrollView>
-                    <View>
+                    <View >
                         {items.map(item => (
                             <TouchableWithoutFeedback key={item.id} onPress={() => this.click(item)}>
                                 <Flex style={styles.content} justify={'between'} align={'center'}>
