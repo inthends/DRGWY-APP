@@ -172,7 +172,7 @@ export default class WanChengListDetailPage extends BasePage {
                         </Flex>
                     </TouchableWithoutFeedback>
                     <DashLine />
-                    <UploadImageView style={{ marginTop: 10 }} />
+                    <UploadImageView style={{ marginTop: 10 }} linkId={fuwu.id} />
                     <View style={{
                         margin: 15,
                         borderStyle: 'solid',

@@ -61,7 +61,7 @@ export default class JianYanListDetailPage extends BasePage {
             lookImageIndex: 0,
             visible: false,
         };
-        console.log(this.state);
+        // console.log(this.state);
     }
 
     componentDidMount(): void {
@@ -90,7 +90,7 @@ export default class JianYanListDetailPage extends BasePage {
             // });
 
             //获取维修单的单据动态
-              WorkService.getOperationRecord(fuwu.id).then(res => {
+            WorkService.getOperationRecord(fuwu.id).then(res => {
                 this.setState({
                     communicates: res,
                 });
@@ -174,20 +174,25 @@ export default class JianYanListDetailPage extends BasePage {
                     </TouchableWithoutFeedback>
                     <DashLine />
                     <Flex justify={'between'} style={{ margin: 15 }}>
-                        <TouchableWithoutFeedback onPress={() => this.setState({ result: 1 })}>
+                        {/* <TouchableWithoutFeedback onPress={() => this.setState({ result: 1 })}>
                             <Flex>
-                                {/* <LoadImage style={{ width: 15, height: 15 }} /> */}
-                                <Radio style={{ width: 15, height: 15 }}/>
-                                <Text style={{ color: '#666', fontSize: 15, paddingLeft: 15 }}>合格</Text>
+                                <LoadImage style={{ width: 15, height: 15 }} /> 
+                                <Text style={{ color: '#666', fontSize: 15, paddingLeft: 15 }}>合格</Text> 
                             </Flex>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={() => this.setState({ result: 0 })}>
                             <Flex>
-                                {/* <LoadImage style={{ width: 15, height: 15 }} /> */}
-                                <Radio style={{ width: 15, height: 15 }} />
-                                <Text style={{ color: '#666', fontSize: 15, paddingLeft: 15 }}>不合格</Text>
+                                <LoadImage style={{ width: 15, height: 15 }} /> 
+                                <Text style={{ color: '#666', fontSize: 15, paddingLeft: 15 }}>不合格</Text> 
                             </Flex>
-                        </TouchableWithoutFeedback>
+                        </TouchableWithoutFeedback> */}
+
+
+                        <Radio>
+                            <Text onPress={() => this.setState({ result: 1 })} style={{ color: '#666', fontSize: 15, paddingLeft: 15 }}>合格</Text>
+                            <Text onPress={() => this.setState({ result: 0 })} style={{ color: '#666', fontSize: 15, paddingLeft: 15 }}>不合格</Text>
+                        </Radio>
+
                     </Flex>
                     <View style={{
                         margin: 15,
@@ -211,7 +216,7 @@ export default class JianYanListDetailPage extends BasePage {
                     </TouchableWithoutFeedback>
                     {/* <Communicates communicateClick={this.communicateClick} communicates={communicates} /> */}
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
-                    
+
 
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
