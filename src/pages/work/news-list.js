@@ -184,16 +184,14 @@ class NewsList extends BasePage {
                 //             break;
                 //
                 //     }
-                // }
-
-
+                // } 
             }}>
                 <Flex direction='column' align={'start'}
                       style={[styles.card, styles.blue]}>
                     <Flex justify='between' style={{width: '100%'}}>
                         <Text style={styles.title}>{item.title}</Text>
                         {/* <Text style={item.isRead === 0 ? styles.unread : styles.read}>{item.isRead ? '已读' : '未读'}</Text> */}
-                        <Text style={styles.unread}>{item.sendUserName}，{item.sendTime}</Text>
+                        <Text style={styles.read}>{item.sendUserName}，{item.sdtime}</Text>
                     </Flex>
                     <Flex style={styles.line}/>
                     <Flex align={'start'} direction={'column'}>
