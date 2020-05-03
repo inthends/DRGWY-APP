@@ -1,7 +1,7 @@
 import ImagePicker from 'react-native-image-picker';
 import UDToast from './UDToast';
 import api from './api';
-import {ImagePickerOptions} from 'react-native-image-picker/src/internal/types';
+import { ImagePickerOptions } from 'react-native-image-picker/src/internal/types';
 
 const options: ImagePickerOptions = {
     title: '请选择',
@@ -23,11 +23,10 @@ const options: ImagePickerOptions = {
 
 
 export default class SelectImage {
-    static select(id,uploadUrl) {
+    static select(id, uploadUrl) {
         return new Promise((resolve, reject) => {
             ImagePicker.showImagePicker(options, (response) => {
-                console.log('Response = ', response);
-
+                // console.log('Response = ', response); 
                 if (response.didCancel) {
                     // UDToast.showInfo('已取消选择图片');
                 } else if (response.error) {
@@ -40,9 +39,9 @@ export default class SelectImage {
 
                     // You can also display the image using data:
                     // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-                    api.uploadFile(response.uri, id,uploadUrl).then(res => {
+                    api.uploadFile(response.uri, id, uploadUrl).then(res => {
                         resolve(res);
-                    }).catch(error=>{
+                    }).catch(error => {
 
                     });
 

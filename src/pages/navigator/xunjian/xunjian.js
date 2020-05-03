@@ -1,26 +1,26 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import BasePage from '../../base/base';
-import {Flex, Accordion, List, Icon, WingBlank} from '@ant-design/react-native';
+import { Flex, Accordion, List, Icon, WingBlank } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
-import {StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, ScrollView} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, ScrollView } from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import CommonView from '../../../components/CommonView';
 import RNLocation from 'react-native-location';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import memberReducer from '../../../utils/store/reducers/member-reducer';
 import XunJianService from './xunjian-service';
 
 
 class XunJianPage extends BasePage {
-    static navigationOptions = ({navigation}) => {
+    static navigationOptions = ({ navigation }) => {
 
         return {
             tabBarVisible: false,
             title: '综合巡检',
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
         };
@@ -68,7 +68,7 @@ class XunJianPage extends BasePage {
     }
 
     onChange = activeSections => {
-        this.setState({activeSections});
+        this.setState({ activeSections });
     };
 
     callBack = (pointId) => {
@@ -99,7 +99,7 @@ class XunJianPage extends BasePage {
             'didFocus',
             () => {
                 let person = this.state.person || {};
-                XunJianService.xunjianData(person.id,false).then(res => {
+                XunJianService.xunjianData(person.id, false).then(res => {
                     this.setState({
                         ...res,
                     });
@@ -131,7 +131,7 @@ class XunJianPage extends BasePage {
                         items: all[index],
                     };
                 });
-                this.setState({items: [...items]}, () => {
+                this.setState({ items: [...items] }, () => {
                     // console.log(44, this.state);
                 });
             });
@@ -140,17 +140,18 @@ class XunJianPage extends BasePage {
     }
 
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
-        const {person, today, todo, missed, finish, items} = this.state;
-        const {user} = this.props;
+        const { person, today, todo, missed, finish, items } = this.state;
+        const { user } = this.props;
         let name;
-        let userId;
-        if (user) {
-            name = user.showName;
-        }
+        let userId; 
         if (person) {
             name = person.name;
             userId = person.id;
+        } else { 
+            name = user.showName;
+            userId = user.userId;
         }
+        
         return (
             <CommonView>
                 <Flex direction='column' align={'start'} style={[styles.card]}>
@@ -161,7 +162,7 @@ class XunJianPage extends BasePage {
                                 userId,
                             },
                         })}>
-                            <Flex direction='column' style={{width: '25%'}}>
+                            <Flex direction='column' style={{ width: '25%' }}>
                                 <Text style={styles.top}>{today || 0}</Text>
                                 <Text style={styles.bottom}>今日任务</Text>
                             </Flex>
@@ -172,7 +173,7 @@ class XunJianPage extends BasePage {
                                 userId,
                             },
                         })}>
-                            <Flex direction='column' style={{width: '25%'}}>
+                            <Flex direction='column' style={{ width: '25%' }}>
                                 <Text style={styles.top}>{todo || 0}</Text>
                                 <Text style={styles.bottom}>待完成</Text>
                             </Flex>
@@ -183,7 +184,7 @@ class XunJianPage extends BasePage {
                                 userId,
                             },
                         })}>
-                            <Flex direction='column' style={{width: '25%'}}>
+                            <Flex direction='column' style={{ width: '25%' }}>
                                 <Text style={styles.top}>{missed || 0}</Text>
                                 <Text style={styles.bottom}>漏检</Text>
                             </Flex>
@@ -195,7 +196,7 @@ class XunJianPage extends BasePage {
 
                             },
                         })}>
-                            <Flex direction='column' style={{width: '25%'}}>
+                            <Flex direction='column' style={{ width: '25%' }}>
                                 <Text style={styles.top}>{finish || 0}</Text>
                                 <Text style={styles.bottom}>已完成</Text>
                             </Flex>
@@ -203,7 +204,7 @@ class XunJianPage extends BasePage {
                     </Flex>
 
                 </Flex>
-                <Flex style={styles.line}/>
+                <Flex style={styles.line} />
                 {/*<Text style={styles.location}>当前位置：xxxx</Text>*/}
                 <TouchableWithoutFeedback onPress={() => this.props.navigation.push('selectXunjian', {
                     'data': {
@@ -213,10 +214,10 @@ class XunJianPage extends BasePage {
                 })}>
                     <Flex style={styles.person} align={'center'} justify={'center'}>
                         <Text style={styles.personText}>{name}</Text>
-                        <LoadImage style={{width: 20, height: 20}}/>
+                        <LoadImage style={{ width: 20, height: 20 }} />
                     </Flex>
                 </TouchableWithoutFeedback>
-                <ScrollView style={{height: ScreenUtil.contentHeight() - 220}}>
+                <ScrollView style={{ height: ScreenUtil.contentHeight() - 220 }}>
                     <Accordion
                         onChange={this.onChange}
                         activeSections={this.state.activeSections}
@@ -226,12 +227,12 @@ class XunJianPage extends BasePage {
                                 <List>
                                     {item.items.map((it, index) => (
                                         <TouchableWithoutFeedback key={it.name + index}
-                                                                  onPress={() => this.props.navigation.push('xunjianPointDetail', {
-                                                                      'data': {
-                                                                          lineId: item.lineId,
-                                                                          pointId: it.id,
-                                                                      },
-                                                                  })}>
+                                            onPress={() => this.props.navigation.push('xunjianPointDetail', {
+                                                'data': {
+                                                    lineId: item.lineId,
+                                                    pointId: it.id,
+                                                },
+                                            })}>
                                             <WingBlank>
                                                 <List.Item>{it.name}</List.Item>
                                             </WingBlank>
@@ -248,7 +249,7 @@ class XunJianPage extends BasePage {
                         marginLeft: '10%',
                         marginRight: '10%',
                         marginBottom: 20,
-                    }, {backgroundColor: Macro.color_4d8fcc}]}>
+                    }, { backgroundColor: Macro.color_4d8fcc }]}>
                         <Text style={styles.word}>开始巡检</Text>
                     </Flex>
                 </TouchableWithoutFeedback>
@@ -258,7 +259,7 @@ class XunJianPage extends BasePage {
 }
 
 
-const mapStateToProps = ({memberReducer}) => {
+const mapStateToProps = ({ memberReducer }) => {
     return {
         user: memberReducer.user,
     };

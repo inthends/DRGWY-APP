@@ -138,7 +138,7 @@ export default class WanChengListDetailPage extends BasePage {
 
     render() {
         const { images, detail, communicates } = this.state;
-        console.log(1122, detail);
+        // console.log(1122, detail);
 
 
         return (
