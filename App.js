@@ -6,16 +6,16 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import AppContainer from './src/pages/tabbar/tabbar';
-import { Provider } from '@ant-design/react-native';
-import { Provider as Pro } from 'react-redux';
+import {Provider} from '@ant-design/react-native';
+import {Provider as Pro} from 'react-redux';
 import store from './src/utils/store/store';
 import AppRouter from './router';
-import { PersistGate } from 'redux-persist/lib/integration/react';
-import { persistor } from './src/utils/store/store';
+import {PersistGate} from 'redux-persist/lib/integration/react';
+import {persistor} from './src/utils/store/store';
 import JPush from 'jpush-react-native';
-import { Alert, DeviceEventEmitter } from 'react-native';
+import {Alert, DeviceEventEmitter} from 'react-native';
 import UDAlert from './src/utils/UDAlert';
 import NavigatorService from './src/pages/navigator/navigator-service';
 
@@ -48,7 +48,7 @@ class App extends Component<Props> {
                 [
                     {
                         text: '取消',
-                        // onPress: () => console.log('Cancel Pressed'), 
+                        // onPress: () => console.log('Cancel Pressed'),
                         style: 'cancel',
                     },
                     {
@@ -60,7 +60,7 @@ class App extends Component<Props> {
                         },
                     },
                 ],
-                { cancelable: false },
+                {cancelable: false},
             );
         };
         JPush.addNotificationListener(this.notificationListener);
@@ -86,6 +86,10 @@ class App extends Component<Props> {
         };
         JPush.addMobileNumberListener(this.mobileNumberListener);
 
+        // JPush.getRegistrationID(res => {
+        //     alert(JSON.stringify(res));
+        // });
+
 
         JPush.setLoggerEnable(true);
 
@@ -98,7 +102,7 @@ class App extends Component<Props> {
             <Pro store={store}>
                 <PersistGate loading={null} persistor={persistor}>
                     <Provider>
-                        <AppRouter />
+                        <AppRouter/>
                     </Provider>
                 </PersistGate>
             </Pro>

@@ -29,16 +29,6 @@ class LoginPage extends BasePage {
     componentDidMount(): void {
 
 
-        const toast = UDToast.showLoading();
-        JPush.getRegistrationID(result => {
-                UDToast.hiddenLoading(toast);
-                console.log('re', result);
-                this.setState({
-                    registration_id: result.registerID,
-                });
-            },
-        );
-
         if (!common.isIOS()) {
             NativeModules.LHNToast.getVersionCode((version) => {
                 this.setState({version});
@@ -82,20 +72,29 @@ class LoginPage extends BasePage {
     // }
 
     login = () => {
-        const {username, password, usercode, registration_id} = this.state;
+        const {username, password, usercode} = this.state;
+        JPush.getRegistrationID(result => {
+                // console.log('re', result);
+                // this.setState({
+                //     registration_id: result.registerID,
+                // });
 
-        LoginService.getServiceUrl(usercode).then(res => {
-            this.props.saveUrl(res);
-            LoginService.login(username, password, registration_id).then(res => {
-                console.log(1, res);
-                this.props.saveNameAndPsd({...this.state});
-                this.props.saveToken(res);
-            }).catch(error => {
-                console.log(error);
-            });
-        }).catch(err => {
+                LoginService.getServiceUrl(usercode).then(res => {
+                    this.props.saveUrl(res);
+                    LoginService.login(username, password, result.registerID).then(res => {
+                        console.log(1, res);
+                        this.props.saveNameAndPsd({...this.state});
+                        this.props.saveToken(res);
+                    }).catch(error => {
+                        console.log(error);
+                    });
+                }).catch(err => {
 
-        });
+                });
+            },
+        );
+
+
     };
 
 
