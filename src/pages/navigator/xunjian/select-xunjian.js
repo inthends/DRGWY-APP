@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 import BasePage from '../../base/base';
 import {Flex, Accordion, List, Icon} from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
-import {StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View,ScrollView} from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import CommonView from '../../../components/CommonView';
@@ -80,14 +80,16 @@ class SelectXunJianPerson extends BasePage {
         const {persons} = this.state;
         return (
             <CommonView>
-                {persons.map(item => (
-                    <TouchableWithoutFeedback key={item.id} onPress={() => this.select(item)}>
-                        <Flex key={item.id} justify='between' style={styles.hang}>
-                            <Text style={styles.word}>{item.name}</Text>
-                            <Text style={styles.word}>{item.orgName}</Text>
-                        </Flex>
-                    </TouchableWithoutFeedback>
-                ))}
+                <ScrollView>
+                    {persons.map(item => (
+                        <TouchableWithoutFeedback key={item.id} onPress={() => this.select(item)}>
+                            <Flex key={item.id} justify='between' style={styles.hang}>
+                                <Text style={styles.word}>{item.name}</Text>
+                                <Text style={styles.word}>{item.orgName}</Text>
+                            </Flex>
+                        </TouchableWithoutFeedback>
+                    ))}
+                </ScrollView>
             </CommonView>
         );
     }

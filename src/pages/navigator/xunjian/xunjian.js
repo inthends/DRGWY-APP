@@ -98,7 +98,7 @@ class XunJianPage extends BasePage {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             () => {
-                let person = this.state.person || {};
+                let person = this.state.person || this.props.user;
                 XunJianService.xunjianData(person.id, false).then(res => {
                     this.setState({
                         ...res,
@@ -115,7 +115,7 @@ class XunJianPage extends BasePage {
     }
 
     initUI() {
-        let person = this.state.person || {};
+        let person = this.state.person || this.props.user;
         XunJianService.xunjianData(person.id).then(res => {
             this.setState({
                 ...res,
@@ -261,7 +261,10 @@ class XunJianPage extends BasePage {
 
 const mapStateToProps = ({ memberReducer }) => {
     return {
-        user: memberReducer.user,
+        user: {
+            ...memberReducer.user,
+            id: memberReducer.user.userId,
+        },
     };
 };
 

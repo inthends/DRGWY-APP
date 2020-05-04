@@ -73,7 +73,7 @@ class SelectPaiDanPerson extends BasePage {
         return (
             <CommonView>
                 <ScrollView>
-                    <View>
+                    <View >
                         {items.map(item => (
                             <TouchableWithoutFeedback key={item.id} onPress={() => this.click(item)}>
                                 <Flex style={styles.content} justify={'between'} align={'center'}>
@@ -89,8 +89,8 @@ class SelectPaiDanPerson extends BasePage {
                                     <Flex direction={'column'}>
                                         <Text style={styles.identifier}>{item.dutyName}</Text>
                                         <Text style={styles.state}>{item.state === 1 ? '在线' : '离线'}</Text>
-                                    </Flex> 
-                                    
+                                    </Flex>
+
                                 </Flex>
 
                             </TouchableWithoutFeedback>

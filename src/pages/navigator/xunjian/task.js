@@ -96,26 +96,28 @@ export default class TaskPage extends BasePage {
                 <ScrollTitle index={index} onChange={this.onChange} titles={titles}/>
 
                 <Flex direction={'column'} style={{padding: 15, paddingTop: 30}}>
-
-                    {res.data.map(item => (
-                        <TouchableWithoutFeedback key={item.id}
-                                                  onPress={() => this.props.navigation.push('xunjianDetail', {
-                                                      'data': {
-                                                          'id': item.id, 
-                                                      },
-                                                  })}>
-                            <Flex direction='column' align={'start'}
-                                  style={[styles.card, {borderLeftColor: Macro.work_blue, borderLeftWidth: 5}]}>
-                                <Text style={styles.title}>{item.pName}</Text>
-                                <Flex style={styles.line}/>
-                                <Flex>
-                                    <Flex style={{width: '100%'}}>
-                                        <Text style={styles.top}>{item.planTime} {item.tName}</Text>
+                    <ScrollView>
+                        {res.data.map(item => (
+                            <TouchableWithoutFeedback key={item.id}
+                                                      onPress={() => this.props.navigation.push('xunjianDetail', {
+                                                          'data': {
+                                                              'id': item.id,
+                                                          },
+                                                      })}>
+                                <Flex direction='column' align={'start'}
+                                      style={[styles.card, {borderLeftColor: Macro.work_blue, borderLeftWidth: 5}]}>
+                                    <Text style={styles.title}>{item.pName}</Text>
+                                    <Flex style={styles.line}/>
+                                    <Flex>
+                                        <Flex style={{width: '100%'}}>
+                                            <Text style={styles.top}>{item.planTime} {item.tName}</Text>
+                                        </Flex>
                                     </Flex>
                                 </Flex>
-                            </Flex>
-                        </TouchableWithoutFeedback>
-                    ))}
+                            </TouchableWithoutFeedback>
+                        ))}
+                    </ScrollView>
+
                 </Flex>
             </CommonView>
         );
