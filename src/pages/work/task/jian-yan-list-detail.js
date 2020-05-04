@@ -10,7 +10,7 @@ import {
     RefreshControl, Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
-import {Icon} from '@ant-design/react-native/lib/index';
+import {Icon, Radio} from '@ant-design/react-native/lib/index';
 import {List, WhiteSpace, Flex, TextareaItem, Grid, Button} from '@ant-design/react-native/lib/index';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
@@ -19,12 +19,12 @@ import common from '../../../utils/common';
 import UDRecord from '../../../utils/UDRecord';
 import api from '../../../utils/api';
 import UDPlayer from '../../../utils/UDPlayer';
-
 import UDToast from '../../../utils/UDToast';
 import DashLine from '../../../components/dash-line';
 import WorkService from '../work-service';
 import UploadImageView from '../../../components/upload-image-view';
-import Communicates from '../../../components/communicates';
+// import Communicates from '../../../components/communicates';
+import OperationRecords from '../../../components/operationrecords';
 import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
@@ -61,7 +61,7 @@ export default class JianYanListDetailPage extends BasePage {
             lookImageIndex: 0,
             visible: false,
         };
-        console.log(this.state);
+        // console.log(this.state);
     }
 
     componentDidMount(): void {
@@ -71,9 +71,9 @@ export default class JianYanListDetailPage extends BasePage {
 
     getData = () => {
         const {fuwu, type} = this.state;
-        console.log('fuw', fuwu);
+        // console.log('fuw', fuwu);
         WorkService.weixiuDetail(fuwu.id).then(detail => {
-            console.log('detail', detail);
+            // console.log('detail', detail);
             this.setState({
                 detail: {
                     ...detail.entity,
@@ -82,30 +82,42 @@ export default class JianYanListDetailPage extends BasePage {
                     statusName: detail.statusName,
                 },
             });
-            WorkService.serviceCommunicates(detail.relationId).then(res => {
+
+            // WorkService.serviceCommunicates(detail.relationId).then(res => {
+            //     this.setState({
+            //         communicates: res,
+            //     });
+            // });
+
+            //获取维修单的单据动态
+            WorkService.getOperationRecord(fuwu.id).then(res => {
                 this.setState({
                     communicates: res,
                 });
             });
+
         });
 
-        WorkService.serviceExtra(fuwu.id).then(images => {
+        // WorkService.serviceExtra(fuwu.id).then(images => {
+        WorkService.weixiuExtra(fuwu.id).then(images => {
             this.setState({
                 images,
             });
         });
     };
+
     click = (handle) => {
-        const {fuwu, type, value,result} = this.state;
-        if (handle === '回复' && !(value&&value.length > 0)) {
+        const {fuwu, type, value, result} = this.state;
+        if (handle === '完成检验' && !(value && value.length > 0)) {
             UDToast.showInfo('请输入文字');
             return;
         }
-        WorkService.serviceHandle(handle, fuwu.id, value,{result}).then(res => {
+        WorkService.serviceHandle(handle, fuwu.id, value, {result}).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
         });
     };
+
     communicateClick = (i) => {
         let c = this.state.communicates;
         let d = c.map(it => {
@@ -131,12 +143,11 @@ export default class JianYanListDetailPage extends BasePage {
         });
     };
 
-
     render() {
-        const {images, detail, communicates} = this.state;
-        console.log(1122, detail);
+        const {images, detail, communicates, result} = this.state;
 
-
+        const selectImg = require('../../../static/images/select.png');
+        const noselectImg = require('../../../static/images/no-select.png');
         return (
             <CommonView style={{flex: 1, backgroundColor: '#fff', paddingBottom: 10}}>
                 <ScrollView>
@@ -154,32 +165,40 @@ export default class JianYanListDetailPage extends BasePage {
                     <Text style={styles.desc}>{detail.repairContent}</Text>
                     <DashLine/>
                     <ListImages images={images} lookImage={this.lookImage}/>
-
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
                     </Flex>
-
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every]}>
                             <Text style={styles.left}>关联单：</Text>
-                            <Text onPress={() => this.props.navigation.navigate('service', {data: {id: detail.relationId}})}
-                                  style={[styles.right, {color: Macro.color_4d8fcc}]}>{detail.serviceDeskCode}</Text>
+                            <Text
+                                onPress={() => this.props.navigation.navigate('service', {data: {id: detail.relationId}})}
+                                style={[styles.right, {color: Macro.color_4d8fcc}]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
                     <DashLine/>
                     <Flex justify={'between'} style={{margin: 15}}>
                         <TouchableWithoutFeedback onPress={() => this.setState({result: 1})}>
                             <Flex>
-                                <LoadImage style={{width: 15, height: 15}}/>
+                                <LoadImage img={result === 1 ? selectImg : noselectImg}
+                                           style={{width: 15, height: 15}}/>
                                 <Text style={{color: '#666', fontSize: 15, paddingLeft: 15}}>合格</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={() => this.setState({result: 0})}>
                             <Flex>
-                                <LoadImage style={{width: 15, height: 15}}/>
+                                <LoadImage img={result === 0 ? selectImg : noselectImg}
+                                           style={{width: 15, height: 15}}/>
                                 <Text style={{color: '#666', fontSize: 15, paddingLeft: 15}}>不合格</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
+
+
+                        {/*<Radio>*/}
+                        {/*    <Text onPress={() => this.setState({ result: 1 })} style={{ color: '#666', fontSize: 15, paddingLeft: 15 }}>合格</Text>*/}
+                        {/*    <Text onPress={() => this.setState({ result: 0 })} style={{ color: '#666', fontSize: 15, paddingLeft: 15 }}>不合格</Text>*/}
+                        {/*</Radio>*/}
+
                     </Flex>
                     <View style={{
                         margin: 15,
@@ -197,11 +216,19 @@ export default class JianYanListDetailPage extends BasePage {
                         />
                     </View>
                     <TouchableWithoutFeedback onPress={() => this.click('完成检验')}>
-                        <Flex justify={'center'} style={[styles.ii,{width: '80%', marginLeft: '10%',marginRight: '10%', marginBottom: 20}, {backgroundColor: Macro.color_4d8fcc}]}>
+                        <Flex justify={'center'} style={[styles.ii, {
+                            width: '80%',
+                            marginLeft: '10%',
+                            marginRight: '10%',
+                            marginBottom: 20,
+                        }, {backgroundColor: Macro.color_4d8fcc}]}>
                             <Text style={styles.word}>完成检验</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-                    <Communicates communicateClick={this.communicateClick} communicates={communicates}/>
+                    {/* <Communicates communicateClick={this.communicateClick} communicates={communicates} /> */}
+                    <OperationRecords communicateClick={this.communicateClick} communicates={communicates}/>
+
+
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}

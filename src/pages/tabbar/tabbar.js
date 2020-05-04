@@ -32,6 +32,7 @@ import SelectPaiDanPerson from '../work/task/select-pai-dan-person';
 import FeeHousePage from '../navigator/fee-housing';
 import FeeBuildingsPage from '../navigator/fee-buildings';
 import FeeRoomsPage from '../navigator/fee-rooms';
+import FeeParkingsPage from '../navigator/fee-parkings';
 import FeeDetailPage from '../navigator/fee-detail';
 import CollectionRatePage from '../navigator/analyse/collection-rate';
 import ZiJinLiuPage from '../navigator/analyse/zijinliu';
@@ -64,8 +65,6 @@ import YiQingInfoPage from '../building/yiqing/yiqing-info';
 import ChaoBiaoPage from '../navigator/chao-biao/chao-biao';
 import NewsList from '../work/news-list';
 
-
-
 const BuildingNavigator = createStackNavigator({
 
     Building: {
@@ -87,11 +86,9 @@ const BuildingNavigator = createStackNavigator({
 }, {
 
     containerOptions: (options) => {
-        const {navigation} = options;
-
-        DeviceEventEmitter.emit('currentNavigation',navigation);
-
-        console.log('navigation 对象', navigation);
+        const {navigation} = options;   
+        DeviceEventEmitter.emit('currentNavigation',navigation);  
+        //console.log('navigation 对象', navigation);
         return {
             options,
         };
@@ -101,10 +98,7 @@ BuildingNavigator.navigationOptions = ({navigation}) => ({
     tabBarVisible: navigation.state.index === 0,
 });
 
-
 const navigatorNavigator = createStackNavigator({
-
-
     Navigator: {
         screen: NavigatorPage,
     },
@@ -114,7 +108,8 @@ const navigatorNavigator = createStackNavigator({
             title: '统计分析',
         }),
     },
-    feeRooms: FeeRoomsPage,
+    feeRooms: FeeRoomsPage,//房间
+    feeParkings: FeeParkingsPage,//车位
     feeBuildings: FeeBuildingsPage,
     feeHouse: FeeHousePage,
     e_fuwu: EstateFuwuPage,

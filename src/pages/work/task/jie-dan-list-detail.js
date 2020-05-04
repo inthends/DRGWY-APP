@@ -21,7 +21,8 @@ import UDPlayer from '../../../utils/UDPlayer';
 import UDToast from '../../../utils/UDToast';
 import DashLine from '../../../components/dash-line';
 import WorkService from '../work-service';
-import Communicates from '../../../components/communicates';
+// import Communicates from '../../../components/communicates';
+import OperationRecords from '../../../components/operationrecords';
 import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
@@ -67,9 +68,9 @@ export default class JieDanListDetailPage extends BasePage {
 
     getData = () => {
         const {fuwu, type} = this.state;
-        console.log('fuw', fuwu);
+        // console.log('fuw', fuwu);
         WorkService.weixiuDetail(fuwu.id).then(detail => {
-            console.log('detail', detail);
+            // console.log('detail', detail);
             this.setState({
                 detail: {
                     ...detail.entity,
@@ -78,14 +79,16 @@ export default class JieDanListDetailPage extends BasePage {
                     statusName: detail.statusName,
                 },
             });
-            WorkService.serviceCommunicates(detail.relationId).then(res => {
+            
+            //获取维修单的单据动态
+            WorkService.getOperationRecord(fuwu.id).then(res => {
                 this.setState({
                     communicates: res,
                 });
             });
         });
 
-        WorkService.serviceExtra(fuwu.id).then(images => {
+        WorkService.weixiuExtra(fuwu.id).then(images => {
             this.setState({
                 images,
             });
@@ -185,7 +188,7 @@ export default class JieDanListDetailPage extends BasePage {
                             <Text style={styles.word}>接单</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-                    <Communicates communicateClick={this.communicateClick} communicates={communicates}/>
+                    <OperationRecords communicateClick={this.communicateClick} communicates={communicates}/>
 
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>

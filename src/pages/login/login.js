@@ -145,12 +145,11 @@ class LoginPage extends BasePage {
                                     });
                                 }}
                                 placeholder="请输入密码"
-                                last={true}
-                            >
+                                last={true}>
                                 密码
                             </InputItem>
                         </List>
-                        <Button onPress={() => this.login()} style={styles.login} type="primary">登陆</Button>
+                        <Button onPress={() => this.login()} style={styles.login} type="primary">登录</Button>
                         <Flex>
                             <Text style={styles.version}>版本号：{version}</Text>
                         </Flex>

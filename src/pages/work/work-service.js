@@ -14,22 +14,23 @@ export default {
     },
     //服务单详情
     serviceDetail(type, keyValue) {
-        return api.getData('/api/MobileMethod/MGetServicedeskEntity', {keyValue});
+        return api.getData('/api/MobileMethod/MGetServicedeskEntity', { keyValue });
     },
     //服务单附件
     serviceExtra(keyValue) {
-        return api.getData('/api/MobileMethod/MGetFilesData', {keyValue});
+        return api.getData('/api/MobileMethod/MGetFilesData', { keyValue });
     },
     //服务单操作
-    serviceHandle(handle, keyValue, content, extra = null) {
+     serviceHandle(handle, keyValue, content, extra = null) { 
         let url = '';
-        let params = {keyValue, content};
+        let params = { keyValue, content };
         if (extra) {
             params = {
                 ...params,
                 ...extra,
             };
         }
+
         if (handle === '回复') {
             url = '/api/MobileMethod/MSendCommunicate';
         } else if (handle === '转投诉') {
@@ -49,29 +50,35 @@ export default {
         } else if (handle === '完成回访') {
             url = '/api/MobileMethod/MRepairVisitFinish';
         } else if (handle === '完成检验') {
-            url = 'MRepairCheckFinish';
+            url = '/api/MobileMethod/MRepairCheckFinish';
         }
         return api.postData(url, params);
     },
 
     serviceCommunicates(keyValue) {
-        return api.getData('/api/MobileMethod/MGetCommunicates', {keyValue, pageIndex: 1, pageSize: 100});
+        return api.getData('/api/MobileMethod/MGetCommunicates', { keyValue, pageIndex: 1, pageSize: 100 });
     },
+
+    //维修单单据动态
+    getOperationRecord(keyValue) {
+        return api.getData('/api/MobileMethod/MGetOperationRecordList', { keyValue, pageIndex: 1, pageSize: 100 });
+    },
+
     //维修单详情
     weixiuDetail(keyValue) {
-        return api.getData('/api/MobileMethod/MGetRepairEntity', {keyValue});
+        return api.getData('/api/MobileMethod/MGetRepairEntity', { keyValue });
     },
     //维修单附件
     weixiuExtra(keyValue) {
-        return api.getData('/api/MobileMethod/MGetRepairFilesData', {keyValue});
+        return api.getData('/api/MobileMethod/MGetRepairFilesData', { keyValue });
     },
     //投诉单详情
     tousuDetail(keyValue) {
-        return api.getData('/api/MobileMethod/MGetComplaintEntity', {keyValue});
+        return api.getData('/api/MobileMethod/MGetComplaintEntity', { keyValue });
     },
     //投诉单附件
     tousuExtra(keyValue) {
-        return api.getData('/api/MobileMethod/MGetComplaintFilesData', {keyValue});
+        return api.getData('/api/MobileMethod/MGetComplaintFilesData', { keyValue });
     },
 
     //工作台列表
@@ -84,28 +91,32 @@ export default {
             type = overdue;
             overdue = null;
         } else if (type === 'fuwu') {
-            url = '/api/MobileMethod/MGetUnReplyServiceDeskPageList';
-            type = null;
+            if (overdue === -1) {
+                //已回复，已经回复不判断是否逾期
+                url = '/api/MobileMethod/MGetReplyServiceDeskPageList';
+                type = null;
+            } else {
+                //待回复
+                url = '/api/MobileMethod/MGetUnReplyServiceDeskPageList';
+                type = null;
+            }
         }
-
-        return api.postData(url, {status: type, pageIndex, pageSize: 100, overdue, isOverdue: overdue});
+        return api.postData(url, { status: type, pageIndex, pageSize: 100, overdue, isOverdue: overdue });
     },
 
     paidanPersons(organizeId, keyword = null, type = '员工') {
-        return api.getData('/api/MobileMethod/MGetUserList', {organizeId, keyword, type});
+        return api.getData('/api/MobileMethod/MGetUserList', { organizeId, keyword, type });
     },
     paidan(keyValue, receiverName, receiverId) {
-        return api.postData('/api/MobileMethod/MRepairDispatch', {keyValue, receiverName, receiverId});
+        return api.postData('/api/MobileMethod/MRepairDispatch', { keyValue, receiverName, receiverId });
     },
     unreadCount() {
         return api.getData('/api/MobileMethod/MGetUnReadNewsCount', {}, false);
     },
     unreadList(pageIndex, showLoading) {
-        return api.postData('/api/MobileMethod/MGetNewsPageList', {pageIndex, pageSize: 10}, showLoading);
+        return api.postData('/api/MobileMethod/MGetNewsPageList', { pageIndex, pageSize: 10 }, showLoading);
     },
     readNews(newsId) {
-        return api.postData('/api/MobileMethod/MReadNews', {newsId});
+        return api.postData('/api/MobileMethod/MReadNews', { newsId });
     },
-
-
 };

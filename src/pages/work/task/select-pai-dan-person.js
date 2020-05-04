@@ -1,25 +1,25 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import BasePage from '../../base/base';
-import {Button, Flex, Icon, List, WhiteSpace} from '@ant-design/react-native';
-import {TouchableWithoutFeedback, View, Text, TouchableOpacity, StyleSheet, ScrollView} from 'react-native';
+import { Button, Flex, Icon, List, WhiteSpace } from '@ant-design/react-native';
+import { TouchableWithoutFeedback, View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import CommonView from '../../../components/CommonView';
 import Macro from '../../../utils/macro';
 import WorkService from '../work-service';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 
 class SelectPaiDanPerson extends BasePage {
-    static navigationOptions = ({navigation}) => {
+    static navigationOptions = ({ navigation }) => {
         return {
             title: '选择接单人',
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
             headerRight: (
                 <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
-                    <Icon name='bars' style={{marginRight: 15}} color="black"/>
+                    <Icon name='bars' style={{ marginRight: 15 }} color="black" />
                 </TouchableWithoutFeedback>
             ),
 
@@ -35,7 +35,7 @@ class SelectPaiDanPerson extends BasePage {
     }
 
     componentDidMount() {
-        console.log(111, this.props);
+        // console.log(111, this.props);
         this.initData();
     }
 
@@ -62,14 +62,14 @@ class SelectPaiDanPerson extends BasePage {
     }
 
     click = (selectPerson) => {
-        const {navigation} = this.props;
-        navigation.state.params.onSelect({selectPerson});
+        const { navigation } = this.props;
+        navigation.state.params.onSelect({ selectPerson });
         navigation.goBack();
     };
 
 
     render() {
-        const {items} = this.state;
+        const { items } = this.state;
         return (
             <CommonView>
                 <ScrollView>
@@ -90,6 +90,7 @@ class SelectPaiDanPerson extends BasePage {
                                         <Text style={styles.identifier}>{item.dutyName}</Text>
                                         <Text style={styles.state}>{item.state === 1 ? '在线' : '离线'}</Text>
                                     </Flex>
+
                                 </Flex>
 
                             </TouchableWithoutFeedback>
@@ -140,7 +141,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const mapStateToProps = ({buildingReducer}) => {
+const mapStateToProps = ({ buildingReducer }) => {
     return {
         selectBuilding: buildingReducer.selectBuilding,
     };
