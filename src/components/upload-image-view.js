@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, Animated, TouchableWithoutFeedback, Touc
 import { Button, Flex, Icon, List, WhiteSpace, SegmentedControl } from '@ant-design/react-native';
 import ScreenUtil from '../utils/screen-util';
 import SelectImage from '../utils/select-image';
+import LoadImage from './load-image';
 
 const single_width = 60;
 
@@ -10,7 +11,7 @@ export default class UploadImageView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            images: [{ icon: 'https://os.alipayobjects.com/rmsportal/IptWdCkrtkAUfjE.png' }],
+            images: [{ icon: '' }],
         };
     }
 
@@ -32,13 +33,14 @@ export default class UploadImageView extends Component {
         const { images } = this.state;
         const width = (ScreenUtil.deviceWidth() - 5 * 20) / 4.0;
         const height = (ScreenUtil.deviceWidth() - 5 * 20) / 4.0;
+
         return (
             <Flex justify={'start'} align={'start'} style={[{ width: ScreenUtil.deviceWidth() }, this.props.style]}>
                 <Flex wrap={'wrap'}>
                     {images.map((item, index) => {
                         return (
                             <TouchableWithoutFeedback key={index} onPress={() => {
-                                if (index === images.length - 1 && item.icon.includes('os.alipayobjects.com')) {
+                                if (index === images.length - 1 && item.icon.length === 0) {
                                     this.selectImages();
                                 }
                             }}>
@@ -48,7 +50,10 @@ export default class UploadImageView extends Component {
                                     paddingBottom: 10,
                                     paddingTop: 10,
                                 }}>
-                                    <Image style={{ width: width, height: height }} source={{ uri: item.icon }} />
+                                    <LoadImage style={{width: width, height: height}}
+                                               defaultImg={require('../static/images/add_pic.png')}
+                                               img={item.icon}/>
+
                                 </View>
                             </TouchableWithoutFeedback>
                         );
