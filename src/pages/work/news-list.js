@@ -115,18 +115,12 @@ class NewsList extends BasePage {
 
     _renderItem = ({item, index}) => {
         return (
-            <TouchableWithoutFeedback key={item.id + ''} onPress={() => {
-
-
-                WorkService.readNews(item.id);
-
-
-                const {type} = item;
-
+            <TouchableWithoutFeedback key={item.id + ''} onPress={() => { 
+                WorkService.readNews(item.id); 
+                const {type} = item; 
                 const d = {
                     ...item,
-                    id: item.linkId,
-
+                    id: item.linkId
                 };
 
                 switch (type) {
@@ -148,6 +142,11 @@ class NewsList extends BasePage {
                         break;
                     }
 
+                    case 6: {
+                        //检验
+                        this.props.navigation.navigate('jianyan', {data: d});
+                        break;
+                    } 
                 }
 
                 // if (type === 'fuwu') {
