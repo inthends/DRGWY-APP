@@ -29,8 +29,10 @@ class LoginPage extends BasePage {
     componentDidMount(): void {
 
 
-
+        const toast = UDToast.showLoading();
         JPush.getRegistrationID(result => {
+                UDToast.hiddenLoading(toast);
+                console.log('re', result);
                 this.setState({
                     registration_id: result.registerID,
                 });
