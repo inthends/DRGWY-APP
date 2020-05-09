@@ -1,23 +1,22 @@
-import React, {Component, Fragment} from 'react';
-import {View, Text, Image, StyleSheet, Animated, TouchableWithoutFeedback} from 'react-native';
-import {Button, Flex, Icon, List, WhiteSpace, SegmentedControl} from '@ant-design/react-native';
+import React, { Component, Fragment } from 'react';
+import { View, Text,  StyleSheet, Animated, TouchableWithoutFeedback } from 'react-native';
+import { Checkbox, Flex } from '@ant-design/react-native';
 import ScreenUtil from '../utils/screen-util';
-
 const single_width = 60;
 
 export default class TwoChange extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isShow: true,//是否按户显示
             fadeAnim: new Animated.Value(20),
             index: 0,
-            datas: [{'title': '未交', select: true}, {'title': '已交'}],
+            datas: [{ 'title': '未交', select: true }, { 'title': '已交' }],
         };
     }
 
     tap = (index) => {
         let value = (single_width + 15) * index + 20;
-
         Animated.timing(                  // 随时间变化而执行动画
             this.state.fadeAnim,            // 动画中的变量值
             {
@@ -25,9 +24,16 @@ export default class TwoChange extends Component {
                 duration: 200,              // 让动画持续一段时间
             },
         ).start();
-        this.setState({index: index});
+        this.setState({ index: index, isShow: this.state.isShow });
         if (this.props.onChange) {
-            this.props.onChange(this.state.datas[index].title);
+            this.props.onChange(this.state.datas[index].title, this.state.isShow);
+        }
+    };
+
+    showAllFee = (e) => { 
+        this.setState({ index: this.state.index, isShow: e.target.checked });
+        if (this.props.onChange) {
+            this.props.onChange(this.state.datas[this.state.index].title, e.target.checked);
         }
     };
 
@@ -36,23 +42,32 @@ export default class TwoChange extends Component {
         return (
             <Fragment>
                 <Flex direction={'column'} align={'start'}>
-                    <Flex style={[styles.content, this.props.style]}>
+                    <Flex justify='center' style={[styles.content, this.props.style]}>
                         {datas.map((item, index) => {
                             return (
-                                <TouchableWithoutFeedback key={item.title} onPress={() => this.tap(index)}>
+                                <TouchableWithoutFeedback key={item.title}
+                                    onPress={() => this.tap(index)}>
                                     <View>
                                         <Text
-                                            style={[index === this.state.index ? styles.title_select : styles.title, {marginLeft: 15}]}>
+                                            style={[index === this.state.index ? styles.title_select : styles.title, { marginLeft: 15 }]}>
                                             {item.title}
                                         </Text>
                                     </View>
                                 </TouchableWithoutFeedback>
                             );
                         })}
+
+                        <Flex style={{ paddingTop: 11, paddingRight: 15, marginLeft: 'auto' }}>
+                            <Checkbox
+                                defaultChecked={true}
+                                onChange={(e) => this.showAllFee(e)}
+                            />
+                            <Text style={{ paddingTop: 3, paddingLeft: 3 }}>按户显示</Text>
+                        </Flex>
                     </Flex>
-                    <Animated.View style={[styles.line, {marginLeft: this.state.fadeAnim}]}/>
+                    <Animated.View style={[styles.line, { marginLeft: this.state.fadeAnim }]} />
                 </Flex>
-            </Fragment>
+            </Fragment >
         );
     }
 }
@@ -76,8 +91,6 @@ const styles = StyleSheet.create({
         paddingRight: 15,
         paddingTop: 15,
         textAlign: 'center',
-
-
     },
     line: {
         height: 2,
