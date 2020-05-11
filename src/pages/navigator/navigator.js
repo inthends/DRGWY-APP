@@ -124,6 +124,11 @@ export default class NavigatorPage extends BasePage {
                                     <Text style={styles.content}>移动抄表</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
+                            <TouchableWithoutFeedback onPress={() => {}}>
+                                <Flex style={styles.left}>
+
+                                </Flex>
+                            </TouchableWithoutFeedback>
                         </Flex>
 
                         <Flex style={styles.line}/>

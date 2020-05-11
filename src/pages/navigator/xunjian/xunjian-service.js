@@ -17,7 +17,7 @@ export default {
     xunjianTaskList(status, userId) {
         return api.postData('/api/MobileMethod/MGetPollingTaskPageList', {
             pageIndex: 1,
-            pageSize: 1000,
+            pageSize: 1000000,
             status,
             userId,
         });

@@ -51,22 +51,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(mapStateToProps, mapDispatchToProps)(AppRouter);
 
 
-
-
 // polyfillGlobal('XMLHttpRequest', () => require('../Network/XMLHttpRequest'));
-
-// android:networkSecurityConfig="@xml/network_security_config"
-//       android:networkSecurityConfig="@xml/network_security_config"
-
-
-// static BOOL RCTParseUnused(const char **input)
-// {
-//     return RCTReadString(input, "__unused") ||
-//         RCTReadString(input, "__attribute__((__unused__))") ||
-//         RCTReadString(input, "__attribute__((unused))");
-// }
-
-//
-
-
-

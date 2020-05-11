@@ -1866,7 +1866,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODEPUSH_KEY = "";
 				CODE_SIGN_ENTITLEMENTS = statistics/statistics.entitlements;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 9TRS7WJSZ3;
 				HEADER_SEARCH_PATHS = (
@@ -1889,7 +1889,7 @@
 				);
 				INFOPLIST_FILE = statistics/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 2.1.5;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1908,7 +1908,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODEPUSH_KEY = v8J3iax2P1BgfZucYZgHcE17EyDXSX9JiCvr3w;
 				CODE_SIGN_ENTITLEMENTS = statistics/statistics.entitlements;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 9TRS7WJSZ3;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1930,7 +1930,7 @@
 				);
 				INFOPLIST_FILE = statistics/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 2.1.5;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2293,7 +2293,7 @@
 				CODEPUSH_KEY = XCcurMb7K0YXlDBQxtCRm10KDog1_xDJGmZh1;
 				CODE_SIGN_ENTITLEMENTS = statistics/statistics.entitlements;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)";
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 9TRS7WJSZ3;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2315,7 +2315,7 @@
 				);
 				INFOPLIST_FILE = statistics/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 2.1.5;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

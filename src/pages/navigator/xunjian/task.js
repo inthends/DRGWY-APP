@@ -74,6 +74,7 @@ export default class TaskPage extends BasePage {
     initUI() {
         const {status, userId} = this.state;
         XunJianService.xunjianTaskList(status, userId).then(res => {
+            console.log(1, res);
             this.setState({res});
         });
     }
@@ -91,12 +92,14 @@ export default class TaskPage extends BasePage {
         } else if (status === '1') {
             index = 3;
         }
+        console.log(22, res.data);
+
         return (
-            <CommonView>
+            <CommonView style={{flex: 1}}>
                 <ScrollTitle index={index} onChange={this.onChange} titles={titles}/>
 
-                <Flex direction={'column'} style={{padding: 15, paddingTop: 30}}>
-                    <ScrollView>
+                <ScrollView style={{flex: 1}} alwaysBounceVertical={true}>
+                    <Flex direction={'column'} style={{padding: 15, flex: 1}}>
                         {res.data.map(item => (
                             <TouchableWithoutFeedback key={item.id}
                                                       onPress={() => this.props.navigation.push('xunjianDetail', {
@@ -116,9 +119,10 @@ export default class TaskPage extends BasePage {
                                 </Flex>
                             </TouchableWithoutFeedback>
                         ))}
-                    </ScrollView>
+                    </Flex>
+                </ScrollView>
 
-                </Flex>
+
             </CommonView>
         );
     }
