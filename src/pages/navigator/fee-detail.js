@@ -22,6 +22,7 @@ import NavigatorService from './navigator-service';
 import UDToast from '../../utils/UDToast';
 // import QRCode from 'react-native-qrcode-svg';
 import CommonView from '../../components/CommonView';
+import {upgrade} from 'rn-app-upgrade';
 
 
 class FeeDetailPage extends BasePage {
@@ -351,9 +352,26 @@ class FeeDetailPage extends BasePage {
                                         {type !== '已交' && item.billSource === '临时加费' && (
                                             <Flex>
                                                 <Text onPress={() => {
-                                                    NavigatorService.invalidBillForm(item.id).then(res => {
-                                                        this.onRefresh();
-                                                    });
+                                                    Alert.alert(
+                                                        '确认删除',
+                                                        '',
+                                                        [
+                                                            {
+                                                                text: '取消',
+                                                                onPress: () => {},
+                                                                style: 'cancel',
+                                                            },
+                                                            {
+                                                                text: '确定',
+                                                                onPress: () => {
+                                                                    NavigatorService.invalidBillForm(item.id).then(res => {
+                                                                        this.onRefresh();
+                                                                    });
+                                                                },
+                                                            },
+                                                        ],
+                                                        {cancelable: false},
+                                                    );
                                                 }} style={{
                                                     paddingRight: 15,
                                                     fontSize: 16,
