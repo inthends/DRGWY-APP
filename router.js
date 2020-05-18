@@ -51,4 +51,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(mapStateToProps, mapDispatchToProps)(AppRouter);
 
 
-// polyfillGlobal('XMLHttpRequest', () => require('../Network/XMLHttpRequest'));
+polyfillGlobal('XMLHttpRequest', () => require('../Network/XMLHttpRequest'));
