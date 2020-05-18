@@ -14,6 +14,15 @@ export default class MyPopover extends Component {
         };
     }
 
+    componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
+        if (this.props.titles.length !== prevProps.titles.length) {
+            this.setState({
+                titles: this.props.titles,
+                index: 0,
+            });
+        }
+    }
+
     showPopover = () => {
         this.setState({
             isVisible: true,
@@ -26,7 +35,7 @@ export default class MyPopover extends Component {
         const {titles} = this.state;
         this.setState({index, isVisible: false});
         if (this.props.onChange) {
-            this.props.onChange(titles[index],index);
+            this.props.onChange(titles[index], index);
         }
     };
 
@@ -35,11 +44,18 @@ export default class MyPopover extends Component {
         return (
             <View style={[styles.container, this.props.style]}>
                 <TouchableWithoutFeedback ref={ref => this.touchable = ref} onPress={() => this.showPopover()}>
-                    <Flex style={{height:40}}>
-                        <Flex>
-                            <LoadImage style={{width: 15, height: 15}}/>
-                        </Flex>
-                        <Text style={[{paddingLeft: 10, color: '#666', fontSize: 16},this.props.textStyle]}>{titles[index]}</Text>
+                    <Flex style={{height: 40}}>
+                        {!this.props.hiddenImage && (
+                            <Flex>
+                                <LoadImage style={{width: 15, height: 15}}/>
+                            </Flex>
+                        )}
+
+                        <Text style={[{
+                            paddingLeft: 10,
+                            color: '#666',
+                            fontSize: 16,
+                        }, this.props.textStyle]}>{titles[index]}</Text>
                     </Flex>
                 </TouchableWithoutFeedback>
 
@@ -51,7 +67,11 @@ export default class MyPopover extends Component {
                     <ScrollView style={{maxHeight: 400}}>
                         {titles.map((item, index) => (
                             <TouchableWithoutFeedback key={item + index} onPress={() => this.select(index)}>
-                                <Text style={[{padding: 15, color: '#666', fontSize: 16},this.props.textStyle]}>{item}</Text>
+                                <Text style={[{
+                                    padding: 15,
+                                    color: '#666',
+                                    fontSize: 16,
+                                }, this.props.textStyle]}>{item}</Text>
                             </TouchableWithoutFeedback>
                         ))}
                     </ScrollView>

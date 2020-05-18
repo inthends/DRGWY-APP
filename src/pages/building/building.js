@@ -44,6 +44,7 @@ class BuildingPage extends BasePage {
             },
             refreshing: true,
         };
+
         addDownListener((progress) => {
             if (100 - progress <= 0.0001) {
                 UDToast.hiddenLoading(this.loading);
@@ -51,6 +52,10 @@ class BuildingPage extends BasePage {
             }
             this.loading = UDToast.showLoading('正在下载，已完成：' + progress + '%');
         });
+
+    }
+
+    componentDidMount() {
         if (!common.isIOS()) {
             NativeModules.LHNToast.getVersionCode((version) => {
 
@@ -123,25 +128,26 @@ class BuildingPage extends BasePage {
 
 
     initUI() {
+
         BuildingService.getUserInfo().then(res => {
             this.props.saveUser(res);
         });
 
         this.onRefresh();
-        this.viewDidAppear = this.props.navigation.addListener(
-            'didFocus',
-            (obj) => {
-                if (obj.state.params) {
-                    let address = obj.state.params;
-
-                }
-            },
-        );
+        // this.viewDidAppear = this.props.navigation.addListener(
+        //     'didFocus',
+        //     (obj) => {
+        //         if (obj.state.params) {
+        //             let address = obj.state.params;
+        //
+        //         }
+        //     },
+        // );
     }
 
 
     componentWillUnmount(): void {
-        this.viewDidAppear.remove();
+        // this.viewDidAppear.remove();
     }
 
     getInitData = () => {

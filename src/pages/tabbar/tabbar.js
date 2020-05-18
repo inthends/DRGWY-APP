@@ -34,6 +34,7 @@ import FeeBuildingsPage from '../navigator/fee-buildings';
 import FeeRoomsPage from '../navigator/fee-rooms';
 import FeeParkingsPage from '../navigator/fee-parkings';
 import FeeDetailPage from '../navigator/fee-detail';
+import FeeAddPage from '../navigator/fee-add';
 import CollectionRatePage from '../navigator/analyse/collection-rate';
 import ZiJinLiuPage from '../navigator/analyse/zijinliu';
 import QianFeiZhangLingPage from '../navigator/analyse/qian-fei-zhang-ling';
@@ -83,11 +84,12 @@ const BuildingNavigator = createStackNavigator({
     yiqinginfo: YiQingInfoPage,
     scanForHome: ScanOnly,
     newsList: NewsList,
+    feeAdd: FeeAddPage,
 }, {
 
     containerOptions: (options) => {
-        const {navigation} = options;   
-        DeviceEventEmitter.emit('currentNavigation',navigation);  
+        const {navigation} = options;
+        DeviceEventEmitter.emit('currentNavigation', navigation);
         //console.log('navigation 对象', navigation);
         return {
             options,
@@ -114,6 +116,7 @@ const navigatorNavigator = createStackNavigator({
     feeHouse: FeeHousePage,
     e_fuwu: EstateFuwuPage,
     feeDetail: FeeDetailPage,
+    feeAdd: FeeAddPage,
     fuwuD: EfuwuDetailPage,
     weixiuD: EweixiuDetailPage,
     tousuD: EtousuDetailPage,
@@ -269,7 +272,7 @@ const tabbar = createBottomTabNavigator({
     defaultNavigationOptions: ({navigation}) => {
         if (navigation.isFocused()) {
             console.log('navigation 对象', navigation);
-            DeviceEventEmitter.emit('currentNavigation',navigation);
+            DeviceEventEmitter.emit('currentNavigation', navigation);
         }
 
         return {
