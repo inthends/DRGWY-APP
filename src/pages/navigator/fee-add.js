@@ -187,7 +187,7 @@ class FeeAddPage extends BasePage {
                 <ScrollView>
                     <MyPopover hiddenImage={true}
                                style={{width: '100%', borderWidth: 1, borderStyle: 'solid', borderColor: '#74BAF1'}}
-                               textStyle={{fontSize: 14}} onChange={this.typeChange}
+                               textStyle={{fontSize: 17.6}} onChange={this.typeChange}
                                titles={titles} visible={true}/>
                     <Flex direction={'column'} align={'start'} style={styles.cell}>
                         <Flex wrap={'wrap'} justify={'start'} style={styles.cellContnent}>
@@ -204,7 +204,7 @@ class FeeAddPage extends BasePage {
                     </Flex>
 
                     {fee && (
-                        <List style={{marginTop: 10, height: 50, width: '100%'}}>
+                        <List style={{flex:1,marginTop: 10, width: '100%'}}>
                             <Item>
                                 <Text style={styles.titleWord}>{title}</Text>
                             </Item>
@@ -273,7 +273,7 @@ class FeeAddPage extends BasePage {
                     )}
                 </ScrollView>
                 {fee &&
-                <Button type={'primary'} style={{marginLeft: 20, marginRight: 20}} onPress={this.save}>保 存</Button>}
+                <Button type={'primary'} style={{margin:20}} onPress={this.save}>保 存</Button>}
             </CommonView>
 
         );
@@ -296,8 +296,8 @@ const styles = StyleSheet.create({
     content: {
         color: '#404145',
         fontSize: 17.6,
-        paddingTop: 15,
-        paddingBottom: 15,
+        paddingTop: 10,
+        paddingBottom: 10,
     },
     left: {
 
