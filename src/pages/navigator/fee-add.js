@@ -9,6 +9,7 @@ import {
     Alert,
     DeviceEventEmitter,
     TextInput,
+    View,
 
 } from 'react-native';
 import BasePage from '../base/base';
@@ -85,7 +86,7 @@ class FeeAddPage extends BasePage {
                 day = '0' + day;
             }
 
-            return year + '-' + month + '-' + day;
+            return year + '-' + month + '-' + day + ' 00:00:00';
         };
     }
 
@@ -127,6 +128,10 @@ class FeeAddPage extends BasePage {
     componentDidMount(): void {
         NavigatorService.getFeeItemTreeJson(this.state.room.id).then(resp => {
             const res = resp.filter(item => item.children.length > 0);
+            if (res.length === 0) {
+                UDToast.showError('暂无可加费项目');
+                return;
+            }
             console.log(121, res);
             const items = res[0].children;
             let big;
@@ -138,6 +143,7 @@ class FeeAddPage extends BasePage {
                 res,
                 items: res[0].children,
                 big,
+                show: true,
             }, () => {
                 console.log(1, this.state);
             });
@@ -163,8 +169,8 @@ class FeeAddPage extends BasePage {
                 small: item,
                 fee: {
                     ...res,
-                    beginDate: (res.beginDate ? new Date(res.beginDate) : null),
-                    endDate: (res.endDate ? new Date(res.endDate) : null),
+                    beginDate: (res.beginDate ? new Date(res.beginDate.split(' ')[0]) : null),
+                    endDate: (res.endDate ? new Date(res.endDate.split(' ')[0]) : null),
                     number: res.number + '',
                     amount: res.amount + '',
                 },
@@ -182,6 +188,9 @@ class FeeAddPage extends BasePage {
     render() {
         const {titles, items, big, small, fee} = this.state;
         const title = small ? small.title : (big ? big.title : null);
+        if (!this.state.show) {
+            return <View/>;
+        }
         return (
             <CommonView style={{flex: 1}}>
                 <ScrollView>
@@ -204,7 +213,7 @@ class FeeAddPage extends BasePage {
                     </Flex>
 
                     {fee && (
-                        <List style={{flex:1,marginTop: 10, width: '100%'}}>
+                        <List style={{flex: 1, marginTop: 10, width: '100%'}}>
                             <Item>
                                 <Text style={styles.titleWord}>{title}</Text>
                             </Item>
@@ -273,7 +282,7 @@ class FeeAddPage extends BasePage {
                     )}
                 </ScrollView>
                 {fee &&
-                <Button type={'primary'} style={{margin:20}} onPress={this.save}>保 存</Button>}
+                <Button type={'primary'} style={{margin: 20}} onPress={this.save}>保 存</Button>}
             </CommonView>
 
         );
@@ -296,12 +305,12 @@ const styles = StyleSheet.create({
     content: {
         color: '#404145',
         fontSize: 17.6,
-        paddingTop: 10,
-        paddingBottom: 10,
+        paddingTop: 6,
+        paddingBottom: 6,
     },
     left: {
 
-        width: (ScreenUtil.deviceWidth() - 80) / 2,
+        width: (ScreenUtil.deviceWidth() - 100) / 2,
 
         textAlign: 'center',
         marginTop: 10,
@@ -311,14 +320,13 @@ const styles = StyleSheet.create({
 
     },
     right: {
-        width: (ScreenUtil.deviceWidth() - 80) / 2,
-        marginLeft: 10,
+        width: (ScreenUtil.deviceWidth() - 100) / 2,
+        marginLeft: 40,
         textAlign: 'center',
         marginTop: 10,
         borderWidth: 1,
         borderStyle: 'solid',
         borderColor: '#74BAF1',
-
 
     },
     line: {
