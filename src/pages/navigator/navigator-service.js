@@ -25,7 +25,7 @@ export default {
     //账单
     getBillList(type, id, isShow, pageIndex, pageSize = 10) {
         let url = '/api/MobileMethod/MGetNotChargeBillList';
-        if (type === '已交') {
+        if (type === '已收') {
             url = '/api/MobileMethod/MGetChargeBillList';
         }
         return api.postData(url, {pageIndex, pageSize, unitId: id, isShow: isShow});

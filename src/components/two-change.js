@@ -11,7 +11,7 @@ export default class TwoChange extends Component {
             isShow: true,//是否按户显示
             fadeAnim: new Animated.Value(20),
             index: 0,
-            datas: [{ 'title': '未交', select: true }, { 'title': '已交' }],
+            datas: [{ 'title': '未收', select: true }, { 'title': '已收' }],
         };
     }
 
@@ -60,8 +60,7 @@ export default class TwoChange extends Component {
                         <Flex style={{ paddingTop: 11, paddingRight: 15, marginLeft: 'auto' }}>
                             <Checkbox
                                 defaultChecked={true}
-                                onChange={(e) => this.showAllFee(e)}
-                            >
+                                onChange={(e) => this.showAllFee(e)}>
                                 <Text style={{ paddingTop: 3, paddingLeft: 3 }}>按户显示</Text>
                             </Checkbox>
                         </Flex>

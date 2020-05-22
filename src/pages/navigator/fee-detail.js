@@ -337,7 +337,7 @@ class FeeDetailPage extends BasePage {
                     {dataInfo.data.map(item => (
                         <TouchableWithoutFeedback key={item.id} onPress={() => this.changeItem(item)}>
                             <Flex style={styles.check}>
-                                {type !== '已交' && <Checkbox
+                                {type !== '已收' && <Checkbox
                                     checked={item.select === true}
                                     style={{ color: Macro.color_f39d39 }}
                                     onChange={event => {
@@ -348,7 +348,7 @@ class FeeDetailPage extends BasePage {
                                     <Flex justify={'between'}
                                         style={{ paddingLeft: 15, paddingTop: 5, paddingBottom: 5, width: '100%' }}>
                                         <Text style={{ fontSize: 16, width: '80%',color:'green' }}>{item.allName}</Text>
-                                        {type !== '已交' && item.billSource === '临时加费' && (
+                                        {type !== '已收' && item.billSource === '临时加费' && (
                                             <Flex>
                                                 <Text onPress={() => {
                                                     Alert.alert(
@@ -379,7 +379,6 @@ class FeeDetailPage extends BasePage {
                                             </Flex>
                                         )}
                                     </Flex>
-
                                     <Flex justify={'between'}
                                         style={{ paddingLeft: 15, paddingTop: 10, paddingBottom: 5, width: '100%' }}>
                                         <Text style={{ fontSize: 16 }}>{item.feeName}</Text>
@@ -390,14 +389,13 @@ class FeeDetailPage extends BasePage {
                                     {item.beginDate ? <Text style={{
                                         paddingLeft: 15,
                                         paddingTop: 10,
-                                    }}> {item.beginDate + '至' + item.endDate}</Text> : null}
-                                </Flex>
-
+                                    }}> {item.beginDate + '至' + item.endDate}</Text> : null} 
+                                </Flex> 
                             </Flex>
                         </TouchableWithoutFeedback>
                     ))}
                 </ScrollView>
-                {type === '已交' || dataInfo.data.length === 0 ? null : (
+                {type === '已收' || dataInfo.data.length === 0 ? null : (
                     <Flex style={{ marginBottom: 30 }} direction={'column'}>
                         <Flex align={'center'}>
                             <Text style={{ paddingLeft: 15, fontSize: 20 }}>合计：</Text>
