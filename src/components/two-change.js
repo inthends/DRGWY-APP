@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { View, Text,  StyleSheet, Animated, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, StyleSheet, Animated, TouchableWithoutFeedback } from 'react-native';
 import { Checkbox, Flex } from '@ant-design/react-native';
 import ScreenUtil from '../utils/screen-util';
 const single_width = 60;
@@ -30,7 +30,7 @@ export default class TwoChange extends Component {
         }
     };
 
-    showAllFee = (e) => { 
+    showAllFee = (e) => {
         this.setState({ index: this.state.index, isShow: e.target.checked });
         if (this.props.onChange) {
             this.props.onChange(this.state.datas[this.state.index].title, e.target.checked);
@@ -61,8 +61,9 @@ export default class TwoChange extends Component {
                             <Checkbox
                                 defaultChecked={true}
                                 onChange={(e) => this.showAllFee(e)}
-                            />
-                            <Text style={{ paddingTop: 3, paddingLeft: 3 }}>按户显示</Text>
+                            >
+                                <Text style={{ paddingTop: 3, paddingLeft: 3 }}>按户显示</Text>
+                            </Checkbox>
                         </Flex>
                     </Flex>
                     <Animated.View style={[styles.line, { marginLeft: this.state.fadeAnim }]} />

@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import {
     Text,
     StyleSheet,
@@ -10,10 +10,10 @@ import {
     DeviceEventEmitter,
 } from 'react-native';
 import BasePage from '../base/base';
-import {Flex, Icon, Checkbox, Modal} from '@ant-design/react-native';
+import { Flex, Icon, Checkbox, Modal } from '@ant-design/react-native';
 import Macro from '../../utils/macro';
 import ScreenUtil from '../../utils/screen-util';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 // import ListHeader from '../../components/list-header';
 import common from '../../utils/common';
 import LoadImage from '../../components/load-image';
@@ -22,18 +22,18 @@ import NavigatorService from './navigator-service';
 import UDToast from '../../utils/UDToast';
 // import QRCode from 'react-native-qrcode-svg';
 import CommonView from '../../components/CommonView';
-import {upgrade} from 'rn-app-upgrade';
+import { upgrade } from 'rn-app-upgrade';
 
 
 class FeeDetailPage extends BasePage {
-    static navigationOptions = ({navigation}) => {
+    static navigationOptions = ({ navigation }) => {
         // console.log(1, navigation);
         return {
             tabBarVisible: false,
             title: '上门收费',
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
             headerRight: (
@@ -219,7 +219,7 @@ class FeeDetailPage extends BasePage {
                                 },
                             },
                         ],
-                        {cancelable: false},
+                        { cancelable: false },
                     );
                     break;
                 }
@@ -240,7 +240,7 @@ class FeeDetailPage extends BasePage {
     };
 
     onRefresh = () => {
-        const {pageIndex, type, room, isShow} = this.state;
+        const { pageIndex, type, room, isShow } = this.state;
         NavigatorService.getBillList(type, room.id, isShow, pageIndex, 1000).then(dataInfo => {
             this.setState({
                 dataInfo: dataInfo,
@@ -326,29 +326,28 @@ class FeeDetailPage extends BasePage {
     };
 
     render() {
-        const {dataInfo, type, room, price} = this.state;
+        const { dataInfo, type, room, price } = this.state;
         return (
-            <CommonView style={{flex: 1}}>
+            <CommonView style={{ flex: 1 }}>
                 <ScrollView>
                     <Text
-                        style={{paddingLeft: 15, paddingTop: 15, fontSize: 20}}>{room.allName} {room.tenantName}</Text>
-                    <TwoChange onChange={this.typeOnChange}/>
-                    <Flex style={{backgroundColor: '#eee', height: 1, marginLeft: 15, marginRight: 15, marginTop: 15}}/>
+                        style={{ paddingLeft: 15, paddingTop: 15, fontSize: 20 }}>{room.allName} {room.tenantName}</Text>
+                    <TwoChange onChange={this.typeOnChange} />
+                    <Flex style={{ backgroundColor: '#eee', height: 1, marginLeft: 15, marginRight: 15, marginTop: 15 }} />
                     {dataInfo.data.map(item => (
                         <TouchableWithoutFeedback key={item.id} onPress={() => this.changeItem(item)}>
-                            <Flex style={styles.item}>
+                            <Flex style={styles.check}>
                                 {type !== '已交' && <Checkbox
                                     checked={item.select === true}
-                                    style={{color: Macro.color_f39d39}}
+                                    style={{ color: Macro.color_f39d39 }}
                                     onChange={event => {
                                         this.changeItem(item);
                                     }}
                                 />}
-                                <Flex align={'start'} direction={'column'} style={{marginLeft: 5, flex: 1}}>
-
+                                <Flex align={'start'} direction={'column'} style={{ marginLeft: 3, flex: 1 }}> 
                                     <Flex justify={'between'}
-                                          style={{paddingLeft: 15, paddingTop: 5, paddingBottom: 5, width: '100%'}}>
-                                        <Text style={{fontSize: 16}}>{item.allName}</Text>
+                                        style={{ paddingLeft: 15, paddingTop: 5, paddingBottom: 5, width: '100%' }}>
+                                        <Text style={{ fontSize: 16, width: '80%',color:'green' }}>{item.allName}</Text>
                                         {type !== '已交' && item.billSource === '临时加费' && (
                                             <Flex>
                                                 <Text onPress={() => {
@@ -358,7 +357,7 @@ class FeeDetailPage extends BasePage {
                                                         [
                                                             {
                                                                 text: '取消',
-                                                                onPress: () => {},
+                                                                onPress: () => { },
                                                                 style: 'cancel',
                                                             },
                                                             {
@@ -370,7 +369,7 @@ class FeeDetailPage extends BasePage {
                                                                 },
                                                             },
                                                         ],
-                                                        {cancelable: false},
+                                                        { cancelable: false },
                                                     );
                                                 }} style={{
                                                     paddingRight: 15,
@@ -382,10 +381,10 @@ class FeeDetailPage extends BasePage {
                                     </Flex>
 
                                     <Flex justify={'between'}
-                                          style={{paddingLeft: 15, paddingTop: 10, paddingBottom: 5, width: '100%'}}>
-                                        <Text style={{fontSize: 16}}>{item.feeName}</Text>
+                                        style={{ paddingLeft: 15, paddingTop: 10, paddingBottom: 5, width: '100%' }}>
+                                        <Text style={{ fontSize: 16 }}>{item.feeName}</Text>
                                         <Flex>
-                                            <Text style={{paddingRight: 15, fontSize: 16}}>{item.amount}</Text>
+                                            <Text style={{ paddingRight: 15, fontSize: 16 }}>{item.amount}</Text>
                                         </Flex>
                                     </Flex>
                                     {item.beginDate ? <Text style={{
@@ -399,9 +398,9 @@ class FeeDetailPage extends BasePage {
                     ))}
                 </ScrollView>
                 {type === '已交' || dataInfo.data.length === 0 ? null : (
-                    <Flex style={{marginBottom: 30}} direction={'column'}>
+                    <Flex style={{ marginBottom: 30 }} direction={'column'}>
                         <Flex align={'center'}>
-                            <Text style={{paddingLeft: 15, fontSize: 20}}>合计：</Text>
+                            <Text style={{ paddingLeft: 15, fontSize: 20 }}>合计：</Text>
                             <Text
                                 style={{
                                     paddingLeft: 5,
@@ -409,24 +408,24 @@ class FeeDetailPage extends BasePage {
                                     color: Macro.color_FA3951,
                                 }}>¥{price}</Text>
                         </Flex>
-                        <Flex style={{minHeight: 40}}>
+                        <Flex style={{ minHeight: 40 }}>
                             <TouchableWithoutFeedback onPress={() => this.click('刷卡')}>
                                 <Flex justify={'center'} style={styles.ii}>
                                     <Text style={styles.word}>刷卡</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
                             <TouchableWithoutFeedback onPress={() => this.click('扫码')}>
-                                <Flex justify={'center'} style={[styles.ii, {backgroundColor: Macro.color_4d8fcc}]}>
+                                <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.color_4d8fcc }]}>
                                     <Text style={styles.word}>扫码</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
                             <TouchableWithoutFeedback onPress={() => this.click('收款码')}>
-                                <Flex justify={'center'} style={[styles.ii, {backgroundColor: Macro.color_f39d39}]}>
+                                <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.color_f39d39 }]}>
                                     <Text style={styles.word}>收款码</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
                             <TouchableWithoutFeedback onPress={() => this.click('现金')}>
-                                <Flex justify={'center'} style={[styles.ii, {backgroundColor: 'green'}]}>
+                                <Flex justify={'center'} style={[styles.ii, { backgroundColor: 'green' }]}>
                                     <Text style={styles.word}>现金</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
@@ -442,12 +441,12 @@ class FeeDetailPage extends BasePage {
                     visible={this.state.visible}
 
                 >
-                    <Flex justify={'center'} style={{margin: 30}}>
+                    <Flex justify={'center'} style={{ margin: 30 }}>
                         {/*<QRCode*/}
                         {/*    size={200}*/}
                         {/*    value={this.state.code}*/}
                         {/*/>*/}
-                        <LoadImage style={{width: 200, height: 200}} img={this.state.code}/>
+                        <LoadImage style={{ width: 200, height: 200 }} img={this.state.code} />
                     </Flex>
 
                     {/*<Button type="primary" style={{height:50}} onPress={this.onClose}>*/}
@@ -512,7 +511,8 @@ const styles = StyleSheet.create({
         height: 90,
         width: 90,
     },
-    item: {
+
+    check: {
         borderRadius: 6,
         borderWidth: 1,
         borderColor: '#eee',
@@ -526,6 +526,7 @@ const styles = StyleSheet.create({
         marginRight: 15,
         marginLeft: 15,
     },
+
     name: {
         fontSize: Macro.font_16,
         fontWeight: '600',
@@ -576,8 +577,8 @@ const styles = StyleSheet.create({
     },
 });
 
-const mapStateToProps = ({memberReducer}) => {
-    return {userInfo: memberReducer.userInfo};
+const mapStateToProps = ({ memberReducer }) => {
+    return { userInfo: memberReducer.userInfo };
 };
 
 export default connect(mapStateToProps)(FeeDetailPage);

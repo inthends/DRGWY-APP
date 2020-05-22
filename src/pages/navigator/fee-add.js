@@ -291,11 +291,11 @@ class FeeAddPage extends BasePage {
 
 const styles = StyleSheet.create({
     cell: {
-        marginTop: 10,
+        marginTop: 8,
     },
     title: {
         color: '#000000',
-        fontSize: 19.44,
+        fontSize: 17.6,
         paddingLeft: 6,
     },
     cellContnent: {
@@ -339,7 +339,7 @@ const styles = StyleSheet.create({
     },
     titleWord: {
         color: '#404145',
-        fontSize: 20,
+        fontSize: 17.6,
     },
 
     word: {
