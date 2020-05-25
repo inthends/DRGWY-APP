@@ -65,6 +65,7 @@ import YiQingPage from '../building/yiqing/yiqing';
 import YiQingInfoPage from '../building/yiqing/yiqing-info';
 import ChaoBiaoPage from '../navigator/chao-biao/chao-biao';
 import NewsList from '../work/news-list';
+import FeeChargeDetail from '../navigator/fee-charge-detail';
 
 const BuildingNavigator = createStackNavigator({
 
@@ -123,6 +124,7 @@ const navigatorNavigator = createStackNavigator({
     e_weixiu: EstateWeixiuPage,
     e_tousu: EstateTousuPage,
     selectPaidanPerson: SelectPaiDanPerson,
+    charge: FeeChargeDetail,
 
     collection: CollectionRatePage,
     zijinliu: ZiJinLiuPage,

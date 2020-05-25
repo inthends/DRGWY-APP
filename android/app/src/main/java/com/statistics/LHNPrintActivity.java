@@ -60,6 +60,7 @@ public class LHNPrintActivity extends BaseLKLActivity {
     private Bundle bundle;
     private Boolean printText = false;
     private Boolean printImage = false;
+    private SystemActivity s = new SystemActivity();
 
 
     @Override
@@ -78,7 +79,6 @@ public class LHNPrintActivity extends BaseLKLActivity {
         });
         this.bundle = getIntent().getExtras();
         this.showMessage("准备打印信息...");
-
 
     }
 
@@ -244,6 +244,8 @@ public class LHNPrintActivity extends BaseLKLActivity {
                     String tradeNo = bundle.getString("tradeNo");
                     String payType = bundle.getString("payType");
                     String username = bundle.getString("username");
+                    String mchName = bundle.getString("mchName");
+                    String mchId = bundle.getString("mchId");
                     ArrayList<ZhangDanObj> bills = (ArrayList<ZhangDanObj>) bundle.getSerializable("bills");
 
                     /*
@@ -260,6 +262,9 @@ public class LHNPrintActivity extends BaseLKLActivity {
 
 
                     add(new PrintItemObj("POS机收款凭据", big, true, PrintItemObj.ALIGN.CENTER, false, false, 25));
+                    add(new PrintItemObj("商户名称：" + mchName, medium));
+                    add(new PrintItemObj("商户号：" + mchId, medium));
+                    add(new PrintItemObj("终端号：" + s.getTerminalSn(), medium));
                     add(new PrintItemObj("房屋全称：" + allName, medium));
                     add(new PrintItemObj("支付渠道：" + payType, medium));
                     add(new PrintItemObj("订单号：" + tradeNo, medium));
@@ -315,32 +320,8 @@ public class LHNPrintActivity extends BaseLKLActivity {
 
             printerDev.printText(new ArrayList<PrintItemObj>() {
                 {
-                    int big = 16;
-                    int medium = 8;
-                    int small = 4;
 
-                    String allName = bundle.getString("allName");
-                    String billDate = bundle.getString("billDate");
-                    String amount = bundle.getString("amount");
-                    String tradeNo = bundle.getString("tradeNo");
-                    String payType = bundle.getString("payType");
-                    String username = bundle.getString("username");
-                    ArrayList<ZhangDanObj> bills = (ArrayList<ZhangDanObj>) bundle.getSerializable("bills");
-
-                    /*
-                    PrintItemObj(
-                    String text,
-                    int fontSize,
-                    boolean isBold,
-                     PrintItemObj.ALIGN align,
-                      boolean isUnderline,
-                       boolean isWordWrap,
-                        int lineHeight,
-                         int letterSpacing)
-                     */
-
-
-                    add(new PrintItemObj("", big, true, PrintItemObj.ALIGN.CENTER, false, false, 50));
+                    add(new PrintItemObj("", 16, true, PrintItemObj.ALIGN.CENTER, false, false, 50));
 
 
 

@@ -18,7 +18,7 @@ public class BlurHandler extends Handler {
         super.handleMessage(msg);
         LHNPrintActivity activity = mTarget.get();
         if (activity != null) {
-            Bitmap bitmap = (Bitmap)msg.obj;
+            Bitmap bitmap = (Bitmap) msg.obj;
             if (bitmap != null) {
 //                activity.showMessage("下载成功");
                 activity.bmp = bitmap;
@@ -27,7 +27,7 @@ public class BlurHandler extends Handler {
                 activity.print();
 //                activity.getPrintState();
 //                activity.printBitmap();
-            }else {
+            } else {
                 activity.showMessage("下载失败");
             }
         }

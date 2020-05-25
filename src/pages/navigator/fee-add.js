@@ -228,8 +228,10 @@ class FeeAddPage extends BasePage {
                                 <Text style={styles.word}>系数：</Text>
                             </Item>
                             <Item extra={<TextInput onChangeText={amount => this.setState({
-                                ...this.state.fee,
-                                amount,
+                                fee: {
+                                    ...this.state.fee,
+                                    amount,
+                                }
                             })} value={fee.amount}
                                                     placeholder={'请输入金额'} style={styles.input}/>}>
                                 <Text style={styles.word}>金额：</Text>

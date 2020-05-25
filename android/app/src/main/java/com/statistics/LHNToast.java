@@ -105,7 +105,7 @@ public class LHNToast extends ReactContextBaseJavaModule {
                 bundle.putString("tradeNo", res.getString("tradeNo"));
                 bundle.putString("payType", res.getString("payType"));
                 bundle.putString("username", res.getString("username"));
-                bundle.putString("stampUrl",res.isNull("stampUrl") ? "" : res.getString("stampUrl"));
+                bundle.putString("stampUrl", res.isNull("stampUrl") ? "" : res.getString("stampUrl"));
                 ReadableArray params = res.getArray("bills");
                 ArrayList<ZhangDanObj> list = new ArrayList<ZhangDanObj>();
                 if (params != null && params.size() > 0) {
@@ -158,6 +158,8 @@ public class LHNToast extends ReactContextBaseJavaModule {
                         bundle.putString("time_stamp", DateTimeUtil.getCurrentDate("yyyyMMddhhmmss"));
                         bundle.putString("order_info", order.getString("order_info"));
                         bundle.putString("print_info", order.getString("print_info"));
+                        bundle.putString("mchName", order.getString("mchName"));
+                        bundle.putString("mchId", order.getString("mchId"));
                         bundle.putString("posType", posType);
                         intent.putExtras(bundle);
                         currentActivity.startActivity(intent);
@@ -187,8 +189,11 @@ public class LHNToast extends ReactContextBaseJavaModule {
     }
 
 
-    public static void sendEventToRn(String eventName,@Nullable WritableMap paramss) {
+    public static void sendEventToRn(String eventName, @Nullable WritableMap paramss) {
         myContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, paramss);
     }
+
+
+
 
 }

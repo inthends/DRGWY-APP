@@ -10,7 +10,6 @@ import java.io.Serializable;
  * 修改者：
  * 修改时间：
  * 修改详情：
- *
  */
 public class TransactionEntity implements Serializable {
 
@@ -33,84 +32,111 @@ public class TransactionEntity implements Serializable {
     public String getAmt() {
         return amt;
     }
+
     public void setAmt(String amt) {
         this.amt = amt;
     }
+
     public String getMerid() {
         return merid;
     }
+
     public void setMerid(String merid) {
         this.merid = merid;
     }
+
     public String getTermid() {
         return termid;
     }
+
     public void setTermid(String termid) {
         this.termid = termid;
     }
+
     public String getBatchno() {
         return batchno;
     }
+
     public void setBatchno(String batchno) {
         this.batchno = batchno;
     }
+
     public String getSystraceno() {
         return systraceno;
     }
+
     public void setSystraceno(String systraceno) {
         this.systraceno = systraceno;
     }
+
     public String getAuthcode() {
         return authcode;
     }
+
     public void setAuthcode(String authcode) {
         this.authcode = authcode;
     }
+
     public String getOrderid_scan() {
         return orderid_scan;
     }
+
     public void setOrderid_scan(String orderid_scan) {
         this.orderid_scan = orderid_scan;
     }
+
     public String getTranslocaltime() {
         return translocaltime;
     }
+
     public void setTranslocaltime(String translocaltime) {
         this.translocaltime = translocaltime;
     }
+
     public String getTranslocaldate() {
         return translocaldate;
     }
+
     public void setTranslocaldate(String translocaldate) {
         this.translocaldate = translocaldate;
     }
+
     public String getTransamount() {
         return transamount;
     }
+
     public void setTransamount(String transamount) {
         this.transamount = transamount;
     }
+
     public String getPriaccount() {
         return priaccount;
     }
+
     public void setPriaccount(String priaccount) {
         this.priaccount = priaccount;
     }
+
     public String getPay_tp() {
         return pay_tp;
     }
+
     public void setPay_tp(String pay_tp) {
         this.pay_tp = pay_tp;
     }
+
     public String getRefernumber() {
         return refernumber;
     }
+
     public void setRefernumber(String refernumber) {
         this.refernumber = refernumber;
     }
+
     public static long getSerialversionuid() {
         return serialVersionUID;
     }
+
     @Override
     public String toString() {
         return "========================\n\r 商户号=" + merid + "\n\r 终端号=" + termid
@@ -119,6 +145,6 @@ public class TransactionEntity implements Serializable {
                 + "\n\r 交易时间=" + translocaltime + "\n\r 交易日期="
                 + translocaldate + "\n\r 交易金额=" + transamount
                 + "\n\r 卡号=" + priaccount + "\n\r 交易类型=" + pay_tp
-                + "\n\r 系统参考号=" + refernumber+ "\n\r 金额=" + amt;
+                + "\n\r 系统参考号=" + refernumber + "\n\r 金额=" + amt;
     }
 }

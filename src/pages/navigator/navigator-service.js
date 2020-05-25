@@ -166,9 +166,12 @@ export default {
         return api.getData('/api/MobileMethod/GetFeeItemDetail', {unitId, feeItemId});
     },
     saveFee(unitId, bills) {
-        return api.postData('/api/MobileMethod/SaveFee', {bills:JSON.stringify(bills)});
+        return api.postData('/api/MobileMethod/SaveFee', {bills: JSON.stringify(bills)});
     },
     invalidBillForm(keyValue) {
-        return api.postData('/api/MobileMethod/InvalidBillForm',{keyValue})
-    }
+        return api.postData('/api/MobileMethod/InvalidBillForm', {keyValue});
+    },
+    billDetailList(billId) {
+        return api.postData('/api/MobileMethod/MGetChargeBillDetailList', {billId});
+    },
 };
