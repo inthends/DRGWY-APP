@@ -106,6 +106,8 @@ public class LHNToast extends ReactContextBaseJavaModule {
                 bundle.putString("payType", res.getString("payType"));
                 bundle.putString("username", res.getString("username"));
                 bundle.putString("stampUrl", res.isNull("stampUrl") ? "" : res.getString("stampUrl"));
+                bundle.putString("mchName", res.isNull("mchName") ? "" : res.getString("mchName"));
+                bundle.putString("mchId", res.isNull("mchId") ? "" : res.getString("mchId"));
                 ReadableArray params = res.getArray("bills");
                 ArrayList<ZhangDanObj> list = new ArrayList<ZhangDanObj>();
                 if (params != null && params.size() > 0) {
@@ -192,8 +194,6 @@ public class LHNToast extends ReactContextBaseJavaModule {
     public static void sendEventToRn(String eventName, @Nullable WritableMap paramss) {
         myContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, paramss);
     }
-
-
 
 
 }
