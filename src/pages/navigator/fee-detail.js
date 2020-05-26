@@ -267,7 +267,7 @@ class FeeDetailPage extends BasePage {
     changeItem = item => {
         const {type} = this.state;
 
-        if(type === '已交') {
+        if(type === '已收') {
             this.props.navigation.push('charge', { data: item });
 
         }else {
