@@ -87,8 +87,6 @@ class FeeChargeDetail extends BasePage {
                         {this.state.items.map((item,index)=>(
                             <Flex key={index} style={styles.item}>
                                 <Flex align={'start'} direction={'column'} style={{marginLeft: 5, flex: 1}}>
-
-
                                     <Flex justify={'between'}
                                           style={{paddingLeft: 15, paddingTop: 10, paddingBottom: 5, width: '100%'}}>
                                         <Text style={{fontSize: 16}}>{item.feeName}</Text>

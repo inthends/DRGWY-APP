@@ -356,7 +356,7 @@ class FeeDetailPage extends BasePage {
                                 <Flex align={'start'} direction={'column'} style={{ marginLeft: 3, flex: 1 }}>
                                     <Flex justify={'between'}
                                         style={{ paddingLeft: 15, paddingTop: 5, paddingBottom: 5, width: '100%' }}>
-                                        <Text style={{ fontSize: 16, width: '80%',color:'green' }}>{item.allName}</Text>
+                                        {type !== '已收' && <Text style={{ fontSize: 16, width: '80%',color:'green' }}>{item.allName}</Text>}
                                         {type !== '已收' && item.billSource === '临时加费' && (
                                             <Flex>
                                                 <Text onPress={() => {
@@ -389,8 +389,8 @@ class FeeDetailPage extends BasePage {
                                         )}
                                     </Flex>
                                     <Flex justify={'between'}
-                                        style={{ paddingLeft: 15, paddingTop: 10, paddingBottom: 5, width: '100%' }}>
-                                        <Text style={{ fontSize: 16 }}>{item.feeName}</Text>
+                                        style={[{ paddingLeft: 15, paddingTop: 10, paddingBottom: 5, width: '100%' },type === '已收' ? {paddingBottom: 15} : {}]}>
+                                        <Text style={{ fontSize: 16 }}>{type === '已收' ? item.billCode : item.feeName}</Text>
                                         <Flex>
                                             <Text style={{ paddingRight: 15, fontSize: 16 }}>{item.amount}</Text>
                                         </Flex>

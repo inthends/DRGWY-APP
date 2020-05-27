@@ -60,7 +60,7 @@ public class LHNPrintActivity extends BaseLKLActivity {
     private Bundle bundle;
     private Boolean printText = false;
     private Boolean printImage = false;
-//    private SystemActivity s = new SystemActivity();
+//     private SystemActivity systemActivity = new SystemActivity();
 
 
     @Override
@@ -264,7 +264,7 @@ public class LHNPrintActivity extends BaseLKLActivity {
                     add(new PrintItemObj("POS机收款凭据", big, true, PrintItemObj.ALIGN.CENTER, false, false, 25));
                     add(new PrintItemObj("商户名称：" + mchName, medium));
                     add(new PrintItemObj("商户号：" + mchId, medium));
-//                    add(new PrintItemObj("终端号：" + s.getTerminalSn(), medium));
+//                     add(new PrintItemObj("终端号：" + systemActivity.getTerminalSn(), medium));
                     add(new PrintItemObj("房屋全称：" + allName, medium));
                     add(new PrintItemObj("支付渠道：" + payType, medium));
                     add(new PrintItemObj("订单号：" + tradeNo, medium));
