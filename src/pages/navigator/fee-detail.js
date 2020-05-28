@@ -340,9 +340,9 @@ class FeeDetailPage extends BasePage {
             <CommonView style={{ flex: 1 }}>
                 <ScrollView>
                     <Text
-                        style={{ paddingLeft: 10, paddingTop: 15, fontSize: 20 }}>{room.allName} {room.tenantName}</Text>
+                        style={{ paddingLeft: 10, paddingTop: 10, fontSize: 20 }}>{room.allName} {room.tenantName}</Text>
                     <TwoChange onChange={this.typeOnChange} />
-                    <Flex style={{ backgroundColor: '#eee', height: 1, marginLeft: 15, marginRight: 15, marginTop: 15 }} />
+                    <Flex style={{ backgroundColor: '#eee', height: 1, marginLeft: 10, marginRight: 10, marginTop: 10 }} />
                     {dataInfo.data.map(item => (
                         <TouchableWithoutFeedback key={item.id} onPress={() => this.changeItem(item)}>
                             <Flex style={styles.check}>
@@ -382,7 +382,7 @@ class FeeDetailPage extends BasePage {
                                                         { cancelable: false },
                                                     );
                                                 }} style={{
-                                                    paddingRight: 15,
+                                                    paddingRight: 10,
                                                     fontSize: 16,
                                                     color: 'red',
                                                 }}>删除</Text>
@@ -390,10 +390,10 @@ class FeeDetailPage extends BasePage {
                                         )}
                                     </Flex>
                                     <Flex justify={'between'}
-                                        style={[{ paddingLeft: 10, paddingTop: 10, paddingBottom: 5, width: '100%' }, type === '已收' ? { paddingBottom: 15 } : {}]}>
+                                        style={[{ paddingLeft: 10, paddingTop: 10, paddingBottom: 5, width: '100%' }, type === '已收' ? { paddingBottom: 10 } : {}]}>
                                         <Text style={{ fontSize: 16 }}>{type === '已收' ? item.billCode : item.feeName}</Text>
                                         <Flex>
-                                            <Text style={{ paddingRight: 15, fontSize: 16 }}>{item.amount}</Text>
+                                            <Text style={{ paddingRight: 10, fontSize: 16 }}>{item.amount}</Text>
                                         </Flex>
                                     </Flex>
 
@@ -501,12 +501,12 @@ const styles = StyleSheet.create({
     top: {
 
         fontSize: 18,
-        paddingBottom: 15,
+        paddingBottom: 10,
     },
     bottom: {
         color: '#868688',
         fontSize: 18,
-        paddingBottom: 20,
+        paddingBottom: 10,
     },
     button: {
         color: '#868688',
@@ -528,9 +528,9 @@ const styles = StyleSheet.create({
     right: {
         flex: 3,
 
-        paddingTop: 20,
-        paddingBottom: 20,
-        marginLeft: 20,
+        paddingTop: 10,
+        paddingBottom: 10,
+        marginLeft: 10,
     },
     image: {
         height: 90,
@@ -542,20 +542,20 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#eee',
         borderStyle: 'solid',
-        paddingLeft: 15,
-        paddingRight: 15,
+        paddingLeft: 10,
+        paddingRight: 10,
         // width: (ScreenUtil.deviceWidth() - 50) / 3.0-1,
         paddingTop: 10,
         paddingBottom: 10,
-        marginTop: 20,
-        marginRight: 15,
-        marginLeft: 15,
+        marginTop: 10,
+        marginRight: 10,
+        marginLeft: 10,
     },
 
     name: {
         fontSize: Macro.font_16,
         fontWeight: '600',
-        paddingBottom: 15,
+        paddingBottom: 10,
     },
     area: {
         color: Macro.color_636470,
@@ -592,7 +592,7 @@ const styles = StyleSheet.create({
         width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 3) / 4.0,
         backgroundColor: '#999',
         borderRadius: 6,
-        marginTop: 20,
+        marginTop: 10,
     },
     word: {
         color: 'white',
