@@ -98,19 +98,20 @@ class EstateFuwuPage extends BasePage {
 
     getList = () => {
         /*
-        pageIndex, BillStatus, TreeType, TreeTypeId, BillType, StartTime, EndTime
+        pageIndex, BillStatus, TreeType, organizeId, BillType, StartTime, EndTime
          */
         const {billStatus, selectBuilding, billType, time} = this.state;
         let treeType;
-        let treeTypeId;
+        let organizeId;
         if (selectBuilding) {
             treeType = selectBuilding.type;
-            treeTypeId = selectBuilding.key;
+            organizeId = selectBuilding.key;
         }
+
         let startTime = common.getMonthFirstDay(time);
         let endTime = common.getMonthLastDay(time);
 
-        NavigatorService.serviceList(this.state.pageIndex, billStatus, treeType, treeTypeId, billType, startTime, endTime).then(dataInfo => {
+        NavigatorService.serviceList(this.state.pageIndex, billStatus, treeType, organizeId, billType, startTime, endTime).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,

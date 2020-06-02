@@ -31,9 +31,9 @@ export default {
         return api.postData(url, {pageIndex, pageSize, unitId: id, isShow: isShow});
     },
     //服务单
-    serviceList(pageIndex, billStatus, treeType, treeTypeId, billType, startTime, endTime) {
+    serviceList(pageIndex, billStatus, treeType, organizeId, billType, startTime, endTime) {
         /*
-        {:,TreeType:,TreeTypeId:BillType:,StartTime:,EndTime:,}
+        {:,TreeType:,organizeId:BillType:,StartTime:,EndTime:,}
          */
 
         // if (billType === '报修') {
@@ -49,15 +49,15 @@ export default {
             billStatus,
             status: billStatus,
             treeType,
-            treeTypeId,
+            organizeId,
             billType,
             startTime,
             endTime,
         });
     },
-    weixiuList(pageIndex, billStatus, treeType, treeTypeId, startTime, endTime, repairArea) {
+    weixiuList(pageIndex, billStatus, treeType, organizeId, startTime, endTime, repairArea) {
         /*
-        {:,TreeType:,TreeTypeId:BillType:,StartTime:,EndTime:,}
+        {:,TreeType:,organizeId:BillType:,StartTime:,EndTime:,}
          */
 
         // if (billType === '报修') {
@@ -72,21 +72,21 @@ export default {
             billStatus,
             status: billStatus,
             treeType,
-            treeTypeId,
+            organizeId,
             startTime,
             endTime,
             repairArea,
 
         });
     },
-    tousuList(pageIndex, billStatus, treeType, treeTypeId, billType, startTime, endTime) {
+    tousuList(pageIndex, billStatus, treeType, organizeId, billType, startTime, endTime) {
         return api.postData('/api/MobileMethod/MGetComplaintPageList', {
             pageIndex,
             pageSize: 10,
             billStatus,
             status: billStatus,
             treeType,
-            treeTypeId,
+            organizeId,
             billType,
             startTime,
             endTime,

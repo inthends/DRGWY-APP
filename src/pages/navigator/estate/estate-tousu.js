@@ -97,19 +97,19 @@ class EstateTousuPage extends BasePage {
 
     getList = () => {
         /*
-        pageIndex, BillStatus, TreeType, TreeTypeId, BillType, StartTime, EndTime
+        pageIndex, BillStatus, TreeType, organizeId, BillType, StartTime, EndTime
          */
         const {billStatus, selectBuilding, time} = this.state;
         let treeType;
-        let treeTypeId;
+        let organizeId;
         if (selectBuilding) {
             treeType = selectBuilding.type;
-            treeTypeId = selectBuilding.key;
+            organizeId = selectBuilding.key;
         }
         let startTime = common.getMonthFirstDay(time);
         let endTime = common.getMonthLastDay(time);
 
-        NavigatorService.tousuList(this.state.pageIndex, billStatus, treeType, treeTypeId, '', startTime, endTime).then(dataInfo => {
+        NavigatorService.tousuList(this.state.pageIndex, billStatus, treeType, organizeId, '', startTime, endTime).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
