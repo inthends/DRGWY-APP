@@ -265,12 +265,12 @@ class FeeDetailPage extends BasePage {
     };
 
     changeItem = item => {
-        const {type} = this.state;
+        const { type } = this.state;
 
-        if(type === '已收') {
+        if (type === '已收') {
             this.props.navigation.push('charge', { data: item });
 
-        }else {
+        } else {
             let data = this.state.dataInfo.data;
             data = data.map(it => {
                 if (it.id === item.id) {
@@ -340,9 +340,9 @@ class FeeDetailPage extends BasePage {
             <CommonView style={{ flex: 1 }}>
                 <ScrollView>
                     <Text
-                        style={{ paddingLeft: 15, paddingTop: 15, fontSize: 20 }}>{room.allName} {room.tenantName}</Text>
+                        style={{ paddingLeft: 10, paddingTop: 10, fontSize: 20 }}>{room.allName} {room.tenantName}</Text>
                     <TwoChange onChange={this.typeOnChange} />
-                    <Flex style={{ backgroundColor: '#eee', height: 1, marginLeft: 15, marginRight: 15, marginTop: 15 }} />
+                    <Flex style={{ backgroundColor: '#eee', height: 1, marginLeft: 10, marginRight: 10, marginTop: 10 }} />
                     {dataInfo.data.map(item => (
                         <TouchableWithoutFeedback key={item.id} onPress={() => this.changeItem(item)}>
                             <Flex style={styles.check}>
@@ -355,8 +355,9 @@ class FeeDetailPage extends BasePage {
                                 />}
                                 <Flex align={'start'} direction={'column'} style={{ marginLeft: 3, flex: 1 }}>
                                     <Flex justify={'between'}
-                                        style={{ paddingLeft: 15, paddingTop: 5, paddingBottom: 5, width: '100%' }}>
-                                        {type !== '已收' && <Text style={{ fontSize: 16, width: '80%',color:'green' }}>{item.allName}</Text>}
+                                        style={{ paddingLeft: 10, paddingTop: 5, paddingBottom: 5, width: '100%' }}>
+                                        {/* {type !== '已收' && <Text style={{ fontSize: 16, width: '80%',color:'green' }}>{item.allName}</Text>} */}
+                                        <Text style={{ fontSize: 16, width: '80%', color: 'green' }}>{item.allName}</Text>
                                         {type !== '已收' && item.billSource === '临时加费' && (
                                             <Flex>
                                                 <Text onPress={() => {
@@ -381,7 +382,7 @@ class FeeDetailPage extends BasePage {
                                                         { cancelable: false },
                                                     );
                                                 }} style={{
-                                                    paddingRight: 15,
+                                                    paddingRight: 10,
                                                     fontSize: 16,
                                                     color: 'red',
                                                 }}>删除</Text>
@@ -389,16 +390,33 @@ class FeeDetailPage extends BasePage {
                                         )}
                                     </Flex>
                                     <Flex justify={'between'}
-                                        style={[{ paddingLeft: 15, paddingTop: 10, paddingBottom: 5, width: '100%' },type === '已收' ? {paddingBottom: 15} : {}]}>
+                                        style={[{ paddingLeft: 10, paddingTop: 10, paddingBottom: 5, width: '100%' }, type === '已收' ? { paddingBottom: 10 } : {}]}>
                                         <Text style={{ fontSize: 16 }}>{type === '已收' ? item.billCode : item.feeName}</Text>
                                         <Flex>
-                                            <Text style={{ paddingRight: 15, fontSize: 16 }}>{item.amount}</Text>
+                                            <Text style={{ paddingRight: 10, fontSize: 16 }}>{item.amount}</Text>
                                         </Flex>
                                     </Flex>
-                                    {item.beginDate ? <Text style={{
+
+                                    {/* {item.beginDate ? <Text style={{
                                         paddingLeft: 15,
                                         paddingTop: 10,
-                                    }}> {item.beginDate + '至' + item.endDate}</Text> : null}
+                                    }}> {item.beginDate + '至' + item.endDate}</Text> : null} */}
+
+                                    {type === '已收' ?
+                                        <Text style={{
+                                            paddingLeft: 10,
+                                            paddingTop: 10,
+                                        }}> {item.billDate + '，收款人：' + item.createUserName}
+                                        </Text>
+                                        : item.beginDate ?
+
+                                            <Text style={{
+                                                paddingLeft: 10,
+                                                paddingTop: 10,
+                                            }}>
+                                                {item.beginDate + '至' + item.endDate}</Text> : null 
+                                    }
+
                                 </Flex>
                             </Flex>
                         </TouchableWithoutFeedback>
@@ -407,7 +425,7 @@ class FeeDetailPage extends BasePage {
                 {type === '已收' || dataInfo.data.length === 0 ? null : (
                     <Flex style={{ marginBottom: 30 }} direction={'column'}>
                         <Flex align={'center'}>
-                            <Text style={{ paddingLeft: 15, fontSize: 20 }}>合计：</Text>
+                            <Text style={{ paddingLeft: 10, fontSize: 20 }}>合计：</Text>
                             <Text
                                 style={{
                                     paddingLeft: 5,
@@ -483,12 +501,12 @@ const styles = StyleSheet.create({
     top: {
 
         fontSize: 18,
-        paddingBottom: 15,
+        paddingBottom: 10,
     },
     bottom: {
         color: '#868688',
         fontSize: 18,
-        paddingBottom: 20,
+        paddingBottom: 10,
     },
     button: {
         color: '#868688',
@@ -510,9 +528,9 @@ const styles = StyleSheet.create({
     right: {
         flex: 3,
 
-        paddingTop: 20,
-        paddingBottom: 20,
-        marginLeft: 20,
+        paddingTop: 10,
+        paddingBottom: 10,
+        marginLeft: 10,
     },
     image: {
         height: 90,
@@ -524,20 +542,20 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#eee',
         borderStyle: 'solid',
-        paddingLeft: 15,
-        paddingRight: 15,
+        paddingLeft: 10,
+        paddingRight: 10,
         // width: (ScreenUtil.deviceWidth() - 50) / 3.0-1,
         paddingTop: 10,
         paddingBottom: 10,
-        marginTop: 20,
-        marginRight: 15,
-        marginLeft: 15,
+        marginTop: 10,
+        marginRight: 10,
+        marginLeft: 10,
     },
 
     name: {
         fontSize: Macro.font_16,
         fontWeight: '600',
-        paddingBottom: 15,
+        paddingBottom: 10,
     },
     area: {
         color: Macro.color_636470,
@@ -574,7 +592,7 @@ const styles = StyleSheet.create({
         width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 3) / 4.0,
         backgroundColor: '#999',
         borderRadius: 6,
-        marginTop: 20,
+        marginTop: 10,
     },
     word: {
         color: 'white',
