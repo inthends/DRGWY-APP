@@ -76,7 +76,8 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        YSSDKManager.login(getApplicationContext(), "95E1926350CD95EF0F1C065190092F23");
+//         YSSDKManager.login(getApplicationContext(), "95E1926350CD95EF0F1C065190092F23");
+        YSSDKManager.login(getApplicationContext(), "4B53EEDCF8DAA0BD5AA11411AD9F854B");
         SoLoader.init(this, /* native exopackage */ false);
         JPushModule.registerActivityLifecycle(this);
     }

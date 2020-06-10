@@ -14,6 +14,7 @@ import NavigatorService from './navigator-service';
 import {Flex} from '@ant-design/react-native';
 import Macro from '../../utils/macro';
 import {RNCamera} from 'react-native-camera';
+import UDToast from '../../utils/UDToast';
 
 export default class ScanScreen extends Component {
 
@@ -43,6 +44,7 @@ export default class ScanScreen extends Component {
             tbout_trade_no: '',
             code: '',
             result: null,
+            count: null,
         };
     }
 
@@ -68,17 +70,23 @@ export default class ScanScreen extends Component {
         }
 
         this.setState({
+            time: 30,
             result,
         }, () => {
             let ids = common.getValueFromProps(this.props);
-            let callBack = common.getValueFromProps(this.props,'callBack');
+            let callBack = common.getValueFromProps(this.props, 'callBack');
             NavigatorService.createOrder(ids).then(res => {
                 NavigatorService.scanPay(result.data, res.out_trade_no).then(resp => {
-                    callBack(res.out_trade_no);
-                    this.props.navigation.goBack();
+                    if (resp === 'need_query') {
+                        this.needQuery(res);
+                    } else {
+                        callBack(res.out_trade_no);
+                        this.props.navigation.goBack();
+                    }
                 }).catch(() => {
                     this.setState({
                         result: null,
+                        count: null,
                     });
                 });
 
@@ -91,12 +99,51 @@ export default class ScanScreen extends Component {
             }).catch(() => {
                 this.setState({
                     result: null,
+                    count: null,
                 });
             });
         });
 
 
     };
+
+    needQuery(res) {
+        let callBack = common.getValueFromProps(this.props, 'callBack');
+        let count = this.state.count || 7;
+
+        if (count === 7) {
+            this.showLoadingNumber = UDToast.showLoading('正在查询支付结果，请稍后...');
+        }
+        this.setState({
+            count: count - 1,
+        }, () => {
+            if (count > 0) {
+                NavigatorService.scanPayQuery(res.out_trade_no).then(query => {
+                    if (query === 'SUCCESS') {
+                        UDToast.hiddenLoading(this.showLoadingNumber);
+                        callBack(res.out_trade_no);
+                        this.props.navigation.goBack();
+                    } else {
+                        setTimeout(()=>{
+                            this.needQuery(res);
+                        },5000);
+                    }
+                }).catch(res => {
+                    UDToast.hiddenLoading(this.showLoadingNumber);
+                    this.setState({
+                        result: null,
+                        count: null,
+                    });
+                });
+            } else {
+                NavigatorService.scanPayReserve(res.out_trade_no);
+                setTimeout(() => {
+                    UDToast.hiddenLoading(this.showLoadingNumber);
+                    this.props.navigation.goBack();
+                }, 1000);
+            }
+        });
+    }
 
 
     render() {

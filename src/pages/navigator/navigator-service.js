@@ -142,6 +142,12 @@ export default {
     scanPay(auth_code, tbout_trade_no) {
         return api.postData('/api/MobileMethod/WFTScanPay', {auth_code, tbout_trade_no});
     },
+    scanPayQuery(tbout_trade_no) {
+        return api.postData('/api/MobileMethod/WFTScanPayQuery', {tbout_trade_no},false);
+    },
+    scanPayReserve(tbout_trade_no) {
+        return api.postData('/api/MobileMethod/WFTScanPayReserve', {tbout_trade_no},false);
+    },
     qrcodePay(tbout_trade_no) {
         return api.postData('/api/MobileMethod/WFTPay', {tbout_trade_no});
     },
@@ -174,4 +180,5 @@ export default {
     billDetailList(billId) {
         return api.postData('/api/MobileMethod/MGetChargeBillDetailList', {billId});
     },
+
 };
