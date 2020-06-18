@@ -1,4 +1,4 @@
-import React,{Fragment} from 'react';
+import React, { Fragment } from 'react';
 import {
     View,
     Text,
@@ -8,8 +8,8 @@ import {
     ScrollView, Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
-import {Icon} from '@ant-design/react-native/lib/index';
-import {List, WhiteSpace, Flex, TextareaItem, Grid, Button} from '@ant-design/react-native/lib/index';
+import { Icon } from '@ant-design/react-native/lib/index';
+import { List, WhiteSpace, Flex, TextareaItem, Grid, Button } from '@ant-design/react-native/lib/index';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import SelectImage from '../../../utils/select-image';
@@ -33,12 +33,12 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 const Item = List.Item;
 
 export default class KaiGongListDetailPage extends BasePage {
-    static navigationOptions = ({navigation}) => {
+    static navigationOptions = ({ navigation }) => {
         return {
             title: '开始维修',
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
 
@@ -68,10 +68,10 @@ export default class KaiGongListDetailPage extends BasePage {
 
 
     getData = () => {
-        const {fuwu, type} = this.state;
-        console.log('fuw', fuwu);
+        const { fuwu, type } = this.state;
+        // console.log('fuw', fuwu);
         WorkService.weixiuDetail(fuwu.id).then(detail => {
-            console.log('detail', detail);
+            // console.log('detail', detail);
             this.setState({
                 detail: {
                     ...detail.entity,
@@ -80,7 +80,7 @@ export default class KaiGongListDetailPage extends BasePage {
                     statusName: detail.statusName,
                 },
             });
-            
+
             //获取维修单的单据动态
             WorkService.getOperationRecord(fuwu.id).then(res => {
                 this.setState({
@@ -95,10 +95,12 @@ export default class KaiGongListDetailPage extends BasePage {
             });
         });
     };
+
     click = (handle) => {
-        const {fuwu, type, value} = this.state;
-        if (handle === '回复' && !(value&&value.length > 0)) {
-            UDToast.showInfo('请输入文字');
+        const { fuwu, type, value } = this.state; 
+        // if (handle === '回复' && !(value&&value.length > 0)) {
+        if (!(value && value.length > 0)) {
+            UDToast.showInfo('请输入故障判断');
             return;
         }
         WorkService.serviceHandle(handle, fuwu.id, value).then(res => {
@@ -106,6 +108,7 @@ export default class KaiGongListDetailPage extends BasePage {
             this.props.navigation.goBack();
         });
     };
+
     communicateClick = (i) => {
         let c = this.state.communicates;
         let d = c.map(it => {
@@ -133,12 +136,12 @@ export default class KaiGongListDetailPage extends BasePage {
 
 
     render() {
-        const {images, detail, communicates} = this.state;
-        console.log(1122, detail);
+        const { images, detail, communicates } = this.state;
+        // console.log(1122, detail);
 
 
         return (
-            <CommonView style={{flex: 1, backgroundColor: '#fff', paddingBottom: 10}}>
+            <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.billCode}</Text>
@@ -147,13 +150,13 @@ export default class KaiGongListDetailPage extends BasePage {
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>{detail.address} {detail.contactName}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
-                            <Flex><LoadImage style={{width: 30, height: 30}}/></Flex>
+                            <Flex><LoadImage style={{ width: 30, height: 30 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
-                    <DashLine/>
+                    <DashLine />
                     <Text style={styles.desc}>{detail.repairContent}</Text>
-                    <DashLine/>
-                    <ListImages images={images} lookImage={this.lookImage}/>
+                    <DashLine />
+                    <ListImages images={images} lookImage={this.lookImage} />
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
                     </Flex>
@@ -161,11 +164,11 @@ export default class KaiGongListDetailPage extends BasePage {
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every]}>
                             <Text style={styles.left}>关联单：</Text>
-                            <Text onPress={() => this.props.navigation.navigate('service', {data: {id: detail.relationId}})}
-                                  style={[styles.right, {color: Macro.color_4d8fcc}]}>{detail.serviceDeskCode}</Text>
+                            <Text onPress={() => this.props.navigation.navigate('service', { data: { id: detail.relationId } })}
+                                style={[styles.right, { color: Macro.color_4d8fcc }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-                    <DashLine/>
+                    <DashLine />
                     {/* <UploadImageView style={{marginTop:10}}/> */}
                     <View style={{
                         margin: 15,
@@ -177,23 +180,23 @@ export default class KaiGongListDetailPage extends BasePage {
                         <TextareaItem
                             rows={4}
                             placeholder='请输入故障判断'
-                            style={{fontSize:14,paddingTop: 10, height: 100, width: ScreenUtil.deviceWidth() - 32}}
-                            onChange={value => this.setState({value})}
+                            style={{ fontSize: 14, paddingTop: 10, height: 100, width: ScreenUtil.deviceWidth() - 32 }}
+                            onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
                     </View>
 
                     <TouchableWithoutFeedback onPress={() => this.click('开始维修')}>
-                        <Flex justify={'center'} style={[styles.ii,{width: '80%', marginLeft: '10%',marginRight: '10%', marginBottom: 20}, {backgroundColor: Macro.color_4d8fcc}]}>
+                        <Flex justify={'center'} style={[styles.ii, { width: '80%', marginLeft: '10%', marginRight: '10%', marginBottom: 20 }, { backgroundColor: Macro.color_4d8fcc }]}>
                             <Text style={styles.word}>开始维修</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-                    <OperationRecords communicateClick={this.communicateClick} communicates={communicates}/>
+                    <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
 
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
-                                 imageUrls={this.state.images}/>
+                        imageUrls={this.state.images} />
                 </Modal>
             </CommonView>
         );

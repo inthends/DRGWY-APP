@@ -95,10 +95,8 @@ public class LKLPayActivity extends Activity {
 
             Intent intent = new Intent();
             intent.setAction("com.ys.smartpos.pay.sdk");
-            intent.putExtra("transType", transType);
-
-//            intent.putExtra("amount", Long.parseLong(amount));
-
+            intent.putExtra("transType", transType); 
+//            intent.putExtra("amount", Long.parseLong(amount)); 
             intent.putExtra("amount", (long)this.yinshengBundle.getInt("amount"));
             intent.putExtra("transAction", 1);
             intent.putExtra("orderBelongTo", this.yinshengBundle.getString("orderBelongTo"));
@@ -113,11 +111,7 @@ public class LKLPayActivity extends Activity {
         } catch (Exception e) {
             mShow.setText(e.getMessage());
         }
-
     }
-
-
-
 
 
     public Intent setComponent() {
