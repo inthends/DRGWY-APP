@@ -96,7 +96,7 @@ export default class KaiGongListDetailPage extends BasePage {
         });
     };
 
-    click = (handle) => {
+    click = () => {
         const { fuwu, type, value } = this.state; 
         // if (handle === '回复' && !(value&&value.length > 0)) {
         if (!(value && value.length > 0)) {
@@ -186,7 +186,7 @@ export default class KaiGongListDetailPage extends BasePage {
                         />
                     </View>
 
-                    <TouchableWithoutFeedback onPress={() => this.click('开始维修')}>
+                    <TouchableWithoutFeedback onPress={() => this.click()}>
                         <Flex justify={'center'} style={[styles.ii, { width: '80%', marginLeft: '10%', marginRight: '10%', marginBottom: 20 }, { backgroundColor: Macro.color_4d8fcc }]}>
                             <Text style={styles.word}>开始维修</Text>
                         </Flex>

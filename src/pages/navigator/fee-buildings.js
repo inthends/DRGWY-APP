@@ -45,7 +45,6 @@ export default class FeeBuildingsPage extends BasePage {
             housing,
             items: [],
         };
-
     }
 
     componentDidMount(): void {
@@ -84,9 +83,14 @@ export default class FeeBuildingsPage extends BasePage {
                                         //车位
                                         this.props.navigation.push('feeParkings', { data: item });
                                 }}>
-                                <Flex style={[styles.item, item.isClear === true ? '' : styles.orange2]} justify={'center'}>
+                                {/* <Flex style={[styles.item, item.isClear === true ? '' : styles.orange2]} justify={'center'}>
                                     <Text style={[styles.title, item.isClear === true ? '' : styles.orange2]}>{item.name}</Text>
+                                </Flex> */}
+
+                                <Flex style={[styles.item, item.color === 2 ? '' : styles.orange2]} justify={'center'}>
+                                    <Text style={[styles.title, item.color === 2 ? '' : styles.orange2]}>{item.name}</Text>
                                 </Flex>
+
                             </TouchableWithoutFeedback>
                         ))}
 

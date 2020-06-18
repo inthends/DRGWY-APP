@@ -7,19 +7,20 @@ export default {
     },
     //楼栋或者车库
     getBuildings(keyValue) {
-        return api.getData('/api/MobileMethod/MGetPStructs', {keyValue, type: 2});
+        // return api.getData('/api/MobileMethod/MGetPStructs', {keyValue, type: 2});
+        return api.getData('/api/MobileMethod/MGetFeePStructs', {keyValue, type: 2});
     },
     //楼层
     getFloors(keyValue) {
-        return api.getData('/api/MobileMethod/MGetPStructs', {keyValue, type: 4});
+        return api.getData('/api/MobileMethod/MGetFeePStructs', {keyValue, type: 4});
     },
     //车位
     getParkings(keyValue) {
-        return api.getData('/api/MobileMethod/MGetPStructs', {keyValue, type: 9});
+        return api.getData('/api/MobileMethod/MGetFeePStructs', {keyValue, type: 9});
     },
     //房间
     getRooms(keyValue) {
-        return api.getData('/api/MobileMethod/MGetPStructs', {keyValue, type: 5});
+        return api.getData('/api/MobileMethod/MGetFeePStructs', {keyValue, type: 5});
     },
 
     //账单

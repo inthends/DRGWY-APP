@@ -111,7 +111,7 @@ export default class SelectAddressPage extends BasePage {
         });
     };
     next = (item) => {
-        console.log(item);
+        //console.log(item);
         if (item.type !== 5) {
             this.props.navigation.push('select', {
                 'data': {
@@ -120,15 +120,11 @@ export default class SelectAddressPage extends BasePage {
 
             });
         }
-
-
     };
 
 
     render() {
         const {items, parent, selectItem} = this.state;
-
-
         return (
             <CommonView style={{flex: 1, backgroundColor: '#eee'}}>
                 <View style={{flex: 1}}>
