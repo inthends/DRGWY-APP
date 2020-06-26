@@ -161,42 +161,47 @@ export default class FuWuDanListDetailPage extends BasePage {
                         <TouchableWithoutFeedback>
                             <Flex style={[styles.every]}>
                                 <Text style={styles.left}>关联单：</Text>
-                                <Text onPress={()=>{
-                                    let item = {
-                                        ...detail,
-                                        id: detail.businessId
-                                    };
-                                    switch (detail.statusName) {
-                                        case '待派单': {
-                                            this.props.navigation.navigate('paidan', {data: item});
-                                            break;
-                                        }
-                                        case '待接单': {
-                                            this.props.navigation.navigate('jiedan', {data: item});
-                                            break;
-                                        }
-                                        case '待开工': {
-                                            this.props.navigation.navigate('kaigong', {data: item});
-                                            break;
-                                        }
-                                        case '待完成': {
-                                            this.props.navigation.navigate('wancheng', {data: item});
-                                            break;
-                                        }
-                                        case '待检验': {
-                                            this.props.navigation.navigate('jianyan', {data: item});
-                                            break;
-                                        }
-                                        case '待回访': {
-                                            this.props.navigation.navigate('huifang', {data: item});
-                                            break;
-                                        }
-                                        default:
-                                            console.log(item);
-                                            break;
+                                <Text 
+                                
+                                //服务单关联单据，不允许操作 neo 2020年6月26日10:24:45
+                                // onPress={()=>{
+                                //     let item = {
+                                //         ...detail,
+                                //         id: detail.businessId
+                                //     };
+                                //     switch (detail.statusName) {
+                                //         case '待派单': {
+                                //             this.props.navigation.navigate('paidan', {data: item});
+                                //             break;
+                                //         }
+                                //         case '待接单': {
+                                //             this.props.navigation.navigate('jiedan', {data: item});
+                                //             break;
+                                //         }
+                                //         case '待开工': {
+                                //             this.props.navigation.navigate('kaigong', {data: item});
+                                //             break;
+                                //         }
+                                //         case '待完成': {
+                                //             this.props.navigation.navigate('wancheng', {data: item});
+                                //             break;
+                                //         }
+                                //         case '待检验': {
+                                //             this.props.navigation.navigate('jianyan', {data: item});
+                                //             break;
+                                //         }
+                                //         case '待回访': {
+                                //             this.props.navigation.navigate('huifang', {data: item});
+                                //             break;
+                                //         }
+                                //         default:
+                                //             console.log(item);
+                                //             break;
 
-                                    }
-                                }} style={[styles.right,{color:Macro.color_4d8fcc}]}>{detail.businessCode}</Text>
+                                //     }
+                                // }} 
+                                
+                                style={[styles.right,{color:Macro.color_4d8fcc}]}>{detail.businessCode}</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
                     ):null}
@@ -242,8 +247,10 @@ export default class FuWuDanListDetailPage extends BasePage {
                     <Communicates communicateClick={this.communicateClick} communicates={communicates}/>
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
-                    <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
-                                 imageUrls={this.state.images}/>
+                    <ImageViewer index={this.state.lookImageIndex} 
+                    onCancel={this.cancel} 
+                    onClick={this.cancel}
+                    imageUrls={this.state.images}/>
                 </Modal>
             </CommonView>
         );
