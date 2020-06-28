@@ -1,3 +1,4 @@
+//服务单回访
 import React, { Fragment } from 'react';
 import {
     View,
@@ -32,13 +33,12 @@ import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
-
 const Item = List.Item;
 
 export default class HuiFangDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
-            title: '维修回访',
+            title: '服务单回访',
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
@@ -62,8 +62,7 @@ export default class HuiFangDetailPage extends BasePage {
             star: 3,
             lookImageIndex: 0,
             visible: false,
-        };
-        console.log(this.state);
+        }; 
     }
 
     componentDidMount(): void {
@@ -71,35 +70,59 @@ export default class HuiFangDetailPage extends BasePage {
     }
 
 
+    // getData = () => {
+    //     const { fuwu, type } = this.state;
+    //     // console.log('fuw', fuwu);
+    //     WorkService.weixiuDetail(fuwu.id).then(detail => {
+    //         // console.log('detail', detail);
+    //         this.setState({
+    //             detail: {
+    //                 ...detail.entity,
+    //                 serviceDeskCode: detail.serviceDeskCode,
+    //                 relationId: detail.relationId,
+    //                 statusName: detail.statusName,
+    //             },
+    //         });
+    //         //获取维修单的单据动态
+    //         WorkService.getOperationRecord(fuwu.id).then(res => {
+    //             this.setState({
+    //                 communicates: res,
+    //             });
+    //         });
+    //     }); 
+    //     //获取维修单附件
+    //     WorkService.weixiuExtra(fuwu.id).then(images => {
+    //         this.setState({
+    //             images,
+    //         });
+    //     });
+    // };
+ 
+    //获取服务单信息
     getData = () => {
-        const { fuwu, type } = this.state;
-        console.log('fuw', fuwu);
-        WorkService.weixiuDetail(fuwu.id).then(detail => {
-            // console.log('detail', detail);
+        const {fuwu, type} = this.state;
+        // console.log(fuwu);
+        WorkService.serviceDetail(type, fuwu.id).then(item => { 
             this.setState({
-                detail: {
-                    ...detail.entity,
-                    serviceDeskCode: detail.serviceDeskCode,
-                    relationId: detail.relationId,
-                    statusName: detail.statusName,
+                detail:{
+                    ...item.data,
+                    businessId: item.businessId,
+                    statusName: item.statusName
                 },
             });
-            //获取维修单的单据动态
-            WorkService.getOperationRecord(fuwu.id).then(res => {
-                this.setState({
-                    communicates: res,
-                });
+        });
+        WorkService.serviceCommunicates(fuwu.id).then(res => {
+            this.setState({
+                communicates:res,
             });
         });
-
-        //获取维修单附件
-        WorkService.weixiuExtra(fuwu.id).then(images => {
+        WorkService.serviceExtra(fuwu.id).then(images => {
             this.setState({
                 images,
             });
         });
-
     };
+
     click = (handle) => {
         const { fuwu, type, value, star } = this.state;
         if (handle === '回复' && !(value && value.length > 0)) {
@@ -111,8 +134,7 @@ export default class HuiFangDetailPage extends BasePage {
             this.props.navigation.goBack();
         });
     };
-    changeStar = (star) => {
-        console.log(star);
+    changeStar = (star) => { 
         this.setState({ star });
     };
     communicateClick = (i) => {
@@ -142,10 +164,7 @@ export default class HuiFangDetailPage extends BasePage {
 
 
     render() {
-        const { images, detail, communicates } = this.state;
-        console.log(1122, detail);
-
-
+        const { images, detail, communicates } = this.state;   
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>

@@ -131,9 +131,7 @@ export default class FuWuDanListDetailPage extends BasePage {
 
 
     render() {
-        const {images, detail, communicates} = this.state;
-
-
+        const {images, detail, communicates} = this.state; 
         return (
             <CommonView style={{flex: 1, backgroundColor: '#fff', paddingBottom: 10}}>
                 <ScrollView>

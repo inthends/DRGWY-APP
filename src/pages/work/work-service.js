@@ -3,8 +3,7 @@ import api from '../../utils/api';
 export default {
     workData(showLoading) {
         return api.postData('/api/MobileMethod/MGetDeskStatistics', {}, showLoading);
-    },
-
+    }, 
     //房产类别，1获取小区，获取小区时候keyvalue=0，2获取楼栋，4获取楼层，5获取房间
     getPStructs(params) {
         return api.getData('/api/MobileMethod/MGetPStructs', params);
@@ -21,7 +20,7 @@ export default {
         return api.getData('/api/MobileMethod/MGetFilesData', { keyValue });
     },
     //服务单操作
-     serviceHandle(handle, keyValue, content, extra = null) { 
+    serviceHandle(handle, keyValue, content, extra = null) {
         let url = '';
         let params = { keyValue, content };
         if (extra) {
@@ -48,7 +47,8 @@ export default {
         } else if (handle === '完成维修') {
             url = '/api/MobileMethod/MRepairHandleFinish';
         } else if (handle === '完成回访') {
-            url = '/api/MobileMethod/MRepairVisitFinish';
+            // url = '/api/MobileMethod/MRepairVisitFinish';
+            url = '/api/MobileMethod/MVisitFinish';//服务单完成回访
         } else if (handle === '完成检验') {
             url = '/api/MobileMethod/MRepairCheckFinish';
         }
@@ -87,7 +87,7 @@ export default {
         if (type === '3') {
             url = '/api/MobileMethod/MGetUnFinishRepairPageList';
         } else if (type === '6') {
-            url = '/api/MobileMethod/MGetTestAndVisitRepairPageList';
+            url = '/api/MobileMethod/MGetTestRepairPageList';
             type = overdue;
             overdue = null;
         } else if (type === 'fuwu') {
@@ -100,7 +100,12 @@ export default {
                 url = '/api/MobileMethod/MGetUnReplyServiceDeskPageList';
                 type = null;
             }
+        } else if (type === 'visit') {
+            //服务单回访
+            url = '/api/MobileMethod/MGetUnVisitServiceDeskPageList';
+            type = null;
         }
+
         return api.postData(url, { status: type, pageIndex, pageSize: 100, overdue, isOverdue: overdue });
     },
 

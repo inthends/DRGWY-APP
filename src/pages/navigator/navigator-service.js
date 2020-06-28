@@ -1,3 +1,4 @@
+
 import api from '../../utils/api';
 import common from '../../utils/common';
 
@@ -181,5 +182,4 @@ export default {
     billDetailList(billId) {
         return api.postData('/api/MobileMethod/MGetChargeBillDetailList', {billId});
     },
-
 };
