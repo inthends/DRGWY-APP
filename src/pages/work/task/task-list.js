@@ -23,11 +23,9 @@ import ListJianYanHeader from '../../../components/list-jianyan-header';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 
-
 class TaskListPage extends BasePage {
-    static navigationOptions = ({navigation}) => {
-
-        console.log(1, navigation);
+    static navigationOptions = ({navigation}) => { 
+        //console.log(1, navigation);
         return {
             tabBarVisible: false,
             title: navigation.getParam('data') ? navigation.getParam('data').title : '',
@@ -35,6 +33,11 @@ class TaskListPage extends BasePage {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{width: 30, marginLeft: 15}}/>
                 </TouchableOpacity>
+            ),
+            headerRight: (
+                <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
+                    <Icon name='bars' style={{ marginRight: 15 }} color="black" />
+                </TouchableWithoutFeedback>
             ),
         };
     };

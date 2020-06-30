@@ -86,15 +86,14 @@ class EstateWeixiuPage extends BasePage {
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
         const nextSelectBuilding = nextProps.selectBuilding;
-        console.log('selectBuilding', selectBuilding);
-        console.log('nextSelectBuilding', nextSelectBuilding);
+        // console.log('selectBuilding', selectBuilding);
+        // console.log('nextSelectBuilding', nextSelectBuilding);
 
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
             this.setState({selectBuilding: nextProps.selectBuilding}, () => {
                 this.onRefresh();
             });
         }
-
     }
 
 
@@ -124,7 +123,7 @@ class EstateWeixiuPage extends BasePage {
                 refreshing: false,
                 //canLoadMore: true,
             }, () => {
-                console.log(this.state.dataInfo.data);
+                //console.log(this.state.dataInfo.data);
             });
         });
     };
@@ -195,13 +194,11 @@ class EstateWeixiuPage extends BasePage {
         let billStatus;
         switch (title) {
             case '待派单': {
-                billStatus = 1;
-
+                billStatus = 1; 
                 break;
             }
             case '待接单': {
-                billStatus = 2;
-
+                billStatus = 2; 
                 break;
             }
             case '待完成': {
@@ -252,7 +249,6 @@ class EstateWeixiuPage extends BasePage {
     render() {
         const {statistics, dataInfo, ym} = this.state;
         return (
-
 
             <View style={{flex: 1}}>
                 <CommonView style={{flex: 1}}>

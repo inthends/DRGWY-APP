@@ -22,9 +22,8 @@ import CommonView from '../../../components/CommonView';
 
 
 class EstateFuwuPage extends BasePage {
-    static navigationOptions = ({ navigation }) => {
-
-        console.log(1, navigation);
+    static navigationOptions = ({ navigation }) => { 
+        //console.log(1, navigation);
         return {
             tabBarVisible: false,
             title: '服务单',
