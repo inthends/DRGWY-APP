@@ -34,11 +34,11 @@ class TaskListPage extends BasePage {
                     <Icon name='left' style={{width: 30, marginLeft: 15}}/>
                 </TouchableOpacity>
             ),
-            headerRight: (
-                <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
-                    <Icon name='bars' style={{ marginRight: 15 }} color="black" />
-                </TouchableWithoutFeedback>
-            ),
+            // headerRight: (
+            //     <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
+            //         <Icon name='bars' style={{ marginRight: 15 }} color="black" />
+            //     </TouchableWithoutFeedback>
+            // ),
         };
     };
 
@@ -53,7 +53,6 @@ class TaskListPage extends BasePage {
         const overdue = common.getValueFromProps(this.props).overdue;
         const hiddenHeader = common.getValueFromProps(this.props).hiddenHeader;
 
-
         this.state = {
             count: 0,
             showTabbar: true,
@@ -67,7 +66,6 @@ class TaskListPage extends BasePage {
             hiddenHeader,
             refreshing: false,
         };
-
     }
 
     componentDidMount(): void {
@@ -174,8 +172,7 @@ class TaskListPage extends BasePage {
                         }
                         default:
                             console.log(item);
-                            break;
-
+                            break; 
                     }
                 }
 
