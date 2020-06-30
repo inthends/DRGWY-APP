@@ -1,3 +1,4 @@
+//导航里面点击的服务单详情
 import React, { Fragment } from 'react';
 import {
     View,
@@ -48,7 +49,7 @@ export default class EfuwuDetailPage extends BasePage {
         super(props);
         let fuwu = common.getValueFromProps(this.props);
         let type = common.getValueFromProps(this.props, 'type');
-        console.log(fuwu, type, 11)
+        //console.log(fuwu, type, 11)
         this.state = {
             value: '',
             fuwu,
@@ -100,7 +101,7 @@ export default class EfuwuDetailPage extends BasePage {
         WorkService.serviceHandle(handle, fuwu.id, value).then(res => {
             this.props.navigation.goBack();
         }).catch(err => {
-            UDToast.showError(err);   
+            UDToast.showError(err);
         });
     };
 
@@ -159,15 +160,16 @@ export default class EfuwuDetailPage extends BasePage {
                         </TouchableWithoutFeedback>
                     </Flex>
 
-                    {detail.businessCode && (detail.billType === '报修' || detail.billType === '投诉') ? (
+                    {detail.businessCode ? (
                         <TouchableWithoutFeedback>
                             <Flex style={[styles.every]}>
                                 <Text style={styles.left}>关联单：</Text>
                                 <Text onPress={() => {
-                                    if (detail.billType === '报修') {
+                                    if (detail.businessType === 'Repair') {
                                         this.props.navigation.navigate('weixiuD', { data: { id: detail.businessId } });
                                     }
-                                    if (detail.billType === '投诉') {
+                                    else //if (detail.businessType === 'Complaint') 
+                                    {
                                         this.props.navigation.navigate('tousuD', { data: { id: detail.businessId } });
                                     }
                                 }} style={[styles.right, { color: Macro.color_4d8fcc }]}>{detail.businessCode}</Text>
