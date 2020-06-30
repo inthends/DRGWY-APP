@@ -119,7 +119,9 @@ const navigatorNavigator = createStackNavigator({
     feeDetail: FeeDetailPage,
     feeAdd: FeeAddPage,
     fuwuD: EfuwuDetailPage,
-    weixiuD: EweixiuDetailPage,
+
+    weixiuD: EweixiuDetailPage,//服务单页面点击关联单据，跳转到维修单，只能查看
+
     tousuD: EtousuDetailPage,
     e_weixiu: EstateWeixiuPage,
     e_tousu: EstateTousuPage,
@@ -159,12 +161,11 @@ const navigatorNavigator = createStackNavigator({
 navigatorNavigator.navigationOptions = ({navigation}) => ({
     tabBarVisible: navigation.state.index === 0,
 });
+
 const WorkNavigator = createStackNavigator({
     // select: SelectAddressPage,
     // AddWork: AddWorkPage,
-    // Task: TaskListPage,
-
-
+    // Task: TaskListPage, 
     Work: {
         screen: WorkPage,
         navigationOptions: () => ({

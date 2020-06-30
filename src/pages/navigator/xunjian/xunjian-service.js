@@ -1,8 +1,8 @@
 import api from '../../../utils/api';
 
 export default {
-    persons() {
-        return api.getData('/api/MobileMethod/MGetPollingUserList');
+    persons(showLoading=true) {
+        return api.getData('/api/MobileMethod/MGetPollingUserList',showLoading);
     },
 
     xunjianData(userId, showLoading = true) {

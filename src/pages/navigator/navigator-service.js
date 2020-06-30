@@ -94,7 +94,7 @@ export default {
 
         });
     },
-    // //服务单详情
+    //服务单详情
     // serviceDetail(type,keyValue) {
     //     let url = '/api/MobileMethod/MGetServicedeskEntity';
     //     if (billType === '报修') {

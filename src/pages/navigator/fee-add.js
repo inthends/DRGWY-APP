@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import {
     Text,
     StyleSheet,
@@ -13,10 +13,10 @@ import {
 
 } from 'react-native';
 import BasePage from '../base/base';
-import {Flex, Icon, Checkbox, Modal, WhiteSpace, List, DatePicker, Button} from '@ant-design/react-native';
+import { Flex, Icon, Checkbox, Modal, WhiteSpace, List, DatePicker, Button } from '@ant-design/react-native';
 import Macro from '../../utils/macro';
 import ScreenUtil from '../../utils/screen-util';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 // import ListHeader from '../../components/list-header';
 import common from '../../utils/common';
 import LoadImage from '../../components/load-image';
@@ -30,14 +30,14 @@ import MyPopover from '../../components/my-popover';
 const Item = List.Item;
 
 class FeeAddPage extends BasePage {
-    static navigationOptions = ({navigation}) => {
+    static navigationOptions = ({ navigation }) => {
         // console.log(1, navigation);
         return {
             tabBarVisible: false,
             title: '上门收费',
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
             type: null,
@@ -105,16 +105,16 @@ class FeeAddPage extends BasePage {
         });
     };
     save = () => {
-        let {fee} = this.state;
-        console.log(34, fee);
+        let { fee } = this.state;
+        //console.log(34, fee);
         fee = {
             ...fee,
-            beginDate: fee.beginDate.yearMonthDay(),
-            endDate: fee.endDate.yearMonthDay(),
+            beginDate: fee.beginDate == null ? null : fee.beginDate.yearMonthDay(),
+            endDate: fee.endDate == null ? null : fee.endDate.yearMonthDay(),
         };
 
 
-        console.log(12, fee);
+        // console.log(12, fee);
 
         NavigatorService.saveFee(this.state.room.id, [fee]).then(res => {
             UDToast.showError('保存成功');
@@ -132,7 +132,7 @@ class FeeAddPage extends BasePage {
                 UDToast.showError('暂无可加费项目');
                 return;
             }
-            console.log(121, res);
+            //console.log(121, res);
             const items = res[0].children;
             let big;
             if (items.length === 0) {
@@ -145,14 +145,14 @@ class FeeAddPage extends BasePage {
                 big,
                 show: true,
             }, () => {
-                console.log(1, this.state);
+                //console.log(1, this.state);
             });
 
         });
     }
 
     xishuAction = (number) => {
-        const {quantity, price} = this.state.fee;
+        const { quantity, price } = this.state.fee;
         const amount = (parseFloat(number) * parseFloat(quantity) * parseFloat(price)).toFixed(2) + '';
         this.setState({
             fee: {
@@ -163,19 +163,18 @@ class FeeAddPage extends BasePage {
         });
     };
     click = (item) => {
-        NavigatorService.getFeeItemDetail(this.state.room.id, item.key).then(res => {
-
+        NavigatorService.getFeeItemDetail(this.state.room.id, item.key).then(res => { 
             this.setState({
                 small: item,
                 fee: {
                     ...res,
-                    beginDate: (res.beginDate ? new Date(res.beginDate.split(' ')[0]) : null),
-                    endDate: (res.endDate ? new Date(res.endDate.split(' ')[0]) : null),
+                    beginDate: (res.beginDate == null ? null : new Date(res.beginDate.split(' ')[0])),
+                    endDate: (res.endDate == null ? null : new Date(res.endDate.split(' ')[0])),
                     number: res.number + '',
                     amount: res.amount + '',
                 },
             }, () => {
-                console.log(212, this.state);
+                //console.log(212, this.state);
             });
         }).catch(error => {
             this.setState({
@@ -186,24 +185,24 @@ class FeeAddPage extends BasePage {
     };
 
     render() {
-        const {titles, items, big, small, fee} = this.state;
+        const { titles, items, big, small, fee } = this.state;
         const title = small ? small.title : (big ? big.title : null);
         if (!this.state.show) {
-            return <View/>;
+            return <View />;
         }
         return (
-            <CommonView style={{flex: 1}}>
+            <CommonView style={{ flex: 1 }}>
                 <ScrollView>
                     <MyPopover hiddenImage={true}
-                               style={{width: '100%', borderWidth: 1, borderStyle: 'solid', borderColor: '#74BAF1'}}
-                               textStyle={{fontSize: 17.6}} onChange={this.typeChange}
-                               titles={titles} visible={true}/>
+                        style={{ width: '100%', borderWidth: 1, borderStyle: 'solid', borderColor: '#74BAF1' }}
+                        textStyle={{ fontSize: 15 }} onChange={this.typeChange}
+                        titles={titles} visible={true} />
                     <Flex direction={'column'} align={'start'} style={styles.cell}>
                         <Flex wrap={'wrap'} justify={'start'} style={styles.cellContnent}>
                             {items.map((item, index) => (
                                 <TouchableWithoutFeedback key={item.title} onPress={() => this.click(item)}>
                                     <Flex style={index % 2 === 0 ? styles.left : styles.right}>
-                                        <Flex style={{flex: 1}} justify={'center'} align={'center'}>
+                                        <Flex style={{ flex: 1 }} justify={'center'} align={'center'}>
                                             <Text style={styles.content}>{item.title}</Text>
                                         </Flex>
                                     </Flex>
@@ -213,7 +212,7 @@ class FeeAddPage extends BasePage {
                     </Flex>
 
                     {fee && (
-                        <List style={{flex: 1, marginTop: 10, width: '100%'}}>
+                        <List style={{ flex: 1, marginTop: 10, width: '100%' }}>
                             <Item>
                                 <Text style={styles.titleWord}>{title}</Text>
                             </Item>
@@ -224,7 +223,7 @@ class FeeAddPage extends BasePage {
                                 <Text style={styles.word}>单价：</Text>
                             </Item>
                             <Item extra={<TextInput keyboardType="number-pad" onChangeText={this.xishuAction}
-                                                    value={fee.number} placeholder={'请输入系数'} style={styles.input}/>}>
+                                value={fee.number} placeholder={'请输入系数'} style={styles.input} />}>
                                 <Text style={styles.word}>系数：</Text>
                             </Item>
                             <Item extra={<TextInput onChangeText={amount => this.setState({
@@ -233,14 +232,14 @@ class FeeAddPage extends BasePage {
                                     amount,
                                 }
                             })} value={fee.amount}
-                                                    placeholder={'请输入金额'} style={styles.input}/>}>
+                                placeholder={'请输入金额'} style={styles.input} />}>
                                 <Text style={styles.word}>金额：</Text>
                             </Item>
                             <DatePicker
                                 extra={<Text style={styles.aa}>请选择开始时间</Text>}
                                 mode={'date'}
                                 title="选择开始时间"
-                                value={new Date(this.state.fee.beginDate)}
+                                value={this.state.fee.beginDate}
                                 onChange={beginDate => this.setState({
                                     fee: {
                                         ...this.state.fee,
@@ -248,12 +247,8 @@ class FeeAddPage extends BasePage {
                                     },
                                 })}
                                 // format={date}
-                                style={{backgroundColor: 'white', width: 200, borderWidth: 0}}
-
-                            >
-                                <List.Item arrow={'empty'}
-
-                                           style={{borderWidth: 0}}><Text style={styles.word}>开始时间：</Text></List.Item>
+                                style={{ backgroundColor: 'white', width: 200, borderWidth: 0 }}  >
+                                <List.Item arrow={'empty'} style={{ borderWidth: 0 }}><Text style={styles.word}>开始时间：</Text></List.Item>
                             </DatePicker>
                             <DatePicker
                                 extra={<Text style={styles.aa}>请选择结束时间</Text>}
@@ -269,7 +264,7 @@ class FeeAddPage extends BasePage {
                             >
                                 <List.Item arrow={'empty'}
 
-                                           style={{borderWidth: 0}}><Text style={styles.word}>结束时间：</Text></List.Item>
+                                    style={{ borderWidth: 0 }}><Text style={styles.word}>结束时间：</Text></List.Item>
                             </DatePicker>
 
                             <Item extra={<TextInput placeholder={'请输入备注'} onChangeText={memo => this.setState({
@@ -277,14 +272,14 @@ class FeeAddPage extends BasePage {
                                     ...this.state.fee,
                                     memo,
                                 },
-                            })} value={fee.memo} style={styles.input}/>}>
+                            })} value={fee.memo} style={styles.input} />}>
                                 <Text style={styles.word}>备注：</Text>
                             </Item>
                         </List>
                     )}
                 </ScrollView>
                 {fee &&
-                <Button type={'primary'} style={{margin: 20}} onPress={this.save}>保 存</Button>}
+                    <Button type={'primary'} style={{ margin: 20 }} onPress={this.save}>保 存</Button>}
             </CommonView>
 
         );
@@ -361,8 +356,8 @@ const styles = StyleSheet.create({
     },
 });
 
-const mapStateToProps = ({memberReducer}) => {
-    return {userInfo: memberReducer.userInfo};
+const mapStateToProps = ({ memberReducer }) => {
+    return { userInfo: memberReducer.userInfo };
 };
 
 export default connect(mapStateToProps)(FeeAddPage);

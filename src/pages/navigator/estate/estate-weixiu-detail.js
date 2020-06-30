@@ -29,6 +29,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 
 const Item = List.Item;
 
+
 export default class EweixiuDetailPage extends BasePage {
     static navigationOptions = ({navigation}) => {
         return {
@@ -218,8 +219,6 @@ const styles = StyleSheet.create({
     word: {
         color: 'white',
         fontSize: 16,
-
-
     },
 
 });

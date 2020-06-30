@@ -19,6 +19,8 @@ import UDToast from '../../utils/UDToast';
 import common from '../../utils/common';
 import api from '../../utils/api';
 import NavigatorService from '../navigator/navigator-service';
+import XunJianService from '../navigator/xunjian/xunjian-service';
+import HomePage from '../home/home';
 
 class BuildingPage extends BasePage {
     // static navigationOptions = ({navigation}) => {
@@ -55,7 +57,42 @@ class BuildingPage extends BasePage {
 
     }
 
+    update() {
+        XunJianService.persons(false).then(res=>{
+            const array = [this.props.user,...res];
+            const xunjianDatapromises = array.map(item=>{
+                return XunJianService.xunjianData(item.id,false).then(resp=>{
+                    return {
+                        ...item,
+                        xunjianData: resp
+                    }
+                })
+            })
+            Promise.all(xunjianDatapromises).then(r=>{
+                Promise.all(r.map(ii=>XunJianService.xunjianIndexList(ii.id,false).then(res=>{
+                    // {...ii,lineData:res}
+                    return XunJianService.xunjianPointTasks(res.lineId,false).then(rrrr=>{
+                        return {
+                            ...ii,
+                            lineData: {
+                                ...res,
+                                pointData:rrrr
+
+                            }
+                        }
+                    })
+                }))).then(rr=>{
+                    console.log(2233,rr)
+                    // Promise.all(rr.map(iii=>.then(res=>({...iii,pointData:res})))).then(rrrr=>{
+                    //     console.log(2233,rrrr)
+                    // });
+                });
+            })
+        })
+    }
+
     componentDidMount() {
+        this.update();
         if (!common.isIOS()) {
             NativeModules.LHNToast.getVersionCode((version) => {
 
@@ -268,9 +305,14 @@ const styles = StyleSheet.create({
         flex: 1,
     },
 });
-const mapStateToProps = ({buildingReducer}) => {
+const mapStateToProps = ({buildingReducer,memberReducer}) => {
+    const user = memberReducer.user || {};
     return {
-        selectBuilding: buildingReducer.selectBuilding,
+        selectBuilding: buildingReducer.selectBuilding || {},
+        user: {
+            ...user,
+            id: user.userId,
+        },
     };
 };
 const mapDispatchToProps = (dispatch) => {
