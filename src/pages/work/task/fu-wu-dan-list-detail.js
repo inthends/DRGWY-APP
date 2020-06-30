@@ -131,9 +131,7 @@ export default class FuWuDanListDetailPage extends BasePage {
 
 
     render() {
-        const {images, detail, communicates} = this.state;
-
-
+        const {images, detail, communicates} = this.state; 
         return (
             <CommonView style={{flex: 1, backgroundColor: '#fff', paddingBottom: 10}}>
                 <ScrollView>
@@ -157,54 +155,52 @@ export default class FuWuDanListDetailPage extends BasePage {
                             </TouchableWithoutFeedback>
                         </Flex>
 
-                    {detail.businessCode ? (
+                     {/* 服务单关联单据，不允许操作 neo 2020年6月26日10:24:45 */}
+                     {/* {detail.businessCode ? (
                         <TouchableWithoutFeedback>
                             <Flex style={[styles.every]}>
                                 <Text style={styles.left}>关联单：</Text>
-                                <Text 
-                                
-                                //服务单关联单据，不允许操作 neo 2020年6月26日10:24:45
-                                // onPress={()=>{
-                                //     let item = {
-                                //         ...detail,
-                                //         id: detail.businessId
-                                //     };
-                                //     switch (detail.statusName) {
-                                //         case '待派单': {
-                                //             this.props.navigation.navigate('paidan', {data: item});
-                                //             break;
-                                //         }
-                                //         case '待接单': {
-                                //             this.props.navigation.navigate('jiedan', {data: item});
-                                //             break;
-                                //         }
-                                //         case '待开工': {
-                                //             this.props.navigation.navigate('kaigong', {data: item});
-                                //             break;
-                                //         }
-                                //         case '待完成': {
-                                //             this.props.navigation.navigate('wancheng', {data: item});
-                                //             break;
-                                //         }
-                                //         case '待检验': {
-                                //             this.props.navigation.navigate('jianyan', {data: item});
-                                //             break;
-                                //         }
-                                //         case '待回访': {
-                                //             this.props.navigation.navigate('huifang', {data: item});
-                                //             break;
-                                //         }
-                                //         default:
-                                //             console.log(item);
-                                //             break;
-
-                                //     }
-                                // }} 
+                                <Text   
+                                onPress={()=>{
+                                    let item = {
+                                        ...detail,
+                                        id: detail.businessId
+                                    };
+                                    switch (detail.statusName) {
+                                        case '待派单': {
+                                            this.props.navigation.navigate('paidan', {data: item});
+                                            break;
+                                        }
+                                        case '待接单': {
+                                            this.props.navigation.navigate('jiedan', {data: item});
+                                            break;
+                                        }
+                                        case '待开工': {
+                                            this.props.navigation.navigate('kaigong', {data: item});
+                                            break;
+                                        }
+                                        case '待完成': {
+                                            this.props.navigation.navigate('wancheng', {data: item});
+                                            break;
+                                        }
+                                        case '待检验': {
+                                            this.props.navigation.navigate('jianyan', {data: item});
+                                            break;
+                                        }
+                                        case '待回访': {
+                                            this.props.navigation.navigate('huifang', {data: item});
+                                            break;
+                                        }
+                                        default: 
+                                            break; 
+                                    }
+                                }} 
                                 
                                 style={[styles.right,{color:Macro.color_4d8fcc}]}>{detail.businessCode}</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
-                    ):null}
+                    ):null} */}
+
                     <DashLine/>
                     <View style={{
                         margin: 15,

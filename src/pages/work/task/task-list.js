@@ -125,7 +125,7 @@ class TaskListPage extends BasePage {
     };
     loadMore = () => {
         const {data, total, pageIndex} = this.state.dataInfo;
-        console.log('loadmore');
+        //console.log('loadmore');
         if (this.canAction && data.length < total) {
             this.setState({
                 refreshing: true,
