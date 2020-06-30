@@ -1,4 +1,4 @@
-import {Platform, Linking, Alert} from 'react-native';
+import { Platform, Linking, Alert } from 'react-native';
 import forge from 'node-forge';
 import UDToast from './UDToast';
 
@@ -144,7 +144,7 @@ export default {
             .then(supported => {
                 if (!supported) {
                     return Alert.alert('提示', `您的设备不支持该功能，请手动拨打 ${phone}`, [
-                        {text: '确定'},
+                        { text: '确定' },
                     ]);
                 }
                 return Linking.openURL(url);
@@ -214,7 +214,7 @@ export default {
         if (isNaN(index) || index < -1 || index > 4) {
             return '';
         }
-        return ['', '待处理', '待完成', '待归档', '已归档'][index];
+        return ['', '待处理', '待完成', '待回访', '待检验', '已回访', '已检验', '已归档'][index];
     },
     getMonthFirstDay(ym) {
 

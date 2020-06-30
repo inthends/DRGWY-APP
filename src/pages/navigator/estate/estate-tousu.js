@@ -190,13 +190,11 @@ class EstateTousuPage extends BasePage {
         let billStatus;
         switch (title) {
             case '待处理': {
-                billStatus = 1;
-
+                billStatus = 1; 
                 break;
             }
-            case '处理中': {
-                billStatus = 2;
-
+            case '待完成': {
+                billStatus = 2; 
                 break;
             }
             case '待回访': {
@@ -207,7 +205,7 @@ class EstateTousuPage extends BasePage {
                 billStatus = 4;
                 break;
             }
-            case '已归档': {
+            case '已审核': {
                 billStatus = 5;
                 break;
             }
@@ -246,11 +244,9 @@ class EstateTousuPage extends BasePage {
     render() {
         const {statistics, dataInfo, ym} = this.state;
         return (
-
-
             <View style={{flex: 1}}>
                 <CommonView style={{flex: 1}}>
-                    <ScrollTitle onChange={this.statusChange} titles={['全部', '待处理', '处理中', '待回访', '待审核', '已归档']}/>
+                    <ScrollTitle onChange={this.statusChange} titles={['全部', '待处理', '待完成', '待回访', '待审核', '已审核']}/>
                     {/*<Tabs tabs={tabs2} initialPage={1} tabBarPosition="top">*/}
                     {/*    {renderContent}*/}
                     {/*</Tabs>*/}

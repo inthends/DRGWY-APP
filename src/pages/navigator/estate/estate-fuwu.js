@@ -56,7 +56,7 @@ class EstateFuwuPage extends BasePage {
                 data: [],
             },
             refreshing: false,
-            ym: common.getYM('2017-01'),
+            ym: common.getYM('2020-01'),
             billType: '全部',
             billStatus: -1,
             canLoadMore: true,
@@ -258,7 +258,8 @@ class EstateFuwuPage extends BasePage {
                     {/*    {renderContent}*/}
                     {/*</Tabs>*/}
                     <Flex justify={'between'} style={{paddingLeft:15,marginTop: 15, paddingRight: 15, height: 30}}>
-                        <MyPopover onChange={this.statusChange} titles={['全部', '待处理', '待完成', '待归档', '已归档']}
+                        <MyPopover onChange={this.statusChange} 
+                        titles={['全部', '待处理', '待完成', '待回访','待检验', '已回访','已检验','已归档']}
                                    visible={true}/>
                         <MyPopover onChange={this.timeChange} titles={ym} visible={true}/>
                     </Flex>
