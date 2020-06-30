@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import {
     View,
     Text,
@@ -8,10 +8,10 @@ import {
     FlatList,
 } from 'react-native';
 import BasePage from '../../base/base';
-import {Button, Flex, Icon, List, WhiteSpace} from '@ant-design/react-native';
+import { Button, Flex, Icon, List, WhiteSpace } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import common from '../../../utils/common';
 import LoadImage from '../../../components/load-image';
 import ScrollTitle from '../../../components/scroll-title';
@@ -22,7 +22,7 @@ import CommonView from '../../../components/CommonView';
 
 
 class EstateFuwuPage extends BasePage {
-    static navigationOptions = ({navigation}) => {
+    static navigationOptions = ({ navigation }) => {
 
         console.log(1, navigation);
         return {
@@ -30,12 +30,12 @@ class EstateFuwuPage extends BasePage {
             title: '服务单',
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
             headerRight: (
                 <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
-                    <Icon name='bars' style={{marginRight: 15}} color="black"/>
+                    <Icon name='bars' style={{ marginRight: 15 }} color="black" />
                 </TouchableWithoutFeedback>
             ),
         };
@@ -59,7 +59,7 @@ class EstateFuwuPage extends BasePage {
             ym: common.getYM('2020-01'),
             billType: '全部',
             billStatus: -1,
-            canLoadMore: true,
+            //canLoadMore: true,
             time: common.getCurrentYearAndMonth(),
             selectBuilding: this.props.selectBuilding,
         };
@@ -74,7 +74,6 @@ class EstateFuwuPage extends BasePage {
                 this.onRefresh();
             },
         );
-
     }
 
     componentWillUnmount(): void {
@@ -88,11 +87,10 @@ class EstateFuwuPage extends BasePage {
         console.log('nextSelectBuilding', nextSelectBuilding);
 
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
-            this.setState({selectBuilding: nextProps.selectBuilding}, () => {
+            this.setState({ selectBuilding: nextProps.selectBuilding }, () => {
                 this.onRefresh();
             });
         }
-
     }
 
 
@@ -100,7 +98,7 @@ class EstateFuwuPage extends BasePage {
         /*
         pageIndex, BillStatus, TreeType, organizeId, BillType, StartTime, EndTime
          */
-        const {billStatus, selectBuilding, billType, time} = this.state;
+        const { billStatus, selectBuilding, billType, time } = this.state;
         let treeType;
         let organizeId;
         if (selectBuilding) {
@@ -121,55 +119,55 @@ class EstateFuwuPage extends BasePage {
             this.setState({
                 dataInfo: dataInfo,
                 refreshing: false,
-                canLoadMore: true,
+                //canLoadMore: true,
             }, () => {
-                console.log(this.state.dataInfo.data);
+                //console.log(this.state.dataInfo.data);
             });
         });
     };
-
 
     onRefresh = () => {
         this.setState({
             refreshing: true,
             pageIndex: 1,
         }, () => {
-            console.log('state', this.state);
+            //console.log('state', this.state);
             this.getList();
         });
     };
+
     loadMore = () => {
-        const {data, total, pageIndex} = this.state.dataInfo;
-        console.log('loadmore', this.state.dataInfo);
-        if (!this.state.canLoadMore) {
-            return;
-        }
+        const { data, total, pageIndex } = this.state.dataInfo;
+        // console.log('loadmore', this.state.dataInfo);
+        // if (!this.state.canLoadMore) {
+        //     return;
+        // }
         if (this.canAction && data.length < total) {
             this.setState({
                 refreshing: true,
                 pageIndex: pageIndex + 1,
-                canLoadMore: false,
+                // canLoadMore: false,
             }, () => {
                 this.getList();
             });
         }
     };
 
-    _renderItem = ({item, index}) => {
+    _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.props.navigation.push('fuwuD', {data: item, type: this.state.billType});
+                this.props.navigation.push('fuwuD', { data: item, type: this.state.billType });
             }}>
                 <Flex direction='column' align={'start'}
-                      style={[styles.card, index === 0 ? styles.blue : styles.orange]}>
-                    <Flex justify='between' style={{width: '100%'}}>
+                    style={[styles.card, index === 0 ? styles.blue : styles.orange]}>
+                    <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.billCode}</Text>
                         <Text style={styles.title2}>{item.billType}</Text>
                     </Flex>
-                    <Flex style={styles.line}/>
+                    <Flex style={styles.line} />
                     <Flex align={'start'} direction={'column'}>
                         <Flex justify='between'
-                              style={{width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20}}>
+                            style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>{item.address} </Text>
                             <Text>{item.statusName}</Text>
                         </Flex>
@@ -181,10 +179,10 @@ class EstateFuwuPage extends BasePage {
                         }}>{item.contents}</Text>
 
                         <Flex justify='between'
-                              style={{width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20}}>
+                            style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>{item.contactName} {item.contactPhone}</Text>
                             <TouchableWithoutFeedback onPress={() => common.call(item.contactPhone)}>
-                                <Flex><LoadImage style={{width: 15, height: 15}}/></Flex>
+                                <Flex><LoadImage style={{ width: 15, height: 15 }} /></Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
                     </Flex>
@@ -198,20 +196,30 @@ class EstateFuwuPage extends BasePage {
         switch (title) {
             case '待处理': {
                 billStatus = 1;
-
                 break;
             }
             case '待完成': {
                 billStatus = 2;
-
                 break;
             }
-            case '待归档': {
+            case '待回访': {
                 billStatus = 3;
                 break;
             }
-            case '已归档': {
+            case '待检验': {
                 billStatus = 4;
+                break;
+            }
+            case '已回访': {
+                billStatus = 5;
+                break;
+            }
+            case '已检验': {
+                billStatus = 6;
+                break;
+            }
+            case '已归档': {
+                billStatus = 7;
                 break;
             }
             default: {
@@ -247,21 +255,21 @@ class EstateFuwuPage extends BasePage {
 
 
     render() {
-        const {statistics, dataInfo, ym} = this.state;
+        const { statistics, dataInfo, ym } = this.state;
         return (
 
 
-            <View style={{flex: 1}}>
-                <CommonView style={{flex: 1}}>
-                    <ScrollTitle onChange={this.billType} titles={['全部', '报修', '投诉', '建议', '咨询']}/>
+            <View style={{ flex: 1 }}>
+                <CommonView style={{ flex: 1 }}>
+                    <ScrollTitle onChange={this.billType} titles={['全部', '报修', '投诉', '建议', '咨询']} />
                     {/*<Tabs tabs={tabs2} initialPage={1} tabBarPosition="top">*/}
                     {/*    {renderContent}*/}
                     {/*</Tabs>*/}
-                    <Flex justify={'between'} style={{paddingLeft:15,marginTop: 15, paddingRight: 15, height: 30}}>
-                        <MyPopover onChange={this.statusChange} 
-                        titles={['全部', '待处理', '待完成', '待回访','待检验', '已回访','已检验','已归档']}
-                                   visible={true}/>
-                        <MyPopover onChange={this.timeChange} titles={ym} visible={true}/>
+                    <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
+                        <MyPopover onChange={this.statusChange}
+                            titles={['全部', '待处理', '待完成', '待回访', '待检验', '已回访', '已检验', '已归档']}
+                            visible={true} />
+                        <MyPopover onChange={this.timeChange} titles={ym} visible={true} />
                     </Flex>
 
                     <FlatList
@@ -270,15 +278,15 @@ class EstateFuwuPage extends BasePage {
                         renderItem={this._renderItem}
                         style={styles.list}
                         keyExtractor={(item, index) => item.id}
-                        // refreshing={this.state.refreshing}
-                        // onRefresh={() => this.onRefresh()}
+                        //refreshing={this.state.refreshing}
+                        //onRefresh={() => this.onRefresh()}
                         onEndReached={() => this.loadMore()}
-                        onEndReachedThreshold={0}
-                        onScrollBeginDrag={() => this.canAction = true}
-                        onScrollEndDrag={() => this.canAction = false}
+                        onEndReachedThreshold={0.1}
+                        // onScrollBeginDrag={() => this.canAction = true}
+                        // onScrollEndDrag={() => this.canAction = false}
                         onMomentumScrollBegin={() => this.canAction = true}
                         onMomentumScrollEnd={() => this.canAction = false}
-                        ListEmptyComponent={<NoDataView/>}
+                        ListEmptyComponent={<NoDataView />}
                     />
                 </CommonView>
             </View>
@@ -359,7 +367,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         backgroundColor: 'white',
         shadowColor: '#00000033',
-        shadowOffset: {h: 10, w: 10},
+        shadowOffset: { h: 10, w: 10 },
         shadowRadius: 5,
         shadowOpacity: 0.8,
     },
@@ -373,7 +381,7 @@ const styles = StyleSheet.create({
     },
 
 });
-const mapStateToProps = ({buildingReducer}) => {
+const mapStateToProps = ({ buildingReducer }) => {
     return {
         selectBuilding: buildingReducer.selectBuilding,
     };

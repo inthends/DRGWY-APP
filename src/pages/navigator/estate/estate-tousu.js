@@ -57,9 +57,9 @@ class EstateTousuPage extends BasePage {
                 data: [],
             },
             refreshing: false,
-            ym: common.getYM('2017-01'),
+            ym: common.getYM('2020-01'),
             billStatus: -1,
-            canLoadMore: true,
+            //canLoadMore: true,
             time: common.getCurrentYearAndMonth(),
             selectBuilding: this.props.selectBuilding,
         };
@@ -83,8 +83,8 @@ class EstateTousuPage extends BasePage {
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
         const nextSelectBuilding = nextProps.selectBuilding;
-        console.log('selectBuilding', selectBuilding);
-        console.log('nextSelectBuilding', nextSelectBuilding);
+        // console.log('selectBuilding', selectBuilding);
+        // console.log('nextSelectBuilding', nextSelectBuilding);
 
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
             this.setState({selectBuilding: nextProps.selectBuilding}, () => {
@@ -119,7 +119,7 @@ class EstateTousuPage extends BasePage {
             this.setState({
                 dataInfo: dataInfo,
                 refreshing: false,
-                canLoadMore: true,
+                //canLoadMore: true,
             }, () => {
                 console.log(this.state.dataInfo.data);
             });
@@ -132,21 +132,22 @@ class EstateTousuPage extends BasePage {
             refreshing: true,
             pageIndex: 1,
         }, () => {
-            console.log('state', this.state);
+            //console.log('state', this.state);
             this.getList();
         });
     };
+
     loadMore = () => {
         const {data, total, pageIndex} = this.state.dataInfo;
-        console.log('loadmore', this.state.dataInfo);
-        if (!this.state.canLoadMore) {
-            return;
-        }
+        //console.log('loadmore', this.state.dataInfo);
+        // if (!this.state.canLoadMore) {
+        //     return;
+        // }
         if (this.canAction && data.length < total) {
             this.setState({
                 refreshing: true,
                 pageIndex: pageIndex + 1,
-                canLoadMore: false,
+                //canLoadMore: false,
             }, () => {
                 this.getList();
             });
@@ -264,9 +265,9 @@ class EstateTousuPage extends BasePage {
                         // refreshing={this.state.refreshing}
                         // onRefresh={() => this.onRefresh()}
                         onEndReached={() => this.loadMore()}
-                        onEndReachedThreshold={0}
-                        onScrollBeginDrag={() => this.canAction = true}
-                        onScrollEndDrag={() => this.canAction = false}
+                        onEndReachedThreshold={0.1}
+                        // onScrollBeginDrag={() => this.canAction = true}
+                        // onScrollEndDrag={() => this.canAction = false}
                         onMomentumScrollBegin={() => this.canAction = true}
                         onMomentumScrollEnd={() => this.canAction = false}
                         ListEmptyComponent={<NoDataView/>}

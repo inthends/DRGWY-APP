@@ -209,6 +209,7 @@ export default {
         };
 
     },
+    //此方法已废弃
     getServiceStatus(i) {
         let index = parseInt(i);
         if (isNaN(index) || index < -1 || index > 4) {

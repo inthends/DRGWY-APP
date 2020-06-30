@@ -59,9 +59,9 @@ class EstateWeixiuPage extends BasePage {
                 data: [],
             },
             refreshing: false,
-            ym: common.getYM('2017-01'),
+            ym: common.getYM('2020-01'),
             billStatus: -1,
-            canLoadMore: true,
+            //canLoadMore: true,
             time: common.getCurrentYearAndMonth(),
             selectBuilding: this.props.selectBuilding,
             repairArea: '',
@@ -122,7 +122,7 @@ class EstateWeixiuPage extends BasePage {
             this.setState({
                 dataInfo: dataInfo,
                 refreshing: false,
-                canLoadMore: true,
+                //canLoadMore: true,
             }, () => {
                 console.log(this.state.dataInfo.data);
             });
@@ -139,17 +139,18 @@ class EstateWeixiuPage extends BasePage {
             this.getList();
         });
     };
+
     loadMore = () => {
         const {data, total, pageIndex} = this.state.dataInfo;
-        console.log('loadmore', this.state.dataInfo);
-        if (!this.state.canLoadMore) {
-            return;
-        }
+        //console.log('loadmore', this.state.dataInfo);
+        // if (!this.state.canLoadMore) {
+        //     return;
+        // }
         if (this.canAction && data.length < total) {
             this.setState({
                 refreshing: true,
                 pageIndex: pageIndex + 1,
-                canLoadMore: false,
+                //canLoadMore: false,
             }, () => {
                 this.getList();
             });
@@ -274,9 +275,9 @@ class EstateWeixiuPage extends BasePage {
                         // refreshing={this.state.refreshing}
                         // onRefresh={() => this.onRefresh()}
                         onEndReached={() => this.loadMore()}
-                        onEndReachedThreshold={0}
-                        onScrollBeginDrag={() => this.canAction = true}
-                        onScrollEndDrag={() => this.canAction = false}
+                        onEndReachedThreshold={0.1}
+                        // onScrollBeginDrag={() => this.canAction = true}
+                        // onScrollEndDrag={() => this.canAction = false}
                         onMomentumScrollBegin={() => this.canAction = true}
                         onMomentumScrollEnd={() => this.canAction = false}
                         ListEmptyComponent={<NoDataView/>}
