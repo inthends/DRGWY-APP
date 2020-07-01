@@ -19,10 +19,11 @@ import common from '../../utils/common';
 import LoadImage from '../../components/load-image';
 import TwoChange from '../../components/two-change';
 import NavigatorService from './navigator-service';
+import MyPopover from '../../components/my-popover';
 import UDToast from '../../utils/UDToast';
 // import QRCode from 'react-native-qrcode-svg';
 import CommonView from '../../components/CommonView';
-import { upgrade } from 'rn-app-upgrade';
+// import { upgrade } from 'rn-app-upgrade';
 
 
 class FeeDetailPage extends BasePage {
@@ -67,7 +68,7 @@ class FeeDetailPage extends BasePage {
         });
         // let room = common.getValueFromProps(this.props) || {id:'FY-XHF-01-0101'};
         let room = common.getValueFromProps(this.props);
-        console.log('room123', room);
+        //console.log('room123', room);
         this.state = {
             room,
             pageIndex: 1,
@@ -76,12 +77,15 @@ class FeeDetailPage extends BasePage {
             },
             type: null,
             isShow: true,
-            tbout_trade_no: null,
+            out_trade_no: null,
             visible: false,
             code: '',
             price: '0.00',
             needPrint: false,
             printAgain: false,
+            isML: false,
+            mlType: '抹去角',
+            mlScale: '四舍五入'
         };
     }
 
@@ -235,7 +239,6 @@ class FeeDetailPage extends BasePage {
                     username: this.props.userInfo && this.props.userInfo.username,
                 });
             });
-
         });
     };
 
@@ -265,12 +268,14 @@ class FeeDetailPage extends BasePage {
     };
 
     changeItem = item => {
-        const { type } = this.state;
+
+        const { isML, mlType, mlScale, type } = this.state;
 
         if (type === '已收') {
             this.props.navigation.push('charge', { data: item });
 
         } else {
+
             let data = this.state.dataInfo.data;
             data = data.map(it => {
                 if (it.id === item.id) {
@@ -278,18 +283,45 @@ class FeeDetailPage extends BasePage {
                 }
                 return it;
             });
-            let price = data.filter(item => item.select === true).reduce((a, b) => a + b.amount, 0);
-            price = price.toFixed(2);
+
+            // price = price.toFixed(2);
             this.setState({
                 dataInfo: {
                     ...this.state.dataInfo,
                     data,
-                },
-                price,
+                }
+                //price,
+            });
+
+            const items = data.filter(item => item.select === true);
+            if (items.length != 0) {
+                let price = items.filter(item => item.select === true).reduce((a, b) => a + b.amount, 0);
+                //从后台计算抹零总金额 neo 2020年7月1日23:00:52
+                let ids = JSON.stringify((items.map(item => item.id)));
+                NavigatorService.CalFee(isML, mlType, mlScale, price, ids).then(res => {
+                    this.setState({ price: res });
+                });
+            } else {
+                this.setState({ price: 0.00 });
+            }
+        }
+    };
+
+
+    //抹零计算
+    mlCal = (isML, mlType, mlScale) => {
+        const items = this.state.dataInfo.data.filter(item => item.select === true);
+        if (items.length != 0) {
+            let price = items.filter(item => item.select === true).reduce((a, b) => a + b.amount, 0);
+            //从后台计算抹零总金额 neo 2020年7月1日23:00:52
+            let ids = JSON.stringify((items.map(item => item.id)));
+            NavigatorService.CalFee(isML, mlType, mlScale, price, ids).then(res => {
+                this.setState({ price: res });
             });
         }
-
-
+        else {
+            this.setState({ price: 0.00 });
+        }
     };
 
     onClose = () => {
@@ -414,7 +446,7 @@ class FeeDetailPage extends BasePage {
                                                 paddingLeft: 10,
                                                 paddingTop: 10,
                                             }}>
-                                                {item.beginDate + '至' + item.endDate}</Text> : null 
+                                                {item.beginDate + '至' + item.endDate}</Text> : null
                                     }
 
                                 </Flex>
@@ -424,6 +456,36 @@ class FeeDetailPage extends BasePage {
                 </ScrollView>
                 {type === '已收' || dataInfo.data.length === 0 ? null : (
                     <Flex style={{ marginBottom: 30 }} direction={'column'}>
+
+                        <Flex justify={'between'} >
+                            <Checkbox
+                                defaultChecked={false}
+                                onChange={(e) => {
+                                    this.setState({ isML: e.target.checked });
+                                    //算抹零金额
+                                    this.mlCal(e.target.checked, this.state.mlType, this.state.mlScale);
+                                }}
+                            ><Text style={{ paddingTop: 3, paddingLeft: 3 }}>抹零</Text></Checkbox>
+
+
+                            <MyPopover
+                                onChange={(title) => {
+                                    this.setState({ mlType: title });
+                                    this.mlCal(this.state.isML, title, this.state.mlScale);
+                                }}
+                                titles={['抹去角', '抹去分',]}
+                                visible={true} />
+
+                            <MyPopover
+                                onChange={(title) => {
+                                    this.setState({ mlScale: title });
+                                    this.mlCal(this.state.isML, this.state.mlType, title, title);
+                                }}
+                                titles={['四舍五入', '直接舍去', '有数进一']}
+                                visible={true} />
+
+                        </Flex>
+
                         <Flex align={'center'}>
                             <Text style={{ paddingLeft: 10, fontSize: 20 }}>合计：</Text>
                             <Text
@@ -456,7 +518,8 @@ class FeeDetailPage extends BasePage {
                             </TouchableWithoutFeedback>
                         </Flex>
                     </Flex>
-                )}
+                )
+                }
 
                 <Modal
                     transparent
@@ -478,7 +541,7 @@ class FeeDetailPage extends BasePage {
                     {/*    取消*/}
                     {/*</Button>*/}
                 </Modal>
-            </CommonView>
+            </CommonView >
 
         );
     }

@@ -98,7 +98,8 @@ class FeeChargeDetail extends BasePage {
                             </Flex>
                         ))}
                         <WhiteSpace/>
-                        <WhiteSpace/>
+                        <WhiteSpace/> 
+                        <WhiteSpace/>     
                         <Flex justify={'center'}>
                             <Text style={{
                                 fontSize: 20,

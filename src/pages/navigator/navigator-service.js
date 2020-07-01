@@ -181,4 +181,8 @@ export default {
     billDetailList(billId) {
         return api.postData('/api/MobileMethod/MGetChargeBillDetailList', {billId});
     },
+
+    CalFee(isML,mlType,mlScale,price,ids) {
+        return api.postData('/api/MobileMethod/CalFee', {isML,mlType,mlScale,price,ids},false);
+    },
 };

@@ -62,7 +62,7 @@ export default class MyPopover extends Component {
                 <Popover
                     onRequestClose={() => this.closePopover()}
                     fromView={this.touchable}
-                    placement={'bottom'}
+                    placement={'auto'}
                     isVisible={this.state.isVisible}>
                     <ScrollView style={{maxHeight: 400}}>
                         {titles.map((item, index) => (

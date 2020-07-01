@@ -30,6 +30,7 @@ export default class TwoChange extends Component {
         }
     };
 
+    //按户显示费用
     showAllFee = (e) => {
         this.setState({ index: this.state.index, isShow: e.target.checked });
         if (this.props.onChange) {
