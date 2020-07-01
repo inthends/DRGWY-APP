@@ -44,19 +44,19 @@ export default {
         //     url = '/api/MobileMethod/MGetComplaintPageList';
         // }
 
-
         return api.postData('/api/MobileMethod/MGetServiceDeskPageList', {
             pageIndex,
             pageSize: 10,
             billStatus,
             status: billStatus,
-            treeType,
+            //treeType,
             organizeId,
             billType,
             startTime,
             endTime,
         });
     },
+
     weixiuList(pageIndex, billStatus, treeType, organizeId, startTime, endTime, repairArea) {
         /*
         {:,TreeType:,organizeId:BillType:,StartTime:,EndTime:,}
@@ -68,31 +68,30 @@ export default {
         //     url = '/api/MobileMethod/MGetComplaintPageList';
         // }
 
-        return api.postData('/api/MobileMethod/MGetRepairPageList', {
+        return api.postData('/api/MobileMethod/MGetRepairPageListForNavigator', {
             pageIndex,
             pageSize: 10,
-            billStatus,
+            //billStatus,
             status: billStatus,
-            treeType,
+            //treeType,
             organizeId,
             startTime,
             endTime,
-            repairArea,
-
+            repairArea
         });
     },
+
     tousuList(pageIndex, billStatus, treeType, organizeId, billType, startTime, endTime) {
         return api.postData('/api/MobileMethod/MGetComplaintPageList', {
             pageIndex,
             pageSize: 10,
-            billStatus,
+            //billStatus,
             status: billStatus,
-            treeType,
+            //treeType,
             organizeId,
             billType,
             startTime,
-            endTime,
-
+            endTime
         });
     },
     //服务单详情

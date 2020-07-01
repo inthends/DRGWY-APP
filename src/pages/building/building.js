@@ -1,14 +1,14 @@
-import React, {Fragment} from 'react';
-import {View, StyleSheet, FlatList, NativeModules, Alert, Linking} from 'react-native';
+import React, { Fragment } from 'react';
+import { View, StyleSheet, FlatList, NativeModules, Alert, Linking } from 'react-native';
 import BasePage from '../base/base';
 import BuildingHeader from '../../components/building/building-header';
 import BuildingCell from '../../components/building/build-cell';
 import Macro from '../../utils/macro';
 import BuildingService from './building_service';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import NoDataView from '../../components/no-data-view';
 import CommonView from '../../components/CommonView';
-import {saveUser} from '../../utils/store/actions/actions';
+import { saveUser } from '../../utils/store/actions/actions';
 import JPush from 'jpush-react-native';
 import {
     upgrade,
@@ -118,7 +118,7 @@ class BuildingPage extends BasePage {
                                     },
                                 },
                             ],
-                            {cancelable: false},
+                            { cancelable: false },
                         );
 
                     } else {
@@ -182,7 +182,6 @@ class BuildingPage extends BasePage {
         // );
     }
 
-
     componentWillUnmount(): void {
         // this.viewDidAppear.remove();
     }
@@ -190,7 +189,7 @@ class BuildingPage extends BasePage {
     getInitData = () => {
         BuildingService.getStatisticsTotal(this.selectBuilding.key).then(res => {
             if (res && res.length > 0) {
-                this.setState({statistics: res[0]});
+                this.setState({ statistics: res[0] });
             }
         });
     };
@@ -227,9 +226,8 @@ class BuildingPage extends BasePage {
         });
     };
     loadMore = () => {
-        const {data, total, pageIndex} = this.state.dataInfo;
-        console.log('loadmore', this.canAction);
-
+        const { data, total, pageIndex } = this.state.dataInfo;
+        //console.log('loadmore', this.canAction);
         if (!this.canAction && data.length < total) {
             // if (data.length < total) {
             this.canAction = true;
@@ -260,18 +258,17 @@ class BuildingPage extends BasePage {
 
 
     render() {
-        const {statistics, dataInfo} = this.state;
+        const { statistics, dataInfo } = this.state;
         return (
             <View style={styles.all}>
-                <CommonView style={{flex: 1}}>
+                <CommonView style={{ flex: 1 }}>
                     <View style={styles.content}>
                         <BuildingHeader title={this.selectBuilding.title} statistics={statistics}
-                                        openDrawer={this.openDrawer} {...this.props}/>
+                            openDrawer={this.openDrawer} {...this.props} />
                         <FlatList
                             data={dataInfo.data}
                             // ListHeaderComponent={}
-                            renderItem={({item}) => <BuildingCell nextRouteName='Buildings' {...this.props}
-                                                                  item={item}/>}
+                            renderItem={({ item }) => <BuildingCell nextRouteName='Buildings' {...this.props} item={item} />}
                             style={styles.list}
                             keyExtractor={(item, index) => item.id}
                             refreshing={this.state.refreshing}
@@ -279,7 +276,7 @@ class BuildingPage extends BasePage {
                             onEndReached={() => this.loadMore()}
                             onEndReachedThreshold={0.1}
                             onMomentumScrollBegin={() => this.canAction = false}
-                            ListEmptyComponent={<NoDataView/>}
+                            ListEmptyComponent={<NoDataView />}
                         />
                     </View>
 
@@ -305,8 +302,10 @@ const styles = StyleSheet.create({
         flex: 1,
     },
 });
+
 const mapStateToProps = ({buildingReducer,memberReducer}) => {
     const user = memberReducer.user || {};
+
     return {
         selectBuilding: buildingReducer.selectBuilding || {},
         user: {

@@ -106,7 +106,7 @@ export default {
             type = null;
         }
 
-        return api.postData(url, { status: type, pageIndex, pageSize: 100, overdue, isOverdue: overdue });
+        return api.postData(url, { status: type, isOverdue: overdue , pageIndex, pageSize: 100});
     },
 
     paidanPersons(organizeId, keyword = null, type = '员工') {
