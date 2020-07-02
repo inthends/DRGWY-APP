@@ -98,19 +98,15 @@ class FeeChargeDetail extends BasePage {
                             </Flex>
                         ))}
                         <WhiteSpace/>
-                        <WhiteSpace/> 
                         <WhiteSpace/>     
                         <Flex justify={'center'}>
                             <Text style={{
                                 fontSize: 20,
                             }}>合计：{room.amount}</Text>
-                        </Flex>
-
+                        </Flex> 
                     </ScrollView>
-                </CommonView>
-
-            </View>
-
+                </CommonView> 
+            </View> 
 
         );
     }

@@ -85,7 +85,8 @@ class FeeDetailPage extends BasePage {
             printAgain: false,
             isML: false,
             mlType: '抹去角',
-            mlScale: '四舍五入'
+            mlScale: '四舍五入',
+            mlAmount: 0
         };
     }
 
@@ -142,12 +143,13 @@ class FeeDetailPage extends BasePage {
             UDToast.showError('请选择');
         } else {
             let ids = JSON.stringify((items.map(item => item.id)));
+            const { isML, mlAmount } = this.state;
             switch (title) {
                 case '刷卡': {
                     if (common.isIOS()) {
                         UDToast.showInfo('功能暂未开放，敬请期待！');
                     } else {
-                        NavigatorService.createOrder(ids).then(res => {
+                        NavigatorService.createOrder(ids, isML, mlAmount).then(res => {
                             NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
                                 ...res,
                                 transType: 101, //消费
@@ -157,7 +159,7 @@ class FeeDetailPage extends BasePage {
                     break;
                 }
                 case '扫码': {
-                    NavigatorService.createOrder(ids).then(res => {
+                    NavigatorService.createOrder(ids, isML, mlAmount).then(res => {
                         let posType = res.posType;
                         if (posType === '银盛') {
                             this.setState({
@@ -178,7 +180,7 @@ class FeeDetailPage extends BasePage {
                     break;
                 }
                 case '收款码': {
-                    NavigatorService.createOrder(ids).then(res => {
+                    NavigatorService.createOrder(ids, isML, mlAmount).then(res => {
                         let posType = res.posType;
                         if (posType === '银盛') {
                             this.setState({
@@ -219,7 +221,7 @@ class FeeDetailPage extends BasePage {
                                 onPress: () => {
                                     this.func = this.cashPay;
                                     this.params = ids;
-                                    this.cashPay(ids);
+                                    this.cashPay(ids, isML, mlAmount);
                                 },
                             },
                         ],
@@ -231,8 +233,8 @@ class FeeDetailPage extends BasePage {
         }
     };
 
-    cashPay = (ids) => {
-        NavigatorService.cashPay(ids).then(res => {
+    cashPay = (ids, isML, mlAmount) => {
+        NavigatorService.cashPay(ids, isML, mlAmount).then(res => {
             NavigatorService.cashPayPrint(ids).then(res => {
                 NativeModules.LHNToast.printTicket({
                     ...res,
@@ -255,7 +257,6 @@ class FeeDetailPage extends BasePage {
 
     typeOnChange = (type, isShow) => {
         // console.log(type);
-
         this.setState({
             type,
             isShow,
@@ -268,9 +269,7 @@ class FeeDetailPage extends BasePage {
     };
 
     changeItem = item => {
-
         const { isML, mlType, mlScale, type } = this.state;
-
         if (type === '已收') {
             this.props.navigation.push('charge', { data: item });
 
@@ -299,14 +298,13 @@ class FeeDetailPage extends BasePage {
                 //从后台计算抹零总金额 neo 2020年7月1日23:00:52
                 let ids = JSON.stringify((items.map(item => item.id)));
                 NavigatorService.CalFee(isML, mlType, mlScale, price, ids).then(res => {
-                    this.setState({ price: res });
+                    this.setState({ price: res.lastAmount, mlAmount: res.mlAmount });
                 });
             } else {
                 this.setState({ price: 0.00 });
             }
         }
     };
-
 
     //抹零计算
     mlCal = (isML, mlType, mlScale) => {
@@ -316,7 +314,7 @@ class FeeDetailPage extends BasePage {
             //从后台计算抹零总金额 neo 2020年7月1日23:00:52
             let ids = JSON.stringify((items.map(item => item.id)));
             NavigatorService.CalFee(isML, mlType, mlScale, price, ids).then(res => {
-                this.setState({ price: res });
+                this.setState({ price: res.lastAmount, mlAmount: res.mlAmount });
             });
         }
         else {
@@ -352,7 +350,6 @@ class FeeDetailPage extends BasePage {
                         this.getOrderStatus(out_trade_no);
                     }, 1000);
                 }
-
             }
         });
     };
@@ -423,7 +420,11 @@ class FeeDetailPage extends BasePage {
                                     </Flex>
                                     <Flex justify={'between'}
                                         style={[{ paddingLeft: 10, paddingTop: 10, paddingBottom: 5, width: '100%' }, type === '已收' ? { paddingBottom: 10 } : {}]}>
-                                        <Text style={{ fontSize: 16 }}>{type === '已收' ? item.billCode : item.feeName}</Text>
+                                        <Text style={{ fontSize: 16 }}>{type === '已收' ? item.billCode :
+                                            item.rmid != null ?
+                                                item.feeName + ' ' + <span style={{ color: 'red', fontSize: '4px', verticalAlign: 'super' }}>惠</span> :
+                                                item.feeName
+                                        }</Text>
                                         <Flex>
                                             <Text style={{ paddingRight: 10, fontSize: 16 }}>{item.amount}</Text>
                                         </Flex>
@@ -441,7 +442,6 @@ class FeeDetailPage extends BasePage {
                                         }}> {item.billDate + '，收款人：' + item.createUserName}
                                         </Text>
                                         : item.beginDate ?
-
                                             <Text style={{
                                                 paddingLeft: 10,
                                                 paddingTop: 10,
@@ -467,8 +467,8 @@ class FeeDetailPage extends BasePage {
                                 }}
                             ><Text style={{ paddingTop: 3, paddingLeft: 3 }}>抹零</Text></Checkbox>
 
-
                             <MyPopover
+                                textStyle={{ fontSize: 14 }}
                                 onChange={(title) => {
                                     this.setState({ mlType: title });
                                     this.mlCal(this.state.isML, title, this.state.mlScale);
@@ -477,6 +477,7 @@ class FeeDetailPage extends BasePage {
                                 visible={true} />
 
                             <MyPopover
+                                textStyle={{ fontSize: 14 }}
                                 onChange={(title) => {
                                     this.setState({ mlScale: title });
                                     this.mlCal(this.state.isML, this.state.mlType, title, title);

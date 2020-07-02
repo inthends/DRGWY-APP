@@ -137,9 +137,15 @@ export default {
         }
         return api.postData(url, {estateId, type});
     },
-    createOrder(linkId) {
-        return api.postData('/api/MobileMethod/MCreateTradeno', {linkId});
+    // createOrder(linkId) {
+    //     return api.postData('/api/MobileMethod/MCreateTradeno', {linkId});
+    // },
+
+    //创建预订单号
+    createOrder(linkId,isML,mlAmount) {
+        return api.postData('/api/MobileMethod/MCreateTradeno', {linkId,isML,mlAmount});
     },
+
     scanPay(auth_code, tbout_trade_no) {
         return api.postData('/api/MobileMethod/WFTScanPay', {auth_code, tbout_trade_no});
     },
@@ -152,9 +158,16 @@ export default {
     qrcodePay(tbout_trade_no) {
         return api.postData('/api/MobileMethod/WFTPay', {tbout_trade_no});
     },
-    cashPay(linkId) {
-        return api.postData('/api/MobileMethod/MCharge', {linkId});
+    
+    // cashPay(linkId) {
+    //     return api.postData('/api/MobileMethod/MCharge', {linkId});
+    // },
+
+    //现金收款
+    cashPay(linkId,isML,mlAmount) {
+        return api.postData('/api/MobileMethod/MCharge', {linkId,isML,mlAmount});
     },
+
     cashPayPrint(linkId) {
         return api.postData('/api/MobileMethod/MGetCashPrintInfo', {linkId});
     },
