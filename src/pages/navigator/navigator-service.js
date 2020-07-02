@@ -195,7 +195,8 @@ export default {
         return api.postData('/api/MobileMethod/MGetChargeBillDetailList', {billId});
     },
 
+    //计算费用金额
     CalFee(isML,mlType,mlScale,price,ids) {
-        return api.postData('/api/MobileMethod/CalFee', {isML,mlType,mlScale,price,ids},false);
+        return api.postData('/api/MobileMethod/MCalFee', {isML,mlType,mlScale,price,ids},false);
     },
 };

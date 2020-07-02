@@ -368,8 +368,7 @@ class FeeDetailPage extends BasePage {
         return (
             <CommonView style={{ flex: 1 }}>
                 <ScrollView>
-                    <Text
-                        style={{ paddingLeft: 10, paddingTop: 10, fontSize: 20 }}>{room.allName} {room.tenantName}</Text>
+                    <Text style={{ paddingLeft: 10, paddingTop: 10, fontSize: 20 }}>{room.allName} {room.tenantName}</Text>
                     <TwoChange onChange={this.typeOnChange} />
                     <Flex style={{ backgroundColor: '#eee', height: 1, marginLeft: 10, marginRight: 10, marginTop: 10 }} />
                     {dataInfo.data.map(item => (
@@ -387,44 +386,62 @@ class FeeDetailPage extends BasePage {
                                         style={{ paddingLeft: 10, paddingTop: 5, paddingBottom: 5, width: '100%' }}>
                                         {/* {type !== '已收' && <Text style={{ fontSize: 16, width: '80%',color:'green' }}>{item.allName}</Text>} */}
                                         <Text style={{ fontSize: 16, width: '80%', color: 'green' }}>{item.allName}</Text>
-                                        {type !== '已收' && item.billSource === '临时加费' && (
-                                            <Flex>
-                                                <Text onPress={() => {
-                                                    Alert.alert(
-                                                        '确认删除',
-                                                        '',
-                                                        [
-                                                            {
-                                                                text: '取消',
-                                                                onPress: () => { },
-                                                                style: 'cancel',
-                                                            },
-                                                            {
-                                                                text: '确定',
-                                                                onPress: () => {
-                                                                    NavigatorService.invalidBillForm(item.id).then(res => {
-                                                                        this.onRefresh();
-                                                                    });
+                                        {type !== '已收'
+                                            && item.billSource === '临时加费'
+                                            && item.rmid === null
+                                            && (
+                                                <Flex>
+                                                    <Text onPress={() => {
+                                                        Alert.alert(
+                                                            '确认删除',
+                                                            '',
+                                                            [
+                                                                {
+                                                                    text: '取消',
+                                                                    onPress: () => { },
+                                                                    style: 'cancel',
                                                                 },
-                                                            },
-                                                        ],
-                                                        { cancelable: false },
-                                                    );
-                                                }} style={{
-                                                    paddingRight: 10,
-                                                    fontSize: 16,
-                                                    color: 'red',
-                                                }}>删除</Text>
-                                            </Flex>
-                                        )}
+                                                                {
+                                                                    text: '确定',
+                                                                    onPress: () => {
+                                                                        NavigatorService.invalidBillForm(item.id).then(res => {
+                                                                            this.onRefresh();
+                                                                        });
+                                                                    },
+                                                                },
+                                                            ],
+                                                            { cancelable: false },
+                                                        );
+                                                    }} style={{
+                                                        paddingRight: 10,
+                                                        fontSize: 16,
+                                                        color: 'red',
+                                                    }}>删除</Text>
+                                                </Flex>
+                                            )}
                                     </Flex>
                                     <Flex justify={'between'}
                                         style={[{ paddingLeft: 10, paddingTop: 10, paddingBottom: 5, width: '100%' }, type === '已收' ? { paddingBottom: 10 } : {}]}>
-                                        <Text style={{ fontSize: 16 }}>{type === '已收' ? item.billCode :
-                                            item.rmid != null ?
-                                                item.feeName + ' ' + <span style={{ color: 'red', fontSize: '4px', verticalAlign: 'super' }}>惠</span> :
-                                                item.feeName
-                                        }</Text>
+
+                                        {/* <Text style={{ fontSize: 16 }}>{type === '已收' ?
+                                            item.billCode :
+                                            item.feeName 
+                                        }</Text> */}
+
+                                        {type === '已收' ? <Text style={{ fontSize: 16 }}>{item.billCode}</Text> :
+                                            item.rmid ?
+                                                <Flex>
+                                                    <Text style={{ fontSize: 16 }}>{item.feeName + ' '}</Text>
+                                                    <Text style={{
+                                                        color: 'red',
+                                                        fontSize: 8,
+                                                        paddingBottom: 16
+                                                    }}>惠</Text>
+                                                </Flex>
+                                                :
+                                                <Text style={{ fontSize: 16 }}>{item.feeName}</Text>
+                                        }
+
                                         <Flex>
                                             <Text style={{ paddingRight: 10, fontSize: 16 }}>{item.amount}</Text>
                                         </Flex>
@@ -456,7 +473,6 @@ class FeeDetailPage extends BasePage {
                 </ScrollView>
                 {type === '已收' || dataInfo.data.length === 0 ? null : (
                     <Flex style={{ marginBottom: 30 }} direction={'column'}>
-
                         <Flex justify={'between'} >
                             <Checkbox
                                 defaultChecked={false}
