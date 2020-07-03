@@ -1,3 +1,4 @@
+//工作台里面，待回访点击跳转的维修单，只能查看
 import React, {Fragment} from 'react';
 import {
     Text,
@@ -30,7 +31,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 const Item = List.Item;
 
 
-export default class EweixiuDetailPage extends BasePage {
+export default class WeixiuDetailPage extends BasePage {
     static navigationOptions = ({navigation}) => {
         return {
             title: '维修单详情',
@@ -127,9 +128,7 @@ export default class EweixiuDetailPage extends BasePage {
     };
 
     render() {
-        const {images, detail, communicates} = this.state;
-        console.log(1122, detail);
-
+        const {images, detail, communicates} = this.state;  
 
         return (
             <CommonView style={{flex: 1, backgroundColor: '#fff', paddingBottom: 10}}>
@@ -152,14 +151,13 @@ export default class EweixiuDetailPage extends BasePage {
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
                     </Flex>
 
-                    {detail.relationId&&<TouchableWithoutFeedback>
+                    {/* {detail.relationId&&<TouchableWithoutFeedback>
                         <Flex style={[styles.every]}>
                             <Text style={styles.left}>关联单：</Text>
                             <Text onPress={()=>this.props.navigation.navigate('fuwuD', {data: {id:detail.relationId}})} 
                             style={[styles.right, {color: Macro.color_4d8fcc}]}>{detail.serviceDeskCode}</Text>
                         </Flex>
-                    </TouchableWithoutFeedback>}
-
+                    </TouchableWithoutFeedback>} */}
 
                     <DashLine/>
                     <Communicates communicateClick={this.communicateClick} communicates={communicates}/>
