@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import {
     View,
     Text,
@@ -11,10 +11,10 @@ import {
     ScrollView,
 } from 'react-native';
 import BasePage from '../base/base';
-import {Button, Checkbox, Flex, Icon, List, WhiteSpace} from '@ant-design/react-native';
+import { Button, Checkbox, Flex, Icon, List, WhiteSpace } from '@ant-design/react-native';
 import Macro from '../../utils/macro';
 import ScreenUtil from '../../utils/screen-util';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import ListHeader from '../../components/list-header';
 import common from '../../utils/common';
 import LoadImage from '../../components/load-image';
@@ -24,7 +24,7 @@ import CommonView from '../../components/CommonView';
 
 
 class FeeChargeDetail extends BasePage {
-    static navigationOptions = ({navigation}) => {
+    static navigationOptions = ({ navigation }) => {
 
         console.log(1, navigation);
         return {
@@ -32,7 +32,7 @@ class FeeChargeDetail extends BasePage {
             title: '收款单详情',
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
         };
@@ -40,16 +40,16 @@ class FeeChargeDetail extends BasePage {
 
     constructor(props) {
         super(props);
-        let room = common.getValueFromProps(this.props);  
+        let data = common.getValueFromProps(this.props);
         this.state = {
-            room,
+            data,
             items: [],
-        }; 
+        };
     }
 
     componentDidMount(): void {
-        const {room} = this.state;
-        NavigatorService.billDetailList(room.billId).then(res => { 
+        const { data } = this.state;
+        NavigatorService.billDetailList(data.billId).then(res => {
             this.setState({
                 items: res,
             });
@@ -58,13 +58,16 @@ class FeeChargeDetail extends BasePage {
 
 
     render() {
-        const {statistics, dataInfo, room} = this.state;
-        const {selectBuilding} = this.props;
+        // const { statistics, dataInfo, data } = this.state;
+        // const { selectBuilding } = this.props;
         // console.log('selet', selectBuilding);
+
+        const { data } = this.state;
+
         return (
-            <View style={{flex: 1}}>
-                <CommonView style={{flex: 1}}>
-                    <ScrollView style={{flex: 1}}>
+            <View style={{ flex: 1 }}>
+                <CommonView style={{ flex: 1 }}>
+                    <ScrollView style={{ flex: 1 }}>
                         <Text style={{
                             paddingLeft: 15,
                             paddingTop: 10,
@@ -80,14 +83,14 @@ class FeeChargeDetail extends BasePage {
                             paddingTop: 10,
                             fontSize: 16,
                         }}>日期：{room.billDate}</Text>
-                        {this.state.items.map((item,index)=>(
+                        {this.state.items.map((item, index) => (
                             <Flex key={index} style={styles.item}>
-                                <Flex align={'start'} direction={'column'} style={{marginLeft: 3, flex: 1}}>
+                                <Flex align={'start'} direction={'column'} style={{ marginLeft: 3, flex: 1 }}>
                                     <Flex justify={'between'}
-                                          style={{paddingLeft: 10, paddingTop: 5, paddingBottom: 5, width: '100%'}}>
-                                        <Text style={{fontSize: 16}}>{item.feeName}</Text>
+                                        style={{ paddingLeft: 10, paddingTop: 5, paddingBottom: 5, width: '100%' }}>
+                                        <Text style={{ fontSize: 16 }}>{item.feeName}</Text>
                                         <Flex>
-                                            <Text style={{paddingRight: 10, fontSize: 16}}>{item.amount}</Text>
+                                            <Text style={{ paddingRight: 10, fontSize: 16 }}>{item.amount}</Text>
                                         </Flex>
                                     </Flex>
                                     {item.beginDate ? <Text style={{
@@ -97,16 +100,16 @@ class FeeChargeDetail extends BasePage {
                                 </Flex>
                             </Flex>
                         ))}
-                        <WhiteSpace/>
-                        <WhiteSpace/>     
+                        <WhiteSpace />
+                        <WhiteSpace />
                         <Flex justify={'center'}>
                             <Text style={{
                                 fontSize: 20,
-                            }}>合计：{room.amount}</Text>
-                        </Flex> 
+                            }}>抹零：{data.mlAmount}，合计：{data.amount}</Text>
+                        </Flex>
                     </ScrollView>
-                </CommonView> 
-            </View> 
+                </CommonView>
+            </View>
 
         );
     }
@@ -154,7 +157,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     right: {
-        flex: 3, 
+        flex: 3,
         paddingTop: 10,
         paddingBottom: 10,
         marginLeft: 10,
@@ -225,7 +228,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const mapStateToProps = ({buildingReducer}) => {
+const mapStateToProps = ({ buildingReducer }) => {
     return {
         selectBuilding: buildingReducer.selectBuilding,
     };

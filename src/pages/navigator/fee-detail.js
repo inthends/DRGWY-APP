@@ -143,9 +143,10 @@ class FeeDetailPage extends BasePage {
             UDToast.showError('请选择');
         } else {
             let ids = JSON.stringify((items.map(item => item.id)));
-            const { isML, mlAmount } = this.state;
+            const { isML, mlAmount, price } = this.state;
             switch (title) {
                 case '刷卡': {
+
                     if (common.isIOS()) {
                         UDToast.showInfo('功能暂未开放，敬请期待！');
                     } else {
@@ -180,6 +181,7 @@ class FeeDetailPage extends BasePage {
                     break;
                 }
                 case '收款码': {
+
                     NavigatorService.createOrder(ids, isML, mlAmount).then(res => {
                         let posType = res.posType;
                         if (posType === '银盛') {
@@ -206,6 +208,7 @@ class FeeDetailPage extends BasePage {
                     });
                     break;
                 }
+
                 case '现金': {
                     Alert.alert(
                         '确定现金支付？',
@@ -504,26 +507,39 @@ class FeeDetailPage extends BasePage {
                         </Flex>
 
                         <Flex align={'center'}>
+                            <Text style={{ paddingLeft: 10, fontSize: 20 }}>抹零：</Text>
+                            <Text style={{
+                                paddingLeft: 5,
+                                fontSize: 20,
+                                color: Macro.color_FA3951
+                            }}>¥{mlAmount}</Text>
+
                             <Text style={{ paddingLeft: 10, fontSize: 20 }}>合计：</Text>
                             <Text
                                 style={{
                                     paddingLeft: 5,
                                     fontSize: 20,
-                                    color: Macro.color_FA3951,
+                                    color: Macro.color_FA3951
                                 }}>¥{price}</Text>
                         </Flex>
                         <Flex style={{ minHeight: 40 }}>
-                            <TouchableWithoutFeedback onPress={() => this.click('刷卡')}>
+                            <TouchableWithoutFeedback
+                                disabled={price == 0 ? true : false}
+                                onPress={() => this.click('刷卡')}>
                                 <Flex justify={'center'} style={styles.ii}>
                                     <Text style={styles.word}>刷卡</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
-                            <TouchableWithoutFeedback onPress={() => this.click('扫码')}>
+                            <TouchableWithoutFeedback
+                                disabled={price == 0 ? true : false}
+                                onPress={() => this.click('扫码')}>
                                 <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.color_4d8fcc }]}>
                                     <Text style={styles.word}>扫码</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
-                            <TouchableWithoutFeedback onPress={() => this.click('收款码')}>
+                            <TouchableWithoutFeedback
+                                disabled={price == 0 ? true : false}
+                                onPress={() => this.click('收款码')}>
                                 <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.color_f39d39 }]}>
                                     <Text style={styles.word}>收款码</Text>
                                 </Flex>
@@ -543,9 +559,7 @@ class FeeDetailPage extends BasePage {
                     onClose={this.onClose}
                     onRequestClose={this.onClose}
                     maskClosable
-                    visible={this.state.visible}
-
-                >
+                    visible={this.state.visible}>
                     <Flex justify={'center'} style={{ margin: 30 }}>
                         {/*<QRCode*/}
                         {/*    size={200}*/}
