@@ -56,12 +56,10 @@ class FeeChargeDetail extends BasePage {
         });
     }
 
-
     render() {
         // const { statistics, dataInfo, data } = this.state;
         // const { selectBuilding } = this.props;
         // console.log('selet', selectBuilding);
-
         const { data } = this.state;
 
         return (
@@ -72,17 +70,17 @@ class FeeChargeDetail extends BasePage {
                             paddingLeft: 15,
                             paddingTop: 10,
                             fontSize: 20,
-                        }}>{room.allName} {room.createUserName}</Text>
+                        }}>{data.allName} {data.createUserName}</Text>
                         <Text style={{
                             paddingLeft: 15,
                             paddingTop: 10,
                             fontSize: 16,
-                        }}>单号：{room.billCode}</Text>
+                        }}>单号：{data.billCode}</Text>
                         <Text style={{
                             paddingLeft: 15,
                             paddingTop: 10,
                             fontSize: 16,
-                        }}>日期：{room.billDate}</Text>
+                        }}>日期：{data.billDate}</Text>
                         {this.state.items.map((item, index) => (
                             <Flex key={index} style={styles.item}>
                                 <Flex align={'start'} direction={'column'} style={{ marginLeft: 3, flex: 1 }}>
@@ -104,13 +102,12 @@ class FeeChargeDetail extends BasePage {
                         <WhiteSpace />
                         <Flex justify={'center'}>
                             <Text style={{
-                                fontSize: 20,
+                                fontSize: 18,
                             }}>抹零：{data.mlAmount}，合计：{data.amount}</Text>
                         </Flex>
                     </ScrollView>
                 </CommonView>
             </View>
-
         );
     }
 }

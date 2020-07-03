@@ -25,7 +25,6 @@ import UDToast from '../../utils/UDToast';
 import CommonView from '../../components/CommonView';
 // import { upgrade } from 'rn-app-upgrade';
 
-
 class FeeDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         // console.log(1, navigation);
@@ -80,7 +79,7 @@ class FeeDetailPage extends BasePage {
             out_trade_no: null,
             visible: false,
             code: '',
-            price: '0.00',
+            price: 0,
             needPrint: false,
             printAgain: false,
             isML: false,
@@ -304,7 +303,7 @@ class FeeDetailPage extends BasePage {
                     this.setState({ price: res.lastAmount, mlAmount: res.mlAmount });
                 });
             } else {
-                this.setState({ price: 0.00 });
+                this.setState({ price: 0 });
             }
         }
     };
@@ -321,7 +320,7 @@ class FeeDetailPage extends BasePage {
             });
         }
         else {
-            this.setState({ price: 0.00 });
+            this.setState({ price: 0 });
         }
     };
 
@@ -367,7 +366,7 @@ class FeeDetailPage extends BasePage {
     };
 
     render() {
-        const { dataInfo, type, room, price } = this.state;
+        const { dataInfo, type, room, price, mlAmount } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
                 <ScrollView>
@@ -507,29 +506,22 @@ class FeeDetailPage extends BasePage {
                         </Flex>
 
                         <Flex align={'center'}>
-                            <Text style={{ paddingLeft: 10, fontSize: 20 }}>抹零：</Text>
+                            <Text style={{ paddingLeft: 10, fontSize: 18 }}>抹零：</Text>
                             <Text style={{
                                 paddingLeft: 5,
-                                fontSize: 20,
+                                fontSize: 18,
                                 color: Macro.color_FA3951
                             }}>¥{mlAmount}</Text>
 
-                            <Text style={{ paddingLeft: 10, fontSize: 20 }}>合计：</Text>
+                            <Text style={{ paddingLeft: 10, fontSize: 18 }}>合计：</Text>
                             <Text
                                 style={{
                                     paddingLeft: 5,
-                                    fontSize: 20,
+                                    fontSize: 18,
                                     color: Macro.color_FA3951
                                 }}>¥{price}</Text>
                         </Flex>
-                        <Flex style={{ minHeight: 40 }}>
-                            <TouchableWithoutFeedback
-                                disabled={price == 0 ? true : false}
-                                onPress={() => this.click('刷卡')}>
-                                <Flex justify={'center'} style={styles.ii}>
-                                    <Text style={styles.word}>刷卡</Text>
-                                </Flex>
-                            </TouchableWithoutFeedback>
+                        <Flex style={{ minHeight: 40 }}> 
                             <TouchableWithoutFeedback
                                 disabled={price == 0 ? true : false}
                                 onPress={() => this.click('扫码')}>
@@ -547,6 +539,14 @@ class FeeDetailPage extends BasePage {
                             <TouchableWithoutFeedback onPress={() => this.click('现金')}>
                                 <Flex justify={'center'} style={[styles.ii, { backgroundColor: 'green' }]}>
                                     <Text style={styles.word}>现金</Text>
+                                </Flex>
+                            </TouchableWithoutFeedback>
+
+                            <TouchableWithoutFeedback
+                                disabled={price == 0 ? true : false}
+                                onPress={() => this.click('刷卡')}>
+                                <Flex justify={'center'} style={styles.ii}>
+                                    <Text style={styles.word}>刷卡</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
