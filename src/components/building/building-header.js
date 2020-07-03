@@ -58,7 +58,7 @@ export default class BuildingHeader extends BasePage {
                 <Flex direction="column" style={styles.middle}>
                     <Flex justify="between" style={styles.area}>
                         <Text style={styles.text}>管理数量{Macro.meter_square}</Text>
-                        <Text style={styles.text}> 在租均价 {statistics.averagerentprice}{Macro.yuan_meter_day}</Text>
+                        <Text style={styles.text}>实时在租均价 {statistics.averagerentprice}{Macro.yuan_meter_day}</Text>
                     </Flex>
                     <Flex justify='start' style={styles.number}>
                         <Text style={[styles.text, styles.big]}>{statistics.areasum}</Text>
