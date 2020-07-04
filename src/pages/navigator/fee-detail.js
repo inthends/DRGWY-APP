@@ -79,13 +79,13 @@ class FeeDetailPage extends BasePage {
             out_trade_no: null,
             visible: false,
             code: '',
-            price: 0,
             needPrint: false,
             printAgain: false,
             isML: false,
             mlType: '抹去角',
             mlScale: '四舍五入',
-            mlAmount: 0
+            price: 0.00,
+            mlAmount: 0.00
         };
     }
 
@@ -142,7 +142,7 @@ class FeeDetailPage extends BasePage {
             UDToast.showError('请选择');
         } else {
             let ids = JSON.stringify((items.map(item => item.id)));
-            const { isML, mlAmount, price } = this.state;
+            const { isML, mlAmount } = this.state;
             switch (title) {
                 case '刷卡': {
 
@@ -296,14 +296,14 @@ class FeeDetailPage extends BasePage {
 
             const items = data.filter(item => item.select === true);
             if (items.length != 0) {
-                let price = items.filter(item => item.select === true).reduce((a, b) => a + b.amount, 0);
+                let price = items.filter(item => item.select === true).reduce((a, b) => a + b.amount, 0).toFixed(2);
                 //从后台计算抹零总金额 neo 2020年7月1日23:00:52
                 let ids = JSON.stringify((items.map(item => item.id)));
                 NavigatorService.CalFee(isML, mlType, mlScale, price, ids).then(res => {
                     this.setState({ price: res.lastAmount, mlAmount: res.mlAmount });
                 });
             } else {
-                this.setState({ price: 0 });
+                this.setState({ price: 0.00, mlAmount:  0.00 });
             }
         }
     };
@@ -312,7 +312,7 @@ class FeeDetailPage extends BasePage {
     mlCal = (isML, mlType, mlScale) => {
         const items = this.state.dataInfo.data.filter(item => item.select === true);
         if (items.length != 0) {
-            let price = items.filter(item => item.select === true).reduce((a, b) => a + b.amount, 0);
+            let price = items.filter(item => item.select === true).reduce((a, b) => a + b.amount, 0).toFixed(2);//javascript浮点运算的一个bug
             //从后台计算抹零总金额 neo 2020年7月1日23:00:52
             let ids = JSON.stringify((items.map(item => item.id)));
             NavigatorService.CalFee(isML, mlType, mlScale, price, ids).then(res => {
@@ -320,7 +320,7 @@ class FeeDetailPage extends BasePage {
             });
         }
         else {
-            this.setState({ price: 0 });
+            this.setState({ price:  0.00, mlAmount:  0.00 });
         }
     };
 
@@ -521,7 +521,7 @@ class FeeDetailPage extends BasePage {
                                     color: Macro.color_FA3951
                                 }}>¥{price}</Text>
                         </Flex>
-                        <Flex style={{ minHeight: 40 }}> 
+                        <Flex style={{ minHeight: 40 }}>
                             <TouchableWithoutFeedback
                                 disabled={price == 0 ? true : false}
                                 onPress={() => this.click('扫码')}>
