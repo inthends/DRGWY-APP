@@ -102,8 +102,7 @@ public class LHNPrintActivity extends BaseLKLActivity {
             returnBitMap();
             printKong();
 
-        } catch (RemoteException e) {
-            // TODO Auto-generated catch block
+        } catch (RemoteException e) { 
             e.printStackTrace();
             showMessage("绑定打印服务失败");
         }
@@ -127,8 +126,7 @@ public class LHNPrintActivity extends BaseLKLActivity {
                 showMessage("打印机状态不对");
             }
 
-        } catch (RemoteException e) {
-            // TODO Auto-generated catch block
+        } catch (RemoteException e) { 
             e.printStackTrace();
             showMessage("获取到的打印机状态失败");
         }
@@ -162,8 +160,7 @@ public class LHNPrintActivity extends BaseLKLActivity {
                     showMessage("打印位图失败，错误码" + arg0 + ",宽：" + String.valueOf(bmp.getWidth()));
                 }
             });
-        } catch (RemoteException e) {
-            // TODO Auto-generated catch block
+        } catch (RemoteException e) { 
             e.printStackTrace();
             showMessage("打印异常");
         }
@@ -191,7 +188,6 @@ public class LHNPrintActivity extends BaseLKLActivity {
                     HttpURLConnection conn = (HttpURLConnection) myFileUrl.openConnection();
                     conn.setRequestMethod("GET");
                     conn.setUseCaches(false);
-
                     conn.setDoInput(true); // true if we want to read server's response
                     conn.setDoOutput(false); // false indicates this is a GET request
                     conn.connect();
@@ -208,12 +204,8 @@ public class LHNPrintActivity extends BaseLKLActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-
             }
         }).start();
-
-
     }
 
 
@@ -305,8 +297,7 @@ public class LHNPrintActivity extends BaseLKLActivity {
                     showMessage("打印出错，错误码为：" + arg0);
                 }
             });
-        } catch (RemoteException e) {
-            // TODO Auto-generated catch block
+        } catch (RemoteException e) { 
             e.printStackTrace();
             showMessage("打印异常");
         }

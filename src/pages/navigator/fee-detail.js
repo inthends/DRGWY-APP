@@ -19,11 +19,11 @@ import common from '../../utils/common';
 import LoadImage from '../../components/load-image';
 import TwoChange from '../../components/two-change';
 import NavigatorService from './navigator-service';
+import MyPopover from '../../components/my-popover';
 import UDToast from '../../utils/UDToast';
 // import QRCode from 'react-native-qrcode-svg';
 import CommonView from '../../components/CommonView';
-import { upgrade } from 'rn-app-upgrade';
-
+// import { upgrade } from 'rn-app-upgrade';
 
 class FeeDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -67,7 +67,7 @@ class FeeDetailPage extends BasePage {
         });
         // let room = common.getValueFromProps(this.props) || {id:'FY-XHF-01-0101'};
         let room = common.getValueFromProps(this.props);
-        console.log('room123', room);
+        //console.log('room123', room);
         this.state = {
             room,
             pageIndex: 1,
@@ -76,12 +76,16 @@ class FeeDetailPage extends BasePage {
             },
             type: null,
             isShow: true,
-            tbout_trade_no: null,
+            out_trade_no: null,
             visible: false,
             code: '',
-            price: '0.00',
             needPrint: false,
             printAgain: false,
+            isML: false,
+            mlType: '抹去角',
+            mlScale: '四舍五入',
+            price: 0.00,
+            mlAmount: 0.00
         };
     }
 
@@ -138,12 +142,14 @@ class FeeDetailPage extends BasePage {
             UDToast.showError('请选择');
         } else {
             let ids = JSON.stringify((items.map(item => item.id)));
+            const { isML, mlAmount } = this.state;
             switch (title) {
                 case '刷卡': {
+
                     if (common.isIOS()) {
                         UDToast.showInfo('功能暂未开放，敬请期待！');
                     } else {
-                        NavigatorService.createOrder(ids).then(res => {
+                        NavigatorService.createOrder(ids, isML, mlAmount).then(res => {
                             NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
                                 ...res,
                                 transType: 101, //消费
@@ -153,7 +159,7 @@ class FeeDetailPage extends BasePage {
                     break;
                 }
                 case '扫码': {
-                    NavigatorService.createOrder(ids).then(res => {
+                    NavigatorService.createOrder(ids, isML, mlAmount).then(res => {
                         let posType = res.posType;
                         if (posType === '银盛') {
                             this.setState({
@@ -174,7 +180,8 @@ class FeeDetailPage extends BasePage {
                     break;
                 }
                 case '收款码': {
-                    NavigatorService.createOrder(ids).then(res => {
+
+                    NavigatorService.createOrder(ids, isML, mlAmount).then(res => {
                         let posType = res.posType;
                         if (posType === '银盛') {
                             this.setState({
@@ -200,6 +207,7 @@ class FeeDetailPage extends BasePage {
                     });
                     break;
                 }
+
                 case '现金': {
                     Alert.alert(
                         '确定现金支付？',
@@ -215,7 +223,7 @@ class FeeDetailPage extends BasePage {
                                 onPress: () => {
                                     this.func = this.cashPay;
                                     this.params = ids;
-                                    this.cashPay(ids);
+                                    this.cashPay(ids, isML, mlAmount);
                                 },
                             },
                         ],
@@ -227,15 +235,14 @@ class FeeDetailPage extends BasePage {
         }
     };
 
-    cashPay = (ids) => {
-        NavigatorService.cashPay(ids).then(res => {
+    cashPay = (ids, isML, mlAmount) => {
+        NavigatorService.cashPay(ids, isML, mlAmount).then(res => {
             NavigatorService.cashPayPrint(ids).then(res => {
                 NativeModules.LHNToast.printTicket({
                     ...res,
                     username: this.props.userInfo && this.props.userInfo.username,
                 });
             });
-
         });
     };
 
@@ -252,7 +259,6 @@ class FeeDetailPage extends BasePage {
 
     typeOnChange = (type, isShow) => {
         // console.log(type);
-
         this.setState({
             type,
             isShow,
@@ -265,12 +271,12 @@ class FeeDetailPage extends BasePage {
     };
 
     changeItem = item => {
-        const { type } = this.state;
-
+        const { isML, mlType, mlScale, type } = this.state;
         if (type === '已收') {
             this.props.navigation.push('charge', { data: item });
 
         } else {
+
             let data = this.state.dataInfo.data;
             data = data.map(it => {
                 if (it.id === item.id) {
@@ -278,18 +284,44 @@ class FeeDetailPage extends BasePage {
                 }
                 return it;
             });
-            let price = data.filter(item => item.select === true).reduce((a, b) => a + b.amount, 0);
-            price = price.toFixed(2);
+
+            // price = price.toFixed(2);
             this.setState({
                 dataInfo: {
                     ...this.state.dataInfo,
                     data,
-                },
-                price,
+                }
+                //price,
+            });
+
+            const items = data.filter(item => item.select === true);
+            if (items.length != 0) {
+                let price = items.filter(item => item.select === true).reduce((a, b) => a + b.amount, 0).toFixed(2);
+                //从后台计算抹零总金额 neo 2020年7月1日23:00:52
+                let ids = JSON.stringify((items.map(item => item.id)));
+                NavigatorService.CalFee(isML, mlType, mlScale, price, ids).then(res => {
+                    this.setState({ price: res.lastAmount, mlAmount: res.mlAmount });
+                });
+            } else {
+                this.setState({ price: 0.00, mlAmount:  0.00 });
+            }
+        }
+    };
+
+    //抹零计算
+    mlCal = (isML, mlType, mlScale) => {
+        const items = this.state.dataInfo.data.filter(item => item.select === true);
+        if (items.length != 0) {
+            let price = items.filter(item => item.select === true).reduce((a, b) => a + b.amount, 0).toFixed(2);//javascript浮点运算的一个bug
+            //从后台计算抹零总金额 neo 2020年7月1日23:00:52
+            let ids = JSON.stringify((items.map(item => item.id)));
+            NavigatorService.CalFee(isML, mlType, mlScale, price, ids).then(res => {
+                this.setState({ price: res.lastAmount, mlAmount: res.mlAmount });
             });
         }
-
-
+        else {
+            this.setState({ price:  0.00, mlAmount:  0.00 });
+        }
     };
 
     onClose = () => {
@@ -320,7 +352,6 @@ class FeeDetailPage extends BasePage {
                         this.getOrderStatus(out_trade_no);
                     }, 1000);
                 }
-
             }
         });
     };
@@ -335,12 +366,11 @@ class FeeDetailPage extends BasePage {
     };
 
     render() {
-        const { dataInfo, type, room, price } = this.state;
+        const { dataInfo, type, room, price, mlAmount } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
                 <ScrollView>
-                    <Text
-                        style={{ paddingLeft: 10, paddingTop: 10, fontSize: 20 }}>{room.allName} {room.tenantName}</Text>
+                    <Text style={{ paddingLeft: 10, paddingTop: 10, fontSize: 20 }}>{room.allName} {room.tenantName}</Text>
                     <TwoChange onChange={this.typeOnChange} />
                     <Flex style={{ backgroundColor: '#eee', height: 1, marginLeft: 10, marginRight: 10, marginTop: 10 }} />
                     {dataInfo.data.map(item => (
@@ -358,40 +388,62 @@ class FeeDetailPage extends BasePage {
                                         style={{ paddingLeft: 10, paddingTop: 5, paddingBottom: 5, width: '100%' }}>
                                         {/* {type !== '已收' && <Text style={{ fontSize: 16, width: '80%',color:'green' }}>{item.allName}</Text>} */}
                                         <Text style={{ fontSize: 16, width: '80%', color: 'green' }}>{item.allName}</Text>
-                                        {type !== '已收' && item.billSource === '临时加费' && (
-                                            <Flex>
-                                                <Text onPress={() => {
-                                                    Alert.alert(
-                                                        '确认删除',
-                                                        '',
-                                                        [
-                                                            {
-                                                                text: '取消',
-                                                                onPress: () => { },
-                                                                style: 'cancel',
-                                                            },
-                                                            {
-                                                                text: '确定',
-                                                                onPress: () => {
-                                                                    NavigatorService.invalidBillForm(item.id).then(res => {
-                                                                        this.onRefresh();
-                                                                    });
+                                        {type !== '已收'
+                                            && item.billSource === '临时加费'
+                                            && item.rmid === null
+                                            && (
+                                                <Flex>
+                                                    <Text onPress={() => {
+                                                        Alert.alert(
+                                                            '确认删除',
+                                                            '',
+                                                            [
+                                                                {
+                                                                    text: '取消',
+                                                                    onPress: () => { },
+                                                                    style: 'cancel',
                                                                 },
-                                                            },
-                                                        ],
-                                                        { cancelable: false },
-                                                    );
-                                                }} style={{
-                                                    paddingRight: 10,
-                                                    fontSize: 16,
-                                                    color: 'red',
-                                                }}>删除</Text>
-                                            </Flex>
-                                        )}
+                                                                {
+                                                                    text: '确定',
+                                                                    onPress: () => {
+                                                                        NavigatorService.invalidBillForm(item.id).then(res => {
+                                                                            this.onRefresh();
+                                                                        });
+                                                                    },
+                                                                },
+                                                            ],
+                                                            { cancelable: false },
+                                                        );
+                                                    }} style={{
+                                                        paddingRight: 10,
+                                                        fontSize: 16,
+                                                        color: 'red',
+                                                    }}>删除</Text>
+                                                </Flex>
+                                            )}
                                     </Flex>
                                     <Flex justify={'between'}
                                         style={[{ paddingLeft: 10, paddingTop: 10, paddingBottom: 5, width: '100%' }, type === '已收' ? { paddingBottom: 10 } : {}]}>
-                                        <Text style={{ fontSize: 16 }}>{type === '已收' ? item.billCode : item.feeName}</Text>
+
+                                        {/* <Text style={{ fontSize: 16 }}>{type === '已收' ?
+                                            item.billCode :
+                                            item.feeName 
+                                        }</Text> */}
+
+                                        {type === '已收' ? <Text style={{ fontSize: 16 }}>{item.billCode}</Text> :
+                                            item.rmid ?
+                                                <Flex>
+                                                    <Text style={{ fontSize: 16 }}>{item.feeName + ' '}</Text>
+                                                    <Text style={{
+                                                        color: 'red',
+                                                        fontSize: 8,
+                                                        paddingBottom: 16
+                                                    }}>惠</Text>
+                                                </Flex>
+                                                :
+                                                <Text style={{ fontSize: 16 }}>{item.feeName}</Text>
+                                        }
+
                                         <Flex>
                                             <Text style={{ paddingRight: 10, fontSize: 16 }}>{item.amount}</Text>
                                         </Flex>
@@ -409,12 +461,11 @@ class FeeDetailPage extends BasePage {
                                         }}> {item.billDate + '，收款人：' + item.createUserName}
                                         </Text>
                                         : item.beginDate ?
-
                                             <Text style={{
                                                 paddingLeft: 10,
                                                 paddingTop: 10,
                                             }}>
-                                                {item.beginDate + '至' + item.endDate}</Text> : null 
+                                                {item.beginDate + '至' + item.endDate}</Text> : null
                                     }
 
                                 </Flex>
@@ -424,27 +475,63 @@ class FeeDetailPage extends BasePage {
                 </ScrollView>
                 {type === '已收' || dataInfo.data.length === 0 ? null : (
                     <Flex style={{ marginBottom: 30 }} direction={'column'}>
+                        <Flex justify={'between'} >
+                            <Checkbox
+                                defaultChecked={false}
+                                onChange={(e) => {
+                                    this.setState({ isML: e.target.checked });
+                                    //算抹零金额
+                                    this.mlCal(e.target.checked, this.state.mlType, this.state.mlScale);
+                                }}
+                            ><Text style={{ paddingTop: 3, paddingLeft: 3 }}>抹零</Text></Checkbox>
+
+                            <MyPopover
+                                textStyle={{ fontSize: 14 }}
+                                onChange={(title) => {
+                                    this.setState({ mlType: title });
+                                    this.mlCal(this.state.isML, title, this.state.mlScale);
+                                }}
+                                titles={['抹去角', '抹去分',]}
+                                visible={true} />
+
+                            <MyPopover
+                                textStyle={{ fontSize: 14 }}
+                                onChange={(title) => {
+                                    this.setState({ mlScale: title });
+                                    this.mlCal(this.state.isML, this.state.mlType, title, title);
+                                }}
+                                titles={['四舍五入', '直接舍去', '有数进一']}
+                                visible={true} />
+
+                        </Flex>
+
                         <Flex align={'center'}>
-                            <Text style={{ paddingLeft: 10, fontSize: 20 }}>合计：</Text>
+                            <Text style={{ paddingLeft: 10, fontSize: 18 }}>抹零：</Text>
+                            <Text style={{
+                                paddingLeft: 5,
+                                fontSize: 18,
+                                color: Macro.color_FA3951
+                            }}>¥{mlAmount}</Text>
+
+                            <Text style={{ paddingLeft: 10, fontSize: 18 }}>合计：</Text>
                             <Text
                                 style={{
                                     paddingLeft: 5,
-                                    fontSize: 20,
-                                    color: Macro.color_FA3951,
+                                    fontSize: 18,
+                                    color: Macro.color_FA3951
                                 }}>¥{price}</Text>
                         </Flex>
                         <Flex style={{ minHeight: 40 }}>
-                            <TouchableWithoutFeedback onPress={() => this.click('刷卡')}>
-                                <Flex justify={'center'} style={styles.ii}>
-                                    <Text style={styles.word}>刷卡</Text>
-                                </Flex>
-                            </TouchableWithoutFeedback>
-                            <TouchableWithoutFeedback onPress={() => this.click('扫码')}>
+                            <TouchableWithoutFeedback
+                                disabled={price == 0 ? true : false}
+                                onPress={() => this.click('扫码')}>
                                 <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.color_4d8fcc }]}>
                                     <Text style={styles.word}>扫码</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
-                            <TouchableWithoutFeedback onPress={() => this.click('收款码')}>
+                            <TouchableWithoutFeedback
+                                disabled={price == 0 ? true : false}
+                                onPress={() => this.click('收款码')}>
                                 <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.color_f39d39 }]}>
                                     <Text style={styles.word}>收款码</Text>
                                 </Flex>
@@ -454,18 +541,25 @@ class FeeDetailPage extends BasePage {
                                     <Text style={styles.word}>现金</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
+
+                            <TouchableWithoutFeedback
+                                disabled={price == 0 ? true : false}
+                                onPress={() => this.click('刷卡')}>
+                                <Flex justify={'center'} style={styles.ii}>
+                                    <Text style={styles.word}>刷卡</Text>
+                                </Flex>
+                            </TouchableWithoutFeedback>
                         </Flex>
                     </Flex>
-                )}
+                )
+                }
 
                 <Modal
                     transparent
                     onClose={this.onClose}
                     onRequestClose={this.onClose}
                     maskClosable
-                    visible={this.state.visible}
-
-                >
+                    visible={this.state.visible}>
                     <Flex justify={'center'} style={{ margin: 30 }}>
                         {/*<QRCode*/}
                         {/*    size={200}*/}
@@ -478,7 +572,7 @@ class FeeDetailPage extends BasePage {
                     {/*    取消*/}
                     {/*</Button>*/}
                 </Modal>
-            </CommonView>
+            </CommonView >
 
         );
     }

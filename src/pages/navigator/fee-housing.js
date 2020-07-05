@@ -134,7 +134,7 @@ class FeeHousePage extends BasePage {
                             <Flex justify={'between'} style={{width: '100%', paddingRight: 20}}>
                                 <Flex direction={'column'}>
                                     <Text>{item.roomcount}户</Text>
-                                    <Text style={{paddingTop: 12}}>总户数</Text>
+                                    <Text style={{paddingTop: 12}}>房产总数</Text>
                                 </Flex>
                                 <Flex direction={'column'}>
                                     <Text>{item.charge}户</Text>

@@ -43,9 +43,6 @@ export default class Macro {
     static font_20 = 20;
     static font_40 = 35;
 
-
-
-
     //content_offset
     static marginLeft_15 = 15;
     static marginRight_15 = 15;
@@ -53,8 +50,6 @@ export default class Macro {
     static marginBottom_15 = 15;
 
     static marginLeft_30 = 30;
-
-
 
     //单位
     static yuan_meter_day = '元/m²·天';

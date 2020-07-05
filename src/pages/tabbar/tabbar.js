@@ -16,19 +16,13 @@ import ManagerBuildingPage from '../../pages/building/manager-building/manager-b
 import DetailBuildingPage from '../building/detail-building/detail-building';
 import BuildingsPage from '../building/buildings/buildings';
 import FeeStatisticPage from '../navigator/fee-statistic/fee-statistic';
-import {Icon} from '@ant-design/react-native';
+// import {Icon} from '@ant-design/react-native';
 import AddWorkPage from '../work/add-work';
 import PersonInfoPage from '../mine/person-info';
 import SettingPage from '../mine/setting';
 import ModifyPsdPage from '../mine/modify-psd';
-import SelectAddressPage from '../work/select-address';
-import TaskListPage from '../work/task/task-list';
-import FuWuDanListDetailPage from '../work/task/fu-wu-dan-list-detail';
-import PaiDanListDetailPage from '../work/task/pai-dan-list-detail';
-import JieDanListDetailPage from '../work/task/jie-dan-list-detail';
-import KaiGongListDetailPage from '../work/task/kai-gong-list-detail';
-import WanChengListDetailPage from '../work/task/wan-cheng-list-detail';
-import SelectPaiDanPerson from '../work/task/select-pai-dan-person';
+
+//导航
 import FeeHousePage from '../navigator/fee-housing';
 import FeeBuildingsPage from '../navigator/fee-buildings';
 import FeeRoomsPage from '../navigator/fee-rooms';
@@ -41,19 +35,15 @@ import QianFeiZhangLingPage from '../navigator/analyse/qian-fei-zhang-ling';
 import WeiXiuRatePage from '../navigator/analyse/wei-xiu';
 import TouSuPage from '../navigator/analyse/tou-su';
 import HuiFangRatePage from '../navigator/analyse/hui-fang';
-
 import EstateFuwuPage from '../navigator/estate/estate-fuwu';
 import EfuwuDetailPage from '../navigator/estate/estate-fuwu-detail';
 import EtousuDetailPage from '../navigator/estate/estate-tousu-detail';
 import EweixiuDetailPage from '../navigator/estate/estate-weixiu-detail';
 import EstateWeixiuPage from '../navigator/estate/estate-weixiu';
 import EstateTousuPage from '../navigator/estate/estate-tousu';
-import JianYanListDetailPage from '../work/task/jian-yan-list-detail';
-import HuiFangDetailPage from '../work/task/hui-fang-detail';
 import ScanScreen from '../navigator/qrcode-scanner';
 import ScanOnly from '../navigator/ScanOnly';
 import ScanSS from '../navigator/scan-ss';
-
 import XunJianPage from '../navigator/xunjian/xunjian';
 import TaskPage from '../navigator/xunjian/task';
 import XunJianDetailPage from '../navigator/xunjian/xunjian-detail';
@@ -66,6 +56,23 @@ import YiQingInfoPage from '../building/yiqing/yiqing-info';
 import ChaoBiaoPage from '../navigator/chao-biao/chao-biao';
 import NewsList from '../work/news-list';
 import FeeChargeDetail from '../navigator/fee-charge-detail';
+
+
+//工作台
+import SelectAddressPage from '../work/select-address';
+import SelectPaiDanPerson from '../work/task/select-pai-dan-person';
+import TaskListPage from '../work/task/task-list';
+import FuWuDanListDetailPage from '../work/task/fu-wu-dan-list-detail';
+import PaiDanListDetailPage from '../work/task/pai-dan-list-detail';
+import JieDanListDetailPage from '../work/task/jie-dan-list-detail';
+import KaiGongListDetailPage from '../work/task/kai-gong-list-detail';
+import WanChengListDetailPage from '../work/task/wan-cheng-list-detail';
+import JianYanListDetailPage from '../work/task/jian-yan-list-detail';
+import HuiFangDetailPage from '../work/task/hui-fang-detail';
+
+//工作台回访查看单据
+import WeixiuDetailPage from '../work/task/weixiu-detail';
+import TousuDetailPage from '../work/task/tousu-detail';
 
 const BuildingNavigator = createStackNavigator({
 
@@ -121,21 +128,22 @@ const navigatorNavigator = createStackNavigator({
     fuwuD: EfuwuDetailPage,
 
     weixiuD: EweixiuDetailPage,//服务单页面点击关联单据，跳转到维修单，只能查看
+    tousuD: EtousuDetailPage,//投诉单详情，只能查看
 
-    tousuD: EtousuDetailPage,
     e_weixiu: EstateWeixiuPage,
     e_tousu: EstateTousuPage,
     selectPaidanPerson: SelectPaiDanPerson,
     charge: FeeChargeDetail,
 
+    //报表
     collection: CollectionRatePage,
     zijinliu: ZiJinLiuPage,
     qianfei: QianFeiZhangLingPage,
     weixiu_s: WeiXiuRatePage,
     tousu_s: TouSuPage,
     huifang_s: HuiFangRatePage,
-    scan: ScanScreen,
 
+    scan: ScanScreen,
     service: FuWuDanListDetailPage,
     wancheng: WanChengListDetailPage,
     jianyan: JianYanListDetailPage,
@@ -176,6 +184,10 @@ const WorkNavigator = createStackNavigator({
     AddWork: AddWorkPage,
     select: SelectAddressPage,
     service: FuWuDanListDetailPage,
+
+    weixiuView: WeixiuDetailPage,//工作台里面，待回访点击跳转的维修单，只能查看
+    tousuView: TousuDetailPage,//工作台里面，待回访点击跳转的投诉单，只能查看
+
     wancheng: WanChengListDetailPage,
     jianyan: JianYanListDetailPage,
     kaigong: KaiGongListDetailPage,

@@ -1,3 +1,4 @@
+//工作台里面，待回访点击跳转的投诉单，只能查看
 import React, {Fragment} from 'react';
 import {
     Text,
@@ -30,10 +31,10 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 const Item = List.Item;
 
 
-export default class EweixiuDetailPage extends BasePage {
+export default class TousuDetailPage extends BasePage {
     static navigationOptions = ({navigation}) => {
         return {
-            title: '维修单详情',
+            title: '投诉单详情',
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{width: 30, marginLeft: 15}}/>
@@ -67,9 +68,9 @@ export default class EweixiuDetailPage extends BasePage {
 
     getData = () => {
         const {fuwu, type} = this.state;
-        // console.log('fuw', fuwu);
-        WorkService.weixiuDetail(fuwu.id).then(detail => {
-            // console.log('detail', detail);
+        console.log('fuw', fuwu);
+        WorkService.tousuDetail(fuwu.id).then(detail => {
+            console.log('detail', detail);
             this.setState({
                 detail: {
                     ...detail.entity,
@@ -84,8 +85,7 @@ export default class EweixiuDetailPage extends BasePage {
                 });
             });
         });
-
-        WorkService.weixiuExtra(fuwu.id).then(images => {
+        WorkService.tousuExtra(fuwu.id).then(images => {
             this.setState({
                 images,
             });
@@ -126,6 +126,7 @@ export default class EweixiuDetailPage extends BasePage {
         });
     };
 
+
     render() {
         const {images, detail, communicates} = this.state;
         console.log(1122, detail);
@@ -138,32 +139,31 @@ export default class EweixiuDetailPage extends BasePage {
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
+
                         <Flex style={[styles.every2]} justify='between'>
-                            <Text style={styles.left}>{detail.address}   {detail.contactName}</Text>
-                            <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
-                                <Flex><LoadImage style={{width: 30, height: 30}}/></Flex>
+                            <Text style={styles.left}>{detail.complaintAddress} {detail.complaintUser}</Text>
+                            <TouchableWithoutFeedback onPress={() => common.call(detail.complaintLink)}>
+                            <Flex><LoadImage style={{width: 30, height: 30}}/></Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
+
                     <DashLine/>
-                    <Text style={styles.desc}>{detail.repairContent}</Text>
+                    <Text style={styles.desc}>{detail.contents}</Text>
                     <DashLine/>
                     <ListImages images={images} lookImage={this.lookImage}/>
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
                     </Flex>
 
-                    {detail.relationId&&<TouchableWithoutFeedback>
+                    {/* {detail.relationId&&<TouchableWithoutFeedback>
                         <Flex style={[styles.every]}>
                             <Text style={styles.left}>关联单：</Text>
-                            <Text onPress={()=>this.props.navigation.navigate('fuwuD', {data: {id:detail.relationId}})} 
-                            style={[styles.right, {color: Macro.color_4d8fcc}]}>{detail.serviceDeskCode}</Text>
+                            <Text onPress={()=>this.props.navigation.navigate('fuwuD', {data: {id:detail.relationId}})} style={[styles.right, {color: Macro.color_4d8fcc}]}>{detail.serviceDeskCode}</Text>
                         </Flex>
-                    </TouchableWithoutFeedback>}
-
+                    </TouchableWithoutFeedback>} */} 
 
                     <DashLine/>
                     <Communicates communicateClick={this.communicateClick} communicates={communicates}/>
-
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
@@ -220,6 +220,8 @@ const styles = StyleSheet.create({
     word: {
         color: 'white',
         fontSize: 16,
+
+
     },
 
 });

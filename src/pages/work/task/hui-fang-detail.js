@@ -62,7 +62,7 @@ export default class HuiFangDetailPage extends BasePage {
             star: 3,
             lookImageIndex: 0,
             visible: false,
-        }; 
+        };
     }
 
     componentDidMount(): void {
@@ -97,14 +97,14 @@ export default class HuiFangDetailPage extends BasePage {
     //         });
     //     });
     // };
- 
+
     //获取服务单信息
     getData = () => {
-        const {fuwu, type} = this.state;
+        const { fuwu, type } = this.state;
         // console.log(fuwu);
-        WorkService.serviceDetail(type, fuwu.id).then(item => { 
+        WorkService.serviceDetail(type, fuwu.id).then(item => {
             this.setState({
-                detail:{
+                detail: {
                     ...item.data,
                     businessId: item.businessId,
                     statusName: item.statusName
@@ -113,7 +113,7 @@ export default class HuiFangDetailPage extends BasePage {
         });
         WorkService.serviceCommunicates(fuwu.id).then(res => {
             this.setState({
-                communicates:res,
+                communicates: res,
             });
         });
         WorkService.serviceExtra(fuwu.id).then(images => {
@@ -134,7 +134,7 @@ export default class HuiFangDetailPage extends BasePage {
             this.props.navigation.goBack();
         });
     };
-    changeStar = (star) => { 
+    changeStar = (star) => {
         this.setState({ star });
     };
     communicateClick = (i) => {
@@ -164,7 +164,7 @@ export default class HuiFangDetailPage extends BasePage {
 
 
     render() {
-        const { images, detail, communicates } = this.state;   
+        const { images, detail, communicates } = this.state;
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
@@ -189,8 +189,18 @@ export default class HuiFangDetailPage extends BasePage {
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every]}>
                             <Text style={styles.left}>关联单：</Text>
-                            <Text onPress={() => this.props.navigation.navigate('service', { data: { id: detail.relationId } })}
-                                style={[styles.right, { color: Macro.color_4d8fcc }]}>{detail.serviceDeskCode}</Text>
+                            {/* <Text onPress={() => this.props.navigation.navigate('service', { data: { id: detail.relationId } })}
+                                style={[styles.right, { color: Macro.color_4d8fcc }]}>{detail.businessCode}</Text> */}
+ 
+                            <Text onPress={() => {
+                                if (detail.businessType === 'Repair') {
+                                    this.props.navigation.navigate('weixiuView', { data: { id: detail.businessId } });
+                                }
+                                else {
+                                    this.props.navigation.navigate('tousuView', { data: { id: detail.businessId } });
+                                }
+                            }} style={[styles.right, { color: Macro.color_4d8fcc }]}>{detail.businessCode}</Text>
+
                         </Flex>
                     </TouchableWithoutFeedback>
                     <DashLine />
