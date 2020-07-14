@@ -8,7 +8,7 @@ import BuildingService from './building_service';
 import { connect } from 'react-redux';
 import NoDataView from '../../components/no-data-view';
 import CommonView from '../../components/CommonView';
-import { saveUser } from '../../utils/store/actions/actions';
+import { saveUser,saveXunJian } from '../../utils/store/actions/actions';
 import JPush from 'jpush-react-native';
 import {
     upgrade,
@@ -57,42 +57,10 @@ class BuildingPage extends BasePage {
 
     }
 
-    update() {
-        XunJianService.persons(false).then(res=>{
-            const array = [this.props.user,...res];
-            const xunjianDatapromises = array.map(item=>{
-                return XunJianService.xunjianData(item.id,false).then(resp=>{
-                    return {
-                        ...item,
-                        xunjianData: resp
-                    }
-                })
-            })
-            Promise.all(xunjianDatapromises).then(r=>{
-                Promise.all(r.map(ii=>XunJianService.xunjianIndexList(ii.id,false).then(res=>{
-                    // {...ii,lineData:res}
-                    return XunJianService.xunjianPointTasks(res.lineId,false).then(rrrr=>{
-                        return {
-                            ...ii,
-                            lineData: {
-                                ...res,
-                                pointData:rrrr
 
-                            }
-                        }
-                    })
-                }))).then(rr=>{
-                    console.log(2233,rr)
-                    // Promise.all(rr.map(iii=>.then(res=>({...iii,pointData:res})))).then(rrrr=>{
-                    //     console.log(2233,rrrr)
-                    // });
-                });
-            })
-        })
-    }
 
     componentDidMount() {
-        this.update();
+
         if (!common.isIOS()) {
             NativeModules.LHNToast.getVersionCode((version) => {
 
@@ -319,6 +287,9 @@ const mapDispatchToProps = (dispatch) => {
         saveUser(user) {
             dispatch(saveUser(user));
         },
+        saveXunjian(data) {
+            dispatch(saveXunJian(data));
+        }
     };
 };
 

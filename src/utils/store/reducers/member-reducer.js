@@ -9,6 +9,7 @@ const initialState = {
         usercode: '',
     },
     user: null,
+    hasNetwork: true,
 };
 
 const memberReducer = (state = initialState, action) => {
@@ -21,6 +22,8 @@ const memberReducer = (state = initialState, action) => {
             return {...state, userInfo: action.data};
         case ACTIONS.user:
             return {...state, user: action.user};
+        case ACTIONS.hasNetwork:
+            return {...state,hasNetwork: action.state};
         default:
             return state;
     }

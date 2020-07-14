@@ -4,6 +4,7 @@ export function saveGoodsList(goodsList) {
     return {type: ACTIONS.save_goods_list, data: goodsList};
 }
 
+
 // function makeActionCreator(type, ...argNames) {
 //     return function (...args) {
 //         let action = {type};
@@ -47,4 +48,14 @@ export function saveSelectBuilding(selectBuilding) {
 
 export function saveUser(user) {
     return {type: ACTIONS.user, user};
+}
+export function saveXunJian(xunJianData) {
+    return {type: ACTIONS.xunJianData, xunJianData};
+}
+
+export function savehasNetwork(state) {
+    return {type: ACTIONS.hasNetwork, state};
+}
+export function saveXunJianAction(data) {
+    return {type: ACTIONS.xunJianAction, data};
 }

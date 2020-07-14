@@ -11,8 +11,10 @@ import XunJianComponent from './xunjian-component';
 import SelectImage from '../../../utils/select-image';
 import XunJianService from './xunjian-service';
 import common from '../../../utils/common';
+import {connect} from 'react-redux';
+import {saveUser, saveXunJian,saveXunJianAction} from '../../../utils/store/actions/actions';
 
-export default class StartXunJianPage extends BasePage {
+class StartXunJianPage extends BasePage {
     static navigationOptions = ({navigation}) => {
 
 
@@ -40,13 +42,18 @@ export default class StartXunJianPage extends BasePage {
     }
 
     componentDidMount(): void {
-        const {id, pointId} = this.state;
-        XunJianService.xunjianAddress(pointId).then(address => {
-            XunJianService.xunjianDetail(id).then(data => {
-                this.setState({data, address});
-                XunJianService.xunjianTaskDeletePhoto(data.id);
+        const {id, pointId,item} = this.state;
+
+        if (this.props.hasNetwork) {
+            XunJianService.xunjianAddress(pointId).then(address => {
+                XunJianService.xunjianDetail(id).then(data => {
+                    this.setState({data, address});
+                    XunJianService.xunjianTaskDeletePhoto(data.id);
+                });
             });
-        });
+        } else {
+            this.setState({data:item,address:{allName:item.allName}});
+        }
 
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
@@ -63,7 +70,7 @@ export default class StartXunJianPage extends BasePage {
     }
 
     selectImages = () => {
-        SelectImage.select(this.state.id, '/api/MobileMethod/MUploadPollingTask').then(res => {
+        SelectImage.select(this.state.id, '/api/MobileMethod/MUploadPollingTask',false).then(res => {
             console.log(1122, res);
             let images = [...this.state.images];
             images.splice(images.length - 1, 0, {'icon': res});
@@ -85,19 +92,32 @@ export default class StartXunJianPage extends BasePage {
     };
 
     submit(status) {
-        const {id, person, address} = this.state;
-        XunJianService.xunjianExecute(id, status, person.id, person.name).then(res => {
+        const {id, person, address,item} = this.state;
+        if (this.props.hasNetwork) {
+            XunJianService.xunjianExecute(id, status, person.id, person.name).then(res => {
+                if (status === 1) {
+                    this.props.navigation.goBack();
+                } else {
+                    this.needBack = true;
+                    this.props.navigation.push('addTaskWork', {
+                        data: {
+                            address,
+                        },
+                    });
+                }
+            });
+        }else {
             if (status === 1) {
-                this.props.navigation.goBack();
-            } else {
-                this.needBack = true;
-                this.props.navigation.push('addTaskWork', {
-                    data: {
-                        address,
-                    },
-                });
+                let images = this.state.images.filter(item=>item.uri&&item.uri.length> 0);
+                this.props.saveXunJianAction({
+                    [item.taskId]: {
+                        status,
+                        images
+                    }
+                })
             }
-        });
+        }
+
     }
 
 
@@ -187,3 +207,19 @@ const styles = StyleSheet.create({
 
 
 });
+
+const mapStateToProps = ({memberReducer,xunJianReducer}) => {
+
+    return {
+        hasNetwork:memberReducer.hasNetwork,
+    };
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        saveXunJianAction(data) {
+            dispatch(saveXunJianAction(data));
+        },
+
+    };
+};
+export default connect(mapStateToProps,mapDispatchToProps)(StartXunJianPage);

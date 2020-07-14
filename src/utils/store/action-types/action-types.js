@@ -6,4 +6,7 @@ export const ACTIONS = {
     selectBuilding: 'selectBuilding',
     nameAndPsd: 'nameAndPsd',
     user: 'user',
+    xunJianData:'xunJianData',
+    hasNetwork: 'hasNetwork',
+    xunJianAction:'xunJianAction',
 };

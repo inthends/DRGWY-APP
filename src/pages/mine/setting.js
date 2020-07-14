@@ -8,9 +8,13 @@ import LoadImage from '../../components/load-image';
 import Macro from '../../utils/macro';
 import ManualAction from '../../utils/store/actions/manual-action';
 import MineService from './mine-service';
+import {connect} from 'react-redux';
+import {savehasNetwork} from '../../utils/store/actions/actions';
+import XunJianService from '../navigator/xunjian/xunjian-service';
+import UDToast from '../../utils/UDToast';
 
 
-export default class SettingPage extends BasePage {
+class SettingPage extends BasePage {
     static navigationOptions = ({navigation}) => {
         return {
             title: '设置',
@@ -34,6 +38,7 @@ export default class SettingPage extends BasePage {
     }
 
     componentDidMount(): void {
+        console.log('network', this.props);
     }
 
     logout = () => {
@@ -62,6 +67,50 @@ export default class SettingPage extends BasePage {
         );
     };
 
+    componentWillUnmount() {
+
+        UDToast.hiddenLoading(this.loading);
+    }
+
+    update() {
+        this.loading = UDToast.showLoading('正在同步中...');
+        XunJianService.xunjianData(this.props.user.userId, false).then(resp => {
+            XunJianService.xunjianIndexList(this.props.user.userId, false).then(res => {
+                const items = res.data;
+
+                Promise.all(items.map(item => XunJianService.xunjianIndexDetail(item.lineId).then(res => ({
+                    ...item,
+                    items: res,
+                })))).then(rea => {
+
+                    XunJianService.MGetPollingUserPointTasks().then(r => {
+                        UDToast.hiddenLoading(this.loading);
+                        const aaa = {
+                            allData: resp || {},
+                            lists: rea || [],
+                            scanLists: r || {},
+                        };
+                        console.log(1221, aaa);
+                        this.props.saveXunjian(aaa);
+                    }).catch(err => {
+                        UDToast.hiddenLoading(this.loading);
+                    });
+                }).catch(err => {
+                    UDToast.hiddenLoading(this.loading);
+                });
+            }).catch(err => {
+                UDToast.hiddenLoading(this.loading);
+            });
+        }).catch(err => {
+            UDToast.hiddenLoading(this.loading);
+        });
+
+    }
+
+    uploading() {
+
+    }
+
     render() {
         const {data} = this.state;
         return (
@@ -73,6 +122,32 @@ export default class SettingPage extends BasePage {
                             <Text style={{color: '#666', fontSize: 16}}>消息推送</Text>
                         </Flex>
                     </List.Item>
+                </List>
+                <List renderHeader={<View style={{height: 10}}/>}>
+                    <List.Item extra={<Switch color='#447FEA' checked={this.props.hasNetwork}
+                                              onChange={checked => this.props.savehasNetwork(checked)}/>}>
+                        <Flex style={{height: 40}}>
+                            <Text style={{color: '#666', fontSize: 16}}>网络有用</Text>
+                        </Flex>
+                    </List.Item>
+                </List>
+                <List renderHeader={<View style={{height: 10}}/>}>
+                    <TouchableWithoutFeedback onPress={() => this.update()}>
+                        <List.Item>
+                            <Flex style={{height: 40}}>
+                                <Text style={{color: '#666', fontSize: 16}}>同步巡检数据</Text>
+                            </Flex>
+                        </List.Item>
+                    </TouchableWithoutFeedback>
+                </List>
+                <List renderHeader={<View style={{height: 10}}/>}>
+                    <TouchableWithoutFeedback onPress={() => this.uploading()}>
+                        <List.Item>
+                            <Flex style={{height: 40}}>
+                                <Text style={{color: '#666', fontSize: 16}}>上传巡检数据</Text>
+                            </Flex>
+                        </List.Item>
+                    </TouchableWithoutFeedback>
                 </List>
                 <List renderHeader={<View style={{height: 10}}/>}>
                     <TouchableWithoutFeedback onPress={() => this.logout()}>
@@ -116,3 +191,20 @@ const styles = StyleSheet.create({
         color: '#333',
     },
 });
+
+const mapStateToProps = ({memberReducer}) => {
+
+    return {
+        hasNetwork: memberReducer.hasNetwork,
+    };
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        savehasNetwork(user) {
+            dispatch(savehasNetwork(user));
+        },
+
+    };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(SettingPage);
+

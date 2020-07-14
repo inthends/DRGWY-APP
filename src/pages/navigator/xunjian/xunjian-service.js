@@ -8,12 +8,8 @@ export default {
     xunjianData(userId, showLoading = true) {
         return api.postData('/api/MobileMethod/MGetPollingStatistics', {userId}, showLoading);
     },
-    xunjianIndexList(userId) {
-        return api.postData('/api/MobileMethod/MGetPollingLinePageList', {pageIndex: 1, pageSize: 100, userId});
-    },
-    xunjianIndexDetail(lineId) {
-        return api.getData('/api/MobileMethod/MGetPollingTaskPoints', {lineId});
-    },
+
+
     xunjianTaskList(status, userId) {
         return api.postData('/api/MobileMethod/MGetPollingTaskPageList', {
             pageIndex: 1,
@@ -38,14 +34,33 @@ export default {
     xunjianPointDetail(lineId, pointId) {
         return api.getData('/api/MobileMethod/MGetPollingPointEntity', {lineId, pointId});
     },
-    xunjianPointTasks(pointId, showLoading = true) {
-        return api.getData('/api/MobileMethod/MGetPollingPointTasks', {pointId}, showLoading);
-    },
+
     xunjianExecute(keyValue, pointStatus, userId, userName) {
         return api.postData('/api/MobileMethod/MExcutePollingTasck', {keyValue, pointStatus, userId, userName});
     },
     xunjianAddress(pointId) {
         return api.getData('/api/MobileMethod/MGetPollingPointDetail', {pointId});
     },
+
+
+
+    xunjianIndexList(userId) {
+        return api.postData('/api/MobileMethod/MGetPollingLinePageList', {pageIndex: 1, pageSize: 100, userId});
+    },
+    xunjianIndexDetail(lineId) {
+        return api.getData('/api/MobileMethod/MGetPollingTaskPoints', {lineId});
+    },
+
+
+    //有网络
+    xunjianPointTasks(pointId, showLoading = true) {
+        return api.getData('/api/MobileMethod/MGetPollingPointTasks', {pointId}, showLoading);
+    },
+
+    //无网络
+    MGetPollingUserPointTasks() {
+        return api.getData('/api/MobileMethod/MGetPollingUserPointTasks', {}, false);
+    }
+
 
 };

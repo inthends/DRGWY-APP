@@ -1,6 +1,7 @@
 import {createStore, combineReducers} from 'redux';
 import memberReducer from './reducers/member-reducer';
 import buildingReducer from './reducers/building-reducer';
+import xunJianReducer from './reducers/xunjian-reducer';
 import {persistStore, persistReducer} from 'redux-persist';
 // import storage from 'redux-persist/lib/storage';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -9,6 +10,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 const reducers = combineReducers({
     memberReducer,
     buildingReducer,
+    xunJianReducer,
 });
 const storageConfig = {
     key: 'root', // 必须有的

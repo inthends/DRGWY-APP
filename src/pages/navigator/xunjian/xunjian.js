@@ -10,6 +10,7 @@ import RNLocation from 'react-native-location';
 import {connect} from 'react-redux';
 import memberReducer from '../../../utils/store/reducers/member-reducer';
 import XunJianService from './xunjian-service';
+import xunJianReducer from '../../../utils/store/reducers/xunjian-reducer';
 
 
 class XunJianPage extends BasePage {
@@ -38,22 +39,6 @@ class XunJianPage extends BasePage {
 
     constructor(props) {
         super(props);
-        // RNLocation.configure({
-        //     distanceFilter: 5.0,
-        // });
-        //
-        // RNLocation.requestPermission({
-        //     ios: 'whenInUse',
-        //     android: {
-        //         detail: 'coarse',
-        //     },
-        // }).then(granted => {
-        //     if (granted) {
-        //         this.locationSubscription = RNLocation.subscribeToLocationUpdates(locations => {
-        //             console.log(111, locations);
-        //         });
-        //     }
-        // });
 
         this.state = {
             activeSections: [2, 0],
@@ -86,6 +71,16 @@ class XunJianPage extends BasePage {
     };
 
     start = () => {
+        let person = this.state.person || {};
+        this.props.navigation.navigate('xunjianBeforeStart', {
+            'data': {
+                person,
+                pointId:'7681da78-e5da-4bbe-8d1e-15c78237be97',
+            },
+        });
+
+
+        return;
         this.props.navigation.push('scanForWork', {
             data: {
                 callBack: this.callBack,
@@ -96,19 +91,23 @@ class XunJianPage extends BasePage {
 
     componentDidMount(): void {
         this.initUI();
+
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             () => {
-                let person = this.state.person || this.props.user;
-                XunJianService.xunjianData(person.id, false).then(res => {
-                    this.setState({
-                        ...res,
+
+                if (this.props.hasNetwork) {
+                    let person = this.state.person || this.props.user;
+                    XunJianService.xunjianData(person.id, false).then(res => {
+                        this.setState({
+                            ...res,
+                        });
+
                     });
-
-                });
-
+                }
             },
         );
+
     }
 
     componentWillUnmount(): void {
@@ -116,6 +115,17 @@ class XunJianPage extends BasePage {
     }
 
     initUI() {
+        console.log(12,this.props)
+        if (this.props.hasNetwork) {
+            this.hasNetwork();
+        } else {
+            // this.hasNetwork();
+            this.noNetwork();
+        }
+
+    }
+
+    hasNetwork() {
         let person = this.state.person || this.props.user;
         XunJianService.xunjianData(person.id).then(res => {
             this.setState({
@@ -134,10 +144,29 @@ class XunJianPage extends BasePage {
                 });
                 this.setState({items: [...items]}, () => {
                     // console.log(44, this.state);
+
                 });
             });
             // Promise.all()
         });
+    }
+
+    noNetwork() {
+        const xunJianData = this.props.xunJianData;
+        console.log(12,this.props);
+
+        const params = {
+            ...xunJianData.allData,
+            items: xunJianData.lists,
+
+        };
+        console.log('before2',params)
+
+        this.setState({
+            ...params,
+        });
+
+
     }
 
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
@@ -260,12 +289,15 @@ class XunJianPage extends BasePage {
 }
 
 
-const mapStateToProps = ({memberReducer}) => {
+const mapStateToProps = ({memberReducer, xunJianReducer}) => {
+    console.log(1221,memberReducer,xunJianReducer)
     return {
         user: {
             ...memberReducer.user,
             id: memberReducer.user.userId,
         },
+        hasNetwork:memberReducer.hasNetwork,
+        xunJianData: xunJianReducer.xunJianData,
     };
 };
 

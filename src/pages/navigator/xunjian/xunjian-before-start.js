@@ -9,9 +9,10 @@ import CommonView from '../../../components/CommonView';
 import ScrollTitle from '../../../components/scroll-title';
 import XunJianService from './xunjian-service';
 import common from '../../../utils/common';
+import {connect} from 'react-redux';
 
 
-export default class XunjianBeforeStart extends BasePage {
+class XunjianBeforeStart extends BasePage {
     static navigationOptions = ({navigation}) => {
 
 
@@ -36,11 +37,24 @@ export default class XunjianBeforeStart extends BasePage {
     }
 
     componentDidMount(): void {
-        this.initUI();
+        const {pointId} = this.state;
+
+        if (this.props.hasNetwork) {
+            this.initUI();
+        } else {
+            const items = this.props.xunJianData.scanLists.filter(item=>item.pointId === pointId);
+            console.log(211,items);
+            this.setState({items});
+        }
+
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             () => {
-                this.initUI(false);
+                if (this.props.hasNetwork) {
+                    this.initUI(false);
+                }else {
+                    console.log(11,this.props);
+                }
             },
         );
     }
@@ -73,6 +87,7 @@ export default class XunjianBeforeStart extends BasePage {
                                                               id: item.id,
                                                               person,
                                                               pointId,
+                                                              item
                                                           },
                                                       })}>
                                 <Flex direction='column' align={'start'}
@@ -94,6 +109,16 @@ export default class XunjianBeforeStart extends BasePage {
         );
     }
 }
+
+const mapStateToProps = ({memberReducer,xunJianReducer}) => {
+
+    return {
+        hasNetwork:memberReducer.hasNetwork,
+        xunJianData: xunJianReducer.xunJianData,
+        xunJianAction:xunJianReducer.xunJianAction,
+    };
+};
+export default connect(mapStateToProps)(XunjianBeforeStart);
 
 const styles = StyleSheet.create({
     title: {
