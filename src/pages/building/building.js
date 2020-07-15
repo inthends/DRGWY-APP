@@ -57,9 +57,9 @@ class BuildingPage extends BasePage {
 
     componentDidMount() {
         if (!common.isIOS()) {
-            NativeModules.LHNToast.getVersionCode((version) => {
+            NativeModules.LHNToast.getVersionCode((version,deviceName) => {
 
-                api.getData('/api/Mobile/GetVersion', {}, true).then(res => {
+                api.getData('/api/Mobile/GetVersion', {deviceName}, true).then(res => {
                     let netVersion = common.handlerVersionString(res.appVersionName);
                     let localVersion = common.handlerVersionString(version);
                     console.log(netVersion);
@@ -190,7 +190,7 @@ class BuildingPage extends BasePage {
     };
     loadMore = () => {
         const { data, total, pageIndex } = this.state.dataInfo;
-        //console.log('loadmore', this.canAction); 
+        //console.log('loadmore', this.canAction);
         if (!this.canAction && data.length < total) {
             // if (data.length < total) {
             this.canAction = true;
