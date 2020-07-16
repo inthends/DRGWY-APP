@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.JSApplicationIllegalArgumentException;
@@ -34,15 +33,21 @@ import javax.annotation.Nullable;
 public class LHNToast extends ReactContextBaseJavaModule {
     private String APPID;
     private String versionName;
+    // private String brandName;// 品牌
+    // private String modelName;// 型号
     private ReactContext reactContext;
     private static ReactContext myContext;
+    //是否是银盛
+    private boolean isYse;
 
     public LHNToast(ReactApplicationContext context) {
         super(context);
         this.reactContext = context;
         APPID = Tool.getPackageName(context);
         versionName = Tool.getPackageCode(context);
-
+        // brandName = Tool.getBRAND();
+        // modelName = Tool.getMODEL();
+        isYse = Tool.isAvailable(context,"com.ys.smartpos");//银盛支付sdk（com.ys.smartpos）或 厂商服务（com.ysepay.pos.deviceservice）
     }
 
     @Nonnull
@@ -63,38 +68,22 @@ public class LHNToast extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getVersionCode(Callback successCallback) {
-
-        successCallback.invoke(versionName);
+        successCallback.invoke(versionName, isYse);
     }
 
     @ReactMethod
     public void printTicket(ReadableMap res) {
+
         try {
             /*
-            {
-        "allName": "0/FY-XHF/FY-XHF-01/FY-XHF-01-001/FY-XHF-01-0101",
-        "billDate": "2020-03-26 00:37:39",
-        "amount": "238",
-        "tradeNo": "",
-        "payType": "现金",
-        "transactionId": "",
-        "stampUrl": null,
-        "bills": [
-            {
-                "feeName": "物业费",
-                "amount": 238,
-                "beginDate": "2020-01-01 00:00:00",
-                "endDate": "2020-02-27 00:00:00"
-            },
-            {
-                "feeName": "物业费",
-                "amount": 238,
-                "beginDate": "2020-01-01 00:00:00",
-                "endDate": "2020-02-27 00:00:00"
-            }
-        ]
-    }
+             * { "allName": "0/FY-XHF/FY-XHF-01/FY-XHF-01-001/FY-XHF-01-0101", "billDate":
+             * "2020-03-26 00:37:39", "amount": "238", "tradeNo": "", "payType": "现金",
+             * "transactionId": "", "stampUrl": null, "bills": [ { "feeName": "物业费",
+             * "amount": 238, "beginDate": "2020-01-01 00:00:00", "endDate":
+             * "2020-02-27 00:00:00" }, { "feeName": "物业费", "amount": 238, "beginDate":
+             * "2020-01-01 00:00:00", "endDate": "2020-02-27 00:00:00" } ] }
              */
+
             Activity currentActivity = getCurrentActivity();
             if (currentActivity != null) {
                 Intent intent = new Intent(currentActivity, LHNPrintActivity.class);
@@ -115,7 +104,8 @@ public class LHNToast extends ReactContextBaseJavaModule {
                         ReadableMap map = params.getMap(i);
 
                         if (map != null) {
-                            ZhangDanObj obj = new ZhangDanObj(map.getString("feeName"), map.getString("amount"), map.getString("beginDate"), map.getString("endDate"));
+                            ZhangDanObj obj = new ZhangDanObj(map.getString("feeName"), map.getString("amount"),
+                                    map.getString("beginDate"), map.getString("endDate"));
                             list.add(obj);
                         }
                     }
@@ -125,12 +115,9 @@ public class LHNToast extends ReactContextBaseJavaModule {
                 currentActivity.startActivity(intent);
             }
         } catch (Exception e) {
-
         }
 
-
     }
-
 
     @ReactMethod
     public void startActivityFromJS(String name, ReadableMap order) {
@@ -138,8 +125,7 @@ public class LHNToast extends ReactContextBaseJavaModule {
         try {
             Activity currentActivity = getCurrentActivity();
             if (null != currentActivity) {
-//                Class toActivity = Class.forName(name);
-
+                // Class toActivity = Class.forName(name);
 
                 Intent intent = new Intent(currentActivity, LKLPayActivity.class);
                 Bundle bundle = new Bundle();
@@ -183,17 +169,14 @@ public class LHNToast extends ReactContextBaseJavaModule {
                     }
                 }
 
-
             }
         } catch (Exception e) {
             this.show(e.getMessage(), 2);
         }
     }
 
-
     public static void sendEventToRn(String eventName, @Nullable WritableMap paramss) {
         myContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, paramss);
     }
-
 
 }

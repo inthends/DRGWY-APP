@@ -107,7 +107,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "2.3.6"
+        versionName "2.3.7"
         missingDimensionStrategy 'react-native-camera', 'general'
         manifestPlaceholders = [
                 JPUSH_APPKEY : "996f9f0191243d335f473952",         //在此替换你的APPKey
@@ -129,6 +129,8 @@ android {
             storePassword MYAPP_RELEASE_STORE_PASSWORD
             keyAlias MYAPP_RELEASE_KEY_ALIAS
             keyPassword MYAPP_RELEASE_KEY_PASSWORD
+            // v1SigningEnabled true
+            // v2SigningEnabled false
         }
     }
 
@@ -226,5 +228,5 @@ task myUploadApkTask(type: Exec) {
 //Android Gradle plugin to version 2.2.0 and Gradle to version 2.14.1.
 task myBuild() {
     dependsOn 'assembleRelease'
-    dependsOn 'myUploadApkTask'
+    //dependsOn 'myUploadApkTask'
 }

@@ -128,6 +128,7 @@ class FeeDetailPage extends BasePage {
     }
 
     callBack = (out_trade_no) => {
+        
         NavigatorService.printInfo(out_trade_no).then(res => {
             NativeModules.LHNToast.printTicket({
                 ...res,
