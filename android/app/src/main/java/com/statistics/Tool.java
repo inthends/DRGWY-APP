@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Tool {
+
     public static String getPackageName(Context context) {
         try {
             PackageManager packageManager = context.getPackageManager();
@@ -34,23 +35,12 @@ public class Tool {
         return versionName;
     }
 
-     //获取品牌
-    //  public static String getBRAND() {
-    //     return Build.BRAND;
-    // }
-
-    //获取型号
-    // public static String getMODEL() {
-    //     return Build.MODEL;
-    // } 
-
-
     /**
      * 检查手机上是否安装了指定的软件
      */
     public static boolean isAvailable(Context context, String packageName) {
         // 获取packagemanager
-        final PackageManager packageManager = context.getPackageManager();
+        PackageManager packageManager = context.getPackageManager();
         // 获取所有已安装程序的包信息
         List<PackageInfo> packageInfos = packageManager.getInstalledPackages(0);
         // 用于存储所有已安装程序的包名
@@ -65,5 +55,15 @@ public class Tool {
         // 判断packageNames中是否有目标程序的包名，有TRUE，没有FALSE
         return packageNames.contains(packageName);
     }
+
+    // 获取品牌
+    public static String getBRAND() {
+        return Build.BRAND;
+    }
+
+    // 获取型号
+    // public static String getMODEL() {
+    // return Build.MODEL;
+    // }
 
 }

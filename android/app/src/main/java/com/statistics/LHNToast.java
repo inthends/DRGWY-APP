@@ -33,27 +33,36 @@ import javax.annotation.Nullable;
 public class LHNToast extends ReactContextBaseJavaModule {
     private String APPID;
     private String versionName;
-    // private String brandName;// 品牌
+    private String brandName;// 品牌
     // private String modelName;// 型号
     private ReactContext reactContext;
     private static ReactContext myContext;
-    //是否是银盛
+    // 是否是银盛POS机
     private boolean isYse;
+    // 是否是拉卡拉POS机
+    private boolean isLKL;
 
     public LHNToast(ReactApplicationContext context) {
         super(context);
         this.reactContext = context;
         APPID = Tool.getPackageName(context);
         versionName = Tool.getPackageCode(context);
-        // brandName = Tool.getBRAND();
-        // modelName = Tool.getMODEL();
-        isYse = Tool.isAvailable(context,"com.ys.smartpos");//银盛支付sdk（com.ys.smartpos）或 厂商服务（com.ysepay.pos.deviceservice）
+        // 银盛支付sdk（com.ys.smartpos）或 厂商服务（com.ysepay.pos.deviceservice）
+        isYse = Tool.isAvailable(context, "com.ys.smartpos");
+        brandName = Tool.getBRAND();
+        isLKL = brandName.toLowerCase() == "landi";
     }
 
     @Nonnull
     @Override
     public String getName() {
         return "LHNToast";
+    }
+
+    // 获取POS类型
+    @ReactMethod
+    public void getPOSType(Callback successCallback) {
+        successCallback.invoke(isLKL, isYse);
     }
 
     @ReactMethod
@@ -153,7 +162,10 @@ public class LHNToast extends ReactContextBaseJavaModule {
                         currentActivity.startActivity(intent);
                         break;
                     }
+
                     case "银盛": {
+                        // if (isYse) {
+                        // 只有是银盛pos机才能扫码和收款码
                         // yinshengBundle 银盛支付参数
                         bundle.putInt("amount", order.getInt("amount"));
                         bundle.putString("orderBelongTo", order.getString("orderBelongTo"));
@@ -164,7 +176,7 @@ public class LHNToast extends ReactContextBaseJavaModule {
                         bundle.putString("posType", posType);
                         intent.putExtras(bundle);
                         currentActivity.startActivity(intent);
-
+                        // }
                         break;
                     }
                 }

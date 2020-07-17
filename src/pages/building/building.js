@@ -170,7 +170,7 @@ class BuildingPage extends BasePage {
                 refreshing: false,
                 pageIndex: dataInfo.pageIndex,
             }, () => {
-                console.log(this.state.dataInfo.data);
+                //console.log(this.state.dataInfo.data);
             });
         });
     };
@@ -212,7 +212,7 @@ class BuildingPage extends BasePage {
     };
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
-        console.log(112233445566, nextProps);
+        //console.log(112233445566, nextProps);
         if (!(this.selectBuilding && nextProps.selectBuilding && (this.selectBuilding.key === nextProps.selectBuilding.key))) {
             this.selectBuilding = nextProps.selectBuilding;
             this.onRefresh();
