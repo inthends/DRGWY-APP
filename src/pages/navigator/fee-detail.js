@@ -129,7 +129,7 @@ class FeeDetailPage extends BasePage {
             this.setState({
                 isLKL: isLKL,
                 isYse: isYse
-            }); 
+            });
         });
 
     }
