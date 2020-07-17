@@ -50,7 +50,10 @@ public class LHNToast extends ReactContextBaseJavaModule {
         // 银盛支付sdk（com.ys.smartpos）或 厂商服务（com.ysepay.pos.deviceservice）
         isYse = Tool.isAvailable(context, "com.ys.smartpos");
         brandName = Tool.getBRAND();
-        isLKL = brandName.toLowerCase() == "landi";
+        if (brandName.toLowerCase().equals("landi"))
+            isLKL = true;
+        else
+            isLKL = false;
     }
 
     @Nonnull
@@ -77,7 +80,7 @@ public class LHNToast extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getVersionCode(Callback successCallback) {
-        successCallback.invoke(versionName, isYse);
+        successCallback.invoke(versionName, isYse, isLKL, brandName);
     }
 
     @ReactMethod
@@ -125,7 +128,6 @@ public class LHNToast extends ReactContextBaseJavaModule {
             }
         } catch (Exception e) {
         }
-
     }
 
     @ReactMethod

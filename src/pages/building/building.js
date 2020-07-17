@@ -57,9 +57,9 @@ class BuildingPage extends BasePage {
 
     componentDidMount() {
         if (!common.isIOS()) {
-            NativeModules.LHNToast.getVersionCode((version, isYse) => {
+            NativeModules.LHNToast.getVersionCode((version, isYse, isLKL, brandName) => {
 
-                api.getData('/api/Mobile/GetVersion', { isYse }, true).then(res => {
+                api.getData('/api/Mobile/GetVersion', { isYse, isLKL, brandName }, true).then(res => {
                     let netVersion = common.handlerVersionString(res.appVersionName);
                     let localVersion = common.handlerVersionString(version);
                     // console.log(netVersion);

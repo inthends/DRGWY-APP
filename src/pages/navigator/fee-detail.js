@@ -573,6 +573,12 @@ class FeeDetailPage extends BasePage {
                                 </Flex>
                             </TouchableWithoutFeedback>
 
+                            <TouchableWithoutFeedback onPress={() => this.click('现金')}>
+                                <Flex justify={'center'} style={[styles.ii, { backgroundColor: 'green' }]}>
+                                    <Text style={styles.word}>现金</Text>
+                                </Flex>
+                            </TouchableWithoutFeedback>
+
                             {this.state.isLKL || this.state.isYse ?
                                 //手机都不能刷卡
                                 <TouchableWithoutFeedback
@@ -581,14 +587,7 @@ class FeeDetailPage extends BasePage {
                                     <Flex justify={'center'} style={styles.ii}>
                                         <Text style={styles.word}>刷卡</Text>
                                     </Flex>
-                                </TouchableWithoutFeedback> : null}
-
-
-                            <TouchableWithoutFeedback onPress={() => this.click('现金')}>
-                                <Flex justify={'center'} style={[styles.ii, { backgroundColor: 'green' }]}>
-                                    <Text style={styles.word}>现金</Text>
-                                </Flex>
-                            </TouchableWithoutFeedback>
+                                </TouchableWithoutFeedback> : null} 
 
                         </Flex>
                     </Flex>
