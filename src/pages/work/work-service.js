@@ -44,7 +44,11 @@ export default {
             url = '/api/MobileMethod/MRepairAccept';
         } else if (handle === '开始维修') {
             url = '/api/MobileMethod/MRepairStart';
-        } else if (handle === '完成维修') {
+        } 
+        else if (handle === '退单') {
+            url = '/api/MobileMethod/MRepairBack';
+        } 
+        else if (handle === '完成维修') {
             url = '/api/MobileMethod/MRepairHandleFinish';
         } else if (handle === '完成回访') {
             // url = '/api/MobileMethod/MRepairVisitFinish';

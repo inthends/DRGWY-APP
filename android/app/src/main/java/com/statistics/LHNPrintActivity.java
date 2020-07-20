@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -38,13 +37,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * 打印机测试工具类
+ * 打印类
  *
  * @author Tianxiaobo
  */
 
 /**
- * 打印机测试工具类
+ * 打印类
  *
  * @author Tianxiaobo
  */
@@ -60,12 +59,11 @@ public class LHNPrintActivity extends BaseLKLActivity {
     private Bundle bundle;
     private Boolean printText = false;
     private Boolean printImage = false;
-//     private SystemActivity systemActivity = new SystemActivity();
-
+    // private SystemActivity systemActivity = new SystemActivity();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        super.setContentView(R.layout.printdev);
+        // super.setContentView(R.layout.printdev);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         mShow = (TextView) findViewById(R.id.show);
@@ -92,7 +90,7 @@ public class LHNPrintActivity extends BaseLKLActivity {
         super.onPause();
     }
 
-    //BestActivity,调用
+    // BestActivity,调用
     @Override
     public void onDeviceConnected(AidlDeviceService serviceManager) {
         try {
@@ -102,7 +100,7 @@ public class LHNPrintActivity extends BaseLKLActivity {
             returnBitMap();
             printKong();
 
-        } catch (RemoteException e) { 
+        } catch (RemoteException e) {
             e.printStackTrace();
             showMessage("绑定打印服务失败");
         }
@@ -126,12 +124,11 @@ public class LHNPrintActivity extends BaseLKLActivity {
                 showMessage("打印机状态不对");
             }
 
-        } catch (RemoteException e) { 
+        } catch (RemoteException e) {
             e.printStackTrace();
             showMessage("获取到的打印机状态失败");
         }
     }
-
 
     /**
      * 打印位图
@@ -144,7 +141,7 @@ public class LHNPrintActivity extends BaseLKLActivity {
         try {
 
             Bitmap bmp = this.bmp;
-//            imageView.setImageBitmap(bmp);
+            // imageView.setImageBitmap(bmp);
 
             printerDev.printBmp(50, 30, 30, bmp, new AidlPrinterListener.Stub() {
 
@@ -160,12 +157,11 @@ public class LHNPrintActivity extends BaseLKLActivity {
                     showMessage("打印位图失败，错误码" + arg0 + ",宽：" + String.valueOf(bmp.getWidth()));
                 }
             });
-        } catch (RemoteException e) { 
+        } catch (RemoteException e) {
             e.printStackTrace();
             showMessage("打印异常");
         }
     }
-
 
     public void returnBitMap() {
         String url = this.bundle.getString("stampUrl");
@@ -173,18 +169,16 @@ public class LHNPrintActivity extends BaseLKLActivity {
             return;
         }
 
-
         new Thread(new Runnable() {
             @Override
             public void run() {
                 URL myFileUrl = null;
                 Message message = new Message();
 
-
                 try {
 
                     myFileUrl = new URL(url);
-//            myFileUrl = new URL(url);
+                    // myFileUrl = new URL(url);
                     HttpURLConnection conn = (HttpURLConnection) myFileUrl.openConnection();
                     conn.setRequestMethod("GET");
                     conn.setUseCaches(false);
@@ -193,7 +187,7 @@ public class LHNPrintActivity extends BaseLKLActivity {
                     conn.connect();
                     int responseCode = conn.getResponseCode();
                     if (responseCode == HttpURLConnection.HTTP_OK) {
-                        //得到响应流
+                        // 得到响应流
                         InputStream is = conn.getInputStream();
                         message.obj = BitmapFactory.decodeStream(is);
                         is.close();
@@ -208,27 +202,24 @@ public class LHNPrintActivity extends BaseLKLActivity {
         }).start();
     }
 
-
-    //打印
+    // 打印
     @SuppressWarnings("unchecked")
-    public void printText() {
-
+    public void printText() { 
         showMessage("开始打印");
         try {
-            Thread thread = Thread.currentThread();
-
+            Thread thread = Thread.currentThread(); 
             printerDev.printText(new ArrayList<PrintItemObj>() {
                 {
                     int big = 16;
                     int medium = 8;
                     int small = 4;
                     /*
-                    bundle.putString("allName",res.getString("allName"));
-                bundle.putString("billDate",res.getString("billDate"));
-                bundle.putString("amount",res.getString("amount"));
-                bundle.putString("tradeNo",res.getString("tradeNo"));
-                bundle.putString("payType",res.getString("payType"));
-                ReadableArray params = res.getArray("bills");
+                     * bundle.putString("allName",res.getString("allName"));
+                     * bundle.putString("billDate",res.getString("billDate"));
+                     * bundle.putString("amount",res.getString("amount"));
+                     * bundle.putString("tradeNo",res.getString("tradeNo"));
+                     * bundle.putString("payType",res.getString("payType")); ReadableArray params =
+                     * res.getArray("bills");
                      */
                     String allName = bundle.getString("allName");
                     String billDate = bundle.getString("billDate");
@@ -241,22 +232,15 @@ public class LHNPrintActivity extends BaseLKLActivity {
                     ArrayList<ZhangDanObj> bills = (ArrayList<ZhangDanObj>) bundle.getSerializable("bills");
 
                     /*
-                    PrintItemObj(
-                    String text,
-                    int fontSize,
-                    boolean isBold,
-                     PrintItemObj.ALIGN align,
-                      boolean isUnderline,
-                       boolean isWordWrap,
-                        int lineHeight,
-                         int letterSpacing)
+                     * PrintItemObj( String text, int fontSize, boolean isBold, PrintItemObj.ALIGN
+                     * align, boolean isUnderline, boolean isWordWrap, int lineHeight, int
+                     * letterSpacing)
                      */
-
 
                     add(new PrintItemObj("POS机收款凭据", big, true, PrintItemObj.ALIGN.CENTER, false, false, 25));
                     add(new PrintItemObj("商户名称：" + mchName, medium));
                     add(new PrintItemObj("商户号：" + mchId, medium));
-//                     add(new PrintItemObj("终端号：" + systemActivity.getTerminalSn(), medium));
+                    // add(new PrintItemObj("终端号：" + systemActivity.getTerminalSn(), medium));
                     add(new PrintItemObj("房屋全称：" + allName, medium));
                     add(new PrintItemObj("支付渠道：" + payType, medium));
                     add(new PrintItemObj("订单号：" + tradeNo, medium));
@@ -274,13 +258,11 @@ public class LHNPrintActivity extends BaseLKLActivity {
                         }
                     }
 
-
                     add(new PrintItemObj("--------------------------------", medium));
                     add(new PrintItemObj("付款人（签字）", medium, false, PrintItemObj.ALIGN.LEFT, false, false, 40));
                     add(new PrintItemObj("收款单位（签章）", medium, false, PrintItemObj.ALIGN.LEFT, false, false));
                 }
             }, new AidlPrinterListener.Stub() {
-
 
                 Thread thread = Thread.currentThread();
 
@@ -297,30 +279,23 @@ public class LHNPrintActivity extends BaseLKLActivity {
                     showMessage("打印出错，错误码为：" + arg0);
                 }
             });
-        } catch (RemoteException e) { 
+        } catch (RemoteException e) {
             e.printStackTrace();
             showMessage("打印异常");
         }
     }
 
+    // 打印空白换行
     @SuppressWarnings("unchecked")
     public void printKong() {
 
         try {
             Thread thread = Thread.currentThread();
-
             printerDev.printText(new ArrayList<PrintItemObj>() {
                 {
-
                     add(new PrintItemObj("", 16, true, PrintItemObj.ALIGN.CENTER, false, false, 50));
-
-
-
-
                 }
             }, new AidlPrinterListener.Stub() {
-
-
 
                 @Override
                 public void onPrintFinish() throws RemoteException {
@@ -333,7 +308,6 @@ public class LHNPrintActivity extends BaseLKLActivity {
                 }
             });
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             showMessage("打印异常");
         }
@@ -343,11 +317,13 @@ public class LHNPrintActivity extends BaseLKLActivity {
         showMessage("开始打印");
 
         printText();
-        printBitmap();
+
+        String url = this.bundle.getString("stampUrl");
+        if (url != null && url.length() > 0) {
+            printBitmap();
+        }
+
         printKong();
 
-
     }
-
-
 }
