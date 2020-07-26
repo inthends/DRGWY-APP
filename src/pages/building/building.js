@@ -62,13 +62,15 @@ class BuildingPage extends BasePage {
     componentDidMount() {
 
         if (!common.isIOS()) {
-            NativeModules.LHNToast.getVersionCode((version,deviceName) => {
 
-                api.getData('/api/Mobile/GetVersion', {deviceName}, true).then(res => {
+            NativeModules.LHNToast.getVersionCode((version, isYse, isLKL, brandName) => {
+
+                api.getData('/api/Mobile/GetVersion', { isYse, isLKL, brandName }, true).then(res => {
+
                     let netVersion = common.handlerVersionString(res.appVersionName);
                     let localVersion = common.handlerVersionString(version);
-                    console.log(netVersion);
-                    console.log(localVersion);
+                    // console.log(netVersion);
+                    // console.log(localVersion);
                     if (netVersion > localVersion) {
                         Alert.alert(
                             '发现有新版本',
@@ -175,7 +177,7 @@ class BuildingPage extends BasePage {
                 refreshing: false,
                 pageIndex: dataInfo.pageIndex,
             }, () => {
-                console.log(this.state.dataInfo.data);
+                //console.log(this.state.dataInfo.data);
             });
         });
     };
@@ -217,7 +219,7 @@ class BuildingPage extends BasePage {
     };
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
-        console.log(112233445566, nextProps);
+        //console.log(112233445566, nextProps);
         if (!(this.selectBuilding && nextProps.selectBuilding && (this.selectBuilding.key === nextProps.selectBuilding.key))) {
             this.selectBuilding = nextProps.selectBuilding;
             this.onRefresh();

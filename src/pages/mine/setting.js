@@ -9,9 +9,11 @@ import Macro from '../../utils/macro';
 import ManualAction from '../../utils/store/actions/manual-action';
 import MineService from './mine-service';
 import {connect} from 'react-redux';
-import {savehasNetwork} from '../../utils/store/actions/actions';
+import {savehasNetwork, saveXunJian} from '../../utils/store/actions/actions';
 import XunJianService from '../navigator/xunjian/xunjian-service';
 import UDToast from '../../utils/UDToast';
+import WorkService from '../work/work-service';
+import axios from 'axios';
 
 
 class SettingPage extends BasePage {
@@ -72,7 +74,10 @@ class SettingPage extends BasePage {
         UDToast.hiddenLoading(this.loading);
     }
 
+
     update() {
+        console.log(11, this.props);
+
         this.loading = UDToast.showLoading('正在同步中...');
         XunJianService.xunjianData(this.props.user.userId, false).then(resp => {
             XunJianService.xunjianIndexList(this.props.user.userId, false).then(res => {
@@ -91,6 +96,7 @@ class SettingPage extends BasePage {
                             scanLists: r || {},
                         };
                         console.log(1221, aaa);
+                        UDToast.showInfo('同步完成');
                         this.props.saveXunjian(aaa);
                     }).catch(err => {
                         UDToast.hiddenLoading(this.loading);
@@ -107,7 +113,83 @@ class SettingPage extends BasePage {
 
     }
 
+    uploadWork(works) {
+        return new Promise((resolve, reject) => {
+            if (works.length === 0) {
+                return resolve();
+            } else {
+                return Promise.all(works.map(item => WorkService.saveForm(item,false)));
+            }
+        });
+    }
+
+    uploadImages(imageObjs) {
+        return new Promise((resolve, reject) => {
+            if (imageObjs.length === 0) {
+                return resolve();
+            } else {
+                return Promise.all(imageObjs.map(i => {
+                    const {id, images} = i;
+                    const formData = new FormData();//如果需要上传多张图片,需要遍历数组,把图片的路径数组放入formData中
+                    for (let index = 0; index < images.length; index++) {
+                        let img = images[index];
+                        let file = {uri: img.icon.fileUri, type: 'multipart/form-data', name: 'picture.png'};   //这里的key(uri和type和name)不能改变,
+                        formData.append('Files', file);   //这里的files就是后台需要的key
+                    }
+                    formData.append('keyValue', id);
+                    console.log('formData', formData);
+                    axios.defaults.headers['Content-Type'] = 'multipart/form-data';
+                    axios.defaults.headers['Authorization'] = 'Bearer ' + ManualAction.getTokenBYStore();
+                    return axios.post('/api/MobileMethod/MUploadPollingTask', formData);
+                }));
+            }
+        });
+
+    }
+
     uploading() {
+        const {xunJianAction} = this.props;
+        let xunJians = [];
+        let imageObjs = [];
+        let works = [];
+        for (let taskId in xunJianAction) {
+            if (xunJianAction.hasOwnProperty(taskId)) {
+                let xunJian = xunJianAction[taskId];
+                xunJians.push(xunJian.xunjianParams);
+                imageObjs.push({
+                    images: xunJian.images,
+                    id: xunJian.idForUploadImage,
+                });
+                if (xunJian.workParams) {
+                    works.push(xunJian.workParams);
+                }
+            }
+        }
+        if (xunJians.length > 0) {
+            this.loading = UDToast.showLoading('正在上传中...');
+            Promise.all(xunJians.map(item => {
+                const {keyValue, pointStatus, userId, userName} = item;
+                return XunJianService.xunjianExecute(keyValue, pointStatus, userId, userName, false);
+            })).then(res => {
+                this.uploadWork(works).then(res => {
+                    this.uploadImages(imageObjs).then(res => {
+                        UDToast.hiddenLoading(this.loading);
+                        UDToast.showSuccess('上传成功');
+                    }).catch(reas => {
+                        UDToast.hiddenLoading(this.loading);
+                        UDToast.showError('上传图片数据失败');
+                    });
+                }).catch(err => {
+                    UDToast.hiddenLoading(this.loading);
+                    UDToast.showError('上传工单数据失败');
+                });
+            }).catch(res => {
+                UDToast.hiddenLoading(this.loading);
+                UDToast.showError('上传巡检数据失败');
+            });
+        } else {
+            UDToast.showError('没有数据需要上传');
+        }
 
     }
 
@@ -192,16 +274,26 @@ const styles = StyleSheet.create({
     },
 });
 
-const mapStateToProps = ({memberReducer}) => {
+const mapStateToProps = ({memberReducer, xunJianReducer}) => {
+    const user = memberReducer.user || {};
+
 
     return {
         hasNetwork: memberReducer.hasNetwork,
+        user: {
+            ...user,
+            id: user.userId,
+        },
+        ...xunJianReducer,
     };
 };
 const mapDispatchToProps = (dispatch) => {
     return {
         savehasNetwork(user) {
             dispatch(savehasNetwork(user));
+        },
+        saveXunjian(data) {
+            dispatch(saveXunJian(data));
         },
 
     };

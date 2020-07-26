@@ -3,13 +3,13 @@ import api from '../../utils/api';
 export default {
     workData(showLoading) {
         return api.postData('/api/MobileMethod/MGetDeskStatistics', {}, showLoading);
-    }, 
+    },
     //房产类别，1获取小区，获取小区时候keyvalue=0，2获取楼栋，4获取楼层，5获取房间
     getPStructs(params) {
         return api.getData('/api/MobileMethod/MGetPStructs', params);
     },
-    saveForm(params) {
-        return api.postData('/api/MobileMethod/MSaveServiceDeskForm', params);
+    saveForm(params,showLoading=true) {
+        return api.postData('/api/MobileMethod/MSaveServiceDeskForm', params,showLoading);
     },
     //服务单详情
     serviceDetail(type, keyValue) {
@@ -44,7 +44,11 @@ export default {
             url = '/api/MobileMethod/MRepairAccept';
         } else if (handle === '开始维修') {
             url = '/api/MobileMethod/MRepairStart';
-        } else if (handle === '完成维修') {
+        }
+        else if (handle === '退单') {
+            url = '/api/MobileMethod/MRepairBack';
+        }
+        else if (handle === '完成维修') {
             url = '/api/MobileMethod/MRepairHandleFinish';
         } else if (handle === '完成回访') {
             // url = '/api/MobileMethod/MRepairVisitFinish';

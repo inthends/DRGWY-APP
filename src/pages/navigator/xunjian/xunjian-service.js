@@ -1,8 +1,8 @@
 import api from '../../../utils/api';
 
 export default {
-    persons(showLoading=true) {
-        return api.getData('/api/MobileMethod/MGetPollingUserList',showLoading);
+    persons(showLoading = true) {
+        return api.getData('/api/MobileMethod/MGetPollingUserList', showLoading);
     },
 
     xunjianData(userId, showLoading = true) {
@@ -35,13 +35,17 @@ export default {
         return api.getData('/api/MobileMethod/MGetPollingPointEntity', {lineId, pointId});
     },
 
-    xunjianExecute(keyValue, pointStatus, userId, userName) {
-        return api.postData('/api/MobileMethod/MExcutePollingTasck', {keyValue, pointStatus, userId, userName});
+    xunjianExecute(keyValue, pointStatus, userId, userName, showLoading = true) {
+        return api.postData('/api/MobileMethod/MExcutePollingTasck', {
+            keyValue,
+            pointStatus,
+            userId,
+            userName,
+        }, showLoading);
     },
     xunjianAddress(pointId) {
         return api.getData('/api/MobileMethod/MGetPollingPointDetail', {pointId});
     },
-
 
 
     xunjianIndexList(userId) {
@@ -60,7 +64,7 @@ export default {
     //无网络
     MGetPollingUserPointTasks() {
         return api.getData('/api/MobileMethod/MGetPollingUserPointTasks', {}, false);
-    }
+    },
 
 
 };

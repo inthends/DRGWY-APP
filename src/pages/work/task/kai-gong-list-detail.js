@@ -58,6 +58,7 @@ export default class KaiGongListDetailPage extends BasePage {
             communicates: [],
             lookImageIndex: 0,
             visible: false,
+            backMemo: ''
         };
         console.log(this.state);
     }
@@ -97,7 +98,7 @@ export default class KaiGongListDetailPage extends BasePage {
     };
 
     click = (handle) => {
-        const { fuwu, type, value } = this.state; 
+        const { fuwu, type, value } = this.state;
         // if (handle === '回复' && !(value&&value.length > 0)) {
         if (!(value && value.length > 0)) {
             UDToast.showInfo('请输入故障判断');
@@ -108,6 +109,20 @@ export default class KaiGongListDetailPage extends BasePage {
             this.props.navigation.goBack();
         });
     };
+
+    back = (handle) => {
+        const { fuwu, type, backMemo } = this.state;
+        // if (handle === '回复' && !(value&&value.length > 0)) {
+        if (!(backMemo && backMemo.length > 0)) {
+            UDToast.showInfo('请输入退单原因');
+            return;
+        }
+        WorkService.serviceHandle(handle, fuwu.id, backMemo).then(res => {
+            UDToast.showInfo('操作成功');
+            this.props.navigation.goBack();
+        });
+    };
+
 
     communicateClick = (i) => {
         let c = this.state.communicates;
@@ -138,8 +153,6 @@ export default class KaiGongListDetailPage extends BasePage {
     render() {
         const { images, detail, communicates } = this.state;
         // console.log(1122, detail);
-
-
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
@@ -186,11 +199,37 @@ export default class KaiGongListDetailPage extends BasePage {
                         />
                     </View>
 
-                    <TouchableWithoutFeedback onPress={() => this.click('开始维修')}>
-                        <Flex justify={'center'} style={[styles.ii, { width: '80%', marginLeft: '10%', marginRight: '10%', marginBottom: 20 }, { backgroundColor: Macro.color_4d8fcc }]}>
-                            <Text style={styles.word}>开始维修</Text>
-                        </Flex>
-                    </TouchableWithoutFeedback>
+                    <DashLine />
+                    <View style={{
+                        margin: 15,
+                        borderStyle: 'solid',
+                        borderColor: '#F3F4F2',
+                        borderWidth: 1,
+                        borderRadius: 5,
+                    }}>
+                        <TextareaItem
+                            rows={4}
+                            placeholder='请输入退单原因'
+                            style={{ fontSize: 14, paddingTop: 10, height: 100, width: ScreenUtil.deviceWidth() - 32 }}
+                            onChange={value => this.setState({ backMemo: value })}
+                            value={this.state.backMemo}
+                        />
+                    </View>
+                    <Flex justify={'center'}  style={{ marginBottom: 20 }} >
+
+                        <TouchableWithoutFeedback onPress={() => this.click('开始维修')}>
+                            <Flex justify={'center'}  style={[styles.ii, { backgroundColor: Macro.color_4d8fcc }]}>
+                                <Text style={styles.word}>开始维修</Text>
+                            </Flex>
+                        </TouchableWithoutFeedback>
+
+                        <TouchableWithoutFeedback onPress={() => this.back('退单')}>
+                            <Flex  justify={'center'}  style={[styles.ii, { backgroundColor: 'red' }]}>
+                                <Text style={styles.word}>退单</Text>
+                            </Flex>
+                        </TouchableWithoutFeedback>
+                    </Flex>
+
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
 
                 </ScrollView>

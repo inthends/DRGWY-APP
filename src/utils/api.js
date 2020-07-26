@@ -109,7 +109,7 @@ export default {
             //console.log('file', file);
             formData.append('Files', file);   //这里的files就是后台需要的key
             formData.append('keyValue', id);
-            //console.log('formData', formData);
+            console.log('formData', formData);
             axios.defaults.headers['Content-Type'] = 'multipart/form-data';
             axios.defaults.headers['Authorization'] = 'Bearer ' + ManualAction.getTokenBYStore();
             let showLoadingNumber = UDToast.showLoading('正在上传...');

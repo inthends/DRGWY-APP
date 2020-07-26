@@ -85,7 +85,9 @@ class FeeDetailPage extends BasePage {
             mlType: '抹去角',
             mlScale: '四舍五入',
             price: 0.00,
-            mlAmount: 0.00
+            mlAmount: 0.00,
+            isLKL: false,
+            isYse: false
         };
     }
 
@@ -121,6 +123,15 @@ class FeeDetailPage extends BasePage {
                 // }
             },
         );
+
+        //判断是否是银盛POS或者拉卡拉POS机
+        NativeModules.LHNToast.getPOSType((isLKL, isYse) => {
+            this.setState({
+                isLKL: isLKL,
+                isYse: isYse
+            });
+        });
+
     }
 
     componentWillUnmount(): void {
@@ -128,6 +139,7 @@ class FeeDetailPage extends BasePage {
     }
 
     callBack = (out_trade_no) => {
+
         NavigatorService.printInfo(out_trade_no).then(res => {
             NativeModules.LHNToast.printTicket({
                 ...res,
@@ -148,7 +160,9 @@ class FeeDetailPage extends BasePage {
 
                     if (common.isIOS()) {
                         UDToast.showInfo('功能暂未开放，敬请期待！');
+
                     } else {
+
                         NavigatorService.createOrder(ids, isML, mlAmount).then(res => {
                             NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
                                 ...res,
@@ -158,18 +172,28 @@ class FeeDetailPage extends BasePage {
                     }
                     break;
                 }
+
                 case '扫码': {
                     NavigatorService.createOrder(ids, isML, mlAmount).then(res => {
                         let posType = res.posType;
                         if (posType === '银盛') {
-                            this.setState({
-                                out_trade_no: res.out_trade_no,
-                            });
-                            NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
-                                ...res,
-                                transType: 1070, //pos机扫顾客
-                            });
-                        } else {
+
+                            if (!this.state.isYse) {
+                                // 只有是银盛pos机才能扫码和收款码
+                                UDToast.showInfo('银盛不支持手机扫码，请使用POS机！');
+                            } else {
+
+                                this.setState({
+                                    out_trade_no: res.out_trade_no,
+                                });
+
+                                NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
+                                    ...res,
+                                    transType: 1070, //pos机扫顾客
+                                });
+                            }
+                        }
+                        else {
                             this.props.navigation.push('scan', {
                                 data: ids,
                                 callBack: this.callBack,
@@ -184,13 +208,19 @@ class FeeDetailPage extends BasePage {
                     NavigatorService.createOrder(ids, isML, mlAmount).then(res => {
                         let posType = res.posType;
                         if (posType === '银盛') {
-                            this.setState({
-                                out_trade_no: res.out_trade_no,
-                            });
-                            NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
-                                ...res,
-                                transType: 1054, //顾客扫pos机
-                            });
+                            if (!this.state.isYse) {
+                                // 只有是银盛pos机才能扫码和收款码
+                                UDToast.showInfo('银盛不支持手机收款码，请使用POS机！');
+                            } else {
+
+                                this.setState({
+                                    out_trade_no: res.out_trade_no,
+                                });
+                                NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
+                                    ...res,
+                                    transType: 1054, //顾客扫pos机
+                                });
+                            }
                         } else {
                             NavigatorService.qrcodePay(res.out_trade_no).then(code => {
                                 this.setState({
@@ -215,7 +245,7 @@ class FeeDetailPage extends BasePage {
                         [
                             {
                                 text: '取消',
-                                onPress: () => console.log('Cancel Pressed'),
+                                //onPress: () => console.log('Cancel Pressed'),
                                 style: 'cancel',
                             },
                             {
@@ -237,12 +267,16 @@ class FeeDetailPage extends BasePage {
 
     cashPay = (ids, isML, mlAmount) => {
         NavigatorService.cashPay(ids, isML, mlAmount).then(res => {
-            NavigatorService.cashPayPrint(ids).then(res => {
-                NativeModules.LHNToast.printTicket({
-                    ...res,
-                    username: this.props.userInfo && this.props.userInfo.username,
+            if (this.state.isLKL || this.state.isYse) {
+                //pos机才能打印
+                NavigatorService.cashPayPrint(ids).then(res => {
+                    NativeModules.LHNToast.printTicket({
+                        ...res,
+                        username: this.props.userInfo && this.props.userInfo.username,
+                    });
                 });
-            });
+            }
+            this.onRefresh();//刷新数据
         });
     };
 
@@ -303,7 +337,7 @@ class FeeDetailPage extends BasePage {
                     this.setState({ price: res.lastAmount, mlAmount: res.mlAmount });
                 });
             } else {
-                this.setState({ price: 0.00, mlAmount:  0.00 });
+                this.setState({ price: 0.00, mlAmount: 0.00 });
             }
         }
     };
@@ -320,7 +354,7 @@ class FeeDetailPage extends BasePage {
             });
         }
         else {
-            this.setState({ price:  0.00, mlAmount:  0.00 });
+            this.setState({ price: 0.00, mlAmount: 0.00 });
         }
     };
 
@@ -522,13 +556,15 @@ class FeeDetailPage extends BasePage {
                                 }}>¥{price}</Text>
                         </Flex>
                         <Flex style={{ minHeight: 40 }}>
+
                             <TouchableWithoutFeedback
                                 disabled={price == 0 ? true : false}
-                                onPress={() => this.click('扫码')}>
+                                onPress={() => this.click('扫码')}  >
                                 <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.color_4d8fcc }]}>
                                     <Text style={styles.word}>扫码</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
+
                             <TouchableWithoutFeedback
                                 disabled={price == 0 ? true : false}
                                 onPress={() => this.click('收款码')}>
@@ -536,19 +572,23 @@ class FeeDetailPage extends BasePage {
                                     <Text style={styles.word}>收款码</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
+
                             <TouchableWithoutFeedback onPress={() => this.click('现金')}>
                                 <Flex justify={'center'} style={[styles.ii, { backgroundColor: 'green' }]}>
                                     <Text style={styles.word}>现金</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
 
-                            <TouchableWithoutFeedback
-                                disabled={price == 0 ? true : false}
-                                onPress={() => this.click('刷卡')}>
-                                <Flex justify={'center'} style={styles.ii}>
-                                    <Text style={styles.word}>刷卡</Text>
-                                </Flex>
-                            </TouchableWithoutFeedback>
+                            {this.state.isLKL || this.state.isYse ?
+                                //手机都不能刷卡
+                                <TouchableWithoutFeedback
+                                    disabled={price == 0 ? true : false}
+                                    onPress={() => this.click('刷卡')} >
+                                    <Flex justify={'center'} style={styles.ii}>
+                                        <Text style={styles.word}>刷卡</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback> : null} 
+
                         </Flex>
                     </Flex>
                 )

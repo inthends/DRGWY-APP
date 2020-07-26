@@ -21,8 +21,10 @@ import UDToast from '../../utils/UDToast';
 import WorkService from './work-service';
 import {AudioRecorder, AudioUtils} from 'react-native-audio';
 import CommonView from '../../components/CommonView';
+import {connect} from 'react-redux';
+import {saveXunJianAction} from '../../utils/store/actions/actions';
 
-export default class AddWorkPage extends BasePage {
+class AddWorkPage extends BasePage {
     static navigationOptions = ({navigation}) => {
         return {
             title: '新增',
@@ -37,8 +39,9 @@ export default class AddWorkPage extends BasePage {
 
     constructor(props) {
         super(props);
-        const {address} = common.getValueFromProps(this.props) || {};
-        console.log('address', address);
+        const {taskId, address} = common.getValueFromProps(this.props) || {};
+        console.log('address', taskId, address);
+        console.log(this.props);
         this.state = {
             index: 0,
             data: ['报修', '报事', '巡场'],
@@ -51,6 +54,7 @@ export default class AddWorkPage extends BasePage {
             playing: false,
             address,
             canSelectAddress: !address,
+            taskId,
 
         };
     }
@@ -177,16 +181,37 @@ export default class AddWorkPage extends BasePage {
             Address: address.allName,
             Contents: value,
             isAdd: true,
+            taskId: this.state.taskId,
         };
-        WorkService.saveForm(params).then(res => {
-            UDToast.showInfo('提交成功', true);
-            setTimeout(() => {
+        if (this.props.hasNetwork) {
+            WorkService.saveForm(params).then(res => {
+                UDToast.showInfo('提交成功', true);
+                setTimeout(() => {
+                    this.canSubmit = true;
+                    this.props.navigation.goBack();
+                }, 2000);
+            }).catch(res => {
                 this.canSubmit = true;
-                this.props.navigation.goBack();
-            }, 2000);
-        }).catch(res => {
-            this.canSubmit = true;
-        });
+            });
+        } else {
+            const {taskId} = this.state;
+            const {xunJianAction} = this.props;
+            const data = xunJianAction[taskId];
+            console.log(this.props,xunJianAction,taskId,data)
+            if (!data) {
+                UDToast.showSuccess('数据异常，请关闭app重新进入');
+            } else {
+                this.props.saveXunJianAction({
+                    [taskId]: {
+                        ...data,
+                        workParams:params,
+                    },
+                });
+                UDToast.showSuccess('已保存，稍后可在我的-设置中同步巡检数据');
+            }
+
+
+        }
 
 
     };
@@ -201,116 +226,134 @@ export default class AddWorkPage extends BasePage {
         return (
             <CommonView style={{flex: 1, backgroundColor: 'F3F4F2'}}>
                 {/*<ScrollView>*/}
-                    <Flex direction='column'>
-                        <Flex justify='between' style={styles.header}>
-                            {data.map((item, i) => (
-                                <TouchableWithoutFeedback key={i} onPress={() => this.setState({index: i})}>
-                                    <Flex justify='center' style={[{
-                                        marginLeft: 5,
-                                        marginRight: 5,
-                                        backgroundColor: '#0325FD',
-                                        height: 30,
-                                        width: (ScreenUtil.deviceWidth() / 3.0 - 20),
-                                        borderRadius: 4,
-                                    }, index === i && {backgroundColor: '#E67942'}]}>
-                                        <Text style={{color: 'white', fontSize: 14}}>{item}</Text>
-                                    </Flex>
-                                </TouchableWithoutFeedback>
-                            ))}
-                        </Flex>
-                        <Flex>
-                            <TouchableWithoutFeedback
-                                onPress={() => {
-                                    if (canSelectAddress) {
-                                        this.props.navigation.push('select');
-                                    }
-                                }
-                                }>
-                                <Flex justify="between" style={[{
-                                    paddingTop: 15,
-                                    paddingBottom: 15,
-                                    marginLeft: 15,
-                                    marginRight: 15,
-                                    width: ScreenUtil.deviceWidth() - 30,
-                                }, ScreenUtil.borderBottom()]}>
-                                    <Text style={[address ? {color: '#333', fontSize: 16} : {
-                                        color: '#999',
-                                        fontSize: 16,
-                                    }]}>{address ? address.allName : `请选择${title}地址`}</Text>
-                                    <LoadImage style={{width: 6, height: 11}}
-                                               defaultImg={require('../../static/images/address/right.png')}/>
+                <Flex direction='column'>
+                    <Flex justify='between' style={styles.header}>
+                        {data.map((item, i) => (
+                            <TouchableWithoutFeedback key={i} onPress={() => this.setState({index: i})}>
+                                <Flex justify='center' style={[{
+                                    marginLeft: 5,
+                                    marginRight: 5,
+                                    backgroundColor: '#0325FD',
+                                    height: 30,
+                                    width: (ScreenUtil.deviceWidth() / 3.0 - 20),
+                                    borderRadius: 4,
+                                }, index === i && {backgroundColor: '#E67942'}]}>
+                                    <Text style={{color: 'white', fontSize: 14}}>{item}</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
-
-                        </Flex>
-
-                        <View style={{marginLeft: -15}}>
-                            <TextareaItem
-                                rows={4}
-                                placeholder={title2}
-                                autoHeight
-                                style={{paddingTop: 15, minHeight: 100, width: ScreenUtil.deviceWidth() - 30}}
-                                onChange={value => this.setState({value})}
-                                value={this.state.value}
-                            />
-                        </View>
-                        <Flex align={'start'} justify={'start'} style={{
-                            paddingTop: 15,
-                            paddingBottom: 15,
-                            width: ScreenUtil.deviceWidth() - 30,
-                        }}>
-                            <TouchableOpacity onPressIn={() => this.startRecord()} onPressOut={() => this.stopRecord()}>
-                                <LoadImage style={{width: 20, height: 20}}
-                                           defaultImg={require('../../static/images/icon_copy.png')}/>
-                            </TouchableOpacity>
-                            {fileUrl && fileUrl.length > 0 ?
-                                <TouchableOpacity onPress={() => this.play()}>
-                                    <LoadImage style={{width: 20, height: 20, marginLeft: 10}}
-                                               defaultImg={require('../../static/images/icon_s.png')}/>
-                                </TouchableOpacity>
-                                : null}
-
-                        </Flex>
-                        <Flex justify={'start'} align={'start'} style={{width: ScreenUtil.deviceWidth()}}>
-                            <Flex wrap={'wrap'}>
-                                {images.map((item, index) => {
-                                    return (
-                                        <TouchableWithoutFeedback key={index} onPress={() => {
-                                            if (index === images.length - 1 && item.icon.length === 0) {
-                                                this.selectImages();
-                                            }
-                                        }}>
-                                            <View style={{
-                                                paddingLeft: 15,
-                                                paddingRight: 5,
-                                                paddingBottom: 10,
-                                                paddingTop: 10,
-                                            }}>
-                                                <LoadImage style={{width: width, height: height}}
-                                                           defaultImg={require('../../static/images/add_pic.png')}
-                                                           img={item.icon}/>
-                                            </View>
-                                        </TouchableWithoutFeedback>
-                                    );
-                                })}
+                        ))}
+                    </Flex>
+                    <Flex>
+                        <TouchableWithoutFeedback
+                            onPress={() => {
+                                if (canSelectAddress) {
+                                    this.props.navigation.push('select');
+                                }
+                            }
+                            }>
+                            <Flex justify="between" style={[{
+                                paddingTop: 15,
+                                paddingBottom: 15,
+                                marginLeft: 15,
+                                marginRight: 15,
+                                width: ScreenUtil.deviceWidth() - 30,
+                            }, ScreenUtil.borderBottom()]}>
+                                <Text style={[address ? {color: '#333', fontSize: 16} : {
+                                    color: '#999',
+                                    fontSize: 16,
+                                }]}>{address ? address.allName : `请选择${title}地址`}</Text>
+                                <LoadImage style={{width: 6, height: 11}}
+                                           defaultImg={require('../../static/images/address/right.png')}/>
                             </Flex>
+                        </TouchableWithoutFeedback>
+
+                    </Flex>
+
+                    <View style={{marginLeft: -15}}>
+                        <TextareaItem
+                            rows={4}
+                            placeholder={title2}
+                            autoHeight
+                            style={{paddingTop: 15, minHeight: 100, width: ScreenUtil.deviceWidth() - 30}}
+                            onChange={value => this.setState({value})}
+                            value={this.state.value}
+                        />
+                    </View>
+                    <Flex align={'start'} justify={'start'} style={{
+                        paddingTop: 15,
+                        paddingBottom: 15,
+                        width: ScreenUtil.deviceWidth() - 30,
+                    }}>
+                        <TouchableOpacity onPressIn={() => this.startRecord()} onPressOut={() => this.stopRecord()}>
+                            <LoadImage style={{width: 20, height: 20}}
+                                       defaultImg={require('../../static/images/icon_copy.png')}/>
+                        </TouchableOpacity>
+                        {fileUrl && fileUrl.length > 0 ?
+                            <TouchableOpacity onPress={() => this.play()}>
+                                <LoadImage style={{width: 20, height: 20, marginLeft: 10}}
+                                           defaultImg={require('../../static/images/icon_s.png')}/>
+                            </TouchableOpacity>
+                            : null}
+
+                    </Flex>
+                    <Flex justify={'start'} align={'start'} style={{width: ScreenUtil.deviceWidth()}}>
+                        <Flex wrap={'wrap'}>
+                            {images.map((item, index) => {
+                                return (
+                                    <TouchableWithoutFeedback key={index} onPress={() => {
+                                        if (index === images.length - 1 && item.icon.length === 0) {
+                                            this.selectImages();
+                                        }
+                                    }}>
+                                        <View style={{
+                                            paddingLeft: 15,
+                                            paddingRight: 5,
+                                            paddingBottom: 10,
+                                            paddingTop: 10,
+                                        }}>
+                                            <LoadImage style={{width: width, height: height}}
+                                                       defaultImg={require('../../static/images/add_pic.png')}
+                                                       img={item.icon}/>
+                                        </View>
+                                    </TouchableWithoutFeedback>
+                                );
+                            })}
                         </Flex>
                     </Flex>
-                    <Flex justify={'center'} align={'start'} style={{
-                        height: 80,
-                        backgroundColor: '#eee',
-                        width: '100%',
-                        marginTop: 20,
-                        flex: 1,
-                        paddingTop: 40,
-                    }}>
-                        <Button style={{width: '90%'}} type="primary" onPress={() => this.submit()}>确定</Button>
-                    </Flex>
+                </Flex>
+                <Flex justify={'center'} align={'start'} style={{
+                    height: 80,
+                    backgroundColor: '#eee',
+                    width: '100%',
+                    marginTop: 20,
+                    flex: 1,
+                    paddingTop: 40,
+                }}>
+                    <Button style={{width: '90%'}} type="primary" onPress={() => this.submit()}>确定</Button>
+                </Flex>
                 {/*</ScrollView>*/}
             </CommonView>
         );
     }
 }
+
+const mapStateToProps = ({memberReducer, xunJianReducer}) => {
+
+    return {
+        hasNetwork: memberReducer.hasNetwork,
+        ...xunJianReducer,
+    };
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        saveXunJianAction(data) {
+            dispatch(saveXunJianAction(data));
+        },
+
+    };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(AddWorkPage);
+
 
 const styles = StyleSheet.create({
     header: {

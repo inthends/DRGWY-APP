@@ -12,7 +12,8 @@ import SelectImage from '../../../utils/select-image';
 import XunJianService from './xunjian-service';
 import common from '../../../utils/common';
 import {connect} from 'react-redux';
-import {saveUser, saveXunJian,saveXunJianAction} from '../../../utils/store/actions/actions';
+import {saveUser, saveXunJian, saveXunJianAction} from '../../../utils/store/actions/actions';
+import UDToast from '../../../utils/UDToast';
 
 class StartXunJianPage extends BasePage {
     static navigationOptions = ({navigation}) => {
@@ -42,7 +43,7 @@ class StartXunJianPage extends BasePage {
     }
 
     componentDidMount(): void {
-        const {id, pointId,item} = this.state;
+        const {id, pointId, item} = this.state;
 
         if (this.props.hasNetwork) {
             XunJianService.xunjianAddress(pointId).then(address => {
@@ -52,7 +53,7 @@ class StartXunJianPage extends BasePage {
                 });
             });
         } else {
-            this.setState({data:item,address:{allName:item.allName}});
+            this.setState({data: item, address: {allName: item.allName, id: item.pointId}});
         }
 
         this.viewDidAppear = this.props.navigation.addListener(
@@ -70,7 +71,7 @@ class StartXunJianPage extends BasePage {
     }
 
     selectImages = () => {
-        SelectImage.select(this.state.id, '/api/MobileMethod/MUploadPollingTask',false).then(res => {
+        SelectImage.select(this.state.id, '/api/MobileMethod/MUploadPollingTask', this.props.hasNetwork).then(res => {
             console.log(1122, res);
             let images = [...this.state.images];
             images.splice(images.length - 1, 0, {'icon': res});
@@ -92,7 +93,7 @@ class StartXunJianPage extends BasePage {
     };
 
     submit(status) {
-        const {id, person, address,item} = this.state;
+        const {id, person, address, item} = this.state;
         if (this.props.hasNetwork) {
             XunJianService.xunjianExecute(id, status, person.id, person.name).then(res => {
                 if (status === 1) {
@@ -106,15 +107,33 @@ class StartXunJianPage extends BasePage {
                     });
                 }
             });
-        }else {
+        } else {
+            let images = this.state.images.filter(item => item.icon.fileUri && item.icon.fileUri.length > 0);
+            this.props.saveXunJianAction({
+                [item.taskId]: {
+                    xunjianParams: {
+                        keyValue: item.taskId,
+                        pointStatus: status,
+                        userId: person.id,
+                        userName: person.name,
+                    },
+                    idForUploadImage: item.taskId,
+                    status,
+                    images,
+                    address,
+                },
+            });
             if (status === 1) {
-                let images = this.state.images.filter(item=>item.uri&&item.uri.length> 0);
-                this.props.saveXunJianAction({
-                    [item.taskId]: {
-                        status,
-                        images
-                    }
-                })
+                UDToast.showSuccess('已保存，稍后可在我的-设置中同步巡检数据');
+                this.props.navigation.goBack();
+            } else {
+                this.needBack = true;
+                this.props.navigation.push('addTaskWork', {
+                    data: {
+                        taskId: item.taskId,
+                        address,
+                    },
+                });
             }
         }
 
@@ -208,10 +227,10 @@ const styles = StyleSheet.create({
 
 });
 
-const mapStateToProps = ({memberReducer,xunJianReducer}) => {
+const mapStateToProps = ({memberReducer, xunJianReducer}) => {
 
     return {
-        hasNetwork:memberReducer.hasNetwork,
+        hasNetwork: memberReducer.hasNetwork,
     };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -222,4 +241,4 @@ const mapDispatchToProps = (dispatch) => {
 
     };
 };
-export default connect(mapStateToProps,mapDispatchToProps)(StartXunJianPage);
+export default connect(mapStateToProps, mapDispatchToProps)(StartXunJianPage);

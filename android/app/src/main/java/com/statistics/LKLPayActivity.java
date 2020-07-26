@@ -115,8 +115,7 @@ public class LKLPayActivity extends Activity {
 
 
     public Intent setComponent() {
-        ComponentName component = new ComponentName("com.lkl.cloudpos.payment",
-                "com.lkl.cloudpos.payment.activity.MainMenuActivity");
+        ComponentName component = new ComponentName("com.lkl.cloudpos.payment", "com.lkl.cloudpos.payment.activity.MainMenuActivity");
         Intent intent = new Intent();
         intent.setComponent(component);
         return intent;
