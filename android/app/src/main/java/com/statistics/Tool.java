@@ -3,6 +3,7 @@ package com.statistics;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 
 public class Tool {
     public static String getPackageName(Context context) {
@@ -31,5 +32,8 @@ public class Tool {
             e.printStackTrace();
         }
         return versionName;
+    }
+    public static String getDeviceName() {
+        return Build.BRAND;
     }
 }

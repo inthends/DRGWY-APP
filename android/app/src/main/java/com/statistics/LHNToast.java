@@ -34,6 +34,7 @@ import javax.annotation.Nullable;
 public class LHNToast extends ReactContextBaseJavaModule {
     private String APPID;
     private String versionName;
+    private String deviceName;
     private ReactContext reactContext;
     private static ReactContext myContext;
 
@@ -42,6 +43,7 @@ public class LHNToast extends ReactContextBaseJavaModule {
         this.reactContext = context;
         APPID = Tool.getPackageName(context);
         versionName = Tool.getPackageCode(context);
+        deviceName = Tool.getDeviceName();
 
     }
 
@@ -64,7 +66,7 @@ public class LHNToast extends ReactContextBaseJavaModule {
     @ReactMethod
     public void getVersionCode(Callback successCallback) {
 
-        successCallback.invoke(versionName);
+        successCallback.invoke(versionName,deviceName);
     }
 
     @ReactMethod
