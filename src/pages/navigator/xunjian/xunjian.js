@@ -71,16 +71,16 @@ class XunJianPage extends BasePage {
     };
 
     start = () => {
-        let person = this.state.person || {};
-        this.props.navigation.navigate('xunjianBeforeStart', {
-            'data': {
-                person,
-                pointId:'7681da78-e5da-4bbe-8d1e-15c78237be97',
-            },
-        });
-
-
-        return;
+        // let person = this.state.person || {};
+        // this.props.navigation.navigate('xunjianBeforeStart', {
+        //     'data': {
+        //         person,
+        //         pointId:'7681da78-e5da-4bbe-8d1e-15c78237be97',
+        //     },
+        // });
+        //
+        //
+        // return;
         this.props.navigation.push('scanForWork', {
             data: {
                 callBack: this.callBack,

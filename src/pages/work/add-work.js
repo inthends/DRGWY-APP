@@ -166,7 +166,7 @@ class AddWorkPage extends BasePage {
             return;
         }
         this.canSubmit = false;
-        const {id, data, index, address, value} = this.state;
+        const {id, data, index, address, value,taskId} = this.state;
         if (!address) {
             const title = '请选择' + data[index] + '地址';
             UDToast.showInfo(title);
@@ -183,7 +183,8 @@ class AddWorkPage extends BasePage {
             isAdd: true,
             taskId: this.state.taskId,
         };
-        if (this.props.hasNetwork) {
+
+        if (this.props.hasNetwork || !taskId) {
             WorkService.saveForm(params).then(res => {
                 UDToast.showInfo('提交成功', true);
                 setTimeout(() => {

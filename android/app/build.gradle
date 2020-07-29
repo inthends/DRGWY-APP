@@ -228,5 +228,5 @@ task myUploadApkTask(type: Exec) {
 //Android Gradle plugin to version 2.2.0 and Gradle to version 2.14.1.
 task myBuild() {
     dependsOn 'assembleRelease'
-    //dependsOn 'myUploadApkTask'
+    dependsOn 'myUploadApkTask'
 }
