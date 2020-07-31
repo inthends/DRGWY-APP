@@ -124,14 +124,21 @@ class FeeDetailPage extends BasePage {
             },
         );
 
-        //判断是否是银盛POS或者拉卡拉POS机
-        NativeModules.LHNToast.getPOSType((isLKL, isYse) => {
-            this.setState({
-                isLKL: isLKL,
-                isYse: isYse
-            });
-        });
 
+
+        if (!common.isIOS()) {
+
+            //判断是否是银盛POS或者拉卡拉POS机
+            NativeModules.LHNToast.getPOSType((isLKL, isYse) => {
+                this.setState({
+                    isLKL: isLKL,
+                    isYse: isYse
+                });
+            });
+
+        } else {
+           //方法待实现
+        }
     }
 
     componentWillUnmount(): void {
@@ -587,7 +594,7 @@ class FeeDetailPage extends BasePage {
                                     <Flex justify={'center'} style={styles.ii}>
                                         <Text style={styles.word}>刷卡</Text>
                                     </Flex>
-                                </TouchableWithoutFeedback> : null} 
+                                </TouchableWithoutFeedback> : null}
 
                         </Flex>
                     </Flex>
