@@ -147,9 +147,8 @@ public class LHNPrintActivity extends BaseLKLActivity {
 
                 @Override
                 public void onPrintFinish() throws RemoteException {
-                    showMessage("打印位图成功");
-                    printImage = true;
-
+                    // showMessage("打印位图成功");
+                    printImage = true; 
                 }
 
                 @Override
@@ -245,7 +244,7 @@ public class LHNPrintActivity extends BaseLKLActivity {
                     add(new PrintItemObj("支付渠道：" + payType, medium));
                     add(new PrintItemObj("订单号：" + tradeNo, medium));
                     add(new PrintItemObj("收款人：" + username, medium));
-                    add(new PrintItemObj("日期/时间：" + billDate, medium));
+                    add(new PrintItemObj("收款日期：" + billDate, medium));
                     add(new PrintItemObj("实付金额：" + amount, medium, false, PrintItemObj.ALIGN.LEFT, false, false, 20));
                     add(new PrintItemObj("付款明细", medium, false, PrintItemObj.ALIGN.LEFT, false, false, 20));
                     add(new PrintItemObj("--------------------------------", medium));
@@ -270,8 +269,7 @@ public class LHNPrintActivity extends BaseLKLActivity {
                 public void onPrintFinish() throws RemoteException {
                     Thread thread = Thread.currentThread();
                     printText = true;
-                    showMessage("打印完成");
-
+                    showMessage("打印完成"); 
                 }
 
                 @Override

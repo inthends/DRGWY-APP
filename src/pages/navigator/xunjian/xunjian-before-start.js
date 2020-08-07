@@ -12,8 +12,10 @@ import common from '../../../utils/common';
 import {connect} from 'react-redux';
 
 
+
 class XunjianBeforeStart extends BasePage {
     static navigationOptions = ({navigation}) => {
+
 
 
         return {
@@ -61,7 +63,7 @@ class XunjianBeforeStart extends BasePage {
 
     initUI(showLoading = true) {
         const {pointId} = this.state;
-        console.log(321, this.state);
+        //console.log(321, this.state);
         XunJianService.xunjianPointTasks(pointId, showLoading).then(items => {
             this.setState({items});
         });
@@ -92,7 +94,7 @@ class XunjianBeforeStart extends BasePage {
                                                       })}>
                                 <Flex direction='column' align={'start'}
                                       style={[styles.card, {borderLeftColor: Macro.work_blue, borderLeftWidth: 5}]}>
-                                    <Text style={styles.title}>{item.tName}</Text>
+                                    <Text style={styles.title}>{item.pName}</Text>
                                     <Flex style={styles.line}/>
                                     <Flex>
                                         <Flex style={{width: '100%'}}>
