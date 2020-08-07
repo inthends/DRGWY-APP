@@ -35,6 +35,7 @@ class App extends Component<Props> {
 
     componentDidMount() {
         JPush.init();
+
         //连接状态
         this.connectListener = result => {
             // console.log('connectListener:' + JSON.stringify(result));

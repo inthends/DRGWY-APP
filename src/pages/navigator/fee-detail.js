@@ -307,6 +307,7 @@ class FeeDetailPage extends BasePage {
     changeItem = item => {
         const { isML, mlType, mlScale, type } = this.state;
         if (type === '已收') {
+            console.log(1122,item);
             this.props.navigation.push('charge', { data: item });
 
         } else {
@@ -461,7 +462,7 @@ class FeeDetailPage extends BasePage {
 
                                         {/* <Text style={{ fontSize: 16 }}>{type === '已收' ?
                                             item.billCode :
-                                            item.feeName 
+                                            item.feeName
                                         }</Text> */}
 
                                         {type === '已收' ? <Text style={{ fontSize: 16 }}>{item.billCode}</Text> :
@@ -587,7 +588,7 @@ class FeeDetailPage extends BasePage {
                                     <Flex justify={'center'} style={styles.ii}>
                                         <Text style={styles.word}>刷卡</Text>
                                     </Flex>
-                                </TouchableWithoutFeedback> : null} 
+                                </TouchableWithoutFeedback> : null}
 
                         </Flex>
                     </Flex>

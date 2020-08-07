@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
     Linking, Alert,
-    ScrollView,
+    ScrollView, NativeModules,
 } from 'react-native';
 import BasePage from '../base/base';
 import { Button, Checkbox, Flex, Icon, List, WhiteSpace } from '@ant-design/react-native';
@@ -35,6 +35,17 @@ class FeeChargeDetail extends BasePage {
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
+            headerRight: (
+                <TouchableOpacity onPress={navigation.state.params.print}>
+                    <Text style={{
+                        fontSize: 16,
+                        paddingLeft: 15,
+                        paddingRight: 15,
+                        paddingTop: 10,
+                        paddingBottom: 10,
+                    }}>补打小票</Text>
+                </TouchableOpacity>
+            ),
         };
     };
 
@@ -45,6 +56,18 @@ class FeeChargeDetail extends BasePage {
             data,
             items: [],
         };
+        this.props.navigation.setParams({
+            print: this.print,
+        });
+    }
+    print = () => {
+        const {data} = this.state;
+        NavigatorService.printInfo(data.out_trade_no).then(res => {
+            NativeModules.LHNToast.printTicket({
+                ...res,
+                username: this.props.userInfo && this.props.userInfo.username,
+            });
+        });
     }
 
     componentDidMount(): void {
