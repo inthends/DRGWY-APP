@@ -248,9 +248,10 @@ const styles = StyleSheet.create({
     },
 });
 
-const mapStateToProps = ({ buildingReducer }) => {
+const mapStateToProps = ({ memberReducer,buildingReducer }) => {
     return {
         selectBuilding: buildingReducer.selectBuilding,
+        userInfo: memberReducer.userInfo
     };
 };
 export default connect(mapStateToProps)(FeeChargeDetail);
