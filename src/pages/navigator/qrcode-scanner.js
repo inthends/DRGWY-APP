@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 import {
     StyleSheet,
@@ -11,9 +11,9 @@ import {
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import common from '../../utils/common';
 import NavigatorService from './navigator-service';
-import {Flex} from '@ant-design/react-native';
+import { Flex } from '@ant-design/react-native';
 import Macro from '../../utils/macro';
-import {RNCamera} from 'react-native-camera';
+import { RNCamera } from 'react-native-camera';
 import UDToast from '../../utils/UDToast';
 
 export default class ScanScreen extends Component {
@@ -63,7 +63,8 @@ export default class ScanScreen extends Component {
             },
         ).start(() => this.startAnimation());
     };
-    //  识别二维码
+
+    //识别二维码
     onBarCodeRead = (result) => {
         if (this.state.result) {
             return;
@@ -74,8 +75,12 @@ export default class ScanScreen extends Component {
             result,
         }, () => {
             let ids = common.getValueFromProps(this.props);
+            //抹零 neo add
+            let isML = common.getValueFromProps(this.props, 'isML');
+            let mlAmount = common.getValueFromProps(this.props, 'mlAmount');
+
             let callBack = common.getValueFromProps(this.props, 'callBack');
-            NavigatorService.createOrder(ids).then(res => {
+            NavigatorService.createOrder(ids, isML, mlAmount).then(res => {
                 NavigatorService.scanPay(result.data, res.out_trade_no).then(resp => {
                     if (resp === 'need_query') {
                         this.needQuery(res);
@@ -124,9 +129,9 @@ export default class ScanScreen extends Component {
                         callBack(res.out_trade_no);
                         this.props.navigation.goBack();
                     } else {
-                        setTimeout(()=>{
+                        setTimeout(() => {
                             this.needQuery(res);
-                        },5000);
+                        }, 5000);
                     }
                 }).catch(res => {
                     UDToast.hiddenLoading(this.showLoadingNumber);
@@ -163,10 +168,10 @@ export default class ScanScreen extends Component {
                     onBarCodeRead={this.onBarCodeRead}
                 >
                     <View style={styles.rectangleContainer}>
-                        <View style={styles.rectangle}/>
+                        <View style={styles.rectangle} />
                         <Animated.View style={[
                             styles.border,
-                            {transform: [{translateY: this.state.moveAnim}]}]}/>
+                            { transform: [{ translateY: this.state.moveAnim }] }]} />
                         <Text style={styles.rectangleText}>将二维码放入框内，即可自动扫描</Text>
                     </View>
                 </RNCamera>
