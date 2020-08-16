@@ -237,7 +237,6 @@ class SettingPage extends BasePage {
                             <Text style={{color: Macro.work_blue, fontSize: 16}}>退出登录</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-
                 </List>
             </View>
         );

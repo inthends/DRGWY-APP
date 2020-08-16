@@ -62,7 +62,7 @@ class FeeChargeDetail extends BasePage {
     }
     print = () => {
         const {data} = this.state;
-        NavigatorService.printInfo(data.out_trade_no).then(res => {
+        NavigatorService.RePrintInfo(data.billId).then(res => {
             NativeModules.LHNToast.printTicket({
                 ...res,
                 username: this.props.userInfo && this.props.userInfo.username,

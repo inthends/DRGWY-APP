@@ -158,7 +158,7 @@ export default {
     qrcodePay(tbout_trade_no) {
         return api.postData('/api/MobileMethod/WFTPay', {tbout_trade_no});
     },
-    
+
     // cashPay(linkId) {
     //     return api.postData('/api/MobileMethod/MCharge', {linkId});
     // },
@@ -177,6 +177,9 @@ export default {
 
     printInfo(out_trade_no) {
         return api.getData('/api/MobileMethod/MGetPrintInfo', {out_trade_no});
+    },
+    RePrintInfo(billId) {
+        return api.getData('/api/MobileMethod/MGetRePrintInfo', {billId});
     },
 
     getFeeItemTreeJson(unitId) {
