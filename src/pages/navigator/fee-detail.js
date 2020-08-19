@@ -137,7 +137,7 @@ class FeeDetailPage extends BasePage {
             });
 
         } else {
-           //方法待实现
+            //方法待实现
         }
     }
 
@@ -203,6 +203,8 @@ class FeeDetailPage extends BasePage {
                         else {
                             this.props.navigation.push('scan', {
                                 data: ids,
+                                isML: isML,
+                                mlAmount: mlAmount,
                                 callBack: this.callBack,
                                 printAgain: false,
                             });
