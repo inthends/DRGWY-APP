@@ -93,6 +93,7 @@ const BuildingNavigator = createStackNavigator({
     scanForHome: ScanOnly,
     newsList: NewsList,
     feeAdd: FeeAddPage,
+    feeDetail: FeeDetailPage,
 }, {
 
     containerOptions: (options) => {
@@ -173,7 +174,7 @@ navigatorNavigator.navigationOptions = ({navigation}) => ({
 const WorkNavigator = createStackNavigator({
     // select: SelectAddressPage,
     // AddWork: AddWorkPage,
-    // Task: TaskListPage, 
+    // Task: TaskListPage,
     Work: {
         screen: WorkPage,
         navigationOptions: () => ({

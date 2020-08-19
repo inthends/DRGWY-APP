@@ -20,7 +20,7 @@ export default class BuildingCell extends BasePage {
     componentDidMount(): void {
 
     }
-
+// <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('feeDetail',{})}>
 //DetailBuilding
     render() {
         const {item} = this.props;
