@@ -152,13 +152,12 @@ public class LHNToast extends ReactContextBaseJavaModule {
                     case "拉卡拉": {
                         // bundle是 拉卡拉支付参数
                         bundle.putString("msg_tp", "0200");
-                        bundle.putString("pay_tp", "0");
+                        bundle.putString("pay_tp", order.getString("pay_tp"));
                         bundle.putString("proc_tp", "00");
-                        bundle.putString("proc_cd", "000000");
-                        bundle.putInt("transType", order.getInt("transType"));
-                        bundle.putString("appid", APPID);
+                        bundle.putString("proc_cd", order.getString("proc_cd"));
                         bundle.putString("amt", order.getString("amt"));
                         bundle.putString("order_no", order.getString("order_no"));
+                        bundle.putString("appid", APPID);
                         bundle.putString("notify_url", order.getString("notify_url"));
                         bundle.putString("time_stamp", DateTimeUtil.getCurrentDate("yyyyMMddhhmmss"));
                         bundle.putString("order_info", order.getString("order_info"));

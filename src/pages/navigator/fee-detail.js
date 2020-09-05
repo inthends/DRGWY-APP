@@ -187,7 +187,7 @@ class FeeDetailPage extends BasePage {
         NavigatorService.printInfo(out_trade_no).then(res => {
             NativeModules.LHNToast.printTicket({
                 ...res,
-                username: this.props.userInfo && this.props.userInfo.username,
+                username: res.userName,
             });
         });
     };
@@ -210,7 +210,8 @@ class FeeDetailPage extends BasePage {
                         NavigatorService.createOrder(ids, isML, mlAmount).then(res => {
                             NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
                                 ...res,
-                                transType: 101, //消费
+                                "proc_cd": "000000", //拉卡拉消费
+                                "pay_tp":"0",
                             });
                         });
                     }
@@ -236,7 +237,14 @@ class FeeDetailPage extends BasePage {
                                     transType: 1070, //pos机扫顾客
                                 });
                             }
-                        } else {
+                        } else if (posType === '拉卡拉'){
+                            NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
+                                ...res,
+                                "proc_cd": "660000", //拉卡拉消费
+                                "pay_tp":"1",
+
+                            });
+                        } else if (posType === '威富通'){
                             this.props.navigation.push('scan', {
                                 data: ids,
                                 isML: isML,
@@ -266,7 +274,14 @@ class FeeDetailPage extends BasePage {
                                     transType: 1054, //顾客扫pos机
                                 });
                             }
-                        } else {
+                        } else if (posType === '拉卡拉'){
+                            NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
+                                ...res,
+                                "proc_cd": "710000", //拉卡拉消费
+                                "pay_tp":"1",
+
+                            });
+                        } else if (posType === '威富通'){
                             NavigatorService.qrcodePay(res.out_trade_no).then(code => {
                                 this.setState({
                                     visible: true,
@@ -317,7 +332,7 @@ class FeeDetailPage extends BasePage {
                 NavigatorService.cashPayPrint(ids).then(res => {
                     NativeModules.LHNToast.printTicket({
                         ...res,
-                        username: this.props.userInfo && this.props.userInfo.username,
+                        username: res.userName,
                     });
                 });
             }
@@ -439,7 +454,7 @@ class FeeDetailPage extends BasePage {
         NavigatorService.printInfo(out_trade_no).then(res => {
             NativeModules.LHNToast.printTicket({
                 ...res,
-                username: this.props.userInfo && this.props.userInfo.username,
+                username: res.userName,
             });
         });
     };
@@ -578,16 +593,16 @@ class FeeDetailPage extends BasePage {
     dateonChange = (value) => {
         console.log(11,value)
 
-        this.setState({
-            chaifeiDate: value,
-        })
+        // this.setState({
+        //     chaifeiDate: value,
+        // })
     }
 
     render() {
         const {dataInfo, type, room, price, mlAmount} = this.state;
         return (
             <CommonView style={{flex: 1}}>
-                <ScrollView>
+                <ScrollView onScrollBeginDrag={()=>console.log('onScrollBeginDrag')}>
                     <Text
                         style={{paddingLeft: 10, paddingTop: 10, fontSize: 20}}>{room.allName} {room.tenantName}</Text>
                     <TwoChange onChange={this.typeOnChange}/>
@@ -714,25 +729,7 @@ class FeeDetailPage extends BasePage {
                         }} item={this.state.selectItem}/>
                     </Flex>
                 </Modal>
-                {/*<Modal*/}
-                {/*    transparent*/}
-                {/*    onClose={() => this.setState({chaifeiAlert: false})}*/}
-                {/*    onRequestClose={() => this.setState({chaifeiAlert: false})}*/}
-                {/*    maskClosable*/}
-                {/*    className={'chaifeifei'}*/}
-                {/*    visible={this.state.chaifeiAlert}>*/}
 
-                {/*    <Flex  justify={'center'} align={'center'}>*/}
-                {/*        <ChaiFei*/}
-                {/*            onClose={() => {*/}
-                {/*                this.setState({chaifeiAlert: false});*/}
-                {/*                this.onRefresh();*/}
-                {/*            }}*/}
-                {/*            showP={showPicker=>this.setState({showPicker})}*/}
-                {/*            item={this.state.selectItem}/>*/}
-                {/*    </Flex>*/}
-
-                {/*</Modal>*/}
                 {
                     this.state.chaifeiAlert && (
                         <TouchableWithoutFeedback onPress={()=>this.setState({chaifeiAlert: false})}>
@@ -758,22 +755,20 @@ class FeeDetailPage extends BasePage {
                 {
                     this.state.showPicker &&
                     <TouchableWithoutFeedback onPress={()=>{
-                        this.setState({
-                            showPicker: false,
-                        })
+                        // this.setState({
+                        //     showPicker: false,
+                        // })
                     }}>
 
                             <View style={styles.pp} >
-                               <Provider>
                                 <DatePickerView
                                     mode={'date'}
                                     style={styles.dd}
                                     value={this.state.chaifeiDate}
-                                    onChange={this.dateonChange}
+                                    // onChange={this.dateonChange}
                                     minDate={new Date(this.state.selectItem.beginDate)}
                                     maxDate={new Date(new Date(this.state.selectItem.endDate).getTime() - 24*60*60*1000)}
                                 />
-                               </Provider>
                             </View>
                     </TouchableWithoutFeedback>
 
@@ -914,7 +909,7 @@ const styles = StyleSheet.create({
         right: 0,
         top: 0,
         bottom: 0,
-        zIndex: 99,
+        // zIndex: 99,
     },
     c: {
         display: 'flex',
@@ -922,13 +917,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     dd: {
-        position: 'absolute',
+        // position: 'absolute',
         left: 0,
         right: 0,
         bottom: 0,
         width:'100%',
         backgroundColor:'white',
-        height:200,
+        overflow:'scroll'
 
     }
 });

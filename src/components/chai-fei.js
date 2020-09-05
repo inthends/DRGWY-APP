@@ -12,7 +12,6 @@ import {
     List,
     Icon,
     TextareaItem,
-    DatePicker,
 } from '@ant-design/react-native';
 import LoadImage from './load-image';
 import ScreenUtil from '../utils/screen-util';
@@ -23,6 +22,7 @@ import selectImage from '../static/images/select.png';
 import unselectImage from '../static/images/no-select.png';
 import CommonView from './CommonView';
 import api from '../utils/api';
+import DatePicker from 'react-native-datepicker'
 
 
 export default class ChaiFei extends BasePage {
@@ -34,6 +34,7 @@ export default class ChaiFei extends BasePage {
             money: '',
             memo: '',
             last:'',
+            a:this.props.item.beginDate,
         };
 
         console.log(112,this.props.item)
@@ -42,19 +43,15 @@ export default class ChaiFei extends BasePage {
 
 
     in = () => {
-        const {money, memo,last} = this.state;
-        const {item,chaifeiDate} = this.props;
+        let {money, memo,last,a} = this.state;
+        const {item} = this.props;
         if (!money) {
             UDToast.showError('请输入金额');
             return;
         }
 
-        let a = '';
-        let b = '';
+        let b = new Date(new Date(a).getTime() + 24*60*60*1000).getYearAndMonthAndDay();
 
-        let aaa = new Date(chaifeiDate.getTime() + 24*60*60*1000);
-        a = chaifeiDate.getYearAndMonthAndDay();
-        b = aaa.getYearAndMonthAndDay();
 
         let data = {
             FirstAmount: money,
@@ -92,14 +89,14 @@ unitId: "FY-XHF-01-0401"
 
     render() {
 
-        const {item,chaifeiDate} = this.props;
-        let a = '';
-        let b = '';
+        const {item} = this.props;
+        const {a} = this.state;
+
+       let b = new Date(new Date(a).getTime() + 24*60*60*1000)
 
 
-            let aaa = new Date(chaifeiDate.getTime() + 24*60*60*1000);
-            a = chaifeiDate.getYearAndMonthAndDay();
-            b = aaa.getYearAndMonthAndDay();
+
+
 
 
 
@@ -127,9 +124,31 @@ unitId: "FY-XHF-01-0401"
                                     <Text>
                                         至
                                     </Text>
-                                    <Text onPress={()=>this.props.showP(true)} style={styles.enable}>
-                                        {a}
-                                    </Text>
+                                    {/*<Text onPress={()=>this.props.showP(true)} style={styles.enable}>*/}
+                                    {/*    {a}*/}
+                                    {/*</Text>*/}
+                                    <DatePicker
+                                        style={{width: 105}}
+                                        date={a}
+                                        mode="date"
+                                        placeholder="select date"
+                                        format="YYYY-MM-DD"
+                                        minDate={item.beginDate}
+                                        maxDate={new Date(new Date(item.endDate).getTime() - 24*60*60*1000)}
+                                        showIcon={false}
+                                        customStyles={{
+                                            dateIcon: {
+                                                display:'none'
+                                                // position: 'absolute',
+                                                // left: 0,
+                                                // top: 4,
+                                                // marginLeft: 0
+                                            },
+                                            dateInput: styles.enable
+                                            // ... You can check the source to find the other keys.
+                                        }}
+                                        onDateChange={(a) => {this.setState({a: a})}}
+                                    />
 
 
 
@@ -147,7 +166,7 @@ unitId: "FY-XHF-01-0401"
                                 value={this.state.money}
                                 keyboardType={'decimal-pad'}
                                 onChangeText={money => {
-                                    if (!isNaN(money)) {
+                                    if (!isNaN(money) && money >= 0 && money <= item.amount) {
                                         this.setState({money,last:(item.amount-money).toFixed(2)})
                                     }
                                 }} style={styles.input}
@@ -165,7 +184,7 @@ unitId: "FY-XHF-01-0401"
                         <Flex align={'start'} style={{width:'100%'}}>
                             <Flex justify={'between'} style={{width:'100%'}}>
                                 <Text style={styles.unenable}>
-                                    {b}
+                                    {b.getYearAndMonthAndDay()}
                                 </Text>
                                 <Text>
                                     至
@@ -267,8 +286,7 @@ const styles = StyleSheet.create({
         fontSize:17,
         color:'#333',
         backgroundColor:'#fff',
-        paddingLeft: 10,
-        paddingRight:10,
+
         paddingTop:6,
         paddingBottom:6,
         borderRadius: 10,

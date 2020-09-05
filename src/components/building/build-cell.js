@@ -25,8 +25,8 @@ export default class BuildingCell extends BasePage {
     render() {
         const {item} = this.props;
         return (
-            <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('feeDetail',{})}>
-            {/*<TouchableWithoutFeedback onPress={() => this.props.navigation.navigate(this.props.nextRouteName, {data: item})}>*/}
+            // <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('feeDetail',{})}>
+            <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate(this.props.nextRouteName, {data: item})}>
                 <View style={styles.content}>
                     <Flex direction="row">
                         <Flex style={styles.left}>
