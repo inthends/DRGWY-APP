@@ -79,7 +79,7 @@ export default class JieDanListDetailPage extends BasePage {
                     statusName: detail.statusName,
                 },
             });
-            
+
             //获取维修单的单据动态
             WorkService.getOperationRecord(fuwu.id).then(res => {
                 this.setState({
@@ -147,7 +147,7 @@ export default class JieDanListDetailPage extends BasePage {
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>{detail.address} {detail.contactName}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
-                            <Flex><LoadImage style={{width: 30, height: 30}}/></Flex>
+                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{width: 30, height: 30}}/></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
                     <DashLine/>

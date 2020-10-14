@@ -173,7 +173,7 @@ class EstateWeixiuPage extends BasePage {
                               style={{width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20}}>
                             <Text>{item.address} {item.contactName}</Text>
                             <TouchableWithoutFeedback onPress={() => common.call(item.contactLink)}>
-                                <Flex><LoadImage style={{width: 20, height: 20}}/></Flex>
+                                <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{width: 20, height: 20}}/></Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
                         <Text style={{
@@ -194,11 +194,11 @@ class EstateWeixiuPage extends BasePage {
         let billStatus;
         switch (title) {
             case '待派单': {
-                billStatus = 1; 
+                billStatus = 1;
                 break;
             }
             case '待接单': {
-                billStatus = 2; 
+                billStatus = 2;
                 break;
             }
             case '待完成': {

@@ -89,7 +89,7 @@ export default class HuiFangDetailPage extends BasePage {
     //                 communicates: res,
     //             });
     //         });
-    //     }); 
+    //     });
     //     //获取维修单附件
     //     WorkService.weixiuExtra(fuwu.id).then(images => {
     //         this.setState({
@@ -175,7 +175,7 @@ export default class HuiFangDetailPage extends BasePage {
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>{detail.address} {detail.contactName}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
-                            <Flex><LoadImage style={{ width: 30, height: 30 }} /></Flex>
+                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 30, height: 30 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
                     <DashLine />
@@ -191,7 +191,7 @@ export default class HuiFangDetailPage extends BasePage {
                             <Text style={styles.left}>关联单：</Text>
                             {/* <Text onPress={() => this.props.navigation.navigate('service', { data: { id: detail.relationId } })}
                                 style={[styles.right, { color: Macro.color_4d8fcc }]}>{detail.businessCode}</Text> */}
- 
+
                             <Text onPress={() => {
                                 if (detail.businessType === 'Repair') {
                                     this.props.navigation.navigate('weixiuView', { data: { id: detail.businessId } });

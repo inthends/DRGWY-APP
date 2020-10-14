@@ -9,7 +9,7 @@ import {
     StatusBar,
 } from 'react-native';
 import BasePage from '../base/base';
-import {Flex} from '@ant-design/react-native';
+import {Flex,Icon} from '@ant-design/react-native';
 import Macro from '../../utils/macro';
 import ScreenUtil from '../../utils/screen-util';
 import LoadImage from '../../components/load-image';
@@ -71,6 +71,45 @@ export default class MinePage extends BasePage {
                                        defaultImg={require('../../static/images/address/right.png')}/>
                         </Flex>
                     </TouchableWithoutFeedback>
+
+                    <TouchableWithoutFeedback onPress={() => this.props.navigation.push('jixiao')}>
+                        <Flex justify='between'
+                              style={[{
+                                  marginTop: 30,
+                                  paddingBottom: 20,
+                                  paddingLeft: 30,
+                                  paddingRight: 25,
+                              }, ScreenUtil.borderBottom()]}>
+                            <Flex>
+
+                                <LoadImage style={{width: 18, height: 18}}
+                                           defaultImg={require('../../static/images/img-kong.png')}/>
+                                <Text style={styles.item}>我的绩效</Text>
+                            </Flex>
+                            <LoadImage style={{width: 8, height: 15}}
+                                       defaultImg={require('../../static/images/address/right.png')}/>
+                        </Flex>
+                    </TouchableWithoutFeedback>
+
+                    <TouchableWithoutFeedback onPress={() => this.props.navigation.push('contact')}>
+                        <Flex justify='between'
+                              style={[{
+                                  marginTop: 30,
+                                  paddingBottom: 20,
+                                  paddingLeft: 30,
+                                  paddingRight: 25,
+                              }, ScreenUtil.borderBottom()]}>
+                            <Flex>
+
+                                <LoadImage style={{width: 18, height: 18}}
+                                           defaultImg={require('../../static/images/paiyipai.png')}/>
+                                <Text style={styles.item}>通讯录</Text>
+                            </Flex>
+                            <LoadImage style={{width: 8, height: 15}}
+                                       defaultImg={require('../../static/images/address/right.png')}/>
+                        </Flex>
+                    </TouchableWithoutFeedback>
+
                     <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Setting')}>
                         <Flex justify='between'
                               style={[{

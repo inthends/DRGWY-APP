@@ -26,3 +26,18 @@ render() {
     );
   }
 ```
+## 2 
+```
+node_modules/react-native/React/Base/RCTModuleMethod.mm
+
+
+static BOOL RCTParseUnused(const char **input)
+{
+  return RCTReadString(input, "__unused") ||
+  RCTReadString(input, "__attribute__((__unused__))") ||
+  RCTReadString(input, "__attribute__((unused))");
+}
+
+
+
+```

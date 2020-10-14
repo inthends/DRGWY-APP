@@ -132,7 +132,7 @@ export default class FuWuDanListDetailPage extends BasePage {
 
 
     render() {
-        const {images, detail, communicates} = this.state; 
+        const {images, detail, communicates} = this.state;
         return (
             <CommonView style={{flex: 1, backgroundColor: '#fff', paddingBottom: 10}}>
                 <ScrollView>
@@ -152,7 +152,7 @@ export default class FuWuDanListDetailPage extends BasePage {
                         <Flex style={[styles.every2]} justify='between'>
                             <Text style={styles.left}>报单人：{detail.contactName} {detail.createDate}</Text>
                             <TouchableWithoutFeedback onPress={() => common.call(detail.contactPhone)}>
-                                <Flex><LoadImage style={{width: 30, height: 30}}/></Flex>
+                                <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{width: 30, height: 30}}/></Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
 
@@ -161,7 +161,7 @@ export default class FuWuDanListDetailPage extends BasePage {
                         <TouchableWithoutFeedback>
                             <Flex style={[styles.every]}>
                                 <Text style={styles.left}>关联单：</Text>
-                                <Text   
+                                <Text
                                 onPress={()=>{
                                     let item = {
                                         ...detail,
@@ -192,11 +192,11 @@ export default class FuWuDanListDetailPage extends BasePage {
                                             this.props.navigation.navigate('huifang', {data: item});
                                             break;
                                         }
-                                        default: 
-                                            break; 
+                                        default:
+                                            break;
                                     }
-                                }} 
-                                
+                                }}
+
                                 style={[styles.right,{color:Macro.color_4d8fcc}]}>{detail.businessCode}</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
@@ -244,8 +244,8 @@ export default class FuWuDanListDetailPage extends BasePage {
                     <Communicates communicateClick={this.communicateClick} communicates={communicates}/>
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
-                    <ImageViewer index={this.state.lookImageIndex} 
-                    onCancel={this.cancel} 
+                    <ImageViewer index={this.state.lookImageIndex}
+                    onCancel={this.cancel}
                     onClick={this.cancel}
                     imageUrls={this.state.images}/>
                 </Modal>

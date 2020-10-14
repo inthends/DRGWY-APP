@@ -22,7 +22,7 @@ import CommonView from '../../../components/CommonView';
 
 
 class EstateFuwuPage extends BasePage {
-    static navigationOptions = ({ navigation }) => { 
+    static navigationOptions = ({ navigation }) => {
         //console.log(1, navigation);
         return {
             tabBarVisible: false,
@@ -181,7 +181,7 @@ class EstateFuwuPage extends BasePage {
                             style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>{item.contactName} {item.contactPhone}</Text>
                             <TouchableWithoutFeedback onPress={() => common.call(item.contactPhone)}>
-                                <Flex><LoadImage style={{ width: 15, height: 15 }} /></Flex>
+                                <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 15, height: 15 }} /></Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
                     </Flex>
@@ -241,7 +241,6 @@ class EstateFuwuPage extends BasePage {
         }, () => {
             this.onRefresh();
         });
-
     };
     billType = (billType) => {
         this.setState({

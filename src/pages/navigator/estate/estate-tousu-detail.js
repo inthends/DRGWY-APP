@@ -142,7 +142,7 @@ export default class EtousuDetailPage extends BasePage {
                         <Flex style={[styles.every2]} justify='between'>
                             <Text style={styles.left}>{detail.complaintAddress} {detail.complaintUser}</Text>
                             <TouchableWithoutFeedback onPress={() => common.call(detail.complaintLink)}>
-                            <Flex><LoadImage style={{width: 30, height: 30}}/></Flex>
+                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{width: 30, height: 30}}/></Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
 

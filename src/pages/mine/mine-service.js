@@ -13,4 +13,8 @@ export default {
     logout() {
         return api.postData('/api/MobileMethod/MLogout', {}, false);
     },
+    getMyAchievement(begin,end) {
+        return api.postData('/api/MobileMethod/MGetMyAchievement', {begin,end});
+    }
+
 };

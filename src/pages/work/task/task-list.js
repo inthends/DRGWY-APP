@@ -24,7 +24,7 @@ import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 
 class TaskListPage extends BasePage {
-    static navigationOptions = ({navigation}) => { 
+    static navigationOptions = ({navigation}) => {
         //console.log(1, navigation);
         return {
             tabBarVisible: false,
@@ -172,7 +172,7 @@ class TaskListPage extends BasePage {
                         }
                         default:
                             console.log(item);
-                            break; 
+                            break;
                     }
                 }
 
@@ -191,7 +191,7 @@ class TaskListPage extends BasePage {
                             <Text>{item.address} {item.contactName}</Text>
                             <TouchableWithoutFeedback
                                 onPress={() => common.call(item.contactLink || item.contactPhone)}>
-                                <Flex><LoadImage style={{width: 20, height: 20}}/></Flex>
+                                <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{width: 20, height: 20}}/></Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
                         <Text style={{

@@ -20,13 +20,15 @@ export default class BuildingCell extends BasePage {
     componentDidMount(): void {
 
     }
+    //louDetail shebeiDetail
 // <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('feeDetail',{})}>
 //DetailBuilding
     render() {
         const {item} = this.props;
         return (
             // <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('feeDetail',{})}>
-            <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate(this.props.nextRouteName, {data: item})}>
+            // <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('louDetail',{})}>
+             <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate(this.props.nextRouteName, {data: item})}>
                 <View style={styles.content}>
                     <Flex direction="row">
                         <Flex style={styles.left}>
