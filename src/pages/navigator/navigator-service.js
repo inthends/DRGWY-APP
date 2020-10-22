@@ -4,24 +4,24 @@ import common from '../../utils/common';
 
 export default {
     getFeeStatistics(pageIndex, OrganizeId, pageSize = 10) {
-        return api.postData('/api/MobileMethod/MGetFeeStatistics', {pageIndex, pageSize, OrganizeId});
+        return api.postData('/api/MobileMethod/MGetFeeStatistics', { pageIndex, pageSize, OrganizeId });
     },
     //楼栋或者车库
     getBuildings(keyValue) {
         // return api.getData('/api/MobileMethod/MGetPStructs', {keyValue, type: 2});
-        return api.getData('/api/MobileMethod/MGetFeePStructs', {keyValue, type: 2});
+        return api.getData('/api/MobileMethod/MGetFeePStructs', { keyValue, type: 2 });
     },
     //楼层
     getFloors(keyValue) {
-        return api.getData('/api/MobileMethod/MGetFeePStructs', {keyValue, type: 4});
+        return api.getData('/api/MobileMethod/MGetFeePStructs', { keyValue, type: 4 });
     },
     //车位
     getParkings(keyValue) {
-        return api.getData('/api/MobileMethod/MGetFeePStructs', {keyValue, type: 9});
+        return api.getData('/api/MobileMethod/MGetFeePStructs', { keyValue, type: 9 });
     },
     //房间
     getRooms(keyValue) {
-        return api.getData('/api/MobileMethod/MGetFeePStructs', {keyValue, type: 5});
+        return api.getData('/api/MobileMethod/MGetFeePStructs', { keyValue, type: 5 });
     },
 
     //账单
@@ -30,7 +30,7 @@ export default {
         if (type === '已收') {
             url = '/api/MobileMethod/MGetChargeBillList';
         }
-        return api.postData(url, {pageIndex, pageSize, unitId: id, isShow: isShow});
+        return api.postData(url, { pageIndex, pageSize, unitId: id, isShow: isShow });
     },
     //服务单
     serviceList(pageIndex, billStatus, treeType, organizeId, billType, startTime, endTime) {
@@ -135,71 +135,67 @@ export default {
             default:
                 break;
         }
-        return api.postData(url, {estateId, type});
+        return api.postData(url, { estateId, type });
     },
     // createOrder(linkId) {
     //     return api.postData('/api/MobileMethod/MCreateTradeno', {linkId});
     // },
 
     //创建预订单号
-    createOrder(linkId,isML,mlAmount) {
-        return api.postData('/api/MobileMethod/MCreateTradeno', {linkId,isML,mlAmount});
+    createOrder(linkId, isML, mlType, mlScale) {
+        return api.postData('/api/MobileMethod/MCreateTradeno', { linkId, isML, mlType, mlScale });
     },
 
     scanPay(auth_code, tbout_trade_no) {
-        return api.postData('/api/MobileMethod/WFTScanPay', {auth_code, tbout_trade_no});
+        return api.postData('/api/MobileMethod/WFTScanPay', { auth_code, tbout_trade_no });
     },
     scanPayQuery(tbout_trade_no) {
-        return api.postData('/api/MobileMethod/WFTScanPayQuery', {tbout_trade_no},false);
+        return api.postData('/api/MobileMethod/WFTScanPayQuery', { tbout_trade_no }, false);
     },
     scanPayReserve(tbout_trade_no) {
-        return api.postData('/api/MobileMethod/WFTScanPayReserve', {tbout_trade_no},false);
+        return api.postData('/api/MobileMethod/WFTScanPayReserve', { tbout_trade_no }, false);
     },
     qrcodePay(tbout_trade_no) {
-        return api.postData('/api/MobileMethod/WFTPay', {tbout_trade_no});
+        return api.postData('/api/MobileMethod/WFTPay', { tbout_trade_no });
     },
 
-    // cashPay(linkId) {
-    //     return api.postData('/api/MobileMethod/MCharge', {linkId});
-    // },
-
     //现金收款
-    cashPay(linkId,isML,mlAmount) {
-        return api.postData('/api/MobileMethod/MCharge', {linkId,isML,mlAmount});
+    cashPay(linkId, isML, mlType, mlScale) {
+        return api.postData('/api/MobileMethod/MCharge', { linkId, isML, mlType, mlScale });
     },
 
     cashPayPrint(linkId) {
-        return api.postData('/api/MobileMethod/MGetCashPrintInfo', {linkId});
+        return api.postData('/api/MobileMethod/MGetCashPrintInfo', { linkId });
     },
     orderStatus(out_trade_no) {
-        return api.postData('/api/MobileMethod/WFTPayResult', {out_trade_no}, false);
+        return api.postData('/api/MobileMethod/WFTPayResult', { out_trade_no }, false);
     },
 
     printInfo(out_trade_no) {
-        return api.getData('/api/MobileMethod/MGetPrintInfo', {out_trade_no});
+        return api.getData('/api/MobileMethod/MGetPrintInfo', { out_trade_no });
     },
     RePrintInfo(billId) {
-        return api.getData('/api/MobileMethod/MGetRePrintInfo', {billId});
+        return api.getData('/api/MobileMethod/MGetRePrintInfo', { billId });
     },
 
     getFeeItemTreeJson(unitId) {
-        return api.getData('/api/MobileMethod/GetFeeItemTreeJson', {unitId});
+        return api.getData('/api/MobileMethod/GetFeeItemTreeJson', { unitId });
     },
     getFeeItemDetail(unitId, feeItemId) {
-        return api.getData('/api/MobileMethod/GetFeeItemDetail', {unitId, feeItemId});
+        return api.getData('/api/MobileMethod/GetFeeItemDetail', { unitId, feeItemId });
     },
     saveFee(unitId, bills) {
-        return api.postData('/api/MobileMethod/SaveFee', {bills: JSON.stringify(bills)});
+        return api.postData('/api/MobileMethod/SaveFee', { bills: JSON.stringify(bills) });
     },
     invalidBillForm(keyValue) {
-        return api.postData('/api/MobileMethod/InvalidBillForm', {keyValue});
+        return api.postData('/api/MobileMethod/InvalidBillForm', { keyValue });
     },
     billDetailList(billId) {
-        return api.postData('/api/MobileMethod/MGetChargeBillDetailList', {billId});
+        return api.postData('/api/MobileMethod/MGetChargeBillDetailList', { billId });
     },
 
     //计算费用金额
-    CalFee(isML,mlType,mlScale,price,ids) {
-        return api.postData('/api/MobileMethod/MCalFee', {isML,mlType,mlScale,price,ids},false);
+    CalFee(isML, mlType, mlScale, ids) {
+        return api.postData('/api/MobileMethod/MCalFee', { isML, mlType, mlScale, ids }, false);
     },
 };

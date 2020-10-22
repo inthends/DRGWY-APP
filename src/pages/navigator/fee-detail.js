@@ -146,7 +146,6 @@ class FeeDetailPage extends BasePage {
     }
 
     callBack = (out_trade_no) => {
-
         NavigatorService.printInfo(out_trade_no).then(res => {
             NativeModules.LHNToast.printTicket({
                 ...res,
@@ -161,7 +160,7 @@ class FeeDetailPage extends BasePage {
             UDToast.showError('请选择');
         } else {
             let ids = JSON.stringify((items.map(item => item.id)));
-            const { isML, mlAmount } = this.state;
+            const { isML, mlType, mlScale } = this.state;
             switch (title) {
                 case '刷卡': {
 
@@ -170,7 +169,7 @@ class FeeDetailPage extends BasePage {
 
                     } else {
 
-                        NavigatorService.createOrder(ids, isML, mlAmount).then(res => {
+                        NavigatorService.createOrder(ids, isML, mlType, mlScale).then(res => {
                             NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
                                 ...res,
                                 transType: 101, //消费
@@ -181,19 +180,16 @@ class FeeDetailPage extends BasePage {
                 }
 
                 case '扫码': {
-                    NavigatorService.createOrder(ids, isML, mlAmount).then(res => {
+                    NavigatorService.createOrder(ids, isML, mlType, mlScale).then(res => {
                         let posType = res.posType;
                         if (posType === '银盛') {
-
                             if (!this.state.isYse) {
                                 // 只有是银盛pos机才能扫码和收款码
                                 UDToast.showInfo('银盛不支持手机扫码，请使用POS机！');
                             } else {
-
                                 this.setState({
                                     out_trade_no: res.out_trade_no,
                                 });
-
                                 NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
                                     ...res,
                                     transType: 1070, //pos机扫顾客
@@ -204,7 +200,9 @@ class FeeDetailPage extends BasePage {
                             this.props.navigation.push('scan', {
                                 data: ids,
                                 isML: isML,
-                                mlAmount: mlAmount,
+                                mlType: mlType,
+                                mlScale: mlScale,
+                                //mlAmount: mlAmount,
                                 callBack: this.callBack,
                                 printAgain: false,
                             });
@@ -214,7 +212,7 @@ class FeeDetailPage extends BasePage {
                 }
                 case '收款码': {
 
-                    NavigatorService.createOrder(ids, isML, mlAmount).then(res => {
+                    NavigatorService.createOrder(ids, isML, mlType, mlScale).then(res => {
                         let posType = res.posType;
                         if (posType === '银盛') {
                             if (!this.state.isYse) {
@@ -262,7 +260,7 @@ class FeeDetailPage extends BasePage {
                                 onPress: () => {
                                     this.func = this.cashPay;
                                     this.params = ids;
-                                    this.cashPay(ids, isML, mlAmount);
+                                    this.cashPay(ids, isML, mlType, mlScale);
                                 },
                             },
                         ],
@@ -274,8 +272,8 @@ class FeeDetailPage extends BasePage {
         }
     };
 
-    cashPay = (ids, isML, mlAmount) => {
-        NavigatorService.cashPay(ids, isML, mlAmount).then(res => {
+    cashPay = (ids, isML, mlType, mlScale) => {
+        NavigatorService.cashPay(ids, isML, mlType, mlScale).then(res => {
             if (this.state.isLKL || this.state.isYse) {
                 //pos机才能打印
                 NavigatorService.cashPayPrint(ids).then(res => {
@@ -316,7 +314,7 @@ class FeeDetailPage extends BasePage {
     changeItem = item => {
         const { isML, mlType, mlScale, type } = this.state;
         if (type === '已收') {
-            console.log(1122,item);
+            //console.log(1122, item);
             this.props.navigation.push('charge', { data: item });
 
         } else {
@@ -343,7 +341,7 @@ class FeeDetailPage extends BasePage {
                 //let price = items.filter(item => item.select === true).reduce((a, b) => a + b.amount, 0).toFixed(2);
                 //从后台计算抹零总金额 neo 2020年7月1日23:00:52
                 let ids = JSON.stringify((items.map(item => item.id)));
-                NavigatorService.CalFee(isML, mlType, mlScale,  ids).then(res => {
+                NavigatorService.CalFee(isML, mlType, mlScale, ids).then(res => {
                     this.setState({ price: res.lastAmount, mlAmount: res.mlAmount });
                 });
             } else {

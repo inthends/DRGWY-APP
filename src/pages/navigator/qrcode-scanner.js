@@ -77,10 +77,11 @@ export default class ScanScreen extends Component {
             let ids = common.getValueFromProps(this.props);
             //抹零 neo add
             let isML = common.getValueFromProps(this.props, 'isML');
-            let mlAmount = common.getValueFromProps(this.props, 'mlAmount');
-
+            //let mlAmount = common.getValueFromProps(this.props, 'mlAmount');
+            let mlType = common.getValueFromProps(this.props, 'mlType');
+            let mlScale = common.getValueFromProps(this.props, 'mlScale');
             let callBack = common.getValueFromProps(this.props, 'callBack');
-            NavigatorService.createOrder(ids, isML, mlAmount).then(res => {
+            NavigatorService.createOrder(ids, isML, mlType, mlScale).then(res => {
                 NavigatorService.scanPay(result.data, res.out_trade_no).then(resp => {
                     if (resp === 'need_query') {
                         this.needQuery(res);
@@ -107,15 +108,12 @@ export default class ScanScreen extends Component {
                     count: null,
                 });
             });
-        });
-
-
+        }); 
     };
 
     needQuery(res) {
         let callBack = common.getValueFromProps(this.props, 'callBack');
-        let count = this.state.count || 7;
-
+        let count = this.state.count || 7; 
         if (count === 7) {
             this.showLoadingNumber = UDToast.showLoading('正在查询支付结果，请稍后...');
         }

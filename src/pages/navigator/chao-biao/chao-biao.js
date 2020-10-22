@@ -72,7 +72,6 @@ class ChaoBiaoPage extends BasePage {
             },
             refreshing: true,
             scan: false,
-
             nowRead: '',
             showSubmit: false,
             current: {},
