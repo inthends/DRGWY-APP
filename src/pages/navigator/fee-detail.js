@@ -340,10 +340,10 @@ class FeeDetailPage extends BasePage {
 
             const items = data.filter(item => item.select === true);
             if (items.length != 0) {
-                let price = items.filter(item => item.select === true).reduce((a, b) => a + b.amount, 0).toFixed(2);
+                //let price = items.filter(item => item.select === true).reduce((a, b) => a + b.amount, 0).toFixed(2);
                 //从后台计算抹零总金额 neo 2020年7月1日23:00:52
                 let ids = JSON.stringify((items.map(item => item.id)));
-                NavigatorService.CalFee(isML, mlType, mlScale, price, ids).then(res => {
+                NavigatorService.CalFee(isML, mlType, mlScale,  ids).then(res => {
                     this.setState({ price: res.lastAmount, mlAmount: res.mlAmount });
                 });
             } else {
@@ -356,10 +356,10 @@ class FeeDetailPage extends BasePage {
     mlCal = (isML, mlType, mlScale) => {
         const items = this.state.dataInfo.data.filter(item => item.select === true);
         if (items.length != 0) {
-            let price = items.filter(item => item.select === true).reduce((a, b) => a + b.amount, 0).toFixed(2);//javascript浮点运算的一个bug
+            //let price = items.filter(item => item.select === true).reduce((a, b) => a + b.amount, 0).toFixed(2);//javascript浮点运算的一个bug
             //从后台计算抹零总金额 neo 2020年7月1日23:00:52
             let ids = JSON.stringify((items.map(item => item.id)));
-            NavigatorService.CalFee(isML, mlType, mlScale, price, ids).then(res => {
+            NavigatorService.CalFee(isML, mlType, mlScale, ids).then(res => {
                 this.setState({ price: res.lastAmount, mlAmount: res.mlAmount });
             });
         }
