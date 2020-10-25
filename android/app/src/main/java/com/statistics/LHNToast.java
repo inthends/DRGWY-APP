@@ -51,7 +51,6 @@ public class LHNToast extends ReactContextBaseJavaModule {
 
         deviceName = Tool.getDeviceName();
 
-
         // 银盛支付sdk（com.ys.smartpos）或 厂商服务（com.ysepay.pos.deviceservice）
         isYse = Tool.isAvailable(context, "com.ys.smartpos");
         brandName = Tool.getBRAND();
@@ -149,13 +148,13 @@ public class LHNToast extends ReactContextBaseJavaModule {
 
                 String posType = order.getString("posType");
                 switch (posType) {
-                    case "拉卡拉": {
+                    case "拉卡拉":
+                    case "威富通": {
                         // bundle是 拉卡拉支付参数
                         bundle.putString("msg_tp", "0200");
                         bundle.putString("pay_tp", "0");
                         bundle.putString("proc_tp", "00");
                         bundle.putString("proc_cd", "000000");
-                        bundle.putInt("transType", order.getInt("transType"));
                         bundle.putString("appid", APPID);
                         bundle.putString("amt", order.getString("amt"));
                         bundle.putString("order_no", order.getString("order_no"));
@@ -164,8 +163,14 @@ public class LHNToast extends ReactContextBaseJavaModule {
                         bundle.putString("order_info", order.getString("order_info"));
                         bundle.putString("print_info", order.getString("print_info"));
                         bundle.putString("mchName", order.getString("mchName"));
-                        bundle.putString("mchId", order.getString("mchId"));
-                        bundle.putString("posType", posType);
+                        bundle.putString("mchId", order.getString("mchId")); 
+                        bundle.putInt("transType", order.getInt("transType")); 
+                        if (order.getInt("transType") == 101)
+                            //刷卡都走拉卡拉
+                            bundle.putString("posType", "拉卡拉");
+                        else
+                            bundle.putString("posType", posType);
+
                         intent.putExtras(bundle);
                         currentActivity.startActivity(intent);
                         break;

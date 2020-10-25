@@ -43,7 +43,9 @@ public class LKLPayActivity extends Activity {
 
         //
         switch (posType) {
-            case "拉卡拉": {
+            case "拉卡拉": 
+            case "威富通":  
+            {
                 this.bundle = bu;
                 lakalaPay();
 
@@ -61,12 +63,10 @@ public class LKLPayActivity extends Activity {
     private void initView() {
         mShow = (TextView) findViewById(R.id.show);
         button = (Button)findViewById(R.id.button);
-        button.setVisibility(View.INVISIBLE);
-
+        button.setVisibility(View.INVISIBLE); 
     }
 
-    private void initData() {
-
+    private void initData() { 
     }
 
     public void lakalaPay() {
