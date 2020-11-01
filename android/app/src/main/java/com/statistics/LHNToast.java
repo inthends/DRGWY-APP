@@ -35,19 +35,23 @@ public class LHNToast extends ReactContextBaseJavaModule {
     private String versionName;
     private String deviceName;
     private String brandName;// 品牌
+    private String aa;
 
     private ReactContext reactContext;
-    private static ReactContext myContext;
+    public static ReactContext myContext;
     // 是否是银盛POS机
     private boolean isYse;
     // 是否是拉卡拉POS机
     private boolean isLKL;
+
 
     public LHNToast(ReactApplicationContext context) {
         super(context);
         this.reactContext = context;
         APPID = Tool.getPackageName(context);
         versionName = Tool.getPackageCode(context);
+
+        aa = Tool.getAppId();
 
         deviceName = Tool.getDeviceName();
 
@@ -86,7 +90,7 @@ public class LHNToast extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getVersionCode(Callback successCallback) {
-        successCallback.invoke(versionName, isYse, isLKL, brandName);
+        successCallback.invoke(versionName, isYse, isLKL, brandName,aa,APPID);
     }
 
     @ReactMethod
@@ -149,7 +153,8 @@ public class LHNToast extends ReactContextBaseJavaModule {
 
                 String posType = order.getString("posType");
                 switch (posType) {
-                    case "拉卡拉": {
+                    case "拉卡拉":
+                    case "威富通":{
                         // bundle是 拉卡拉支付参数
                         bundle.putString("msg_tp", "0200");
                         bundle.putString("pay_tp", order.getString("pay_tp"));
@@ -191,11 +196,16 @@ public class LHNToast extends ReactContextBaseJavaModule {
             }
         } catch (Exception e) {
             this.show(e.getMessage(), 2);
+            e.printStackTrace();
         }
     }
 
-    public static void sendEventToRn(String eventName, @Nullable WritableMap paramss) {
+    public static void sendEventToRn(String eventName) {
+        myContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, "");
+    }
+    public static void sendEventAndDataToRn(String eventName, @Nullable WritableMap paramss) {
         myContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, paramss);
     }
+
 
 }

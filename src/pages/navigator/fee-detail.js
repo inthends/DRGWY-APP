@@ -127,20 +127,14 @@ class FeeDetailPage extends BasePage {
             console.log(year + '-' + month + '-' + day)
             return year + '-' + month + '-' + day;
         }
+
     }
 
     componentDidMount(): void {
-        DeviceEventEmitter.addListener('printAgain', () => {
-            setTimeout(() => {
-                if (!this.state.printAgain) {
-                    this.setState({
-                        printAgain: true,
-                    }, () => {
-                        // this.func(this.params);
-                    });
-                }
-            }, 2000);
+         this.needPrintListener = DeviceEventEmitter.addListener('needPrint', () => {
+            this.printInfo(this.state.out_trade_no);
         });
+
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
@@ -180,7 +174,9 @@ class FeeDetailPage extends BasePage {
 
     componentWillUnmount(): void {
         this.viewDidAppear.remove();
+        this.needPrintListener.remove();
     }
+
 
     callBack = (out_trade_no) => {
 
@@ -208,6 +204,9 @@ class FeeDetailPage extends BasePage {
                     } else {
 
                         NavigatorService.createOrder(ids, isML, mlAmount).then(res => {
+                            this.setState({
+                                out_trade_no: res.out_trade_no,
+                            });
                             NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
                                 ...res,
                                 "proc_cd": "000000", //拉卡拉消费
@@ -238,6 +237,9 @@ class FeeDetailPage extends BasePage {
                                 });
                             }
                         } else if (posType === '拉卡拉'){
+                            this.setState({
+                                out_trade_no: res.out_trade_no,
+                            });
                             NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
                                 ...res,
                                 "proc_cd": "660000", //拉卡拉消费
@@ -275,6 +277,9 @@ class FeeDetailPage extends BasePage {
                                 });
                             }
                         } else if (posType === '拉卡拉'){
+                            this.setState({
+                                out_trade_no: res.out_trade_no,
+                            });
                             NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
                                 ...res,
                                 "proc_cd": "710000", //拉卡拉消费
@@ -452,6 +457,7 @@ class FeeDetailPage extends BasePage {
 
     printInfo = (out_trade_no) => {
         NavigatorService.printInfo(out_trade_no).then(res => {
+            console.log(123456,res)
             NativeModules.LHNToast.printTicket({
                 ...res,
                 username: res.userName,

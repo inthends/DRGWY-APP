@@ -94,6 +94,10 @@ def enableSeparateBuildPerCPUArchitecture = false
  */
 def enableProguardInReleaseBuilds = false
 
+// def releaseTime() {
+//     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+// }
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
@@ -102,19 +106,57 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    flavorDimensions "default"
+    productFlavors {
+            // main
+            huiyun {
+                applicationId "com.statistics"
+                buildConfigField("int", "ENV_TYPE", "1")
+                manifestPlaceholders = [
+                                app_name: "慧云管家",
+                                JPUSH_APPKEY : "996f9f0191243d335f473952",         //在此替换你的APPKey
+                                JPUSH_CHANNEL: "android"        //在此替换你的channel
+                        ]
+            }
+            //安徽
+            huiyunAnhui {
+                applicationId "com.anhui.statistics"
+                buildConfigField("int", "ENV_TYPE", "2")
+                manifestPlaceholders = [
+                                app_name: "安徽慧云管家",
+                                JPUSH_APPKEY : "ce2ecbe56b0486dc5d47f56c",         //在此替换你的APPKey
+                                JPUSH_CHANNEL: "android"        //在此替换你的channel
+                        ]
+            }
+        }
+
     defaultConfig {
-        applicationId "com.statistics"
+//        applicationId "com.statistics"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "2.3.9"
+        versionName "2.3.10"
         missingDimensionStrategy 'react-native-camera', 'general'
-        manifestPlaceholders = [
-                JPUSH_APPKEY : "996f9f0191243d335f473952",         //在此替换你的APPKey
-                JPUSH_CHANNEL: "android"        //在此替换你的channel
-        ]
+//         manifestPlaceholders = [
+//                 JPUSH_APPKEY : "996f9f0191243d335f473952",         //在此替换你的APPKey
+//                 JPUSH_CHANNEL: "android"        //在此替换你的channel
+//         ]
         multiDexEnabled true
     }
+
+
+//     applicationVariants.all { variant ->
+//             variant.outputs.each { output ->
+//                 def outputFile = output.outputFile
+//                 if (variant.buildType.name.equals('release')) {
+//                     //生成apk名字的格式：Channel1.0.0_2016-06-22_baidu.apk
+//                     //可自定义自己想要生成的格式
+//                     def fileName = "Channel${defaultConfig.versionName}_${releaseTime()}_${variant.productFlavors[0].name}.apk"
+//                     output.outputFile = new File(outputFile.parent, fileName)
+//                 }
+//             }
+//     }
+
     splits {
         abi {
             reset()
@@ -228,5 +270,5 @@ task myUploadApkTask(type: Exec) {
 //Android Gradle plugin to version 2.2.0 and Gradle to version 2.14.1.
 task myBuild() {
     dependsOn 'assembleRelease'
-    dependsOn 'myUploadApkTask'
+//     dependsOn 'myUploadApkTask'
 }
