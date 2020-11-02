@@ -132,7 +132,8 @@ class FeeDetailPage extends BasePage {
 
     componentDidMount(): void {
          this.needPrintListener = DeviceEventEmitter.addListener('needPrint', () => {
-            this.printInfo(this.state.out_trade_no);
+             this.onRefresh();
+             this.printInfo(this.state.out_trade_no);
         });
 
         this.viewDidAppear = this.props.navigation.addListener(

@@ -135,7 +135,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "2.3.10"
+        versionName "2.3.12"
         missingDimensionStrategy 'react-native-camera', 'general'
 //         manifestPlaceholders = [
 //                 JPUSH_APPKEY : "996f9f0191243d335f473952",         //在此替换你的APPKey
@@ -145,17 +145,24 @@ android {
     }
 
 
-//     applicationVariants.all { variant ->
-//             variant.outputs.each { output ->
+//     android.applicationVariants.all { variant ->
+//             variant.outputs.all { output ->
+
+//                 outputFile.name = "${productFlavors[0].name}_v${defaultConfig.versionName}_${buildType.name}.apk"
 //                 def outputFile = output.outputFile
 //                 if (variant.buildType.name.equals('release')) {
 //                     //生成apk名字的格式：Channel1.0.0_2016-06-22_baidu.apk
 //                     //可自定义自己想要生成的格式
-//                     def fileName = "Channel${defaultConfig.versionName}_${releaseTime()}_${variant.productFlavors[0].name}.apk"
+//                     def fileName = "${productFlavors[0].name}_v${defaultConfig.versionName}_${buildType.name}.apk"
 //                     output.outputFile = new File(outputFile.parent, fileName)
 //                 }
 //             }
 //     }
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+                    outputFileName = "app_${productFlavors[0].name}_v${defaultConfig.versionName}_${buildType.name}.apk"
+        }
+    }
 
     splits {
         abi {

@@ -38,7 +38,7 @@ public class LKLPayActivity extends Activity {
         initView();
         initData();
 
-        mShow.setText("正在支付中...");
+        mShow.setText("等待支付请稍后！");
 
         Bundle bu = getIntent().getExtras();
         String posType = bu.getString("posType");
@@ -73,6 +73,8 @@ public class LKLPayActivity extends Activity {
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 LHNToast.sendEventToRn("needPrint");
+                finish();
+
             }
         });
 
