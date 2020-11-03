@@ -157,7 +157,12 @@ export default {
     },
     getCurrentYearAndMonth() {
         let date = new Date();
-        return date.getFullYear() + '-' + (date.getMonth() + 1);
+        let m = date.getMonth();
+        m += 1;
+        if (m < 10) {
+            m = '0' + m;
+        }
+        return date.getFullYear() + '-' + m;
     },
     getYearAndMonth(start, end) {
         var result = [];

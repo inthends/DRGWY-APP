@@ -10,6 +10,10 @@ import java.util.List;
 
 public class Tool {
 
+    public static String getAppId() {
+        return BuildConfig.APPLICATION_ID;
+    }
+
     public static String getPackageName(Context context) {
         try {
             PackageManager packageManager = context.getPackageManager();

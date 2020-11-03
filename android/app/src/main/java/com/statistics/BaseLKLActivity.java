@@ -45,6 +45,7 @@ public abstract class BaseLKLActivity extends Activity {
     //设别服务连接桥
     private ServiceConnection conn = new ServiceConnection() {
 
+
         @Override
         public void onServiceConnected(ComponentName name, IBinder serviceBinder) {
             Log.d("aaa", "aidlService服务连接成功");

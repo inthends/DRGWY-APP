@@ -65,7 +65,7 @@ class FeeChargeDetail extends BasePage {
         NavigatorService.RePrintInfo(data.billId).then(res => {
             NativeModules.LHNToast.printTicket({
                 ...res,
-                username: this.props.userInfo && this.props.userInfo.username,
+                username: res.userName,
             });
         });
     }

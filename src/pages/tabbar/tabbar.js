@@ -73,6 +73,15 @@ import HuiFangDetailPage from '../work/task/hui-fang-detail';
 //工作台回访查看单据
 import WeixiuDetailPage from '../work/task/weixiu-detail';
 import TousuDetailPage from '../work/task/tousu-detail';
+import Contact from '../mine/contact/contact';
+import ContactDetail from '../mine/contact/contact-detail';
+import Jixiao from '../mine/jixiao';
+import LouPan from '../navigator/house-infomation/lou-pan';
+import LouDong from '../navigator/house-infomation/lou-dong';
+import LouCeng from '../navigator/house-infomation/lou-ceng';
+import LouDetail from '../navigator/house-infomation/lou-detail';
+import SheBeiList from '../navigator/she-bei/list';
+import ShebeiDetail from '../navigator/she-bei/detail';
 
 const BuildingNavigator = createStackNavigator({
 
@@ -94,6 +103,8 @@ const BuildingNavigator = createStackNavigator({
     newsList: NewsList,
     feeAdd: FeeAddPage,
     feeDetail: FeeDetailPage,
+    louDetail: LouDetail,
+
 }, {
 
     containerOptions: (options) => {
@@ -164,6 +175,12 @@ const navigatorNavigator = createStackNavigator({
     scanForWork: ScanOnly,
     chaobiao: ChaoBiaoPage,
     newsList: NewsList,
+    louPan: LouPan,
+    louDong: LouDong,
+    louCeng: LouCeng,
+    louDetail: LouDetail,
+    shebeiList: SheBeiList,
+    shebeiDetail:ShebeiDetail,
 
 
 });
@@ -218,6 +235,9 @@ const MineNavigator = createStackNavigator({
     Setting: SettingPage,
     ModifyPsd: ModifyPsdPage,
     newsList: NewsList,
+    contact: Contact,
+    contactDetail: ContactDetail,
+    jixiao: Jixiao,
 });
 MineNavigator.navigationOptions = ({navigation}) => ({
     tabBarVisible: navigation.state.index === 0,

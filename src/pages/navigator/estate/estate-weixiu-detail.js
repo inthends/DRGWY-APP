@@ -141,7 +141,7 @@ export default class EweixiuDetailPage extends BasePage {
                         <Flex style={[styles.every2]} justify='between'>
                             <Text style={styles.left}>{detail.address}   {detail.contactName}</Text>
                             <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
-                                <Flex><LoadImage style={{width: 30, height: 30}}/></Flex>
+                                <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{width: 30, height: 30}}/></Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
                     <DashLine/>
@@ -155,7 +155,7 @@ export default class EweixiuDetailPage extends BasePage {
                     {detail.relationId&&<TouchableWithoutFeedback>
                         <Flex style={[styles.every]}>
                             <Text style={styles.left}>关联单：</Text>
-                            <Text onPress={()=>this.props.navigation.navigate('fuwuD', {data: {id:detail.relationId}})} 
+                            <Text onPress={()=>this.props.navigation.navigate('fuwuD', {data: {id:detail.relationId}})}
                             style={[styles.right, {color: Macro.color_4d8fcc}]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>}

@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.view.View.OnClickListener;
 
 import com.google.gson.Gson;
 
@@ -34,18 +36,13 @@ public class LKLPayActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         initView();
-        initData();
-
-        mShow.setText("正在支付中...");
-
+        initData(); 
+        mShow.setText("等待支付请稍后！"); 
         Bundle bu = getIntent().getExtras();
-        String posType = bu.getString("posType");
-
-        //
+        String posType = bu.getString("posType"); 
         switch (posType) {
-            case "拉卡拉": 
-            case "威富通":  
-            {
+            case "拉卡拉":
+            case "威富通": {
                 this.bundle = bu;
                 lakalaPay();
 
@@ -56,14 +53,23 @@ public class LKLPayActivity extends Activity {
                 yinshengPay();
                 break;
             }
-        }
-
+        } 
     }
 
     private void initView() {
         mShow = (TextView) findViewById(R.id.show);
         button = (Button)findViewById(R.id.button);
-        button.setVisibility(View.INVISIBLE); 
+        button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                LHNToast.sendEventToRn("needPrint");
+                finish();
+
+            }
+        });
+
+
     }
 
     private void initData() { 
@@ -95,8 +101,8 @@ public class LKLPayActivity extends Activity {
 
             Intent intent = new Intent();
             intent.setAction("com.ys.smartpos.pay.sdk");
-            intent.putExtra("transType", transType); 
-//            intent.putExtra("amount", Long.parseLong(amount)); 
+            intent.putExtra("transType", transType);
+//            intent.putExtra("amount", Long.parseLong(amount));
             intent.putExtra("amount", (long)this.yinshengBundle.getInt("amount"));
             intent.putExtra("transAction", 1);
             intent.putExtra("orderBelongTo", this.yinshengBundle.getString("orderBelongTo"));
@@ -131,59 +137,60 @@ public class LKLPayActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (bundle != null) {
-            // 应答码
-            String msg_tp = data.getExtras().getString("msg_tp");
-            // 检索参考号
-            String refernumber = data.getExtras().getString("refernumber");
-            // 订单号
-            String order_no = data.getExtras().getString("order_no");
-            // 批次流水号
-            String batchbillno = data.getExtras().getString("batchbillno");
-            // 失败原因
-            String reason = data.getExtras().getString("reason");
-            // 时间戳
-            String time = data.getExtras().getString("time_stamp");
-            // 附加数据
-            String addword = data.getExtras().getString("adddataword");
-            // 交易详情
-            TransactionEntity transactionEntity = gson.fromJson(data.getExtras().getString("txndetail"),
-                    TransactionEntity.class);
-            switch (resultCode) {
-                // 支付成功
-                case Activity.RESULT_OK:
-                    mShow.setText("  应答码：" + msg_tp + "\n\r 检索参考号：" + refernumber + "\n\r 订单号：" + order_no
-                            + "\n\r 批次流水号：" + batchbillno + "\n\r 时间：" + time + "\n\r 附加数据域：" + addword + "\n\r ");
-                    if (null != transactionEntity) {
-                        mShow.append(transactionEntity.toString());
-                    }
-                    break;
-                // 支付取消
-                case Activity.RESULT_CANCELED:
-                    if (reason != null) {
-                        mShow.setText(reason);
-                    }
-                    break;
-                case -2:
-                    // 交易失败
-                    if (reason != null) {
-                        mShow.setText(" 交易失败：\n\n\r" + reason);
-                    }
-                    break;
-                default:
+        try {
+            if (bundle != null) {
+//                // 应答码
+//                String msg_tp = data.getExtras().getString("msg_tp");
+//                // 检索参考号
+//                String refernumber = data.getExtras().getString("refernumber");
+//                // 订单号
+//                String order_no = data.getExtras().getString("order_no");
+//                // 批次流水号
+//                String batchbillno = data.getExtras().getString("batchbillno");
+                // 失败原因
+                String reason = data.getExtras().getString("reason");
+//                // 时间戳
+//                String time = data.getExtras().getString("time_stamp");
+//                // 附加数据
+//                String addword = data.getExtras().getString("adddataword");
+//                // 交易详情
+//                TransactionEntity transactionEntity = gson.fromJson(data.getExtras().getString("txndetail"),
+//                        TransactionEntity.class);
+                switch (resultCode) {
+                    // 支付成功
+                    case Activity.RESULT_OK:
+                        mShow.setText("支付成功");
+                        break;
+                    // 支付取消
+                    case Activity.RESULT_CANCELED:
+                        if (reason != null) {
+                            mShow.setText(reason);
+                        }
+                        break;
+                    case -2:
+                        // 交易失败
+                        if (reason != null) {
+                            mShow.setText(" 交易失败：\n\n\r" + reason);
+                        }
+                        break;
+                    default:
 
-                    break;
+                        break;
+                }
+            } else if (yinshengBundle != null) {
+                Integer result = data.getExtras().getInt("transResult", -1);
+                switch (result) {
+                    case 0:
+                        mShow.setText("支付成功");
+                        break;
+                    default:
+                        mShow.setText("支付失败");
+                        break;
+                }
             }
-        } else if (yinshengBundle != null) {
-            Integer result = data.getExtras().getInt("transResult", -1);
-            switch (result) {
-                case 0:
-                    mShow.setText("支付成功");
-                    break;
-                default:
-                    mShow.setText("支付失败");
-                    break;
-            }
+        }catch (Exception e) {
+            mShow.setText(e.getMessage());
+            e.printStackTrace();
         }
 
     }

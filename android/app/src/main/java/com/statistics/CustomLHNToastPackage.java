@@ -23,6 +23,7 @@ public class CustomLHNToastPackage implements ReactPackage {
     public List<NativeModule> createNativeModules(@Nonnull ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
 
+        LHNToast.myContext = reactContext;
         modules.add(new LHNToast(reactContext));
 
         return modules;

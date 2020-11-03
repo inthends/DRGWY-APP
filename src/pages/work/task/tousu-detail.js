@@ -143,7 +143,7 @@ export default class TousuDetailPage extends BasePage {
                         <Flex style={[styles.every2]} justify='between'>
                             <Text style={styles.left}>{detail.complaintAddress} {detail.complaintUser}</Text>
                             <TouchableWithoutFeedback onPress={() => common.call(detail.complaintLink)}>
-                            <Flex><LoadImage style={{width: 30, height: 30}}/></Flex>
+                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{width: 30, height: 30}}/></Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
 
@@ -160,7 +160,7 @@ export default class TousuDetailPage extends BasePage {
                             <Text style={styles.left}>关联单：</Text>
                             <Text onPress={()=>this.props.navigation.navigate('fuwuD', {data: {id:detail.relationId}})} style={[styles.right, {color: Macro.color_4d8fcc}]}>{detail.serviceDeskCode}</Text>
                         </Flex>
-                    </TouchableWithoutFeedback>} */} 
+                    </TouchableWithoutFeedback>} */}
 
                     <DashLine/>
                     <Communicates communicateClick={this.communicateClick} communicates={communicates}/>

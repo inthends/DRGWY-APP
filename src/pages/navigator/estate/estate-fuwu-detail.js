@@ -156,7 +156,7 @@ export default class EfuwuDetailPage extends BasePage {
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>报单人：{detail.contactName} {detail.createDate}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactPhone)}>
-                            <Flex><LoadImage style={{ width: 30, height: 30 }} /></Flex>
+                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 30, height: 30 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
 
@@ -168,7 +168,7 @@ export default class EfuwuDetailPage extends BasePage {
                                     if (detail.businessType === 'Repair') {
                                         this.props.navigation.navigate('weixiuD', { data: { id: detail.businessId } });
                                     }
-                                    else //if (detail.businessType === 'Complaint') 
+                                    else //if (detail.businessType === 'Complaint')
                                     {
                                         this.props.navigation.navigate('tousuD', { data: { id: detail.businessId } });
                                     }
