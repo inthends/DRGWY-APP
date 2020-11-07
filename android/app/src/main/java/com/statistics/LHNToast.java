@@ -167,14 +167,8 @@ public class LHNToast extends ReactContextBaseJavaModule {
                         bundle.putString("order_info", order.getString("order_info"));
                         bundle.putString("print_info", order.getString("print_info"));
                         bundle.putString("mchName", order.getString("mchName"));
-                        bundle.putString("mchId", order.getString("mchId")); 
-                        bundle.putInt("transType", order.getInt("transType")); 
-                        if (order.getInt("transType") == 101)
-                            //刷卡都走拉卡拉
-                            bundle.putString("posType", "拉卡拉");
-                        else
-                            bundle.putString("posType", posType);
-
+                        bundle.putString("mchId", order.getString("mchId"));  
+                        bundle.putString("posType", posType); 
                         intent.putExtras(bundle);
                         currentActivity.startActivity(intent);
                         break;
