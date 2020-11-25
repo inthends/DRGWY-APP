@@ -1,20 +1,21 @@
-import React, {Fragment} from 'react';
+import React//, {Fragment}
+ from 'react';
 import {
     View,
     Text,
     StyleSheet,
-    StatusBar,
+    //StatusBar,
     FlatList,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    Linking,
+    //Linking,
 } from 'react-native';
 import BasePage from '../../base/base';
-import {Button, Flex, Icon, List, WhiteSpace} from '@ant-design/react-native';
+import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
 import {connect} from 'react-redux';
-import ListHeader from '../../../components/list-header';
+//import ListHeader from '../../../components/list-header';
 import common from '../../../utils/common';
 import LoadImage from '../../../components/load-image';
 import ScrollTitle from '../../../components/scroll-title';
@@ -25,9 +26,8 @@ import CommonView from '../../../components/CommonView';
 
 
 class EstateWeixiuPage extends BasePage {
-    static navigationOptions = ({navigation}) => {
-
-        console.log(1, navigation);
+    static navigationOptions = ({navigation}) => { 
+        //console.log(1, navigation);
         return {
             tabBarVisible: false,
             title: '维修单',
@@ -65,8 +65,7 @@ class EstateWeixiuPage extends BasePage {
             time: common.getCurrentYearAndMonth(),
             selectBuilding: this.props.selectBuilding,
             repairArea: '',
-        };
-
+        }; 
     }
 
     componentDidMount(): void {
@@ -76,7 +75,6 @@ class EstateWeixiuPage extends BasePage {
                 this.onRefresh();
             },
         );
-
     }
 
     componentWillUnmount() {
@@ -134,7 +132,7 @@ class EstateWeixiuPage extends BasePage {
             refreshing: true,
             pageIndex: 1,
         }, () => {
-            console.log('state', this.state);
+            //console.log('state', this.state);
             this.getList();
         });
     };
