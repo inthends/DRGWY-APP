@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Image} from 'react-native';
+import { Image} from 'react-native';
 
 export default class LoadImage extends Component {
     constructor(props) {
@@ -22,8 +22,7 @@ export default class LoadImage extends Component {
     }
 
     _handleImg = (props) => {
-        let {img, defaultImg, style} = props;
-        console.log(123, props);
+        let {img, defaultImg, style} = props; 
 
         if (img) {
             console.log('img', img);
@@ -50,8 +49,7 @@ export default class LoadImage extends Component {
     };
 
     render() {
-        const {img, style} = this.state;
-        console.log(img, style);
+        const {img, style} = this.state; 
         return (
             <Image style={style} source={img} onError={this._loadError}/>
         );

@@ -10,7 +10,7 @@ export default {
                 return;
             }
             // loaded successfully
-            console.log('duration in seconds: ' + whoosh.getDuration() + 'number of channels: ' + whoosh.getNumberOfChannels());
+            //console.log('duration in seconds: ' + whoosh.getDuration() + 'number of channels: ' + whoosh.getNumberOfChannels());
             whoosh.setVolume(1);
             // Play the sound with an onEnd callback
             whoosh.play((success) => {

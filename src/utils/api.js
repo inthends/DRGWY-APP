@@ -63,8 +63,7 @@ export default {
             resolve(data.data);
         }
     },
-    fail(showError, error, reject) {
-        console.log('error', error);
+    fail(showError, error, reject) { 
         if (error) {
             let errorStr = JSON.stringify(error);
             if (errorStr.includes('401')) {

@@ -49,12 +49,9 @@ public class LHNToast extends ReactContextBaseJavaModule {
         super(context);
         this.reactContext = context;
         APPID = Tool.getPackageName(context);
-        versionName = Tool.getPackageCode(context);
-
-        aa = Tool.getAppId();
-
-        deviceName = Tool.getDeviceName();
-
+        versionName = Tool.getPackageCode(context); 
+        aa = Tool.getAppId(); 
+        deviceName = Tool.getDeviceName(); 
         // 银盛支付sdk（com.ys.smartpos）或 厂商服务（com.ysepay.pos.deviceservice）
         isYse = Tool.isAvailable(context, "com.ys.smartpos");
         brandName = Tool.getBRAND();
@@ -62,7 +59,6 @@ public class LHNToast extends ReactContextBaseJavaModule {
             isLKL = true;
         else
             isLKL = false;
-
     }
 
     @Nonnull
@@ -125,8 +121,7 @@ public class LHNToast extends ReactContextBaseJavaModule {
                         ReadableMap map = params.getMap(i);
 
                         if (map != null) {
-                            ZhangDanObj obj = new ZhangDanObj(map.getString("feeName"), map.getString("amount"),
-                                    map.getString("beginDate"), map.getString("endDate"));
+                            ZhangDanObj obj = new ZhangDanObj(map.getString("feeName"), map.getString("amount"), map.getString("beginDate"), map.getString("endDate"));
                             list.add(obj);
                         }
                     }

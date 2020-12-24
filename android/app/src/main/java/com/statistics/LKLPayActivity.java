@@ -94,9 +94,7 @@ public class LKLPayActivity extends Activity {
 
 //        mShow.setText(String.valueOf(transType));
 //        String amount = this.yinshengBundle.getString("amount", "0");
-
-
-
+ 
         try {
 
             Intent intent = new Intent();

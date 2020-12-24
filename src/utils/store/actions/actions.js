@@ -1,9 +1,8 @@
 import {ACTIONS} from '../action-types/action-types';
 
-export function saveGoodsList(goodsList) {
-    return {type: ACTIONS.save_goods_list, data: goodsList};
-}
-
+// export function saveGoodsList(goodsList) {
+//     return {type: ACTIONS.save_goods_list, data: goodsList};
+// }
 
 // function makeActionCreator(type, ...argNames) {
 //     return function (...args) {

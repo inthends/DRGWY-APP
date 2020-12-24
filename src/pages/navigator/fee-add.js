@@ -4,17 +4,23 @@ import {
     StyleSheet,
     TouchableOpacity,
     TouchableWithoutFeedback, 
-    ScrollView, 
+    ScrollView,
+    // NativeModules,
+    // Alert,
+    // DeviceEventEmitter,
     TextInput,
     View,
 
 } from 'react-native';
 import BasePage from '../base/base';
-import { Flex, Icon,  List, DatePicker, Button } from '@ant-design/react-native'; 
+import { Flex, Icon, List, DatePicker, Button } from '@ant-design/react-native';
+//import Macro from '../../utils/macro';
 import ScreenUtil from '../../utils/screen-util';
 import { connect } from 'react-redux';
 // import ListHeader from '../../components/list-header';
-import common from '../../utils/common'; 
+import common from '../../utils/common';
+// import LoadImage from '../../components/load-image';
+// import TwoChange from '../../components/two-change';
 import NavigatorService from './navigator-service';
 import UDToast from '../../utils/UDToast';
 // import QRCode from 'react-native-qrcode-svg';
@@ -99,12 +105,16 @@ class FeeAddPage extends BasePage {
         });
     };
     save = () => {
-        let { fee } = this.state; 
+        let { fee } = this.state;
+        //console.log(34, fee);
         fee = {
             ...fee,
             beginDate: fee.beginDate == null ? null : fee.beginDate.yearMonthDay(),
             endDate: fee.endDate == null ? null : fee.endDate.yearMonthDay(),
         };
+
+
+        // console.log(12, fee);
 
         NavigatorService.saveFee(this.state.room.id, [fee]).then(res => {
             UDToast.showError('保存成功');
@@ -121,7 +131,8 @@ class FeeAddPage extends BasePage {
             if (res.length === 0) {
                 UDToast.showError('暂无可加费项目');
                 return;
-            } 
+            }
+            //console.log(121, res);
             const items = res[0].children;
             let big;
             if (items.length === 0) {

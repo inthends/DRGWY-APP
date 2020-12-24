@@ -1,30 +1,29 @@
-import React, { Fragment } from 'react';
-import {
-    View,
+import React  from 'react';
+import { 
     Text,
     StyleSheet,
-    StatusBar,
-    FlatList,
+    //View,
+    // StatusBar,
+    // FlatList,
+    // Linking,
     TouchableOpacity,
-    TouchableWithoutFeedback,
-    Linking,
+    TouchableWithoutFeedback, 
     ScrollView,
 } from 'react-native';
 import BasePage from '../base/base';
-import { Button, Flex, Icon, List, WhiteSpace } from '@ant-design/react-native';
+import {   Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../utils/macro';
 import ScreenUtil from '../../utils/screen-util';
-import { connect } from 'react-redux';
-import ListHeader from '../../components/list-header';
+//import { connect } from 'react-redux';
+//import ListHeader from '../../components/list-header';
 import common from '../../utils/common';
 import NavigatorService from './navigator-service';
-import LoadImage from '../../components/load-image';
+//import LoadImage from '../../components/load-image';
 import CommonView from '../../components/CommonView';
 
 
 export default class FeeBuildingsPage extends BasePage {
-    static navigationOptions = ({ navigation }) => {
-
+    static navigationOptions = ({ navigation }) => { 
         // console.log(1, navigation);
         return {
             tabBarVisible: false,
@@ -89,17 +88,13 @@ export default class FeeBuildingsPage extends BasePage {
 
                                 <Flex style={[styles.item, item.color === 2 ? '' : styles.orange2]} justify={'center'}>
                                     <Text style={[styles.title, item.color === 2 ? '' : styles.orange2]}>{item.name}</Text>
-                                </Flex>
-
+                                </Flex> 
                             </TouchableWithoutFeedback>
                         ))}
 
                     </Flex>
-                </ScrollView>
-
-
-            </CommonView>
-
+                </ScrollView> 
+            </CommonView> 
         );
     }
 }

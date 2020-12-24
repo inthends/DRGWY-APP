@@ -1,21 +1,25 @@
-import React, {Fragment} from 'react';
+import React//, { Fragment } 
+    from 'react';
 import {
     View,
     Text,
     StyleSheet,
-    StatusBar,
+    //StatusBar, Linking,
     FlatList,
     TouchableOpacity,
-    TouchableWithoutFeedback,
-    Linking,
+    TouchableWithoutFeedback
 } from 'react-native';
 import BasePage from '../base/base';
-import {Button, Flex, Icon, List, WhiteSpace} from '@ant-design/react-native';
+import {
+    Flex, Icon
+    //Button,  List, WhiteSpace 
+} from '@ant-design/react-native';
+
 import Macro from '../../utils/macro';
-import ScreenUtil from '../../utils/screen-util';
-import {connect} from 'react-redux';
-import ListHeader from '../../components/list-header';
-import common from '../../utils/common';
+//import ScreenUtil from '../../utils/screen-util';
+import { connect } from 'react-redux';
+//import ListHeader from '../../components/list-header';
+//import common from '../../utils/common';
 import LoadImage from '../../components/load-image';
 import NavigatorService from './navigator-service';
 import NoDataView from '../../components/no-data-view';
@@ -23,29 +27,26 @@ import CommonView from '../../components/CommonView';
 
 
 class FeeHousePage extends BasePage {
-    static navigationOptions = ({navigation}) => {
-
-        console.log(1, navigation);
+    static navigationOptions = ({ navigation }) => {
+        //console.log(1, navigation);
         return {
             tabBarVisible: false,
             title: '上门收费',
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
             headerRight: (
                 <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
-                    <Icon name='bars' style={{marginRight: 15}} color="black"/>
+                    <Icon name='bars' style={{ marginRight: 15 }} color="black" />
                 </TouchableWithoutFeedback>
             ),
         };
     };
 
     constructor(props) {
-        super(props);
-
-
+        super(props); 
         this.state = {
             count: 0,
             showTabbar: true,
@@ -90,7 +91,7 @@ class FeeHousePage extends BasePage {
         console.log('nextSelectBuilding', nextSelectBuilding);
 
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
-            this.setState({selectBuilding: nextProps.selectBuilding}, () => {
+            this.setState({ selectBuilding: nextProps.selectBuilding }, () => {
                 this.onRefresh();
             });
         }
@@ -107,7 +108,7 @@ class FeeHousePage extends BasePage {
         });
     };
     loadMore = () => {
-        const {data, total, pageIndex} = this.state.dataInfo;
+        const { data, total, pageIndex } = this.state.dataInfo;
         //console.log('loadmore');
         if (this.canAction && data.length < total) {
             this.setState({
@@ -119,30 +120,30 @@ class FeeHousePage extends BasePage {
         }
     };
 
-    _renderItem = ({item, index}) => {
+    _renderItem = ({ item, index }) => {
         return (
-            <TouchableWithoutFeedback onPress={() => this.props.navigation.push('feeBuildings', {data: item})}>
+            <TouchableWithoutFeedback onPress={() => this.props.navigation.push('feeBuildings', { data: item })}>
                 <View style={styles.content}>
                     <Flex direction="row" style={styles.top}>
                         <Flex justify={'center'} style={styles.left}>
-                            <LoadImage img={item.mainpic} style={styles.image}/>
+                            <LoadImage img={item.mainpic} style={styles.image} />
                         </Flex>
                         <Flex direction="column" style={styles.right}>
                             <Flex style={styles.item}>
                                 <Text style={styles.name}>{item.name}</Text>
                             </Flex>
-                            <Flex justify={'between'} style={{width: '100%', paddingRight: 20}}>
+                            <Flex justify={'between'} style={{ width: '100%', paddingRight: 20 }}>
                                 <Flex direction={'column'}>
                                     <Text>{item.roomcount}户</Text>
-                                    <Text style={{paddingTop: 12}}>房产总数</Text>
+                                    <Text style={{ paddingTop: 12 }}>房产总数</Text>
                                 </Flex>
                                 <Flex direction={'column'}>
                                     <Text>{item.charge}户</Text>
-                                    <Text style={{paddingTop: 12}}>交清</Text>
+                                    <Text style={{ paddingTop: 12 }}>交清</Text>
                                 </Flex>
                                 <Flex direction={'column'}>
                                     <Text>{item.notcharge}户</Text>
-                                    <Text style={{paddingTop: 12}}>未交清</Text>
+                                    <Text style={{ paddingTop: 12 }}>未交清</Text>
                                 </Flex>
                             </Flex>
                         </Flex>
@@ -154,13 +155,13 @@ class FeeHousePage extends BasePage {
 
 
     render() {
-        const {statistics, dataInfo} = this.state;
-        const {selectBuilding} = this.props;
+        const { statistics, dataInfo } = this.state;
+        const { selectBuilding } = this.props;
         // console.log('selet', selectBuilding);
         return (
-            <View style={{flex: 1}}>
-                <CommonView style={{flex: 1}}>
-                    <View style={{flex: 1}}>
+            <View style={{ flex: 1 }}>
+                <CommonView style={{ flex: 1 }}>
+                    <View style={{ flex: 1 }}>
                         <FlatList
                             data={dataInfo.data}
                             // ListHeaderComponent={}
@@ -170,12 +171,12 @@ class FeeHousePage extends BasePage {
                             onRefresh={() => this.onRefresh()}
                             onEndReached={() => this.loadMore()}
                             onEndReachedThreshold={0.1}
-                            ItemSeparatorComponent={() => <View style={{backgroundColor: '#eee', height: 1}}/>}
+                            ItemSeparatorComponent={() => <View style={{ backgroundColor: '#eee', height: 1 }} />}
                             onScrollBeginDrag={() => this.canAction = true}
                             onScrollEndDrag={() => this.canAction = false}
                             onMomentumScrollBegin={() => this.canAction = true}
                             onMomentumScrollEnd={() => this.canAction = false}
-                            ListEmptyComponent={<NoDataView/>}
+                            ListEmptyComponent={<NoDataView />}
                         />
                     </View>
                 </CommonView>
@@ -301,7 +302,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const mapStateToProps = ({buildingReducer}) => {
+const mapStateToProps = ({ buildingReducer }) => {
     return {
         selectBuilding: buildingReducer.selectBuilding,
     };

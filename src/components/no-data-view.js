@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Image,Text} from 'react-native';
+import {  Text} from 'react-native';
 import {Flex} from '@ant-design/react-native';
 import LoadImage from './load-image';
 

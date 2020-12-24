@@ -1,27 +1,27 @@
 //房间
-import React, { Fragment } from 'react';
-import {
-    View,
+import React from 'react';
+import { 
     Text,
     StyleSheet,
-    StatusBar,
-    FlatList,
+    //View,
+    // StatusBar,
+    // FlatList,
+    // Linking,
     TouchableOpacity,
-    TouchableWithoutFeedback,
-    Linking,
-    ScrollView,
+    TouchableWithoutFeedback, 
+    ScrollView
 } from 'react-native';
 import BasePage from '../base/base';
-import { Button, Flex, Icon, List, WhiteSpace } from '@ant-design/react-native';
+import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../utils/macro';
 import ScreenUtil from '../../utils/screen-util';
-import { connect } from 'react-redux';
-import ListHeader from '../../components/list-header';
+// import { connect } from 'react-redux';
+// import ListHeader from '../../components/list-header';
 import common from '../../utils/common';
-import LoadImage from '../../components/load-image';
+//import LoadImage from '../../components/load-image';
 import NavigatorService from './navigator-service';
 import CommonView from '../../components/CommonView';
-import WorkService from '../work/work-service';
+//import WorkService from '../work/work-service';
 
 
 export default class FeeRoomsPage extends BasePage {

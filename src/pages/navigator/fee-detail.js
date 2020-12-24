@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import {
     Text,
     StyleSheet,
@@ -11,37 +11,34 @@ import {
     View,
 } from 'react-native';
 import BasePage from '../base/base';
-import {Flex, Icon, Checkbox, Modal, Popover, DatePicker,DatePickerView,Provider} from '@ant-design/react-native';
+import { Flex, Icon, Checkbox, Modal, DatePickerView } from '@ant-design/react-native';
 import Macro from '../../utils/macro';
 import ScreenUtil from '../../utils/screen-util';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 // import ListHeader from '../../components/list-header';
 import common from '../../utils/common';
 import LoadImage from '../../components/load-image';
 import TwoChange from '../../components/two-change';
 import NavigatorService from './navigator-service';
 import MyPopover from '../../components/my-popover';
-
 import UDToast from '../../utils/UDToast';
 // import QRCode from 'react-native-qrcode-svg';
 import CommonView from '../../components/CommonView';
 import ActionPopover from '../../components/action-popover';
 import JianFei from '../../components/jian-fei';
 import ChaiFei from '../../components/chai-fei';
-
-
 // import { upgrade } from 'rn-app-upgrade';
 
 
 class FeeDetailPage extends BasePage {
-    static navigationOptions = ({navigation}) => {
+    static navigationOptions = ({ navigation }) => {
         // console.log(1, navigation);
         return {
             tabBarVisible: false,
             title: '上门收费',
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
             headerRight: (
@@ -86,7 +83,7 @@ class FeeDetailPage extends BasePage {
         this.props.navigation.setParams({
             addFee: this.addFee,
         });
-        let room = common.getValueFromProps(this.props) || {id: 'FY-XHF-01-0101'};
+        let room = common.getValueFromProps(this.props);// || { id: 'FY-XHF-01-0101' };
         // let room = common.getValueFromProps(this.props);
         //console.log('room123', room);
         this.state = {
@@ -131,9 +128,9 @@ class FeeDetailPage extends BasePage {
     }
 
     componentDidMount(): void {
-         this.needPrintListener = DeviceEventEmitter.addListener('needPrint', () => {
-             this.onRefresh();
-             this.printInfo(this.state.out_trade_no);
+        this.needPrintListener = DeviceEventEmitter.addListener('needPrint', () => {
+            this.onRefresh();
+            this.printInfo(this.state.out_trade_no);
         });
 
         this.viewDidAppear = this.props.navigation.addListener(
@@ -210,7 +207,7 @@ class FeeDetailPage extends BasePage {
                             NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
                                 ...res,
                                 "proc_cd": "000000", //拉卡拉消费
-                                "pay_tp":"0",
+                                "pay_tp": "0",
                             });
                         });
                     }
@@ -233,17 +230,17 @@ class FeeDetailPage extends BasePage {
                                     transType: 1070, //pos机扫顾客
                                 });
                             }
-                        } else if (posType === '拉卡拉'){
+                        } else if (posType === '拉卡拉') {
                             this.setState({
                                 out_trade_no: res.out_trade_no,
                             });
                             NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
                                 ...res,
                                 "proc_cd": "660000", //拉卡拉消费
-                                "pay_tp":"1",
-
+                                "pay_tp": "1"
                             });
-                        } else if (posType === '威富通'){
+                            
+                        } else if (posType === '威富通') {
                             this.props.navigation.push('scan', {
                                 data: ids,
                                 isML: isML,
@@ -275,17 +272,17 @@ class FeeDetailPage extends BasePage {
                                     transType: 1054, //顾客扫pos机
                                 });
                             }
-                        } else if (posType === '拉卡拉'){
+                        } else if (posType === '拉卡拉') {
                             this.setState({
                                 out_trade_no: res.out_trade_no,
                             });
                             NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
                                 ...res,
                                 "proc_cd": "710000", //拉卡拉消费
-                                "pay_tp":"1",
+                                "pay_tp": "1"
 
                             });
-                        } else if (posType === '威富通'){
+                        } else if (posType === '威富通') {
                             NavigatorService.qrcodePay(res.out_trade_no).then(code => {
                                 this.setState({
                                     visible: true,
@@ -321,7 +318,7 @@ class FeeDetailPage extends BasePage {
                                 },
                             },
                         ],
-                        {cancelable: false},
+                        { cancelable: false },
                     );
                     break;
                 }
@@ -345,7 +342,7 @@ class FeeDetailPage extends BasePage {
     };
 
     onRefresh = () => {
-        const {pageIndex, type, room, isShow} = this.state;
+        const { pageIndex, type, room, isShow } = this.state;
         NavigatorService.getBillList(type, room.id, isShow, pageIndex, 1000).then(dataInfo => {
             this.setState({
                 dataInfo: dataInfo,
@@ -369,9 +366,9 @@ class FeeDetailPage extends BasePage {
     };
 
     changeItem = item => {
-        const {isML, mlType, mlScale, type} = this.state;
+        const { isML, mlType, mlScale, type } = this.state;
         if (type === '已收') {
-            this.props.navigation.push('charge', { data: item });  
+            this.props.navigation.push('charge', { data: item });
         } else {
 
             let data = this.state.dataInfo.data;
@@ -400,7 +397,7 @@ class FeeDetailPage extends BasePage {
                     this.setState({ price: res.lastAmount, mlAmount: res.mlAmount });
                 });
             } else {
-                this.setState({price: 0.00, mlAmount: 0.00});
+                this.setState({ price: 0.00, mlAmount: 0.00 });
             }
         }
     };
@@ -416,7 +413,7 @@ class FeeDetailPage extends BasePage {
                 this.setState({ price: res.lastAmount, mlAmount: res.mlAmount });
             });
         } else {
-            this.setState({price: 0.00, mlAmount: 0.00});
+            this.setState({ price: 0.00, mlAmount: 0.00 });
         }
     };
 
@@ -454,7 +451,7 @@ class FeeDetailPage extends BasePage {
 
     printInfo = (out_trade_no) => {
         NavigatorService.printInfo(out_trade_no).then(res => {
-            console.log(123456,res)
+            console.log(123456, res)
             NativeModules.LHNToast.printTicket({
                 ...res,
                 username: res.userName,
@@ -482,12 +479,12 @@ class FeeDetailPage extends BasePage {
                     },
                 },
             ],
-            {cancelable: false},
+            { cancelable: false },
         );
     };
 
     renderItem = (item) => {
-        const {dataInfo, type, room, price, mlAmount} = this.state;
+        const { dataInfo, type, room, price, mlAmount } = this.state;
         let titles = [];
         console.log(11, item);
         if (item.billSource === '临时加费' && item.rmid === null) {
@@ -500,59 +497,59 @@ class FeeDetailPage extends BasePage {
                 <Flex style={styles.check}>
                     {type !== '已收' && <Checkbox
                         checked={item.select === true}
-                        style={{color: Macro.color_f39d39}}
+                        style={{ color: Macro.color_f39d39 }}
                         onChange={event => {
                             this.changeItem(item);
                         }}
                     />}
-                    <Flex align={'start'} direction={'column'} style={{marginLeft: 3, flex: 1}}>
+                    <Flex align={'start'} direction={'column'} style={{ marginLeft: 3, flex: 1 }}>
                         <Flex justify={'between'}
-                              style={{paddingLeft: 10, paddingTop: 5, paddingBottom: 5, width: '100%'}}>
-                            <Text style={{fontSize: 16, width: '80%', color: 'green'}}>{item.allName}</Text>
+                            style={{ paddingLeft: 10, paddingTop: 5, paddingBottom: 5, width: '100%' }}>
+                            <Text style={{ fontSize: 16, width: '80%', color: 'green' }}>{item.allName}</Text>
                             {type !== '已收' &&
-                            (
-                                <ActionPopover
-                                    textStyle={{fontSize: 14}}
-                                    hiddenImage={true}
-                                    onChange={(title) => {
-                                        console.log(1, title);
-                                        if (title === '删除') {
-                                            this.delete(item);
-                                        } else if (title === '减免') {
-                                            this.setState({
-                                                selectItem: item,
-                                                jianfeiAlert: true,
-                                            });
-                                        } else {
-                                            this.setState({
-                                                selectItem: item,
-                                                chaifeiAlert: true,
-                                                chaifeiDate: new Date(item.beginDate)
-                                            });
-                                        }
+                                (
+                                    <ActionPopover
+                                        textStyle={{ fontSize: 14 }}
+                                        hiddenImage={true}
+                                        onChange={(title) => {
+                                            //console.log(1, title);
+                                            if (title === '删除') {
+                                                this.delete(item);
+                                            } else if (title === '减免') {
+                                                this.setState({
+                                                    selectItem: item,
+                                                    jianfeiAlert: true,
+                                                });
+                                            } else {
+                                                this.setState({
+                                                    selectItem: item,
+                                                    chaifeiAlert: true,
+                                                    chaifeiDate: new Date(item.beginDate)
+                                                });
+                                            }
 
-                                    }}
-                                    titles={titles}
-                                    visible={true}/>
-                            )}
+                                        }}
+                                        titles={titles}
+                                        visible={true} />
+                                )}
                         </Flex>
                         <Flex justify={'between'}
-                              style={[{
-                                  paddingLeft: 10,
-                                  paddingTop: 10,
-                                  paddingBottom: 5,
-                                  width: '100%',
-                              }, type === '已收' ? {paddingBottom: 10} : {}]}>
+                            style={[{
+                                paddingLeft: 10,
+                                paddingTop: 10,
+                                paddingBottom: 5,
+                                width: '100%',
+                            }, type === '已收' ? { paddingBottom: 10 } : {}]}>
 
                             {/* <Text style={{ fontSize: 16 }}>{type === '已收' ?
                                             item.billCode :
                                             item.feeName
                                         }</Text> */}
 
-                            {type === '已收' ? <Text style={{fontSize: 16}}>{item.billCode}</Text> :
+                            {type === '已收' ? <Text style={{ fontSize: 16 }}>{item.billCode}</Text> :
                                 item.rmid ?
                                     <Flex>
-                                        <Text style={{fontSize: 16}}>{item.feeName + ' '}</Text>
+                                        <Text style={{ fontSize: 16 }}>{item.feeName + ' '}</Text>
                                         <Text style={{
                                             color: 'red',
                                             fontSize: 8,
@@ -560,11 +557,11 @@ class FeeDetailPage extends BasePage {
                                         }}>惠</Text>
                                     </Flex>
                                     :
-                                    <Text style={{fontSize: 16}}>{item.feeName}</Text>
+                                    <Text style={{ fontSize: 16 }}>{item.feeName}</Text>
                             }
 
                             <Flex>
-                                <Text style={{paddingRight: 10, fontSize: 16}}>{item.amount}</Text>
+                                <Text style={{ paddingRight: 10, fontSize: 16 }}>{item.amount}</Text>
                             </Flex>
                         </Flex>
 
@@ -593,68 +590,68 @@ class FeeDetailPage extends BasePage {
         );
     };
 
-    dateonChange = (value) => {
-        console.log(11,value)
+    //dateonChange = (value) => {
+    //   console.log(11,value)
 
-        // this.setState({
-        //     chaifeiDate: value,
-        // })
-    }
+    // this.setState({
+    //     chaifeiDate: value,
+    // })
+    //}
 
     render() {
-        const {dataInfo, type, room, price, mlAmount} = this.state;
+        const { dataInfo, type, room, price, mlAmount } = this.state;
         return (
-            <CommonView style={{flex: 1}}>
-                <ScrollView onScrollBeginDrag={()=>console.log('onScrollBeginDrag')}>
+            <CommonView style={{ flex: 1 }}>
+                <ScrollView onScrollBeginDrag={() => console.log('onScrollBeginDrag')}>
                     <Text
-                        style={{paddingLeft: 10, paddingTop: 10, fontSize: 20}}>{room.allName} {room.tenantName}</Text>
-                    <TwoChange onChange={this.typeOnChange}/>
-                    <Flex style={{backgroundColor: '#eee', height: 1, marginLeft: 10, marginRight: 10, marginTop: 10}}/>
+                        style={{ paddingLeft: 10, paddingTop: 10, fontSize: 18 }}>{room.allName} {room.tenantName}</Text>
+                    <TwoChange onChange={this.typeOnChange} />
+                    <Flex style={{ backgroundColor: '#eee', height: 1, marginLeft: 10, marginRight: 10, marginTop: 10 }} />
                     {dataInfo.data.map(item => {
                         return this.renderItem(item);
                     })}
                 </ScrollView>
                 {type === '已收' || dataInfo.data.length === 0 ? null : (
-                    <Flex style={{marginBottom: 30}} direction={'column'}>
+                    <Flex style={{ marginBottom: 30 }} direction={'column'}>
                         <Flex justify={'between'}>
                             <Checkbox
                                 defaultChecked={false}
                                 onChange={(e) => {
-                                    this.setState({isML: e.target.checked});
+                                    this.setState({ isML: e.target.checked });
                                     //算抹零金额
                                     this.mlCal(e.target.checked, this.state.mlType, this.state.mlScale);
                                 }}
-                            ><Text style={{paddingTop: 3, paddingLeft: 3}}>抹零</Text></Checkbox>
+                            ><Text style={{ paddingTop: 3, paddingLeft: 3 }}>抹零</Text></Checkbox>
 
                             <MyPopover
-                                textStyle={{fontSize: 14}}
+                                textStyle={{ fontSize: 14 }}
                                 onChange={(title) => {
-                                    this.setState({mlType: title});
+                                    this.setState({ mlType: title });
                                     this.mlCal(this.state.isML, title, this.state.mlScale);
                                 }}
                                 titles={['抹去角', '抹去分']}
-                                visible={true}/>
+                                visible={true} />
 
                             <MyPopover
-                                textStyle={{fontSize: 14}}
+                                textStyle={{ fontSize: 14 }}
                                 onChange={(title) => {
-                                    this.setState({mlScale: title});
+                                    this.setState({ mlScale: title });
                                     this.mlCal(this.state.isML, this.state.mlType, title, title);
                                 }}
                                 titles={['四舍五入', '直接舍去', '有数进一']}
-                                visible={true}/>
+                                visible={true} />
 
                         </Flex>
 
                         <Flex align={'center'}>
-                            <Text style={{paddingLeft: 10, fontSize: 18}}>抹零：</Text>
+                            <Text style={{ paddingLeft: 10, fontSize: 18 }}>抹零：</Text>
                             <Text style={{
                                 paddingLeft: 5,
                                 fontSize: 18,
                                 color: Macro.color_FA3951,
                             }}>¥{mlAmount}</Text>
 
-                            <Text style={{paddingLeft: 10, fontSize: 18}}>合计：</Text>
+                            <Text style={{ paddingLeft: 10, fontSize: 18 }}>合计：</Text>
                             <Text
                                 style={{
                                     paddingLeft: 5,
@@ -662,12 +659,12 @@ class FeeDetailPage extends BasePage {
                                     color: Macro.color_FA3951,
                                 }}>¥{price}</Text>
                         </Flex>
-                        <Flex style={{minHeight: 40}}>
+                        <Flex style={{ minHeight: 40 }}>
 
                             <TouchableWithoutFeedback
                                 disabled={price == 0 ? true : false}
                                 onPress={() => this.click('扫码')}>
-                                <Flex justify={'center'} style={[styles.ii, {backgroundColor: Macro.color_4d8fcc}]}>
+                                <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.color_4d8fcc }]}>
                                     <Text style={styles.word}>扫码</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
@@ -675,13 +672,13 @@ class FeeDetailPage extends BasePage {
                             <TouchableWithoutFeedback
                                 disabled={price == 0 ? true : false}
                                 onPress={() => this.click('收款码')}>
-                                <Flex justify={'center'} style={[styles.ii, {backgroundColor: Macro.color_f39d39}]}>
+                                <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.color_f39d39 }]}>
                                     <Text style={styles.word}>收款码</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
 
                             <TouchableWithoutFeedback onPress={() => this.click('现金')}>
-                                <Flex justify={'center'} style={[styles.ii, {backgroundColor: 'green'}]}>
+                                <Flex justify={'center'} style={[styles.ii, { backgroundColor: 'green' }]}>
                                     <Text style={styles.word}>现金</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
@@ -712,7 +709,7 @@ class FeeDetailPage extends BasePage {
                         {/*    size={200}*/}
                         {/*    value={this.state.code}*/}
                         {/*/>*/}
-                        <LoadImage style={{width: 200, height: 200}} img={this.state.code}/>
+                        <LoadImage style={{ width: 200, height: 200 }} img={this.state.code} />
                     </Flex>
 
                     {/*<Button type="primary" style={{height:50}} onPress={this.onClose}>*/}
@@ -721,30 +718,32 @@ class FeeDetailPage extends BasePage {
                 </Modal>
                 <Modal
                     transparent
-                    onClose={() => this.setState({jianfeiAlert: false})}
-                    onRequestClose={() => this.setState({jianfeiAlert: false})}
+                    onClose={() => this.setState({ jianfeiAlert: false })}
+                    onRequestClose={() => this.setState({ jianfeiAlert: false })}
                     maskClosable
                     visible={this.state.jianfeiAlert}>
                     <Flex justify={'center'} align={'center'}>
                         <JianFei onClose={() => {
-                            this.setState({jianfeiAlert: false});
+                            this.setState({ jianfeiAlert: false });
                             this.onRefresh();
-                        }} item={this.state.selectItem}/>
+                        }} item={this.state.selectItem} />
                     </Flex>
                 </Modal>
 
                 {
                     this.state.chaifeiAlert && (
-                        <TouchableWithoutFeedback onPress={()=>this.setState({chaifeiAlert: false})}>
-                            <View style={{...styles.pp,...styles.c}}>
-                                <Flex style={{backgroundColor: 'white', marginLeft:30,marginRight:30,borderRadius:10,
-                                    overflow:'hidden',padding:15}} justify={'center'} align={'center'}>
+                        <TouchableWithoutFeedback onPress={() => this.setState({ chaifeiAlert: false })}>
+                            <View style={{ ...styles.pp, ...styles.c }}>
+                                <Flex style={{
+                                    backgroundColor: 'white', marginLeft: 30, marginRight: 30, borderRadius: 10,
+                                    overflow: 'hidden', padding: 15
+                                }} justify={'center'} align={'center'}>
                                     <ChaiFei
                                         onClose={() => {
-                                            this.setState({chaifeiAlert: false});
+                                            this.setState({ chaifeiAlert: false });
                                             this.onRefresh();
                                         }}
-                                        showP={showPicker => this.setState({showPicker})}
+                                        showP={showPicker => this.setState({ showPicker })}
                                         item={this.state.selectItem}
                                         chaifeiDate={this.state.chaifeiDate}
                                     />
@@ -757,22 +756,22 @@ class FeeDetailPage extends BasePage {
 
                 {
                     this.state.showPicker &&
-                    <TouchableWithoutFeedback onPress={()=>{
+                    <TouchableWithoutFeedback onPress={() => {
                         // this.setState({
                         //     showPicker: false,
                         // })
                     }}>
 
-                            <View style={styles.pp} >
-                                <DatePickerView
-                                    mode={'date'}
-                                    style={styles.dd}
-                                    value={this.state.chaifeiDate}
-                                    // onChange={this.dateonChange}
-                                    minDate={new Date(this.state.selectItem.beginDate)}
-                                    maxDate={new Date(new Date(this.state.selectItem.endDate).getTime() - 24*60*60*1000)}
-                                />
-                            </View>
+                        <View style={styles.pp} >
+                            <DatePickerView
+                                mode={'date'}
+                                style={styles.dd}
+                                value={this.state.chaifeiDate}
+                                // onChange={this.dateonChange}
+                                minDate={new Date(this.state.selectItem.beginDate)}
+                                maxDate={new Date(new Date(this.state.selectItem.endDate).getTime() - 24 * 60 * 60 * 1000)}
+                            />
+                        </View>
                     </TouchableWithoutFeedback>
 
 
@@ -924,15 +923,15 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
-        width:'100%',
-        backgroundColor:'white',
-        overflow:'scroll'
+        width: '100%',
+        backgroundColor: 'white',
+        overflow: 'scroll'
 
     }
 });
 
-const mapStateToProps = ({memberReducer}) => {
-    return {userInfo: memberReducer.userInfo};
+const mapStateToProps = ({ memberReducer }) => {
+    return { userInfo: memberReducer.userInfo };
 };
 
 export default connect(mapStateToProps)(FeeDetailPage);

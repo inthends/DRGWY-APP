@@ -1,31 +1,30 @@
-import React, { Fragment } from 'react';
+import React  from 'react';
 import {
     View,
     Text,
-    StyleSheet,
-    StatusBar,
-    FlatList,
+    StyleSheet, 
     TouchableOpacity,
-    TouchableWithoutFeedback,
-    Linking, Alert,
+    // StatusBar,
+    // FlatList,
+    // TouchableWithoutFeedback,
+    // Linking, Alert,
     ScrollView, NativeModules,
 } from 'react-native';
 import BasePage from '../base/base';
-import { Button, Checkbox, Flex, Icon, List, WhiteSpace } from '@ant-design/react-native';
+import {  Flex, Icon, WhiteSpace } from '@ant-design/react-native';
 import Macro from '../../utils/macro';
 import ScreenUtil from '../../utils/screen-util';
 import { connect } from 'react-redux';
-import ListHeader from '../../components/list-header';
+//import ListHeader from '../../components/list-header';
 import common from '../../utils/common';
-import LoadImage from '../../components/load-image';
+//import LoadImage from '../../components/load-image';
 import NavigatorService from './navigator-service';
-import NoDataView from '../../components/no-data-view';
+//import NoDataView from '../../components/no-data-view';
 import CommonView from '../../components/CommonView';
 
 
 class FeeChargeDetail extends BasePage {
-    static navigationOptions = ({ navigation }) => {
-
+    static navigationOptions = ({ navigation }) => { 
         console.log(1, navigation);
         return {
             tabBarVisible: false,
@@ -92,7 +91,7 @@ class FeeChargeDetail extends BasePage {
                         <Text style={{
                             paddingLeft: 15,
                             paddingTop: 10,
-                            fontSize: 20,
+                            fontSize: 18,
                         }}>{data.allName} {data.createUserName}</Text>
                         <Text style={{
                             paddingLeft: 15,

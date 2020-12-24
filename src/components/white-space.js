@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, Image} from 'react-native';
-import LoadImage from './load-image';
+import {View } from 'react-native'; 
 
 export default class WhiteSpace extends Component {
     render() {

@@ -1,5 +1,5 @@
 import api from '../../utils/api';
-import common from '../../utils/common';
+// import common from '../../utils/common';
 
 export default {
     getStatistics(pageIndex, OrganizeId,showLoading=true) {

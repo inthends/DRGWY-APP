@@ -1,9 +1,7 @@
 package com.statistics;
-
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
-
 import java.lang.ref.WeakReference;
 
 public class BlurHandler extends Handler {

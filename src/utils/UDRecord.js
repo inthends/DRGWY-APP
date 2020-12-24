@@ -1,6 +1,6 @@
-import {AudioRecorder, AudioUtils} from 'react-native-audio';
-import UDToast from './UDToast';
-import common from './common';
+import {AudioRecorder } from 'react-native-audio';
+// import UDToast from './UDToast';
+// import common from './common';
 
 export default {
     prepardRecord() {

@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
-
 import {
     StyleSheet,
     Text,
-    TouchableOpacity,
-    Linking,
-    ScrollView, View, Animated, Easing, NativeModules,
+    View, Animated, Easing,
+    // TouchableOpacity,
+    // Linking,
+    // ScrollView,
+    // NativeModules,
 } from 'react-native';
 
-import QRCodeScanner from 'react-native-qrcode-scanner';
+//import QRCodeScanner from 'react-native-qrcode-scanner';
 import common from '../../utils/common';
 import NavigatorService from './navigator-service';
-import { Flex } from '@ant-design/react-native';
+//import { Flex } from '@ant-design/react-native';
 import Macro from '../../utils/macro';
 import { RNCamera } from 'react-native-camera';
 import UDToast from '../../utils/UDToast';
 
 export default class ScanScreen extends Component {
-
 
     // onSuccess = (e) => {
     //     let ids = common.getValueFromProps(this.props);
