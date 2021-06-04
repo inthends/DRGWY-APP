@@ -1,4 +1,4 @@
-//房间
+//车位
 import React from 'react';
 import {
     Text,
@@ -10,21 +10,17 @@ import {
 import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
-import ScreenUtil from '../../../utils/screen-util';
-// import { connect } from 'react-redux';
-// import ListHeader from '../../../components/list-header';
-// import WorkService from '../../work/work-service';
-// import LoadImage from '../../../components/load-image';
+import ScreenUtil from '../../../utils/screen-util'; 
 import common from '../../../utils/common';
 import NavigatorService from '../navigator-service';
 import CommonView from '../../../components/CommonView';
 
-export default class LouCeng extends BasePage {
+export default class LouPark extends BasePage {
     static navigationOptions = ({ navigation }) => {
         // console.log(1, navigation);
         return {
             tabBarVisible: false,
-            title: '楼层',
+            title: '车位',
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
@@ -38,7 +34,7 @@ export default class LouCeng extends BasePage {
         let building = common.getValueFromProps(this.props);
         this.state = {
             building,
-            floors: [],
+            parkings: [],
         };
     }
 
@@ -49,19 +45,24 @@ export default class LouCeng extends BasePage {
             (obj) => {
                 const { building } = this.state;
                 //获取楼层和房间
-                NavigatorService.getFloors(building.id).then(floors => {
-                    const promises = floors.map(item => {
-                        return NavigatorService.getRooms(item.id).then(rooms => {
-                            return {
-                                ...item,
-                                rooms,
-                            };
-                        });
-                    });
-                    Promise.all(promises).then(floors => {
-                        // console.log('floors', floors);
-                        this.setState({ floors });
-                    });
+                // NavigatorService.getFloors(building.id).then(floors => {
+                //     const promises = floors.map(item => {
+                //         return NavigatorService.getRooms(item.id).then(rooms => {
+                //             return {
+                //                 ...item,
+                //                 rooms,
+                //             };
+                //         });
+                //     });
+                //     Promise.all(promises).then(floors => {
+                //         // console.log('floors', floors);
+                //         this.setState({ floors });
+                //     });
+                // });
+
+                //车位
+                NavigatorService.getParkings(building.id).then(parkings => {
+                    this.setState({ parkings });
                 });
             },
         );
@@ -72,45 +73,33 @@ export default class LouCeng extends BasePage {
     }
 
     render() {
-        const { floors, building } = this.state;
-
+        const { parkings, building } = this.state; 
 
         return (
-
-
+ 
             <CommonView style={{ flex: 1 }}>
                 <ScrollView>
-                    <Text style={{ paddingLeft: 15, paddingTop: 15, fontSize: 20 }}>{building.allName}</Text>
-
-                    {floors.map(floor => (
-                        <Flex key={floor.id} align={'start'} direction={'column'}>
-                            <Flex style={styles.bb}>
-                                <Text style={styles.se}>{floor.name}</Text>
-                            </Flex>
-                            <Flex wrap='wrap' style={{ paddingLeft: 10, paddingRight: 10, marginTop: 10 }}>
-                                {floor.rooms.map(room => {
-                                    let color = {};
-                                    if (room.color === 2) {
-                                        color = styles.orange;
-                                    } else if (room.color === 3) {
-                                        color = styles.blue74BAF1;
-                                    }
-                                    return (
-                                        <TouchableWithoutFeedback key={room.id}
-                                            onPress={() => this.props.navigation.push('louDetail', { data: room })}>
-                                            <Flex style={[styles.item, color]} justify={'center'}>
-                                                <Text style={[styles.title, color]}>{room.name}</Text>
-                                            </Flex>
-                                        </TouchableWithoutFeedback>
-                                    );
-                                },
-                                )}
-                            </Flex>
-                        </Flex>
-                    ))}
+                    <Text style={{ paddingLeft: 15, paddingTop: 15, fontSize: 20 }}>{building.allName}</Text>  
+                    <Flex wrap='wrap' style={{ paddingLeft: 10, paddingRight: 10, marginTop: 10 }}>
+                        {parkings.map(room => {
+                            let color = {};
+                            if (room.color === 2) {
+                                color = styles.orange;
+                            } else if (room.color === 3) {
+                                color = styles.blue74BAF1;
+                            }
+                            return (
+                                <TouchableWithoutFeedback key={room.id}
+                                    onPress={() => this.props.navigation.push('louDetail', { data: room })}>
+                                    <Flex style={[styles.item, color]} justify={'center'}>
+                                        <Text style={[styles.title, color]}>{room.name}</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+                            );
+                        },
+                        )}
+                    </Flex>  
                 </ScrollView>
-
-
             </CommonView>
 
         );

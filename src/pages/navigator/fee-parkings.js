@@ -53,7 +53,7 @@ export default class FeeParkingsPage extends BasePage {
             'didFocus',
             (obj) => {
                 const { building } = this.state;
-                //车库和车位
+                //车位
                 NavigatorService.getParkings(building.id).then(parkings => {
                     this.setState({ parkings });
                 });

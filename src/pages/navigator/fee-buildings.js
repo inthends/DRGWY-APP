@@ -67,7 +67,6 @@ export default class FeeBuildingsPage extends BasePage {
         const { housing, items } = this.state;
         return (
 
-
             <CommonView style={{ flex: 1 }}>
                 <ScrollView style={{ flex: 1 }}>
                     <Text style={{ paddingLeft: 15, paddingTop: 15, fontSize: 20 }}>{housing.name}</Text>

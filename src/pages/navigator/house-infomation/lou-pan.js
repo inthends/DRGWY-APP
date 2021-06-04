@@ -1,21 +1,19 @@
-import React, {Fragment} from 'react';
+import React  from 'react';
 import {
     View,
     Text,
-    StyleSheet,
-    StatusBar,
+    StyleSheet, 
     FlatList,
     TouchableOpacity,
-    TouchableWithoutFeedback,
-    Linking,
+    TouchableWithoutFeedback
 } from 'react-native';
 import BasePage from '../../base/base';
-import {Button, Flex, Icon, List, WhiteSpace} from '@ant-design/react-native';
+import {  Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
-import ScreenUtil from '../../../utils/screen-util';
+// import ScreenUtil from '../../../utils/screen-util';
 import {connect} from 'react-redux';
-import ListHeader from '../../../components/list-header';
-import common from '../../../utils/common';
+// import ListHeader from '../../../components/list-header';
+// import common from '../../../utils/common';
 import LoadImage from '../../../components/load-image';
 import NavigatorService from '../navigator-service';
 import NoDataView from '../../../components/no-data-view';
@@ -28,7 +26,7 @@ class LouPan extends BasePage {
         console.log(1, navigation);
         return {
             tabBarVisible: false,
-            title: '楼盘',
+            title: '项目',
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{width: 30, marginLeft: 15}}/>

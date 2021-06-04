@@ -279,8 +279,7 @@ class FeeDetailPage extends BasePage {
                             NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
                                 ...res,
                                 "proc_cd": "710000", //拉卡拉消费
-                                "pay_tp": "1"
-
+                                "pay_tp": "1" 
                             });
                         } else if (posType === '威富通') {
                             NavigatorService.qrcodePay(res.out_trade_no).then(code => {

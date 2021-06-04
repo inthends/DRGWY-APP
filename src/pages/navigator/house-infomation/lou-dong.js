@@ -1,24 +1,20 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import {
-    View,
     Text,
     StyleSheet,
-    StatusBar,
-    FlatList,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    Linking,
     ScrollView,
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Button, Flex, Icon, List, WhiteSpace } from '@ant-design/react-native';
+import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
-import { connect } from 'react-redux';
-import ListHeader from '../../../components/list-header';
+// import { connect } from 'react-redux';
+// import ListHeader from '../../../components/list-header';
 import common from '../../../utils/common';
 import NavigatorService from '../navigator-service';
-import LoadImage from '../../../components/load-image';
+// import LoadImage from '../../../components/load-image';
 import CommonView from '../../../components/CommonView';
 
 
@@ -28,7 +24,7 @@ export default class LouDong extends BasePage {
         // console.log(1, navigation);
         return {
             tabBarVisible: false,
-            title: '楼栋',
+            title: '楼栋/车库',
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
@@ -39,8 +35,7 @@ export default class LouDong extends BasePage {
 
     constructor(props) {
         super(props);
-        let housing = common.getValueFromProps(this.props);
-        // console.log(11, housing);
+        let housing = common.getValueFromProps(this.props); 
         this.state = {
             housing,
             items: [],
@@ -75,15 +70,14 @@ export default class LouDong extends BasePage {
                     <Flex wrap='wrap' style={{ paddingLeft: 10, paddingRight: 10, marginTop: 15 }}>
                         {items.map(item => (
                             <TouchableWithoutFeedback key={item.id}
-                                                      onPress={() => {
-                                                          // if (item.type == 2)
-                                                              //房间
-                                                              this.props.navigation.push('louCeng', { data: item });
-                                                          // else
-                                                          //     //车位
-                                                          //     this.props.navigation.push('feeParkings', { data: item });
-                                                      }}>
-
+                                onPress={() => {
+                                    if (item.type == 2)
+                                        //房间
+                                        this.props.navigation.push('louCeng', { data: item });
+                                    else
+                                        //车位
+                                        this.props.navigation.push('louPark', { data: item });
+                                }}>
 
                                 <Flex style={[styles.item, item.color === 2 ? '' : styles.orange2]} justify={'center'}>
                                     <Text style={[styles.title, item.color === 2 ? '' : styles.orange2]}>{item.name}</Text>
@@ -96,7 +90,7 @@ export default class LouDong extends BasePage {
                 </ScrollView>
 
 
-            </CommonView>
+            </CommonView >
 
         );
     }

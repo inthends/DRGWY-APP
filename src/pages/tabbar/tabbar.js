@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Image, Dimensions, Text, TouchableOpacity, DeviceEventEmitter} from 'react-native';
+import React  from 'react';
+import {Image, Dimensions , DeviceEventEmitter} from 'react-native';
 import {
     createBottomTabNavigator,
     createAppContainer,
@@ -82,6 +82,7 @@ import LouCeng from '../navigator/house-infomation/lou-ceng';
 import LouDetail from '../navigator/house-infomation/lou-detail';
 import SheBeiList from '../navigator/she-bei/list';
 import ShebeiDetail from '../navigator/she-bei/detail';
+import LouPark from '../navigator/house-infomation/lou-park';
 
 const BuildingNavigator = createStackNavigator({
 
@@ -175,9 +176,12 @@ const navigatorNavigator = createStackNavigator({
     scanForWork: ScanOnly,
     chaobiao: ChaoBiaoPage,
     newsList: NewsList,
+
     louPan: LouPan,
     louDong: LouDong,
     louCeng: LouCeng,
+    louPark: LouPark,
+
     louDetail: LouDetail,
     shebeiList: SheBeiList,
     shebeiDetail:ShebeiDetail,
