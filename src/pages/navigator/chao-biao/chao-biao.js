@@ -136,9 +136,9 @@ class ChaoBiaoPage extends BasePage {
         // }
     };
 
-    callBack = (keyValue) => {
+    callBack = (keyvalue) => {
         // 11-FY-XHF-01-0101
-        ChaoBiaoService.lastMeter(keyValue).then(current => {
+        ChaoBiaoService.lastMeter(keyvalue).then(current => {
             this.setState({
                 scan: true,
                 nowRead: '',

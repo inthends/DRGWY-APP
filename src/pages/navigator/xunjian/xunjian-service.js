@@ -35,9 +35,9 @@ export default {
         return api.getData('/api/MobileMethod/MGetPollingPointEntity', {lineId, pointId});
     },
 
-    xunjianExecute(keyValue, pointStatus, userId, userName, showLoading = true) {
+    xunjianExecute(keyvalue, pointStatus, userId, userName, showLoading = true) {
         return api.postData('/api/MobileMethod/MExcutePollingTasck', {
-            keyValue,
+            keyvalue,
             pointStatus,
             userId,
             userName,

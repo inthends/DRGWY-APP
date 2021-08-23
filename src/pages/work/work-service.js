@@ -12,17 +12,17 @@ export default {
         return api.postData('/api/MobileMethod/MSaveServiceDeskForm', params,showLoading);
     },
     //服务单详情
-    serviceDetail(type, keyValue) {
-        return api.getData('/api/MobileMethod/MGetServicedeskEntity', { keyValue });
+    serviceDetail(type, keyvalue) {
+        return api.getData('/api/MobileMethod/MGetServicedeskEntity', { keyvalue });
     },
     //服务单附件
-    serviceExtra(keyValue) {
-        return api.getData('/api/MobileMethod/MGetFilesData', { keyValue });
+    serviceExtra(keyvalue) {
+        return api.getData('/api/MobileMethod/MGetFilesData', { keyvalue });
     },
     //服务单操作
-    serviceHandle(handle, keyValue, content, extra = null) {
+    serviceHandle(handle, keyvalue, content, extra = null) {
         let url = '';
-        let params = { keyValue, content };
+        let params = { keyvalue, content };
         if (extra) {
             params = {
                 ...params,
@@ -59,30 +59,30 @@ export default {
         return api.postData(url, params);
     },
 
-    serviceCommunicates(keyValue) {
-        return api.getData('/api/MobileMethod/MGetCommunicates', { keyValue, pageIndex: 1, pageSize: 100 });
+    serviceCommunicates(keyvalue) {
+        return api.getData('/api/MobileMethod/MGetCommunicates', { keyvalue, pageIndex: 1, pageSize: 100 });
     },
 
     //维修单单据动态
-    getOperationRecord(keyValue) {
-        return api.getData('/api/MobileMethod/MGetOperationRecordList', { keyValue, pageIndex: 1, pageSize: 100 });
+    getOperationRecord(keyvalue) {
+        return api.getData('/api/MobileMethod/MGetOperationRecordList', { keyvalue, pageIndex: 1, pageSize: 100 });
     },
 
     //维修单详情
-    weixiuDetail(keyValue) {
-        return api.getData('/api/MobileMethod/MGetRepairEntity', { keyValue });
+    weixiuDetail(keyvalue) {
+        return api.getData('/api/MobileMethod/MGetRepairEntity', { keyvalue });
     },
     //维修单附件
-    weixiuExtra(keyValue) {
-        return api.getData('/api/MobileMethod/MGetRepairFilesData', { keyValue });
+    weixiuExtra(keyvalue) {
+        return api.getData('/api/MobileMethod/MGetRepairFilesData', { keyvalue });
     },
     //投诉单详情
-    tousuDetail(keyValue) {
-        return api.getData('/api/MobileMethod/MGetComplaintEntity', { keyValue });
+    tousuDetail(keyvalue) {
+        return api.getData('/api/MobileMethod/MGetComplaintEntity', { keyvalue });
     },
     //投诉单附件
-    tousuExtra(keyValue) {
-        return api.getData('/api/MobileMethod/MGetComplaintFilesData', { keyValue });
+    tousuExtra(keyvalue) {
+        return api.getData('/api/MobileMethod/MGetComplaintFilesData', { keyvalue });
     },
 
     //工作台列表
@@ -116,8 +116,8 @@ export default {
     paidanPersons(organizeId, keyword = null, type = '员工') {
         return api.getData('/api/MobileMethod/MGetUserList', { organizeId, keyword, type });
     },
-    paidan(keyValue, receiverName, receiverId) {
-        return api.postData('/api/MobileMethod/MRepairDispatch', { keyValue, receiverName, receiverId });
+    paidan(keyvalue, receiverName, receiverId) {
+        return api.postData('/api/MobileMethod/MRepairDispatch', { keyvalue, receiverName, receiverId });
     },
     unreadCount() {
         return api.getData('/api/MobileMethod/MGetUnReadNewsCount', {}, false);

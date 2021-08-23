@@ -25,10 +25,10 @@ export default class BuildingHeader extends BasePage {
     scan = () => {
         this.props.navigation.push('scanForHome', {
             data: {
-                callBack: (keyValue) => {
+                callBack: (keyvalue) => {
                     this.props.navigation.navigate('yiqing', {
                         'data': {
-                            keyValue,
+                            keyvalue,
                         },
                     });
                 },

@@ -107,7 +107,7 @@ export default {
             let file = {uri: uri, type: 'multipart/form-data', name: name};   //这里的key(uri和type和name)不能改变,
             //console.log('file', file);
             formData.append('Files', file);   //这里的files就是后台需要的key
-            formData.append('keyValue', id);
+            formData.append('keyvalue', id);
             console.log('formData', formData);
             axios.defaults.headers['Content-Type'] = 'multipart/form-data';
             axios.defaults.headers['Authorization'] = 'Bearer ' + ManualAction.getTokenBYStore();

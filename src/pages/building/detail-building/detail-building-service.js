@@ -2,11 +2,11 @@ import api from '../../../utils/api';
 //import common from '../../../utils/common';
 
 export default {
-    getPStructs(keyValue, type) {
-        return api.getData('/api/MobileMethod/MGetPStructs', {keyValue, type});
+    getPStructs(keyvalue, type) {
+        return api.getData('/api/MobileMethod/MGetPStructs', {keyvalue, type});
     },
-    getBuildingDetail(keyValue) {
-        return api.getData('/api/MobileMethod/MGetBuildingEntity', {keyValue});
+    getBuildingDetail(keyvalue) {
+        return api.getData('/api/MobileMethod/MGetBuildingEntity', {keyvalue});
     },
 
 };

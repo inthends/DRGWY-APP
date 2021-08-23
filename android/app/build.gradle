@@ -135,7 +135,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "2.5.3"
+        versionName "3.0.0"
         missingDimensionStrategy 'react-native-camera', 'general'
 //         manifestPlaceholders = [
 //                 JPUSH_APPKEY : "996f9f0191243d335f473952",         //在此替换你的APPKey

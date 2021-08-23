@@ -30,9 +30,9 @@ class YiQingInfoPage extends BasePage {
     constructor(props) {
         super(props);
 
-        const {keyValue} = common.getValueFromProps(this.props);
+        const {keyvalue} = common.getValueFromProps(this.props);
         this.state = {
-            keyValue,
+            keyvalue,
             status: '',
             numbers: '',
             memo: '',
@@ -41,7 +41,7 @@ class YiQingInfoPage extends BasePage {
 
 
     in = () => {
-        const {keyValue, status, numbers, memo} = this.state;
+        const {keyvalue, status, numbers, memo} = this.state;
         if (numbers.length === 0) {
             UDToast.showError('请输入人数');
             return;
@@ -50,7 +50,7 @@ class YiQingInfoPage extends BasePage {
             UDToast.showError('请选择是否正常');
             return;
         }
-        YiQingService.record(keyValue, '1', numbers, status, memo).then(res => {
+        YiQingService.record(keyvalue, '1', numbers, status, memo).then(res => {
             this.props.navigation.popToTop();
         });
     };

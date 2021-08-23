@@ -60,7 +60,7 @@ class LouDetail extends BasePage {
             room,
             jiao: false,
         };
-        api.getData('/api/MobileMethod/MGetRoomEntity', {keyValue: room.id}).then(res => {
+        api.getData('/api/MobileMethod/MGetRoomEntity', {keyvalue: room.id}).then(res => {
             this.setState({
                 detail: {
                     ...res.entity,

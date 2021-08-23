@@ -174,7 +174,7 @@ class AddWorkPage extends BasePage {
         }
         const params = {
             id,
-            keyValue: id,
+            keyvalue: id,
             Source: '员工APP',
             BillType: data[index],
             RoomId: address.id,

@@ -136,7 +136,7 @@ class SettingPage extends BasePage {
                         let file = {uri: img.icon.fileUri, type: 'multipart/form-data', name: 'picture.png'};   //这里的key(uri和type和name)不能改变,
                         formData.append('Files', file);   //这里的files就是后台需要的key
                     }
-                    formData.append('keyValue', id);
+                    formData.append('keyvalue', id);
                     console.log('formData', formData);
                     axios.defaults.headers['Content-Type'] = 'multipart/form-data';
                     axios.defaults.headers['Authorization'] = 'Bearer ' + ManualAction.getTokenBYStore();
@@ -168,8 +168,8 @@ class SettingPage extends BasePage {
         if (xunJians.length > 0) {
             this.loading = UDToast.showLoading('正在上传中...');
             Promise.all(xunJians.map(item => {
-                const {keyValue, pointStatus, userId, userName} = item;
-                return XunJianService.xunjianExecute(keyValue, pointStatus, userId, userName, false);
+                const {keyvalue, pointStatus, userId, userName} = item;
+                return XunJianService.xunjianExecute(keyvalue, pointStatus, userId, userName, false);
             })).then(res => {
                 this.uploadWork(works).then(res => {
                     this.uploadImages(imageObjs).then(res => {

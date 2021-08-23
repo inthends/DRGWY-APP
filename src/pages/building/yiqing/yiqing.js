@@ -24,13 +24,13 @@ class YiQingPage extends BasePage {
     constructor(props) {
         super(props);
 
-        const {keyValue} = common.getValueFromProps(this.props);
+        const {keyvalue} = common.getValueFromProps(this.props);
         this.state = {
             allName: '',
             records: [],
-            keyValue,
+            keyvalue,
         };
-        YiQingService.detail(this.state.keyValue).then(res => {
+        YiQingService.detail(this.state.keyvalue).then(res => {
             this.setState({
                 allName: res.entity.allName,
             });
@@ -40,7 +40,7 @@ class YiQingPage extends BasePage {
     componentDidMount(): void {
 
 
-        YiQingService.records(this.state.keyValue).then(res => {
+        YiQingService.records(this.state.keyvalue).then(res => {
             this.setState({
                 records: res.data,
             });
@@ -49,7 +49,7 @@ class YiQingPage extends BasePage {
 
 
     out = () => {
-        YiQingService.record(this.state.keyValue, '0', '1', '1', '').then(res => {
+        YiQingService.record(this.state.keyvalue, '0', '1', '1', '').then(res => {
             this.props.navigation.popToTop();
         });
     };
@@ -67,7 +67,7 @@ class YiQingPage extends BasePage {
                         <Button type={'primary'} style={styles.button1} onPress={this.out}>出小区</Button>
                         <Button type={'primary'} style={styles.button2}
                                 onPress={() => this.props.navigation.navigate('yiqinginfo', {
-                                    data: {keyValue: this.state.keyValue},
+                                    data: {keyvalue: this.state.keyvalue},
                                 })
                                 }>入小区</Button>
                     </Flex>

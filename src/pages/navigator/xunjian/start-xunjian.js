@@ -112,7 +112,7 @@ class StartXunJianPage extends BasePage {
             this.props.saveXunJianAction({
                 [item.taskId]: {
                     xunjianParams: {
-                        keyValue: item.taskId,
+                        keyvalue: item.taskId,
                         pointStatus: status,
                         userId: person.id,
                         userName: person.name,

@@ -60,7 +60,7 @@ export default class SelectAddressPage extends BasePage {
         const parent = common.getValueFromProps(this.props, 'data');
         let params;
         if (parent) {
-            params = {keyValue: parent.id};
+            params = {keyvalue: parent.id};
             let type = -1;
             switch (parent.type) {
                 case 1: {
@@ -100,7 +100,7 @@ export default class SelectAddressPage extends BasePage {
             this.props.navigation.setParams({
                 title: '选择楼盘',
             });
-            params = {keyValue: 0, type: 1};
+            params = {keyvalue: 0, type: 1};
         }
         this.setState({
             parent,

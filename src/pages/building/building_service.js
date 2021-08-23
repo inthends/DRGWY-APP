@@ -15,8 +15,8 @@ export default {
         return api.postData('/api/MobileMethod/MGetStatisticsTotal', {OrganizeId});
     },
 
-    roomDetail(keyValue) {
-        return api.getData('/api/MobileMethod/MGetRoomEntity', {keyValue});
+    roomDetail(keyvalue) {
+        return api.getData('/api/MobileMethod/MGetRoomEntity', {keyvalue});
     },
     getUserInfo() {
         return api.getData('/api/MobileMethod/MGetUserInfo',{},false);
