@@ -2,17 +2,17 @@ import api from '../../utils/api';
 // import common from '../../utils/common';
 
 export default {
-    getStatistics(pageIndex, OrganizeId,showLoading=true) {
+    getStatistics(pageIndex, organizeId,showLoading=true) {
         return api.postData('/api/MobileMethod/MGetStatistics', {
             pageIndex,
             pageSize: 10,
             sidx: 'name',
             sord: 'asc',
-            OrganizeId,
+            organizeId,
         },showLoading);
     },
-    getStatisticsTotal(OrganizeId) {
-        return api.postData('/api/MobileMethod/MGetStatisticsTotal', {OrganizeId});
+    getStatisticsTotal(organizeId) {
+        return api.postData('/api/MobileMethod/MGetStatisticsTotal', {organizeId});
     },
 
     roomDetail(keyvalue) {

@@ -37,13 +37,13 @@ export default class ChaiFei extends BasePage {
 
         let b = new Date(new Date(a).getTime() + 24 * 60 * 60 * 1000).getYearAndMonthAndDay();
         let data = {
-            FirstAmount: money,
-            FirstBeginDate: item.beginDate,
-            FirstEndDate: a,
-            SecondAmount: last,
-            SecondBeginDate: b,
-            SecondEndDate: item.endDate,
-            Memo: memo
+            firstAmount: money,
+            firstBeginDate: item.beginDate,
+            firstEndDate: a,
+            secondAmount: last,
+            secondBeginDate: b,
+            secondEndDate: item.endDate,
+            memo: memo
         }
         let splitData = {
             Data: JSON.stringify(data),

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {View, Text, Image,TouchableOpacity,StyleSheet} from 'react-native';
-import LoadImage from './load-image';
-import {Button, Flex, Icon, List, WhiteSpace} from '@ant-design/react-native';
+import {  Text,  TouchableOpacity,StyleSheet} from 'react-native';
+// import LoadImage from './load-image';
+import { Flex, Icon } from '@ant-design/react-native';
 import ScreenUtil from '../utils/screen-util';
 
 export default class BackTitleNavigationBar extends Component {

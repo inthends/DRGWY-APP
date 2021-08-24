@@ -175,11 +175,11 @@ class AddWorkPage extends BasePage {
         const params = {
             id,
             keyvalue: id,
-            Source: '员工APP',
-            BillType: data[index],
-            RoomId: address.id,
-            Address: address.allName,
-            Contents: value,
+            source: '员工APP',
+            billType: data[index],
+            roomId: address.id,
+            address: address.allName,
+            contents: value,
             isAdd: true,
             taskId: this.state.taskId,
         };
@@ -210,11 +210,7 @@ class AddWorkPage extends BasePage {
                 });
                 UDToast.showSuccess('已保存，稍后可在我的-设置中同步巡检数据');
             }
-
-
         }
-
-
     };
 
     render() {

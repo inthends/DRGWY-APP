@@ -1,10 +1,10 @@
-import React, {Component, Fragment} from 'react';
-import {View, Image, Text, StyleSheet} from 'react-native';
+import React, {Component } from 'react';
+import {  Text, StyleSheet} from 'react-native';
 import {Flex} from '@ant-design/react-native';
 import Macro from '../utils/macro';
 import ScreenUtil from '../utils/screen-util';
 import LoadImage from './load-image';
-import DashLine from './dash-line';
+// import DashLine from './dash-line';
 
 export default class AreaInfo extends Component {
 

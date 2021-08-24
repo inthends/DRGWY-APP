@@ -1,16 +1,11 @@
 import React, {Component, Fragment} from 'react';
-import {View, Text, Image, StyleSheet, Animated, TouchableWithoutFeedback, ScrollView} from 'react-native';
-import {Button, Flex, Icon, List, WhiteSpace, SegmentedControl} from '@ant-design/react-native';
+import {View, Text,StyleSheet, TouchableWithoutFeedback} from 'react-native';
+import { Flex} from '@ant-design/react-native';
 import ScreenUtil from '../utils/screen-util';
 import LoadImage from './load-image';
-
-
-
-
+ 
 export default class Communicates extends Component {
-
-
-
+ 
     render() {
 
         return (

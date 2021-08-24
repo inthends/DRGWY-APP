@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React  from 'react';
 import BasePage from '../pages/base/base';
 import {SafeAreaView, View} from 'react-native';
 import common from '../utils/common';

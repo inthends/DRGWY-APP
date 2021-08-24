@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React  from 'react';
 import {
     View,
     Text,
@@ -8,7 +8,7 @@ import {
     FlatList,
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Button, Flex, Icon, List, WhiteSpace } from '@ant-design/react-native';
+import {  Flex, Icon, List, WhiteSpace } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
 import { connect } from 'react-redux';
@@ -82,9 +82,8 @@ class EstateFuwuPage extends BasePage {
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
         const nextSelectBuilding = nextProps.selectBuilding;
-        console.log('selectBuilding', selectBuilding);
-        console.log('nextSelectBuilding', nextSelectBuilding);
-
+        // console.log('selectBuilding', selectBuilding);
+        // console.log('nextSelectBuilding', nextSelectBuilding); 
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
             this.setState({ selectBuilding: nextProps.selectBuilding }, () => {
                 this.onRefresh();
@@ -95,7 +94,7 @@ class EstateFuwuPage extends BasePage {
 
     getList = () => {
         /*
-        pageIndex, BillStatus, TreeType, organizeId, BillType, StartTime, EndTime
+        pageIndex, billStatus, treeType, organizeId, billType, startTime, endTime
          */
         const { billStatus, selectBuilding, billType, time } = this.state;
         let treeType;
@@ -222,6 +221,7 @@ class EstateFuwuPage extends BasePage {
                 break;
             }
             default: {
+                //已作废
                 billStatus = -1;
                 break;
             }

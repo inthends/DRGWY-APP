@@ -3,8 +3,8 @@ import api from '../../utils/api';
 //import common from '../../utils/common';
 
 export default {
-    getFeeStatistics(pageIndex, OrganizeId, pageSize = 10) {
-        return api.postData('/api/MobileMethod/MGetFeeStatistics', { pageIndex, pageSize, OrganizeId });
+    getFeeStatistics(pageIndex, organizeId, pageSize = 10) {
+        return api.postData('/api/MobileMethod/MGetFeeStatistics', { pageIndex, pageSize, organizeId });
     },
     //楼栋或者车库
     getBuildings(keyvalue) {
@@ -35,7 +35,7 @@ export default {
     //服务单
     serviceList(pageIndex, billStatus, treeType, organizeId, billType, startTime, endTime) {
         /*
-        {:,TreeType:,organizeId:BillType:,StartTime:,EndTime:,}
+        {:,treeType:,organizeId:billType:,startTime:,endTime:,}
          */
 
         // if (billType === '报修') {
@@ -59,7 +59,7 @@ export default {
 
     weixiuList(pageIndex, billStatus, treeType, organizeId, startTime, endTime, repairArea) {
         /*
-        {:,TreeType:,organizeId:BillType:,StartTime:,EndTime:,}
+        {:,treeType:,organizeId:billType:,startTime:,endTime:,}
          */
 
         // if (billType === '报修') {

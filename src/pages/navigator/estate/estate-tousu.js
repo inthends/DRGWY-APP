@@ -97,7 +97,7 @@ class EstateTousuPage extends BasePage {
 
     getList = () => {
         /*
-        pageIndex, BillStatus, TreeType, organizeId, BillType, StartTime, EndTime
+        pageIndex, billStatus, treeType, organizeId, billType, startTime, endTime
          */
         const {billStatus, selectBuilding, time} = this.state;
         let treeType;
