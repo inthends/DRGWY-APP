@@ -95,7 +95,7 @@ export default class JieDanListDetailPage extends BasePage {
         });
     };
     click = (handle) => {
-        const {fuwu, type, value} = this.state;
+        const {fuwu, value} = this.state;
         if (handle === '回复' && !(value&&value.length > 0)) {
             UDToast.showInfo('请输入文字');
             return;

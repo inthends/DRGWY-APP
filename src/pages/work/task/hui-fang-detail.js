@@ -6,25 +6,24 @@ import {
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    Image,
-    ScrollView,
-    RefreshControl, Modal,
+    ScrollView,Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Icon } from '@ant-design/react-native/lib/index';
-import { List, WhiteSpace, Flex, TextareaItem, Grid, Button } from '@ant-design/react-native/lib/index';
+import { List, Flex, TextareaItem } from '@ant-design/react-native/lib/index';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
-import SelectImage from '../../../utils/select-image';
 import common from '../../../utils/common';
-import UDRecord from '../../../utils/UDRecord';
-import api from '../../../utils/api';
-import UDPlayer from '../../../utils/UDPlayer';
+
+// import SelectImage from '../../../utils/select-image';
+// import UDRecord from '../../../utils/UDRecord';
+// import api from '../../../utils/api';
+// import UDPlayer from '../../../utils/UDPlayer';
 
 import UDToast from '../../../utils/UDToast';
 import DashLine from '../../../components/dash-line';
 import WorkService from '../work-service';
-import UploadImageView from '../../../components/upload-image-view';
+// import UploadImageView from '../../../components/upload-image-view';
 import Star from '../../../components/star';
 // import Communicates from '../../../components/communicates';
 import OperationRecords from '../../../components/operationrecords';
@@ -33,7 +32,7 @@ import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
-const Item = List.Item;
+// const Item = List.Item;
 
 export default class HuiFangDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -124,7 +123,7 @@ export default class HuiFangDetailPage extends BasePage {
     };
 
     click = (handle) => {
-        const { fuwu, type, value, star } = this.state;
+        const { fuwu,  value, star } = this.state;
         if (handle === '回复' && !(value && value.length > 0)) {
             UDToast.showInfo('请输入文字');
             return;

@@ -1,26 +1,25 @@
 //工作台点击服务单详情
-import React, {Fragment} from 'react';
+import React  from 'react';
 import {
     View,
     Text,
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    Image,
-    ScrollView,
-    RefreshControl, Modal,
+    ScrollView, Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
-import {Icon} from '@ant-design/react-native';
-import {List, WhiteSpace, Flex, TextareaItem, Grid, Button} from '@ant-design/react-native';
+import { Icon } from '@ant-design/react-native';
+import { Flex, TextareaItem } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
-import SelectImage from '../../../utils/select-image';
-import common from '../../../utils/common';
-import UDRecord from '../../../utils/UDRecord';
-import api from '../../../utils/api';
-import UDPlayer from '../../../utils/UDPlayer';
 
+// import SelectImage from '../../../utils/select-image';
+// import UDRecord from '../../../utils/UDRecord';
+// import api from '../../../utils/api';
+// import UDPlayer from '../../../utils/UDPlayer';
+
+import common from '../../../utils/common';
 import UDToast from '../../../utils/UDToast';
 import DashLine from '../../../components/dash-line';
 import WorkService from '../work-service';
@@ -30,17 +29,15 @@ import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
-
-
-const Item = List.Item;
+//const Item = List.Item;
 
 export default class FuWuDanListDetailPage extends BasePage {
-    static navigationOptions = ({navigation}) => {
+    static navigationOptions = ({ navigation }) => {
         return {
             title: '服务单详情',
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
 
@@ -71,12 +68,12 @@ export default class FuWuDanListDetailPage extends BasePage {
 
 
     getData = () => {
-        const {fuwu, type} = this.state;
+        const { fuwu, type } = this.state;
         // console.log(fuwu);
         WorkService.serviceDetail(type, fuwu.id).then(item => {
             console.log('detail', item);
             this.setState({
-                detail:{
+                detail: {
                     ...item.data,
                     businessId: item.businessId,
                     statusName: item.statusName
@@ -85,7 +82,7 @@ export default class FuWuDanListDetailPage extends BasePage {
         });
         WorkService.serviceCommunicates(fuwu.id).then(res => {
             this.setState({
-                communicates:res,
+                communicates: res,
             });
         });
         WorkService.serviceExtra(fuwu.id).then(images => {
@@ -95,8 +92,8 @@ export default class FuWuDanListDetailPage extends BasePage {
         });
     };
     click = (handle) => {
-        const {fuwu, type, value} = this.state;
-        if (handle === '回复' && !(value&&value.length > 0)) {
+        const { fuwu, type, value } = this.state;
+        if (handle === '回复' && !(value && value.length > 0)) {
             UDToast.showInfo('请输入文字');
             return;
         }
@@ -132,9 +129,9 @@ export default class FuWuDanListDetailPage extends BasePage {
 
 
     render() {
-        const {images, detail, communicates} = this.state;
+        const { images, detail, communicates } = this.state;
         return (
-            <CommonView style={{flex: 1, backgroundColor: '#fff', paddingBottom: 10}}>
+            <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.billCode}</Text>
@@ -144,20 +141,20 @@ export default class FuWuDanListDetailPage extends BasePage {
                         <Text style={styles.left}>{detail.address}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
-                    <DashLine/>
+                    <DashLine />
                     <Text style={styles.desc}>{detail.contents}</Text>
-                    <DashLine/>
-                    <ListImages images={images} lookImage={this.lookImage}/>
+                    <DashLine />
+                    <ListImages images={images} lookImage={this.lookImage} />
 
-                        <Flex style={[styles.every2]} justify='between'>
-                            <Text style={styles.left}>报单人：{detail.contactName} {detail.createDate}</Text>
-                            <TouchableWithoutFeedback onPress={() => common.call(detail.contactPhone)}>
-                                <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{width: 30, height: 30}}/></Flex>
-                            </TouchableWithoutFeedback>
-                        </Flex>
+                    <Flex style={[styles.every2]} justify='between'>
+                        <Text style={styles.left}>报单人：{detail.contactName} {detail.createDate}</Text>
+                        <TouchableWithoutFeedback onPress={() => common.call(detail.contactPhone)}>
+                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 30, height: 30 }} /></Flex>
+                        </TouchableWithoutFeedback>
+                    </Flex>
 
-                     {/* 服务单关联单据，不允许操作 neo 2020年6月26日10:24:45 */}
-                     {/* {detail.businessCode ? (
+                    {/* 服务单关联单据，不允许操作 neo 2020年6月26日10:24:45 */}
+                    {/* {detail.businessCode ? (
                         <TouchableWithoutFeedback>
                             <Flex style={[styles.every]}>
                                 <Text style={styles.left}>关联单：</Text>
@@ -202,7 +199,7 @@ export default class FuWuDanListDetailPage extends BasePage {
                         </TouchableWithoutFeedback>
                     ):null} */}
 
-                    <DashLine/>
+                    <DashLine />
                     <View style={{
                         margin: 15,
                         borderStyle: 'solid',
@@ -213,19 +210,19 @@ export default class FuWuDanListDetailPage extends BasePage {
                         <TextareaItem
                             rows={4}
                             placeholder='请输入'
-                            style={{fontSize:14,paddingTop: 10, height: 100, width: ScreenUtil.deviceWidth() - 32}}
-                            onChange={value => this.setState({value})}
+                            style={{ fontSize: 14, paddingTop: 10, height: 100, width: ScreenUtil.deviceWidth() - 32 }}
+                            onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
                     </View>
                     <TouchableWithoutFeedback onPress={() => this.click('回复')}>
-                        <Flex justify={'center'} style={[styles.ii,{width: '80%', marginLeft: '10%',marginRight: '10%', marginBottom: 20}, {backgroundColor: Macro.color_4d8fcc}]}>
+                        <Flex justify={'center'} style={[styles.ii, { width: '80%', marginLeft: '10%', marginRight: '10%', marginBottom: 20 }, { backgroundColor: Macro.color_4d8fcc }]}>
                             <Text style={styles.word}>回复</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-                    {detail.status === 1&&<Flex>
+                    {detail.status === 1 && <Flex>
                         <TouchableWithoutFeedback onPress={() => this.click('转维修')}>
-                            <Flex justify={'center'} style={[styles.ii, {backgroundColor: '#F7A51E'}]}>
+                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: '#F7A51E' }]}>
                                 <Text style={styles.word}>转维修</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
@@ -235,19 +232,19 @@ export default class FuWuDanListDetailPage extends BasePage {
                             </Flex>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={() => this.click('关闭')}>
-                            <Flex justify={'center'} style={[styles.ii, {backgroundColor: Macro.color_4d8fcc}]}>
+                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.color_4d8fcc }]}>
                                 <Text style={styles.word}>关闭</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
                     </Flex>}
-                    <DashLine/>
-                    <Communicates communicateClick={this.communicateClick} communicates={communicates}/>
+                    <DashLine />
+                    <Communicates communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex}
-                    onCancel={this.cancel}
-                    onClick={this.cancel}
-                    imageUrls={this.state.images}/>
+                        onCancel={this.cancel}
+                        onClick={this.cancel}
+                        imageUrls={this.state.images} />
                 </Modal>
             </CommonView>
         );
@@ -297,6 +294,5 @@ const styles = StyleSheet.create({
     word: {
         color: 'white',
         fontSize: 16,
-    },
-
+    }
 });

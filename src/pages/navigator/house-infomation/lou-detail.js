@@ -51,9 +51,7 @@ class LouDetail extends BasePage {
 
     constructor(props) {
         super(props);
-
-
-        let room = common.getValueFromProps(this.props) || {id: 'FY-XHF-01-0103'};
+        let room = common.getValueFromProps(this.props);// || {id: 'FY-XHF-01-0103'};
         // let room = common.getValueFromProps(this.props);
         //console.log('room123', room);
         this.state = {

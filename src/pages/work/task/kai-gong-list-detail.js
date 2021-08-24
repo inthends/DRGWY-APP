@@ -111,7 +111,7 @@ export default class KaiGongListDetailPage extends BasePage {
     };
 
     back = (handle) => {
-        const { fuwu, type, backMemo } = this.state;
+        const { fuwu,  backMemo } = this.state;
         // if (handle === '回复' && !(value&&value.length > 0)) {
         if (!(backMemo && backMemo.length > 0)) {
             UDToast.showInfo('请输入退单原因');

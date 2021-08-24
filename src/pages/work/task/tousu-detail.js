@@ -70,7 +70,7 @@ export default class TousuDetailPage extends BasePage {
         const {fuwu, type} = this.state;
         console.log('fuw', fuwu);
         WorkService.tousuDetail(fuwu.id).then(detail => {
-            console.log('detail', detail);
+            //console.log('detail', detail);
             this.setState({
                 detail: {
                     ...detail.entity,
@@ -98,7 +98,7 @@ export default class TousuDetailPage extends BasePage {
             return;
         }
         WorkService.serviceHandle(handle, fuwu.id, value).then(res => {
-            console.log(res);
+            //console.log(res);
         });
     };
     communicateClick = (i) => {

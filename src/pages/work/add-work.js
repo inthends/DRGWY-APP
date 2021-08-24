@@ -5,11 +5,11 @@ import {
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    ScrollView,
+    //ScrollView,
 } from 'react-native';
 import BasePage from '../base/base';
 import {Icon} from '@ant-design/react-native';
-import {List, WhiteSpace, Flex, TextareaItem, Grid, Button} from '@ant-design/react-native';
+import {  Flex, TextareaItem, Grid, Button} from '@ant-design/react-native';
 import ScreenUtil from '../../utils/screen-util';
 import LoadImage from '../../components/load-image';
 import SelectImage from '../../utils/select-image';

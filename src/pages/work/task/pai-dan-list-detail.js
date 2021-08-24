@@ -140,8 +140,7 @@ export default class PaiDanListDetailPage extends BasePage {
 
     render() {
         const { images, detail, communicates, selectPerson } = this.state;
-        console.log(1122, detail);
-
+        //console.log(1122, detail); 
 
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>

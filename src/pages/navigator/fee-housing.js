@@ -87,9 +87,8 @@ class FeeHousePage extends BasePage {
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
         const nextSelectBuilding = nextProps.selectBuilding;
-        console.log('selectBuilding', selectBuilding);
-        console.log('nextSelectBuilding', nextSelectBuilding);
-
+        // console.log('selectBuilding', selectBuilding);
+        // console.log('nextSelectBuilding', nextSelectBuilding); 
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
             this.setState({ selectBuilding: nextProps.selectBuilding }, () => {
                 this.onRefresh();

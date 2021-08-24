@@ -70,7 +70,7 @@ export default class JianYanListDetailPage extends BasePage {
 
 
     getData = () => {
-        const {fuwu, type} = this.state;
+        const {fuwu} = this.state;
         // console.log('fuw', fuwu);
         WorkService.weixiuDetail(fuwu.id).then(detail => {
             // console.log('detail', detail);
@@ -107,7 +107,7 @@ export default class JianYanListDetailPage extends BasePage {
     };
 
     click = (handle) => {
-        const {fuwu, type, value, result} = this.state;
+        const {fuwu, value, result} = this.state;
         if (handle === '完成检验' && !(value && value.length > 0)) {
             UDToast.showInfo('请输入文字');
             return;

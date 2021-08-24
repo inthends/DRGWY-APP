@@ -1,17 +1,20 @@
 import React, {Fragment} from 'react';
 import {View, StyleSheet, FlatList, TouchableOpacity, TouchableWithoutFeedback, Text} from 'react-native';
 import BasePage from '../base/base';
-import BuildingHeader from '../../components/building/building-header';
-import BuildingCell from '../../components/building/build-cell';
 import Macro from '../../utils/macro';
 import WorkService from './work-service';
-import {connect} from 'react-redux';
 import NoDataView from '../../components/no-data-view';
-import CommonView from '../../components/CommonView';
-import {saveUser} from '../../utils/store/actions/actions';
+
+// import CommonView from '../../components/CommonView';
+// import {saveUser} from '../../utils/store/actions/actions';
+// import common from '../../utils/common';
+// import LoadImage from '../../components/load-image';
+// import {connect} from 'react-redux';
+// import BuildingHeader from '../../components/building/building-header';
+// import BuildingCell from '../../components/building/build-cell';
+
 import {Flex, Icon} from '@ant-design/react-native';
-import common from '../../utils/common';
-import LoadImage from '../../components/load-image';
+
 
 class NewsList extends BasePage {
     static navigationOptions = ({navigation}) => {
@@ -44,23 +47,18 @@ class NewsList extends BasePage {
         };
     }
 
-    componentDidMount(): void {
-
-
+    componentDidMount(): void { 
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
-                this.onRefresh();
-
-            },
+                this.onRefresh(); 
+            }
         );
     }
-
 
     componentWillUnmount(): void {
         this.viewDidAppear.remove();
     }
-
 
     getList = (showLoading = true) => {
         WorkService.unreadList(this.state.pageIndex, showLoading).then(dataInfo => {
