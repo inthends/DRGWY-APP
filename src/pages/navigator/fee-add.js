@@ -112,8 +112,7 @@ class FeeAddPage extends BasePage {
             beginDate: fee.beginDate == null ? null : fee.beginDate.yearMonthDay(),
             endDate: fee.endDate == null ? null : fee.endDate.yearMonthDay(),
         };
-
-
+ 
         // console.log(12, fee);
 
         NavigatorService.saveFee(this.state.room.id, [fee]).then(res => {

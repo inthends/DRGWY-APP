@@ -83,7 +83,7 @@ class FeeDetailPage extends BasePage {
         this.props.navigation.setParams({
             addFee: this.addFee,
         });
-        let room = common.getValueFromProps(this.props);// || { id: 'FY-XHF-01-0101' };
+        let room = common.getValueFromProps(this.props);
         // let room = common.getValueFromProps(this.props);
         //console.log('room123', room);
         this.state = {
@@ -143,7 +143,7 @@ class FeeDetailPage extends BasePage {
 
                 // if (obj.state.params) {
                 //     let address = obj.state.params.data;
-                //     NavigatorService.scanPay(address.a,address.b).then(res => {
+                //     NavigatorService.wftScanPay(address.a,address.b).then(res => {
                 //         alert(JSON.stringify(res));
                 //
                 //         this.setState({
@@ -156,7 +156,6 @@ class FeeDetailPage extends BasePage {
 
 
         if (!common.isIOS()) {
-
             //判断是否是银盛POS或者拉卡拉POS机
             NativeModules.LHNToast.getPOSType((isLKL, isYse) => {
                 this.setState({
@@ -193,13 +192,12 @@ class FeeDetailPage extends BasePage {
             let ids = JSON.stringify((items.map(item => item.id)));
             const { isML, mlType, mlScale } = this.state;
             switch (title) {
-                case '刷卡': {
-
+                case '刷卡': { 
                     if (common.isIOS()) {
                         UDToast.showInfo('功能暂未开放，敬请期待！');
 
                     } else {
-
+                        //刷卡目前只支持拉卡拉
                         NavigatorService.createOrder(ids, isML, mlType, mlScale).then(res => {
                             this.setState({
                                 out_trade_no: res.out_trade_no,
@@ -217,20 +215,21 @@ class FeeDetailPage extends BasePage {
                 case '扫码': {
                     NavigatorService.createOrder(ids, isML, mlType, mlScale).then(res => {
                         let posType = res.posType;
-                        if (posType === '银盛') {
-                            if (!this.state.isYse) {
-                                // 只有是银盛pos机才能扫码和收款码
-                                UDToast.showInfo('银盛不支持手机扫码，请使用POS机！');
-                            } else {
-                                this.setState({
-                                    out_trade_no: res.out_trade_no,
-                                });
-                                NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
-                                    ...res,
-                                    transType: 1070, //pos机扫顾客
-                                });
-                            }
-                        } else if (posType === '拉卡拉') {
+                        // if (posType === '银盛') {
+                        //     if (!this.state.isYse) {
+                        //         // 只有是银盛pos机才能扫码和收款码
+                        //         UDToast.showInfo('银盛不支持手机扫码，请使用POS机！');
+                        //     } else {
+                        //         this.setState({
+                        //             out_trade_no: res.out_trade_no,
+                        //         });
+                        //         NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
+                        //             ...res,
+                        //             transType: 1070, //pos机扫顾客
+                        //         });
+                        //     }
+                        // } else
+                        if (posType === '拉卡拉') {
                             this.setState({
                                 out_trade_no: res.out_trade_no,
                             });
@@ -250,6 +249,14 @@ class FeeDetailPage extends BasePage {
                                 callBack: this.callBack,
                                 printAgain: false,
                             });
+                        } else if (posType === '嘉联') {
+                            this.props.navigation.push('jlscan', {
+                                data: ids,
+                                isML: isML,
+                                mlType: mlType,
+                                mlScale: mlScale, 
+                                callBack: this.callBack
+                            });
                         }
                     });
                     break;
@@ -258,21 +265,21 @@ class FeeDetailPage extends BasePage {
 
                     NavigatorService.createOrder(ids, isML, mlType, mlScale).then(res => {
                         let posType = res.posType;
-                        if (posType === '银盛') {
-                            if (!this.state.isYse) {
-                                // 只有是银盛pos机才能扫码和收款码
-                                UDToast.showInfo('银盛不支持手机收款码，请使用POS机！');
-                            } else {
-
-                                this.setState({
-                                    out_trade_no: res.out_trade_no,
-                                });
-                                NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
-                                    ...res,
-                                    transType: 1054, //顾客扫pos机
-                                });
-                            }
-                        } else if (posType === '拉卡拉') {
+                        // if (posType === '银盛') {
+                        //     if (!this.state.isYse) {
+                        //         // 只有是银盛pos机才能扫码和收款码
+                        //         UDToast.showInfo('银盛不支持手机收款码，请使用POS机！');
+                        //     } else { 
+                        //         this.setState({
+                        //             out_trade_no: res.out_trade_no,
+                        //         });
+                        //         NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
+                        //             ...res,
+                        //             transType: 1054, //顾客扫pos机
+                        //         });
+                        //     }
+                        // } else 
+                        if (posType === '拉卡拉') {
                             this.setState({
                                 out_trade_no: res.out_trade_no,
                             });
@@ -314,8 +321,8 @@ class FeeDetailPage extends BasePage {
                                     this.func = this.cashPay;
                                     this.params = ids;
                                     this.cashPay(ids, isML, mlType, mlScale);
-                                },
-                            },
+                                }
+                            }
                         ],
                         { cancelable: false },
                     );
@@ -358,7 +365,7 @@ class FeeDetailPage extends BasePage {
             isShow,
             dataInfo: {
                 data: [],
-            },
+            }
         }, () => {
             this.onRefresh();
         });
@@ -483,7 +490,8 @@ class FeeDetailPage extends BasePage {
     };
 
     renderItem = (item) => {
-        const { dataInfo, type, room, price, mlAmount } = this.state;
+        // const { dataInfo, type, room, price, mlAmount } = this.state;
+        const { type } = this.state;
         let titles = [];
         console.log(11, item);
         if (item.billSource === '临时加费' && item.rmid === null) {
@@ -659,7 +667,6 @@ class FeeDetailPage extends BasePage {
                                 }}>¥{price}</Text>
                         </Flex>
                         <Flex style={{ minHeight: 40 }}>
-
                             <TouchableWithoutFeedback
                                 disabled={price == 0 ? true : false}
                                 onPress={() => this.click('扫码')}>

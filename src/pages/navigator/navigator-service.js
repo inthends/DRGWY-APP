@@ -146,19 +146,32 @@ export default {
         return api.postData('/api/MobileMethod/MCreateTradeno', { linkId, isML, mlType, mlScale });
     },
 
-    scanPay(auth_code, tbout_trade_no) {
-        return api.postData('/api/MobileMethod/WFTScanPay', { auth_code, tbout_trade_no });
-    },
-    scanPayQuery(tbout_trade_no) {
-        return api.postData('/api/MobileMethod/WFTScanPayQuery', { tbout_trade_no }, false);
-    },
-    scanPayReserve(tbout_trade_no) {
-        return api.postData('/api/MobileMethod/WFTScanPayReserve', { tbout_trade_no }, false);
-    },
-    qrcodePay(tbout_trade_no) {
-        return api.postData('/api/MobileMethod/WFTPay', { tbout_trade_no });
+    //嘉联扫码
+    jlScanPay(auth_code, tbout_trade_no) {
+       return api.postData('/api/MobileMethod/JLScanPay', { auth_code, tbout_trade_no });
     },
 
+     //嘉联扫码，查询支付结果
+     jlScanPayQuery(tbout_trade_no) {
+        return api.postData('/api/MobileMethod/JLScanPayQuery', { tbout_trade_no }, false);
+    },
+ 
+    //威富通扫码
+    wftScanPay(auth_code, tbout_trade_no) {
+        return api.postData('/api/MobileMethod/WFTScanPay', { auth_code, tbout_trade_no });
+    },
+    //威富通扫码，查询支付结果
+    wftScanPayQuery(tbout_trade_no) {
+        return api.postData('/api/MobileMethod/WFTScanPayQuery', { tbout_trade_no }, false);
+    },
+    //扫付款码,威富通接口支付失败，冲正接口进行关单
+    wftScanPayReserve(tbout_trade_no) {
+        return api.postData('/api/MobileMethod/WFTScanPayReserve', { tbout_trade_no }, false);
+    },
+
+    qrcodePay(tbout_trade_no) {
+        return api.postData('/api/MobileMethod/WFTPay', { tbout_trade_no });
+    }, 
     //现金收款
     cashPay(linkId, isML, mlType, mlScale) {
         return api.postData('/api/MobileMethod/MCharge', { linkId, isML, mlType, mlScale });

@@ -1,5 +1,4 @@
 package com.statistics;
-
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -21,12 +20,10 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.IllegalViewOperationException;
 import com.facebook.react.uimanager.PixelUtil;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 

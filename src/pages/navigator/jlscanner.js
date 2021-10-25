@@ -1,41 +1,13 @@
 import React, { Component } from 'react';
-import {
-    StyleSheet,
-    Text,
-    View, Animated, Easing,
-    // TouchableOpacity,
-    // Linking,
-    // ScrollView,
-    // NativeModules,
-} from 'react-native';
-
-//import QRCodeScanner from 'react-native-qrcode-scanner';
+import { StyleSheet, Text, View, Animated, Easing } from 'react-native'; 
 import common from '../../utils/common';
-import NavigatorService from './navigator-service';
-//import { Flex } from '@ant-design/react-native';
+import NavigatorService from './navigator-service'; 
 import Macro from '../../utils/macro';
 import { RNCamera } from 'react-native-camera';
 import UDToast from '../../utils/UDToast';
-
-export default class ScanScreen extends Component {
-
-    // onSuccess = (e) => {
-    //     let ids = common.getValueFromProps(this.props);
-    //     NavigatorService.createOrder(ids).then(res=>{
-    //         NavigatorService.wftScanPay(e.data, res.out_trade_no).then(res => {
-    //             this.props.navigation.goBack();
-    //         }).catch(()=>{
-    //             this.scanner.reactivate();
-    //         });
-    //
-    //         // this.props.navigation.navigate('feeDetail', {
-    //         //     data: {
-    //         //         b:tbout_trade_no,
-    //         //         a:e.data,
-    //         //     }
-    //         // })
-    //     })
-    // };
+//嘉联扫码
+export default class JLScanScreen extends Component {
+  
     constructor(props) {
         super(props);
         this.state = {
@@ -76,13 +48,12 @@ export default class ScanScreen extends Component {
         }, () => {
             let ids = common.getValueFromProps(this.props);
             //抹零 neo add
-            let isML = common.getValueFromProps(this.props, 'isML');
-            //let mlAmount = common.getValueFromProps(this.props, 'mlAmount');
+            let isML = common.getValueFromProps(this.props, 'isML'); 
             let mlType = common.getValueFromProps(this.props, 'mlType');
             let mlScale = common.getValueFromProps(this.props, 'mlScale');
             let callBack = common.getValueFromProps(this.props, 'callBack');
             NavigatorService.createOrder(ids, isML, mlType, mlScale).then(res => {
-                NavigatorService.wftScanPay(result.data, res.out_trade_no).then(resp => {
+                NavigatorService.jlScanPay(result.data, res.out_trade_no).then(resp => {
                     if (resp === 'need_query') {
                         this.needQuery(res);
                     } else {
@@ -108,12 +79,12 @@ export default class ScanScreen extends Component {
                     count: null,
                 });
             });
-        }); 
+        });
     };
 
     needQuery(res) {
         let callBack = common.getValueFromProps(this.props, 'callBack');
-        let count = this.state.count || 7; 
+        let count = this.state.count || 7;
         if (count === 7) {
             this.showLoadingNumber = UDToast.showLoading('正在查询支付结果，请稍后...');
         }
@@ -121,7 +92,7 @@ export default class ScanScreen extends Component {
             count: count - 1,
         }, () => {
             if (count > 0) {
-                NavigatorService.wftScanPayQuery(res.out_trade_no).then(query => {
+                NavigatorService.jlScanPayQuery(res.out_trade_no).then(query => {
                     if (query === 'SUCCESS') {
                         UDToast.hiddenLoading(this.showLoadingNumber);
                         callBack(res.out_trade_no);
@@ -138,21 +109,19 @@ export default class ScanScreen extends Component {
                         count: null,
                     });
                 });
-            } else {
-                //支付不成功，冲正
-                NavigatorService.wftScanPayReserve(res.out_trade_no);
-                setTimeout(() => {
-                    UDToast.hiddenLoading(this.showLoadingNumber);
-                    this.props.navigation.goBack();
-                }, 1000);
-            }
+            } 
+            // else {
+            //     NavigatorService.wftScanPayReserve(res.out_trade_no);
+            //     setTimeout(() => {
+            //         UDToast.hiddenLoading(this.showLoadingNumber);
+            //         this.props.navigation.goBack();
+            //     }, 1000);
+            // }
         });
     }
-
-
+ 
     render() {
-        return (
-
+        return ( 
             <View style={styles.container}>
                 <RNCamera
                     ref={ref => {
@@ -164,8 +133,7 @@ export default class ScanScreen extends Component {
                     googleVisionBarcodeType={RNCamera.Constants.GoogleVisionBarcodeDetection.BarcodeType.QR_CODE}
                     // flashMode={RNCamera.Constants.FlashMode.on}
                     flashMode={RNCamera.Constants.FlashMode.auto}
-                    onBarCodeRead={this.onBarCodeRead}
-                >
+                    onBarCodeRead={this.onBarCodeRead}>
                     <View style={styles.rectangleContainer}>
                         <View style={styles.rectangle} />
                         <Animated.View style={[

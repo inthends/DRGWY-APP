@@ -42,6 +42,7 @@ import EweixiuDetailPage from '../navigator/estate/estate-weixiu-detail';
 import EstateWeixiuPage from '../navigator/estate/estate-weixiu';
 import EstateTousuPage from '../navigator/estate/estate-tousu';
 import ScanScreen from '../navigator/qrcode-scanner';
+
 import ScanOnly from '../navigator/ScanOnly';
 import ScanSS from '../navigator/scan-ss';
 import XunJianPage from '../navigator/xunjian/xunjian';
@@ -83,6 +84,8 @@ import LouDetail from '../navigator/house-infomation/lou-detail';
 import SheBeiList from '../navigator/she-bei/list';
 import ShebeiDetail from '../navigator/she-bei/detail';
 import LouPark from '../navigator/house-infomation/lou-park';
+
+import JLScanScreen from '../navigator/jlscanner';
 
 const BuildingNavigator = createStackNavigator({
 
@@ -157,6 +160,7 @@ const navigatorNavigator = createStackNavigator({
     huifang_s: HuiFangRatePage,
 
     scan: ScanScreen,
+    jlscan: JLScanScreen,//嘉联扫码
     service: FuWuDanListDetailPage,
     wancheng: WanChengListDetailPage,
     jianyan: JianYanListDetailPage,

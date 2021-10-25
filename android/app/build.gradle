@@ -135,7 +135,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "3.0.0"
+        versionName "3.0.1"
         missingDimensionStrategy 'react-native-camera', 'general'
 //         manifestPlaceholders = [
 //                 JPUSH_APPKEY : "996f9f0191243d335f473952",         //在此替换你的APPKey
@@ -221,8 +221,7 @@ dependencies {
     implementation project(':react-native-code-push')
     implementation project(':react-native-location')
     implementation project(':react-native-permissions')
-    implementation project(':react-native-camera')
-
+    implementation project(':react-native-camera') 
     implementation project(':react-native-svg')
     implementation project(':react-native-audio')
     implementation project(':react-native-sound')
@@ -238,7 +237,6 @@ dependencies {
     implementation files('libs/yssdk-v2.0.2.jar')
     implementation files('libs/LklMdxServiceAidl_V1.0.0.16659.0_20180928.jar')
     implementation files('libs/LklPOSUtil.jar')
-
 }
 
 // Run this once to be able to run the application with BUCK
@@ -248,15 +246,12 @@ task copyDownloadableDepsToLibs(type: Copy) {
     into 'libs'
 }
 
-
 //上传到蒲公英task
 task myUploadApkTask(type: Exec) {
     commandLine 'sh', '-c', './uploadApk.sh'
-
     //test
     executable "sh"
     args "-c", "echo 'shell say hello to you'"
-
 }
 
 //my define
