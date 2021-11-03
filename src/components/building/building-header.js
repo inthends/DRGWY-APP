@@ -1,15 +1,12 @@
-import React, {Fragment} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, NativeModules} from 'react-native';
+import React  from 'react';
+import {View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import BasePage from '../../pages/base/base';
 import Macro from '../../utils/macro';
-import {Button, Flex, WhiteSpace, WingBlank} from '@ant-design/react-native';
+import {  Flex } from '@ant-design/react-native';
 import {Icon} from '@ant-design/react-native';
-import NavigatorService from '../../pages/navigator/navigator-service';
-
+//import NavigatorService from '../../pages/navigator/navigator-service';
 
 export default class BuildingHeader extends BasePage {
-
-
     constructor(props) {
         super(props);
         this.state = {
@@ -17,9 +14,8 @@ export default class BuildingHeader extends BasePage {
         };
     }
 
-    componentDidMount(): void {
-
-    }
+    // componentDidMount(): void { 
+    // }
 
 
     scan = () => {
@@ -29,17 +25,16 @@ export default class BuildingHeader extends BasePage {
                     this.props.navigation.navigate('yiqing', {
                         'data': {
                             keyvalue,
-                        },
+                        }
                     });
-                },
-            },
+                }
+            }
         });
     };
 
 
     render() {
         const {statistics, title} = this.props;
-        console.log('1', statistics);
         return (
             <View style={styles.content}>
                 <Flex direction="row" justify='between' style={styles.top}>

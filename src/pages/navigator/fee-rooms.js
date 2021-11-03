@@ -1,6 +1,6 @@
 //房间
 import React from 'react';
-import { 
+import {
     Text,
     StyleSheet,
     //View,
@@ -8,7 +8,7 @@ import {
     // FlatList,
     // Linking,
     TouchableOpacity,
-    TouchableWithoutFeedback, 
+    TouchableWithoutFeedback,
     ScrollView
 } from 'react-native';
 import BasePage from '../base/base';
@@ -78,16 +78,11 @@ export default class FeeRoomsPage extends BasePage {
     }
 
     render() {
-        const { floors, building } = this.state;
-
-
-        return (
-
-
+        const { floors, building } = this.state; 
+        return ( 
             <CommonView style={{ flex: 1 }}>
                 <ScrollView>
-                    <Text style={{ paddingLeft: 15, paddingTop: 15, fontSize: 20 }}>{building.allName}</Text>
-
+                    <Text style={{ paddingLeft: 15, paddingTop: 15, fontSize: 20, color: '#2c2c2c' }}>{building.allName}</Text>
                     {floors.map(floor => (
                         <Flex key={floor.id} align={'start'} direction={'column'}>
                             <Flex style={styles.bb}>

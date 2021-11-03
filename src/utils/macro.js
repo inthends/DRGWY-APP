@@ -17,9 +17,7 @@ export default class Macro {
     static color_dae9ff = '#dbe7ff';
     static color_f6f5f7 = '#f6f5f7';
     static color_black_trunslent = '#000000cc';
-
-
-
+ 
     static color_small_2019 = '#d57d78';
     static color_2019 = '#fa78a4';
     static color_2020 = '#f3a178';
@@ -29,11 +27,8 @@ export default class Macro {
     static color_business = 'white';
     static color_f39d39 = '#f39d39';
     static color_4d8fcc = '#4d8fcc';
-
-
-
+ 
     //fontSize
-
     static font_12 = 12;
     static font_13 = 13;
     static font_14 = 14;
@@ -48,7 +43,6 @@ export default class Macro {
     static marginRight_15 = 15;
     static marginTop_15 = 15;
     static marginBottom_15 = 15;
-
     static marginLeft_30 = 30;
 
     //单位

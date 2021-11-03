@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React  from 'react';
 import {View, StyleSheet, FlatList, TouchableOpacity, TouchableWithoutFeedback, Text} from 'react-native';
 import BasePage from '../base/base';
 import Macro from '../../utils/macro';

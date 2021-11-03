@@ -315,7 +315,7 @@ const tabbar = createBottomTabNavigator({
     },
     defaultNavigationOptions: ({navigation}) => {
         if (navigation.isFocused()) {
-            console.log('navigation 对象', navigation);
+            //console.log('navigation 对象', navigation);
             DeviceEventEmitter.emit('currentNavigation', navigation);
         }
 
@@ -349,8 +349,6 @@ const tabbar = createBottomTabNavigator({
                         imageUrl = require('../../static/images/tabbar/me_n.png');
                     }
                 }
-
-
                 // You can return any component that you like here!
                 return <Image
                     style={{width: 15, height: 18}}
@@ -362,14 +360,13 @@ const tabbar = createBottomTabNavigator({
 
 });
 const {width, height} = Dimensions.get('window');
-
 const Drawer = createDrawerNavigator({
         TabBar: {
             screen: tabbar,
             navigationOptions: {
                 header: null,
-            },
-        },
+            }
+        }
     },
     {
         drawerPosition: 'left',
@@ -379,8 +376,7 @@ const Drawer = createDrawerNavigator({
         overlayColor: '#000000b3',
         contentComponent: props => {
             return <ManagerBuildingPage {...props}/>;
-        },
+        }
     });
-
 
 export default createAppContainer(Drawer);

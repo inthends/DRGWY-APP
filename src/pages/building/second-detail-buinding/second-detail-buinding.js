@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React  from 'react';
 import {
     View,
     Text,
@@ -11,7 +11,7 @@ import {
 
 import BasePage from '../../base/base';
 
-import {Button, Flex, Icon, List, WhiteSpace, SegmentedControl} from '@ant-design/react-native';
+import {  Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import BuildingService from '../building_service';
 import LoadImage from '../../../components/load-image';
@@ -19,9 +19,8 @@ import {connect} from 'react-redux';
 import {saveSelectBuilding} from '../../../utils/store/actions/actions';
 import ScreenUtil from '../../../utils/screen-util';
 import common from '../../../utils/common';
-import CommonView from '../../../components/CommonView';
-
-
+//import CommonView from '../../../components/CommonView';
+ 
 
 const lineWidth = 30;
 

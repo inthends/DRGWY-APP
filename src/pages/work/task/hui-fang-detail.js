@@ -1,5 +1,5 @@
 //服务单回访
-import React, { Fragment } from 'react';
+import React  from 'react';
 import {
     View,
     Text,
@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Icon } from '@ant-design/react-native/lib/index';
-import { List, Flex, TextareaItem } from '@ant-design/react-native/lib/index';
+import {  Flex, TextareaItem } from '@ant-design/react-native/lib/index';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';

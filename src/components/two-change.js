@@ -62,7 +62,7 @@ export default class TwoChange extends Component {
                             <Checkbox
                                 defaultChecked={true}
                                 onChange={(e) => this.showAllFee(e)}>
-                                <Text style={{ paddingTop: 3, paddingLeft: 3 }}>按户显示</Text>
+                                <Text style={{ paddingTop: 3, paddingLeft: 3, color: '#2c2c2c' }}>按户显示</Text>
                             </Checkbox>
                         </Flex>
                     </Flex>

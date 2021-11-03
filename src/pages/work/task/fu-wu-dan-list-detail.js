@@ -68,10 +68,8 @@ export default class FuWuDanListDetailPage extends BasePage {
 
 
     getData = () => {
-        const { fuwu, type } = this.state;
-        // console.log(fuwu);
-        WorkService.serviceDetail(type, fuwu.id).then(item => {
-            console.log('detail', item);
+        const { fuwu, type } = this.state; 
+        WorkService.serviceDetail(type, fuwu.id).then(item => { 
             this.setState({
                 detail: {
                     ...item.data,

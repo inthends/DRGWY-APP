@@ -1,15 +1,15 @@
-import React, {Fragment} from 'react';
+import React//, {Fragment} 
+from 'react';
 import {View, Text, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import BasePage from '../../pages/base/base';
 import Macro from '../../utils/macro';
-import {Button, Flex, WhiteSpace, WingBlank} from '@ant-design/react-native';
+import { Flex,
+    //Button, WhiteSpace, WingBlank
+} from '@ant-design/react-native';
 import LoadImage from '../load-image';
 import ScreenUtil from '../../utils/screen-util';
 
-
 export default class BuildingCell extends BasePage {
-
-
     constructor(props) {
         super(props);
         this.state = {
@@ -17,12 +17,11 @@ export default class BuildingCell extends BasePage {
         };
     }
 
-    componentDidMount(): void {
-
-    }
+    //componentDidMount(): void {}
     //louDetail shebeiDetail
-// <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('feeDetail',{})}>
-//DetailBuilding
+    //<TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('feeDetail',{})}>
+    //DetailBuilding
+
     render() {
         const {item} = this.props;
         return (
@@ -40,14 +39,13 @@ export default class BuildingCell extends BasePage {
                                 <Text style={styles.area}>{item.averagerentprice}{Macro.yuan_meter_day}</Text>
                             </Flex>
                             <Flex justify="between" style={[styles.item,{marginTop: 10}]}>
-                                <Text style={styles.complete}>入住率 {item.checkrate}%</Text>
+                                <Text style={styles.complete}>入住率{item.checkrate}%</Text>
                                 <Text style={styles.number}>管理数量{item.areasum}{Macro.meter_square}</Text>
                             </Flex>
                             <Flex style={[styles.item,{marginTop:15}]}>
                                 <Text style={styles.desc}>在租{item.rentareasum}{Macro.meter_square}</Text>
                                 <View style={styles.line}/>
-                                <Text
-                                    style={styles.desc}>可招商{item.investmentareasum}{Macro.meter_square}</Text>
+                                <Text style={styles.desc}>可招商{item.investmentareasum}{Macro.meter_square}</Text>
                             </Flex>
                         </Flex>
                     </Flex>
@@ -67,9 +65,8 @@ const styles = StyleSheet.create({
     },
     left: {
         paddingTop:20,
-        paddingBottom:20,
-
-        height: 140,
+        paddingBottom:20, 
+        height: 140
     },
     right: {
         width: ScreenUtil.deviceWidth()-100-20-10-20,
@@ -90,14 +87,12 @@ const styles = StyleSheet.create({
     name: {
         fontSize: 17,
         // fontWeight: '600',
-        color:'#2c2c2c',
+        color:'#2c2c2c'
     },
     area: {
         // fontWeight: '600',
         fontSize: Macro.font_14,
-        color:'#2c2c2c',
-
-
+        color:'#2c2c2c'
     },
     complete: {
         color: 'white',
@@ -113,8 +108,7 @@ const styles = StyleSheet.create({
     },
     desc: {
         color: '#999999',
-        fontSize: Macro.font_14,
-
+        fontSize: Macro.font_14
     },
     line: {
         width: 1,
@@ -122,7 +116,5 @@ const styles = StyleSheet.create({
         backgroundColor: Macro.color_c2c1c5,
         marginLeft: 25,
         marginRight: 25,
-    },
-
-
+    }
 });

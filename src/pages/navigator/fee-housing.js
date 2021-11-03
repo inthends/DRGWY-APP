@@ -46,7 +46,7 @@ class FeeHousePage extends BasePage {
     };
 
     constructor(props) {
-        super(props); 
+        super(props);
         this.state = {
             count: 0,
             showTabbar: true,
@@ -133,16 +133,16 @@ class FeeHousePage extends BasePage {
                             </Flex>
                             <Flex justify={'between'} style={{ width: '100%', paddingRight: 20 }}>
                                 <Flex direction={'column'}>
-                                    <Text>{item.roomcount}户</Text>
-                                    <Text style={{ paddingTop: 12 }}>房产总数</Text>
+                                    <Text style={styles.number}>{item.roomcount}户</Text>
+                                    <Text style={styles.desc}>房产总数</Text>
                                 </Flex>
                                 <Flex direction={'column'}>
-                                    <Text>{item.charge}户</Text>
-                                    <Text style={{ paddingTop: 12 }}>交清</Text>
+                                    <Text style={styles.number}>{item.charge}户</Text>
+                                    <Text style={styles.desc}>交清</Text>
                                 </Flex>
                                 <Flex direction={'column'}>
-                                    <Text>{item.notcharge}户</Text>
-                                    <Text style={{ paddingTop: 12 }}>未交清</Text>
+                                    <Text style={styles.number}>{item.notcharge}户</Text>
+                                    <Text style={styles.desc}>未交清</Text>
                                 </Flex>
                             </Flex>
                         </Flex>
@@ -152,11 +152,10 @@ class FeeHousePage extends BasePage {
         );
     };
 
-
     render() {
         const { statistics, dataInfo } = this.state;
-        const { selectBuilding } = this.props;
-        // console.log('selet', selectBuilding);
+        //const { selectBuilding } = this.props;
+        //console.log('selet', selectBuilding);
         return (
             <View style={{ flex: 1 }}>
                 <CommonView style={{ flex: 1 }}>
@@ -179,24 +178,19 @@ class FeeHousePage extends BasePage {
                         />
                     </View>
                 </CommonView>
-
             </View>
-
-
         );
     }
 }
 
 const styles = StyleSheet.create({
-    all: {
-        backgroundColor: Macro.color_sky,
-        flex: 1,
-    },
+    // all: {
+    //     backgroundColor: Macro.color_sky,
+    //     flex: 1,
+    // },
     content: {
         backgroundColor: Macro.color_white,
-        flex: 1,
-
-
+        flex: 1
     },
     title: {
         paddingTop: 15,
@@ -204,11 +198,8 @@ const styles = StyleSheet.create({
         color: '#333',
         fontSize: 16,
         paddingBottom: 10,
-        //
         marginLeft: 20,
-        marginRight: 20,
-
-        // width: ,
+        marginRight: 20
     },
     title2: {
         paddingTop: 15,
@@ -216,15 +207,18 @@ const styles = StyleSheet.create({
         color: '#333',
         fontSize: 16,
         paddingBottom: 10,
-        //
-
-        marginRight: 20,
-
-        // width: ,
+        marginRight: 20
     },
-
+    number: {
+        color: '#666',
+        fontSize: Macro.font_14
+    },
+    desc: {
+        paddingTop: 12,
+        color: '#999999',
+        fontSize: Macro.font_14
+    },
     top: {
-
         fontSize: 18,
         paddingTop: 10,
         paddingBottom: 10,
@@ -237,68 +231,68 @@ const styles = StyleSheet.create({
     button: {
         color: '#868688',
         fontSize: 16,
-        paddingTop: 10,
+        paddingTop: 10
     },
     blue: {
         borderLeftColor: Macro.color_4d8fcc,
-        borderLeftWidth: 8,
+        borderLeftWidth: 8
     },
     orange: {
         borderLeftColor: Macro.color_f39d39,
-        borderLeftWidth: 8,
+        borderLeftWidth: 8
     },
 
     left: {
         flex: 1,
-        paddingLeft: 15,
-
-
+        paddingLeft: 15
     },
     right: {
         flex: 3,
-
-
-        marginLeft: 20,
+        marginLeft: 10
     },
     image: {
         height: 90,
         width: 90,
+        borderRadius: 5
     },
     item: {
-        width: '100%',
+        width: '100%'
     },
     name: {
-        fontSize: 18,
-        fontWeight: '600',
-        paddingBottom: 15,
+        // fontSize: 18,
+        // fontWeight: '600',
+        // paddingBottom: 15,
+        fontSize: 17,
+        color: '#2c2c2c',
+        paddingBottom: 15
     },
-    area: {
-        color: Macro.color_636470,
-        fontSize: Macro.font_14,
-    },
-    complete: {
-        color: Macro.color_80aae2,
-        fontSize: Macro.font_14,
-        backgroundColor: Macro.color_dae9ff,
-        padding: 3,
-        paddingLeft: 5,
-        borderRadius: 1,
-    },
-    number: {
-        color: Macro.color_9c9ca5,
-        fontSize: Macro.font_14,
-    },
-    desc: {
-        color: Macro.color_c2c1c5,
-        fontSize: Macro.font_14,
-    },
-    line: {
-        width: 1,
-        height: 15,
-        backgroundColor: Macro.color_c2c1c5,
-        marginLeft: 5,
-        marginRight: 5,
-    },
+    // area: {
+    //     color: Macro.color_636470,
+    //     fontSize: Macro.font_14,
+    // },
+    // complete: {
+    //     color: Macro.color_80aae2,
+    //     fontSize: Macro.font_14,
+    //     backgroundColor: Macro.color_dae9ff,
+    //     padding: 3,
+    //     paddingLeft: 5,
+    //     borderRadius: 1,
+    // },
+    // number: {
+    //     color: Macro.color_9c9ca5,
+    //     fontSize: Macro.font_14,
+    // },
+    // desc: {
+    //     color: Macro.color_c2c1c5,
+    //     fontSize: Macro.font_14,
+    // },
+    // line: {
+    //     width: 1,
+    //     height: 15,
+    //     backgroundColor: Macro.color_c2c1c5,
+    //     marginLeft: 5,
+    //     marginRight: 5,
+    // },
 });
 
 const mapStateToProps = ({ buildingReducer }) => {

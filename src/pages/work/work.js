@@ -7,7 +7,7 @@ import {
     RefreshControl,
 } from 'react-native';
 import BasePage from '../base/base';
-import { Flex, Icon } from '@ant-design/react-native';
+import { Flex  } from '@ant-design/react-native';
 import ScreenUtil from '../../utils/screen-util';
 import LoadImage from '../../components/load-image';
 import WorkService from './work-service';
@@ -294,9 +294,7 @@ const styles = StyleSheet.create({
         fontSize: 17.6,
         paddingBottom: 12.67,
         marginLeft: 20,
-        marginRight: 20,
-
-        // width: ,
+        marginRight: 20
     },
     line: {
         width: ScreenUtil.deviceWidth() - 30,

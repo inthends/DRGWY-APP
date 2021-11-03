@@ -20,8 +20,6 @@ import CommonView from '../../../components/CommonView';
 
 export default class LouDong extends BasePage {
     static navigationOptions = ({ navigation }) => {
-
-        // console.log(1, navigation);
         return {
             tabBarVisible: false,
             title: '楼栋/车库',
@@ -35,7 +33,7 @@ export default class LouDong extends BasePage {
 
     constructor(props) {
         super(props);
-        let housing = common.getValueFromProps(this.props); 
+        let housing = common.getValueFromProps(this.props);
         this.state = {
             housing,
             items: [],
@@ -62,12 +60,10 @@ export default class LouDong extends BasePage {
     render() {
         const { housing, items } = this.state;
         return (
-
-
             <CommonView style={{ flex: 1 }}>
                 <ScrollView style={{ flex: 1 }}>
-                    <Text style={{ paddingLeft: 15, paddingTop: 15, fontSize: 20 }}>{housing.name}</Text>
-                    <Flex wrap='wrap' style={{ paddingLeft: 10, paddingRight: 10, marginTop: 15 }}>
+                    <Text style={{ paddingLeft: 15, paddingTop: 15, fontSize: 20, color: '#2c2c2c' }}>{housing.name}</Text>
+                    <Flex wrap='wrap' style={{ paddingLeft: 10, paddingRight: 10, marginTop: 5 }}>
                         {items.map(item => (
                             <TouchableWithoutFeedback key={item.id}
                                 onPress={() => {
@@ -79,17 +75,18 @@ export default class LouDong extends BasePage {
                                         this.props.navigation.push('louPark', { data: item });
                                 }}>
 
-                                <Flex style={[styles.item, item.color === 2 ? '' : styles.orange2]} justify={'center'}>
+                                {/* <Flex style={[styles.item, item.color === 2 ? '' : styles.orange2]} justify={'center'}>
                                     <Text style={[styles.title, item.color === 2 ? '' : styles.orange2]}>{item.name}</Text>
+                                </Flex> */}
+
+                                <Flex style={[styles.item, item.color == 1 ? styles.gray : (item.color == 2 ? styles.orange : styles.green)]} justify={'center'}>
+                                    <Text style={[styles.title, item.color == 1 ? styles.gray : (item.color == 2 ? styles.orange : styles.green)]}>{item.name}</Text>
                                 </Flex>
 
                             </TouchableWithoutFeedback>
-                        ))}
-
+                        ))} 
                     </Flex>
-                </ScrollView>
-
-
+                </ScrollView> 
             </CommonView >
 
         );
@@ -132,10 +129,10 @@ const styles = StyleSheet.create({
         borderLeftColor: Macro.color_4d8fcc,
         borderLeftWidth: 8,
     },
-    orange: {
-        borderLeftColor: Macro.color_f39d39,
-        borderLeftWidth: 8,
-    },
+    // orange: {
+    //     borderLeftColor: Macro.color_f39d39,
+    //     borderLeftWidth: 8,
+    // },
 
     left: {
         flex: 1,
@@ -198,8 +195,16 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         marginRight: 5,
     },
-    orange2: {
+    orange: {
         backgroundColor: Macro.color_f39d39,
-        color: '#fff',
+        color: '#fff'
     },
+    green: {
+        backgroundColor: '#298A08',
+        color: '#fff'
+    },
+    gray: {
+        backgroundColor: '#A4A4A4',
+        color: '#fff'
+    }
 });

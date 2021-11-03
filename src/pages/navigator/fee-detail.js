@@ -15,20 +15,19 @@ import { Flex, Icon, Checkbox, Modal, DatePickerView } from '@ant-design/react-n
 import Macro from '../../utils/macro';
 import ScreenUtil from '../../utils/screen-util';
 import { connect } from 'react-redux';
-// import ListHeader from '../../components/list-header';
 import common from '../../utils/common';
 import LoadImage from '../../components/load-image';
 import TwoChange from '../../components/two-change';
 import NavigatorService from './navigator-service';
 import MyPopover from '../../components/my-popover';
 import UDToast from '../../utils/UDToast';
-// import QRCode from 'react-native-qrcode-svg';
 import CommonView from '../../components/CommonView';
 import ActionPopover from '../../components/action-popover';
 import JianFei from '../../components/jian-fei';
 import ChaiFei from '../../components/chai-fei';
+// import QRCode from 'react-native-qrcode-svg';
+// import ListHeader from '../../components/list-header';
 // import { upgrade } from 'rn-app-upgrade';
-
 
 class FeeDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -48,6 +47,7 @@ class FeeDetailPage extends BasePage {
                         paddingLeft: 15,
                         paddingRight: 15,
                         paddingTop: 10,
+                        color:'#2c2c2c',
                         paddingBottom: 10,
                     }}>加费</Text>
 
@@ -124,7 +124,6 @@ class FeeDetailPage extends BasePage {
             console.log(year + '-' + month + '-' + day)
             return year + '-' + month + '-' + day;
         }
-
     }
 
     componentDidMount(): void {
@@ -162,11 +161,11 @@ class FeeDetailPage extends BasePage {
                     isLKL: isLKL,
                     isYse: isYse,
                 });
-            });
-
-        } else {
-            //方法待实现
-        }
+            }); 
+        } 
+        // else {
+        //     //方法待实现
+        // }
     }
 
     componentWillUnmount(): void {
@@ -192,7 +191,7 @@ class FeeDetailPage extends BasePage {
             let ids = JSON.stringify((items.map(item => item.id)));
             const { isML, mlType, mlScale } = this.state;
             switch (title) {
-                case '刷卡': { 
+                case '刷卡': {
                     if (common.isIOS()) {
                         UDToast.showInfo('功能暂未开放，敬请期待！');
 
@@ -238,7 +237,7 @@ class FeeDetailPage extends BasePage {
                                 "proc_cd": "660000", //拉卡拉消费
                                 "pay_tp": "1"
                             });
-                            
+
                         } else if (posType === '威富通') {
                             this.props.navigation.push('scan', {
                                 data: ids,
@@ -282,7 +281,7 @@ class FeeDetailPage extends BasePage {
                             NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
                                 ...res,
                                 "proc_cd": "710000", //拉卡拉消费
-                                "pay_tp": "1" 
+                                "pay_tp": "1"
                             });
                         } else if (posType === '威富通') {
                             NavigatorService.qrcodePay(res.out_trade_no).then(code => {
@@ -552,19 +551,19 @@ class FeeDetailPage extends BasePage {
                             {type === '已收' ? <Text style={{ fontSize: 16 }}>{item.billCode}</Text> :
                                 item.rmid ?
                                     <Flex>
-                                        <Text style={{ fontSize: 16 }}>{item.feeName + ' '}</Text>
+                                        <Text style={{ fontSize: 16, color: '#666' }}>{item.feeName + ' '}</Text>
                                         <Text style={{
                                             color: 'red',
                                             fontSize: 8,
-                                            paddingBottom: 16,
+                                            paddingBottom: 16
                                         }}>惠</Text>
                                     </Flex>
                                     :
-                                    <Text style={{ fontSize: 16 }}>{item.feeName}</Text>
+                                    <Text style={{ fontSize: 16, color: '#666' }}>{item.feeName}</Text>
                             }
 
                             <Flex>
-                                <Text style={{ paddingRight: 10, fontSize: 16 }}>{item.amount}</Text>
+                                <Text style={{ paddingRight: 10, fontSize: 16, color: '#666' }}>{item.amount}</Text>
                             </Flex>
                         </Flex>
 
@@ -577,14 +576,15 @@ class FeeDetailPage extends BasePage {
                             <Text style={{
                                 paddingLeft: 10,
                                 paddingTop: 10,
+                                color: '#666'
                             }}> {item.billDate + '，收款人：' + item.createUserName}
                             </Text>
                             : item.beginDate ?
                                 <Text style={{
                                     paddingLeft: 10,
                                     paddingTop: 10,
-                                }}>
-                                    {item.beginDate + '至' + item.endDate}</Text> : null
+                                    color: '#666'
+                                }}>{item.beginDate + '至' + item.endDate}</Text> : null
                         }
 
                     </Flex>
@@ -605,9 +605,10 @@ class FeeDetailPage extends BasePage {
         const { dataInfo, type, room, price, mlAmount } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
-                <ScrollView onScrollBeginDrag={() => console.log('onScrollBeginDrag')}>
-                    <Text
-                        style={{ paddingLeft: 10, paddingTop: 10, fontSize: 18 }}>{room.allName} {room.tenantName}</Text>
+                <ScrollView
+                //onScrollBeginDrag={() => console.log('onScrollBeginDrag')}
+                >
+                    <Text style={{ paddingLeft: 10, paddingTop: 10, fontSize: 18, color: '#2c2c2c' }}>{room.allName} {room.tenantName}</Text>
                     <TwoChange onChange={this.typeOnChange} />
                     <Flex style={{ backgroundColor: '#eee', height: 1, marginLeft: 10, marginRight: 10, marginTop: 10 }} />
                     {dataInfo.data.map(item => {
@@ -624,7 +625,7 @@ class FeeDetailPage extends BasePage {
                                     //算抹零金额
                                     this.mlCal(e.target.checked, this.state.mlType, this.state.mlScale);
                                 }}
-                            ><Text style={{ paddingTop: 3, paddingLeft: 3 }}>抹零</Text></Checkbox>
+                            ><Text style={{ paddingTop: 3, paddingLeft: 3, color: '#666' }}>抹零</Text></Checkbox>
 
                             <MyPopover
                                 textStyle={{ fontSize: 14 }}
@@ -643,18 +644,17 @@ class FeeDetailPage extends BasePage {
                                 }}
                                 titles={['四舍五入', '直接舍去', '有数进一']}
                                 visible={true} />
-
                         </Flex>
 
                         <Flex align={'center'}>
-                            <Text style={{ paddingLeft: 10, fontSize: 18 }}>抹零：</Text>
+                            <Text style={{ paddingLeft: 10, fontSize: 18, color: '#666' }}>抹零：</Text>
                             <Text style={{
                                 paddingLeft: 5,
                                 fontSize: 18,
                                 color: Macro.color_FA3951,
                             }}>¥{mlAmount}</Text>
 
-                            <Text style={{ paddingLeft: 10, fontSize: 18 }}>合计：</Text>
+                            <Text style={{ paddingLeft: 10, fontSize: 18, color: '#666' }}>合计：</Text>
                             <Text
                                 style={{
                                     paddingLeft: 5,
@@ -774,11 +774,8 @@ class FeeDetailPage extends BasePage {
                                 maxDate={new Date(new Date(this.state.selectItem.endDate).getTime() - 24 * 60 * 60 * 1000)}
                             />
                         </View>
-                    </TouchableWithoutFeedback>
-
-
+                    </TouchableWithoutFeedback> 
                 }
-
             </CommonView>
 
         );

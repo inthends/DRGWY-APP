@@ -79,7 +79,7 @@ export default class LouPark extends BasePage {
  
             <CommonView style={{ flex: 1 }}>
                 <ScrollView>
-                    <Text style={{ paddingLeft: 15, paddingTop: 15, fontSize: 20 }}>{building.allName}</Text>  
+                    <Text style={{ paddingLeft: 15, paddingTop: 15, fontSize: 20, color: '#2c2c2c'  }}>{building.allName}</Text>  
                     <Flex wrap='wrap' style={{ paddingLeft: 10, paddingRight: 10, marginTop: 10 }}>
                         {parkings.map(room => {
                             let color = {};

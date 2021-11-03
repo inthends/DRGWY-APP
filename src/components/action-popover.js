@@ -1,6 +1,6 @@
-import React, {Component, Fragment} from 'react';
-import {View, Text, Image, StyleSheet, TouchableWithoutFeedback, TouchableHighlight, ScrollView} from 'react-native';
-import LoadImage from './load-image';
+import React, {Component } from 'react';
+import {View, Text,   StyleSheet, TouchableWithoutFeedback,  ScrollView} from 'react-native';
+//import LoadImage from './load-image';
 import {Flex} from '@ant-design/react-native';
 import Popover from 'react-native-popover-view';
 

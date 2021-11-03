@@ -1,12 +1,12 @@
 //车位
 import React  from 'react';
 import {
-    View,
+    //View,
     Text,
     StyleSheet,
-    // StatusBar,
-    // FlatList,
-    // Linking,
+    //StatusBar,
+    //FlatList,
+    //Linking,
     TouchableOpacity,
     TouchableWithoutFeedback,
     ScrollView,
@@ -23,7 +23,6 @@ import NavigatorService from './navigator-service';
 import CommonView from '../../components/CommonView';
 //import WorkService from '../work/work-service';
 
-
 export default class FeeParkingsPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         // console.log(1, navigation);
@@ -34,7 +33,7 @@ export default class FeeParkingsPage extends BasePage {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
-            ),
+            )
         };
     };
 
@@ -46,7 +45,6 @@ export default class FeeParkingsPage extends BasePage {
             parkings: [],
         };
     }
-
 
     componentDidMount(): void {
         this.viewDidAppear = this.props.navigation.addListener(
@@ -71,8 +69,8 @@ export default class FeeParkingsPage extends BasePage {
 
             <CommonView style={{ flex: 1 }}>
                 <ScrollView>
-                    <Text style={{ paddingLeft: 15, paddingTop: 15, fontSize: 20 }}>{building.allName}</Text>
-                    <Flex wrap='wrap' style={{ paddingLeft: 10, paddingRight: 10, marginTop: 10 }}>
+                    <Text style={{ paddingLeft: 15, paddingTop: 15, fontSize: 20, color: '#2c2c2c' }}>{building.allName}</Text>
+                    <Flex wrap='wrap' style={{ paddingLeft: 10, paddingRight: 10, marginTop: 5 }}>
                         {parkings.map(room => {
                             let color = {};
                             if (room.color === 2) {
@@ -111,8 +109,7 @@ const styles = StyleSheet.create({
     title: {
         color: '#333',
         fontSize: 16,
-    },
-
+    }, 
 
     top: {
 
@@ -124,15 +121,15 @@ const styles = StyleSheet.create({
         fontSize: 18,
         paddingBottom: 20,
     },
-    button: {
-        color: '#868688',
-        fontSize: 16,
-        paddingTop: 10,
-    },
-    blue: {
-        borderLeftColor: Macro.color_4d8fcc,
-        borderLeftWidth: 8,
-    },
+    // button: {
+    //     color: '#868688',
+    //     fontSize: 16,
+    //     paddingTop: 10,
+    // },
+    // blue: {
+    //     borderLeftColor: Macro.color_4d8fcc,
+    //     borderLeftWidth: 8,
+    // },
 
     left: {
         flex: 1,

@@ -1,6 +1,5 @@
 import api from '../../../utils/api';
 //import common from '../../../utils/common';
-
 export default {
     getAsynChildBuildings(villageId, type) {
         return api.postData('/api/MobileMethod/MGetBuildingStatistics', {

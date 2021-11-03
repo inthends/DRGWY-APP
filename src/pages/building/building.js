@@ -9,18 +9,18 @@ import { connect } from 'react-redux';
 import NoDataView from '../../components/no-data-view';
 import CommonView from '../../components/CommonView';
 import { saveUser,saveXunJian } from '../../utils/store/actions/actions';
-import JPush from 'jpush-react-native';
+//import JPush from 'jpush-react-native';
 import {
     upgrade,
     addDownListener,
-    checkUpdate,
+    //checkUpdate,
 } from 'rn-app-upgrade';
 import UDToast from '../../utils/UDToast';
 import common from '../../utils/common';
 import api from '../../utils/api';
-import NavigatorService from '../navigator/navigator-service';
-import XunJianService from '../navigator/xunjian/xunjian-service';
-import HomePage from '../home/home';
+// import NavigatorService from '../navigator/navigator-service';
+// import XunJianService from '../navigator/xunjian/xunjian-service';
+// import HomePage from '../home/home';
 
 class BuildingPage extends BasePage {
     // static navigationOptions = ({navigation}) => {
@@ -64,12 +64,10 @@ class BuildingPage extends BasePage {
         if (!common.isIOS()) {
 
             NativeModules.LHNToast.getVersionCode((version, isYse, isLKL, brandName,aa,bb) => {
-                console.log(aa,bb,11)
+                //console.log(aa,bb,11)
                 api.getData('/api/Mobile/GetVersion', { isYse, isLKL, brandName }, true).then(res => { 
                     let netVersion = common.handlerVersionString(res.appVersionName);
                     let localVersion = common.handlerVersionString(version);
-                    // console.log(netVersion);
-                    // console.log(localVersion);
                     if (netVersion > localVersion) {
                         Alert.alert(
                             '发现有新版本',
@@ -151,9 +149,9 @@ class BuildingPage extends BasePage {
         // );
     }
 
-    componentWillUnmount(): void {
-        // this.viewDidAppear.remove();
-    }
+    // componentWillUnmount(): void {
+    //     // this.viewDidAppear.remove();
+    // }
 
     getInitData = () => {
         BuildingService.getStatisticsTotal(this.selectBuilding.key).then(res => {
@@ -236,7 +234,7 @@ class BuildingPage extends BasePage {
                             openDrawer={this.openDrawer} {...this.props} />
                         <FlatList
                             data={dataInfo.data}
-                            // ListHeaderComponent={}
+                            //ListHeaderComponent={}
                             renderItem={({ item }) => <BuildingCell nextRouteName='Buildings' {...this.props} item={item} />}
                             style={styles.list}
                             keyExtractor={(item, index) => item.id}

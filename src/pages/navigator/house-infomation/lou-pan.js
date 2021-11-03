@@ -1,17 +1,17 @@
-import React  from 'react';
+import React from 'react';
 import {
     View,
     Text,
-    StyleSheet, 
+    StyleSheet,
     FlatList,
     TouchableOpacity,
     TouchableWithoutFeedback
 } from 'react-native';
 import BasePage from '../../base/base';
-import {  Flex, Icon } from '@ant-design/react-native';
+import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 // import ScreenUtil from '../../../utils/screen-util';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 // import ListHeader from '../../../components/list-header';
 // import common from '../../../utils/common';
 import LoadImage from '../../../components/load-image';
@@ -19,22 +19,20 @@ import NavigatorService from '../navigator-service';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 
-
 class LouPan extends BasePage {
-    static navigationOptions = ({navigation}) => {
-
-        console.log(1, navigation);
+    static navigationOptions = ({ navigation }) => {
+        //console.log(1, navigation);
         return {
             tabBarVisible: false,
             title: '项目',
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
             headerRight: (
                 <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
-                    <Icon name='bars' style={{marginRight: 15}} color="black"/>
+                    <Icon name='bars' style={{ marginRight: 15 }} color="black" />
                 </TouchableWithoutFeedback>
             ),
         };
@@ -42,8 +40,6 @@ class LouPan extends BasePage {
 
     constructor(props) {
         super(props);
-
-
         this.state = {
             count: 0,
             showTabbar: true,
@@ -55,13 +51,11 @@ class LouPan extends BasePage {
             refreshing: false,
             selectBuilding: this.props.selectBuilding,
         };
-
     }
 
     componentDidMount(): void {
         this.onRefresh();
     }
-
 
     getList = () => {
         NavigatorService.getFeeStatistics(this.state.pageIndex, this.state.selectBuilding ? this.state.selectBuilding.key : '').then(dataInfo => {
@@ -78,24 +72,20 @@ class LouPan extends BasePage {
                 console.log(this.state.dataInfo.data);
             });
         });
-
     };
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
         const nextSelectBuilding = nextProps.selectBuilding;
-        console.log('selectBuilding', selectBuilding);
-        console.log('nextSelectBuilding', nextSelectBuilding);
-
+        // console.log('selectBuilding', selectBuilding);
+        // console.log('nextSelectBuilding', nextSelectBuilding); 
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
-            this.setState({selectBuilding: nextProps.selectBuilding}, () => {
+            this.setState({ selectBuilding: nextProps.selectBuilding }, () => {
                 this.onRefresh();
             });
         }
-
     }
-
-
+ 
     onRefresh = () => {
         this.setState({
             refreshing: true,
@@ -105,7 +95,7 @@ class LouPan extends BasePage {
         });
     };
     loadMore = () => {
-        const {data, total, pageIndex} = this.state.dataInfo;
+        const { data, total, pageIndex } = this.state.dataInfo;
         //console.log('loadmore');
         if (this.canAction && data.length < total) {
             this.setState({
@@ -117,30 +107,30 @@ class LouPan extends BasePage {
         }
     };
 
-    _renderItem = ({item, index}) => {
+    _renderItem = ({ item, index }) => {
         return (
-            <TouchableWithoutFeedback onPress={() => this.props.navigation.push('louDong', {data: item})}>
+            <TouchableWithoutFeedback onPress={() => this.props.navigation.push('louDong', { data: item })}>
                 <View style={styles.content}>
                     <Flex direction="row" style={styles.top}>
                         <Flex justify={'center'} style={styles.left}>
-                            <LoadImage img={item.mainpic} style={styles.image}/>
+                            <LoadImage img={item.mainpic} style={styles.image} />
                         </Flex>
                         <Flex direction="column" style={styles.right}>
                             <Flex style={styles.item}>
                                 <Text style={styles.name}>{item.name}</Text>
                             </Flex>
-                            <Flex justify={'between'} style={{width: '100%', paddingRight: 20}}>
+                            <Flex justify={'between'} style={{ width: '100%', paddingRight: 20, color: '#666', fontSize: Macro.font_14 }}>
                                 <Flex direction={'column'}>
-                                    <Text>{item.roomcount}户</Text>
-                                    <Text style={{paddingTop: 12}}>房产总数</Text>
+                                    <Text style={styles.number}>{item.roomcount}户</Text>
+                                    <Text style={styles.desc}>房产总数</Text>
                                 </Flex>
                                 <Flex direction={'column'}>
-                                    <Text>{item.charge}户</Text>
-                                    <Text style={{paddingTop: 12}}>交清</Text>
+                                    <Text style={styles.number}>{item.charge}户</Text>
+                                    <Text style={styles.desc}>交清</Text>
                                 </Flex>
                                 <Flex direction={'column'}>
-                                    <Text>{item.notcharge}户</Text>
-                                    <Text style={{paddingTop: 12}}>未交清</Text>
+                                    <Text style={styles.number}>{item.notcharge}户</Text>
+                                    <Text style={styles.desc}>未交清</Text>
                                 </Flex>
                             </Flex>
                         </Flex>
@@ -150,15 +140,14 @@ class LouPan extends BasePage {
         );
     };
 
-
     render() {
-        const {statistics, dataInfo} = this.state;
-        const {selectBuilding} = this.props;
-        // console.log('selet', selectBuilding);
+        const { statistics, dataInfo } = this.state;
+        //const { selectBuilding } = this.props;
+        //console.log('selet', selectBuilding);
         return (
-            <View style={{flex: 1}}>
-                <CommonView style={{flex: 1}}>
-                    <View style={{flex: 1}}>
+            <View style={{ flex: 1 }}>
+                <CommonView style={{ flex: 1 }}>
+                    <View style={{ flex: 1 }}>
                         <FlatList
                             data={dataInfo.data}
                             // ListHeaderComponent={}
@@ -168,33 +157,28 @@ class LouPan extends BasePage {
                             onRefresh={() => this.onRefresh()}
                             onEndReached={() => this.loadMore()}
                             onEndReachedThreshold={0.1}
-                            ItemSeparatorComponent={() => <View style={{backgroundColor: '#eee', height: 1}}/>}
+                            ItemSeparatorComponent={() => <View style={{ backgroundColor: '#eee', height: 1 }} />}
                             onScrollBeginDrag={() => this.canAction = true}
                             onScrollEndDrag={() => this.canAction = false}
                             onMomentumScrollBegin={() => this.canAction = true}
                             onMomentumScrollEnd={() => this.canAction = false}
-                            ListEmptyComponent={<NoDataView/>}
+                            ListEmptyComponent={<NoDataView />}
                         />
                     </View>
                 </CommonView>
-
             </View>
-
-
         );
     }
 }
 
 const styles = StyleSheet.create({
-    all: {
-        backgroundColor: Macro.color_sky,
-        flex: 1,
-    },
+    // all: {
+    //     backgroundColor: Macro.color_sky,
+    //     flex: 1
+    // },
     content: {
         backgroundColor: Macro.color_white,
-        flex: 1,
-
-
+        flex: 1
     },
     title: {
         paddingTop: 15,
@@ -202,104 +186,102 @@ const styles = StyleSheet.create({
         color: '#333',
         fontSize: 16,
         paddingBottom: 10,
-        //
         marginLeft: 20,
-        marginRight: 20,
-
-        // width: ,
+        marginRight: 20
     },
-    title2: {
-        paddingTop: 15,
-        // textAlign: 'left',
-        color: '#333',
-        fontSize: 16,
-        paddingBottom: 10,
-        //
-
-        marginRight: 20,
-
-        // width: ,
-    },
-
+    // title2: {
+    //     paddingTop: 15,
+    //     // textAlign: 'left',
+    //     color: '#333',
+    //     fontSize: 16,
+    //     paddingBottom: 10,
+    //     marginRight: 20
+    // },
     top: {
-
         fontSize: 18,
         paddingTop: 10,
-        paddingBottom: 10,
+        paddingBottom: 10
     },
-    bottom: {
-        color: '#868688',
-        fontSize: 18,
-
-    },
-    button: {
-        color: '#868688',
-        fontSize: 16,
-        paddingTop: 10,
-    },
-    blue: {
-        borderLeftColor: Macro.color_4d8fcc,
-        borderLeftWidth: 8,
-    },
-    orange: {
-        borderLeftColor: Macro.color_f39d39,
-        borderLeftWidth: 8,
-    },
-
+    // bottom: {
+    //     color: '#868688',
+    //     fontSize: 18,
+    // },
+    // button: {
+    //     color: '#868688',
+    //     fontSize: 16,
+    //     paddingTop: 10,
+    // },
+    // blue: {
+    //     borderLeftColor: Macro.color_4d8fcc,
+    //     borderLeftWidth: 8,
+    // },
+    // orange: {
+    //     borderLeftColor: Macro.color_f39d39,
+    //     borderLeftWidth: 8,
+    // },
     left: {
         flex: 1,
-        paddingLeft: 15,
-
-
+        paddingLeft: 15
     },
     right: {
         flex: 3,
-
-
-        marginLeft: 20,
+        marginLeft: 10
     },
     image: {
         height: 90,
         width: 90,
+        borderRadius: 5
     },
     item: {
-        width: '100%',
+        width: '100%'
     },
     name: {
-        fontSize: 18,
-        fontWeight: '600',
-        paddingBottom: 15,
-    },
-    area: {
-        color: Macro.color_636470,
-        fontSize: Macro.font_14,
-    },
-    complete: {
-        color: Macro.color_80aae2,
-        fontSize: Macro.font_14,
-        backgroundColor: Macro.color_dae9ff,
-        padding: 3,
-        paddingLeft: 5,
-        borderRadius: 1,
+        // fontSize: 18,
+        // fontWeight: '600',
+        // paddingBottom: 15,
+        fontSize: 17,
+        color: '#2c2c2c',
+        paddingBottom: 15
     },
     number: {
-        color: Macro.color_9c9ca5,
-        fontSize: Macro.font_14,
+        color: '#666',
+        fontSize: Macro.font_14
     },
     desc: {
-        color: Macro.color_c2c1c5,
-        fontSize: Macro.font_14,
+        paddingTop: 12,
+        color: '#999999',
+        fontSize: Macro.font_14
     },
-    line: {
-        width: 1,
-        height: 15,
-        backgroundColor: Macro.color_c2c1c5,
-        marginLeft: 5,
-        marginRight: 5,
-    },
+    // area: {
+    //     color: Macro.color_636470,
+    //     fontSize: Macro.font_14,
+    // },
+    // complete: {
+    //     color: Macro.color_80aae2,
+    //     fontSize: Macro.font_14,
+    //     backgroundColor: Macro.color_dae9ff,
+    //     padding: 3,
+    //     paddingLeft: 5,
+    //     borderRadius: 1,
+    // },
+    // number: {
+    //     color: Macro.color_9c9ca5,
+    //     fontSize: Macro.font_14,
+    // },
+    // desc: {
+    //     color: Macro.color_c2c1c5,
+    //     fontSize: Macro.font_14,
+    // },
+    // line: {
+    //     width: 1,
+    //     height: 15,
+    //     backgroundColor: Macro.color_c2c1c5,
+    //     marginLeft: 5,
+    //     marginRight: 5
+    // },
 });
 
-const mapStateToProps = ({buildingReducer}) => {
+const mapStateToProps = ({ buildingReducer }) => {
     return {
         selectBuilding: buildingReducer.selectBuilding,
     };

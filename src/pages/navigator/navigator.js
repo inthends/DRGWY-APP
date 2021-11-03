@@ -59,12 +59,11 @@ export default class NavigatorPage extends BasePage {
                             <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('louPan')}>
                                 <Flex style={styles.left}>
                                     <LoadImage style={{width: 19, height: 25}}
-                                               defaultImg={require('../../static/images/navigator/shangmen.png')}/>
+                                             defaultImg={require('../../static/images/navigator/shangmen.png')} 
+                                               />
                                     <Text style={styles.content}>房产资料</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
-
-
                             {/*<TouchableWithoutFeedback onPress={() => alert(1)}>*/}
                             {/*    <Flex style={styles.right}>*/}
                             {/*        <LoadImage style={{width: 22, height: 22}}*/}
@@ -262,6 +261,6 @@ const styles = StyleSheet.create({
         marginRight: 15,
         width: ScreenUtil.deviceWidth() - 30,
         backgroundColor: '#E0E0E0',
-        height: 0.5,
-    },
+        height: 0.5
+    }
 });

@@ -39,8 +39,7 @@ export default class DetailBuildingPage extends BasePage {
     }
 
     componentDidMount(): void {
-        let id = this.state.item.id;
-        console.log('detail',this.state.item)
+        let id = this.state.item.id; 
         DetailBuildingService.getPStructs(id, 4).then(res => {
             const floors = res || [];
             const promises = floors.map(item => {
@@ -53,8 +52,7 @@ export default class DetailBuildingPage extends BasePage {
                     };
                 });
             });
-            Promise.all(promises).then(res => {
-                console.log(333, res);
+            Promise.all(promises).then(res => { 
                 this.setState({data: res});
             });
         });

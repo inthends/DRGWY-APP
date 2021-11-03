@@ -1,6 +1,5 @@
 import React, {Fragment} from 'react';
 import {View, Text, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
-
 import BasePage from '../../base/base';
 import {Flex, Icon} from '@ant-design/react-native';
 import Macro from '../../../utils/macro';

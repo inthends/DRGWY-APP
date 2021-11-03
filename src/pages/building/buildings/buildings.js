@@ -1,10 +1,14 @@
-import React, {Fragment} from 'react';
-import {View, Text, SafeAreaView, StyleSheet, StatusBar, FlatList, TouchableOpacity, TextInput} from 'react-native';
+import React
+//, {Fragment} 
+from 'react';
+import {View,  StyleSheet, FlatList, 
+    //Text, SafeAreaView, StatusBar,TouchableOpacity, TextInput
+} from 'react-native';
 
 import BasePage from '../../base/base';
-import BuildingHeader from '../../../components/building/building-header';
+//import BuildingHeader from '../../../components/building/building-header';
 import BuildingCell from '../../../components/building/build-cell';
-import {Button, Flex, Icon, List, WhiteSpace} from '@ant-design/react-native';
+//import {Button, Flex, Icon, List, WhiteSpace} from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import BuildingsService from './buildings-service';
 import ScreenUtil from '../../../utils/screen-util';
@@ -16,8 +20,6 @@ import CommonView from '../../../components/CommonView';
 
 class BuildingsPage extends BasePage {
     static navigationOptions = ({navigation}) => {
-
-        console.log(1, navigation);
         return {
             tabBarVisible: false,
             header: null,
@@ -27,19 +29,14 @@ class BuildingsPage extends BasePage {
     constructor(props) {
         super(props);
         let item = common.getValueFromProps(this.props);
-        console.log(item);
-        console.log(this.props);
         this.state = {
             data: [],
             item,
         };
-
     }
 
     componentDidMount(): void {
-
         this.getInitData();
-
     }
 
     getInitData = () => {
@@ -48,7 +45,6 @@ class BuildingsPage extends BasePage {
         });
     };
     _renderItem = ({item}) => {
-        console.log(item);
         return <BuildingCell nextRouteName='DetailBuilding' {...this.props} item={item}/>;
     };
 

@@ -4,33 +4,29 @@ import {
     Text,
     TouchableWithoutFeedback,
     TouchableOpacity,
-    StyleSheet,
-    Image,
-    ScrollView,
-    RefreshControl, Modal,
+    StyleSheet, 
+    ScrollView,  Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
 import {Icon, Radio} from '@ant-design/react-native/lib/index';
 import {List, WhiteSpace, Flex, TextareaItem, Grid, Button} from '@ant-design/react-native/lib/index';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
-import SelectImage from '../../../utils/select-image';
+// import SelectImage from '../../../utils/select-image';
 import common from '../../../utils/common';
-import UDRecord from '../../../utils/UDRecord';
-import api from '../../../utils/api';
-import UDPlayer from '../../../utils/UDPlayer';
+// import UDRecord from '../../../utils/UDRecord';
+// import api from '../../../utils/api';
+// import UDPlayer from '../../../utils/UDPlayer';
 import UDToast from '../../../utils/UDToast';
 import DashLine from '../../../components/dash-line';
 import WorkService from '../work-service';
-import UploadImageView from '../../../components/upload-image-view';
+//import UploadImageView from '../../../components/upload-image-view';
 // import Communicates from '../../../components/communicates';
 import OperationRecords from '../../../components/operationrecords';
 import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
-
-
 const Item = List.Item;
 
 export default class JianYanListDetailPage extends BasePage {

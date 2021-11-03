@@ -1,17 +1,18 @@
-import React  from 'react';
-import { 
+//楼盘
+import React from 'react';
+import {
     Text,
     StyleSheet,
     //View,
-    // StatusBar,
-    // FlatList,
-    // Linking,
+    //StatusBar,
+    //FlatList,
+    //Linking,
     TouchableOpacity,
-    TouchableWithoutFeedback, 
+    TouchableWithoutFeedback,
     ScrollView,
 } from 'react-native';
 import BasePage from '../base/base';
-import {   Flex, Icon } from '@ant-design/react-native';
+import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../utils/macro';
 import ScreenUtil from '../../utils/screen-util';
 //import { connect } from 'react-redux';
@@ -21,10 +22,8 @@ import NavigatorService from './navigator-service';
 //import LoadImage from '../../components/load-image';
 import CommonView from '../../components/CommonView';
 
-
 export default class FeeBuildingsPage extends BasePage {
-    static navigationOptions = ({ navigation }) => { 
-        // console.log(1, navigation);
+    static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
             title: '上门收费',
@@ -39,7 +38,6 @@ export default class FeeBuildingsPage extends BasePage {
     constructor(props) {
         super(props);
         let housing = common.getValueFromProps(this.props);
-        // console.log(11, housing);
         this.state = {
             housing,
             items: [],
@@ -52,7 +50,6 @@ export default class FeeBuildingsPage extends BasePage {
         });
     }
 
-
     onRefresh = () => {
         this.setState({
             refreshing: true,
@@ -62,15 +59,13 @@ export default class FeeBuildingsPage extends BasePage {
         });
     };
 
-
     render() {
         const { housing, items } = this.state;
         return (
-
             <CommonView style={{ flex: 1 }}>
                 <ScrollView style={{ flex: 1 }}>
-                    <Text style={{ paddingLeft: 15, paddingTop: 15, fontSize: 20 }}>{housing.name}</Text>
-                    <Flex wrap='wrap' style={{ paddingLeft: 10, paddingRight: 10, marginTop: 15 }}>
+                    <Text style={{ paddingLeft: 15, paddingTop: 15, fontSize: 20, color: '#2c2c2c' }}>{housing.name}</Text>
+                    <Flex wrap='wrap' style={{ paddingLeft: 10, paddingRight: 10, marginTop: 5 }}>
                         {items.map(item => (
                             <TouchableWithoutFeedback key={item.id}
                                 onPress={() => {
@@ -81,19 +76,23 @@ export default class FeeBuildingsPage extends BasePage {
                                         //车位
                                         this.props.navigation.push('feeParkings', { data: item });
                                 }}>
-                                {/* <Flex style={[styles.item, item.isClear === true ? '' : styles.orange2]} justify={'center'}>
-                                    <Text style={[styles.title, item.isClear === true ? '' : styles.orange2]}>{item.name}</Text>
+
+                                {/* <Flex style={[styles.item, item.color === 2 ? '' : styles.orange]} justify={'center'}>
+                                    <Text style={[styles.title, item.color === 2 ? '' : styles.orange]}>{item.name}</Text>
                                 </Flex> */}
 
-                                <Flex style={[styles.item, item.color === 2 ? '' : styles.orange2]} justify={'center'}>
-                                    <Text style={[styles.title, item.color === 2 ? '' : styles.orange2]}>{item.name}</Text>
+                                {/* 费用状态，1,2,3
+                                没有未收款的 显示灰色1
+                                未收款最小账单日小于当前日期的显示橙色2
+                                未收款最小账单日大于当前日期的显示绿色3 */}
+                                <Flex style={[styles.item, item.color == 1 ? styles.gray : (item.color == 2 ? styles.orange : styles.green)]} justify={'center'}>
+                                    <Text style={[styles.title, item.color == 1 ? styles.gray : (item.color == 2 ? styles.orange : styles.green)]}>{item.name}</Text>
                                 </Flex> 
                             </TouchableWithoutFeedback>
                         ))}
-
                     </Flex>
-                </ScrollView> 
-            </CommonView> 
+                </ScrollView>
+            </CommonView>
         );
     }
 }
@@ -101,20 +100,16 @@ export default class FeeBuildingsPage extends BasePage {
 const styles = StyleSheet.create({
     all: {
         backgroundColor: Macro.color_sky,
-        flex: 1,
+        flex: 1
     },
     content: {
         backgroundColor: Macro.color_white,
-        flex: 1,
-
-
+        flex: 1
     },
     title: {
         color: '#333',
         fontSize: 16,
     },
-
-
     top: {
 
         fontSize: 18,
@@ -125,27 +120,24 @@ const styles = StyleSheet.create({
         fontSize: 18,
         paddingBottom: 20,
     },
-    button: {
-        color: '#868688',
-        fontSize: 16,
-        paddingTop: 10,
-    },
-    blue: {
-        borderLeftColor: Macro.color_4d8fcc,
-        borderLeftWidth: 8,
-    },
-    orange: {
-        borderLeftColor: Macro.color_f39d39,
-        borderLeftWidth: 8,
-    },
-
+    // button: {
+    //     color: '#868688',
+    //     fontSize: 16,
+    //     paddingTop: 10,
+    // },
+    // blue: {
+    //     borderLeftColor: Macro.color_4d8fcc,
+    //     borderLeftWidth: 8,
+    // },
+    // orange: {
+    //     borderLeftColor: Macro.color_f39d39,
+    //     borderLeftWidth: 8,
+    // }, 
     left: {
-        flex: 1,
-
+        flex: 1
     },
     right: {
         flex: 3,
-
         paddingTop: 20,
         paddingBottom: 20,
         marginLeft: 20,
@@ -200,8 +192,16 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         marginRight: 5,
     },
-    orange2: {
+    orange: {
         backgroundColor: Macro.color_f39d39,
-        color: '#fff',
+        color: '#fff'
     },
+    green: {
+        backgroundColor: '#298A08',
+        color: '#fff'
+    },
+    gray: {
+        backgroundColor: '#A4A4A4',
+        color: '#fff'
+    }
 });
