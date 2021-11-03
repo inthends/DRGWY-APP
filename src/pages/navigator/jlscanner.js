@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Animated, Easing } from 'react-native'; 
+import { StyleSheet, Text, View, Animated, Easing } from 'react-native';
 import common from '../../utils/common';
-import NavigatorService from './navigator-service'; 
+import NavigatorService from './navigator-service';
 import Macro from '../../utils/macro';
 import { RNCamera } from 'react-native-camera';
 import UDToast from '../../utils/UDToast';
 //嘉联扫码
 export default class JLScanScreen extends Component {
-  
+
     constructor(props) {
         super(props);
         this.state = {
@@ -41,43 +41,40 @@ export default class JLScanScreen extends Component {
         if (this.state.result) {
             return;
         }
-
         this.setState({
             time: 30,
             result,
         }, () => {
-            let ids = common.getValueFromProps(this.props);
-            //抹零 neo add
-            let isML = common.getValueFromProps(this.props, 'isML'); 
-            let mlType = common.getValueFromProps(this.props, 'mlType');
-            let mlScale = common.getValueFromProps(this.props, 'mlScale');
-            let callBack = common.getValueFromProps(this.props, 'callBack');
-            NavigatorService.createOrder(ids, isML, mlType, mlScale).then(res => {
-                NavigatorService.jlScanPay(result.data, res.out_trade_no).then(resp => {
-                    if (resp === 'need_query') {
-                        this.needQuery(res);
-                    } else {
-                        callBack(res.out_trade_no);
-                        this.props.navigation.goBack();
-                    }
-                }).catch(() => {
-                    this.setState({
-                        result: null,
-                        count: null,
-                    });
-                });
-
-                // this.props.navigation.navigate('feeDetail', {
-                //     data: {
-                //         b:tbout_trade_no,
-                //         a:e.data,
-                //     }
-                // })
+            // let ids = common.getValueFromProps(this.props);
+            // //抹零 neo add
+            // let isML = common.getValueFromProps(this.props, 'isML'); 
+            // let mlType = common.getValueFromProps(this.props, 'mlType');
+            // let mlScale = common.getValueFromProps(this.props, 'mlScale');
+            // let callBack = common.getValueFromProps(this.props, 'callBack');
+            let out_trade_no = common.getValueFromProps(this.props, 'out_trade_no');
+            NavigatorService.jlScanPay(result.data, out_trade_no).then(resp => {
+                if (resp === 'need_query') {
+                    this.needQuery(res);
+                } else {
+                    callBack(out_trade_no);
+                    this.props.navigation.goBack();
+                }
             }).catch(() => {
                 this.setState({
                     result: null,
                     count: null,
                 });
+            });
+            // this.props.navigation.navigate('feeDetail', {
+            //     data: {
+            //         b:tbout_trade_no,
+            //         a:e.data,
+            //     }
+            // })
+        }).catch(() => {
+            this.setState({
+                result: null,
+                count: null,
             });
         });
     };
@@ -109,7 +106,7 @@ export default class JLScanScreen extends Component {
                         count: null,
                     });
                 });
-            } 
+            }
             // else {
             //     NavigatorService.wftScanPayReserve(res.out_trade_no);
             //     setTimeout(() => {
@@ -119,9 +116,9 @@ export default class JLScanScreen extends Component {
             // }
         });
     }
- 
+
     render() {
-        return ( 
+        return (
             <View style={styles.container}>
                 <RNCamera
                     ref={ref => {

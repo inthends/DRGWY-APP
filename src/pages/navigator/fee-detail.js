@@ -251,11 +251,7 @@ class FeeDetailPage extends BasePage {
                             });
                         } else if (posType === '嘉联') {
                             this.props.navigation.push('jlscan', {
-                                data: ids,
-                                isML: isML,
-                                mlType: mlType,
-                                mlScale: mlScale, 
-                                callBack: this.callBack
+                                out_trade_no: res.out_trade_no
                             });
                         }
                     });
