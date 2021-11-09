@@ -137,6 +137,7 @@ export default {
         }
         return api.postData(url, { estateId, type });
     },
+    
     // createOrder(linkId) {
     //     return api.postData('/api/MobileMethod/MCreateTradeno', {linkId});
     // },
@@ -169,9 +170,16 @@ export default {
         return api.postData('/api/MobileMethod/WFTScanPayReserve', { tbout_trade_no }, false);
     },
 
+    //威富通生成收款码
     qrcodePay(tbout_trade_no) {
         return api.postData('/api/MobileMethod/WFTPay', { tbout_trade_no });
     }, 
+
+    //嘉联生成收款码
+    jlqrcodePay(tbout_trade_no) {
+        return api.postData('/api/MobileMethod/JLQrcodePay', { tbout_trade_no });
+    }, 
+     
     //现金收款
     cashPay(linkId, isML, mlType, mlScale) {
         return api.postData('/api/MobileMethod/MCharge', { linkId, isML, mlType, mlScale });
@@ -180,6 +188,7 @@ export default {
     cashPayPrint(linkId) {
         return api.postData('/api/MobileMethod/MGetCashPrintInfo', { linkId });
     },
+    
     orderStatus(out_trade_no) {
         return api.postData('/api/MobileMethod/WFTPayResult', { out_trade_no }, false);
     },

@@ -26,8 +26,7 @@ export default class ScanScreen extends Component {
     //             this.props.navigation.goBack();
     //         }).catch(()=>{
     //             this.scanner.reactivate();
-    //         });
-    //
+    //         }); 
     //         // this.props.navigation.navigate('feeDetail', {
     //         //     data: {
     //         //         b:tbout_trade_no,
@@ -36,6 +35,7 @@ export default class ScanScreen extends Component {
     //         // })
     //     })
     // };
+
     constructor(props) {
         super(props);
         this.state = {
@@ -44,7 +44,7 @@ export default class ScanScreen extends Component {
             tbout_trade_no: '',
             code: '',
             result: null,
-            count: null,
+            count: null
         };
     }
 
@@ -69,24 +69,24 @@ export default class ScanScreen extends Component {
         if (this.state.result) {
             return;
         }
-
         this.setState({
             time: 30,
             result,
         }, () => {
-            let ids = common.getValueFromProps(this.props);
+            //let ids = common.getValueFromProps(this.props);
             //抹零 neo add
-            let isML = common.getValueFromProps(this.props, 'isML');
+            //let isML = common.getValueFromProps(this.props, 'isML');
             //let mlAmount = common.getValueFromProps(this.props, 'mlAmount');
-            let mlType = common.getValueFromProps(this.props, 'mlType');
-            let mlScale = common.getValueFromProps(this.props, 'mlScale');
-            let callBack = common.getValueFromProps(this.props, 'callBack');
-            NavigatorService.createOrder(ids, isML, mlType, mlScale).then(res => {
-                NavigatorService.wftScanPay(result.data, res.out_trade_no).then(resp => {
+            //let mlType = common.getValueFromProps(this.props, 'mlType');
+            //let mlScale = common.getValueFromProps(this.props, 'mlScale');
+            let out_trade_no = common.getValueFromProps(this.props, 'out_trade_no');
+            let callBack = common.getValueFromProps(this.props, 'callBack'); 
+            //NavigatorService.createOrder(ids, isML, mlType, mlScale).then(res => {
+                NavigatorService.wftScanPay(result.data, out_trade_no).then(resp => {
                     if (resp === 'need_query') {
-                        this.needQuery(res);
+                        this.needQuery(out_trade_no);
                     } else {
-                        callBack(res.out_trade_no);
+                        callBack(out_trade_no);
                         this.props.navigation.goBack();
                     }
                 }).catch(() => {
@@ -102,16 +102,17 @@ export default class ScanScreen extends Component {
                 //         a:e.data,
                 //     }
                 // })
-            }).catch(() => {
-                this.setState({
-                    result: null,
-                    count: null,
-                });
-            });
+
+            // }).catch(() => {
+            //     this.setState({
+            //         result: null,
+            //         count: null,
+            //     });
+            // });
         }); 
     };
 
-    needQuery(res) {
+    needQuery(out_trade_no) {
         let callBack = common.getValueFromProps(this.props, 'callBack');
         let count = this.state.count || 7; 
         if (count === 7) {
@@ -121,14 +122,14 @@ export default class ScanScreen extends Component {
             count: count - 1,
         }, () => {
             if (count > 0) {
-                NavigatorService.wftScanPayQuery(res.out_trade_no).then(query => {
+                NavigatorService.wftScanPayQuery(out_trade_no).then(query => {
                     if (query === 'SUCCESS') {
                         UDToast.hiddenLoading(this.showLoadingNumber);
-                        callBack(res.out_trade_no);
+                        callBack(out_trade_no);
                         this.props.navigation.goBack();
                     } else {
                         setTimeout(() => {
-                            this.needQuery(res);
+                            this.needQuery(out_trade_no);
                         }, 5000);
                     }
                 }).catch(res => {
@@ -140,7 +141,7 @@ export default class ScanScreen extends Component {
                 });
             } else {
                 //支付不成功，冲正
-                NavigatorService.wftScanPayReserve(res.out_trade_no);
+                NavigatorService.wftScanPayReserve(out_trade_no);
                 setTimeout(() => {
                     UDToast.hiddenLoading(this.showLoadingNumber);
                     this.props.navigation.goBack();
@@ -149,10 +150,8 @@ export default class ScanScreen extends Component {
         });
     }
 
-
     render() {
         return (
-
             <View style={styles.container}>
                 <RNCamera
                     ref={ref => {
@@ -162,10 +161,9 @@ export default class ScanScreen extends Component {
                     type={RNCamera.Constants.Type.back}
                     barCodeTypes={[RNCamera.Constants.BarCodeType.qr]}
                     googleVisionBarcodeType={RNCamera.Constants.GoogleVisionBarcodeDetection.BarcodeType.QR_CODE}
-                    // flashMode={RNCamera.Constants.FlashMode.on}
+                    //flashMode={RNCamera.Constants.FlashMode.on}
                     flashMode={RNCamera.Constants.FlashMode.auto}
-                    onBarCodeRead={this.onBarCodeRead}
-                >
+                    onBarCodeRead={this.onBarCodeRead}>
                     <View style={styles.rectangleContainer}>
                         <View style={styles.rectangle} />
                         <Animated.View style={[
@@ -175,7 +173,6 @@ export default class ScanScreen extends Component {
                     </View>
                 </RNCamera>
             </View>
-
         );
     }
 }
@@ -183,37 +180,37 @@ export default class ScanScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'row',
+        flexDirection: 'row'
     },
     preview: {
         flex: 1,
         justifyContent: 'flex-end',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     rectangleContainer: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'transparent',
+        backgroundColor: 'transparent'
     },
     rectangle: {
         height: 200,
         width: 200,
         borderWidth: 1,
         borderColor: Macro.work_blue,
-        backgroundColor: 'transparent',
+        backgroundColor: 'transparent'
     },
     rectangleText: {
         flex: 0,
         color: '#fff',
-        marginTop: 10,
+        marginTop: 10
     },
     border: {
         flex: 0,
         width: 200,
         height: 2,
-        backgroundColor: Macro.work_blue,
-    },
+        backgroundColor: Macro.work_blue
+    }
 });
 
 

@@ -106,7 +106,7 @@ class ChaoBiaoPage extends BasePage {
                 refreshing: false,
                 pageIndex: dataInfo.pageIndex,
             }, () => {
-                console.log(this.state.dataInfo.data);
+                //console.log(this.state.dataInfo.data);
             });
         });
 
@@ -114,7 +114,7 @@ class ChaoBiaoPage extends BasePage {
 
     loadMore = () => {
         const {data, total, pageIndex} = this.state.dataInfo;
-        console.log('loadmore', this.canAction);
+        //console.log('loadmore', this.canAction);
 
         if (!this.canAction && data.length < total) {
             // if (data.length < total) {
@@ -137,7 +137,6 @@ class ChaoBiaoPage extends BasePage {
     };
 
     callBack = (keyvalue) => {
-        // 11-FY-XHF-01-0101
         ChaoBiaoService.lastMeter(keyvalue).then(current => {
             this.setState({
                 scan: true,
@@ -146,7 +145,7 @@ class ChaoBiaoPage extends BasePage {
             });
         });
 
-        // ChaoBiaoService.lastMeter('11-FY-XHF-01-0101').then(current => {
+        // ChaoBiaoService.lastMeter('').then(current => {
         //     this.setState({
         //         scan: true,
         //         nowRead: '',

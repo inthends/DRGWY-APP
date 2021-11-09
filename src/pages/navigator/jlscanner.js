@@ -16,7 +16,7 @@ export default class JLScanScreen extends Component {
             tbout_trade_no: '',
             code: '',
             result: null,
-            count: null,
+            count: null
         };
     }
 
@@ -41,28 +41,23 @@ export default class JLScanScreen extends Component {
         if (this.state.result) {
             return;
         }
+
         this.setState({
             time: 30,
-            result,
+            result
         }, () => {
-            // let ids = common.getValueFromProps(this.props);
-            // //抹零 neo add
-            // let isML = common.getValueFromProps(this.props, 'isML'); 
-            // let mlType = common.getValueFromProps(this.props, 'mlType');
-            // let mlScale = common.getValueFromProps(this.props, 'mlScale');
-            // let callBack = common.getValueFromProps(this.props, 'callBack');
             let out_trade_no = common.getValueFromProps(this.props, 'out_trade_no');
             NavigatorService.jlScanPay(result.data, out_trade_no).then(resp => {
                 if (resp === 'need_query') {
-                    this.needQuery(res);
+                    this.needQuery(out_trade_no);
                 } else {
-                    callBack(out_trade_no);
+                    //callBack(out_trade_no);
                     this.props.navigation.goBack();
                 }
             }).catch(() => {
                 this.setState({
                     result: null,
-                    count: null,
+                    count: null
                 });
             });
             // this.props.navigation.navigate('feeDetail', {
@@ -71,16 +66,16 @@ export default class JLScanScreen extends Component {
             //         a:e.data,
             //     }
             // })
-        }).catch(() => {
-            this.setState({
-                result: null,
-                count: null,
-            });
+            // }).catch(() => {
+            //     this.setState({
+            //         result: null,
+            //         count: null,
+            //     });
         });
     };
 
-    needQuery(res) {
-        let callBack = common.getValueFromProps(this.props, 'callBack');
+    needQuery(out_trade_no) {
+        //let callBack = common.getValueFromProps(this.props, 'callBack');
         let count = this.state.count || 7;
         if (count === 7) {
             this.showLoadingNumber = UDToast.showLoading('正在查询支付结果，请稍后...');
@@ -89,14 +84,14 @@ export default class JLScanScreen extends Component {
             count: count - 1,
         }, () => {
             if (count > 0) {
-                NavigatorService.jlScanPayQuery(res.out_trade_no).then(query => {
+                NavigatorService.jlScanPayQuery(out_trade_no).then(query => {
                     if (query === 'SUCCESS') {
                         UDToast.hiddenLoading(this.showLoadingNumber);
-                        callBack(res.out_trade_no);
+                        //callBack(res.out_trade_no);
                         this.props.navigation.goBack();
                     } else {
                         setTimeout(() => {
-                            this.needQuery(res);
+                            this.needQuery(out_trade_no);
                         }, 5000);
                     }
                 }).catch(res => {
@@ -128,7 +123,7 @@ export default class JLScanScreen extends Component {
                     type={RNCamera.Constants.Type.back}
                     barCodeTypes={[RNCamera.Constants.BarCodeType.qr]}
                     googleVisionBarcodeType={RNCamera.Constants.GoogleVisionBarcodeDetection.BarcodeType.QR_CODE}
-                    // flashMode={RNCamera.Constants.FlashMode.on}
+                    //flashMode={RNCamera.Constants.FlashMode.on}
                     flashMode={RNCamera.Constants.FlashMode.auto}
                     onBarCodeRead={this.onBarCodeRead}>
                     <View style={styles.rectangleContainer}>
@@ -177,8 +172,8 @@ const styles = StyleSheet.create({
         flex: 0,
         width: 200,
         height: 2,
-        backgroundColor: Macro.work_blue,
-    },
+        backgroundColor: Macro.work_blue
+    }
 });
 
 

@@ -47,7 +47,7 @@ class FeeDetailPage extends BasePage {
                         paddingLeft: 15,
                         paddingRight: 15,
                         paddingTop: 10,
-                        color:'#2c2c2c',
+                        color: '#2c2c2c',
                         paddingBottom: 10,
                     }}>加费</Text>
 
@@ -161,8 +161,8 @@ class FeeDetailPage extends BasePage {
                     isLKL: isLKL,
                     isYse: isYse,
                 });
-            }); 
-        } 
+            });
+        }
         // else {
         //     //方法待实现
         // }
@@ -240,13 +240,14 @@ class FeeDetailPage extends BasePage {
 
                         } else if (posType === '威富通') {
                             this.props.navigation.push('scan', {
-                                data: ids,
-                                isML: isML,
-                                mlType: mlType,
-                                mlScale: mlScale,
+                                // data: ids,
+                                // isML: isML,
+                                // mlType: mlType,
+                                // mlScale: mlScale,
                                 //mlAmount: mlAmount,
-                                callBack: this.callBack,
+                                out_trade_no: res.out_trade_no,
                                 printAgain: false,
+                                callBack: this.callBack
                             });
                         } else if (posType === '嘉联') {
                             this.props.navigation.push('jlscan', {
@@ -283,7 +284,8 @@ class FeeDetailPage extends BasePage {
                                 "proc_cd": "710000", //拉卡拉消费
                                 "pay_tp": "1"
                             });
-                        } else if (posType === '威富通') {
+                        }
+                        else if (posType === '威富通') {
                             NavigatorService.qrcodePay(res.out_trade_no).then(code => {
                                 this.setState({
                                     visible: true,
@@ -293,6 +295,18 @@ class FeeDetailPage extends BasePage {
                                     printAgain: false,
                                 }, () => {
                                     this.getOrderStatus(res.out_trade_no);
+                                });
+                            });
+                        } else if (posType === '嘉联') {
+                            NavigatorService.jlqrcodePay(res.out_trade_no).then(code => {
+                                this.setState({
+                                    visible: true,
+                                    cancel: false,
+                                    code,
+                                    needPrint: false,
+                                    printAgain: false,
+                                }, () => {
+                                    this.getJLOrderStatus(res.out_trade_no);
                                 });
                             });
                         }
@@ -457,6 +471,28 @@ class FeeDetailPage extends BasePage {
                 ...res,
                 username: res.userName,
             });
+        });
+    };
+
+
+    //嘉联查询订单状态
+    getJLOrderStatus = (out_trade_no) => {
+        clearTimeout(this.timeOut);
+        NavigatorService.orderStatus(out_trade_no).then(res => {
+            if (res) {
+                // if (this.state.needPrint) {
+                //     this.func = this.printInfo;
+                //     this.params = out_trade_no;
+                //     this.printInfo(out_trade_no);
+                // }
+                this.onClose();
+            } else {
+                if (!this.state.cancel) {
+                    this.timeOut = setTimeout(() => {
+                        this.getOrderStatus(out_trade_no);
+                    }, 1000);
+                }
+            }
         });
     };
 
@@ -774,7 +810,7 @@ class FeeDetailPage extends BasePage {
                                 maxDate={new Date(new Date(this.state.selectItem.endDate).getTime() - 24 * 60 * 60 * 1000)}
                             />
                         </View>
-                    </TouchableWithoutFeedback> 
+                    </TouchableWithoutFeedback>
                 }
             </CommonView>
 

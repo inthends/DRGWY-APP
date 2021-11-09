@@ -159,7 +159,7 @@ const navigatorNavigator = createStackNavigator({
     tousu_s: TouSuPage,
     huifang_s: HuiFangRatePage,
 
-    scan: ScanScreen,
+    scan: ScanScreen,//威富通扫码
     jlscan: JLScanScreen,//嘉联扫码
     service: FuWuDanListDetailPage,
     wancheng: WanChengListDetailPage,
