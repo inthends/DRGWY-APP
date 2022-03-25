@@ -90,12 +90,11 @@ export default class JianFei extends BasePage {
 
                         <WhiteSpace size={'lg'} />
 
-                        <Flex direction={'column'} align={'center'}>
+                        <Flex direction={'column'} align={'start'}>
                             <Flex>
                                 <Text style={styles.left}>说明</Text>
                             </Flex>
-                            <WhiteSpace size={'lg'} />
-
+                            <WhiteSpace size={'lg'} /> 
                             <TextareaItem
                                 style={styles.area}
                                 placeholder={'请输入说明'}

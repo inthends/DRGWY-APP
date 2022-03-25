@@ -126,11 +126,11 @@ class LouPan extends BasePage {
                                 </Flex>
                                 <Flex direction={'column'}>
                                     <Text style={styles.number}>{item.charge}户</Text>
-                                    <Text style={styles.desc}>交清</Text>
+                                    <Text style={styles.desc}>缴清</Text>
                                 </Flex>
                                 <Flex direction={'column'}>
                                     <Text style={styles.number}>{item.notcharge}户</Text>
-                                    <Text style={styles.desc}>未交清</Text>
+                                    <Text style={styles.desc}>未缴清</Text>
                                 </Flex>
                             </Flex>
                         </Flex>
