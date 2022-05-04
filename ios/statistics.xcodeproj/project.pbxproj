@@ -496,7 +496,6 @@
 		13CCC0E3128840788644DD59 /* libRNReanimated-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNReanimated-tvOS.a"; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		171DD3E8107F4C2B8CA305D8 /* libRNGestureHandler-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNGestureHandler-tvOS.a"; sourceTree = "<group>"; };
-		25B7556F5923F1E4B1B8993C /* Pods-statistics.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-statistics.release.xcconfig"; path = "Target Support Files/Pods-statistics/Pods-statistics.release.xcconfig"; sourceTree = "<group>"; };
 		2B61007801AE41A6835BB316 /* RCTJPushModule.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTJPushModule.xcodeproj; path = "../node_modules/jpush-react-native/ios/RCTJPushModule.xcodeproj"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* statistics-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "statistics-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* statistics-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "statistics-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -518,7 +517,6 @@
 		89F453AF4D534D27BC52D69B /* RNCWebView.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCWebView.xcodeproj; path = "../node_modules/react-native-webview/ios/RNCWebView.xcodeproj"; sourceTree = "<group>"; };
 		8D45E4CB009A4BE7806C2418 /* libRNPermissions.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNPermissions.a; sourceTree = "<group>"; };
 		8EC799F225CB47A1AB427176 /* libCodePush.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libCodePush.a; sourceTree = "<group>"; };
-		914DCF03381BE6EFF225BCCF /* Pods-statistics.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-statistics.debug.xcconfig"; path = "Target Support Files/Pods-statistics/Pods-statistics.debug.xcconfig"; sourceTree = "<group>"; };
 		92255373AD6846F2AF2DD0AE /* RNSound.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSound.xcodeproj; path = "../node_modules/react-native-sound/RNSound.xcodeproj"; sourceTree = "<group>"; };
 		98745D47695B4291AD5CC077 /* libRNGestureHandler.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNGestureHandler.a; sourceTree = "<group>"; };
 		A8E21CEF67104B1384622A66 /* antfill.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = antfill.ttf; path = "../node_modules/@ant-design/icons-react-native/fonts/antfill.ttf"; sourceTree = "<group>"; };
@@ -830,7 +828,6 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				F67A4A166E254621A53A7789 /* Resources */,
 				DD30091F232261DD0079C667 /* Recovered References */,
-				A20F353C747DD2C07108407C /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -846,15 +843,6 @@
 				2D02E4901E0B4A5D006451C7 /* statistics-tvOSTests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		A20F353C747DD2C07108407C /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				914DCF03381BE6EFF225BCCF /* Pods-statistics.debug.xcconfig */,
-				25B7556F5923F1E4B1B8993C /* Pods-statistics.release.xcconfig */,
-			);
-			path = Pods;
 			sourceTree = "<group>";
 		};
 		ADBDB9201DFEBF0600ED6528 /* Products */ = {
@@ -1861,7 +1849,6 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 914DCF03381BE6EFF225BCCF /* Pods-statistics.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODEPUSH_KEY = "";
@@ -1904,7 +1891,6 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 25B7556F5923F1E4B1B8993C /* Pods-statistics.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODEPUSH_KEY = v8J3iax2P1BgfZucYZgHcE17EyDXSX9JiCvr3w;
@@ -2289,7 +2275,6 @@
 		};
 		DDE0EF1C240932AB0016E405 /* Staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 25B7556F5923F1E4B1B8993C /* Pods-statistics.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODEPUSH_KEY = XCcurMb7K0YXlDBQxtCRm10KDog1_xDJGmZh1;

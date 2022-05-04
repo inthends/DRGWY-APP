@@ -136,7 +136,9 @@ class CollectionRatePage extends BasePage {
         const {statistics, dataInfo,index} = this.state;
         const titles = [...['全部'], ...statistics.map(item => item.name)];
         console.log('t', titles);
-        let {option,tableData, area,rooms,rate } = this.state.res;
+        let { option, tableData, area, rooms, rate } = this.state.res;
+        
+        // console.log(123456,option)
 
 
         // option = {
@@ -196,45 +198,8 @@ class CollectionRatePage extends BasePage {
         //                 80
         //             ],
         //             "barWidth":null
-        //         },
-        //         {
-        //             "name":"往欠清缴率",
-        //             "type":"line",
-        //             "data":[
-        //                 22,
-        //                 18,
-        //                 19,
-        //                 23,
-        //                 29,
-        //                 33,
-        //                 31,
-        //                 68,
-        //                 12,
-        //                 34,
-        //                 55,
-        //                 67
-        //             ],
-        //             "barWidth":null
-        //         },
-        //         {
-        //             "name":"综合收缴率",
-        //             "type":"line",
-        //             "data":[
-        //                 15,
-        //                 23,
-        //                 20,
-        //                 15,
-        //                 19,
-        //                 30,
-        //                 10,
-        //                 55,
-        //                 66,
-        //                 89,
-        //                 12,
-        //                 46
-        //             ],
-        //             "barWidth":null
         //         }
+              
         //     ],
         //     "color":[
         //         "blue",
@@ -254,11 +219,9 @@ class CollectionRatePage extends BasePage {
         //     },
         //     "legend":{
         //         "left":"center",
-        //
+        
         //         "data":[
         //             "本年收缴率",
-        //             "往欠清缴率",
-        //             "综合收缴率"
         //         ]
         //     }
         // }
@@ -277,8 +240,8 @@ class CollectionRatePage extends BasePage {
 
 
                         </Flex>
-                        <Flex justify={'between'} style={{width: ScreenUtil.deviceWidth() - 30}}>
-                            <Text style={styles.name}>入住率：{rate}</Text>
+                        <Flex justify={'between'} style={{paddingLeft:10,width: ScreenUtil.deviceWidth() - 30}}>
+                            {/* <Text style={styles.name}>入住率：{rate}</Text> */}
                             <MyPopover textStyle={{fontSize: 14}} onChange={this.typeChange}
                                        titles={['全部', '收费项目类别', '不是收费项目']} visible={true}/>
 

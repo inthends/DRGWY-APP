@@ -4,6 +4,7 @@ export const ACTIONS = {
     url: 'url',
     token: 'token',
     selectBuilding: 'selectBuilding',
+    selectTask: 'selectTask',
     nameAndPsd: 'nameAndPsd',
     user: 'user',
     xunJianData:'xunJianData',

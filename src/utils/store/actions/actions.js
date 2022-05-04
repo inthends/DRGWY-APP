@@ -45,6 +45,10 @@ export function saveSelectBuilding(selectBuilding) {
     return {type: ACTIONS.selectBuilding, selectBuilding: selectBuilding};
 }
 
+export function saveSelectTask(selectTask) {
+    return {type: ACTIONS.selectTask, selectTask: selectTask};
+}
+
 export function saveUser(user) {
     return {type: ACTIONS.user, user};
 }

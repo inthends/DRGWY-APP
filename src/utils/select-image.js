@@ -32,7 +32,7 @@ export default class SelectImage {
                 } else if (response.error) {
                     UDToast.showInfo('没有权限，请在设置中开启权限');
                 } else {
-                    console.log('response', response);
+                    // console.log('response', response);
                     // let formData = new FormData();//如果需要上传多张图片,需要遍历数组,把图片的路径数组放入formData中
                     // let file = {uri: response.uri, type: 'multipart/form-data', name: 'image.png'};   //这里的key(uri和type和name)不能改变,
                     // formData.append("files",file);   //这里的files就是后台需要的key

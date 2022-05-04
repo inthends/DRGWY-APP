@@ -129,8 +129,34 @@ class HuiFangRatePage extends BasePage {
         const {statistics, dataInfo} = this.state;
         const titles = [...['全部'],...statistics.map(item=>item.name)];
         console.log('t',titles)
-        const {option,tableData, area,rooms,rate,tableHead } = this.state.res;
+        let {option,tableData, area,rooms,rate,tableHead } = this.state.res;
 
+        // console.log(123, option)
+
+        option = {
+            xAxis: 
+    { type: 'category',
+      name: 'x',
+      splitLine: { show: false },
+      data: [ '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12' ] },
+   yAxis: 
+    { type: 'value',
+      name: 'y',
+      data: [ '0', '20', '40', '60', '80', '100' ] },
+   title: { text: '', left: 'center' },
+   series: 
+    [ { name: '本年月度回访量',
+        type: 'line',
+        data: [ 3, 13, 10, 14, 9, 23, 21, 12, 3, 4, 6, 80 ],
+        barWidth: null } ],
+        color:[
+                    "blue",
+                    "#F7A51E",
+                    "green"
+                ],
+   tooltip: { trigger: 'axis', formatter: null, axisPointer: null },
+   grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+   legend: { left: 'center', orient: 'horizontal', data: [ '本年月度回访量' ] } }
 
         return (
 
@@ -146,8 +172,8 @@ class HuiFangRatePage extends BasePage {
 
 
                         </Flex>
-                        <Flex justify={'between'} style={{width: ScreenUtil.deviceWidth() - 30}}>
-                            <Text style={styles.name}>入住率：{rate}</Text>
+                        <Flex justify={'between'} style={{paddingLeft:10,width: ScreenUtil.deviceWidth() - 30}}>
+                            {/* <Text style={styles.name}>入住率：{rate}</Text> */}
                             <MyPopover textStyle={{fontSize:14}} onChange={this.typeChange} titles={['全部', '收费项目类别', '不是收费项目']} visible={true}/>
                         </Flex>
                     </Flex>

@@ -67,7 +67,6 @@ class ManagerBuildingPage extends BasePage {
 
     componentDidMount(): void {
         ManagerBuildingService.getData().then(allData => {
-            // console.log(112233, allData);
             this.setState({allData});
         });  
     }
@@ -275,6 +274,13 @@ const styles = StyleSheet.create({
     },
 });
 
+const mapStateToProps = ({buildingReducer}) => {
+    return {
+        selectBuilding: buildingReducer.selectBuilding,
+        selectTask: buildingReducer.selectTask || {},
+    };
+};
+
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
@@ -284,4 +290,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     };
 };
 
-export default connect(null, mapDispatchToProps)(ManagerBuildingPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ManagerBuildingPage);

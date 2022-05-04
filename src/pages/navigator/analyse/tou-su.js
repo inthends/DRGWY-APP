@@ -127,8 +127,9 @@ class TouSuPage extends BasePage {
     render() {
         const {statistics, dataInfo} = this.state;
         const titles = [...['全部'],...statistics.map(item=>item.name)];
-        const {option1,tableData, area,rooms,rate,option2,tableHead } = this.state.res;
+        const {option,tableData, area,rooms,rate,tableHead } = this.state.res;
 
+        console.log(123,this.state.res)
         return (
 
             <CommonView style={{flex: 1}}>
@@ -143,20 +144,20 @@ class TouSuPage extends BasePage {
 
 
                         </Flex>
-                        <Flex justify={'between'} style={{width: ScreenUtil.deviceWidth() - 30}}>
-                            <Text style={styles.name}>入住率：{rate}</Text>
+                        <Flex justify={'between'} style={{paddingLeft:10,width: ScreenUtil.deviceWidth() - 30}}>
+                            {/* <Text style={styles.name}>入住率：{rate}</Text> */}
                             <MyPopover textStyle={{fontSize:14}} onChange={this.typeChange} titles={['全部', '收费项目类别', '不是收费项目']} visible={true}/>
                         </Flex>
                     </Flex>
                     <DashLine style={{marginTop: 15, marginLeft: 15, marginRight: 15}}/>
 
 
-                    <Echarts option={option1 || {}} height={300}/>
+                    <Echarts option={option || {}} height={300}/>
                     <Table style={{margin:15}} borderStyle={{borderWidth: 2, borderColor: '#eee'}}>
                         <Row data={tableHead} style={styles.head} textStyle={styles.text}/>
                         <Rows data={tableData} textStyle={styles.text}/>
                     </Table>
-                    <Echarts option={option2 || {}} height={300}/>
+                    {/* <Echarts option={option2 || {}} height={300}/> */}
                 </ScrollView>
 
 

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableWithoutFeedback, ScrollView } from 'react-native';
 import LoadImage from './load-image';
+import UpImage from '../static/images/address/up.png';
+import DownImage from '../static/images/address/down.png';
 import { Flex } from '@ant-design/react-native';
 import Popover from 'react-native-popover-view';
 
@@ -47,7 +49,8 @@ export default class MyPopover extends Component {
                     <Flex style={{ height: 40 }}>
                         {!this.props.hiddenImage && (
                             <Flex>
-                                <LoadImage style={{ width: 15, height: 15 }} />
+                                <LoadImage style={{width: 15, height: 8}}
+                                           defaultImg={this.state.isVisible ? UpImage : DownImage}/>
                             </Flex>
                         )}
 

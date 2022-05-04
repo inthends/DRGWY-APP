@@ -33,6 +33,7 @@ import NavigatorService from '../navigator-service';
 import ScrollTitleChange from '../../../components/scroll-title-change';
 import MyPopover from '../../../components/my-popover';
 import CommonView from '../../../components/CommonView';
+import {Table, Row, Rows} from 'react-native-table-component';
 
 
 class QianFeiZhangLingPage extends BasePage {
@@ -90,6 +91,7 @@ class QianFeiZhangLingPage extends BasePage {
     getStatustics = () => {
         const {estateId, type} = this.state;
         NavigatorService.collectionRate(3, estateId, type).then(res => {
+
             this.setState({res});
         });
     };
@@ -124,7 +126,75 @@ class QianFeiZhangLingPage extends BasePage {
         const {statistics, dataInfo} = this.state;
         const titles = [...['全部'],...statistics.map(item=>item.name)];
 
-        const {option,xName,yName, area,rooms,rate} = this.state;
+        let { option, xName, yName, area, rooms, rate, tableData = [], tableHead = [] } = this.state.res || {};
+        console.log(123456, tableHead, tableData)
+        
+        // option = 
+        // {
+        
+        //       "xAxis": {
+        //         "type": "category",
+        //         "name": "x",
+        //         "splitLine": null,
+        //         "data": [
+        //           "0-12",
+        //           "13-24",
+        //           "24-36",
+        //           "36以上"
+        //         ]
+        //       },
+        //       "yAxis": {
+        //         "type": "value",
+        //         "name": "y",
+        //         "data": null
+        //       },
+        //       "title": {
+        //         "text": "",
+        //         "left": "center"
+        //       },
+        //       "series": [
+        //         {
+        //           "name": "",
+        //           "type": "bar",
+        //           "data": [
+        //             350,
+        //             450,
+        //             200,
+        //             50
+        //           ],
+        //           "barWidth": null
+        //         }
+        //       ],
+        //       "color": [
+        //         "blue",
+        //         "#f0a825",
+        //         "green",
+        //         "#666"
+        //       ],
+        //       "tooltip": {
+        //         "trigger": "axis",
+        //         "formatter": null,
+        //         "axisPointer": {
+        //           "type": "shadow"
+        //         }
+        //       },
+        //       "grid": {
+        //         "left": "3%",
+        //         "right": "4%",
+        //         "bottom": "3%",
+        //         "containLabel": true
+        //       },
+        //       "legend": null
+
+        //   }
+        // tableData = [
+        //     ['0-12个月', '100', '100'],
+        //     ['13-24个月', '100', '100'],
+        //     ['24-36个月', '100', '100'],
+        //     ['36个月以上', '100', '100'],
+        //     ['合计', '100', '100'],
+        // ];
+        // tableHead = ['欠费月数', '欠费户数', '欠费金额'];
 
 
         return (
@@ -141,8 +211,8 @@ class QianFeiZhangLingPage extends BasePage {
 
 
                         </Flex>
-                        <Flex justify={'between'} style={{width: ScreenUtil.deviceWidth() - 30}}>
-                            <Text style={styles.name}>入住率：{rate}</Text>
+                        <Flex justify={'between'} style={{paddingLeft:10,width: ScreenUtil.deviceWidth() - 30}}>
+                            {/* <Text style={styles.name}>入住率：{rate}</Text> */}
                             <MyPopover textStyle={{fontSize:14}} onChange={this.typeChange} titles={['全部', '收费项目类别', '不是收费项目']} visible={true}/>
                         </Flex>
                     </Flex>
@@ -151,7 +221,10 @@ class QianFeiZhangLingPage extends BasePage {
                     <Text style={styles.xx}>{xName}</Text>
                     <Text style={styles.xx}>{yName}</Text>
                     <Echarts option={option || {}} height={300}/>
-
+                    <Table style={{margin: 15}} borderStyle={{borderWidth: 2, borderColor: '#eee'}}>
+                        <Row data={tableHead} style={styles.head} textStyle={styles.text}/>
+                        <Rows data={tableData} textStyle={styles.text} />
+                    </Table>
                 </ScrollView>
 
 
@@ -201,6 +274,12 @@ const styles = StyleSheet.create({
         color: '#666',
         fontSize: 14,
         paddingLeft: 10,
+    },
+    text: {
+        textAlign: 'center',
+        paddingTop: 5,
+        paddingBottom: 5,
+        color: '#666',
     },
 });
 

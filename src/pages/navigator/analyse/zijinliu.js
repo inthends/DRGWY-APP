@@ -11,6 +11,7 @@ import {
     Animated,
     FlatList,
     Image, TouchableOpacity,
+    
 } from 'react-native';
 
 import BasePage from '../../base/base';
@@ -33,6 +34,7 @@ import NavigatorService from '../navigator-service';
 import ScrollTitleChange from '../../../components/scroll-title-change';
 import MyPopover from '../../../components/my-popover';
 import CommonView from '../../../components/CommonView';
+import {Table, Row, Rows} from 'react-native-table-component';
 
 
 class ZiJinLiuPage extends BasePage {
@@ -127,7 +129,33 @@ class ZiJinLiuPage extends BasePage {
         const {statistics, dataInfo} = this.state;
         const titles = [...['全部'],...statistics.map(item=>item.name)];
         console.log('t',titles)
-        const {option,area,rooms,rate } = this.state.res;
+        let { option, area, rooms, rate, tableData = [] } = this.state.res;
+
+    
+        
+        // option = { xAxis: 
+        //     { type: 'category',
+        //       name: 'x',
+        //       splitLine: { show: false },
+        //       data: [ '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12' ] },
+        //    yAxis: 
+        //     { type: 'value',
+        //       name: 'y',
+        //       data: [ '0', '20', '40', '60', '80', '100' ] },
+        //    title: { text: '', left: 'center' },
+        //    series: 
+        //     [ { name: '本年月度实收',
+        //         type: 'line',
+        //         data: [ 12, 13, 10, 14, 9, 23, 21, 12, 3, 4, 6, 80 ] },
+        //      ],
+        //    color: [ 'blue', '#f0a825', 'green', '#666' ],
+        //    tooltip: { trigger: 'axis', formatter: null, axisPointer: null },
+        //    grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+        //    legend: 
+        //     { left: 'center',
+        //       orient: 'horizontal',
+        //       data: [ '本年月度实收'] } }
+
         return (
 
             <CommonView style={{flex: 1}}>
@@ -142,15 +170,18 @@ class ZiJinLiuPage extends BasePage {
 
 
                         </Flex>
-                        <Flex justify={'between'} style={{width: ScreenUtil.deviceWidth() - 30}}>
-                            <Text style={styles.name}>入住率：{rate}</Text>
+                        <Flex justify={'between'} style={{paddingLeft:10,width: ScreenUtil.deviceWidth() - 30}}>
+                            {/* <Text style={styles.name}>入住率：{rate}</Text> */}
                             <MyPopover textStyle={{fontSize:14}} onChange={this.typeChange} titles={['全部', '收费项目类别', '不是收费项目']} visible={true}/>
                         </Flex>
                     </Flex>
                     <DashLine style={{marginTop: 15, marginLeft: 15, marginRight: 15}}/>
 
 
-                    <Echarts option={option || {}} height={300}/>
+                    <Echarts option={option || {}} height={300} />
+                    <Table style={{margin: 15}} borderStyle={{borderWidth: 2, borderColor: '#eee'}}>
+                        <Rows data={tableData} textStyle={styles.text}/>
+                    </Table>
                 </ScrollView>
 
 
@@ -194,6 +225,12 @@ const styles = StyleSheet.create({
         color: '#666',
         fontSize: 14,
         paddingLeft: 10,
+    },
+    text: {
+        textAlign: 'center',
+        paddingTop: 5,
+        paddingBottom: 5,
+        color: '#666',
     },
 });
 
