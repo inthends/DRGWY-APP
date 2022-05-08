@@ -1,10 +1,10 @@
-import React  from 'react';
-import {Image, Dimensions , DeviceEventEmitter} from 'react-native';
+import React from 'react';
+import { Image, Dimensions, DeviceEventEmitter } from 'react-native';
 import {
-    createBottomTabNavigator,
-    createAppContainer,
-    createStackNavigator,
-    createDrawerNavigator,
+  createBottomTabNavigator,
+  createAppContainer,
+  createStackNavigator,
+  createDrawerNavigator,
 } from 'react-navigation';
 import BuildingPage from '../building/building';
 import WorkPage from '../work/work';
@@ -58,7 +58,6 @@ import ChaoBiaoPage from '../navigator/chao-biao/chao-biao';
 import NewsList from '../work/news-list';
 import FeeChargeDetail from '../navigator/fee-charge-detail';
 
-
 //工作台
 import SelectAddressPage from '../work/select-address';
 import SelectPaiDanPerson from '../work/task/select-pai-dan-person';
@@ -86,16 +85,29 @@ import ShebeiDetail from '../navigator/she-bei/detail';
 import LouPark from '../navigator/house-infomation/lou-park';
 
 import JLScanScreen from '../navigator/jlscanner';
+import shenpi from '../shenpi';
+import fukuan from '../shenpi/fukuan';
+import jianmian from '../shenpi/jianmian';
+import songshen from '../shenpi/songshen';
+import chuzunew from '../shenpi/chuzun-new';
+import chuzuchange from '../shenpi/chuzun-change';
+import chuzutui from '../shenpi/chuzun-tui';
+import wuyenew from '../shenpi/wuye-new';
+import wuyexu from '../shenpi/wuye-xu';
+import wuyetui from '../shenpi/wuye-tui';
+import zulinplan from '../shenpi/zulin-plan';
+import caigou from '../shenpi/caigou';
+import baoxiao from '../shenpi/baoxiao';
 
-const BuildingNavigator = createStackNavigator({
-
+const BuildingNavigator = createStackNavigator(
+  {
     Building: {
-        screen: BuildingPage,
-        navigationOptions: (navigation) => ({
-            title: '楼宇',
-            headerBackTitle: null,
-            header: null,
-        }),
+      screen: BuildingPage,
+      navigationOptions: (navigation) => ({
+        title: '楼宇',
+        headerBackTitle: null,
+        header: null,
+      }),
     },
     SecondDetail: SecondDetailBuildingPage,
     DetailBuilding: DetailBuildingPage,
@@ -108,275 +120,291 @@ const BuildingNavigator = createStackNavigator({
     feeAdd: FeeAddPage,
     feeDetail: FeeDetailPage,
     louDetail: LouDetail,
-
-}, {
-
+  },
+  {
     containerOptions: (options) => {
-        const {navigation} = options;
-        DeviceEventEmitter.emit('currentNavigation', navigation);
-        //console.log('navigation 对象', navigation);
-        return {
-            options,
-        };
+      const { navigation } = options;
+      DeviceEventEmitter.emit('currentNavigation', navigation);
+      //console.log('navigation 对象', navigation);
+      return {
+        options,
+      };
     },
-});
-BuildingNavigator.navigationOptions = ({navigation}) => ({
-    tabBarVisible: navigation.state.index === 0,
+  },
+);
+BuildingNavigator.navigationOptions = ({ navigation }) => ({
+  tabBarVisible: navigation.state.index === 0,
 });
 
 const navigatorNavigator = createStackNavigator({
-    Navigator: {
-        screen: NavigatorPage,
-    },
-    FeeStatistic: {
-        screen: FeeStatisticPage,
-        navigationOptions: () => ({
-            title: '统计分析',
-        }),
-    },
-    feeRooms: FeeRoomsPage,//房间
-    feeParkings: FeeParkingsPage,//车位
-    feeBuildings: FeeBuildingsPage,
-    feeHouse: FeeHousePage,
-    e_fuwu: EstateFuwuPage,
-    feeDetail: FeeDetailPage,
-    feeAdd: FeeAddPage,
-    fuwuD: EfuwuDetailPage,
+  Navigator: {
+    screen: NavigatorPage,
+  },
+  FeeStatistic: {
+    screen: FeeStatisticPage,
+    navigationOptions: () => ({
+      title: '统计分析',
+    }),
+  },
+  addTaskWork: AddWorkPage,
+  feeRooms: FeeRoomsPage, //房间
+  feeParkings: FeeParkingsPage, //车位
+  feeBuildings: FeeBuildingsPage,
+  feeHouse: FeeHousePage,
+  e_fuwu: EstateFuwuPage,
+  feeDetail: FeeDetailPage,
+  feeAdd: FeeAddPage,
+  fuwuD: EfuwuDetailPage,
 
-    weixiuD: EweixiuDetailPage,//服务单页面点击关联单据，跳转到维修单，只能查看
-    tousuD: EtousuDetailPage,//投诉单详情，只能查看
+  weixiuD: EweixiuDetailPage, //服务单页面点击关联单据，跳转到维修单，只能查看
+  tousuD: EtousuDetailPage, //投诉单详情，只能查看
 
-    e_weixiu: EstateWeixiuPage,
-    e_tousu: EstateTousuPage,
-    selectPaidanPerson: SelectPaiDanPerson,
-    charge: FeeChargeDetail,
+  e_weixiu: EstateWeixiuPage,
+  e_tousu: EstateTousuPage,
+  selectPaidanPerson: SelectPaiDanPerson,
+  charge: FeeChargeDetail,
 
-    //报表
-    collection: CollectionRatePage,
-    zijinliu: ZiJinLiuPage,
-    qianfei: QianFeiZhangLingPage,
-    weixiu_s: WeiXiuRatePage,
-    tousu_s: TouSuPage,
-    huifang_s: HuiFangRatePage,
+  //报表
+  collection: CollectionRatePage,
+  zijinliu: ZiJinLiuPage,
+  qianfei: QianFeiZhangLingPage,
+  weixiu_s: WeiXiuRatePage,
+  tousu_s: TouSuPage,
+  huifang_s: HuiFangRatePage,
 
-    scan: ScanScreen,//威富通扫码
-    jlscan: JLScanScreen,//嘉联扫码
-    service: FuWuDanListDetailPage,
-    wancheng: WanChengListDetailPage,
-    jianyan: JianYanListDetailPage,
-    kaigong: KaiGongListDetailPage,
-    jiedan: JieDanListDetailPage,
-    paidan: PaiDanListDetailPage,
-    huifang: HuiFangDetailPage,
-    xunjian: XunJianPage,
-    xunjiantask: TaskPage,
-    xunjianDetail: XunJianDetailPage,
-    xunjianPointDetail: XunJianPointDetailPage,
-    xunjianBeforeStart: XunjianBeforeStart,
+  scan: ScanScreen, //威富通扫码
+  jlscan: JLScanScreen, //嘉联扫码
+  service: FuWuDanListDetailPage,
+  wancheng: WanChengListDetailPage,
+  jianyan: JianYanListDetailPage,
+  kaigong: KaiGongListDetailPage,
+  jiedan: JieDanListDetailPage,
+  paidan: PaiDanListDetailPage,
+  huifang: HuiFangDetailPage,
+  xunjian: XunJianPage,
+  xunjiantask: TaskPage,
+  xunjianDetail: XunJianDetailPage,
+  xunjianPointDetail: XunJianPointDetailPage,
+  xunjianBeforeStart: XunjianBeforeStart,
 
-    selectXunjian: SelectXunJianPerson,
-    startxunjian: StartXunJianPage,
-    addTaskWork: AddWorkPage,
-    scanForWork: ScanOnly,
-    chaobiao: ChaoBiaoPage,
-    newsList: NewsList,
+  selectXunjian: SelectXunJianPerson,
+  startxunjian: StartXunJianPage,
 
-    louPan: LouPan,
-    louDong: LouDong,
-    louCeng: LouCeng,
-    louPark: LouPark,
+  scanForWork: ScanOnly,
+  chaobiao: ChaoBiaoPage,
+  newsList: NewsList,
 
-    louDetail: LouDetail,
-    shebeiList: SheBeiList,
-    shebeiDetail:ShebeiDetail,
+  louPan: LouPan,
+  louDong: LouDong,
+  louCeng: LouCeng,
+  louPark: LouPark,
 
-
+  louDetail: LouDetail,
+  shebeiList: SheBeiList,
+  shebeiDetail: ShebeiDetail,
 });
-navigatorNavigator.navigationOptions = ({navigation}) => ({
-    tabBarVisible: navigation.state.index === 0,
+navigatorNavigator.navigationOptions = ({ navigation }) => ({
+  tabBarVisible: navigation.state.index === 0,
 });
 
 const WorkNavigator = createStackNavigator({
-    // select: SelectAddressPage,
-    // AddWork: AddWorkPage,
-    // Task: TaskListPage,
-    Work: {
-        screen: WorkPage,
-        navigationOptions: () => ({
-            title: '工作台',
-            headerBackTitle: null,
-        }),
-    },
-    AddWork: AddWorkPage,
-    select: SelectAddressPage,
-    service: FuWuDanListDetailPage,
+  // select: SelectAddressPage,
+  // AddWork: AddWorkPage,
+  // Task: TaskListPage,
+  Work: {
+    screen: WorkPage,
+    navigationOptions: () => ({
+      title: '工作台',
+      headerBackTitle: null,
+    }),
+  },
+  AddWork: AddWorkPage,
+  select: SelectAddressPage,
+  service: FuWuDanListDetailPage,
 
-    weixiuView: WeixiuDetailPage,//工作台里面，待回访点击跳转的维修单，只能查看
-    tousuView: TousuDetailPage,//工作台里面，待回访点击跳转的投诉单，只能查看
+  weixiuView: WeixiuDetailPage, //工作台里面，待回访点击跳转的维修单，只能查看
+  tousuView: TousuDetailPage, //工作台里面，待回访点击跳转的投诉单，只能查看
 
-    wancheng: WanChengListDetailPage,
-    jianyan: JianYanListDetailPage,
-    kaigong: KaiGongListDetailPage,
-    jiedan: JieDanListDetailPage,
-    paidan: PaiDanListDetailPage,
-    huifang: HuiFangDetailPage,
-    selectPaidanPerson: SelectPaiDanPerson,
-    scanonly: ScanOnly,
-    scandemo: ScanSS,
-    Task: TaskListPage,
-    newsList: NewsList,
-
-
+  wancheng: WanChengListDetailPage,
+  jianyan: JianYanListDetailPage,
+  kaigong: KaiGongListDetailPage,
+  jiedan: JieDanListDetailPage,
+  paidan: PaiDanListDetailPage,
+  huifang: HuiFangDetailPage,
+  selectPaidanPerson: SelectPaiDanPerson,
+  scanonly: ScanOnly,
+  scandemo: ScanSS,
+  Task: TaskListPage,
+  newsList: NewsList,
 });
-WorkNavigator.navigationOptions = ({navigation}) => ({
-    tabBarVisible: navigation.state.index === 0,
+WorkNavigator.navigationOptions = ({ navigation }) => ({
+  tabBarVisible: navigation.state.index === 0,
 });
+
+const ShenPiNavigator = createStackNavigator({
+  Shenpi: {
+    screen: shenpi,
+    navigationOptions: () => ({
+      title: '审批',
+      headerBackTitle: null,
+    }),
+  },
+  fukuan,
+  jianmian,
+  songshen,
+  chuzunew,
+  chuzuchange,
+  chuzutui,
+  wuyenew,
+  wuyexu,
+  wuyetui,
+  zulinplan,
+  caigou,
+  baoxiao,
+});
+ShenPiNavigator.navigationOptions = ({ navigation }) => ({
+  tabBarVisible: navigation.state.index === 0,
+});
+
 const MineNavigator = createStackNavigator({
-    Mine: {
-        screen: MinePage,
-        navigationOptions: () => ({
-            headerBackTitle: null,
-            header: null,
-        }),
-    },
-    Person: PersonInfoPage,
-    Setting: SettingPage,
-    ModifyPsd: ModifyPsdPage,
-    newsList: NewsList,
-    contact: Contact,
-    contactDetail: ContactDetail,
-    jixiao: Jixiao,
+  Mine: {
+    screen: MinePage,
+    navigationOptions: () => ({
+      headerBackTitle: null,
+      header: null,
+    }),
+  },
+  Person: PersonInfoPage,
+  Setting: SettingPage,
+  ModifyPsd: ModifyPsdPage,
+  newsList: NewsList,
+  contact: Contact,
+  contactDetail: ContactDetail,
+  jixiao: Jixiao,
 });
-MineNavigator.navigationOptions = ({navigation}) => ({
-    tabBarVisible: navigation.state.index === 0,
+MineNavigator.navigationOptions = ({ navigation }) => ({
+  tabBarVisible: navigation.state.index === 0,
 });
 
-const tabbar = createBottomTabNavigator({
-    // Mine: {
-    //     screen: MineNavigator,
-    //     navigationOptions: () => ({
-    //         title: '我',
-    //         headerBackTitle: null,
-    //     }),
-    // },
-    //
-
+const tabbar = createBottomTabNavigator(
+  {
     Building: {
-        screen: BuildingNavigator,
-        navigationOptions: () => ({
-            title: '楼宇',
-            headerBackTitle: null,
-        }),
+      screen: BuildingNavigator,
+      navigationOptions: () => ({
+        title: '楼宇',
+        headerBackTitle: null,
+      }),
     },
     Navigator: {
-        screen: navigatorNavigator,
-        navigationOptions: () => ({
-            title: '导航',
-            headerBackTitle: null,
-        }),
+      screen: navigatorNavigator,
+      navigationOptions: () => ({
+        title: '导航',
+        headerBackTitle: null,
+      }),
     },
-
 
     Work: {
-        screen: WorkNavigator,
-        navigationOptions: () => ({
-            title: '工作台',
-            headerBackTitle: null,
-        }),
+      screen: WorkNavigator,
+      navigationOptions: () => ({
+        title: '工作台',
+        headerBackTitle: null,
+      }),
     },
 
-
-    // Work: {
-    //     screen: WorkNavigator,
-    //     navigationOptions: () => ({
-    //         title: '工作台',
-    //         headerBackTitle: null,
-    //     }),
-    // },
+    Shenpi: {
+      screen: ShenPiNavigator,
+      navigationOptions: () => ({
+        title: '审批',
+        headerBackTitle: null,
+      }),
+    },
     Mine: {
-        screen: MineNavigator,
-        navigationOptions: () => ({
-            title: '我',
-            headerBackTitle: null,
-        }),
+      screen: MineNavigator,
+      navigationOptions: () => ({
+        title: '我',
+        headerBackTitle: null,
+      }),
     },
-
-}, {
+  },
+  {
     tabBarOptions: {
-        activeTintColor: '#2491C4',
-        inactiveTintColor: '#6F757C',
-        labelStyle: {
-            fontSize: 14,
-        },
-        tabStyle: {
-            // padding:1
-        },
-
+      activeTintColor: '#2491C4',
+      inactiveTintColor: '#6F757C',
+      labelStyle: {
+        fontSize: 14,
+      },
+      tabStyle: {
+        // padding:1
+      },
     },
-    defaultNavigationOptions: ({navigation}) => {
-        if (navigation.isFocused()) {
-            //console.log('navigation 对象', navigation);
-            DeviceEventEmitter.emit('currentNavigation', navigation);
-        }
+    defaultNavigationOptions: ({ navigation }) => {
+      if (navigation.isFocused()) {
+        //console.log('navigation 对象', navigation);
+        DeviceEventEmitter.emit('currentNavigation', navigation);
+      }
 
-        return {
-
-            tabBarIcon: ({focused, horizontal, tintColor}) => {
-                const {routeName} = navigation.state;
-                let imageUrl;
-                if (routeName === 'Building') {
-                    if (focused) {
-                        imageUrl = require('../../static/images/tabbar/ly_h.png');
-                    } else {
-                        imageUrl = require('../../static/images/tabbar/ly_n.png');
-                    }
-                } else if (routeName === 'Navigator') {
-                    if (focused) {
-                        imageUrl = require('../../static/images/tabbar/dh_h.png');
-                    } else {
-                        imageUrl = require('../../static/images/tabbar/dh_n.png');
-                    }
-                } else if (routeName === 'Work') {
-                    if (focused) {
-                        imageUrl = require('../../static/images/tabbar/gz_h.png');
-                    } else {
-                        imageUrl = require('../../static/images/tabbar/gz_n.png');
-                    }
-                } else {
-                    if (focused) {
-                        imageUrl = require('../../static/images/tabbar/me_h.png');
-                    } else {
-                        imageUrl = require('../../static/images/tabbar/me_n.png');
-                    }
-                }
-                // You can return any component that you like here!
-                return <Image
-                    style={{width: 15, height: 18}}
-                    source={imageUrl}
-                />;
-            },
-        };
-    },
-
-});
-const {width, height} = Dimensions.get('window');
-const Drawer = createDrawerNavigator({
-        TabBar: {
-            screen: tabbar,
-            navigationOptions: {
-                header: null,
+      return {
+        tabBarIcon: ({ focused, horizontal, tintColor }) => {
+          const { routeName } = navigation.state;
+          let imageUrl;
+          if (routeName === 'Building') {
+            if (focused) {
+              imageUrl = require('../../static/images/tabbar/ly_h.png');
+            } else {
+              imageUrl = require('../../static/images/tabbar/ly_n.png');
             }
-        }
+          } else if (routeName === 'Navigator') {
+            if (focused) {
+              imageUrl = require('../../static/images/tabbar/dh_h.png');
+            } else {
+              imageUrl = require('../../static/images/tabbar/dh_n.png');
+            }
+          } else if (routeName === 'Work') {
+            if (focused) {
+              imageUrl = require('../../static/images/tabbar/gz_h.png');
+            } else {
+              imageUrl = require('../../static/images/tabbar/gz_n.png');
+            }
+          } else if (routeName === 'Work') {
+            if (focused) {
+              imageUrl = require('../../static/images/tabbar/gz_h.png');
+            } else {
+              imageUrl = require('../../static/images/tabbar/gz_n.png');
+            }
+          } else {
+            if (focused) {
+              imageUrl = require('../../static/images/tabbar/me_h.png');
+            } else {
+              imageUrl = require('../../static/images/tabbar/me_n.png');
+            }
+          }
+          // You can return any component that you like here!
+          return <Image style={{ width: 15, height: 18 }} source={imageUrl} />;
+        },
+      };
     },
-    {
-        drawerPosition: 'left',
-        drawerWidth: width * 0.8,
-        drawerLockMode: 'locked-closed',
-        useNativeAnimations: true,
-        overlayColor: '#000000b3',
-        contentComponent: props => {
-            return <ManagerBuildingPage {...props}/>;
-        }
-    });
+  },
+);
+const { width, height } = Dimensions.get('window');
+const Drawer = createDrawerNavigator(
+  {
+    TabBar: {
+      screen: tabbar,
+      navigationOptions: {
+        header: null,
+      },
+    },
+  },
+  {
+    drawerPosition: 'left',
+    drawerWidth: width * 0.8,
+    drawerLockMode: 'locked-closed',
+    useNativeAnimations: true,
+    overlayColor: '#000000b3',
+    contentComponent: (props) => {
+      return <ManagerBuildingPage {...props} />;
+    },
+  },
+);
 
 export default createAppContainer(Drawer);
