@@ -333,9 +333,7 @@ const tabbar = createBottomTabNavigator(
       labelStyle: {
         fontSize: 14,
       },
-      tabStyle: {
-        // padding:1
-      },
+      tabStyle: {},
     },
     defaultNavigationOptions: ({ navigation }) => {
       if (navigation.isFocused()) {

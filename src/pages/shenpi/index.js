@@ -3,20 +3,14 @@ import {
   View,
   Text,
   TouchableWithoutFeedback,
-  TouchableOpacity,
   StyleSheet,
-  ScrollView,
   FlatList,
-  ImageBackground,
 } from 'react-native';
-import { Icon } from '@ant-design/react-native';
-import { List, WhiteSpace, Flex } from '@ant-design/react-native';
+import { Flex, Icon } from '@ant-design/react-native';
 import { connect } from 'react-redux';
 import ScreenUtil from '../../utils/screen-util';
 import Macro from '../../utils/macro';
-import common from '../../utils/common';
 import BasePage from '../base/base';
-
 import Service from './service';
 import NoDataView from '../../components/no-data-view';
 import { saveSelectDrawerType } from '../../utils/store/actions/actions';
@@ -39,7 +33,7 @@ class ContactDetail extends BasePage {
     this.state = {
       isCompleted: false,
       activeSections: [],
-      selectBuilding: this.props.selectBuilding || {},
+      selectTask: this.props.selectTask || {},
       refreshing: false,
       dataInfo: {},
       pageIndex: 1,
@@ -65,21 +59,15 @@ class ContactDetail extends BasePage {
     );
   }
 
-  componentWillReceiveProps(nextProps) {
-    const selectBuilding = this.state.selectBuilding;
-    const nextSelectBuilding = nextProps.selectBuilding;
+  componentWillReceiveProps(nextProps, nextContext) {
+    const selectTask = this.state.selectTask;
+    const nextSelectTask = nextProps.selectTask;
     if (
-      !(
-        selectBuilding &&
-        nextSelectBuilding &&
-        selectBuilding.key === nextSelectBuilding.key
-      )
+      !(selectTask && nextSelectTask && selectTask.key === nextSelectTask.key)
     ) {
       this.setState(
         {
-          selectBuilding: nextProps.selectBuilding,
-          estateId: nextProps.selectBuilding.key,
-          index: 0,
+          selectTask: nextSelectTask,
         },
         () => {
           this.onRefresh();
@@ -92,7 +80,7 @@ class ContactDetail extends BasePage {
     this.setState(
       {
         refreshing: true,
-        pageIndex: this.state.pageIndex,
+        pageIndex: 1,
       },
       () => {
         this.getList();
@@ -108,6 +96,14 @@ class ContactDetail extends BasePage {
       queryJson: selectTask.value ? { code: selectTask.value } : '',
       pageSize: 10,
     }).then((dataInfo) => {
+      if (dataInfo.pageIndex > 1) {
+        const { data: oldData = [] } = this.state.dataInfo || {};
+        const { data = [] } = dataInfo || {};
+        dataInfo = {
+          ...dataInfo,
+          data: [...oldData, ...data],
+        };
+      }
       this.setState({
         dataInfo,
         refreshing: false,
@@ -215,7 +211,7 @@ class ContactDetail extends BasePage {
           </TouchableWithoutFeedback>
         </Flex>
         <FlatList
-          data={dataInfo.data}
+          data={dataInfo.data || []}
           renderItem={({ item }) => (
             <TouchableWithoutFeedback
               onPress={() => {
@@ -392,7 +388,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = ({ buildingReducer }) => {
   return {
-    selectBuilding: buildingReducer.selectBuilding,
     selectTask: buildingReducer.selectTask || {},
   };
 };
