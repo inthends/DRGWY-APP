@@ -16,27 +16,12 @@ const ShowActions = ({ state, click, isSpecial = false }) => {
   }
 
   const onClick = (type) => {
-    if (!value) {
-      UDToast.showError('输入审批意见');
-      return;
-    }
     const verifyMemo = value;
-
     const { item = {}, detail = {} } = state;
     const { id: taskId, instanceId, code } = item;
     const { organizeId } = detail;
 
     if (type === '同意') {
-      alert(
-        JSON.stringify({
-          code,
-          taskId,
-          instanceId,
-          organizeId: isSpecial ? organizeId : '',
-          projectId: isSpecial ? '' : organizeId,
-          verifyMemo,
-        }),
-      );
       service
         .approveForm({
           code,

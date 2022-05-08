@@ -24,11 +24,6 @@ const ShowMingXi = ({ title = '明细', list = [], open = false }) => {
           click={() => setIsopen(!isOpen)}
         />
       )}
-      <ShowTitle
-        isOpen={isOpen}
-        title={title}
-        click={() => setIsopen(!isOpen)}
-      />
       {isOpen && (
         <Flex style={styles.card} direction="column" align="start">
           {list.map((item, index) => (

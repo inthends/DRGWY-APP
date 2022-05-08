@@ -93,7 +93,7 @@ class ContactDetail extends BasePage {
     Service.getFlowTask({
       isCompleted: this.state.isCompleted,
       pagination: this.state.pageIndex,
-      queryJson: selectTask.value ? { code: selectTask.value } : '',
+      code: selectTask.value || '',
       pageSize: 10,
     }).then((dataInfo) => {
       if (dataInfo.pageIndex > 1) {
