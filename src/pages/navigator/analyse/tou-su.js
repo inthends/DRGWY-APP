@@ -74,6 +74,12 @@ class TouSuPage extends BasePage {
   }
 
   componentDidMount(): void {
+    NavigatorService.GetDataItemTreeJsonComplainType().then((res) => {
+      const titles = (res || []).map((item) => item.title);
+      this.setState({
+        titles: ['全部', ...titles],
+      });
+    });
     this.initData();
   }
 
@@ -139,9 +145,10 @@ class TouSuPage extends BasePage {
     );
   };
   typeChange = (title, index) => {
+    const titles = this.state.titles || [];
     this.setState(
       {
-        type: index + 1,
+        type: index == 0 ? '' : title,
       },
       () => {
         this.getStatustics();
@@ -150,33 +157,17 @@ class TouSuPage extends BasePage {
   };
 
   render() {
-    const { statistics, dataInfo } = this.state;
-    const titles = [...['全部'], ...statistics.map((item) => item.name)];
+    const { statistics, dataInfo, titles = [] } = this.state;
     const { option, tableData, area, rooms, rate, tableHead } = this.state.res;
 
     console.log(123, this.state.res);
     return (
       <CommonView style={{ flex: 1 }}>
         <ScrollView style={{ flex: 1 }}>
-          {/* <ScrollTitleChange onChange={this.titleChange} titles={titles}/> */}
-
           <Flex
             direction={'column'}
             style={{ width: ScreenUtil.deviceWidth(), marginTop: 15 }}
           >
-            <Flex
-              justify={'between'}
-              style={{
-                width: ScreenUtil.deviceWidth() - 30,
-                paddingBottom: 20,
-              }}
-            >
-              <Text style={styles.name}>
-                管理面积：{area}万{Macro.meter_square}
-              </Text>
-
-              <Text style={styles.name}>房屋套数：{rooms}套</Text>
-            </Flex>
             <Flex
               justify={'between'}
               style={{ paddingLeft: 10, width: ScreenUtil.deviceWidth() - 30 }}
@@ -185,7 +176,7 @@ class TouSuPage extends BasePage {
               <MyPopover
                 textStyle={{ fontSize: 14 }}
                 onChange={this.typeChange}
-                titles={['全部', '收费项目类别', '不是收费项目']}
+                titles={titles}
                 visible={true}
               />
             </Flex>

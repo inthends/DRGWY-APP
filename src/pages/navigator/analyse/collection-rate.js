@@ -1,45 +1,20 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import {
-  View,
   Text,
   StyleSheet,
-  StatusBar,
   ScrollView,
-  SectionList,
   TouchableWithoutFeedback,
-  ImageBackground,
-  Animated,
-  FlatList,
-  Image,
   TouchableOpacity,
 } from 'react-native';
-
 import BasePage from '../../base/base';
-import BuildingHeader from '../../../components/building/building-header';
-import BuildingCell from '../../../components/building/build-cell';
-import {
-  Button,
-  Flex,
-  Icon,
-  List,
-  WhiteSpace,
-  SegmentedControl,
-} from '@ant-design/react-native';
+import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
-import forge from 'node-forge';
-import LoadImage from '../../../components/load-image';
 import { connect } from 'react-redux';
-import { saveSelectBuilding } from '../../../utils/store/actions/actions';
 import ScreenUtil from '../../../utils/screen-util';
-import common from '../../../utils/common';
-import SelectHeader from '../../../components/select-header';
 import Echarts from 'native-echarts';
-import AreaInfo from '../../../components/area-info';
-import ScrollTitle from '../../../components/scroll-title';
 import DashLine from '../../../components/dash-line';
 import NavigatorService from '../navigator-service';
-import ScrollTitleChange from '../../../components/scroll-title-change';
-import { Table, Row, Rows } from 'react-native-table-component';
+import { Table, Rows } from 'react-native-table-component';
 import MyPopover from '../../../components/my-popover';
 import CommonView from '../../../components/CommonView';
 
@@ -74,10 +49,17 @@ class CollectionRatePage extends BasePage {
         option: null,
         tableData: [],
       },
+      titles: [],
     };
   }
 
-  componentDidMount(): void {
+  componentDidMount() {
+    NavigatorService.GetReceiveFeeItems().then((res) => {
+      const titles = (res || []).map((item) => item.title);
+      this.setState({
+        titles: ['全部', ...titles],
+      });
+    });
     this.initData();
   }
 
@@ -143,9 +125,10 @@ class CollectionRatePage extends BasePage {
     );
   };
   typeChange = (title, index) => {
+    const titles = this.state.titles || [];
     this.setState(
       {
-        type: index + 1,
+        type: index == 0 ? '' : title,
       },
       () => {
         this.getStatustics();
@@ -154,9 +137,8 @@ class CollectionRatePage extends BasePage {
   };
 
   render() {
-    const { statistics, dataInfo, index } = this.state;
-    const titles = [...['全部'], ...statistics.map((item) => item.name)];
-    console.log('t', titles);
+    const { statistics, dataInfo, index, titles = [] } = this.state;
+
     let { option, tableData, area, rooms, rate } = this.state.res;
 
     // console.log(123456,option)
@@ -249,25 +231,10 @@ class CollectionRatePage extends BasePage {
     return (
       <CommonView style={{ flex: 1 }}>
         <ScrollView style={{ flex: 1 }}>
-          {/* <ScrollTitleChange index={index} onChange={this.titleChange} titles={titles}/> */}
-
           <Flex
             direction={'column'}
             style={{ width: ScreenUtil.deviceWidth(), marginTop: 15 }}
           >
-            <Flex
-              justify={'between'}
-              style={{
-                width: ScreenUtil.deviceWidth() - 30,
-                paddingBottom: 20,
-              }}
-            >
-              <Text style={styles.name}>
-                管理面积：{area}万{Macro.meter_square}
-              </Text>
-
-              <Text style={styles.name}>房屋套数：{rooms}套</Text>
-            </Flex>
             <Flex
               justify={'between'}
               style={{ paddingLeft: 10, width: ScreenUtil.deviceWidth() - 30 }}
@@ -276,7 +243,7 @@ class CollectionRatePage extends BasePage {
               <MyPopover
                 textStyle={{ fontSize: 14 }}
                 onChange={this.typeChange}
-                titles={['全部', '收费项目类别', '不是收费项目']}
+                titles={titles}
                 visible={true}
               />
             </Flex>
