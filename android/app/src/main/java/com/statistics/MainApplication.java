@@ -3,6 +3,7 @@ package com.statistics;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.microsoft.codepush.react.CodePush;
 import com.songlcy.rnupgrade.UpgradePackage;
 
 import cn.jiguang.plugins.push.JPushModule;
@@ -34,6 +35,11 @@ import java.util.List;
 public class MainApplication extends Application implements ReactApplication {
 
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+    @Override
+    protected String getJSBundleFile(){
+      return CodePush.getJSBundleFile();
+    }
+
  
 
         @Override
@@ -45,6 +51,7 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new CodePush(getResources().getString(R.string.reactNativeCodePush_androidDeploymentKey), getApplicationContext(), BuildConfig.DEBUG),
                     new UpgradePackage(),
                     new JPushPackage(),
                     new RNLocationPackage(),
