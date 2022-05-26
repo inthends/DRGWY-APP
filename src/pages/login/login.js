@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ memberReducer }) => {
-  return { userInfo: memberReducer.userInfo };
+  return { userInfo: memberReducer.userInfo || {} };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
