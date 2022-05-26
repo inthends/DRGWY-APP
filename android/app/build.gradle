@@ -77,7 +77,6 @@ project.ext.react = [
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
-apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -218,7 +217,6 @@ dependencies {
     implementation project(':rn-app-upgrade')
     implementation project(':jpush-react-native')
     implementation project(':jcore-react-native')
-    implementation project(':react-native-code-push')
     implementation project(':react-native-location')
     implementation project(':react-native-permissions')
     implementation project(':react-native-camera') 

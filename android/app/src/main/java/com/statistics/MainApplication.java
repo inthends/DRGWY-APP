@@ -8,7 +8,6 @@ import com.songlcy.rnupgrade.UpgradePackage;
 import cn.jiguang.plugins.push.JPushModule;
 import cn.jiguang.plugins.push.JPushPackage;
 
-import com.microsoft.codepush.react.CodePush;
 import com.github.reactnativecommunity.location.RNLocationPackage;
 import com.reactnativecommunity.rnpermissions.RNPermissionsPackage;
 
