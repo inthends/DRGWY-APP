@@ -1,44 +1,23 @@
-import React, { Fragment } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  StatusBar,
-  ScrollView,
-  SectionList,
-  TouchableWithoutFeedback,
-  ImageBackground,
-  Animated,
-  FlatList,
-  Image,
+import React  from 'react';
+import { 
+  StyleSheet, 
+  ScrollView, 
+  TouchableWithoutFeedback, 
   TouchableOpacity,
 } from 'react-native';
 
 import BasePage from '../../base/base';
-import BuildingHeader from '../../../components/building/building-header';
-import BuildingCell from '../../../components/building/build-cell';
-import {
-  Button,
+// import BuildingHeader from '../../../components/building/building-header';
+// import BuildingCell from '../../../components/building/build-cell';
+import { 
   Flex,
-  Icon,
-  List,
-  WhiteSpace,
-  SegmentedControl,
-} from '@ant-design/react-native';
-import Macro from '../../../utils/macro';
-import forge from 'node-forge';
-import LoadImage from '../../../components/load-image';
-import { connect } from 'react-redux';
-import { saveSelectBuilding } from '../../../utils/store/actions/actions';
-import ScreenUtil from '../../../utils/screen-util';
-import common from '../../../utils/common';
-import SelectHeader from '../../../components/select-header';
-import Echarts from 'native-echarts';
-import AreaInfo from '../../../components/area-info';
-import ScrollTitle from '../../../components/scroll-title';
+  Icon, 
+} from '@ant-design/react-native'; 
+import { connect } from 'react-redux'; 
+import ScreenUtil from '../../../utils/screen-util'; 
+import Echarts from 'native-echarts'; 
 import DashLine from '../../../components/dash-line';
-import NavigatorService from '../navigator-service';
-import ScrollTitleChange from '../../../components/scroll-title-change';
+import NavigatorService from '../navigator-service'; 
 import { Row, Rows, Table } from 'react-native-table-component';
 import MyPopover from '../../../components/my-popover';
 import CommonView from '../../../components/CommonView';
@@ -156,9 +135,9 @@ class HuiFangRatePage extends BasePage {
   };
 
   render() {
-    const { statistics, dataInfo, titles = [] } = this.state;
+    const { titles = [] } = this.state;
 
-    let { option, tableData, area, rooms, rate, tableHead } = this.state.res;
+    let { option, tableData, tableHead } = this.state.res;
 
     // console.log(123, option)
 

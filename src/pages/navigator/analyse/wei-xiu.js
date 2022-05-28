@@ -1,44 +1,21 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import {
-  View,
-  Text,
   StyleSheet,
-  StatusBar,
   ScrollView,
-  SectionList,
   TouchableWithoutFeedback,
-  ImageBackground,
-  Animated,
-  FlatList,
-  Image,
   TouchableOpacity,
 } from 'react-native';
 
 import BasePage from '../../base/base';
-import BuildingHeader from '../../../components/building/building-header';
-import BuildingCell from '../../../components/building/build-cell';
 import {
-  Button,
   Flex,
-  Icon,
-  List,
-  WhiteSpace,
-  SegmentedControl,
+  Icon
 } from '@ant-design/react-native';
-import Macro from '../../../utils/macro';
-import forge from 'node-forge';
-import LoadImage from '../../../components/load-image';
 import { connect } from 'react-redux';
-import { saveSelectBuilding } from '../../../utils/store/actions/actions';
 import ScreenUtil from '../../../utils/screen-util';
-import common from '../../../utils/common';
-import SelectHeader from '../../../components/select-header';
 import Echarts from 'native-echarts';
-import AreaInfo from '../../../components/area-info';
-import ScrollTitle from '../../../components/scroll-title';
 import DashLine from '../../../components/dash-line';
 import NavigatorService from '../navigator-service';
-import ScrollTitleChange from '../../../components/scroll-title-change';
 import { Rows, Row, Table } from 'react-native-table-component';
 import MyPopover from '../../../components/my-popover';
 import CommonView from '../../../components/CommonView';
@@ -145,7 +122,7 @@ class WeiXiuRatePage extends BasePage {
     );
   };
   typeChange = (title, index) => {
-    const titles = this.state.titles || [];
+    // const titles = this.state.titles || [];
     this.setState(
       {
         type: index == 0 ? '' : title,
@@ -157,10 +134,8 @@ class WeiXiuRatePage extends BasePage {
   };
 
   render() {
-    const { statistics, dataInfo, titles = [] } = this.state;
-
-    const { option, tableData, area, rooms, rate, tableHead } = this.state.res;
-    console.log(222, this.state.res);
+    const { titles = [] } = this.state;
+    const { option, tableData, tableHead } = this.state.res;
 
     return (
       <CommonView style={{ flex: 1 }}>

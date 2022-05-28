@@ -1,14 +1,12 @@
 import React from 'react';
-import {
-  Text,
+import { 
   StyleSheet,
   ScrollView,
   TouchableWithoutFeedback,
   TouchableOpacity,
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Flex, Icon } from '@ant-design/react-native';
-import Macro from '../../../utils/macro';
+import { Flex, Icon } from '@ant-design/react-native'; 
 import { connect } from 'react-redux';
 import ScreenUtil from '../../../utils/screen-util';
 import Echarts from 'native-echarts';
@@ -43,7 +41,7 @@ class CollectionRatePage extends BasePage {
       selectBuilding: this.props.selectBuilding || {},
       statistics: [],
       estateId: null,
-      type: 1,
+      type: '',
       index: 0,
       res: {
         option: null,
@@ -124,8 +122,9 @@ class CollectionRatePage extends BasePage {
       },
     );
   };
+
   typeChange = (title, index) => {
-    const titles = this.state.titles || [];
+    // const titles = this.state.titles || [];
     this.setState(
       {
         type: index == 0 ? '' : title,
@@ -137,12 +136,9 @@ class CollectionRatePage extends BasePage {
   };
 
   render() {
-    const { statistics, dataInfo, index, titles = [] } = this.state;
-
-    let { option, tableData, area, rooms, rate } = this.state.res;
-
-    // console.log(123456,option)
-
+    const { titles = [] } = this.state; 
+    let { option, tableData} = this.state.res; 
+    // console.log(123456,option) 
     // option = {
     //     "xAxis":{
     //         "type":"category",
