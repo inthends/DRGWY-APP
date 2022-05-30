@@ -1,11 +1,10 @@
-import React, { Fragment } from 'react';
+import React  from 'react';
 import {
   View,
   StyleSheet,
   FlatList,
   NativeModules,
-  Alert,
-  Linking,
+  Alert
 } from 'react-native';
 import BasePage from '../base/base';
 import BuildingHeader from '../../components/building/building-header';

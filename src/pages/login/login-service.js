@@ -1,6 +1,5 @@
 import api from '../../utils/api';
-import common from '../../utils/common';
-import forge from 'node-forge';
+import common from '../../utils/common'; 
 
 export default {
     login(username, psd, registration_id) {

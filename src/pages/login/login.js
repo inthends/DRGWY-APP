@@ -1,13 +1,11 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import {
   View,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
   Keyboard,
-  NativeModules,
-  Alert,
-  Linking,
+  NativeModules
 } from 'react-native';
 import BasePage from '../base/base';
 import { Button, Flex, InputItem, List } from '@ant-design/react-native';
@@ -22,12 +20,12 @@ import LoadImage from '../../components/load-image';
 import ScreenUtil from '../../utils/screen-util';
 import Macro from '../../utils/macro';
 import JPush from 'jpush-react-native';
-import UDAlert from '../../utils/UDAlert';
-import { addDownListener, upgrade, checkUpdate } from 'rn-app-upgrade';
+// import UDAlert from '../../utils/UDAlert';
+// import { addDownListener, upgrade, checkUpdate } from 'rn-app-upgrade';
 import common from '../../utils/common';
-import UDToast from '../../utils/UDToast';
-import api from '../../utils/api';
-import NavigatorService from '../navigator/navigator-service';
+// import UDToast from '../../utils/UDToast';
+// import api from '../../utils/api';
+// import NavigatorService from '../navigator/navigator-service';
 
 class LoginPage extends BasePage {
   constructor(props) {

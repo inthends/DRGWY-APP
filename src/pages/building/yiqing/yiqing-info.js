@@ -1,10 +1,10 @@
-import React, {Fragment} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, TextInput} from 'react-native';
+import React from 'react';
+import {StyleSheet, Text, TouchableOpacity, TextInput} from 'react-native';
 import BasePage from '../../base/base';
-import Macro from '../../../utils/macro';
-import {connect} from 'react-redux';
+// import Macro from '../../../utils/macro';
+// import {connect} from 'react-redux';
 import CommonView from '../../../components/CommonView';
-import {Flex, Button, WhiteSpace, WingBlank, Radio, List, Icon, TextareaItem} from '@ant-design/react-native';
+import {Flex, Button, WhiteSpace, WingBlank,   Icon, TextareaItem} from '@ant-design/react-native';
 import LoadImage from '../../../components/load-image';
 import ScreenUtil from '../../../utils/screen-util';
 import YiQingService from './yiqing-service';

@@ -1,6 +1,6 @@
-import React, {Component, Fragment} from 'react';
-import {View, Text, Image, StyleSheet, Animated, TouchableWithoutFeedback, ScrollView, Modal} from 'react-native';
-import {Button, Flex, Icon, List, WhiteSpace, SegmentedControl} from '@ant-design/react-native';
+import React, {Component} from 'react';
+import {View,StyleSheet, TouchableWithoutFeedback} from 'react-native';
+import { Flex} from '@ant-design/react-native';
 import ScreenUtil from '../utils/screen-util';
 import LoadImage from './load-image';
 

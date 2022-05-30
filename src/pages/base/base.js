@@ -1,4 +1,4 @@
-import React, {Component, Key} from 'react';
+import {Component} from 'react';
 
 
 export default class BasePage extends Component {

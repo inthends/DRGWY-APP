@@ -5,17 +5,13 @@ import {
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    ScrollView,
-    ImageBackground,
+    ScrollView
 } from 'react-native';
 import {Icon} from '@ant-design/react-native';
-import {List, WhiteSpace, Flex, TextareaItem, InputItem, Button, Accordion} from '@ant-design/react-native';
-import ScreenUtil from '../../../utils/screen-util';
+import {List,  Flex,  Accordion} from '@ant-design/react-native'; 
 import LoadImage from '../../../components/load-image';
-import Macro from '../../../utils/macro';
-import MineService from '../mine-service';
-import common from '../../../utils/common';
-import UDToast from '../../../utils/UDToast';
+import Macro from '../../../utils/macro'; 
+import common from '../../../utils/common'; 
 import BasePage from '../../base/base';
 import {connect} from 'react-redux';
 import api from '../../../utils/api';

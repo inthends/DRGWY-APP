@@ -1,5 +1,5 @@
 import React, {Component } from 'react';
-import {  Text, StyleSheet} from 'react-native';
+import {Text, StyleSheet} from 'react-native';
 import {Flex} from '@ant-design/react-native';
 import Macro from '../utils/macro';
 import ScreenUtil from '../utils/screen-util';
