@@ -5,6 +5,7 @@ import {
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
+    Keyboard,
     //ScrollView,
 } from 'react-native';
 import BasePage from '../base/base';
@@ -55,8 +56,10 @@ class AddWorkPage extends BasePage {
             address,
             canSelectAddress: !address,
             taskId,
-
+            KeyboardShown: false,
         };
+        this.keyboardDidShowListener = null;
+        this.keyboardDidHideListener = null;
     }
 
     componentDidMount(): void {
@@ -75,9 +78,32 @@ class AddWorkPage extends BasePage {
         );
     }
 
-    componentWillUnmount(): void {
+    componentWillMount() {
+        this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+            this.setState({
+                KeyboardShown: true,
+            });
+        });
+        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+            this.setState({
+                KeyboardShown: false,
+            });
+        });
+    }
+
+
+
+    componentWillUnmount() {
         this.viewDidAppear.remove();
         UDToast.hiddenLoading(this.recordId);
+        //卸载键盘弹出事件监听
+        if (this.keyboardDidShowListener != null) {
+            this.keyboardDidShowListener.remove();
+        }
+        //卸载键盘隐藏事件监听
+        if (this.keyboardDidHideListener != null) {
+            this.keyboardDidHideListener.remove();
+        }
     }
 
 
@@ -223,7 +249,11 @@ class AddWorkPage extends BasePage {
         return (
             <CommonView style={{flex: 1, backgroundColor: 'F3F4F2'}}>
                 {/*<ScrollView>*/}
-                <Flex direction='column'>
+                <TouchableWithoutFeedback onPress={() => {
+                    Keyboard.dismiss();
+                }}>
+                    <View style={{marginTop:this.state.KeyboardShown ? -100 : 0,height:'100%'}}>
+                    <Flex direction='column'>
                     <Flex justify='between' style={styles.header}>
                         {data.map((item, i) => (
                             <TouchableWithoutFeedback key={i} onPress={() => this.setState({index: i})}>
@@ -327,7 +357,9 @@ class AddWorkPage extends BasePage {
                     paddingTop: 40,
                 }}>
                     <Button style={{width: '90%'}} type="primary" onPress={() => this.submit()}>确定</Button>
-                </Flex>
+                    </Flex>
+                    </View>
+                    </TouchableWithoutFeedback>
                 {/*</ScrollView>*/}
             </CommonView>
         );
