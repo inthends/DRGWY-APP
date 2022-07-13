@@ -143,11 +143,12 @@ class StartXunJianPage extends BasePage {
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
         const {images, data} = this.state;
         return (
-            <CommonView>
-                <Flex direction={'column'} align={'start'} style={styles.content}>
-                    <Text style={styles.title}>{data.pointName}</Text>
-                    <XunJianComponent data={data}/>
-                </Flex>
+            <CommonView style={{ flex: 1 }}>
+                <ScrollView>
+                    <Flex direction={'column'} align={'start'} style={styles.content}>
+                        <Text style={styles.title}>{data.pointName}</Text>
+                        <XunJianComponent data={data}/>
+                    </Flex>
                 <Flex justify={'start'} align={'start'} style={{width: ScreenUtil.deviceWidth()}}>
                     <Flex wrap={'wrap'}>
                         {images.map((item, index) => {
@@ -188,7 +189,8 @@ class StartXunJianPage extends BasePage {
                             <Text style={styles.word}>异常</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-                </Flex>
+                    </Flex>
+                    </ScrollView>
             </CommonView>
         );
     }
