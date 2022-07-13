@@ -1061,6 +1061,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 9TRS7WJSZ3;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -1789,6 +1790,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = statistics/statistics.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 9TRS7WJSZ3;
@@ -1811,7 +1814,7 @@
 				);
 				INFOPLIST_FILE = statistics/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.3.10;
+				MARKETING_VERSION = 3.0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1819,6 +1822,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.yunguanjia.statistics;
 				PRODUCT_NAME = statistics;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_INSTALLED_PRODUCT = NO;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1829,6 +1833,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = statistics/statistics.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9TRS7WJSZ3;
 				HEADER_SEARCH_PATHS = (
@@ -1850,7 +1856,7 @@
 				);
 				INFOPLIST_FILE = statistics/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.3.10;
+				MARKETING_VERSION = 3.0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1858,6 +1864,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.yunguanjia.statistics;
 				PRODUCT_NAME = statistics;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_INSTALLED_PRODUCT = NO;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -2187,6 +2194,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = statistics/statistics.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9TRS7WJSZ3;
@@ -2209,7 +2218,7 @@
 				);
 				INFOPLIST_FILE = statistics/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.3.10;
+				MARKETING_VERSION = 3.0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2217,6 +2226,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.yunguanjia.statistics;
 				PRODUCT_NAME = statistics;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_INSTALLED_PRODUCT = NO;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
