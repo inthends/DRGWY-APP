@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React  from 'react';
 import {
     Text,
     TouchableWithoutFeedback,
@@ -8,15 +8,14 @@ import {
 } from 'react-native';
 import BasePage from '../../base/base';
 import {Icon} from '@ant-design/react-native';
-import {List, WhiteSpace, Flex, TextareaItem, Grid, Button} from '@ant-design/react-native';
+import {List,  Flex } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
-import SelectImage from '../../../utils/select-image';
+// import SelectImage from '../../../utils/select-image';
 import common from '../../../utils/common';
-import UDRecord from '../../../utils/UDRecord';
-import api from '../../../utils/api';
-import UDPlayer from '../../../utils/UDPlayer';
-
+// import UDRecord from '../../../utils/UDRecord';
+// import api from '../../../utils/api';
+// import UDPlayer from '../../../utils/UDPlayer';
 import UDToast from '../../../utils/UDToast';
 import DashLine from '../../../components/dash-line';
 import WorkService from '../../work/work-service';
@@ -25,10 +24,7 @@ import Communicates from '../../../components/communicates';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
-
-
 const Item = List.Item;
-
 
 export default class EweixiuDetailPage extends BasePage {
     static navigationOptions = ({navigation}) => {
@@ -38,8 +34,7 @@ export default class EweixiuDetailPage extends BasePage {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{width: 30, marginLeft: 15}}/>
                 </TouchableOpacity>
-            ),
-
+            )
         };
     };
 
@@ -64,7 +59,6 @@ export default class EweixiuDetailPage extends BasePage {
         this.getData();
     }
 
-
     getData = () => {
         const {fuwu, type} = this.state;
         // console.log('fuw', fuwu);
@@ -85,6 +79,7 @@ export default class EweixiuDetailPage extends BasePage {
             });
         });
 
+        //维修单附件
         WorkService.weixiuExtra(fuwu.id).then(images => {
             this.setState({
                 images,
@@ -128,9 +123,6 @@ export default class EweixiuDetailPage extends BasePage {
 
     render() {
         const {images, detail, communicates} = this.state;
-        console.log(1122, detail);
-
-
         return (
             <CommonView style={{flex: 1, backgroundColor: '#fff', paddingBottom: 10}}>
                 <ScrollView>
@@ -158,12 +150,9 @@ export default class EweixiuDetailPage extends BasePage {
                             <Text onPress={()=>this.props.navigation.navigate('fuwuD', {data: {id:detail.relationId}})}
                             style={[styles.right, {color: Macro.color_4d8fcc}]}>{detail.serviceDeskCode}</Text>
                         </Flex>
-                    </TouchableWithoutFeedback>}
-
-
+                    </TouchableWithoutFeedback>}  
                     <DashLine/>
                     <Communicates communicateClick={this.communicateClick} communicates={communicates}/>
-
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}

@@ -23,7 +23,6 @@ export default class ChaiFei extends BasePage {
             last: '',
             a: this.props.item.beginDate,
         };
-
     }
 
 
@@ -49,7 +48,6 @@ export default class ChaiFei extends BasePage {
             Data: JSON.stringify(data),
             keyvalue: item.id
         };
-
         api.postData('/api/MobileMethod/SplitBilling', splitData).then(res => {
             UDToast.showInfo('操作成功');
             this.props.onClose();
@@ -64,7 +62,6 @@ export default class ChaiFei extends BasePage {
         return (
             <View style={{ flex: 1, width: '100%' }}>
                 <TouchableWithoutFeedback onPress={() => {
-
                     Keyboard.dismiss();
                 }}>
                     <Flex direction={'column'} >
@@ -105,7 +102,6 @@ export default class ChaiFei extends BasePage {
                                     }}
                                     onDateChange={(a) => { this.setState({ a: a }) }}
                                 />
-
                             </Flex>
                         </Flex>
 
@@ -125,7 +121,6 @@ export default class ChaiFei extends BasePage {
 
                         </Flex>
                         <WhiteSpace size={'lg'} />
- 
                         <Flex align={'start'} style={{ width: '100%' }}>
                             <Text style={styles.left}>第二笔</Text>
                         </Flex>
@@ -155,8 +150,7 @@ export default class ChaiFei extends BasePage {
                             <Flex>
                                 <Text style={styles.left}>说明</Text>
                             </Flex>
-                            <WhiteSpace size={'lg'} />
-
+                            <WhiteSpace size={'lg'} /> 
                             <TextareaItem
                                 style={styles.area}
                                 placeholder={'请输入说明'}

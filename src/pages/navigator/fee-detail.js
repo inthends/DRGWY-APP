@@ -139,7 +139,6 @@ class FeeDetailPage extends BasePage {
                 if (this.state.out_trade_no && this.state.visible === false) {
                     this.getOrderStatus(this.state.out_trade_no);
                 }
-
                 // if (obj.state.params) {
                 //     let address = obj.state.params.data;
                 //     NavigatorService.wftScanPay(address.a,address.b).then(res => {
@@ -152,7 +151,6 @@ class FeeDetailPage extends BasePage {
                 // }
             },
         );
-
 
         if (!common.isIOS()) {
             //判断是否是银盛POS或者拉卡拉POS机
@@ -172,7 +170,6 @@ class FeeDetailPage extends BasePage {
         this.viewDidAppear.remove();
         this.needPrintListener.remove();
     }
-
 
     callBack = (out_trade_no) => {
         NavigatorService.printInfo(out_trade_no).then(res => {
@@ -210,7 +207,6 @@ class FeeDetailPage extends BasePage {
                     }
                     break;
                 }
-
                 case '扫码': {
                     NavigatorService.createOrder(ids, isML, mlType, mlScale).then(res => {
                         let posType = res.posType;
@@ -258,7 +254,6 @@ class FeeDetailPage extends BasePage {
                     break;
                 }
                 case '收款码': {
-
                     NavigatorService.createOrder(ids, isML, mlType, mlScale).then(res => {
                         let posType = res.posType;
                         // if (posType === '银盛') {
@@ -313,7 +308,6 @@ class FeeDetailPage extends BasePage {
                     });
                     break;
                 }
-
                 case '现金': {
                     Alert.alert(
                         '确定现金支付？',
@@ -341,6 +335,22 @@ class FeeDetailPage extends BasePage {
         }
     };
 
+    //兴生活缴费
+    clickCIB = () => {
+        const { room } = this.state;
+        NavigatorService.qrcodePayCIB(room.id).then((code) => {
+            this.setState(
+                {
+                    visible: true,
+                    cancel: false,
+                    code,
+                    needPrint: false,
+                    printAgain: false
+                }
+            );
+        });
+    }
+
     cashPay = (ids, isML, mlType, mlScale) => {
         NavigatorService.cashPay(ids, isML, mlType, mlScale).then(res => {
             if (this.state.isLKL || this.state.isYse) {
@@ -357,6 +367,11 @@ class FeeDetailPage extends BasePage {
     };
 
     onRefresh = () => {
+        //获取参数，根据是否兴生活缴费来加载按钮
+        NavigatorService.getSettingInfo().then((res) => {
+            this.setState({ isCIBLife: res });
+        });
+
         const { pageIndex, type, room, isShow } = this.state;
         NavigatorService.getBillList(type, room.id, isShow, pageIndex, 1000).then(dataInfo => {
             this.setState({
@@ -474,7 +489,6 @@ class FeeDetailPage extends BasePage {
         });
     };
 
-
     //嘉联查询订单状态
     getJLOrderStatus = (out_trade_no) => {
         clearTimeout(this.timeOut);
@@ -516,7 +530,7 @@ class FeeDetailPage extends BasePage {
                     },
                 },
             ],
-            { cancelable: false },
+            { cancelable: false }
         );
     };
 
@@ -524,7 +538,7 @@ class FeeDetailPage extends BasePage {
         // const { dataInfo, type, room, price, mlAmount } = this.state;
         const { type } = this.state;
         let titles = [];
-        console.log(11, item);
+        //console.log(11, item);
         if (item.billSource === '临时加费' && item.rmid === null) {
             titles = ['删除', '减免', '拆费'];
         } else {
@@ -578,12 +592,10 @@ class FeeDetailPage extends BasePage {
                                 paddingBottom: 5,
                                 width: '100%',
                             }, type === '已收' ? { paddingBottom: 10 } : {}]}>
-
                             {/* <Text style={{ fontSize: 16 }}>{type === '已收' ?
                                             item.billCode :
                                             item.feeName
                                         }</Text> */}
-
                             {type === '已收' ? <Text style={{ fontSize: 16 }}>{item.billCode}</Text> :
                                 item.rmid ?
                                     <Flex>
@@ -631,7 +643,6 @@ class FeeDetailPage extends BasePage {
 
     //dateonChange = (value) => {
     //   console.log(11,value)
-
     // this.setState({
     //     chaifeiDate: value,
     // })
@@ -721,6 +732,16 @@ class FeeDetailPage extends BasePage {
                                 </Flex>
                             </TouchableWithoutFeedback>
 
+                            {this.state.isCIBLife ?
+                                <TouchableWithoutFeedback onPress={() => this.clickCIB()}>
+                                    <Flex
+                                        justify={'center'}
+                                        style={[styles.ii, { backgroundColor: '#4494f0' }]}
+                                    >
+                                        <Text style={styles.word}>兴生活</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback> : null}
+
                             {this.state.isLKL || this.state.isYse ?
                                 //手机都不能刷卡
                                 <TouchableWithoutFeedback
@@ -735,7 +756,6 @@ class FeeDetailPage extends BasePage {
                     </Flex>
                 )
                 }
-
                 <Modal
                     transparent
                     onClose={this.onClose}
@@ -767,7 +787,6 @@ class FeeDetailPage extends BasePage {
                         }} item={this.state.selectItem} />
                     </Flex>
                 </Modal>
-
                 {
                     this.state.chaifeiAlert && (
                         <TouchableWithoutFeedback onPress={() => this.setState({ chaifeiAlert: false })}>
@@ -787,11 +806,9 @@ class FeeDetailPage extends BasePage {
                                     />
                                 </Flex>
                             </View>
-                        </TouchableWithoutFeedback>
-
+                        </TouchableWithoutFeedback> 
                     )
                 }
-
                 {
                     this.state.showPicker &&
                     <TouchableWithoutFeedback onPress={() => {

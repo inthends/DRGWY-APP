@@ -63,10 +63,8 @@ class FeeAddPage extends BasePage {
             code: '',
             price: '0.00',
             needPrint: false,
-            printAgain: false,
-
-            xishu: null,
-
+            printAgain: false, 
+            xishu: null, 
             res: [],
             titles: [],
             items: [],

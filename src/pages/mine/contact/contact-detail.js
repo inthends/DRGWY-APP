@@ -95,13 +95,12 @@ class ContactDetail extends BasePage {
 
     render() {
         const {data,type} = this.state;
-        console.log(111, data);
+        //console.log(111, data);
         return (
 
             <View style={{flex: 1}}>
                 <ScrollView style={{flex: 1}}>
-                    <View style={styles.content}>
-
+                    <View style={styles.content}> 
                         <Accordion
                             onChange={this.onChange}
                             activeSections={this.state.activeSections}
@@ -110,7 +109,6 @@ class ContactDetail extends BasePage {
                                 <Accordion.Panel key={item.departmentId || item.itemId} header={item.fullName || item.itemName}>
                                     <List>
                                         {item.children.map(i=>(
-
                                             <Flex justify={'start'} key={i.id} align={'start'} style={styles.aa} direction={'column'}>
                                                 {
                                                     type === '2' && (

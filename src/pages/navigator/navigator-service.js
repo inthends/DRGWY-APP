@@ -39,6 +39,11 @@ export default {
     });
   },
 
+   //获取系统参数
+   getSettingInfo() {
+    return api.getData('/api/MobileMethod/MGetSettingInfo');
+  },
+
   //账单
   getBillList(type, id, isShow, pageIndex, pageSize = 10) {
     let url = '/api/MobileMethod/MGetNotChargeBillList';
@@ -56,7 +61,7 @@ export default {
   serviceList(
     pageIndex,
     billStatus,
-    treeType,
+    //treeType,
     organizeId,
     billType,
     startTime,
@@ -88,7 +93,7 @@ export default {
   weixiuList(
     pageIndex,
     billStatus,
-    treeType,
+    //treeType,
     organizeId,
     startTime,
     endTime,
@@ -120,7 +125,7 @@ export default {
   tousuList(
     pageIndex,
     billStatus,
-    treeType,
+    //treeType,
     organizeId,
     billType,
     startTime,
@@ -245,6 +250,11 @@ export default {
   //嘉联生成收款码
   jlqrcodePay(tbout_trade_no) {
     return api.postData('/api/MobileMethod/JLQrcodePay', { tbout_trade_no });
+  },
+
+  //兴生活小程序二维码
+  qrcodePayCIB(unitId) {
+    return api.postData('/api/MobileMethod/CIBQrCode', { unitId });
   },
 
   //现金收款
