@@ -39,9 +39,11 @@ export default {
     });
   },
 
-  //获取系统参数
-  getSettingInfo() {
-    return api.getData('/api/MobileMethod/MGetSettingInfo');
+  //获取系统参数，楼盘id
+  getSettingInfo(organizeId) {
+    return api.getData('/api/MobileMethod/MGetSettingInfo', {
+      organizeId
+    });
   },
 
   //账单

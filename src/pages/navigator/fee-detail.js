@@ -341,7 +341,7 @@ class FeeDetailPage extends BasePage {
         const items = this.state.dataInfo.data.filter(item => item.select === true);
         if (items.length === 0) {
             UDToast.showError('请选择');
-        } else { 
+        } else {
             let ids = JSON.stringify((items.map(item => item.id)));
             const { room } = this.state;
             NavigatorService.qrcodePayCIB(room.id, ids).then((code) => {
@@ -373,13 +373,14 @@ class FeeDetailPage extends BasePage {
         });
     };
 
+    //刷新数据
     onRefresh = () => {
+        const { pageIndex, type, room, isShow } = this.state;
         //获取参数，根据是否兴生活缴费来加载按钮
-        NavigatorService.getSettingInfo().then((res) => {
+        NavigatorService.getSettingInfo(room.organizeId).then((res) => {
             this.setState({ isCIBLife: res });
         });
 
-        const { pageIndex, type, room, isShow } = this.state;
         NavigatorService.getBillList(type, room.id, isShow, pageIndex, 1000).then(dataInfo => {
             this.setState({
                 dataInfo: dataInfo,

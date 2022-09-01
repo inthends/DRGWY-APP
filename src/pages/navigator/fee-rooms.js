@@ -110,10 +110,7 @@ export default class FeeRoomsPage extends BasePage {
                         </Flex>
                     ))}
                 </ScrollView>
-
-
             </CommonView>
-
         );
     }
 }
@@ -125,16 +122,12 @@ const styles = StyleSheet.create({
     },
     content: {
         backgroundColor: Macro.color_white,
-        flex: 1,
-
-
+        flex: 1
     },
     title: {
         color: '#333',
         fontSize: 16,
-    },
-
-
+    }, 
     top: {
 
         fontSize: 18,
