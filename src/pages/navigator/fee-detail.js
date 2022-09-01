@@ -337,18 +337,25 @@ class FeeDetailPage extends BasePage {
 
     //兴生活缴费
     clickCIB = () => {
-        const { room } = this.state;
-        NavigatorService.qrcodePayCIB(room.id).then((code) => {
-            this.setState(
-                {
-                    visible: true,
-                    cancel: false,
-                    code,
-                    needPrint: false,
-                    printAgain: false
-                }
-            );
-        });
+
+        const items = this.state.dataInfo.data.filter(item => item.select === true);
+        if (items.length === 0) {
+            UDToast.showError('请选择');
+        } else { 
+            let ids = JSON.stringify((items.map(item => item.id)));
+            const { room, isML, mlType, mlScale } = this.state;
+            NavigatorService.qrcodePayCIB(room.id, ids, isML, mlType, mlScale).then((code) => {
+                this.setState(
+                    {
+                        visible: true,
+                        cancel: false,
+                        code,
+                        needPrint: false,
+                        printAgain: false
+                    }
+                );
+            });
+        }
     }
 
     cashPay = (ids, isML, mlType, mlScale) => {
@@ -806,7 +813,7 @@ class FeeDetailPage extends BasePage {
                                     />
                                 </Flex>
                             </View>
-                        </TouchableWithoutFeedback> 
+                        </TouchableWithoutFeedback>
                     )
                 }
                 {

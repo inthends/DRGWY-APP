@@ -253,8 +253,8 @@ export default {
   },
 
   //兴生活小程序二维码
-  qrcodePayCIB(unitId) {
-    return api.postData('/api/MobileMethod/CIBQrCode', { unitId });
+  qrcodePayCIB(unitId,linkId, isML, mlType, mlScale) {
+    return api.postData('/api/MobileMethod/CIBQrCode', { unitId,linkId, isML, mlType, mlScale });
   },
 
   //现金收款
