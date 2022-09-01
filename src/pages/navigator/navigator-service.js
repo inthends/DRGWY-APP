@@ -39,8 +39,8 @@ export default {
     });
   },
 
-   //获取系统参数
-   getSettingInfo() {
+  //获取系统参数
+  getSettingInfo() {
     return api.getData('/api/MobileMethod/MGetSettingInfo');
   },
 
@@ -253,8 +253,8 @@ export default {
   },
 
   //兴生活小程序二维码
-  qrcodePayCIB(unitId,linkId, isML, mlType, mlScale) {
-    return api.postData('/api/MobileMethod/CIBQrCode', { unitId,linkId, isML, mlType, mlScale });
+  qrcodePayCIB(unitId, linkId) {
+    return api.postData('/api/MobileMethod/CIBQrCode', { unitId, linkId });
   },
 
   //现金收款

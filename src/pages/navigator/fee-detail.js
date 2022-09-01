@@ -343,8 +343,8 @@ class FeeDetailPage extends BasePage {
             UDToast.showError('请选择');
         } else { 
             let ids = JSON.stringify((items.map(item => item.id)));
-            const { room, isML, mlType, mlScale } = this.state;
-            NavigatorService.qrcodePayCIB(room.id, ids, isML, mlType, mlScale).then((code) => {
+            const { room } = this.state;
+            NavigatorService.qrcodePayCIB(room.id, ids).then((code) => {
                 this.setState(
                     {
                         visible: true,
