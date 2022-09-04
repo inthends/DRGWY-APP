@@ -3,12 +3,12 @@ package com.statistics;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.github.reactnativecommunity.location.RNLocationPackage;
 import com.songlcy.rnupgrade.UpgradePackage;
 
 import cn.jiguang.plugins.push.JPushModule;
 import cn.jiguang.plugins.push.JPushPackage;
 
-import com.github.reactnativecommunity.location.RNLocationPackage;
 import com.reactnativecommunity.rnpermissions.RNPermissionsPackage;
 
 import org.reactnative.camera.RNCameraPackage;
@@ -34,7 +34,7 @@ import java.util.List;
 public class MainApplication extends Application implements ReactApplication {
 
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
- 
+
 
         @Override
         public boolean getUseDeveloperSupport() {
@@ -45,9 +45,9 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new RNLocationPackage(),
                     new UpgradePackage(),
                     new JPushPackage(),
-                    new RNLocationPackage(),
                     new RNPermissionsPackage(),
                     new RNCameraPackage(),
                     new SvgPackage(),
