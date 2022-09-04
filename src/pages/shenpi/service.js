@@ -43,4 +43,7 @@ export default {
   getContractEntity(keyvalue) {
     return api.getData('/api/MobileMethod/MGetContractEntity', { keyvalue });
   },
+  geFiles(keyvalue) {
+    return api.getData('/api/MobileMethod/MGetServiceDeskFiles', { keyvalue });
+  },
 };

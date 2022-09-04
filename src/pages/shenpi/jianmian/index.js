@@ -78,7 +78,7 @@ export default class EfuwuDetailPage extends BasePage {
 
     return (
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
-        <ScrollView style={{ padding: 15 }}>
+        <ScrollView style={{ padding: 15, paddingBottom: 30 }}>
           <ShowTitle title="基础信息" />
           <Flex style={styles.card} direction="column" align="start">
             <ShowText word="减免单号" title={detail.billCode} />
@@ -117,7 +117,7 @@ export default class EfuwuDetailPage extends BasePage {
               this.props.navigation.goBack();
             }}
           />
-          <ShowFiles />
+          <ShowFiles files={detail.files || []} />
           <ShowRecord records={records} />
         </ScrollView>
       </CommonView>

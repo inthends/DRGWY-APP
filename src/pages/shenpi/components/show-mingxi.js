@@ -44,6 +44,7 @@ const ShowMingXi = ({ title = '明细', list = [], open = false }) => {
           ))}
         </Flex>
       )}
+      <View style={{height: 30}}></View>
     </View>
   );
 };

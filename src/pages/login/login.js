@@ -36,8 +36,8 @@ class LoginPage extends BasePage {
 
     // this.state = {
     //   usercode: 'test',
-    //   username: 'zhuwz',
-    //   password: '111111',
+    //   username: 'kj',
+    //   password: '1234598',
     // };
   }
 

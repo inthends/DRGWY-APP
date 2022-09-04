@@ -27,6 +27,7 @@ import ShowActions from '../components/show-actions';
 import ShowFiles from '../components/show-files';
 import ShowRecord from '../components/show-record';
 import common from '../../../utils/common';
+import ShowPrices from '../components/show-prices';
 
 export default class EfuwuDetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
@@ -84,9 +85,11 @@ export default class EfuwuDetailPage extends BasePage {
       hetong = {},
     } = this.state;
 
+    const { prices = [] } = detail;
+
     return (
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
-        <ScrollView style={{ padding: 15 }}>
+        <ScrollView style={{ padding: 15, paddingBottom: 30 }}>
           <ShowTitle title="基础信息" />
           {detail.operationType === '变更客户' && (
             <Flex style={styles.card} direction="column" align="start">
@@ -316,6 +319,12 @@ export default class EfuwuDetailPage extends BasePage {
             </Flex>
           )}
 
+          {
+            detail.operationType != '变更客户' && (
+              <ShowPrices prices={prices} />
+            )
+          }
+          
           <ShowActions
             state={this.state}
             click={() => {
@@ -324,7 +333,7 @@ export default class EfuwuDetailPage extends BasePage {
               this.props.navigation.goBack();
             }}
           />
-          <ShowFiles />
+          <ShowFiles files={detail.files || []} />
           <ShowRecord records={records} />
         </ScrollView>
         <CompanyDetail

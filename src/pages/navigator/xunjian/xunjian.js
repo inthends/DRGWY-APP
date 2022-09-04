@@ -6,7 +6,6 @@ import {StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, ScrollView
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import CommonView from '../../../components/CommonView';
-import RNLocation from 'react-native-location';
 import {connect} from 'react-redux';
 import memberReducer from '../../../utils/store/reducers/member-reducer';
 import XunJianService from './xunjian-service';
