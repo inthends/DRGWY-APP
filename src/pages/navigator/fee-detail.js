@@ -165,6 +165,12 @@ class FeeDetailPage extends BasePage {
         // else {
         //     //方法待实现
         // }
+
+        //获取参数，根据是否兴生活缴费来加载按钮
+        NavigatorService.getSettingInfo(this.state.room.organizeId).then((res) => {
+            this.setState({ isCIBLife: res });
+        });
+
     }
 
     componentWillUnmount(): void {
@@ -376,11 +382,6 @@ class FeeDetailPage extends BasePage {
     //刷新数据
     onRefresh = () => {
         const { pageIndex, type, room, isShow } = this.state;
-        //获取参数，根据是否兴生活缴费来加载按钮
-        NavigatorService.getSettingInfo(room.organizeId).then((res) => {
-            this.setState({ isCIBLife: res });
-        });
-
         NavigatorService.getBillList(type, room.id, isShow, pageIndex, 1000).then(dataInfo => {
             this.setState({
                 dataInfo: dataInfo,
