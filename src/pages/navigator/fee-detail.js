@@ -92,6 +92,7 @@ class FeeDetailPage extends BasePage {
             dataInfo: {
                 data: [],
             },
+            isCIBLife: false,
             type: null,
             isShow: true,
             out_trade_no: null,
@@ -191,7 +192,6 @@ class FeeDetailPage extends BasePage {
                 case '刷卡': {
                     if (common.isIOS()) {
                         UDToast.showInfo('功能暂未开放，敬请期待！');
-
                     } else {
                         //刷卡目前只支持拉卡拉
                         NavigatorService.createOrder(ids, isML, mlType, mlScale).then(res => {
@@ -489,7 +489,7 @@ class FeeDetailPage extends BasePage {
 
     printInfo = (out_trade_no) => {
         NavigatorService.printInfo(out_trade_no).then(res => {
-            console.log(123456, res)
+            //console.log(123456, res)
             NativeModules.LHNToast.printTicket({
                 ...res,
                 username: res.userName,
