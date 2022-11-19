@@ -26,7 +26,7 @@ render() {
   }
 ```
 
-## 2
+## 2 针对 iOS 文件 RCTModuleMethod.mm 做以下修改
 
 ```
 node_modules/react-native/React/Base/RCTModuleMethod.mm
@@ -39,10 +39,17 @@ static BOOL RCTParseUnused(const char **input)
   RCTReadString(input, "__attribute__((unused))");
 }
 
-
-
 ```
 
+## 3 针对 iOS 文件 RCTCxxBridge.mm 需要对以下做修改：
+```
+- (NSArray<RCTModuleData *> *)_initializeModules:(NSArray<id<RCTBridgeModule>> *)modules
+
+修改为这样：
+- (NSArray<RCTModuleData *> *)_initializeModules:(NSArray<Class> *)modules
+```
+
+## 最后
 ```
 首先要打开react native debugger，
 
