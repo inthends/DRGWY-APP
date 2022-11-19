@@ -39,6 +39,10 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>想使用蓝牙连接无线打印设备</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>想使用蓝牙连接无线打印设备</string>
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME)想要访问摄像头，以完成上传图片、扫码等功能</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
@@ -53,6 +57,10 @@
 	<array>
 		<string>antfill.ttf</string>
 		<string>antoutline.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>bluetooth-central</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
