@@ -111,6 +111,7 @@ class FeeDetailPage extends BasePage {
             selected: '',
             chaifeiAlert: false,
             showPicker: false,
+            isDigital: false//数字货币二维码
         };
         Date.prototype.getYearAndMonthAndDay = function () {
             let year = this.getFullYear();
@@ -193,7 +194,7 @@ class FeeDetailPage extends BasePage {
             UDToast.showError('请选择');
         } else {
             let ids = JSON.stringify((items.map(item => item.id)));
-            const { isML, mlType, mlScale } = this.state;
+            const { isML, mlType, mlScale, isDigital } = this.state;
             switch (title) {
                 case '刷卡': {
                     if (common.isIOS()) {
@@ -287,7 +288,7 @@ class FeeDetailPage extends BasePage {
                             });
                         }
                         else if (posType === '威富通') {
-                            NavigatorService.qrcodePay(res.out_trade_no).then(code => {
+                            NavigatorService.qrcodePay(res.out_trade_no, isDigital).then(code => {
                                 this.setState({
                                     visible: true,
                                     cancel: false,
@@ -409,7 +410,6 @@ class FeeDetailPage extends BasePage {
         if (type === '已收') {
             this.props.navigation.push('charge', { data: item });
         } else {
-
             let data = this.state.dataInfo.data;
             data = data.map(it => {
                 if (it.id === item.id) {
@@ -440,6 +440,34 @@ class FeeDetailPage extends BasePage {
             }
         }
     };
+
+    //全选
+    checkAll = () => {
+        const { isML, mlType, mlScale, type } = this.state;
+        if (type === '已收') {
+        } else {
+            let data = this.state.dataInfo.data;
+            data = data.map(it => {
+                it.select = it.select !== true;
+                return it;
+            });
+            this.setState({
+                dataInfo: {
+                    ...this.state.dataInfo,
+                    data,
+                }
+            });
+            const items = data.filter(item => item.select === true);
+            if (items.length != 0) {
+                let ids = JSON.stringify((items.map(item => item.id)));
+                NavigatorService.CalFee(isML, mlType, mlScale, ids).then(res => {
+                    this.setState({ price: res.lastAmount, mlAmount: res.mlAmount });
+                });
+            } else {
+                this.setState({ price: 0.00, mlAmount: 0.00 });
+            }
+        }
+    }
 
     //抹零计算
     mlCal = (isML, mlType, mlScale) => {
@@ -671,9 +699,24 @@ class FeeDetailPage extends BasePage {
                         return this.renderItem(item);
                     })}
                 </ScrollView>
+
                 {type === '已收' || dataInfo.data.length === 0 ? null : (
                     <Flex style={{ marginBottom: 30 }} direction={'column'}>
                         <Flex justify={'between'}>
+                            <Checkbox
+                                style={{ color: Macro.color_f39d39 }}
+                                onChange={event => {
+                                    this.checkAll();
+                                }}
+                            ><Text style={{ paddingTop: 3, paddingLeft: 3, paddingRight: 48, color: '#666' }}>全选</Text></Checkbox>
+
+                            <Checkbox
+                                defaultChecked={false}
+                                onChange={(e) => {
+                                    this.setState({ isDigital: e.target.checked });
+                                }}
+                            ><Text style={{ paddingTop: 3, paddingLeft: 3, color: '#666' }}>数字货币</Text></Checkbox>
+
                             <Checkbox
                                 defaultChecked={false}
                                 onChange={(e) => {

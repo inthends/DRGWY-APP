@@ -245,8 +245,8 @@ export default {
   },
 
   //威富通生成收款码
-  qrcodePay(tbout_trade_no) {
-    return api.postData('/api/MobileMethod/WFTPay', { tbout_trade_no });
+  qrcodePay(tbout_trade_no, isDigital) {
+    return api.postData('/api/MobileMethod/WFTPay', { tbout_trade_no, isDigital });
   },
 
   //嘉联生成收款码
@@ -313,11 +313,7 @@ export default {
 
   //计算费用金额
   CalFee(isML, mlType, mlScale, ids) {
-    return api.postData(
-      '/api/MobileMethod/MCalFee',
-      { isML, mlType, mlScale, ids },
-      false,
-    );
+    return api.postData('/api/MobileMethod/MCalFee', { isML, mlType, mlScale, ids });
   },
 
   // 收缴率、资金流、账龄分析
