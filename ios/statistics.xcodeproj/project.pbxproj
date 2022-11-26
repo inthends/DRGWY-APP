@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -51,12 +51,18 @@
 		8E0E14433BA44CFC8A57659D /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 118CDA99A51645868D6DBB8F /* libRNCamera.a */; };
 		9523A553C1F34059AE47B234 /* libRCTJCoreModule.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4645C843B44D456FAD8CE244 /* libRCTJCoreModule.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
+		C297B7322928E1F6008ACBDC /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = C297B72A2928E1F6008ACBDC /* MBProgressHUD.m */; };
+		C297B7332928E1F6008ACBDC /* cmdtestutils.mm in Sources */ = {isa = PBXBuildFile; fileRef = C297B72D2928E1F6008ACBDC /* cmdtestutils.mm */; };
+		C297B7342928E1F6008ACBDC /* cmdtestunit.mm in Sources */ = {isa = PBXBuildFile; fileRef = C297B72F2928E1F6008ACBDC /* cmdtestunit.mm */; };
+		C297B7352928E1F6008ACBDC /* cmdtestfunction.mm in Sources */ = {isa = PBXBuildFile; fileRef = C297B7302928E1F6008ACBDC /* cmdtestfunction.mm */; };
+		C297B7382928E278008ACBDC /* autoreplyprint.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C297B7362928E239008ACBDC /* autoreplyprint.xcframework */; };
+		C297B7392928E278008ACBDC /* autoreplyprint.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C297B7362928E239008ACBDC /* autoreplyprint.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C3CF3461D3774F7481050515 /* libRNLocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 30A0DC8FECC54857A8881202 /* libRNLocation.a */; };
 		CEEA1A3A2971426F9DF23D55 /* libRNSound.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EFE8B506EAF44085ACE7F85A /* libRNSound.a */; };
 		D27A73D5FC1F435799FEC61E /* antoutline.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E7A2D59F5BD74A4F8DB1F896 /* antoutline.ttf */; };
 		D7B1DDAC0B5840F3B64AF71F /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98745D47695B4291AD5CC077 /* libRNGestureHandler.a */; };
 		DD160F3C243F1BBC004AEE76 /* ios_upgrade in Resources */ = {isa = PBXBuildFile; fileRef = DD160F04243F1BBB004AEE76 /* ios_upgrade */; };
-		DD160F3F243F1CF3004AEE76 /* LHNToast.m in Sources */ = {isa = PBXBuildFile; fileRef = DD160F3E243F1CF3004AEE76 /* LHNToast.m */; };
+		DD160F3F243F1CF3004AEE76 /* LHNToast.mm in Sources */ = {isa = PBXBuildFile; fileRef = DD160F3E243F1CF3004AEE76 /* LHNToast.mm */; };
 		DD23E96F240E5002008579BA /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DD23E96E240E5002008579BA /* libresolv.tbd */; };
 		DD23E971240E5011008579BA /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD23E970240E5011008579BA /* UserNotifications.framework */; };
 		DD2EFB52233F775D004C2373 /* bundle in Resources */ = {isa = PBXBuildFile; fileRef = DD2EFB51233F775D004C2373 /* bundle */; };
@@ -454,6 +460,20 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		C297B73A2928E278008ACBDC /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C297B7392928E278008ACBDC /* autoreplyprint.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTActionSheet.xcodeproj; path = "../node_modules/react-native/Libraries/ActionSheetIOS/RCTActionSheet.xcodeproj"; sourceTree = "<group>"; };
@@ -506,13 +526,22 @@
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		BCBA63D705EF48469EB5C2EB /* RNReanimated.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNReanimated.xcodeproj; path = "../node_modules/react-native-reanimated/ios/RNReanimated.xcodeproj"; sourceTree = "<group>"; };
 		BF826FD76FB243BA9F88C244 /* libRNReanimated.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNReanimated.a; sourceTree = "<group>"; };
+		C297B72A2928E1F6008ACBDC /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		C297B72B2928E1F6008ACBDC /* cmdtestunit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cmdtestunit.h; sourceTree = "<group>"; };
+		C297B72C2928E1F6008ACBDC /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		C297B72D2928E1F6008ACBDC /* cmdtestutils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = cmdtestutils.mm; sourceTree = "<group>"; };
+		C297B72E2928E1F6008ACBDC /* cmdtestutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cmdtestutils.h; sourceTree = "<group>"; };
+		C297B72F2928E1F6008ACBDC /* cmdtestunit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = cmdtestunit.mm; sourceTree = "<group>"; };
+		C297B7302928E1F6008ACBDC /* cmdtestfunction.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = cmdtestfunction.mm; sourceTree = "<group>"; };
+		C297B7312928E1F6008ACBDC /* cmdtestfunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cmdtestfunction.h; sourceTree = "<group>"; };
+		C297B7362928E239008ACBDC /* autoreplyprint.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = autoreplyprint.xcframework; sourceTree = "<group>"; };
 		C5AA4A121BC04A9C909F4A36 /* RNSVG.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSVG.xcodeproj; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; };
 		CB2EFD934AD84496944E7CCE /* libRNAudio.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNAudio.a; sourceTree = "<group>"; };
 		CEA7461320464C98861567AF /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		CFB6B21F4D3A4FAE939684C1 /* libRNSVG-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNSVG-tvOS.a"; sourceTree = "<group>"; };
 		DD160F04243F1BBB004AEE76 /* ios_upgrade */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ios_upgrade; path = statistics/ios_upgrade; sourceTree = "<group>"; };
 		DD160F3D243F1CF3004AEE76 /* LHNToast.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LHNToast.h; path = statistics/LHNToast.h; sourceTree = "<group>"; };
-		DD160F3E243F1CF3004AEE76 /* LHNToast.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = LHNToast.m; path = statistics/LHNToast.m; sourceTree = "<group>"; };
+		DD160F3E243F1CF3004AEE76 /* LHNToast.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = LHNToast.mm; path = statistics/LHNToast.mm; sourceTree = "<group>"; };
 		DD23E96D240E21E8008579BA /* statistics.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = statistics.entitlements; path = statistics/statistics.entitlements; sourceTree = "<group>"; };
 		DD23E96E240E5002008579BA /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		DD23E970240E5011008579BA /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
@@ -544,6 +573,7 @@
 				DD87A53F23C304E800D72517 /* libbz2.1.0.tbd in Frameworks */,
 				ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
+				C297B7382928E278008ACBDC /* autoreplyprint.xcframework in Frameworks */,
 				11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
@@ -689,7 +719,8 @@
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				DD160F3D243F1CF3004AEE76 /* LHNToast.h */,
-				DD160F3E243F1CF3004AEE76 /* LHNToast.m */,
+				DD160F3E243F1CF3004AEE76 /* LHNToast.mm */,
+				C297B7292928E1F6008ACBDC /* Utils */,
 				DD160F04243F1BBB004AEE76 /* ios_upgrade */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
@@ -829,6 +860,23 @@
 				2D16E6721FA4F8DC00B85C8A /* libRCTBlob-tvOS.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		C297B7292928E1F6008ACBDC /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				C297B7362928E239008ACBDC /* autoreplyprint.xcframework */,
+				C297B72A2928E1F6008ACBDC /* MBProgressHUD.m */,
+				C297B72B2928E1F6008ACBDC /* cmdtestunit.h */,
+				C297B72C2928E1F6008ACBDC /* MBProgressHUD.h */,
+				C297B72D2928E1F6008ACBDC /* cmdtestutils.mm */,
+				C297B72E2928E1F6008ACBDC /* cmdtestutils.h */,
+				C297B72F2928E1F6008ACBDC /* cmdtestunit.mm */,
+				C297B7302928E1F6008ACBDC /* cmdtestfunction.mm */,
+				C297B7312928E1F6008ACBDC /* cmdtestfunction.h */,
+			);
+			name = Utils;
+			path = statistics/Utils;
 			sourceTree = "<group>";
 		};
 		DD23E963240E21A6008579BA /* Products */ = {
@@ -1000,6 +1048,7 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				C297B73A2928E278008ACBDC /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1659,9 +1708,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD160F3F243F1CF3004AEE76 /* LHNToast.m in Sources */,
+				C297B7332928E1F6008ACBDC /* cmdtestutils.mm in Sources */,
+				DD160F3F243F1CF3004AEE76 /* LHNToast.mm in Sources */,
+				C297B7352928E1F6008ACBDC /* cmdtestfunction.mm in Sources */,
+				C297B7342928E1F6008ACBDC /* cmdtestunit.mm in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				C297B7322928E1F6008ACBDC /* MBProgressHUD.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1737,7 +1790,11 @@
 				);
 				INFOPLIST_FILE = statisticsTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1776,7 +1833,11 @@
 				);
 				INFOPLIST_FILE = statisticsTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1798,7 +1859,7 @@
 				CODE_SIGN_ENTITLEMENTS = statistics/statistics.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 9TRS7WJSZ3;
 				HEADER_SEARCH_PATHS = (
@@ -1819,8 +1880,12 @@
 					"$(SRCROOT)/../node_modules/react-native-location/ios",
 				);
 				INFOPLIST_FILE = statistics/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.0.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 3.0.6;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1841,7 +1906,7 @@
 				CODE_SIGN_ENTITLEMENTS = statistics/statistics.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 9TRS7WJSZ3;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1861,8 +1926,12 @@
 					"$(SRCROOT)/../node_modules/react-native-location/ios",
 				);
 				INFOPLIST_FILE = statistics/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.0.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 3.0.6;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1906,7 +1975,10 @@
 					"$(SRCROOT)/../node_modules/react-native-location/ios",
 				);
 				INFOPLIST_FILE = "statistics-tvOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1953,7 +2025,10 @@
 					"$(SRCROOT)/../node_modules/react-native-location/ios",
 				);
 				INFOPLIST_FILE = "statistics-tvOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1999,7 +2074,11 @@
 					"$(SRCROOT)/../node_modules/react-native-location/ios",
 				);
 				INFOPLIST_FILE = "statistics-tvOSTests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2045,7 +2124,11 @@
 					"$(SRCROOT)/../node_modules/react-native-location/ios",
 				);
 				INFOPLIST_FILE = "statistics-tvOSTests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2215,7 +2298,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)";
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 9TRS7WJSZ3;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2235,8 +2318,12 @@
 					"$(SRCROOT)/../node_modules/react-native-location/ios",
 				);
 				INFOPLIST_FILE = statistics/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.0.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 3.0.6;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2274,7 +2361,11 @@
 				);
 				INFOPLIST_FILE = statisticsTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2319,7 +2410,10 @@
 					"$(SRCROOT)/../node_modules/react-native-location/ios",
 				);
 				INFOPLIST_FILE = "statistics-tvOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2365,7 +2459,11 @@
 					"$(SRCROOT)/../node_modules/react-native-location/ios",
 				);
 				INFOPLIST_FILE = "statistics-tvOSTests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",

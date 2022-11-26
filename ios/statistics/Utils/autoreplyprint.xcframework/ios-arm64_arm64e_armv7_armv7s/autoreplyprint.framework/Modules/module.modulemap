@@ -1,0 +1,6 @@
+framework module autoreplyprint {
+  umbrella header "autoreplyprint.h"
+
+  export *
+  module * { export * }
+}
