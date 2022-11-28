@@ -708,7 +708,7 @@ class FeeDetailPage extends BasePage {
                                 onChange={event => {
                                     this.checkAll();
                                 }}
-                            ><Text style={{ paddingTop: 3, paddingLeft: 3, paddingRight: 48, color: '#666' }}>全选</Text></Checkbox>
+                            ><Text style={{ paddingTop: 3, paddingLeft: 3, color: '#666' }}>全选</Text></Checkbox>
 
                             <Checkbox
                                 defaultChecked={false}
