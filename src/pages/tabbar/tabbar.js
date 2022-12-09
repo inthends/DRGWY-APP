@@ -174,6 +174,8 @@ const navigatorNavigator = createStackNavigator({
 
   scan: ScanScreen, //威富通扫码
   jlscan: JLScanScreen, //嘉联扫码
+  bcmscan: BCMScanScreen, //交通银行扫码
+
   service: FuWuDanListDetailPage,
   wancheng: WanChengListDetailPage,
   jianyan: JianYanListDetailPage,

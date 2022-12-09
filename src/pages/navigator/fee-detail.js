@@ -247,7 +247,7 @@ class FeeDetailPage extends BasePage {
                                 // isML: isML,
                                 // mlType: mlType,
                                 // mlScale: mlScale,
-                                //mlAmount: mlAmount,
+                                // mlAmount: mlAmount,
                                 out_trade_no: res.out_trade_no,
                                 printAgain: false,
                                 callBack: this.callBack
@@ -257,9 +257,15 @@ class FeeDetailPage extends BasePage {
                                 out_trade_no: res.out_trade_no
                             });
                         }
+                        else if (posType === '交通银行') {
+                            this.props.navigation.push('bcmscan', {
+                                out_trade_no: res.out_trade_no
+                            });
+                        }
                     });
                     break;
                 }
+                
                 case '收款码': {
                     NavigatorService.createOrder(ids, isML, mlType, mlScale).then(res => {
                         let posType = res.posType;

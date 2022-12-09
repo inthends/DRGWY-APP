@@ -216,7 +216,24 @@ export default {
     return api.postData(
       '/api/MobileMethod/JLScanPayQuery',
       { tbout_trade_no },
-      false,
+      false
+    );
+  },
+
+  //交通银行扫码
+  bcmScanPay(auth_code, tbout_trade_no) {
+    return api.postData('/api/MobileMethod/BCMScanPay', {
+      auth_code,
+      tbout_trade_no
+    });
+  },
+
+  //交通银行扫码，查询支付结果
+  bcmScanPayQuery(tbout_trade_no) {
+    return api.postData(
+      '/api/MobileMethod/BCMScanPayQuery',
+      { tbout_trade_no },
+      false
     );
   },
 
@@ -224,7 +241,7 @@ export default {
   wftScanPay(auth_code, tbout_trade_no) {
     return api.postData('/api/MobileMethod/WFTScanPay', {
       auth_code,
-      tbout_trade_no,
+      tbout_trade_no
     });
   },
   //威富通扫码，查询支付结果
@@ -232,7 +249,7 @@ export default {
     return api.postData(
       '/api/MobileMethod/WFTScanPayQuery',
       { tbout_trade_no },
-      false,
+      false
     );
   },
   //扫付款码,威富通接口支付失败，冲正接口进行关单
@@ -240,7 +257,7 @@ export default {
     return api.postData(
       '/api/MobileMethod/WFTScanPayReserve',
       { tbout_trade_no },
-      false,
+      false
     );
   },
 
@@ -265,7 +282,7 @@ export default {
       linkId,
       isML,
       mlType,
-      mlScale,
+      mlScale
     });
   },
 
@@ -277,7 +294,7 @@ export default {
     return api.postData(
       '/api/MobileMethod/WFTPayResult',
       { out_trade_no },
-      false,
+      false
     );
   },
 
@@ -294,12 +311,12 @@ export default {
   getFeeItemDetail(unitId, feeItemId) {
     return api.getData('/api/MobileMethod/GetFeeItemDetail', {
       unitId,
-      feeItemId,
+      feeItemId
     });
   },
   saveFee(unitId, bills) {
     return api.postData('/api/MobileMethod/SaveFee', {
-      bills: JSON.stringify(bills),
+      bills: JSON.stringify(bills)
     });
   },
   invalidBillForm(keyvalue) {
@@ -307,7 +324,7 @@ export default {
   },
   billDetailList(billId) {
     return api.postData('/api/MobileMethod/MGetChargeBillDetailList', {
-      billId,
+      billId
     });
   },
 
@@ -331,5 +348,5 @@ export default {
     return api.getData('/api/MobileMethod/MGetDataItemTreeJson', {
       code: 'ComplainType',
     });
-  },
+  }
 };
