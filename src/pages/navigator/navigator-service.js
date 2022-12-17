@@ -220,7 +220,7 @@ export default {
     );
   },
 
-  //交通银行扫码
+  //交通银行人民币扫码
   bcmScanPay(auth_code, tbout_trade_no) {
     return api.postData('/api/MobileMethod/BCMScanPay', {
       auth_code,
@@ -228,10 +228,27 @@ export default {
     });
   },
 
-  //交通银行扫码，查询支付结果
+  //交通银行人民币扫码，查询支付结果
   bcmScanPayQuery(tbout_trade_no) {
     return api.postData(
       '/api/MobileMethod/BCMScanPayQuery',
+      { tbout_trade_no },
+      false
+    );
+  },
+
+  //交通银行数字货币扫码
+  bcmMisScanPay(auth_code, tbout_trade_no) {
+    return api.postData('/api/MobileMethod/BCMMisScanPay', {
+      auth_code,
+      tbout_trade_no
+    });
+  },
+
+  //交通银行数字货币扫码，查询支付结果
+  bcmMisScanPayQuery(tbout_trade_no) {
+    return api.postData(
+      '/api/MobileMethod/BCMMisScanPayQuery',
       { tbout_trade_no },
       false
     );

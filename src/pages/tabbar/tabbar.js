@@ -85,6 +85,7 @@ import ShebeiDetail from '../navigator/she-bei/detail';
 import LouPark from '../navigator/house-infomation/lou-park';
 
 import JLScanScreen from '../navigator/jlscanner';
+import BCMScanScreen from '../navigator/bcmscanner';
 import shenpi from '../shenpi';
 import fukuan from '../shenpi/fukuan';
 import jianmian from '../shenpi/jianmian';

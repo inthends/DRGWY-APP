@@ -135,7 +135,7 @@ class StartXunJianPage extends BasePage {
             return item
         })
         this.setState({ inspectData });
-        console.log('888888888' + this.state);
+        //console.log('888888888' + this.state);
     }
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
         const { images, data } = this.state;
