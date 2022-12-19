@@ -78,9 +78,17 @@ class StartXunJianPage extends BasePage {
                 images = images.filter((item, index) => index !== images.length - 1);
             }
             console.log(images);
-            this.setState({ images });
+            if (images.length > 1){
+                if (!!images[0]){
+                    this.setState({ images });
+                }
+            }
+            else{
+                this.setState({ images });
+            }
+            
         }).catch(error => {
-
+            console.log(error);
         });
     };
     submit = () => {
@@ -103,10 +111,15 @@ class StartXunJianPage extends BasePage {
             })
         }
         if (this.props.hasNetwork) {
-            let arrStr = JSON.stringify(newInspectData)
-            XunJianService.xunjianExecute(id, person.id, person.name, arrStr).then(res => {
-                this.props.navigation.goBack();
-            });
+            if (this.state.images.length > 1){
+                let arrStr = JSON.stringify(newInspectData)
+                XunJianService.xunjianExecute(id, person.id, person.name, arrStr).then(res => {
+                    this.props.navigation.goBack();
+                });
+            }
+            else{
+                UDToast.showSuccess('请上传图片');
+            }
         } else {
             let images = this.state.images.filter(item => item.icon.fileUri && item.icon.fileUri.length > 0);
             this.props.saveXunJianAction({
@@ -135,7 +148,7 @@ class StartXunJianPage extends BasePage {
             return item
         })
         this.setState({ inspectData });
-        //console.log('888888888' + this.state);
+        console.log('888888888' + this.state);
     }
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
         const { images, data } = this.state;
@@ -173,8 +186,7 @@ class StartXunJianPage extends BasePage {
                                 );
                             })}
                         </Flex>
-                    </Flex>
-
+                    </Flex> 
                     <Flex style={{
                         minHeight: 40,
                         marginBottom: 30,

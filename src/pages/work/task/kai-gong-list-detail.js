@@ -182,7 +182,7 @@ export default class KaiGongListDetailPage extends BasePage {
                         </Flex>
                     </TouchableWithoutFeedback>
                     <DashLine />
-                    {/* <UploadImageView style={{marginTop:10}}/> */}
+                    <UploadImageView style={{marginTop:10}} linkId={this.state.fuwu.id} />
                     <View style={{
                         margin: 15,
                         borderStyle: 'solid',

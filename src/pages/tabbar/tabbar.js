@@ -92,6 +92,7 @@ import jianmian from '../shenpi/jianmian';
 import songshen from '../shenpi/songshen';
 import chuzunew from '../shenpi/chuzun-new';
 import chuzuchange from '../shenpi/chuzun-change';
+import webPage from '../shenpi/components/web-page';
 import chuzutui from '../shenpi/chuzun-tui';
 import wuyenew from '../shenpi/wuye-new';
 import wuyexu from '../shenpi/wuye-xu';
@@ -264,6 +265,7 @@ const ShenPiNavigator = createStackNavigator({
   zulinplan,
   caigou,
   baoxiao,
+  webPage
 });
 ShenPiNavigator.navigationOptions = ({ navigation }) => ({
   tabBarVisible: navigation.state.index === 0,
