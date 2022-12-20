@@ -101,10 +101,10 @@ export default {
     endTime,
     repairArea,
   ) {
+
     /*
         {:,treeType:,organizeId:billType:,startTime:,endTime:,}
          */
-
     // if (billType === '报修') {
     //     url = '';
     // } else if (billType === '投诉') {
@@ -120,7 +120,7 @@ export default {
       organizeId,
       startTime,
       endTime,
-      repairArea,
+      repairArea
     });
   },
 
@@ -156,7 +156,8 @@ export default {
   //     return api.getData(url,{keyvalue});
   // }
 
-  collectionRate(page, estateId, type) {
+  //add time search
+  collectionRate(page, estateId, type, startTime, endTime) {
     let url;
     switch (page) {
       case 1: {
@@ -186,7 +187,12 @@ export default {
       default:
         break;
     }
-    return api.postData(url, { estateId, type });
+    return api.postData(url, {
+      estateId,
+      type,
+      startTime,
+      endTime
+    });
   },
 
   // createOrder(linkId) {
@@ -361,7 +367,7 @@ export default {
       code: 'RepairMajor',
     });
   },
-  
+
   // 投诉完成率下拉接口
   GetDataItemTreeJsonComplainType() {
     return api.getData('/api/MobileMethod/MGetDataItemTreeJson', {

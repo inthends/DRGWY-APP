@@ -137,8 +137,7 @@ class CollectionRatePage extends BasePage {
 
   render() {
     const { titles = [] } = this.state; 
-    let { option, tableData} = this.state.res; 
-    // console.log(123456,option) 
+    let { option, tableData} = this.state.res;
     // option = {
     //     "xAxis":{
     //         "type":"category",

@@ -1,22 +1,23 @@
-import React  from 'react';
-import { 
+import React from 'react';
+import {
   Text,
-  StyleSheet, 
-  ScrollView, 
-  TouchableWithoutFeedback, 
+  StyleSheet,
+  ScrollView,
+  TouchableWithoutFeedback,
   TouchableOpacity,
 } from 'react-native';
 
-import BasePage from '../../base/base'; 
-import { 
+import BasePage from '../../base/base';
+import {
   Flex,
   Icon
-} from '@ant-design/react-native'; 
-import { connect } from 'react-redux'; 
-import ScreenUtil from '../../../utils/screen-util'; 
-import Echarts from 'native-echarts'; 
+} from '@ant-design/react-native';
+import { connect } from 'react-redux';
+import ScreenUtil from '../../../utils/screen-util';
+import common from '../../../utils/common';
+import Echarts from 'native-echarts';
 import DashLine from '../../../components/dash-line';
-import NavigatorService from '../navigator-service'; 
+import NavigatorService from '../navigator-service';
 import MyPopover from '../../../components/my-popover';
 import CommonView from '../../../components/CommonView';
 import { Table, Row, Rows } from 'react-native-table-component';
@@ -43,6 +44,7 @@ class QianFeiZhangLingPage extends BasePage {
     super(props);
     this.state = {
       count: 0,
+      ym: common.getYM('2020-01'),
       selectBuilding: this.props.selectBuilding || {},
       statistics: [],
     };
@@ -55,7 +57,7 @@ class QianFeiZhangLingPage extends BasePage {
         titles: ['全部', ...titles],
       });
     });
-    this.initData();
+    this.getStatustics();
   }
 
   componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
@@ -75,27 +77,35 @@ class QianFeiZhangLingPage extends BasePage {
           index: 0,
         },
         () => {
-          this.initData();
+          this.getStatustics();//initData(); 
         },
       );
     }
   }
 
-  initData = () => {
-    NavigatorService.getFeeStatistics(
-      1,
-      this.state.selectBuilding.key,
-      100000,
-    ).then((statistics) => {
-      this.setState({ statistics: statistics.data || [] }, () => {
-        this.getStatustics();
-      });
-    });
-  };
+  //废弃
+  // initData = () => {
+  //   NavigatorService.getFeeStatistics(
+  //     1,
+  //     this.state.selectBuilding.key,
+  //     100000,
+  //   ).then((statistics) => {
+  //     this.setState({ statistics: statistics.data || [] }, () => {
+  //       this.getStatustics();
+  //     });
+  //   });
+  // };
 
   getStatustics = () => {
-    const { estateId, type } = this.state;
-    NavigatorService.collectionRate(3, estateId, type).then((res) => {
+    const { estateId, type, time } = this.state;
+    let startTime = common.getMonthFirstDay(time);
+    let endTime = common.getMonthLastDay(time);
+    NavigatorService.collectionRate(3,
+      estateId,
+      type,
+      startTime,
+      endTime
+    ).then((res) => {
       this.setState({ res });
     });
   };
@@ -112,7 +122,7 @@ class QianFeiZhangLingPage extends BasePage {
     this.setState(
       {
         index,
-        estateId,
+        estateId
       },
       () => {
         this.getStatustics();
@@ -131,21 +141,28 @@ class QianFeiZhangLingPage extends BasePage {
     );
   };
 
-  render() {
-    const { titles = [] } = this.state;
+  timeChange = (time) => {
+    this.setState({
+      time,
+      pageIndex: 1,
+    }, () => {
+      this.onRefresh();
+    });
 
+  };
+
+  render() {
+    const { titles = [], ym } = this.state;
     let {
       option,
       xName,
-      yName, 
+      yName,
       tableData = [],
       tableHead = [],
     } = this.state.res || {};
-    // console.log(123456, tableHead, tableData);
-
+    // console.log(123456, tableHead, tableData); 
     // option =
     // {
-
     //       "xAxis": {
     //         "type": "category",
     //         "name": "x",
@@ -211,6 +228,7 @@ class QianFeiZhangLingPage extends BasePage {
     // tableHead = ['欠费月数', '欠费户数', '欠费金额'];
 
     return (
+
       <CommonView style={{ flex: 1 }}>
         <ScrollView style={{ flex: 1 }}>
           <Flex
@@ -228,6 +246,9 @@ class QianFeiZhangLingPage extends BasePage {
                 titles={titles}
                 visible={true}
               />
+
+              <MyPopover onChange={this.timeChange} titles={ym} visible={true} />
+
             </Flex>
           </Flex>
           <DashLine
@@ -253,7 +274,7 @@ class QianFeiZhangLingPage extends BasePage {
 const styles = StyleSheet.create({
   header: {},
   left: {
-    width: ScreenUtil.deviceWidth() / 3.0 - 15, 
+    width: ScreenUtil.deviceWidth() / 3.0 - 15,
     borderStyle: 'solid',
     borderWidth: 1,
     borderColor: '#ccc',

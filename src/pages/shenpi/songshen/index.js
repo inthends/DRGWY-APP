@@ -120,7 +120,13 @@ export default class EfuwuDetailPage extends BasePage {
               {detail.receiveDetail}
             </Text>
           </Flex>
-         <ShowFiles files={detail.list}/>
+         <ShowFiles files={detail.list} onPress={
+            (fileStr)=>{
+              this.props.navigation.navigate('webPage',{
+                data: fileStr,
+              });
+            }
+          }/>
           <ShowActions
             state={this.state}
             click={() => {

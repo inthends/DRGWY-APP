@@ -1,5 +1,5 @@
 //工作台导航
-import React, { Fragment } from 'react';
+import React from 'react';
 import {
   Text,
   StyleSheet,
@@ -9,11 +9,11 @@ import {
 
 import BasePage from '../base/base';
 import { Flex } from '@ant-design/react-native';
-import Macro from '../../utils/macro';
+//import Macro from '../../utils/macro';
 import LoadImage from '../../components/load-image';
 import CommonView from '../../components/CommonView';
 import ScreenUtil from '../../utils/screen-util';
-import ChaoBiaoPage from './chao-biao/chao-biao';
+//import ChaoBiaoPage from './chao-biao/chao-biao';
 
 export default class NavigatorPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
@@ -33,7 +33,7 @@ export default class NavigatorPage extends BasePage {
     };
   }
 
-  componentDidMount(): void {}
+  componentDidMount(): void { }
 
   render() {
     const { statistics, dataInfo } = this.state;
@@ -200,7 +200,10 @@ export default class NavigatorPage extends BasePage {
             </Flex>
             <Flex justify={'between'} style={styles.cellContnent}>
               <TouchableWithoutFeedback
-                onPress={() => this.props.navigation.push('collection')}
+                onPress={() =>
+
+                  this.props.navigation.push('collection')
+                }
               >
                 <Flex style={styles.left}>
                   <LoadImage
