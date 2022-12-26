@@ -251,7 +251,7 @@ class EstateFuwuPage extends BasePage {
 
 
     render() {
-        const { statistics, dataInfo, ym } = this.state;
+        const {  dataInfo, ym } = this.state;
         return (
 
 

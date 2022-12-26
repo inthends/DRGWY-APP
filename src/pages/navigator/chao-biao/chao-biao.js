@@ -66,7 +66,8 @@ class ChaoBiaoPage extends BasePage {
         }
         this.state = {
             count: 0,
-            selectBuilding: this.props.selectBuilding || {},
+            //selectBuilding: this.props.selectBuilding || {},
+            selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
             dataInfo: {
                 data: [],
             },

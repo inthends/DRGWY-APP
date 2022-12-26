@@ -45,8 +45,10 @@ class QianFeiZhangLingPage extends BasePage {
     this.state = {
       count: 0,
       ym: common.getYM('2020-01'),
-      selectBuilding: this.props.selectBuilding || {},
-      statistics: [],
+      time: common.getCurrentYearAndMonth(),
+      //selectBuilding: this.props.selectBuilding || {}//选择的管理处
+      selectBuilding: {}//默认为空，防止别的报表选择了机构，带到当前报表
+      // statistics: [],
     };
   }
 
@@ -60,7 +62,8 @@ class QianFeiZhangLingPage extends BasePage {
     this.getStatustics();
   }
 
-  componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
+  // componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
+  componentWillReceiveProps(nextProps: Readonly<P>): void {
     const selectBuilding = this.state.selectBuilding;
     const nextSelectBuilding = nextProps.selectBuilding;
     if (
@@ -110,45 +113,44 @@ class QianFeiZhangLingPage extends BasePage {
     });
   };
 
-  titleChange = (index) => {
-    const { statistics } = this.state;
-    console.log(this.state);
-    let estateId;
-    if (index === 0) {
-      estateId = this.state.selectBuilding.key;
-    } else {
-      estateId = statistics[index - 1].id;
-    }
-    this.setState(
-      {
-        index,
-        estateId
-      },
-      () => {
-        this.getStatustics();
-      },
-    );
-  };
+  // titleChange = (index) => {
+  //   const { statistics } = this.state; 
+  //   let estateId;
+  //   if (index === 0) {
+  //     estateId = this.state.selectBuilding.key;
+  //   } else {
+  //     estateId = statistics[index - 1].id;
+  //   }
+  //   this.setState(
+  //     {
+  //       index,
+  //       estateId
+  //     },
+  //     () => {
+  //       this.getStatustics();
+  //     },
+  //   );
+  // };
+
   typeChange = (title, index) => {
-    const titles = this.state.titles || [];
+    //const titles = this.state.titles || [];
     this.setState(
       {
         type: index == 0 ? '' : title,
       },
       () => {
         this.getStatustics();
-      },
+      }
     );
   };
 
   timeChange = (time) => {
     this.setState({
       time,
-      pageIndex: 1,
+      pageIndex: 1
     }, () => {
-      this.onRefresh();
+      this.getStatustics();
     });
-
   };
 
   render() {
