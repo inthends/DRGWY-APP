@@ -1,0 +1,20 @@
+打包失败
+提示 程序包android.support.v4.content不存在
+找到java文件
+替换成 androidx.core.content
+其他同理
+2022-12-26
+
+
+"rn-app-upgrade": "^1.0.6"
+
+rn-app-upgrade 组件
+DownloadService 类，有bug
+
+//        String appName = getString(getApplicationInfo().labelRes);
+//        int icon = getApplicationInfo().icon;
+//        mBuilder.setContentTitle(appName).setSmallIcon(icon);
+
+        String appName =  getApplicationInfo().nonLocalizedLabel.toString();
+        int icon = getApplicationInfo().icon;
+        mBuilder.setContentTitle(appName).setSmallIcon(icon);
