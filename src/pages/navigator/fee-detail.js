@@ -123,7 +123,7 @@ class FeeDetailPage extends BasePage {
             if (day.length === 1) {
                 day = 0 + day;
             }
-            console.log(year + '-' + month + '-' + day)
+            //console.log(year + '-' + month + '-' + day)
             return year + '-' + month + '-' + day;
         }
     }
@@ -159,7 +159,7 @@ class FeeDetailPage extends BasePage {
             NativeModules.LHNToast.getPOSType((isLKL, isYse) => {
                 this.setState({
                     isLKL: isLKL,
-                    isYse: isYse,
+                    isYse: isYse
                 });
             });
         }
@@ -191,7 +191,7 @@ class FeeDetailPage extends BasePage {
     click = (title) => {
         const items = this.state.dataInfo.data.filter(item => item.select === true);
         if (items.length === 0) {
-            UDToast.showError('请选择');
+            UDToast.showError('请选择费用');
         } else {
             let ids = JSON.stringify((items.map(item => item.id)));
             const { isML, mlType, mlScale, isDigital } = this.state;
@@ -354,7 +354,7 @@ class FeeDetailPage extends BasePage {
 
         const items = this.state.dataInfo.data.filter(item => item.select === true);
         if (items.length === 0) {
-            UDToast.showError('请选择');
+            UDToast.showError('请选择费用');
         } else {
             let ids = JSON.stringify((items.map(item => item.id)));
             const { room } = this.state;
@@ -391,22 +391,27 @@ class FeeDetailPage extends BasePage {
     onRefresh = () => {
         const { pageIndex, type, room, isShow } = this.state;
         NavigatorService.getBillList(type, room.id, isShow, pageIndex, 1000).then(dataInfo => {
+            //重置选择框状态值
             this.setState({
                 dataInfo: dataInfo,
+                isML: false,
+                isCIBLife: false,
+                mlType: '抹去角',
+                mlScale: '四舍五入',
+                price: 0.00,
+                mlAmount: 0.00
             }, () => {
-                // console.log(this.state);
+                //console.log(this.state);
             });
         });
     };
 
     typeOnChange = (type, isShow) => {
-        // console.log(type);
+
         this.setState({
             type,
             isShow,
-            dataInfo: {
-                data: [],
-            }
+            dataInfo: { data: [] }
         }, () => {
             this.onRefresh();
         });
@@ -693,7 +698,7 @@ class FeeDetailPage extends BasePage {
     //}
 
     render() {
-        const { dataInfo, type, room, price, mlAmount } = this.state;
+        const { isDigital, isML, dataInfo, type, room, price, mlAmount } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
                 <ScrollView
@@ -719,6 +724,7 @@ class FeeDetailPage extends BasePage {
 
                             <Checkbox
                                 defaultChecked={false}
+                                checked={isDigital}
                                 onChange={(e) => {
                                     this.setState({ isDigital: e.target.checked });
                                 }}
@@ -726,12 +732,12 @@ class FeeDetailPage extends BasePage {
 
                             <Checkbox
                                 defaultChecked={false}
+                                checked={isML}
                                 onChange={(e) => {
                                     this.setState({ isML: e.target.checked });
                                     //算抹零金额
                                     this.mlCal(e.target.checked, this.state.mlType, this.state.mlScale);
-                                }}
-                            ><Text style={{ paddingTop: 3, paddingLeft: 3, color: '#666' }}>抹零</Text></Checkbox>
+                                }}><Text style={{ paddingTop: 3, paddingLeft: 3, color: '#666' }}>抹零</Text></Checkbox>
 
                             <MyPopover
                                 textStyle={{ fontSize: 14 }}

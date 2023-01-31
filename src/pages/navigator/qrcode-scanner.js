@@ -80,28 +80,30 @@ export default class ScanScreen extends Component {
             //let mlType = common.getValueFromProps(this.props, 'mlType');
             //let mlScale = common.getValueFromProps(this.props, 'mlScale');
             let out_trade_no = common.getValueFromProps(this.props, 'out_trade_no');
-            let callBack = common.getValueFromProps(this.props, 'callBack'); 
+            let callBack = common.getValueFromProps(this.props, 'callBack');
             //NavigatorService.createOrder(ids, isML, mlType, mlScale).then(res => {
-                NavigatorService.wftScanPay(result.data, out_trade_no).then(resp => {
-                    if (resp === 'need_query') {
-                        this.needQuery(out_trade_no);
-                    } else {
-                        callBack(out_trade_no);
-                        this.props.navigation.goBack();
-                    }
-                }).catch(() => {
-                    this.setState({
-                        result: null,
-                        count: null,
-                    });
+            NavigatorService.wftScanPay(result.data, out_trade_no).then(resp => {
+                if (resp === 'need_query') {
+                    this.needQuery(out_trade_no);
+                }
+                else {
+                    //支付成功
+                    callBack(out_trade_no);
+                    this.props.navigation.goBack();
+                }
+            }).catch(() => {
+                this.setState({
+                    result: null,
+                    count: null,
                 });
+            });
 
-                // this.props.navigation.navigate('feeDetail', {
-                //     data: {
-                //         b:tbout_trade_no,
-                //         a:e.data,
-                //     }
-                // })
+            // this.props.navigation.navigate('feeDetail', {
+            //     data: {
+            //         b:tbout_trade_no,
+            //         a:e.data,
+            //     }
+            // })
 
             // }).catch(() => {
             //     this.setState({
@@ -109,7 +111,7 @@ export default class ScanScreen extends Component {
             //         count: null,
             //     });
             // });
-        }); 
+        });
     };
 
     needQuery(out_trade_no) {

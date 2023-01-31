@@ -39,14 +39,14 @@ class SettingPage extends BasePage {
         };
     }
 
-    componentDidMount(): void {
-        console.log('network', this.props);
-    }
+    // componentDidMount(): void {
+    //     console.log('network', this.props);
+    // }
 
     logout = () => {
-        this.showActionSheet();
-
+        this.showActionSheet(); 
     };
+
     showActionSheet = () => {
         const BUTTONS = [
             '确认退出',
@@ -77,8 +77,9 @@ class SettingPage extends BasePage {
     changePrint() {
         NativeModules.LHNToast.changeprint();
     }
+
     update() {
-        console.log(11, this.props);
+        //console.log(11, this.props);
 
         this.loading = UDToast.showLoading('正在同步中...');
         XunJianService.xunjianData(this.props.user.userId, false).then(resp => {
@@ -196,7 +197,7 @@ class SettingPage extends BasePage {
     }
 
     render() {
-        const { data } = this.state;
+        //const { data } = this.state;
         return (
             <View style={{ backgroundColor: '#E8E8E8', flex: 1 }}>
                 <List renderHeader={<View style={{ height: 10 }} />}>
@@ -257,40 +258,38 @@ class SettingPage extends BasePage {
     }
 }
 
-const styles = StyleSheet.create({
-    all: {
-        backgroundColor: Macro.color_white,
-    },
-    content: {
-        backgroundColor: Macro.color_white,
-        paddingLeft: 20,
-        paddingRight: 20,
-        height: ScreenUtil.contentHeight(),
-    },
-    header: {
-        paddingTop: 30,
-        paddingBottom: 30,
-    },
-    name: {
-        fontSize: 20,
-        color: '#333',
+// const styles = StyleSheet.create({
+//     all: {
+//         backgroundColor: Macro.color_white,
+//     },
+//     content: {
+//         backgroundColor: Macro.color_white,
+//         paddingLeft: 20,
+//         paddingRight: 20,
+//         height: ScreenUtil.contentHeight(),
+//     },
+//     header: {
+//         paddingTop: 30,
+//         paddingBottom: 30,
+//     },
+//     name: {
+//         fontSize: 20,
+//         color: '#333',
 
-    },
-    desc: {
-        fontSize: 16,
-        color: '#999',
-        paddingTop: 5,
-    },
-    item: {
-        fontSize: 16,
-        color: '#333',
-    },
-});
+//     },
+//     desc: {
+//         fontSize: 16,
+//         color: '#999',
+//         paddingTop: 5,
+//     },
+//     item: {
+//         fontSize: 16,
+//         color: '#333',
+//     },
+// });
 
 const mapStateToProps = ({ memberReducer, xunJianReducer }) => {
-    const user = memberReducer.user || {};
-
-
+    const user = memberReducer.user || {}; 
     return {
         hasNetwork: memberReducer.hasNetwork,
         user: {
@@ -300,6 +299,7 @@ const mapStateToProps = ({ memberReducer, xunJianReducer }) => {
         ...xunJianReducer,
     };
 };
+
 const mapDispatchToProps = (dispatch) => {
     return {
         savehasNetwork(user) {
@@ -311,5 +311,6 @@ const mapDispatchToProps = (dispatch) => {
 
     };
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(SettingPage);
 
