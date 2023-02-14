@@ -37,7 +37,7 @@ class XunjianBeforeStart extends BasePage {
             this.initUI();
         } else {
             const items = this.props.xunJianData.scanLists.filter(item => item.pointId === pointId);
-            console.log(211, items);
+            //console.log(211, items);
             this.setState({ items });
         }
 
@@ -47,7 +47,7 @@ class XunjianBeforeStart extends BasePage {
                 if (this.props.hasNetwork) {
                     this.initUI(false);
                 } else {
-                    console.log(11, this.props);
+                    //console.log(11, this.props);
                 }
             },
         );

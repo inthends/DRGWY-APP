@@ -6,8 +6,8 @@ import { Modal, ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-nati
 // import ScreenUtil from '../../../utils/screen-util';
 // import LoadImage from '../../../components/load-image';
 import CommonView from '../../../components/CommonView';
-// import ScrollTitle from '../../../components/scroll-title';
-import XunJianComponent from './xunjian-component';
+// import ScrollTitle from '../../../components/scroll-title'; 
+import XunJianViewComponent from './xunjian-componentview';
 import ListImages from '../../../components/list-images';
 import common from '../../../utils/common';
 import XunJianService from './xunjian-service';
@@ -65,7 +65,7 @@ export default class XunJianDetailPage extends BasePage {
                 <ScrollView>
                     <Flex direction={'column'} align={'start'} style={styles.content}>
                         <Text style={styles.title}>{data.pointName}</Text>
-                        <XunJianComponent data={data} />
+                        <XunJianViewComponent data={data} />
                     </Flex>
                     <ListImages images={images} lookImage={this.lookImage} />
                     <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>

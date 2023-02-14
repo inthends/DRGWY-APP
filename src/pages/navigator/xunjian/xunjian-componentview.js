@@ -1,4 +1,4 @@
-//巡检页面
+//巡检查看页面
 import React, { Fragment } from 'react';
 import BasePage from '../../base/base';
 import { Flex } from '@ant-design/react-native';
@@ -7,35 +7,14 @@ import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View, TextInput
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 
-export default class XunJianDetailPage extends BasePage {
+export default class XunJianDetailViewPage extends BasePage {
     constructor(props) {
         super(props);
-        this.state = {
-            list: []
-        };
-    }
-
-    isNormal(itemData) {
-        let newlist = this.state.list;
-        newlist.filter((item) => {
-            if (item.id === itemData.id) {
-                return itemData;
-            }
-            else {
-                return item;
-            }
-        });
-        this.setState({ list: newlist });
-        //如果是查看页面，则不更改数据
-        if (this.props._inspecting)
-            this.props._inspecting(newlist);
     }
 
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
 
         const { data } = this.props;
-        const { list } = this.state;
-
         const selectImg = require('../../../static/images/select.png');
         const noselectImg = require('../../../static/images/no-select.png');
 
@@ -62,20 +41,6 @@ export default class XunJianDetailPage extends BasePage {
                     <Text style={styles.title}>内容</Text>
 
                     {!!data.contents && data.contents.map((item, index) => {
-
-                        let currentItem = { id: item.id, contentId: item.contentId, result: 1, msg: '' };
-                        let isContains = false;
-                        list.map((subItem) => {
-                            if (subItem.id === item.id) {
-                                currentItem = subItem;
-                                isContains = true;
-                            }
-                        });
-
-                        if (!isContains) {
-                            list.push(currentItem);
-                        }
-
                         return <Fragment key={item.id}>
                             <Flex direction={'column'}
                                 align={'start'}
@@ -92,26 +57,18 @@ export default class XunJianDetailPage extends BasePage {
                                 <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
                                     <Text style={styles.blueText}>结果：</Text>
                                     <View style={{ flexDirection: 'column', paddingTop: 2 }}>
-                                        <TouchableWithoutFeedback
-                                            onPress={() => {
-                                                currentItem.result = 1;
-                                                this.isNormal(currentItem);
-                                            }}>
+                                        <TouchableWithoutFeedback >
                                             <Flex>
-                                                <LoadImage img={currentItem.result === 1 ? selectImg : noselectImg}
+                                                <LoadImage img={item.result === 1 ? selectImg : noselectImg}
                                                     style={{ width: 15, height: 15 }} />
                                                 <Text style={{ color: '#666', fontSize: 15, marginLeft: 15 }}>正常</Text>
                                             </Flex>
                                         </TouchableWithoutFeedback>
 
                                         <View flexDirection={'row'} marginTop={5} style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-                                            <TouchableWithoutFeedback
-                                                onPress={() => {
-                                                    currentItem.result = 0;
-                                                    this.isNormal(currentItem);
-                                                }}>
+                                            <TouchableWithoutFeedback >
                                                 <Flex>
-                                                    <LoadImage img={currentItem.result === 0 ? selectImg : noselectImg}
+                                                    <LoadImage img={item.result === 0 ? selectImg : noselectImg}
                                                         style={{ width: 15, height: 15 }} />
                                                     <Text style={{ color: '#666', fontSize: 15, paddingLeft: 15 }}>异常</Text>
                                                 </Flex>
@@ -119,13 +76,9 @@ export default class XunJianDetailPage extends BasePage {
 
                                             <TextInput maxLength={500}
                                                 multiline={true}
-                                                editable={currentItem.result === 0}
+                                                editable={false}
                                                 keyboardType={'default'}
-                                                style={currentItem.result === 0 ? styles.textInput : { height: 1 }}
-                                                onChangeText={memo => {
-                                                    currentItem.msg = memo;
-                                                    this.isNormal(currentItem);
-                                                }}
+                                                style={item.result === 0 ? styles.textInput : { height: 1 }} 
                                             ></TextInput>
                                         </View>
                                     </View>

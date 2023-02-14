@@ -129,6 +129,12 @@ class FeeDetailPage extends BasePage {
     }
 
     componentDidMount(): void {
+
+        //获取参数，根据是否兴生活缴费来加载按钮
+        NavigatorService.getSettingInfo(this.state.room.organizeId).then((res) => {
+            this.setState({ isCIBLife: res });
+        });
+
         this.needPrintListener = DeviceEventEmitter.addListener('needPrint', () => {
             this.onRefresh();
             this.printInfo(this.state.out_trade_no);
@@ -166,11 +172,6 @@ class FeeDetailPage extends BasePage {
         // else {
         //     //方法待实现
         // }
-
-        //获取参数，根据是否兴生活缴费来加载按钮
-        NavigatorService.getSettingInfo(this.state.room.organizeId).then((res) => {
-            this.setState({ isCIBLife: res });
-        });
 
     }
 
@@ -395,7 +396,7 @@ class FeeDetailPage extends BasePage {
             this.setState({
                 dataInfo: dataInfo,
                 isML: false,
-                isCIBLife: false,
+                isDigital: false,
                 mlType: '抹去角',
                 mlScale: '四舍五入',
                 price: 0.00,

@@ -388,6 +388,7 @@ const tabbar = createBottomTabNavigator(
     },
   },
 );
+
 const { width, height } = Dimensions.get('window');
 const Drawer = createDrawerNavigator(
   {

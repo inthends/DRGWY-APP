@@ -1,18 +1,20 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import BasePage from '../../base/base';
-import { Flex, Accordion, List, Icon } from '@ant-design/react-native';
+import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import CommonView from '../../../components/CommonView';
-import ScrollTitle from '../../../components/scroll-title';
+//import ScrollTitle from '../../../components/scroll-title';
 import XunJianComponent from './xunjian-component';
 import SelectImage from '../../../utils/select-image';
 import XunJianService from './xunjian-service';
 import common from '../../../utils/common';
 import { connect } from 'react-redux';
-import { saveUser, saveXunJian, saveXunJianAction } from '../../../utils/store/actions/actions';
+import { //saveUser, saveXunJian, 
+    saveXunJianAction
+} from '../../../utils/store/actions/actions';
 import UDToast from '../../../utils/UDToast';
 
 class StartXunJianPage extends BasePage {
@@ -36,9 +38,7 @@ class StartXunJianPage extends BasePage {
             inspectData: [],
             ...common.getValueFromProps(this.props), // lineId,pointId,person
         };
-        console.log(this.state);
-
-
+        //console.log(this.state);
     }
 
     componentDidMount(): void {
@@ -77,18 +77,18 @@ class StartXunJianPage extends BasePage {
             if (images.length > 4) {
                 images = images.filter((item, index) => index !== images.length - 1);
             }
-            console.log(images);
-            if (images.length > 1){
-                if (!!images[0]){
+            //console.log(images);
+            if (images.length > 1) {
+                if (!!images[0]) {
                     this.setState({ images });
                 }
             }
-            else{
+            else {
                 this.setState({ images });
             }
-            
+
         }).catch(error => {
-            console.log(error);
+            //console.log(error);
         });
     };
     submit = () => {
@@ -99,25 +99,25 @@ class StartXunJianPage extends BasePage {
         if (inspectData.length === 0) {
             try {
                 data.contents.map((subItem) => {
-                    newInspectData.push({id:subItem.id,taskId:item.id,contentId:subItem.contentId,result: 1,memo:''})
+                    newInspectData.push({ id: subItem.id, taskId: item.id, contentId: subItem.contentId, result: 1, memo: '' })
                 })
             } catch (error) {
                 console.log(error)
             }
         }
-        else{
+        else {
             inspectData.map((subItem) => {
-                newInspectData.push({id:subItem.id,taskId:item.id,contentId:subItem.contentId,result:subItem.result,memo:subItem.msg})
+                newInspectData.push({ id: subItem.id, taskId: item.id, contentId: subItem.contentId, result: subItem.result, memo: subItem.msg })
             })
         }
         if (this.props.hasNetwork) {
-            if (this.state.images.length > 1){
+            if (this.state.images.length > 1) {
                 let arrStr = JSON.stringify(newInspectData)
                 XunJianService.xunjianExecute(id, person.id, person.name, arrStr).then(res => {
                     this.props.navigation.goBack();
                 });
             }
-            else{
+            else {
                 UDToast.showSuccess('请上传图片');
             }
         } else {
@@ -143,13 +143,14 @@ class StartXunJianPage extends BasePage {
     _inspecting(newdata) {
         let inspectData = newdata.filter((item) => {
             if (item.result === 1) {
-                item.msg = ''
+                item.msg = '';
             }
-            return item
+            return item;
         })
         this.setState({ inspectData });
-        console.log('888888888' + this.state);
+        //console.log('888888888' + this.state);
     }
+    
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
         const { images, data } = this.state;
         return (
@@ -186,13 +187,13 @@ class StartXunJianPage extends BasePage {
                                 );
                             })}
                         </Flex>
-                    </Flex> 
+                    </Flex>
                     <Flex style={{
                         minHeight: 40,
                         marginBottom: 30,
                         width: '80%',
                         marginHorizontal: '10%',
-                        flex:1
+                        flex: 1
                     }}>
                         <TouchableWithoutFeedback onPress={this.submit}>
                             <Flex flex={1} justify='center' style={[styles.ii, { backgroundColor: Macro.color_4d8fcc }]}>
