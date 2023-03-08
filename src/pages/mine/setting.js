@@ -1,28 +1,28 @@
 import React from 'react';
-import { View, Text, Button, NativeModules, TouchableWithoutFeedback, TouchableOpacity, StyleSheet } from 'react-native';
+import {View, Text, Button, TouchableWithoutFeedback, TouchableOpacity, StyleSheet} from 'react-native';
 import BasePage from '../base/base';
-import { Icon } from '@ant-design/react-native';
-import { List, WhiteSpace, Flex, TextareaItem, Switch, ActionSheet } from '@ant-design/react-native';
+import {Icon} from '@ant-design/react-native';
+import {List, WhiteSpace, Flex, TextareaItem, Switch, ActionSheet} from '@ant-design/react-native';
 import ScreenUtil from '../../utils/screen-util';
 import LoadImage from '../../components/load-image';
 import Macro from '../../utils/macro';
 import ManualAction from '../../utils/store/actions/manual-action';
 import MineService from './mine-service';
-import { connect } from 'react-redux';
-import { savehasNetwork, saveXunJian } from '../../utils/store/actions/actions';
+import {connect} from 'react-redux';
+import {savehasNetwork, saveXunJian} from '../../utils/store/actions/actions';
 import XunJianService from '../navigator/xunjian/xunjian-service';
 import UDToast from '../../utils/UDToast';
 import WorkService from '../work/work-service';
 import axios from 'axios';
-import common from '../../utils/common';
+
 
 class SettingPage extends BasePage {
-    static navigationOptions = ({ navigation }) => {
+    static navigationOptions = ({navigation}) => {
         return {
             title: '设置',
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
+                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
                 </TouchableOpacity>
             ),
 
@@ -39,14 +39,14 @@ class SettingPage extends BasePage {
         };
     }
 
-    // componentDidMount(): void {
-    //     console.log('network', this.props);
-    // }
+    componentDidMount(): void {
+        console.log('network', this.props);
+    }
 
     logout = () => {
-        this.showActionSheet(); 
-    };
+        this.showActionSheet();
 
+    };
     showActionSheet = () => {
         const BUTTONS = [
             '确认退出',
@@ -74,12 +74,9 @@ class SettingPage extends BasePage {
         UDToast.hiddenLoading(this.loading);
     }
 
-    changePrint() {
-        NativeModules.LHNToast.changeprint();
-    }
 
     update() {
-        //console.log(11, this.props);
+        console.log(11, this.props);
 
         this.loading = UDToast.showLoading('正在同步中...');
         XunJianService.xunjianData(this.props.user.userId, false).then(resp => {
@@ -121,7 +118,7 @@ class SettingPage extends BasePage {
             if (works.length === 0) {
                 return resolve();
             } else {
-                return Promise.all(works.map(item => WorkService.saveForm(item, false)));
+                return Promise.all(works.map(item => WorkService.saveForm(item,false)));
             }
         });
     }
@@ -132,11 +129,11 @@ class SettingPage extends BasePage {
                 return resolve();
             } else {
                 return Promise.all(imageObjs.map(i => {
-                    const { id, images } = i;
+                    const {id, images} = i;
                     const formData = new FormData();//如果需要上传多张图片,需要遍历数组,把图片的路径数组放入formData中
                     for (let index = 0; index < images.length; index++) {
                         let img = images[index];
-                        let file = { uri: img.icon.fileUri, type: 'multipart/form-data', name: 'picture.png' };   //这里的key(uri和type和name)不能改变,
+                        let file = {uri: img.icon.fileUri, type: 'multipart/form-data', name: 'picture.png'};   //这里的key(uri和type和name)不能改变,
                         formData.append('Files', file);   //这里的files就是后台需要的key
                     }
                     formData.append('keyvalue', id);
@@ -151,7 +148,7 @@ class SettingPage extends BasePage {
     }
 
     uploading() {
-        const { xunJianAction } = this.props;
+        const {xunJianAction} = this.props;
         let xunJians = [];
         let imageObjs = [];
         let works = [];
@@ -171,7 +168,7 @@ class SettingPage extends BasePage {
         if (xunJians.length > 0) {
             this.loading = UDToast.showLoading('正在上传中...');
             Promise.all(xunJians.map(item => {
-                const { keyvalue, pointStatus, userId, userName } = item;
+                const {keyvalue, pointStatus, userId, userName} = item;
                 return XunJianService.xunjianExecute(keyvalue, pointStatus, userId, userName, false);
             })).then(res => {
                 this.uploadWork(works).then(res => {
@@ -197,59 +194,47 @@ class SettingPage extends BasePage {
     }
 
     render() {
-        //const { data } = this.state;
+        const {data} = this.state;
         return (
-            <View style={{ backgroundColor: '#E8E8E8', flex: 1 }}>
-                <List renderHeader={<View style={{ height: 10 }} />}>
+            <View style={{backgroundColor: '#E8E8E8', flex: 1}}>
+                <List renderHeader={<View style={{height: 10}}/>}>
                     <List.Item extra={<Switch color='#447FEA' checked={this.state.checked}
-                        onChange={checked => this.setState({ checked })} />}>
-                        <Flex style={{ height: 40 }}>
-                            <Text style={{ color: '#666', fontSize: 16 }}>消息推送</Text>
+                                              onChange={checked => this.setState({checked})}/>}>
+                        <Flex style={{height: 40}}>
+                            <Text style={{color: '#666', fontSize: 16}}>消息推送</Text>
                         </Flex>
                     </List.Item>
                 </List>
-                <List renderHeader={<View style={{ height: 10 }} />}>
+                <List renderHeader={<View style={{height: 10}}/>}>
                     <List.Item extra={<Switch color='#447FEA' checked={this.props.hasNetwork}
-                        onChange={checked => this.props.savehasNetwork(checked)} />}>
-                        <Flex style={{ height: 40 }}>
-                            <Text style={{ color: '#666', fontSize: 16 }}>网络有用</Text>
+                                              onChange={checked => this.props.savehasNetwork(checked)}/>}>
+                        <Flex style={{height: 40}}>
+                            <Text style={{color: '#666', fontSize: 16}}>网络有用</Text>
                         </Flex>
                     </List.Item>
                 </List>
-                <List renderHeader={<View style={{ height: 10 }} />}>
+                <List renderHeader={<View style={{height: 10}}/>}>
                     <TouchableWithoutFeedback onPress={() => this.update()}>
                         <List.Item>
-                            <Flex style={{ height: 40 }}>
-                                <Text style={{ color: '#666', fontSize: 16 }}>同步巡检数据</Text>
+                            <Flex style={{height: 40}}>
+                                <Text style={{color: '#666', fontSize: 16}}>同步巡检数据</Text>
                             </Flex>
                         </List.Item>
                     </TouchableWithoutFeedback>
                 </List>
-                {
-                    !common.isIOS() && <List renderHeader={<View style={{ height: 10 }} />}>
-                    <TouchableWithoutFeedback onPress={() => this.changePrint()}>
-                        <List.Item>
-                            <Flex style={{ height: 40 }}>
-                                <Text style={{ color: '#666', fontSize: 16 }}>设置打印机</Text>
-                            </Flex>
-                        </List.Item>
-                    </TouchableWithoutFeedback>
-                </List>
-                }
-
-                <List renderHeader={<View style={{ height: 10 }} />}>
+                <List renderHeader={<View style={{height: 10}}/>}>
                     <TouchableWithoutFeedback onPress={() => this.uploading()}>
                         <List.Item>
-                            <Flex style={{ height: 40 }}>
-                                <Text style={{ color: '#666', fontSize: 16 }}>上传巡检数据</Text>
+                            <Flex style={{height: 40}}>
+                                <Text style={{color: '#666', fontSize: 16}}>上传巡检数据</Text>
                             </Flex>
                         </List.Item>
                     </TouchableWithoutFeedback>
                 </List>
-                <List renderHeader={<View style={{ height: 10 }} />}>
+                <List renderHeader={<View style={{height: 10}}/>}>
                     <TouchableWithoutFeedback onPress={() => this.logout()}>
-                        <Flex justify={'center'} style={{ height: 50 }}>
-                            <Text style={{ color: Macro.work_blue, fontSize: 16 }}>退出登录</Text>
+                        <Flex justify={'center'} style={{height: 50}}>
+                            <Text style={{color: Macro.work_blue, fontSize: 16}}>退出登录</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
                 </List>
@@ -258,38 +243,40 @@ class SettingPage extends BasePage {
     }
 }
 
-// const styles = StyleSheet.create({
-//     all: {
-//         backgroundColor: Macro.color_white,
-//     },
-//     content: {
-//         backgroundColor: Macro.color_white,
-//         paddingLeft: 20,
-//         paddingRight: 20,
-//         height: ScreenUtil.contentHeight(),
-//     },
-//     header: {
-//         paddingTop: 30,
-//         paddingBottom: 30,
-//     },
-//     name: {
-//         fontSize: 20,
-//         color: '#333',
+const styles = StyleSheet.create({
+    all: {
+        backgroundColor: Macro.color_white,
+    },
+    content: {
+        backgroundColor: Macro.color_white,
+        paddingLeft: 20,
+        paddingRight: 20,
+        height: ScreenUtil.contentHeight(),
+    },
+    header: {
+        paddingTop: 30,
+        paddingBottom: 30,
+    },
+    name: {
+        fontSize: 20,
+        color: '#333',
 
-//     },
-//     desc: {
-//         fontSize: 16,
-//         color: '#999',
-//         paddingTop: 5,
-//     },
-//     item: {
-//         fontSize: 16,
-//         color: '#333',
-//     },
-// });
+    },
+    desc: {
+        fontSize: 16,
+        color: '#999',
+        paddingTop: 5,
+    },
+    item: {
+        fontSize: 16,
+        color: '#333',
+    },
+});
 
-const mapStateToProps = ({ memberReducer, xunJianReducer }) => {
-    const user = memberReducer.user || {}; 
+const mapStateToProps = ({memberReducer, xunJianReducer}) => {
+    const user = memberReducer.user || {};
+
+
     return {
         hasNetwork: memberReducer.hasNetwork,
         user: {
@@ -299,7 +286,6 @@ const mapStateToProps = ({ memberReducer, xunJianReducer }) => {
         ...xunJianReducer,
     };
 };
-
 const mapDispatchToProps = (dispatch) => {
     return {
         savehasNetwork(user) {
@@ -311,6 +297,5 @@ const mapDispatchToProps = (dispatch) => {
 
     };
 };
-
 export default connect(mapStateToProps, mapDispatchToProps)(SettingPage);
 

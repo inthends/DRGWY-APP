@@ -42,9 +42,8 @@ class ZiJinLiuPage extends BasePage {
     super(props);
     this.state = {
       count: 0,
-      //selectBuilding: this.props.selectBuilding || {},
-      selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
-      //statistics: [],
+      selectBuilding: this.props.selectBuilding || {},
+      statistics: [],
       res: {
         option: null,
       },
@@ -58,7 +57,7 @@ class ZiJinLiuPage extends BasePage {
         titles: ['全部', ...titles],
       });
     });
-    this.getStatustics();
+    this.initData();
   }
 
   componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
@@ -78,53 +77,52 @@ class ZiJinLiuPage extends BasePage {
           index: 0,
         },
         () => {
-          this.getStatustics();
+          this.initData();
         },
       );
     }
   }
 
-  // initData = () => {
-  //   NavigatorService.getFeeStatistics(
-  //     1,
-  //     this.state.selectBuilding.key,
-  //     100000,
-  //   ).then((statistics) => {
-  //     this.setState({ statistics: statistics.data || [] }, () => {
-  //       this.getStatustics();
-  //     });
-  //   });
-  // };
+  initData = () => {
+    NavigatorService.getFeeStatistics(
+      1,
+      this.state.selectBuilding.key,
+      100000,
+    ).then((statistics) => {
+      this.setState({ statistics: statistics.data || [] }, () => {
+        this.getStatustics();
+      });
+    });
+  };
 
   getStatustics = () => {
     const { estateId, type } = this.state;
-    NavigatorService.collectionRate(2, estateId, type,'','').then((res) => {
+    NavigatorService.collectionRate(2, estateId, type).then((res) => {
       this.setState({ res });
     });
   };
 
-  // titleChange = (index) => {
-  //   const { statistics } = this.state;
-  //   console.log(this.state);
-  //   let estateId;
-  //   if (index === 0) {
-  //     estateId = this.state.selectBuilding.key;
-  //   } else {
-  //     estateId = statistics[index - 1].id;
-  //   }
-  //   this.setState(
-  //     {
-  //       index,
-  //       estateId,
-  //     },
-  //     () => {
-  //       this.getStatustics();
-  //     },
-  //   );
-  // };
-
+  titleChange = (index) => {
+    const { statistics } = this.state;
+    console.log(this.state);
+    let estateId;
+    if (index === 0) {
+      estateId = this.state.selectBuilding.key;
+    } else {
+      estateId = statistics[index - 1].id;
+    }
+    this.setState(
+      {
+        index,
+        estateId,
+      },
+      () => {
+        this.getStatustics();
+      },
+    );
+  };
   typeChange = (title, index) => {
-    //const titles = this.state.titles || [];
+    const titles = this.state.titles || [];
     this.setState(
       {
         type: index == 0 ? '' : title,
@@ -137,7 +135,8 @@ class ZiJinLiuPage extends BasePage {
 
   render() {
     const {  titles = [] } = this.state;
-    let { option,  tableData = [] } = this.state.res; 
+    let { option,  tableData = [] } = this.state.res;
+
     // option = { xAxis:
     //     { type: 'category',
     //       name: 'x',

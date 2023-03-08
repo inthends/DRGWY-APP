@@ -35,17 +35,19 @@ export default {
         return api.getData('/api/MobileMethod/MGetPollingPointEntity', {lineId, pointId});
     },
 
-    xunjianExecute(keyvalue, userId, userName,inspectData, showLoading = true) {
+    xunjianExecute(keyvalue, pointStatus, userId, userName, showLoading = true) {
         return api.postData('/api/MobileMethod/MExcutePollingTasck', {
             keyvalue,
+            pointStatus,
             userId,
             userName,
-            inspectData
         }, showLoading);
     },
     xunjianAddress(pointId) {
         return api.getData('/api/MobileMethod/MGetPollingPointDetail', {pointId});
     },
+
+
     xunjianIndexList(userId) {
         return api.postData('/api/MobileMethod/MGetPollingLinePageList', {pageIndex: 1, pageSize: 100, userId});
     },

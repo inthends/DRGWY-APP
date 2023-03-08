@@ -42,8 +42,7 @@ class ContactDetail extends BasePage {
         this.state = {
             type,
             activeSections: [],
-            //selectBuilding: this.props.selectBuilding || {},
-            selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
+            selectBuilding: this.props.selectBuilding || {},
             data: [],
         };
         this.onChange = activeSections => {

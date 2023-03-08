@@ -24,6 +24,7 @@ import ModifyPsdPage from '../mine/modify-psd';
 
 //导航
 import FeeHousePage from '../navigator/fee-housing';
+import gdMoneyPage from '../navigator/gd-Money';
 import FeeBuildingsPage from '../navigator/fee-buildings';
 import FeeRoomsPage from '../navigator/fee-rooms';
 import FeeParkingsPage from '../navigator/fee-parkings';
@@ -50,6 +51,9 @@ import TaskPage from '../navigator/xunjian/task';
 import XunJianDetailPage from '../navigator/xunjian/xunjian-detail';
 import SelectXunJianPerson from '../navigator/xunjian/select-xunjian';
 import StartXunJianPage from '../navigator/xunjian/start-xunjian';
+import GdzcPandianPage from '../navigator/gdzc/gdzc_pandian';
+import GdzcDetailPage from '../navigator/gdzc/gdzc_detail';
+import OrderlistPage from '../work/order_center/order_list';
 import XunJianPointDetailPage from '../navigator/xunjian/xunjian-point-detail';
 import XunjianBeforeStart from '../navigator/xunjian/xunjian-before-start';
 import YiQingPage from '../building/yiqing/yiqing';
@@ -85,14 +89,12 @@ import ShebeiDetail from '../navigator/she-bei/detail';
 import LouPark from '../navigator/house-infomation/lou-park';
 
 import JLScanScreen from '../navigator/jlscanner';
-import BCMScanScreen from '../navigator/bcmscanner';
 import shenpi from '../shenpi';
 import fukuan from '../shenpi/fukuan';
 import jianmian from '../shenpi/jianmian';
 import songshen from '../shenpi/songshen';
 import chuzunew from '../shenpi/chuzun-new';
 import chuzuchange from '../shenpi/chuzun-change';
-import webPage from '../shenpi/components/web-page';
 import chuzutui from '../shenpi/chuzun-tui';
 import wuyenew from '../shenpi/wuye-new';
 import wuyexu from '../shenpi/wuye-xu';
@@ -153,6 +155,7 @@ const navigatorNavigator = createStackNavigator({
   feeParkings: FeeParkingsPage, //车位
   feeBuildings: FeeBuildingsPage,
   feeHouse: FeeHousePage,
+  gdMoney: gdMoneyPage,
   e_fuwu: EstateFuwuPage,
   feeDetail: FeeDetailPage,
   feeAdd: FeeAddPage,
@@ -166,6 +169,13 @@ const navigatorNavigator = createStackNavigator({
   selectPaidanPerson: SelectPaiDanPerson,
   charge: FeeChargeDetail,
 
+  //固定资产
+  gdzcPandian: GdzcPandianPage,
+  gdzcDetail: GdzcDetailPage,
+
+  //订单中心
+  orderlist: OrderlistPage,
+
   //报表
   collection: CollectionRatePage,
   zijinliu: ZiJinLiuPage,
@@ -176,8 +186,6 @@ const navigatorNavigator = createStackNavigator({
 
   scan: ScanScreen, //威富通扫码
   jlscan: JLScanScreen, //嘉联扫码
-  bcmscan: BCMScanScreen, //交通银行扫码
-
   service: FuWuDanListDetailPage,
   wancheng: WanChengListDetailPage,
   jianyan: JianYanListDetailPage,
@@ -265,7 +273,6 @@ const ShenPiNavigator = createStackNavigator({
   zulinplan,
   caigou,
   baoxiao,
-  webPage
 });
 ShenPiNavigator.navigationOptions = ({ navigation }) => ({
   tabBarVisible: navigation.state.index === 0,
@@ -388,7 +395,6 @@ const tabbar = createBottomTabNavigator(
     },
   },
 );
-
 const { width, height } = Dimensions.get('window');
 const Drawer = createDrawerNavigator(
   {

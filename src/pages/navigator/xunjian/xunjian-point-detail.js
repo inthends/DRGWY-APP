@@ -1,12 +1,12 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import BasePage from '../../base/base';
+import {Flex, Accordion, List, Icon} from '@ant-design/react-native';
+import Macro from '../../../utils/macro';
+import {Modal, ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View} from 'react-native';
+import ScreenUtil from '../../../utils/screen-util';
+import LoadImage from '../../../components/load-image';
 import CommonView from '../../../components/CommonView';
-import { Flex, Icon } from '@ant-design/react-native';
-import { Modal, StyleSheet, Text, TouchableOpacity } from 'react-native';
-//import Macro from '../../../utils/macro';
-//import ScreenUtil from '../../../utils/screen-util';
-//import LoadImage from '../../../components/load-image'; 
-//import ScrollTitle from '../../../components/scroll-title';
+import ScrollTitle from '../../../components/scroll-title';
 import XunJianComponent from './xunjian-component';
 import ListImages from '../../../components/list-images';
 import common from '../../../utils/common';
@@ -14,15 +14,15 @@ import XunJianService from './xunjian-service';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
 export default class XunJianPointDetailPage extends BasePage {
-    static navigationOptions = ({ navigation }) => {
+    static navigationOptions = ({navigation}) => {
         return {
             tabBarVisible: false,
             title: '巡检点详情',
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
+                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
                 </TouchableOpacity>
-            )
+            ),
         };
     };
 
@@ -40,7 +40,7 @@ export default class XunJianPointDetailPage extends BasePage {
     }
 
     componentDidMount(): void {
-        const { lineId, pointId } = this.state;
+        const {lineId, pointId} = this.state;
         XunJianService.xunjianPointDetail(lineId, pointId).then(items => {
             console.log(11, items);
             this.setState({
@@ -79,19 +79,19 @@ export default class XunJianPointDetailPage extends BasePage {
 
 
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
-        const { items } = this.state;
+        const {items} = this.state;
         return (
             <CommonView>
                 {items.map((item, index) => (
                     <Flex key={item.pointName + index} direction={'column'} align={'start'} style={styles.content}>
                         <Text style={styles.title}>{item.pointName}</Text>
-                        <XunJianComponent data={item} />
-                        <ListImages images={item.fileList} lookImage={this.lookImage} />
+                        <XunJianComponent data={item}/>
+                        <ListImages images={item.fileList} lookImage={this.lookImage}/>
                     </Flex>
                 ))}
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
-                        imageUrls={this.state.images} />
+                                 imageUrls={this.state.images}/>
                 </Modal>
             </CommonView>
         );

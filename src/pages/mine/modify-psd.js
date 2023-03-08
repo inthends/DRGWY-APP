@@ -1,12 +1,13 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, TouchableWithoutFeedback, TouchableOpacity, StyleSheet} from 'react-native';
 import BasePage from '../base/base';
 import {Icon} from '@ant-design/react-native';
-import { WhiteSpace, Flex, InputItem, Button} from '@ant-design/react-native';
-import ScreenUtil from '../../utils/screen-util'; 
+import {List, WhiteSpace, Flex, TextareaItem, InputItem, Button} from '@ant-design/react-native';
+import ScreenUtil from '../../utils/screen-util';
+import LoadImage from '../../components/load-image';
 import Macro from '../../utils/macro';
 import MineService from './mine-service';
-//import common from '../../utils/common';
+import common from '../../utils/common';
 import UDToast from '../../utils/UDToast';
 
 export default class ModifyPsdPage extends BasePage {
@@ -17,7 +18,8 @@ export default class ModifyPsdPage extends BasePage {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{width: 30, marginLeft: 15}}/>
                 </TouchableOpacity>
-            )  
+            ),
+
         };
     };
 
@@ -27,35 +29,34 @@ export default class ModifyPsdPage extends BasePage {
             oldPassword: '',
             newPassword: '',
             confirmPassword: '',
-        }; 
+        };
+
     }
 
-    // componentDidMount(): void {
-    // }
+    componentDidMount(): void {
+    }
 
     submit = () => {
         const {oldPassword, newPassword, confirmPassword} = this.state;
         if (newPassword === confirmPassword) {
             MineService.changePsd(newPassword, oldPassword).then(res => {
-                UDToast.showInfo('修改成功');
-                //common.pagebackAfterTime(this.props);
-                //需要重新登录
-                MineService.logout();
-                ManualAction.saveTokenByStore(null);
+                UDToast.showInfo('操作成功');
+                common.pagebackAfterTime(this.props);
             });
-        } 
+        }
+
     };
 
 
     render() {
-        //const {data} = this.state;
+        const {data} = this.state;
+        return (
 
-        return ( 
             <View style={styles.content}>
                 <Flex justify='between' aligen='center' style={styles.header}>
                     <Flex direction='column' align='start'>
                         <Text style={styles.name}>修改密码</Text>
-                        {/* <Text style={styles.desc}>密码规则：8-20位字母与数字的组合，必须包含大小写</Text> */}
+                        <Text style={styles.desc}>密码规则：8-20位字母与数字的组合，必须包含大小写</Text>
                     </Flex>
                 </Flex>
 
@@ -64,7 +65,7 @@ export default class ModifyPsdPage extends BasePage {
                     <InputItem
                         clear
                         type="password"
-                        maxLength={20}
+
                         value={this.state.oldPassword}
                         onChange={value => {
                             this.setState({
@@ -81,7 +82,6 @@ export default class ModifyPsdPage extends BasePage {
                     <InputItem
                         clear
                         type="password"
-                        maxLength={20}
                         value={this.state.newPassword}
                         onChange={value => {
                             this.setState({
@@ -97,8 +97,7 @@ export default class ModifyPsdPage extends BasePage {
                     <Text style={{color: '#666', fontSize: 15, paddingLeft: 15, paddingTop: 15}}>确认新密码</Text>
                     <InputItem
                         clear
-                        type="password"  
-                        maxLength={20}
+                        type="password"
                         value={this.state.confirmPassword}
                         onChange={value => {
                             this.setState({
@@ -110,8 +109,12 @@ export default class ModifyPsdPage extends BasePage {
                     />
                 </Flex>
                 <WhiteSpace style={{height: 50}}/>
-                <Button style={styles.button} type="primary" onPress={() => this.submit()}>确定</Button> 
-            </View> 
+                <Button style={styles.button} type="primary" onPress={() => this.submit()}>完成</Button>
+
+
+            </View>
+
+
         );
     }
 }

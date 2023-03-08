@@ -1,17 +1,20 @@
-import React  from 'react';
+import React, {Fragment} from 'react';
 import BasePage from '../../base/base';
-import {Flex,  Icon} from '@ant-design/react-native';
+import {Flex, Accordion, List, Icon} from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
-import {ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
+import {ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View} from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
-//import LoadImage from '../../../components/load-image';
+import LoadImage from '../../../components/load-image';
 import CommonView from '../../../components/CommonView';
 import ScrollTitle from '../../../components/scroll-title';
 import XunJianService from './xunjian-service';
 import common from '../../../utils/common';
 
+
 export default class TaskPage extends BasePage {
     static navigationOptions = ({navigation}) => {
+
+
         return {
             tabBarVisible: false,
             title: '今日任务',

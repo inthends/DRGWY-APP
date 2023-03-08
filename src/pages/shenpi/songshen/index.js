@@ -24,7 +24,6 @@ import ShowActions from '../components/show-actions';
 import common from '../../../utils/common';
 import service from '../service';
 import ShowMingXiLook from '../components/show-mingxi-look';
-import ShowFiles from '../components/show-files'
 
 export default class EfuwuDetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
@@ -120,13 +119,7 @@ export default class EfuwuDetailPage extends BasePage {
               {detail.receiveDetail}
             </Text>
           </Flex>
-         <ShowFiles files={detail.list} onPress={
-            (fileStr)=>{
-              this.props.navigation.navigate('webPage',{
-                data: fileStr,
-              });
-            }
-          }/>
+
           <ShowActions
             state={this.state}
             click={() => {

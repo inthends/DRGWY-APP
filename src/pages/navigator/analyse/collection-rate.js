@@ -39,7 +39,7 @@ class CollectionRatePage extends BasePage {
     this.state = {
       count: 0,
       selectBuilding: this.props.selectBuilding || {},
-      //statistics: [],
+      statistics: [],
       estateId: null,
       type: '',
       index: 0,
@@ -58,7 +58,7 @@ class CollectionRatePage extends BasePage {
         titles: ['全部', ...titles],
       });
     });
-    this.getStatustics();
+    this.initData();
   }
 
   componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
@@ -78,50 +78,50 @@ class CollectionRatePage extends BasePage {
           index: 0,
         },
         () => {
-          this.getStatustics();
+          this.initData();
         },
       );
     }
   }
 
-  // initData = () => {
-  //   NavigatorService.getFeeStatistics(
-  //     1,
-  //     this.state.selectBuilding.key,
-  //     100000,
-  //   ).then((statistics) => {
-  //     this.setState({ statistics: statistics.data || [] }, () => {
-  //       this.getStatustics();
-  //     });
-  //   });
-  // };
+  initData = () => {
+    NavigatorService.getFeeStatistics(
+      1,
+      this.state.selectBuilding.key,
+      100000,
+    ).then((statistics) => {
+      this.setState({ statistics: statistics.data || [] }, () => {
+        this.getStatustics();
+      });
+    });
+  };
 
   getStatustics = () => {
     const { estateId, type } = this.state;
-    NavigatorService.collectionRate(1, estateId, type,'','').then((res) => {
+    NavigatorService.collectionRate(1, estateId, type).then((res) => {
       this.setState({ res });
     });
   };
 
-  // titleChange = (index) => {
-  //   const { statistics } = this.state;
-  //   //console.log(this.state);
-  //   let estateId;
-  //   if (index === 0) {
-  //     estateId = this.state.selectBuilding.key;
-  //   } else {
-  //     estateId = statistics[index - 1].id;
-  //   }
-  //   this.setState(
-  //     {
-  //       index,
-  //       estateId,
-  //     },
-  //     () => {
-  //       this.getStatustics();
-  //     },
-  //   );
-  // };
+  titleChange = (index) => {
+    const { statistics } = this.state;
+    //console.log(this.state);
+    let estateId;
+    if (index === 0) {
+      estateId = this.state.selectBuilding.key;
+    } else {
+      estateId = statistics[index - 1].id;
+    }
+    this.setState(
+      {
+        index,
+        estateId,
+      },
+      () => {
+        this.getStatustics();
+      },
+    );
+  };
 
   typeChange = (title, index) => {
     // const titles = this.state.titles || [];
@@ -137,7 +137,8 @@ class CollectionRatePage extends BasePage {
 
   render() {
     const { titles = [] } = this.state; 
-    let { option, tableData} = this.state.res;
+    let { option, tableData} = this.state.res; 
+    // console.log(123456,option) 
     // option = {
     //     "xAxis":{
     //         "type":"category",

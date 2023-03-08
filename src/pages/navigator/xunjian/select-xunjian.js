@@ -1,31 +1,31 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import BasePage from '../../base/base';
-import { Flex, Icon } from '@ant-design/react-native';
-// import Macro from '../../../utils/macro';
-import { StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View, ScrollView } from 'react-native';
-// import ScreenUtil from '../../../utils/screen-util';
-// import LoadImage from '../../../components/load-image';
+import {Flex, Accordion, List, Icon} from '@ant-design/react-native';
+import Macro from '../../../utils/macro';
+import {StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View,ScrollView} from 'react-native';
+import ScreenUtil from '../../../utils/screen-util';
+import LoadImage from '../../../components/load-image';
 import CommonView from '../../../components/CommonView';
-import { connect } from 'react-redux';
-// import memberReducer from '../../../utils/store/reducers/member-reducer';
+import {connect} from 'react-redux';
+import memberReducer from '../../../utils/store/reducers/member-reducer';
 import common from '../../../utils/common';
 import XunJianService from './xunjian-service';
 
 
 class SelectXunJianPerson extends BasePage {
-    static navigationOptions = ({ navigation }) => {
+    static navigationOptions = ({navigation}) => {
 
         return {
             tabBarVisible: false,
             title: '选择人员',
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
+                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
                 </TouchableOpacity>
             ),
             headerRight: (
                 <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
-                    <Icon name='bars' style={{ marginRight: 15 }} color="black" />
+                    <Icon name='bars' style={{marginRight: 15}} color="black"/>
                 </TouchableWithoutFeedback>
             ),
         };
@@ -68,7 +68,7 @@ class SelectXunJianPerson extends BasePage {
     }
 
     select(item) {
-        const { lastPageState } = this.state;
+        const {lastPageState} = this.state;
         lastPageState.onSelect(item);
         this.props.navigation.goBack();
     }
@@ -76,7 +76,7 @@ class SelectXunJianPerson extends BasePage {
 
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
 
-        const { persons } = this.state;
+        const {persons} = this.state;
         return (
             <CommonView>
                 <ScrollView>
@@ -95,7 +95,7 @@ class SelectXunJianPerson extends BasePage {
 }
 
 
-const mapStateToProps = ({ buildingReducer }) => {
+const mapStateToProps = ({buildingReducer}) => {
     return {
         selectBuilding: buildingReducer.selectBuilding,
     };

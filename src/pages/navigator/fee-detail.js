@@ -111,7 +111,6 @@ class FeeDetailPage extends BasePage {
             selected: '',
             chaifeiAlert: false,
             showPicker: false,
-            isDigital: false//数字货币二维码
         };
         Date.prototype.getYearAndMonthAndDay = function () {
             let year = this.getFullYear();
@@ -123,18 +122,12 @@ class FeeDetailPage extends BasePage {
             if (day.length === 1) {
                 day = 0 + day;
             }
-            //console.log(year + '-' + month + '-' + day)
+            console.log(year + '-' + month + '-' + day)
             return year + '-' + month + '-' + day;
         }
     }
 
     componentDidMount(): void {
-
-        //获取参数，根据是否兴生活缴费来加载按钮
-        NavigatorService.getSettingInfo(this.state.room.organizeId).then((res) => {
-            this.setState({ isCIBLife: res });
-        });
-
         this.needPrintListener = DeviceEventEmitter.addListener('needPrint', () => {
             this.onRefresh();
             this.printInfo(this.state.out_trade_no);
@@ -165,13 +158,18 @@ class FeeDetailPage extends BasePage {
             NativeModules.LHNToast.getPOSType((isLKL, isYse) => {
                 this.setState({
                     isLKL: isLKL,
-                    isYse: isYse
+                    isYse: isYse,
                 });
             });
         }
         // else {
         //     //方法待实现
         // }
+
+        //获取参数，根据是否兴生活缴费来加载按钮
+        NavigatorService.getSettingInfo(this.state.room.organizeId).then((res) => {
+            this.setState({ isCIBLife: res });
+        });
 
     }
 
@@ -192,10 +190,10 @@ class FeeDetailPage extends BasePage {
     click = (title) => {
         const items = this.state.dataInfo.data.filter(item => item.select === true);
         if (items.length === 0) {
-            UDToast.showError('请选择费用');
+            UDToast.showError('请选择');
         } else {
             let ids = JSON.stringify((items.map(item => item.id)));
-            const { isML, mlType, mlScale, isDigital } = this.state;
+            const { isML, mlType, mlScale } = this.state;
             switch (title) {
                 case '刷卡': {
                     if (common.isIOS()) {
@@ -248,7 +246,7 @@ class FeeDetailPage extends BasePage {
                                 // isML: isML,
                                 // mlType: mlType,
                                 // mlScale: mlScale,
-                                // mlAmount: mlAmount,
+                                //mlAmount: mlAmount,
                                 out_trade_no: res.out_trade_no,
                                 printAgain: false,
                                 callBack: this.callBack
@@ -258,16 +256,9 @@ class FeeDetailPage extends BasePage {
                                 out_trade_no: res.out_trade_no
                             });
                         }
-                        else if (posType === '交通银行') {
-                            this.props.navigation.push('bcmscan', {
-                                isDigital: isDigital,
-                                out_trade_no: res.out_trade_no
-                            });
-                        }
                     });
                     break;
                 }
-
                 case '收款码': {
                     NavigatorService.createOrder(ids, isML, mlType, mlScale).then(res => {
                         let posType = res.posType;
@@ -296,7 +287,7 @@ class FeeDetailPage extends BasePage {
                             });
                         }
                         else if (posType === '威富通') {
-                            NavigatorService.qrcodePay(res.out_trade_no, isDigital).then(code => {
+                            NavigatorService.qrcodePay(res.out_trade_no).then(code => {
                                 this.setState({
                                     visible: true,
                                     cancel: false,
@@ -355,7 +346,7 @@ class FeeDetailPage extends BasePage {
 
         const items = this.state.dataInfo.data.filter(item => item.select === true);
         if (items.length === 0) {
-            UDToast.showError('请选择费用');
+            UDToast.showError('请选择');
         } else {
             let ids = JSON.stringify((items.map(item => item.id)));
             const { room } = this.state;
@@ -392,27 +383,22 @@ class FeeDetailPage extends BasePage {
     onRefresh = () => {
         const { pageIndex, type, room, isShow } = this.state;
         NavigatorService.getBillList(type, room.id, isShow, pageIndex, 1000).then(dataInfo => {
-            //重置选择框状态值
             this.setState({
                 dataInfo: dataInfo,
-                isML: false,
-                isDigital: false,
-                mlType: '抹去角',
-                mlScale: '四舍五入',
-                price: 0.00,
-                mlAmount: 0.00
             }, () => {
-                //console.log(this.state);
+                // console.log(this.state);
             });
         });
     };
 
     typeOnChange = (type, isShow) => {
-
+        // console.log(type);
         this.setState({
             type,
             isShow,
-            dataInfo: { data: [] }
+            dataInfo: {
+                data: [],
+            }
         }, () => {
             this.onRefresh();
         });
@@ -423,6 +409,7 @@ class FeeDetailPage extends BasePage {
         if (type === '已收') {
             this.props.navigation.push('charge', { data: item });
         } else {
+
             let data = this.state.dataInfo.data;
             data = data.map(it => {
                 if (it.id === item.id) {
@@ -453,34 +440,6 @@ class FeeDetailPage extends BasePage {
             }
         }
     };
-
-    //全选
-    checkAll = () => {
-        const { isML, mlType, mlScale, type } = this.state;
-        if (type === '已收') {
-        } else {
-            let data = this.state.dataInfo.data;
-            data = data.map(it => {
-                it.select = it.select !== true;
-                return it;
-            });
-            this.setState({
-                dataInfo: {
-                    ...this.state.dataInfo,
-                    data,
-                }
-            });
-            const items = data.filter(item => item.select === true);
-            if (items.length != 0) {
-                let ids = JSON.stringify((items.map(item => item.id)));
-                NavigatorService.CalFee(isML, mlType, mlScale, ids).then(res => {
-                    this.setState({ price: res.lastAmount, mlAmount: res.mlAmount });
-                });
-            } else {
-                this.setState({ price: 0.00, mlAmount: 0.00 });
-            }
-        }
-    }
 
     //抹零计算
     mlCal = (isML, mlType, mlScale) => {
@@ -699,7 +658,7 @@ class FeeDetailPage extends BasePage {
     //}
 
     render() {
-        const { isDigital, isML, dataInfo, type, room, price, mlAmount } = this.state;
+        const { dataInfo, type, room, price, mlAmount } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
                 <ScrollView
@@ -712,33 +671,17 @@ class FeeDetailPage extends BasePage {
                         return this.renderItem(item);
                     })}
                 </ScrollView>
-
                 {type === '已收' || dataInfo.data.length === 0 ? null : (
                     <Flex style={{ marginBottom: 30 }} direction={'column'}>
                         <Flex justify={'between'}>
                             <Checkbox
-                                style={{ color: Macro.color_f39d39 }}
-                                onChange={event => {
-                                    this.checkAll();
-                                }}
-                            ><Text style={{ paddingTop: 3, paddingLeft: 3, color: '#666' }}>全选</Text></Checkbox>
-
-                            <Checkbox
                                 defaultChecked={false}
-                                checked={isDigital}
-                                onChange={(e) => {
-                                    this.setState({ isDigital: e.target.checked });
-                                }}
-                            ><Text style={{ paddingTop: 3, paddingLeft: 3, color: '#666' }}>数字货币</Text></Checkbox>
-
-                            <Checkbox
-                                defaultChecked={false}
-                                checked={isML}
                                 onChange={(e) => {
                                     this.setState({ isML: e.target.checked });
                                     //算抹零金额
                                     this.mlCal(e.target.checked, this.state.mlType, this.state.mlScale);
-                                }}><Text style={{ paddingTop: 3, paddingLeft: 3, color: '#666' }}>抹零</Text></Checkbox>
+                                }}
+                            ><Text style={{ paddingTop: 3, paddingLeft: 3, color: '#666' }}>抹零</Text></Checkbox>
 
                             <MyPopover
                                 textStyle={{ fontSize: 14 }}

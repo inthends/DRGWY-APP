@@ -117,13 +117,7 @@ export default class EfuwuDetailPage extends BasePage {
               this.props.navigation.goBack();
             }}
           />
-          <ShowFiles files={detail.files || []} onPress={
-            (fileStr)=>{
-              this.props.navigation.navigate('webPage',{
-                data: fileStr,
-              });
-            }
-          }/>
+          <ShowFiles files={detail.files || []} />
           <ShowRecord records={records} />
         </ScrollView>
       </CommonView>
