@@ -264,6 +264,12 @@ class FeeDetailPage extends BasePage {
                                 out_trade_no: res.out_trade_no
                             });
                         }
+                        else if (posType === '兴业银行') {
+                            this.props.navigation.push('cibscan', {
+                                isDigital: isDigital,
+                                out_trade_no: res.out_trade_no
+                            });
+                        } 
                     });
                     break;
                 }
@@ -317,6 +323,19 @@ class FeeDetailPage extends BasePage {
                                     printAgain: false,
                                 }, () => {
                                     this.getJLOrderStatus(res.out_trade_no);
+                                });
+                            });
+                        }
+                        else if (posType === '兴业银行') {
+                            NavigatorService.cibCodePay(res.out_trade_no, isDigital).then(code => {
+                                this.setState({
+                                    visible: true,
+                                    cancel: false,
+                                    code,
+                                    needPrint: true,
+                                    printAgain: false,
+                                }, () => {
+                                    this.getOrderStatus(res.out_trade_no);
                                 });
                             });
                         }
@@ -808,7 +827,7 @@ class FeeDetailPage extends BasePage {
                                     </Flex>
                                 </TouchableWithoutFeedback> : null}
 
-                            {this.state.isLKL || this.state.isYse ?
+                            {this.state.isLKL ? //|| this.state.isYse ?
                                 //手机都不能刷卡
                                 <TouchableWithoutFeedback
                                     disabled={price == 0 ? true : false}
@@ -1017,9 +1036,7 @@ const styles = StyleSheet.create({
     },
     word: {
         color: 'white',
-        fontSize: 16,
-
-
+        fontSize: 16
     },
     pp: {
 

@@ -226,6 +226,37 @@ export default {
     );
   },
 
+
+  //兴业银行人民币扫码
+  cibScanPay(auth_code, tbout_trade_no) {
+    return api.postData('/api/MobileMethod/CIBScanPay', {
+      auth_code,
+      tbout_trade_no
+    });
+  },
+  //兴业银行人民币扫码，查询支付结果
+  cibScanPayQuery(tbout_trade_no) {
+    return api.postData('/api/MobileMethod/CIBScanPayQuery',
+      { tbout_trade_no },
+      false
+    );
+  },
+
+  //扫付款码，兴业银行接口支付失败，则调用撤销接口
+  cibScanPayReserve(tbout_trade_no) {
+    return api.postData(
+      '/api/MobileMethod/CIBScanPayReserve',
+      { tbout_trade_no },
+      false
+    );
+  },
+ 
+  //兴业银行生成收款码
+  cibCodePay(tbout_trade_no, isDigital) {
+    return api.postData('/api/MobileMethod/CIBPay', { tbout_trade_no, isDigital });
+  },
+
+
   //交通银行人民币扫码
   bcmScanPay(auth_code, tbout_trade_no) {
     return api.postData('/api/MobileMethod/BCMScanPay', {
@@ -314,8 +345,7 @@ export default {
   },
 
   orderStatus(out_trade_no) {
-    return api.postData(
-      '/api/MobileMethod/WFTPayResult',
+    return api.postData('/api/MobileMethod/QueryPayResult',
       { out_trade_no },
       false
     );
