@@ -29,7 +29,8 @@ class SelectPaiDanPerson extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            selectBuilding: this.props.selectBuilding || {},
+            //selectBuilding: this.props.selectBuilding || {},
+            selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
             items: [],
         };
     }

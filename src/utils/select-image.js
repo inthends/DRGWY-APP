@@ -8,6 +8,8 @@ const options: ImagePickerOptions = {
     cancelButtonTitle: '取消',
     takePhotoButtonTitle: '相机',
     chooseFromLibraryButtonTitle: '相册',
+    //maxWidth:600,
+    //quality:0.2,
     storageOptions: {
         skipBackup: true,
         path: 'images',

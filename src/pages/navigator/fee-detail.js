@@ -50,7 +50,6 @@ class FeeDetailPage extends BasePage {
                         color: '#2c2c2c',
                         paddingBottom: 10,
                     }}>加费</Text>
-
                     {/*<Icon name='add' style={{ width: 30, marginLeft: 15 }} />*/}
                 </TouchableOpacity>
             ),
@@ -105,12 +104,13 @@ class FeeDetailPage extends BasePage {
             mlScale: '四舍五入',
             price: 0.00,
             mlAmount: 0.00,
-            isLKL: false,
-            isYse: false,
+            // isLKL: false,
+            // isYse: false,
             action: true,
             selected: '',
             chaifeiAlert: false,
             showPicker: false,
+            isDigital: false//数字货币二维码
         };
         Date.prototype.getYearAndMonthAndDay = function () {
             let year = this.getFullYear();
@@ -122,12 +122,18 @@ class FeeDetailPage extends BasePage {
             if (day.length === 1) {
                 day = 0 + day;
             }
-            console.log(year + '-' + month + '-' + day)
+            //console.log(year + '-' + month + '-' + day)
             return year + '-' + month + '-' + day;
         }
     }
 
     componentDidMount(): void {
+
+        //获取参数，根据是否兴生活缴费来加载按钮
+        NavigatorService.getSettingInfo(this.state.room.organizeId).then((res) => {
+            this.setState({ isCIBLife: res });
+        });
+
         this.needPrintListener = DeviceEventEmitter.addListener('needPrint', () => {
             this.onRefresh();
             this.printInfo(this.state.out_trade_no);
@@ -153,23 +159,18 @@ class FeeDetailPage extends BasePage {
             },
         );
 
-        if (!common.isIOS()) {
-            //判断是否是银盛POS或者拉卡拉POS机
-            NativeModules.LHNToast.getPOSType((isLKL, isYse) => {
-                this.setState({
-                    isLKL: isLKL,
-                    isYse: isYse,
-                });
-            });
-        }
+        // if (!common.isIOS()) {
+        //     //判断是否是银盛POS或者拉卡拉POS机
+        //     NativeModules.LHNToast.getPOSType((isLKL, isYse) => {
+        //         this.setState({
+        //             isLKL: isLKL,
+        //             isYse: isYse
+        //         });
+        //     });
+        // }
         // else {
         //     //方法待实现
         // }
-
-        //获取参数，根据是否兴生活缴费来加载按钮
-        NavigatorService.getSettingInfo(this.state.room.organizeId).then((res) => {
-            this.setState({ isCIBLife: res });
-        });
 
     }
 
@@ -190,29 +191,29 @@ class FeeDetailPage extends BasePage {
     click = (title) => {
         const items = this.state.dataInfo.data.filter(item => item.select === true);
         if (items.length === 0) {
-            UDToast.showError('请选择');
+            UDToast.showError('请选择费用');
         } else {
             let ids = JSON.stringify((items.map(item => item.id)));
-            const { isML, mlType, mlScale } = this.state;
+            const { isML, mlType, mlScale, isDigital } = this.state;
             switch (title) {
-                case '刷卡': {
-                    if (common.isIOS()) {
-                        UDToast.showInfo('功能暂未开放，敬请期待！');
-                    } else {
-                        //刷卡目前只支持拉卡拉
-                        NavigatorService.createOrder(ids, isML, mlType, mlScale).then(res => {
-                            this.setState({
-                                out_trade_no: res.out_trade_no,
-                            });
-                            NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
-                                ...res,
-                                "proc_cd": "000000", //拉卡拉消费
-                                "pay_tp": "0",
-                            });
-                        });
-                    }
-                    break;
-                }
+                // case '刷卡': {
+                //     if (common.isIOS()) {
+                //         UDToast.showInfo('功能暂未开放，敬请期待！');
+                //     } else {
+                //         //刷卡目前只支持拉卡拉
+                //         NavigatorService.createOrder(ids, isML, mlType, mlScale).then(res => {
+                //             this.setState({
+                //                 out_trade_no: res.out_trade_no,
+                //             });
+                //             NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
+                //                 ...res,
+                //                 "proc_cd": "000000", //拉卡拉消费
+                //                 "pay_tp": "0",
+                //             });
+                //         });
+                //     }
+                //     break;
+                // }
                 case '扫码': {
                     NavigatorService.createOrder(ids, isML, mlType, mlScale).then(res => {
                         let posType = res.posType;
@@ -246,7 +247,7 @@ class FeeDetailPage extends BasePage {
                                 // isML: isML,
                                 // mlType: mlType,
                                 // mlScale: mlScale,
-                                //mlAmount: mlAmount,
+                                // mlAmount: mlAmount,
                                 out_trade_no: res.out_trade_no,
                                 printAgain: false,
                                 callBack: this.callBack
@@ -256,9 +257,43 @@ class FeeDetailPage extends BasePage {
                                 out_trade_no: res.out_trade_no
                             });
                         }
+                        else if (posType === '交通银行') {
+                            this.props.navigation.push('bcmscan', {
+                                isDigital: isDigital,
+                                out_trade_no: res.out_trade_no
+                            });
+                        }
+                        else if (posType === '兴业银行') {
+                            this.props.navigation.push('cibscan', {
+                                isDigital: isDigital,
+                                out_trade_no: res.out_trade_no
+                            });
+                        } else if (posType === '南京银行') {
+                            this.setState({
+                                nanjingRes: res,
+                            });
+                            this.props.navigation.push('scanForHome', {
+                                data: {
+                                    callBack: (scanCodeData) => {
+                                        setTimeout(() => {
+                                            NativeModules.LHNToast.startActivityFromJS(
+                                                'com.statistics.LKLPayActivity',
+                                                {
+                                                    ...res,
+                                                    transName: '二维码被扫',
+                                                    scanCodeData,
+                                                }
+                                            );
+                                        }, 2000);
+                                    },
+                                    needBack: '1'
+                                }
+                            });
+                        }
                     });
                     break;
                 }
+
                 case '收款码': {
                     NavigatorService.createOrder(ids, isML, mlType, mlScale).then(res => {
                         let posType = res.posType;
@@ -287,7 +322,7 @@ class FeeDetailPage extends BasePage {
                             });
                         }
                         else if (posType === '威富通') {
-                            NavigatorService.qrcodePay(res.out_trade_no).then(code => {
+                            NavigatorService.qrcodePay(res.out_trade_no, isDigital).then(code => {
                                 this.setState({
                                     visible: true,
                                     cancel: false,
@@ -310,6 +345,31 @@ class FeeDetailPage extends BasePage {
                                     this.getJLOrderStatus(res.out_trade_no);
                                 });
                             });
+                        }
+                        else if (posType === '兴业银行') {
+                            NavigatorService.cibCodePay(res.out_trade_no, isDigital).then(code => {
+                                this.setState({
+                                    visible: true,
+                                    cancel: false,
+                                    code,
+                                    needPrint: true,
+                                    printAgain: false,
+                                }, () => {
+                                    this.getOrderStatus(res.out_trade_no);
+                                });
+                            });
+                        } else if (posType === '南京银行') {
+                            this.setState({
+                                nanjingRes: res,
+                            });
+                            NativeModules.LHNToast.startActivityFromJS(
+                                'com.statistics.LKLPayActivity',
+                                {
+                                    ...res,
+                                    transName: '二维码主扫',
+                                    scanCodeData: '',
+                                },
+                            );
                         }
                     });
                     break;
@@ -346,7 +406,7 @@ class FeeDetailPage extends BasePage {
 
         const items = this.state.dataInfo.data.filter(item => item.select === true);
         if (items.length === 0) {
-            UDToast.showError('请选择');
+            UDToast.showError('请选择费用');
         } else {
             let ids = JSON.stringify((items.map(item => item.id)));
             const { room } = this.state;
@@ -366,15 +426,15 @@ class FeeDetailPage extends BasePage {
 
     cashPay = (ids, isML, mlType, mlScale) => {
         NavigatorService.cashPay(ids, isML, mlType, mlScale).then(res => {
-            if (this.state.isLKL || this.state.isYse) {
-                //pos机才能打印
+            //if (this.state.isLKL || this.state.isYse) {
+                //支持蓝牙打印
                 NavigatorService.cashPayPrint(ids).then(res => {
                     NativeModules.LHNToast.printTicket({
                         ...res,
                         username: res.userName,
                     });
                 });
-            }
+            //}
             this.onRefresh();//刷新数据
         });
     };
@@ -383,22 +443,26 @@ class FeeDetailPage extends BasePage {
     onRefresh = () => {
         const { pageIndex, type, room, isShow } = this.state;
         NavigatorService.getBillList(type, room.id, isShow, pageIndex, 1000).then(dataInfo => {
+            //重置选择框状态值
             this.setState({
                 dataInfo: dataInfo,
+                isML: false,
+                isDigital: false,
+                mlType: '抹去角',
+                mlScale: '四舍五入',
+                price: 0.00,
+                mlAmount: 0.00
             }, () => {
-                // console.log(this.state);
+                //console.log(this.state);
             });
         });
     };
 
-    typeOnChange = (type, isShow) => {
-        // console.log(type);
+    typeOnChange = (type, isShow) => { 
         this.setState({
             type,
             isShow,
-            dataInfo: {
-                data: [],
-            }
+            dataInfo: { data: [] }
         }, () => {
             this.onRefresh();
         });
@@ -409,7 +473,6 @@ class FeeDetailPage extends BasePage {
         if (type === '已收') {
             this.props.navigation.push('charge', { data: item });
         } else {
-
             let data = this.state.dataInfo.data;
             data = data.map(it => {
                 if (it.id === item.id) {
@@ -440,6 +503,34 @@ class FeeDetailPage extends BasePage {
             }
         }
     };
+
+    //全选
+    checkAll = () => {
+        const { isML, mlType, mlScale, type } = this.state;
+        if (type === '已收') {
+        } else {
+            let data = this.state.dataInfo.data;
+            data = data.map(it => {
+                it.select = it.select !== true;
+                return it;
+            });
+            this.setState({
+                dataInfo: {
+                    ...this.state.dataInfo,
+                    data,
+                }
+            });
+            const items = data.filter(item => item.select === true);
+            if (items.length != 0) {
+                let ids = JSON.stringify((items.map(item => item.id)));
+                NavigatorService.CalFee(isML, mlType, mlScale, ids).then(res => {
+                    this.setState({ price: res.lastAmount, mlAmount: res.mlAmount });
+                });
+            } else {
+                this.setState({ price: 0.00, mlAmount: 0.00 });
+            }
+        }
+    }
 
     //抹零计算
     mlCal = (isML, mlType, mlScale) => {
@@ -588,7 +679,6 @@ class FeeDetailPage extends BasePage {
                                                     chaifeiDate: new Date(item.beginDate)
                                                 });
                                             }
-
                                         }}
                                         titles={titles}
                                         visible={true} />
@@ -618,7 +708,6 @@ class FeeDetailPage extends BasePage {
                                     :
                                     <Text style={{ fontSize: 16, color: '#666' }}>{item.feeName}</Text>
                             }
-
                             <Flex>
                                 <Text style={{ paddingRight: 10, fontSize: 16, color: '#666' }}>{item.amount}</Text>
                             </Flex>
@@ -658,7 +747,7 @@ class FeeDetailPage extends BasePage {
     //}
 
     render() {
-        const { dataInfo, type, room, price, mlAmount } = this.state;
+        const { isDigital, isML, dataInfo, type, room, price, mlAmount } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
                 <ScrollView
@@ -671,17 +760,33 @@ class FeeDetailPage extends BasePage {
                         return this.renderItem(item);
                     })}
                 </ScrollView>
+
                 {type === '已收' || dataInfo.data.length === 0 ? null : (
                     <Flex style={{ marginBottom: 30 }} direction={'column'}>
                         <Flex justify={'between'}>
                             <Checkbox
+                                style={{ color: Macro.color_f39d39 }}
+                                onChange={event => {
+                                    this.checkAll();
+                                }}
+                            ><Text style={{ paddingTop: 3, paddingLeft: 3, color: '#666' }}>全选</Text></Checkbox>
+
+                            <Checkbox
                                 defaultChecked={false}
+                                checked={isDigital}
+                                onChange={(e) => {
+                                    this.setState({ isDigital: e.target.checked });
+                                }}
+                            ><Text style={{ paddingTop: 3, paddingLeft: 3, color: '#666' }}>数字货币</Text></Checkbox>
+
+                            <Checkbox
+                                defaultChecked={false}
+                                checked={isML}
                                 onChange={(e) => {
                                     this.setState({ isML: e.target.checked });
                                     //算抹零金额
                                     this.mlCal(e.target.checked, this.state.mlType, this.state.mlScale);
-                                }}
-                            ><Text style={{ paddingTop: 3, paddingLeft: 3, color: '#666' }}>抹零</Text></Checkbox>
+                                }}><Text style={{ paddingTop: 3, paddingLeft: 3, color: '#666' }}>抹零</Text></Checkbox>
 
                             <MyPopover
                                 textStyle={{ fontSize: 14 }}
@@ -751,20 +856,20 @@ class FeeDetailPage extends BasePage {
                                     </Flex>
                                 </TouchableWithoutFeedback> : null}
 
-                            {this.state.isLKL || this.state.isYse ?
-                                //手机都不能刷卡
+                            {/* 
+                                 //手机都不能刷卡
                                 <TouchableWithoutFeedback
                                     disabled={price == 0 ? true : false}
                                     onPress={() => this.click('刷卡')}>
                                     <Flex justify={'center'} style={styles.ii}>
                                         <Text style={styles.word}>刷卡</Text>
                                     </Flex>
-                                </TouchableWithoutFeedback> : null}
+                                </TouchableWithoutFeedback>   */}
 
                         </Flex>
                     </Flex>
-                )
-                }
+                )}
+
                 <Modal
                     transparent
                     onClose={this.onClose}
@@ -846,61 +951,57 @@ class FeeDetailPage extends BasePage {
 
 const styles = StyleSheet.create({
     mask: {
-        backgroundColor: Macro.color_sky,
-
+        backgroundColor: Macro.color_sky
     },
     all: {
         backgroundColor: Macro.color_sky,
-        flex: 1,
+        flex: 1
     },
     content: {
         backgroundColor: Macro.color_white,
-        flex: 1,
+        flex: 1
     },
     title: {
         color: '#333',
-        fontSize: 16,
+        fontSize: 16
     },
 
     top: {
-
         fontSize: 18,
-        paddingBottom: 10,
+        paddingBottom: 10
     },
     bottom: {
         color: '#868688',
         fontSize: 18,
-        paddingBottom: 10,
+        paddingBottom: 10
     },
     button: {
         color: '#868688',
         fontSize: 16,
-        paddingTop: 10,
+        paddingTop: 10
     },
     blue: {
         borderLeftColor: Macro.color_4d8fcc,
-        borderLeftWidth: 8,
+        borderLeftWidth: 8
     },
     orange: {
         borderLeftColor: Macro.color_f39d39,
-        borderLeftWidth: 8,
+        borderLeftWidth: 8
     },
 
     left: {
-        flex: 1,
+        flex: 1
     },
     right: {
         flex: 3,
-
         paddingTop: 10,
         paddingBottom: 10,
-        marginLeft: 10,
+        marginLeft: 10
     },
     image: {
         height: 90,
-        width: 90,
+        width: 90
     },
-
     check: {
         borderRadius: 6,
         borderWidth: 1,
@@ -913,13 +1014,12 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         marginTop: 10,
         marginRight: 10,
-        marginLeft: 10,
+        marginLeft: 10
     },
-
     name: {
         fontSize: Macro.font_16,
         fontWeight: '600',
-        paddingBottom: 10,
+        paddingBottom: 10
     },
     area: {
         color: Macro.color_636470,
@@ -931,7 +1031,7 @@ const styles = StyleSheet.create({
         backgroundColor: Macro.color_dae9ff,
         padding: 3,
         paddingLeft: 5,
-        borderRadius: 1,
+        borderRadius: 1
     },
     number: {
         color: Macro.color_9c9ca5,
@@ -939,14 +1039,14 @@ const styles = StyleSheet.create({
     },
     desc: {
         color: Macro.color_c2c1c5,
-        fontSize: Macro.font_14,
+        fontSize: Macro.font_14
     },
     line: {
         width: 1,
         height: 15,
         backgroundColor: Macro.color_c2c1c5,
         marginLeft: 5,
-        marginRight: 5,
+        marginRight: 5
     },
     ii: {
         paddingTop: 10,
@@ -956,13 +1056,11 @@ const styles = StyleSheet.create({
         width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 3) / 4.0,
         backgroundColor: '#999',
         borderRadius: 6,
-        marginTop: 10,
+        marginTop: 10
     },
     word: {
         color: 'white',
-        fontSize: 16,
-
-
+        fontSize: 16
     },
     pp: {
 
@@ -987,7 +1085,6 @@ const styles = StyleSheet.create({
         width: '100%',
         backgroundColor: 'white',
         overflow: 'scroll'
-
     }
 });
 

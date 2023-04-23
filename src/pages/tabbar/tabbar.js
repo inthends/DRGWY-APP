@@ -42,7 +42,7 @@ import EtousuDetailPage from '../navigator/estate/estate-tousu-detail';
 import EweixiuDetailPage from '../navigator/estate/estate-weixiu-detail';
 import EstateWeixiuPage from '../navigator/estate/estate-weixiu';
 import EstateTousuPage from '../navigator/estate/estate-tousu';
-import ScanScreen from '../navigator/qrcode-scanner';
+
 
 import ScanOnly from '../navigator/ScanOnly';
 import ScanSS from '../navigator/scan-ss';
@@ -89,13 +89,18 @@ import SheBeiList from '../navigator/she-bei/list';
 import ShebeiDetail from '../navigator/she-bei/detail';
 import LouPark from '../navigator/house-infomation/lou-park';
 
+import ScanScreen from '../navigator/qrcode-scanner';
 import JLScanScreen from '../navigator/jlscanner';
+import BCMScanScreen from '../navigator/bcmscanner';
+import CIBScanScreen from '../navigator/cibscanner';
+
 import shenpi from '../shenpi';
 import fukuan from '../shenpi/fukuan';
 import jianmian from '../shenpi/jianmian';
 import songshen from '../shenpi/songshen';
 import chuzunew from '../shenpi/chuzun-new';
 import chuzuchange from '../shenpi/chuzun-change';
+import webPage from '../shenpi/components/web-page';
 import chuzutui from '../shenpi/chuzun-tui';
 import wuyenew from '../shenpi/wuye-new';
 import wuyexu from '../shenpi/wuye-xu';
@@ -188,6 +193,9 @@ const navigatorNavigator = createStackNavigator({
 
   scan: ScanScreen, //威富通扫码
   jlscan: JLScanScreen, //嘉联扫码
+  bcmscan: BCMScanScreen, //交通银行扫码
+  cibscan: CIBScanScreen, //兴业银行扫码
+
   service: FuWuDanListDetailPage,
   wancheng: WanChengListDetailPage,
   jianyan: JianYanListDetailPage,
@@ -275,6 +283,7 @@ const ShenPiNavigator = createStackNavigator({
   zulinplan,
   caigou,
   baoxiao,
+  webPage
 });
 ShenPiNavigator.navigationOptions = ({ navigation }) => ({
   tabBarVisible: navigation.state.index === 0,
@@ -397,6 +406,7 @@ const tabbar = createBottomTabNavigator(
     },
   },
 );
+
 const { width, height } = Dimensions.get('window');
 const Drawer = createDrawerNavigator(
   {

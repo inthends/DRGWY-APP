@@ -11,7 +11,6 @@ import memberReducer from '../../../utils/store/reducers/member-reducer';
 import XunJianService from './xunjian-service';
 import xunJianReducer from '../../../utils/store/reducers/xunjian-reducer';
 
-
 class XunJianPage extends BasePage {
     static navigationOptions = ({navigation}) => {
 

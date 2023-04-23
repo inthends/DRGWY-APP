@@ -1,5 +1,5 @@
 import React//, {Fragment}
- from 'react';
+    from 'react';
 import {
     View,
     Text,
@@ -14,7 +14,7 @@ import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 //import ListHeader from '../../../components/list-header';
 import common from '../../../utils/common';
 import LoadImage from '../../../components/load-image';
@@ -26,19 +26,19 @@ import CommonView from '../../../components/CommonView';
 
 
 class EstateWeixiuPage extends BasePage {
-    static navigationOptions = ({navigation}) => { 
+    static navigationOptions = ({ navigation }) => {
         //console.log(1, navigation);
         return {
             tabBarVisible: false,
             title: '维修单',
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
             headerRight: (
                 <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
-                    <Icon name='bars' style={{marginRight: 15}} color="black"/>
+                    <Icon name='bars' style={{ marginRight: 15 }} color="black" />
                 </TouchableWithoutFeedback>
             ),
         };
@@ -65,7 +65,7 @@ class EstateWeixiuPage extends BasePage {
             time: common.getCurrentYearAndMonth(),
             selectBuilding: this.props.selectBuilding,
             repairArea: '',
-        }; 
+        };
     }
 
     componentDidMount(): void {
@@ -86,20 +86,16 @@ class EstateWeixiuPage extends BasePage {
         const nextSelectBuilding = nextProps.selectBuilding;
         // console.log('selectBuilding', selectBuilding);
         // console.log('nextSelectBuilding', nextSelectBuilding);
-
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
-            this.setState({selectBuilding: nextProps.selectBuilding}, () => {
+            this.setState({ selectBuilding: nextProps.selectBuilding }, () => {
                 this.onRefresh();
             });
         }
     }
 
 
-    getList = () => {
-        /*
-        pageIndex, billStatus, treeType, organizeId, billType, startTime, endTime
-         */
-        const {billStatus, selectBuilding, time, repairArea} = this.state;
+    getList = () => { 
+        const { billStatus, selectBuilding, time, repairArea } = this.state;
         let treeType;
         let organizeId;
         if (selectBuilding) {
@@ -107,25 +103,29 @@ class EstateWeixiuPage extends BasePage {
             organizeId = selectBuilding.key;
         }
         let startTime = common.getMonthFirstDay(time);
-        let endTime = common.getMonthLastDay(time);
-
-        NavigatorService.weixiuList(this.state.pageIndex, billStatus, treeType, organizeId, startTime, endTime, repairArea).then(dataInfo => {
-            if (dataInfo.pageIndex > 1) {
-                dataInfo = {
-                    ...dataInfo,
-                    data: [...this.state.dataInfo.data, ...dataInfo.data],
-                };
-            }
-            this.setState({
-                dataInfo: dataInfo,
-                refreshing: false,
-                //canLoadMore: true,
-            }, () => {
-                //console.log(this.state.dataInfo.data);
+        let endTime = common.getMonthLastDay(time); 
+        NavigatorService.weixiuList(this.state.pageIndex,
+            billStatus,
+            // treeType,
+            organizeId,
+            startTime,
+            endTime,
+            repairArea).then(dataInfo => {
+                if (dataInfo.pageIndex > 1) {
+                    dataInfo = {
+                        ...dataInfo,
+                        data: [...this.state.dataInfo.data, ...dataInfo.data],
+                    };
+                }
+                this.setState({
+                    dataInfo: dataInfo,
+                    refreshing: false,
+                    //canLoadMore: true,
+                }, () => {
+                    //console.log(this.state.dataInfo.data);
+                });
             });
-        });
     };
-
 
     onRefresh = () => {
         this.setState({
@@ -138,7 +138,7 @@ class EstateWeixiuPage extends BasePage {
     };
 
     loadMore = () => {
-        const {data, total, pageIndex} = this.state.dataInfo;
+        const { data, total, pageIndex } = this.state.dataInfo;
         //console.log('loadmore', this.state.dataInfo);
         // if (!this.state.canLoadMore) {
         //     return;
@@ -154,24 +154,24 @@ class EstateWeixiuPage extends BasePage {
         }
     };
 
-    _renderItem = ({item, index}) => {
+    _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.props.navigation.navigate('weixiuD', {data: item});
+                this.props.navigation.navigate('weixiuD', { data: item });
             }}>
                 <Flex direction='column' align={'start'}
-                      style={[styles.card, index === 0 ? styles.blue : styles.orange]}>
-                    <Flex justify='between' style={{width: '100%'}}>
+                    style={[styles.card, index === 0 ? styles.blue : styles.orange]}>
+                    <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.billCode}</Text>
                         <Text style={styles.title2}>{item.statusName}</Text>
                     </Flex>
-                    <Flex style={styles.line}/>
+                    <Flex style={styles.line} />
                     <Flex align={'start'} direction={'column'}>
                         <Flex justify='between'
-                              style={{width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20}}>
+                            style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>{item.address} {item.contactName}</Text>
                             <TouchableWithoutFeedback onPress={() => common.call(item.contactLink)}>
-                                <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{width: 20, height: 20}}/></Flex>
+                                <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 20, height: 20 }} /></Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
                         <Text style={{
@@ -218,8 +218,8 @@ class EstateWeixiuPage extends BasePage {
         }, () => {
             this.onRefresh();
         });
-
     };
+
     timeChange = (time) => {
         this.setState({
             time,
@@ -245,19 +245,18 @@ class EstateWeixiuPage extends BasePage {
 
 
     render() {
-        const {statistics, dataInfo, ym} = this.state;
+        const { dataInfo, ym } = this.state;
         return (
-
-            <View style={{flex: 1}}>
-                <CommonView style={{flex: 1}}>
-                    <ScrollTitle onChange={this.statusChange} titles={['全部', '待派单', '待接单', '待完成', '待回访']}/>
+            <View style={{ flex: 1 }}>
+                <CommonView style={{ flex: 1 }}>
+                    <ScrollTitle onChange={this.statusChange} titles={['全部', '待派单', '待接单', '待完成', '待回访']} />
                     {/*<Tabs tabs={tabs2} initialPage={1} tabBarPosition="top">*/}
                     {/*    {renderContent}*/}
                     {/*</Tabs>*/}
-                    <Flex justify={'between'} style={{marginTop: 15, paddingRight: 15, height: 30}}>
+                    <Flex justify={'between'} style={{ marginTop: 15, paddingRight: 15, height: 30 }}>
                         <MyPopover onChange={this.areaChange} titles={['全部', '客户区域', '公共区域']}
-                                   visible={true}/>
-                        <MyPopover onChange={this.timeChange} titles={ym} visible={true}/>
+                            visible={true} />
+                        <MyPopover onChange={this.timeChange} titles={ym} visible={true} />
                     </Flex>
 
                     <FlatList
@@ -274,7 +273,7 @@ class EstateWeixiuPage extends BasePage {
                         // onScrollEndDrag={() => this.canAction = false}
                         onMomentumScrollBegin={() => this.canAction = true}
                         onMomentumScrollEnd={() => this.canAction = false}
-                        ListEmptyComponent={<NoDataView/>}
+                        ListEmptyComponent={<NoDataView />}
                     />
                 </CommonView>
             </View>
@@ -355,7 +354,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         backgroundColor: 'white',
         shadowColor: '#00000033',
-        shadowOffset: {h: 10, w: 10},
+        shadowOffset: { h: 10, w: 10 },
         shadowRadius: 5,
         shadowOpacity: 0.8,
     },
@@ -372,7 +371,7 @@ const styles = StyleSheet.create({
     },
 
 });
-const mapStateToProps = ({buildingReducer}) => {
+const mapStateToProps = ({ buildingReducer }) => {
     return {
         selectBuilding: buildingReducer.selectBuilding,
     };

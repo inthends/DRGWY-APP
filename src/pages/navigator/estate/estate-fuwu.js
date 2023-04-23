@@ -103,10 +103,8 @@ class EstateFuwuPage extends BasePage {
             treeType = selectBuilding.type;
             organizeId = selectBuilding.key;
         }
-
         let startTime = common.getMonthFirstDay(time);
         let endTime = common.getMonthLastDay(time);
-
         NavigatorService.serviceList(this.state.pageIndex, billStatus, treeType, organizeId, billType, startTime, endTime).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
@@ -253,7 +251,7 @@ class EstateFuwuPage extends BasePage {
 
 
     render() {
-        const { statistics, dataInfo, ym } = this.state;
+        const {  dataInfo, ym } = this.state;
         return (
 
 
