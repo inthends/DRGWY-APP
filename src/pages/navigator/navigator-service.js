@@ -403,6 +403,10 @@ export default {
     return api.getData('/api/MobileMethod/MGetDataItemTreeJson', {
       code: 'ComplainType',
     });
-  }
+  },
+  //固定资产列表
+  gdzcList(pageIndex, showLoading,keywordStr) {
+    return api.postData('/api/MobileMethod/MGetAssetsListJson', { pageIndex, pageSize: 10,keyword:keywordStr}, showLoading);
+  },
 
 };

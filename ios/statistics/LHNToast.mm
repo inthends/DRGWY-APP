@@ -75,14 +75,14 @@ RCT_EXPORT_METHOD(printTicket:(NSDictionary *)infoData) {
   NSString *mchNameStr = [NSString stringWithFormat:@"商户名称：%@\r\n", [self.infoDataMuDic objectForKey:@"mchName"]];
   CP_Pos_PrintTextInGBK(self.pHandle, [self nsstringToCharWith: mchNameStr]);
   
-  NSString *tradeNoStr = [NSString stringWithFormat:@"商户号：%@\r\n", [self.infoDataMuDic objectForKey:@"tradeNo"]];
+  NSString *tradeNoStr = [NSString stringWithFormat:@"商户号：%@\r\n", [self.infoDataMuDic objectForKey:@"mchId"]];
   CP_Pos_PrintTextInGBK(self.pHandle, [self nsstringToCharWith: tradeNoStr]);
   
   NSString *allNameStr = [NSString stringWithFormat:@"房屋全称：%@\r\n", [self.infoDataMuDic objectForKey:@"allName"]];
   CP_Pos_PrintTextInGBK(self.pHandle, [self nsstringToCharWith: allNameStr]);
   NSString *payTypeStr = [NSString stringWithFormat:@"支付渠道：%@\r\n", [self.infoDataMuDic objectForKey:@"payType"]];
   CP_Pos_PrintTextInGBK(self.pHandle, [self nsstringToCharWith: payTypeStr]);
-  NSString *mchIdStr = [NSString stringWithFormat:@"订单号：%@\r\n", [self.infoDataMuDic objectForKey:@"mchId"]];
+  NSString *mchIdStr = [NSString stringWithFormat:@"订单号：%@\r\n", [self.infoDataMuDic objectForKey:@"tradeNo"]];
   CP_Pos_PrintTextInGBK(self.pHandle, [self nsstringToCharWith: mchIdStr]);
   NSString *userNameStr = [NSString stringWithFormat:@"收款人：%@\r\n", [self.infoDataMuDic objectForKey:@"userName"]];
   CP_Pos_PrintTextInGBK(self.pHandle, [self nsstringToCharWith: userNameStr]);

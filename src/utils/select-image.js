@@ -8,8 +8,8 @@ const options: ImagePickerOptions = {
     cancelButtonTitle: '取消',
     takePhotoButtonTitle: '相机',
     chooseFromLibraryButtonTitle: '相册',
-    maxWidth:600,
-    quality:0.2,
+    //maxWidth:600,
+    //quality:0.2,
     storageOptions: {
         skipBackup: true,
         path: 'images',
@@ -43,7 +43,10 @@ export default class SelectImage {
                     // const source = { uri: 'data:image/jpeg;base64,' + response.data };
                     if (hasNetwork) {
                         api.uploadFile(response.uri, id, uploadUrl).then(res => {
-                            resolve(res);
+                            if (!!res){
+                                resolve(res);
+                            }
+                            
                         }).catch(error => {
 
                         });

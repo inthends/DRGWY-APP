@@ -61,7 +61,7 @@ export default class ScanOnly extends Component {
         const {data, type} = result;
         let callBack = common.getValueFromProps(this.props).callBack;
         let needBack = common.getValueFromProps(this.props).needBack;
-        if (callBack) {
+        if (callBack && !!data) {
             callBack(data);
         }
         if (needBack) {

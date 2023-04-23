@@ -10,6 +10,8 @@ export const ACTIONS = {
   xunJianData: 'xunJianData',
   hasNetwork: 'hasNetwork',
   xunJianAction: 'xunJianAction',
+  gdzcData: 'gdzcData',
+  gdzcAction: 'gdzcAction',
   selectDrawerType: 'selectDrawerType',
 };
 

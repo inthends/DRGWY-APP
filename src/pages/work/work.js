@@ -280,6 +280,63 @@ export default class WorkPage extends BasePage {
                                 </TouchableWithoutFeedback>
                             </Flex>
                         </Flex>
+
+                        <Flex direction='column' align={'start'}
+                            style={[styles.card, {
+                                borderLeftColor: Macro.work_green,
+                                borderLeftWidth: 5,
+                                borderStyle: 'solid',
+                            }]}>
+                            <Text style={styles.title}>订单中心</Text>
+                            <Flex style={styles.line} />
+                            <Flex>
+                                <TouchableWithoutFeedback onPress={() => this.props.navigation.push('orderlist', {
+                                    'data': {
+                                        'type': '0',
+                                        title: '待查阅',
+                                    },
+                                })}>
+                                    <Flex direction='column' style={{ width: '25%' }}>
+                                        <Text style={styles.top}>{data.orderUnRead}</Text>
+                                        <Text style={styles.bottom}>待查阅</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+                                <TouchableWithoutFeedback onPress={() => this.props.navigation.push('orderlist', {
+                                    'data': {
+                                        'type': '1',
+                                        title: '待回复',
+                                    },
+                                })}>
+                                    <Flex direction='column' style={{ width: '25%' }}>
+                                        <Text style={styles.top}>{data.orderUnReply}</Text>
+                                        <Text style={styles.bottom}>待回复</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+                                <TouchableWithoutFeedback onPress={() => this.props.navigation.push('orderlist', {
+                                    'data': {
+                                        'type': '2',
+                                        title: '已回复',
+                                    },
+                                })}>
+                                    <Flex direction='column' style={{ width: '25%' }}>
+                                        <Text style={styles.top}>{data.orderReply}</Text>
+                                        <Text style={styles.bottom}>已回复</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+                                <TouchableWithoutFeedback onPress={() => this.props.navigation.push('orderlist', {
+                                    'data': {
+                                        'type': '-1',
+                                        hiddenHeader: true,
+                                        title: '已关闭',
+                                    },
+                                })}>
+                                    <Flex direction='column' style={{ width: '25%' }}>
+                                        <Text style={styles.top}>{data.orderClose}</Text>
+                                        <Text style={styles.bottom}>已关闭</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+                            </Flex>
+                        </Flex>
                     </Flex>
                 </ScrollView>
             </CommonView>

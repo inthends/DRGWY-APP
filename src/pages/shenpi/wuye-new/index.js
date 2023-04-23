@@ -63,8 +63,7 @@ export default class EfuwuDetailPage extends BasePage {
   getData = () => {
     const { id, instanceId } = this.state;
     service.getFlowData(id).then((detail) => {
-      console.log('detail', detail);
-
+      //console.log('detail', detail); 
       this.setState({
         detail,
       });
@@ -80,7 +79,6 @@ export default class EfuwuDetailPage extends BasePage {
   render() {
     const { detail = {}, records = [], customer = {} } = this.state;
     const { prices = [], fees: list = [] } = detail;
-
     return (
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
         <ScrollView style={{ padding: 15, paddingBottom: 30 }}>
@@ -89,8 +87,7 @@ export default class EfuwuDetailPage extends BasePage {
             <ShowText word="项目" title={detail.organizeName} />
             <ShowText word="合同号" title={detail.no} />
             <ShowText word="合同期限" title={detail.date} />
-            <ShowText word="付款方式" title={detail.payType} />
-
+            <ShowText word="付款方式" title={detail.payType} /> 
             <ShowText word="客户名称" title={detail.customer} />
             <ShowText word="合同金额" title={detail.totalAmount} />
             <ShowText word="合同面积" title={detail.totalArea} />

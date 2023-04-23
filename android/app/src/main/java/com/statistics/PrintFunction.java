@@ -32,11 +32,11 @@ class PrintFunction {
         AutoReplyPrint.INSTANCE.CP_Pos_SetMultiByteEncoding(h, AutoReplyPrint.CP_MultiByteEncoding_UTF8);
 
         String allName = "房屋全称："+btBundle.getString("allName") + "";
-        String tradeNo = "商户号："+btBundle.getString("tradeNo") + "";
+        String tradeNo = "商户号："+btBundle.getString("mchId") + "";
         String mchName = "商户名称："+btBundle.getString("mchName") + "";
         String stampUrl = btBundle.getString("stampUrl") + "";
         String payType = "支付渠道："+btBundle.getString("payType") + "";
-        String mchId = "订单号："+btBundle.getString("mchId") + "";
+        String mchId = "订单号："+btBundle.getString("tradeNo") + "";
         String billDate = "收款日期："+btBundle.getString("billDate") + "";
         String amount = "实付金额："+btBundle.getString("amount") + "";
         String userName = "收款人："+btBundle.getString("userName") + "";

@@ -24,6 +24,7 @@ import ModifyPsdPage from '../mine/modify-psd';
 
 //导航
 import FeeHousePage from '../navigator/fee-housing';
+import gdMoneyPage from '../navigator/gd-Money';
 import FeeBuildingsPage from '../navigator/fee-buildings';
 import FeeRoomsPage from '../navigator/fee-rooms';
 import FeeParkingsPage from '../navigator/fee-parkings';
@@ -50,6 +51,10 @@ import TaskPage from '../navigator/xunjian/task';
 import XunJianDetailPage from '../navigator/xunjian/xunjian-detail';
 import SelectXunJianPerson from '../navigator/xunjian/select-xunjian';
 import StartXunJianPage from '../navigator/xunjian/start-xunjian';
+import GdzcPandianPage from '../navigator/gdzc/gdzc_pandian';
+import GdzcDetailPage from '../navigator/gdzc/gdzc_detail';
+import OrderlistPage from '../work/order_center/order_list';
+import OrderDetailPage from '../work/order_center/order_detail'; 
 import XunJianPointDetailPage from '../navigator/xunjian/xunjian-point-detail';
 import XunjianBeforeStart from '../navigator/xunjian/xunjian-before-start';
 import YiQingPage from '../building/yiqing/yiqing';
@@ -156,6 +161,7 @@ const navigatorNavigator = createStackNavigator({
   feeParkings: FeeParkingsPage, //车位
   feeBuildings: FeeBuildingsPage,
   feeHouse: FeeHousePage,
+  gdMoney: gdMoneyPage,
   e_fuwu: EstateFuwuPage,
   feeDetail: FeeDetailPage,
   feeAdd: FeeAddPage,
@@ -168,6 +174,14 @@ const navigatorNavigator = createStackNavigator({
   e_tousu: EstateTousuPage,
   selectPaidanPerson: SelectPaiDanPerson,
   charge: FeeChargeDetail,
+
+  //固定资产
+  gdzcPandian: GdzcPandianPage,
+  gdzcDetail: GdzcDetailPage,
+
+  //订单中心
+  orderlist: OrderlistPage,
+  orderDetail: OrderDetailPage,
 
   //报表
   collection: CollectionRatePage,
