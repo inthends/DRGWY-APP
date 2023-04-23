@@ -336,4 +336,39 @@ export default {
       code: 'ComplainType',
     });
   },
+  //固定资产列表
+  gdzcList(pageIndex, showLoading,keywordStr) {
+    return api.postData('/api/MobileMethod/MGetAssetsListJson', { pageIndex, pageSize: 10,keyword:keywordStr}, showLoading);
+  },
+  
+  /*
+  address: null
+brand: null
+buyDate: null
+code: "000"
+createDate: null
+createUserId: null
+createUserName: null
+custodianId: null
+custodianName: null
+description: null
+id: "9b84832d-2a10-4c5d-9e40-f8d84431445d"
+modelNo: null
+modifyDate: null
+modifyUserId: null
+modifyUserName: null
+name: "ceh  "
+num: 0
+organizeId: "dfbdddcd-a489-4d2c-af99-514a1c135c96"
+pStructId: null
+price: 0
+qrCodePic: null
+rowIndex: 1
+status: "在用"
+typeId: "efe422bc-99f2-460f-b71b-12ccb88db66f"
+unit: null
+useDate: null
+useLimitDate: 0
+valueRate: 0
+  */
 };

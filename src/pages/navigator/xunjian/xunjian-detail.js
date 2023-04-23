@@ -15,8 +15,6 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 
 export default class XunJianDetailPage extends BasePage {
     static navigationOptions = ({navigation}) => {
-
-
         return {
             tabBarVisible: false,
             title: '任务单详情',

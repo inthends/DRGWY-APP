@@ -94,6 +94,17 @@ export default class NavigatorPage extends BasePage {
                   <Text style={styles.content}>上门收费</Text>
                 </Flex>
               </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback
+                onPress={() => this.props.navigation.navigate('gdMoney')}
+              >
+                <Flex style={styles.left}>
+                  <LoadImage
+                    style={{ width: 19, height: 25 }}
+                    defaultImg={require('../../static/images/navigator/shangmen.png')}
+                  />
+                  <Text style={styles.content}>固定资产</Text>
+                </Flex>
+              </TouchableWithoutFeedback>
 
               {/*<TouchableWithoutFeedback onPress={() => alert(1)}>*/}
               {/*    <Flex style={styles.right}>*/}

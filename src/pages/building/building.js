@@ -55,7 +55,7 @@ class BuildingPage extends BasePage {
   }
 
   componentDidMount() {
-    if (!common.isIOS()) {
+    if (!common.isIOS() === false) {
       NativeModules.LHNToast.getVersionCode(
         (version, isYse, isLKL, brandName, aa, bb) => {
           //console.log(aa,bb,11)

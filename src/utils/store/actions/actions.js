@@ -64,3 +64,6 @@ export function savehasNetwork(state) {
 export function saveXunJianAction(data) {
   return { type: ACTIONS.xunJianAction, data };
 }
+export function saveGdzcAction(data) {
+  return { type: ACTIONS.xunJianAction, data };
+}
