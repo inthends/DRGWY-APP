@@ -110,13 +110,14 @@ public class LHNToast extends ReactContextBaseJavaModule {
                 bundle.putString("tradeNo", res.getString("tradeNo"));
                 bundle.putString("payType", res.getString("payType"));
                 bundle.putString("username", res.getString("username"));
+                bundle.putString("customerName", res.getString("customerName"));//添加业主名称
                 bundle.putString("stampUrl", res.isNull("stampUrl") ? "" : res.getString("stampUrl"));
                 if (res.getString("stampUrl") == null){
                     bundle.putString("stampUrl", "");
                 }
-                else {
-                    Log.d("TAG", res.getString("stampUrl"));
-                }
+                // else {
+                //     Log.d("TAG", res.getString("stampUrl"));
+                // }
                 bundle.putString("mchName", res.isNull("mchName") ? "" : res.getString("mchName"));
                 bundle.putString("mchId", res.isNull("mchId") ? "" : res.getString("mchId"));
                 ReadableArray params = res.getArray("bills");
@@ -124,15 +125,13 @@ public class LHNToast extends ReactContextBaseJavaModule {
                 if (params != null && params.size() > 0) {
                     for (int i = 0; i < params.size(); i++) {
                         ReadableMap map = params.getMap(i);
-
                         if (map != null) {
                             ZhangDanObj obj = new ZhangDanObj(map.getString("feeName"), map.getString("amount"), map.getString("beginDate"), map.getString("endDate"));
                             list.add(obj);
                         }
                     }
                 }
-                bundle.putSerializable("bills", list);
-
+                bundle.putSerializable("bills", list); 
                 if (deviceadress.equals("")){
                     Intent intent = new Intent(currentActivity, SearchBTActivity.class);//非自动
                     intent.putExtras(bundle);
@@ -145,7 +144,7 @@ public class LHNToast extends ReactContextBaseJavaModule {
             }
 
         } catch (Exception e) {
-            Log.d("sssssss", "printTicket: ==="+e);
+            //Log.d("sssssss", "printTicket: ==="+e);
         }
     }
 
@@ -155,11 +154,9 @@ public class LHNToast extends ReactContextBaseJavaModule {
         try {
             Activity currentActivity = getCurrentActivity();
             if (null != currentActivity) {
-                // Class toActivity = Class.forName(name);
-
+                // Class toActivity = Class.forName(name); 
                 Intent intent = new Intent(currentActivity, LKLPayActivity.class);
-                Bundle bundle = new Bundle();
-
+                Bundle bundle = new Bundle(); 
                 String posType = order.getString("posType");
                 switch (posType) {
                     case "拉卡拉":

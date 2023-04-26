@@ -80,6 +80,10 @@ RCT_EXPORT_METHOD(printTicket:(NSDictionary *)infoData) {
   
   NSString *allNameStr = [NSString stringWithFormat:@"房屋全称：%@\r\n", [self.infoDataMuDic objectForKey:@"allName"]];
   CP_Pos_PrintTextInGBK(self.pHandle, [self nsstringToCharWith: allNameStr]);
+
+  NSString *customerNameStr = [NSString stringWithFormat:@"客户名称：%@\r\n", [self.infoDataMuDic objectForKey:@"customerName"]];
+  CP_Pos_PrintTextInGBK(self.pHandle, [self nsstringToCharWith: customerNameStr]);
+
   NSString *payTypeStr = [NSString stringWithFormat:@"支付渠道：%@\r\n", [self.infoDataMuDic objectForKey:@"payType"]];
   CP_Pos_PrintTextInGBK(self.pHandle, [self nsstringToCharWith: payTypeStr]);
   NSString *mchIdStr = [NSString stringWithFormat:@"订单号：%@\r\n", [self.infoDataMuDic objectForKey:@"tradeNo"]];
@@ -90,6 +94,7 @@ RCT_EXPORT_METHOD(printTicket:(NSDictionary *)infoData) {
   CP_Pos_PrintTextInGBK(self.pHandle, [self nsstringToCharWith: billDateStr]);
   NSString *amountStr = [NSString stringWithFormat:@"实付金额：%@\r\n", [self.infoDataMuDic objectForKey:@"amount"]];
   CP_Pos_PrintTextInGBK(self.pHandle, [self nsstringToCharWith: amountStr]);
+
   CP_Pos_SetTextLineHeight(self.pHandle, 40);
   CP_Pos_PrintTextInGBK(self.pHandle, L"付款明细\r\n");
   CP_Pos_SetTextLineHeight(self.pHandle, 40);
@@ -109,9 +114,13 @@ RCT_EXPORT_METHOD(printTicket:(NSDictionary *)infoData) {
       NSString *feeName_amountStr = [NSString stringWithFormat:@"%@：    %@\r\n", feeName, amount];
       CP_Pos_SetTextScale(self.pHandle, 0, 0);
       CP_Pos_PrintTextInGBK(self.pHandle, [self nsstringToCharWith: feeName_amountStr]);
+ 
+      //判断日期是否为空 2023-04-26 neo add
+    if(![[bill objectForKey:@"beginDate"] isEqual:[NSNull null]]) {
       NSString *timeStr = [NSString stringWithFormat:@"%@ 至 %@\r\n", [bill objectForKey:@"beginDate"], [bill objectForKey:@"endDate"]];
       CP_Pos_SetTextScale(self.pHandle, 0, 0);
       CP_Pos_PrintTextInGBK(self.pHandle, [self nsstringToCharWith: timeStr]);
+     }
     }
     // 横线
     CP_Pos_PrintMultipleHorizontalLinesAtOneRow(self.pHandle, sizeof(nLineStartPos) / sizeof(int), nLineStartPos, nLineEndPos);

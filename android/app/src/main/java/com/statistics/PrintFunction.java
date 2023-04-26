@@ -40,6 +40,8 @@ class PrintFunction {
         String billDate = "收款日期："+btBundle.getString("billDate") + "";
         String amount = "实付金额："+btBundle.getString("amount") + "";
         String userName = "收款人："+btBundle.getString("userName") + "";
+        String customerName = "客户名称："+btBundle.getString("customerName") + "";
+
         ArrayList<ZhangDanObj> bills = (ArrayList<ZhangDanObj>) btBundle.getSerializable("bills");
 
         AutoReplyPrint.INSTANCE.CP_Pos_SetAlignment(h, AutoReplyPrint.CP_Pos_Alignment_HCenter);
@@ -55,6 +57,10 @@ class PrintFunction {
         AutoReplyPrint.INSTANCE.CP_Pos_FeedLine(h, 1);
         AutoReplyPrint.INSTANCE.CP_Pos_PrintText(h, allName);
         AutoReplyPrint.INSTANCE.CP_Pos_FeedLine(h, 1);
+
+        AutoReplyPrint.INSTANCE.CP_Pos_PrintText(h, customerName);
+        AutoReplyPrint.INSTANCE.CP_Pos_FeedLine(h, 1);
+ 
         AutoReplyPrint.INSTANCE.CP_Pos_PrintText(h, payType);
         AutoReplyPrint.INSTANCE.CP_Pos_FeedLine(h, 1);
         AutoReplyPrint.INSTANCE.CP_Pos_PrintText(h, mchId);
@@ -63,6 +69,7 @@ class PrintFunction {
         AutoReplyPrint.INSTANCE.CP_Pos_FeedLine(h, 1);
         AutoReplyPrint.INSTANCE.CP_Pos_PrintText(h, amount);
         AutoReplyPrint.INSTANCE.CP_Pos_FeedLine(h, 1);
+
         AutoReplyPrint.INSTANCE.CP_Pos_PrintText(h, "付款明细");
         AutoReplyPrint.INSTANCE.CP_Pos_FeedLine(h, 1);
         AutoReplyPrint.INSTANCE.CP_Pos_PrintText(h, "----------------------------------------");
@@ -72,14 +79,18 @@ class PrintFunction {
                 String billfeename = bill.getFeeName();
                 String billamount = bill.getAmount();
                 String feeName_amountStr = billfeename + "  " + billamount + "";
-                String timeStr = bill.getBeginDate() + " 至 " + bill.getEndDate() + "";
-
                 AutoReplyPrint.INSTANCE.CP_Pos_PrintText(h, feeName_amountStr);
                 AutoReplyPrint.INSTANCE.CP_Pos_FeedLine(h, 1);
-                AutoReplyPrint.INSTANCE.CP_Pos_PrintText(h, timeStr);
-                AutoReplyPrint.INSTANCE.CP_Pos_FeedLine(h, 1);
+
+                if(bill.getBeginDate()!=null)
+                {
+                    String timeStr = bill.getBeginDate() + " 至 " + bill.getEndDate() + ""; 
+                    AutoReplyPrint.INSTANCE.CP_Pos_PrintText(h, timeStr);
+                    AutoReplyPrint.INSTANCE.CP_Pos_FeedLine(h, 1);
+                }
             }
         }
+        
         AutoReplyPrint.INSTANCE.CP_Pos_PrintText(h, "----------------------------------------");
         AutoReplyPrint.INSTANCE.CP_Pos_FeedLine(h, 1);
 

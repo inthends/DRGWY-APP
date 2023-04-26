@@ -354,27 +354,32 @@ export default {
   printInfo(out_trade_no) {
     return api.getData('/api/MobileMethod/MGetPrintInfo', { out_trade_no });
   },
-  RePrintInfo(billId) {
+
+  rePrintInfo(billId) {
     return api.getData('/api/MobileMethod/MGetRePrintInfo', { billId });
   },
 
   getFeeItemTreeJson(unitId) {
     return api.getData('/api/MobileMethod/GetFeeItemTreeJson', { unitId });
   },
+
   getFeeItemDetail(unitId, feeItemId) {
     return api.getData('/api/MobileMethod/GetFeeItemDetail', {
       unitId,
       feeItemId
     });
   },
+
   saveFee(unitId, bills) {
     return api.postData('/api/MobileMethod/SaveFee', {
       bills: JSON.stringify(bills)
     });
   },
+
   invalidBillForm(keyvalue) {
     return api.postData('/api/MobileMethod/InvalidBillForm', { keyvalue });
   },
+
   billDetailList(billId) {
     return api.postData('/api/MobileMethod/MGetChargeBillDetailList', {
       billId

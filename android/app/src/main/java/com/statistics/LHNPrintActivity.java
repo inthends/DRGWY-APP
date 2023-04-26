@@ -212,6 +212,7 @@ public class LHNPrintActivity extends BaseLKLActivity {
                     int big = 16;
                     int medium = 8;
                     int small = 4;
+
                     /*
                      * bundle.putString("allName",res.getString("allName"));
                      * bundle.putString("billDate",res.getString("billDate"));
@@ -220,6 +221,7 @@ public class LHNPrintActivity extends BaseLKLActivity {
                      * bundle.putString("payType",res.getString("payType")); ReadableArray params =
                      * res.getArray("bills");
                      */
+
                     String allName = bundle.getString("allName");
                     String billDate = bundle.getString("billDate");
                     String amount = bundle.getString("amount");
@@ -228,6 +230,7 @@ public class LHNPrintActivity extends BaseLKLActivity {
                     String username = bundle.getString("username");
                     String mchName = bundle.getString("mchName");
                     String mchId = bundle.getString("mchId");
+                    String customerName = bundle.getString("customerName");//业主名称
                     ArrayList<ZhangDanObj> bills = (ArrayList<ZhangDanObj>) bundle.getSerializable("bills");
 
                     /*
@@ -241,37 +244,36 @@ public class LHNPrintActivity extends BaseLKLActivity {
                     add(new PrintItemObj("商户号：" + mchId, medium));
                     // add(new PrintItemObj("终端号：" + systemActivity.getTerminalSn(), medium));
                     add(new PrintItemObj("房屋全称：" + allName, medium));
+                    add(new PrintItemObj("客户名称：" + customerName, medium));  
                     add(new PrintItemObj("支付渠道：" + payType, medium));
                     add(new PrintItemObj("订单号：" + tradeNo, medium));
                     add(new PrintItemObj("收款人：" + username, medium));
                     add(new PrintItemObj("收款日期：" + billDate, medium));
                     add(new PrintItemObj("实付金额：" + amount, medium, false, PrintItemObj.ALIGN.LEFT, false, false, 20));
+
                     add(new PrintItemObj("付款明细", medium, false, PrintItemObj.ALIGN.LEFT, false, false, 20));
-                    add(new PrintItemObj("--------------------------------", medium));
-
+                    add(new PrintItemObj("--------------------------------", medium)); 
                     if (bills != null) {
-                        for (ZhangDanObj list : bills) {
+                        for (ZhangDanObj bill : bills) {
 
-                            add(new PrintItemObj(list.getFeeName() + "：   " + list.getAmount(), medium));
-                            add(new PrintItemObj(list.getBeginDate() + " 至 " + list.getEndDate(), small));
+                            add(new PrintItemObj(bill.getFeeName() + "：   " + bill.getAmount(), medium));
+
+                            if(bill.getBeginDate()!=null)
+                                add(new PrintItemObj(bill.getBeginDate() + " 至 " + bill.getEndDate(), small));
                         }
-                    }
-
+                    } 
                     add(new PrintItemObj("--------------------------------", medium));
                     add(new PrintItemObj("付款人（签字）", medium, false, PrintItemObj.ALIGN.LEFT, false, false, 40));
                     add(new PrintItemObj("收款单位（签章）", medium, false, PrintItemObj.ALIGN.LEFT, false, false));
                 }
-            }, new AidlPrinterListener.Stub() {
-
-                Thread thread = Thread.currentThread();
-
+            }, new AidlPrinterListener.Stub() { 
+                Thread thread = Thread.currentThread(); 
                 @Override
                 public void onPrintFinish() throws RemoteException {
                     Thread thread = Thread.currentThread();
                     printText = true;
                     showMessage("打印完成"); 
                 }
-
                 @Override
                 public void onError(int arg0) throws RemoteException {
                     showMessage("打印出错，错误码为：" + arg0);
