@@ -22,6 +22,7 @@ class NewsList extends BasePage {
         console.log(1, navigation);
         return {
             title: '未读消息',
+            headerForceInset:this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{width: 30, marginLeft: 15}}/>

@@ -22,6 +22,7 @@ class StartXunJianPage extends BasePage {
         return {
             tabBarVisible: false,
             title: '开始巡检',
+            headerForceInset:this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />

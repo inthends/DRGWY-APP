@@ -35,7 +35,8 @@ export default class EfuwuDetailPage extends BasePage {
       title: navigation.getParam('data')
         ? navigation.getParam('data').codeName
         : '',
-      headerLeft: (
+      headerForceInset:this.headerForceInset,
+            headerLeft: (
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="left" style={{ width: 30, marginLeft: 15 }} />
         </TouchableOpacity>

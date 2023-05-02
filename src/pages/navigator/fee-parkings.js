@@ -29,6 +29,7 @@ export default class FeeParkingsPage extends BasePage {
         return {
             tabBarVisible: false,
             title: '上门收费',
+            headerForceInset:this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />

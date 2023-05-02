@@ -21,7 +21,8 @@ class CollectionRatePage extends BasePage {
     return {
       tabBarVisible: false,
       title: '收缴率',
-      headerLeft: (
+      headerForceInset:this.headerForceInset,
+            headerLeft: (
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="left" style={{ width: 30, marginLeft: 15 }} />
         </TouchableOpacity>

@@ -38,6 +38,7 @@ export default class WanChengListDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
             title: '完成维修',
+            headerForceInset:this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />

@@ -26,6 +26,7 @@ export default class WorkPage extends BasePage {
                 flex: 1,
                 textAlign: 'center',
             },
+            headerForceInset:this.headerForceInset,
             headerLeft: (
                 <Fragment>
                     <TouchableWithoutFeedback onPress={() => navigation.push('scanonly')}>

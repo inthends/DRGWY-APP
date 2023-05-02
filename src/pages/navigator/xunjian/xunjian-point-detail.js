@@ -18,6 +18,7 @@ export default class XunJianPointDetailPage extends BasePage {
         return {
             tabBarVisible: false,
             title: '巡检点详情',
+            headerForceInset:this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />

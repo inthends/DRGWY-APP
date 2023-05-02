@@ -30,6 +30,7 @@ export default class EweixiuDetailPage extends BasePage {
     static navigationOptions = ({navigation}) => {
         return {
             title: '维修单详情',
+            headerForceInset:this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{width: 30, marginLeft: 15}}/>

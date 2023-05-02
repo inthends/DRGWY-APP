@@ -40,6 +40,7 @@ class ShebeiDetail extends BasePage {
         return {
             tabBarVisible: false,
             title: '设备详情',
+            headerForceInset:this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{width: 30, marginLeft: 15}}/>
