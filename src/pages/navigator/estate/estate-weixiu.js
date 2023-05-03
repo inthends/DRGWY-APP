@@ -31,6 +31,7 @@ class EstateWeixiuPage extends BasePage {
         return {
             tabBarVisible: false,
             title: '维修单',
+            headerForceInset:this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />

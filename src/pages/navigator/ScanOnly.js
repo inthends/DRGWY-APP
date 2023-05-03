@@ -17,11 +17,13 @@ import common from '../../utils/common';
 import { Icon} from '@ant-design/react-native';
 import {RNCamera} from 'react-native-camera';
 import Macro from '../../utils/macro';
+import BasePage from '../base/base';
 
-export default class ScanOnly extends Component {
+export default class ScanOnly extends BasePage {
     static navigationOptions = ({navigation}) => {
         return {
             title: '扫一扫',
+            headerForceInset:this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{width: 30, marginLeft: 15}}/>

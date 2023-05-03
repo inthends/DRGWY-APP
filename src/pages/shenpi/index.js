@@ -20,6 +20,7 @@ class ContactDetail extends BasePage {
   static navigationOptions = ({ navigation }) => {
     return {
       title: '审批',
+      headerForceInset:this.headerForceInset,
       headerRight: (
         <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
           <Icon name="bars" style={{ marginRight: 15 }} color="black" />

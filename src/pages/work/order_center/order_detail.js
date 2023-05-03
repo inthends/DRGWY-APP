@@ -18,6 +18,7 @@ export default class OrderDetailPage extends BasePage {
         return {
             tabBarVisible: false,
             title: navigation.state.params.data.title ?? '订单详情',
+            headerForceInset:this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />

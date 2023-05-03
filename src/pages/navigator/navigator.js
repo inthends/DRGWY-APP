@@ -16,9 +16,11 @@ import ScreenUtil from '../../utils/screen-util';
 import ChaoBiaoPage from './chao-biao/chao-biao';
 
 export default class NavigatorPage extends BasePage {
+  
   static navigationOptions = ({ navigation }) => {
     return {
       title: '导航',
+      headerForceInset:this.headerForceInset,
       headerTitleStyle: {
         flex: 1,
         textAlign: 'center',
