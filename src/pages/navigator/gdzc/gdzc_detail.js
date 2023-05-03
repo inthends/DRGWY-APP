@@ -151,12 +151,17 @@ export default class GdzcDetailPage extends BasePage {
         const {indexType} = this.state
         let data1 = []
             if (indexType == 1) {
+                let useDate = item.useDate ?? ''
+                if (useDate.length > 10){
+                    useDate = useDate.substring(0,10)
+                }
+
                 data1 = [
-                    { key: '领用日期', value: item.useDate },
-                    { key: '领用人', value: item.userName },
-                    { key: '领用说明', value: item.memo },
-                    { key: '归还日期', value: item.returnDate },
-                    { key: '归还说明', value: item.returnMemo }
+                    { key: '领用日期', value: useDate },
+                    { key: '领用人', value: item.userName ?? '' },
+                    { key: '领用说明', value: item.memo ?? '' },
+                    { key: '归还日期', value: item.returnDate ?? '' },
+                    { key: '归还说明', value: item.returnMemo ?? '' }
                 ]
             }
             /*
@@ -189,19 +194,27 @@ rowIndex: 1
 status: 1
             */
             else if (indexType == 2) {
+                let repairDate = item.repairDate ?? ''
+                if (repairDate.length > 10){
+                    repairDate = repairDate.substring(0,10)
+                }
                 data1 = [
-                    { key: '维修日期', value: item.repairDate },
-                    { key: '经办人', value: item.handUserName },
-                    { key: '维修费用', value: item.fee },
-                    { key: '故障描述', value: item.memo }
+                    { key: '维修日期', value: repairDate },
+                    { key: '经办人', value: item.handUserName ?? ''  },
+                    { key: '维修费用', value: item.fee ?? ''  },
+                    { key: '故障描述', value: item.memo ?? ''  }
                 ]
             }
             else if (indexType == 3) {
+                let checkDate = item.checkDate ?? ''
+                if (checkDate.length > 10){
+                    checkDate = checkDate.substring(0,10)
+                }
                 data1 = [
-                    { key: '盘点日期', value: item.checkDate },
-                    { key: '盘点人', value: item.createUserName },
+                    { key: '盘点日期', value: checkDate  },
+                    { key: '盘点人', value: item.createUserName ?? ''  },
                     { key: '盘点结果', value: item.status === 1 ? '正常' : '异常' },
-                    { key: '盘点说明', value: item.memo }
+                    { key: '盘点说明', value: item.memo ?? ''  }
                 ]
             }
             return <Flex direction="column" style={{ ...styles.content, height: 30 * data1.length }}>
@@ -220,14 +233,14 @@ status: 1
         })
         if (indexType == 0) {
             let data1 = [
-                { key: '编号', value: data.code },
-                { key: '名称', value: data.name },
-                { key: '品牌', value: data.brand },
-                { key: '型号规格', value: data.modelNo },
+                { key: '编号', value: data.code ?? ''  },
+                { key: '名称', value: data.name ?? ''  },
+                { key: '品牌', value: data.brand ?? ''  },
+                { key: '型号规格', value: data.modelNo ?? ''  },
                 { key: '数量', value: data.num + data.unit },
-                { key: '原值', value: data.price },
-                { key: '存放地址', value: data.address },
-                { key: '保管人', value: data.custodianName }
+                { key: '原值', value: data.price ?? ''  },
+                { key: '存放地址', value: data.address ?? ''  },
+                { key: '保管人', value: data.custodianName ?? ''  }
             ]
 
             return (
