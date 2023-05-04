@@ -250,7 +250,7 @@ export default {
       false
     );
   },
- 
+
   //兴业银行生成收款码
   cibCodePay(tbout_trade_no, isDigital) {
     return api.postData('/api/MobileMethod/CIBPay', { tbout_trade_no, isDigital });
@@ -370,7 +370,7 @@ export default {
     });
   },
 
-  saveFee(unitId, bills) {
+  saveFee(bills) {
     return api.postData('/api/MobileMethod/SaveFee', {
       bills: JSON.stringify(bills)
     });
@@ -410,8 +410,9 @@ export default {
     });
   },
   //固定资产列表
-  gdzcList(pageIndex, showLoading,keywordStr) {
-    return api.postData('/api/MobileMethod/MGetAssetsListJson', { pageIndex, pageSize: 10,keyword:keywordStr}, showLoading);
+  gdzcList(pageIndex, showLoading, queryJson) {
+    return api.postData('/api/MobileMethod/MGetAssetsListJson',
+      { pageIndex, pageSize: 10, queryJson: queryJson }, showLoading);
   },
 
 };

@@ -104,17 +104,14 @@ class FeeAddPage extends BasePage {
         });
     };
     save = () => {
-        let { fee } = this.state;
-        //console.log(34, fee);
+        let { fee } = this.state; 
         fee = {
             ...fee,
             beginDate: fee.beginDate == null ? null : fee.beginDate.yearMonthDay(),
             endDate: fee.endDate == null ? null : fee.endDate.yearMonthDay(),
         };
- 
-        // console.log(12, fee);
 
-        NavigatorService.saveFee(this.state.room.id, [fee]).then(res => {
+        NavigatorService.saveFee([fee]).then(res => {
             UDToast.showError('保存成功');
             setTimeout(() => {
                 this.props.navigation.goBack();

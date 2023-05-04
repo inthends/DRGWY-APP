@@ -21,7 +21,7 @@ import ScreenUtil from '../../utils/screen-util';
 import { connect } from 'react-redux';
 //import ListHeader from '../../components/list-header';
 //import common from '../../utils/common';
-import LoadImage from '../../components/load-image';
+//import LoadImage from '../../components/load-image';
 import NavigatorService from './navigator-service';
 import NoDataView from '../../components/no-data-view';
 import CommonView from '../../components/CommonView';
@@ -33,7 +33,7 @@ class gdMoneyPage extends BasePage {
         return {
             tabBarVisible: false,
             title: '固定资产',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
@@ -43,7 +43,7 @@ class gdMoneyPage extends BasePage {
                 <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
                     <Icon name='bars' style={{ marginRight: 15 }} color="black" />
                 </TouchableWithoutFeedback>
-            ),
+            )
         };
     };
 
@@ -59,9 +59,9 @@ class gdMoneyPage extends BasePage {
             },
             refreshing: false,
             selectBuilding: this.props.selectBuilding,
-            searchText: ''
+            estateId: null,//机构id
+            //searchText: ''
         };
-
     }
 
     componentDidMount(): void {
@@ -69,8 +69,13 @@ class gdMoneyPage extends BasePage {
     }
 
     getList = () => {
-        const {text} = this.state
-        NavigatorService.gdzcList(this.state.pageIndex, this.state.refreshing,text).then(dataInfo => {
+        const { estateId, text } = this.state;
+        const queryJson = {
+            keyword: text,
+            estateId: estateId
+        };
+
+        NavigatorService.gdzcList(this.state.pageIndex, this.state.refreshing, queryJson).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -93,11 +98,13 @@ class gdMoneyPage extends BasePage {
         // console.log('selectBuilding', selectBuilding);
         // console.log('nextSelectBuilding', nextSelectBuilding); 
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
-            this.setState({ selectBuilding: nextProps.selectBuilding }, () => {
+            this.setState({
+                selectBuilding: nextProps.selectBuilding,
+                estateId: nextProps.selectBuilding.key,
+            }, () => {
                 this.onRefresh();
             });
         }
-
     }
 
     onRefresh = () => {
@@ -127,7 +134,7 @@ class gdMoneyPage extends BasePage {
             pointId,
         }, () => {
             this.props.navigation.navigate('gdzcPandian', {
-                data:{
+                data: {
                     assetsId: pointId
                 }
             });
@@ -144,15 +151,15 @@ class gdMoneyPage extends BasePage {
     };
 
     _renderItem = ({ item, index }) => {
-    
+
         return (
             <TouchableWithoutFeedback onPress={() => this.props.navigation.push('gdzcDetail', { data: item })}>
                 <Flex direction="column" style={styles.content}>
-                    <Flex style={{ justifyContent: 'space-between',width:screen_width - 40,marginTop:10}}>
+                    <Flex style={{ justifyContent: 'space-between', width: screen_width - 40, marginTop: 10 }}>
                         <Text style={styles.top}>{item.code}</Text>
                         <Text style={styles.top}>{item.status}</Text>
                     </Flex>
-                    <Flex style={styles.line}/>
+                    <Flex style={styles.line} />
                     <Text style={styles.desc}>{item.name}{item.modelNo}</Text>
                     <Text style={styles.desc}>{item.address}</Text>
                 </Flex>
@@ -172,7 +179,12 @@ class gdMoneyPage extends BasePage {
         return (
             <View style={{ flex: 1 }}>
                 <CommonView style={{ flex: 1 }}>
-                    <SearchBar cancelText='搜索' showCancelButton={true} onCancel={this.search} value={this.state.text} onChange={text => this.setState({ text })} onSubmit={this.search} />
+                    <SearchBar cancelText='搜索'
+                        showCancelButton={true}
+                        onCancel={this.search}
+                        value={this.state.text}
+                        onChange={text => this.setState({ text })}
+                        onSubmit={this.search} />
                     <View style={{ flex: 1 }}>
                         <FlatList
                             data={dataInfo.data}
@@ -192,15 +204,15 @@ class gdMoneyPage extends BasePage {
                         />
                     </View>
                     <TouchableWithoutFeedback onPress={this.start}>
-                    <Flex justify={'center'} style={[styles.ii, {
-                        width: '80%',
-                        marginLeft: '10%',
-                        marginRight: '10%',
-                        marginBottom: 20,
-                    }, {backgroundColor: Macro.color_4d8fcc}]}>
-                        <Text style={styles.word}>开始盘点</Text>
-                    </Flex>
-                </TouchableWithoutFeedback>
+                        <Flex justify={'center'} style={[styles.ii, {
+                            width: '80%',
+                            marginLeft: '10%',
+                            marginRight: '10%',
+                            marginBottom: 20,
+                        }, { backgroundColor: Macro.color_4d8fcc }]}>
+                            <Text style={styles.word}>开始盘点</Text>
+                        </Flex>
+                    </TouchableWithoutFeedback>
                 </CommonView>
             </View>
         );
@@ -209,26 +221,26 @@ class gdMoneyPage extends BasePage {
 
 const styles = StyleSheet.create({
     content: {
-        marginTop:20,
-        marginHorizontal:10,
-        paddingHorizontal:10,
+        marginTop: 20,
+        marginHorizontal: 10,
+        paddingHorizontal: 10,
         flex: 1,
         borderRadius: 5,
         borderWidth: 1,
         borderColor: '#eeeeee',
         width: screen_width - 20,
-        height:110,
-        alignItems:'flex-start'
+        height: 110,
+        alignItems: 'flex-start'
     },
     line: {
         width: ScreenUtil.deviceWidth() - 40,
         backgroundColor: '#E0E0E0',
         height: 1,
-        marginVertical:10
+        marginVertical: 10
     },
     top: {
         fontSize: 14,
-        color:'#666'
+        color: '#666'
     },
     desc: {
         marginBottom: 10,

@@ -11,7 +11,7 @@ import SelectImage from '../../../utils/select-image'
 import common from '../../../utils/common';
 import gdzcReducer from '../../../utils/store/reducers/gdzc-reducer';
 import gdzcAction from '../../../utils/store/actions/actions'
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 let screen_width = ScreenUtil.deviceWidth()
 
@@ -21,7 +21,7 @@ class GdzcPandianPage extends BasePage {
         return {
             tabBarVisible: false,
             title: '固定资产盘点',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
@@ -35,8 +35,8 @@ class GdzcPandianPage extends BasePage {
         this.state = {
             ...(common.getValueFromProps(this.props)),
             data: {},
-            tfStr:'',
-            images: [{icon: ''}]
+            tfStr: '',
+            images: [{ icon: '' }]
         };
         console.log(this.state);
     }
@@ -44,11 +44,11 @@ class GdzcPandianPage extends BasePage {
     componentDidMount(): void {
         const { assetsId } = this.state
         GdzcService.gdzcBaseInfo(assetsId).then(res => {
-            if (!!res){
+            if (!!res) {
                 this.setState({
                     data: res
                 }, () => {
-    
+
                 })
             }
         })
@@ -59,12 +59,12 @@ class GdzcPandianPage extends BasePage {
         SelectImage.select(this.state.assetsId, '/api/MobileMethod/MUploadAssetsCheck', this.props.hasNetwork).then(res => {
             //console.log(1122, res);
             let images = [...this.state.images];
-            images.splice(images.length - 1, 0, {'icon': res});
+            images.splice(images.length - 1, 0, { 'icon': res });
             if (images.length > 4) {
                 images = images.filter((item, index) => index !== images.length - 1);
             }
             console.log(images);
-            this.setState({images});
+            this.setState({ images });
         }).catch(error => {
 
         });
@@ -78,7 +78,7 @@ class GdzcPandianPage extends BasePage {
     };
 
     submit(status) {
-        const {tfStr,data} = this.state;
+        const { tfStr, data } = this.state;
         if (this.props.hasNetwork) {
             GdzcService.gdzcAssetsCheck(data.id, status, tfStr).then(res => {
                 this.props.navigation.goBack();
@@ -98,8 +98,8 @@ class GdzcPandianPage extends BasePage {
     }
 
     contentView = () => {
-        const { data,tfStr } = this.state
-
+        const { data, tfStr } = this.state 
+        let statusText = data.latelyCheckStatus == 1 ? '正常' : '异常';
         let data1 = [
             { key: '编号', value: data.code },
             { key: '名称', value: data.name },
@@ -109,15 +109,14 @@ class GdzcPandianPage extends BasePage {
             { key: '原值', value: data.price },
             { key: '存放地址', value: data.address },
             { key: '保管人', value: data.custodianName },
-            { key: '最近盘点', value: data.latelyCheckDate + '   ' + data.latelyCheckStatus }
+            { key: '最近盘点', value: data.latelyCheckDate + '   ' + statusText }
         ]
         let data2 = [
-            { key: '本次盘点', value:data.description },
+            { key: '本次盘点', value: data.description },
             { key: '盘点人', value: data.custodianName },
             { key: '盘点说明', value: data.description ?? '' }
         ]
 
-        
         return (
             <Flex>
                 <Flex direction={'column'} align={'start'}>
@@ -141,8 +140,8 @@ class GdzcPandianPage extends BasePage {
                     <TextInput
                         value={tfStr}
                         onChangeText={(txt) => {
-                            this.setState({tfStr:txt})
-                         }}
+                            this.setState({ tfStr: txt })
+                        }}
                         style={{ fontSize: 16, borderColor: '#eee', borderRadius: 5, borderWidth: 1, height: 40, width: screen_width - 30, marginVertical: 10 }} placeholder={'输入说明'} />
                 </Flex>
             </Flex>
@@ -304,7 +303,7 @@ const styles = StyleSheet.create({
 
 
 });
-const mapStateToProps = ({memberReducer, gdzcReducer}) => {
+const mapStateToProps = ({ memberReducer, gdzcReducer }) => {
     return {
         hasNetwork: memberReducer.hasNetwork,
     };

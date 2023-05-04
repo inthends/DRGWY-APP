@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import {
     View,
     Text,
@@ -10,10 +10,10 @@ import {
 
 } from 'react-native';
 import BasePage from '../../base/base';
-import {Button, Flex, Icon, List, WhiteSpace, SearchBar} from '@ant-design/react-native';
+import { Button, Flex, Icon, List, WhiteSpace, SearchBar } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import common from '../../../utils/common';
 import LoadImage from '../../../components/load-image';
 import ScrollTitle from '../../../components/scroll-title';
@@ -25,20 +25,20 @@ import api from '../../../utils/api';
 
 
 class SheBeiList extends BasePage {
-    static navigationOptions = ({navigation}) => {
+    static navigationOptions = ({ navigation }) => {
         //console.log(1, navigation);
         return {
             tabBarVisible: false,
             title: '设备资料',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
             headerRight: (
                 <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
-                    <Icon name='bars' style={{marginRight: 15}} color="black"/>
+                    <Icon name='bars' style={{ marginRight: 15 }} color="black" />
                 </TouchableWithoutFeedback>
             ),
         };
@@ -82,7 +82,7 @@ class SheBeiList extends BasePage {
         console.log('nextSelectBuilding', nextSelectBuilding);
 
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
-            this.setState({selectBuilding: nextProps.selectBuilding}, () => {
+            this.setState({ selectBuilding: nextProps.selectBuilding }, () => {
                 this.onRefresh();
             });
         }
@@ -90,8 +90,8 @@ class SheBeiList extends BasePage {
 
 
     getList = () => {
-        const {text} = this.state;
-        let params = {keyword: text};
+        const { text } = this.state;
+        let params = { keyword: text };
         if (this.state.selectBuilding) {
             params = {
                 ...params,
@@ -99,8 +99,8 @@ class SheBeiList extends BasePage {
             }
         }
 
-        api.getData('/api/MobileMethod/MGetDeviceList',params).then(res=>{
-            this.setState({data:res});
+        api.getData('/api/MobileMethod/MGetDeviceList', params).then(res => {
+            this.setState({ data: res });
         })
 
     };
@@ -116,7 +116,7 @@ class SheBeiList extends BasePage {
     };
 
     loadMore = () => {
-        const {data, total, pageIndex} = this.state.dataInfo;
+        const { data, total, pageIndex } = this.state.dataInfo;
         // console.log('loadmore', this.state.dataInfo);
         // if (!this.state.canLoadMore) {
         //     return;
@@ -132,12 +132,12 @@ class SheBeiList extends BasePage {
         }
     };
 
-    _renderItem = ({item, index}) => {
+    _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback key={item.id} onPress={() => {
-                this.props.navigation.push('shebeiDetail', {data: item});
+                this.props.navigation.push('shebeiDetail', { data: item });
             }}>
-                <Flex justify='between' style={{width: '100%'}}>
+                <Flex justify='between' style={{ width: '100%' }}>
                     <Text style={styles.title}>{item.name}</Text>
                     <Text style={styles.title2}>{item.code}</Text>
                 </Flex>
@@ -152,20 +152,17 @@ class SheBeiList extends BasePage {
 
 
     render() {
-        const {data = []} = this.state;
-        return (
-
-
-            <View style={{flex: 1}}>
-                <CommonView style={{flex: 1}}>
-
-
-                        <SearchBar cancelText='搜索' showCancelButton={true} onCancel={this.search} value={this.state.text} onChange={text=>this.setState({text})} onSubmit={this.search}/>
-
-
+        const { data = [] } = this.state;
+        return ( 
+            <View style={{ flex: 1 }}>
+                <CommonView style={{ flex: 1 }}> 
+                    <SearchBar cancelText='搜索'
+                        showCancelButton={true} onCancel={this.search}
+                        value={this.state.text} onChange={text => this.setState({ text })}
+                        onSubmit={this.search} /> 
                     {
-                        data.map((item,index)=>{
-                            return this._renderItem({item,index})
+                        data.map((item, index) => {
+                            return this._renderItem({ item, index })
                         })
                     }
 
@@ -264,7 +261,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         backgroundColor: 'white',
         shadowColor: '#00000033',
-        shadowOffset: {h: 10, w: 10},
+        shadowOffset: { h: 10, w: 10 },
         shadowRadius: 5,
         shadowOpacity: 0.8,
     },
@@ -278,7 +275,7 @@ const styles = StyleSheet.create({
     },
 
 });
-const mapStateToProps = ({buildingReducer}) => {
+const mapStateToProps = ({ buildingReducer }) => {
     return {
         selectBuilding: buildingReducer.selectBuilding,
     };
