@@ -1,5 +1,5 @@
 //工作台导航
-import React, { Fragment } from 'react';
+import React from 'react';
 import {
   Text,
   StyleSheet,
@@ -8,12 +8,11 @@ import {
 } from 'react-native';
 
 import BasePage from '../base/base';
-import { Flex } from '@ant-design/react-native';
-import Macro from '../../utils/macro';
+import { Flex } from '@ant-design/react-native'; 
 import LoadImage from '../../components/load-image';
 import CommonView from '../../components/CommonView';
 import ScreenUtil from '../../utils/screen-util';
-import ChaoBiaoPage from './chao-biao/chao-biao';
+// import ChaoBiaoPage from './chao-biao/chao-biao';
 
 export default class NavigatorPage extends BasePage {
   

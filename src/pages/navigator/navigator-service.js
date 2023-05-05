@@ -410,9 +410,9 @@ export default {
     });
   },
   //固定资产列表
-  gdzcList(pageIndex, showLoading, queryJson) {
+  gdzcList(pageIndex, estateId, keyword, showLoading) {
     return api.postData('/api/MobileMethod/MGetAssetsListJson',
-      { pageIndex, pageSize: 10, queryJson: queryJson }, showLoading);
+      { pageIndex, pageSize: 10, estateId, keyword }, showLoading);
   },
 
 };

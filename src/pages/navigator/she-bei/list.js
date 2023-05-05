@@ -1,25 +1,19 @@
-import React, { Fragment } from 'react';
+import React  from 'react';
 import {
     View,
     Text,
     StyleSheet,
     TouchableOpacity,
-    TouchableWithoutFeedback,
-    FlatList,
+    TouchableWithoutFeedback, 
     Keyboard
 
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Button, Flex, Icon, List, WhiteSpace, SearchBar } from '@ant-design/react-native';
+import {  Flex, Icon,  SearchBar } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
 import { connect } from 'react-redux';
-import common from '../../../utils/common';
-import LoadImage from '../../../components/load-image';
-import ScrollTitle from '../../../components/scroll-title';
-import MyPopover from '../../../components/my-popover';
-import NavigatorService from '../navigator-service';
-import NoDataView from '../../../components/no-data-view';
+import common from '../../../utils/common'; 
 import CommonView from '../../../components/CommonView';
 import api from '../../../utils/api';
 

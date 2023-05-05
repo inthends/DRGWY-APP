@@ -51,8 +51,13 @@ import TaskPage from '../navigator/xunjian/task';
 import XunJianDetailPage from '../navigator/xunjian/xunjian-detail';
 import SelectXunJianPerson from '../navigator/xunjian/select-xunjian';
 import StartXunJianPage from '../navigator/xunjian/start-xunjian';
+
+//固定资产
 import GdzcPandianPage from '../navigator/gdzc/gdzc_pandian';
 import GdzcDetailPage from '../navigator/gdzc/gdzc_detail';
+import AddRepairPage from '../navigator/gdzc/add-repair';
+
+
 import OrderlistPage from '../work/order_center/order_list';
 import OrderDetailPage from '../work/order_center/order_detail'; 
 import XunJianPointDetailPage from '../navigator/xunjian/xunjian-point-detail';
@@ -178,6 +183,7 @@ const navigatorNavigator = createStackNavigator({
   //固定资产
   gdzcPandian: GdzcPandianPage,
   gdzcDetail: GdzcDetailPage,
+  AddRepair:AddRepairPage,
 
   //订单中心
   orderlist: OrderlistPage,
@@ -233,6 +239,7 @@ const WorkNavigator = createStackNavigator({
   // select: SelectAddressPage,
   // AddWork: AddWorkPage,
   // Task: TaskListPage,
+
   Work: {
     screen: WorkPage,
     navigationOptions: () => ({
@@ -240,6 +247,7 @@ const WorkNavigator = createStackNavigator({
       headerBackTitle: null,
     }),
   },
+  
   AddWork: AddWorkPage,
   select: SelectAddressPage,
   service: FuWuDanListDetailPage,
@@ -259,6 +267,7 @@ const WorkNavigator = createStackNavigator({
   Task: TaskListPage,
   newsList: NewsList,
 });
+
 WorkNavigator.navigationOptions = ({ navigation }) => ({
   tabBarVisible: navigation.state.index === 0,
 });
@@ -285,6 +294,7 @@ const ShenPiNavigator = createStackNavigator({
   baoxiao,
   webPage
 });
+
 ShenPiNavigator.navigationOptions = ({ navigation }) => ({
   tabBarVisible: navigation.state.index === 0,
 });
@@ -305,6 +315,7 @@ const MineNavigator = createStackNavigator({
   contactDetail: ContactDetail,
   jixiao: Jixiao,
 });
+
 MineNavigator.navigationOptions = ({ navigation }) => ({
   tabBarVisible: navigation.state.index === 0,
 });

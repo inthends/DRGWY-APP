@@ -5,27 +5,30 @@ import {
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    Keyboard,
-    //ScrollView,
+    Keyboard
 } from 'react-native';
-import BasePage from '../base/base';
-import { Icon } from '@ant-design/react-native';
-import { Flex, TextareaItem, Button } from '@ant-design/react-native';
-import ScreenUtil from '../../utils/screen-util';
-import LoadImage from '../../components/load-image';
-import SelectImage from '../../utils/select-image';
-import common from '../../utils/common';
-import UDRecord from '../../utils/UDRecord';
-import api from '../../utils/api';
-import UDPlayer from '../../utils/UDPlayer';
-import UDToast from '../../utils/UDToast';
-import WorkService from './work-service';
-import { AudioRecorder, AudioUtils } from 'react-native-audio';
-import CommonView from '../../components/CommonView';
-import { connect } from 'react-redux';
-import { saveXunJianAction } from '../../utils/store/actions/actions';
 
-class AddWorkPage extends BasePage {
+import { Icon } from '@ant-design/react-native';
+import { connect } from 'react-redux';
+import BasePage from '../../base/base';
+import { Flex, TextareaItem, Button } from '@ant-design/react-native';
+import ScreenUtil from '../../../utils/screen-util';
+import LoadImage from '../../../components/load-image';
+import SelectImage from '../../../utils/select-image';
+import common from '../../../utils/common';
+import UDRecord from '../../../utils/UDRecord';
+import api from '../../../utils/api';
+import UDPlayer from '../../../utils/UDPlayer';
+import UDToast from '../../../utils/UDToast';
+// import WorkService from './work-service';
+import GdzcService from './gdzc-service';
+import { AudioRecorder, AudioUtils } from 'react-native-audio';
+import CommonView from '../../../components/CommonView';
+import { saveXunJianAction } from '../../../utils/store/actions/actions';
+
+//固定资产盘点，异常的时候弹出报修单页面
+class AddRepairPage extends BasePage {
+
     static navigationOptions = ({ navigation }) => {
         return {
             title: '新增',
@@ -52,7 +55,7 @@ class AddWorkPage extends BasePage {
             playing: false,
             taskId,
             KeyboardShown: false,
-            canSelectAddress: !address,
+            canSelectAddress: false, //!address,
             address,
             value
         };
@@ -201,11 +204,13 @@ class AddWorkPage extends BasePage {
         };
 
         if (this.props.hasNetwork || !taskId) {
-            WorkService.saveForm(params).then(res => {
+            GdzcService.saveRepariForm(params).then(res => {
                 UDToast.showInfo('提交成功', true);
                 setTimeout(() => {
                     this.canSubmit = true;
-                    this.props.navigation.goBack();
+                    //this.props.navigation.goBack(); 
+                    //盘点结束跳转到固定资产列表
+                    this.props.navigation.navigate('gdMoney');
                 }, 2000);
             }).catch(res => {
                 this.canSubmit = true;
@@ -233,12 +238,10 @@ class AddWorkPage extends BasePage {
         const { data, index, images, fileUrl, address, canSelectAddress } = this.state;
         const title = data[index];
         const title2 = '输入' + title + '内容';
-
         const width = (ScreenUtil.deviceWidth() - 5 * 20) / 4.0;
         const height = (ScreenUtil.deviceWidth() - 5 * 20) / 4.0;
         return (
             <CommonView style={{ flex: 1, backgroundColor: 'F3F4F2' }}>
-                {/*<ScrollView>*/}
                 <TouchableWithoutFeedback onPress={() => {
                     Keyboard.dismiss();
                 }}>
@@ -279,8 +282,8 @@ class AddWorkPage extends BasePage {
                                             color: '#999',
                                             fontSize: 16,
                                         }]}>{address ? address.allName : `请选择${title}地址`}</Text>
-                                        <LoadImage style={{ width: 6, height: 11 }}
-                                            defaultImg={require('../../static/images/address/right.png')} />
+                                        {/* <LoadImage style={{ width: 6, height: 11 }}
+                                            defaultImg={require('../../../static/images/address/right.png')} /> */}
                                     </Flex>
                                 </TouchableWithoutFeedback>
 
@@ -303,12 +306,12 @@ class AddWorkPage extends BasePage {
                             }}>
                                 <TouchableOpacity onPressIn={() => this.startRecord()} onPressOut={() => this.stopRecord()}>
                                     <LoadImage style={{ width: 20, height: 20 }}
-                                        defaultImg={require('../../static/images/icon_copy.png')} />
+                                        defaultImg={require('../../../static/images/icon_copy.png')} />
                                 </TouchableOpacity>
                                 {fileUrl && fileUrl.length > 0 ?
                                     <TouchableOpacity onPress={() => this.play()}>
                                         <LoadImage style={{ width: 20, height: 20, marginLeft: 10 }}
-                                            defaultImg={require('../../static/images/icon_s.png')} />
+                                            defaultImg={require('../../../static/images/icon_s.png')} />
                                     </TouchableOpacity>
                                     : null}
                             </Flex>
@@ -329,7 +332,7 @@ class AddWorkPage extends BasePage {
                                                     paddingTop: 10,
                                                 }}>
                                                     <LoadImage style={{ width: width, height: height }}
-                                                        defaultImg={require('../../static/images/add_pic.png')}
+                                                        defaultImg={require('../../../static/images/add_pic.png')}
                                                         img={item.icon} />
                                                 </View>
                                             </TouchableWithoutFeedback>
@@ -350,29 +353,25 @@ class AddWorkPage extends BasePage {
                         </Flex>
                     </View>
                 </TouchableWithoutFeedback>
-                {/*</ScrollView>*/}
             </CommonView>
         );
     }
 }
 
-const mapStateToProps = ({ memberReducer, xunJianReducer }) => {
-
+const mapStateToProps = ({ memberReducer, xunJianReducer }) => { 
     return {
         hasNetwork: memberReducer.hasNetwork,
-        ...xunJianReducer,
+        ...xunJianReducer
     };
 };
+
 const mapDispatchToProps = (dispatch) => {
     return {
         saveXunJianAction(data) {
             dispatch(saveXunJianAction(data));
-        },
-
+        }
     };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(AddWorkPage);
-
 
 const styles = StyleSheet.create({
     header: {
@@ -383,3 +382,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#F3F4F2',
     }
 });
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddRepairPage);
+

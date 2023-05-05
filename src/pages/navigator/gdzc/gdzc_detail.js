@@ -1,15 +1,13 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import BasePage from '../../base/base';
-import { Flex, Accordion, List, Icon } from '@ant-design/react-native';
-import Macro from '../../../utils/macro';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, Modal, FlatList } from 'react-native';
+import { Flex, Icon } from '@ant-design/react-native';
+import { StyleSheet, Text, TouchableOpacity, Modal, FlatList } from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 import TopTitle from '../../../components/top-title';
 import GdzcService from './gdzc-service';
 import common from '../../../utils/common';
-
 import ListImages from '../../../components/list-images';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
@@ -21,7 +19,7 @@ export default class GdzcDetailPage extends BasePage {
         return {
             tabBarVisible: false,
             title: '固定资产详情',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
@@ -40,14 +38,14 @@ export default class GdzcDetailPage extends BasePage {
             titles: ['基本信息', '领用记录', '维修记录', '盘点记录'],
             indexType: 0,
             visible: false,
-            refreshing:false,
-            dataInfo:{
-                total:0, 
-                pageIndex:0
+            refreshing: false,
+            dataInfo: {
+                total: 0,
+                pageIndex: 0
             }
         };
         this.getInfo()
-        console.log(this.state);
+        //console.log(this.state);
     }
 
     getImages = () => {
@@ -55,7 +53,7 @@ export default class GdzcDetailPage extends BasePage {
             this.setState({
                 imageDatas: res
             }, () => {
-                console.log(res);
+                //console.log(res);
             })
         })
     }
@@ -84,12 +82,12 @@ export default class GdzcDetailPage extends BasePage {
     };
 
     getInfo = () => {
-        const { indexType,pageIndex,id } = this.state;
+        const { indexType, pageIndex, id } = this.state;
         if (indexType === 0) {
             GdzcService.gdzcBaseInfo(id).then(res => {
                 this.setState({
                     data: res,
-                    total:res.total
+                    total: res.total
                 }, () => {
                     this.getImages()
                 })
@@ -97,41 +95,41 @@ export default class GdzcDetailPage extends BasePage {
 
         }
         else if (indexType === 1) {
-            GdzcService.gdzcAssetsUseInfo(pageIndex,id).then(res => {
+            GdzcService.gdzcAssetsUseInfo(pageIndex, id).then(res => {
                 this.setState({
                     datasList: res.data,
-                    total:res.total,
-                    refreshing:false
+                    total: res.total,
+                    refreshing: false
                 }, () => {
-                    console.log(res);
+                    //console.log(res);
                 })
             })
         }
         else if (indexType === 2) {
-            GdzcService.gdzcRepairList(pageIndex,id).then(res => {
+            GdzcService.gdzcRepairList(pageIndex, id).then(res => {
                 this.setState({
                     datasList: res.data,
-                    total:res.total,
-                    refreshing:false
+                    total: res.total,
+                    refreshing: false
                 }, () => {
-                    console.log(res);
+                    //console.log(res);
                 })
             })
         }
         else if (indexType === 3) {
-            GdzcService.gdzcAssetsCheckList(pageIndex,id).then(res => {
+            GdzcService.gdzcAssetsCheckList(pageIndex, id).then(res => {
                 this.setState({
                     datasList: res.data,
-                    total:res.total,
-                    refreshing:false
+                    total: res.total,
+                    refreshing: false
                 }, () => {
-                    console.log(res);
+                    //console.log(res);
                 })
             })
         }
     }
-    componentDidMount(): void {
 
+    componentDidMount(): void {
     }
 
     lookImage = (lookImageIndex) => {
@@ -147,70 +145,41 @@ export default class GdzcDetailPage extends BasePage {
         });
     };
 
-    _renderItem = ({item})=>{
-        const {indexType} = this.state
+    _renderItem = ({ item }) => {
+        const { indexType } = this.state
         let data1 = []
-            if (indexType == 1) {
-                data1 = [
-                    { key: '领用日期', value: item.useDate },
-                    { key: '领用人', value: item.userName },
-                    { key: '领用说明', value: item.memo },
-                    { key: '归还日期', value: item.returnDate },
-                    { key: '归还说明', value: item.returnMemo }
-                ]
+        if (indexType == 1) {
+            data1 = [
+                { key: '领用日期', value: item.useDate },
+                { key: '领用人', value: item.userName },
+                { key: '领用说明', value: item.memo },
+                { key: '归还日期', value: item.returnDate },
+                { key: '归还说明', value: item.returnMemo }
+            ]
+        }
+        else if (indexType == 2) {
+            data1 = [
+                { key: '维修日期', value: item.repairDate },
+                { key: '经办人', value: item.handUserName },
+                { key: '维修费用', value: item.fee },
+                { key: '故障描述', value: item.memo }
+            ]
+        }
+        else if (indexType == 3) {
+            data1 = [
+                { key: '盘点日期', value: item.checkDate },
+                { key: '盘点人', value: item.createUserName },
+                { key: '盘点结果', value: item.status === 1 ? '正常' : '异常' },
+                { key: '盘点说明', value: item.memo }
+            ]
+        }
+        return <Flex direction="column" style={{ ...styles.content, height: 30 * data1.length }}>
+            {
+                data1.map((subItem) => {
+                    return <Text style={styles.desc}>{subItem.key + '：' + (subItem.value == null ? '' : subItem.value)}</Text>
+                })
             }
-            /*
-            assetsId: "08d8ba78-1d35-4bee-a3b5-755e85eea651"
-createDate: "2022-11-15 15:11:35"
-createUserId: "System"
-createUserName: "系统"
-fee: "111"
-handUserId: "74bde3c4-e80b-4209-b40d-8b7efe9f0c80"
-handUserName: "会计"
-id: 1
-memo: "222"
-modifyDate: null
-modifyUserId: null
-modifyUserName: null
-repairDate: "2022-11-02 00:00:00"
-rowIndex: 1
-
-
-
-assetsId: "9b84832d-2a10-4c5d-9e40-f8d84431445d"
-checkDate: "2023-03-07 07:09:08"
-createDate: null
-createUserId: "74bde3c4-e80b-4209-b40d-8b7efe9f0c80"
-createUserName: "会计"
-id: 2
-memo: null
-phoneNum: "15295507559"
-rowIndex: 1
-status: 1
-            */
-            else if (indexType == 2) {
-                data1 = [
-                    { key: '维修日期', value: item.repairDate },
-                    { key: '经办人', value: item.handUserName },
-                    { key: '维修费用', value: item.fee },
-                    { key: '故障描述', value: item.memo }
-                ]
-            }
-            else if (indexType == 3) {
-                data1 = [
-                    { key: '盘点日期', value: item.checkDate },
-                    { key: '盘点人', value: item.createUserName },
-                    { key: '盘点结果', value: item.status === 1 ? '正常' : '异常' },
-                    { key: '盘点说明', value: item.memo }
-                ]
-            }
-            return <Flex direction="column" style={{ ...styles.content, height: 30 * data1.length }}>
-                {
-                    data1.map((subItem)=>{
-                        return <Text style={styles.desc}>{subItem.key + ': ' + subItem.value}</Text>
-                    })
-                }
-            </Flex>
+        </Flex>
     }
 
     contentView = () => {
@@ -228,7 +197,7 @@ status: 1
                 { key: '原值', value: data.price },
                 { key: '存放地址', value: data.address },
                 { key: '保管人', value: data.custodianName }
-            ]
+            ];
 
             return (
                 <Flex direction={'column'} align={'start'} style={{
@@ -243,8 +212,8 @@ status: 1
                     {
                         data1.map((item) => {
                             return <Flex>
-                                <Text style={styles.desc}>{item.key + ': '}</Text>
-                                <Text style={styles.desc}> {item.value}</Text>
+                                <Text style={styles.desc}>{item.key + '：'}</Text>
+                                <Text style={styles.desc}>{item.value == null ? '' : item.value}</Text>
                             </Flex>
                         })
                     }
@@ -258,91 +227,87 @@ status: 1
         }
         else {
             return (
-<FlatList
-                            data={datasList}
-                            // ListHeaderComponent={}
-                            renderItem={this._renderItem}
-                            keyExtractor={(item, index) => item.id}
-                            refreshing={this.state.refreshing}
-                            onRefresh={() => this.onRefresh()}
-                            onEndReached={() => this.loadMore()}
-                            onEndReachedThreshold={0.1}
-                            // ItemSeparatorComponent={() => <View style={{ backgroundColor: '#eee', height: 1 }} />}
-                            onScrollBeginDrag={() => this.canAction = true}
-                            onScrollEndDrag={() => this.canAction = false}
-                            onMomentumScrollBegin={() => this.canAction = true}
-                            onMomentumScrollEnd={() => this.canAction = false}
-                            ListEmptyComponent={<NoDataView />}
-                        />
+                <FlatList
+                    data={datasList}
+                    // ListHeaderComponent={}
+                    renderItem={this._renderItem}
+                    keyExtractor={(item, index) => item.id}
+                    refreshing={this.state.refreshing}
+                    onRefresh={() => this.onRefresh()}
+                    onEndReached={() => this.loadMore()}
+                    onEndReachedThreshold={0.1}
+                    // ItemSeparatorComponent={() => <View style={{ backgroundColor: '#eee', height: 1 }} />}
+                    onScrollBeginDrag={() => this.canAction = true}
+                    onScrollEndDrag={() => this.canAction = false}
+                    onMomentumScrollBegin={() => this.canAction = true}
+                    onMomentumScrollEnd={() => this.canAction = false}
+                    ListEmptyComponent={<NoDataView />}
+                />
 
+                //                 <ScrollView>
+                //                      <ScrollView onRefresh={this.onRefresh()} onScrollEndDrag={this.loadMore()}>
+                //                     {
+                //                         datasList.map((item) => {
+                //                             let data1 = []
+                //                             if (indexType == 1) {
+                //                                 data1 = [
 
+                // /*
+                // allName: "中交/中交世通资产管理(北京)有限公司/资产经营部"
+                // assetsId: "08d8ba78-1d35-4bee-a3b5-755e85eea651"
+                // createDate: null
+                // createUserId: null
+                // createUserName: null
+                // id: 4
+                // memo: "1111"
+                // modifyDate: null
+                // modifyUserId: null
+                // modifyUserName: null
+                // phoneNum: "1111"
+                // postName: null
+                // restitutionUserId: null
+                // restitutionUserName: null
+                // returnDate: null
+                // rowIndex: 1
+                // status: 0
+                // useDate: "2022-11-02 00:00:00"
+                // userId: "ea77df59-5bb9-4142-9367-7bc012acbdee"
+                // userName: "陆陆"
+                // */
 
-
-
-//                 <ScrollView>
-//                      <ScrollView onRefresh={this.onRefresh()} onScrollEndDrag={this.loadMore()}>
-//                     {
-//                         datasList.map((item) => {
-//                             let data1 = []
-//                             if (indexType == 1) {
-//                                 data1 = [
-
-// /*
-// allName: "中交/中交世通资产管理(北京)有限公司/资产经营部"
-// assetsId: "08d8ba78-1d35-4bee-a3b5-755e85eea651"
-// createDate: null
-// createUserId: null
-// createUserName: null
-// id: 4
-// memo: "1111"
-// modifyDate: null
-// modifyUserId: null
-// modifyUserName: null
-// phoneNum: "1111"
-// postName: null
-// restitutionUserId: null
-// restitutionUserName: null
-// returnDate: null
-// rowIndex: 1
-// status: 0
-// useDate: "2022-11-02 00:00:00"
-// userId: "ea77df59-5bb9-4142-9367-7bc012acbdee"
-// userName: "陆陆"
-// */
-
-//                                     { key: '领用日期', value: item.useDate },
-//                                     { key: '领用人', value: item.userName },
-//                                     { key: '领用说明', value: item.name },
-//                                     { key: '归还日期', value: item.returnDate },
-//                                     { key: '归还说明', value: item.name }
-//                                 ]
-//                             }
-//                             else if (indexType == 2) {
-//                                 data1 = [
-//                                     { key: '维修日期', value: item.name },
-//                                     { key: '经办人', value: item.name },
-//                                     { key: '维修费用', value: item.name },
-//                                     { key: '故障描述', value: item.name }
-//                                 ]
-//                             }
-//                             else if (indexType == 3) {
-//                                 data1 = [
-//                                     { key: '盘点日期', value: item.name },
-//                                     { key: '盘点人', value: item.name },
-//                                     { key: '盘点结果', value: item.name },
-//                                     { key: '盘点说明', value: item.name }
-//                                 ]
-//                             }
-//                             return <Flex direction="column" style={{ ...styles.content, height: 30 * data1.length }}>
-//                                 {
-//                                     data1.map((subItem)=>{
-//                                         return <Text style={styles.desc}>{subItem.key + ': ' + subItem.value}</Text>
-//                                     })
-//                                 }
-//                             </Flex>
-//                         })
-//                     }
-//                 </ScrollView>
+                //                                     { key: '领用日期', value: item.useDate },
+                //                                     { key: '领用人', value: item.userName },
+                //                                     { key: '领用说明', value: item.name },
+                //                                     { key: '归还日期', value: item.returnDate },
+                //                                     { key: '归还说明', value: item.name }
+                //                                 ]
+                //                             }
+                //                             else if (indexType == 2) {
+                //                                 data1 = [
+                //                                     { key: '维修日期', value: item.name },
+                //                                     { key: '经办人', value: item.name },
+                //                                     { key: '维修费用', value: item.name },
+                //                                     { key: '故障描述', value: item.name }
+                //                                 ]
+                //                             }
+                //                             else if (indexType == 3) {
+                //                                 data1 = [
+                //                                     { key: '盘点日期', value: item.name },
+                //                                     { key: '盘点人', value: item.name },
+                //                                     { key: '盘点结果', value: item.name },
+                //                                     { key: '盘点说明', value: item.name }
+                //                                 ]
+                //                             }
+                //                             return <Flex direction="column" style={{ ...styles.content, height: 30 * data1.length }}>
+                //                                 {
+                //                                     data1.map((subItem)=>{
+                //                                         return <Text style={styles.desc}>{subItem.key + ': ' + subItem.value}</Text>
+                //                                     })
+                //                                 }
+                //                             </Flex>
+                //                         })
+                //                     }
+                //                 </ScrollView>
             );
         }
     }
@@ -353,9 +318,8 @@ status: 1
     }
 
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
-        const { indexType, data, titles } = this.state;
-        console.log(22, data);
-
+        const { indexType, titles } = this.state;
+        //console.log(22, data); 
         return (
             <CommonView style={{ flex: 1, justifyContent: 'flex-start' }}>
                 <TopTitle index={indexType} onChange={this.onChange} titles={titles} />
@@ -396,25 +360,3 @@ const styles = StyleSheet.create({
     },
 
 });
-/*
-allName: "中交/中交世通资产管理(北京)有限公司/资产经营部"
-assetsId: "08d8ba78-1d35-4bee-a3b5-755e85eea651"
-createDate: null
-createUserId: null
-createUserName: null
-id: 4
-memo: "1111"
-modifyDate: null
-modifyUserId: null
-modifyUserName: null
-phoneNum: "1111"
-postName: null
-restitutionUserId: null
-restitutionUserName: null
-returnDate: null
-rowIndex: 1
-status: 0
-useDate: "2022-11-02 00:00:00"
-userId: "ea77df59-5bb9-4142-9367-7bc012acbdee"
-userName: "陆陆"
-*/

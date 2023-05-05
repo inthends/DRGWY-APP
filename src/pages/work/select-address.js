@@ -10,8 +10,8 @@ import {
     RefreshControl,
 } from 'react-native';
 import BasePage from '../base/base';
-import {Icon} from '@ant-design/react-native';
-import {List, Flex, Button} from '@ant-design/react-native';
+import { Icon } from '@ant-design/react-native';
+import { List, Flex, Button } from '@ant-design/react-native';
 import common from '../../utils/common';
 import WorkService from './work-service';
 import UDToast from '../../utils/UDToast';
@@ -20,13 +20,13 @@ import CommonView from '../../components/CommonView';
 const Item = List.Item;
 
 export default class SelectAddressPage extends BasePage {
-    static navigationOptions = ({navigation}) => {
+    static navigationOptions = ({ navigation }) => {
         return {
             title: navigation.getParam('title'),
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
 
@@ -47,21 +47,19 @@ export default class SelectAddressPage extends BasePage {
     }
 
     submit = () => {
-        const {selectItem} = this.state;
+        const { selectItem } = this.state;
         if (selectItem && selectItem.id) {
-            this.props.navigation.navigate('AddWork', {data: {address: selectItem}});
+            this.props.navigation.navigate('AddWork', { data: { address: selectItem } });
         } else {
             UDToast.showInfo('请先选择');
         }
-
-
     };
 
     getData = () => {
         const parent = common.getValueFromProps(this.props, 'data');
         let params;
         if (parent) {
-            params = {keyvalue: parent.id};
+            params = { keyvalue: parent.id };
             let type = -1;
             switch (parent.type) {
                 case 1: {
@@ -101,14 +99,14 @@ export default class SelectAddressPage extends BasePage {
             this.props.navigation.setParams({
                 title: '选择楼盘',
             });
-            params = {keyvalue: 0, type: 1};
+            params = { keyvalue: 0, type: 1 };
         }
         this.setState({
             parent,
             refreshing: true,
         });
         WorkService.getPStructs(params).then(items => {
-            this.setState({items, refreshing: false});
+            this.setState({ items, refreshing: false });
         });
     };
     next = (item) => {
@@ -125,15 +123,15 @@ export default class SelectAddressPage extends BasePage {
 
 
     render() {
-        const {items, parent, selectItem} = this.state;
+        const { items, parent, selectItem } = this.state;
         return (
-            <CommonView style={{flex: 1, backgroundColor: '#eee'}}>
-                <View style={{flex: 1}}>
+            <CommonView style={{ flex: 1, backgroundColor: '#eee' }}>
+                <View style={{ flex: 1 }}>
 
                     <Item arrow="empty">
                         {parent ? parent.allName : '/'}
                     </Item>
-                    <ScrollView style={{flex: 1}} refreshControl={
+                    <ScrollView style={{ flex: 1 }} refreshControl={
                         <RefreshControl
                             refreshing={this.state.refreshing}
                             onRefresh={() => this.getData()}
@@ -142,11 +140,11 @@ export default class SelectAddressPage extends BasePage {
                         <List>
                             {items.map((item, index) => (
                                 <Item key={index} arrow={item.type !== 5 ? 'horizontal' : 'empty'}
-                                      onPress={() => this.next(item)}>
+                                    onPress={() => this.next(item)}>
                                     <Flex>
-                                        <TouchableWithoutFeedback onPress={() => this.setState({selectItem: item})}>
-                                            <Image alt='' style={{width: 24, height: 24}}
-                                                   source={selectItem.id === item.id ? require('../../static/images/select.png') : require('../../static/images/no-select.png')}/>
+                                        <TouchableWithoutFeedback onPress={() => this.setState({ selectItem: item })}>
+                                            <Image alt='' style={{ width: 24, height: 24 }}
+                                                source={selectItem.id === item.id ? require('../../static/images/select.png') : require('../../static/images/no-select.png')} />
                                         </TouchableWithoutFeedback>
                                         <Text style={{
                                             paddingLeft: 15,
@@ -158,8 +156,8 @@ export default class SelectAddressPage extends BasePage {
                             ))}
                         </List>
                     </ScrollView>
-                    <Flex justify={'center'} style={{height: 80, backgroundColor: '#eee'}}>
-                        <Button style={{width: '90%'}} type="primary" onPress={() => this.submit()}>确定</Button>
+                    <Flex justify={'center'} style={{ height: 80, backgroundColor: '#eee' }}>
+                        <Button style={{ width: '90%' }} type="primary" onPress={() => this.submit()}>确定</Button>
                     </Flex>
 
                 </View>

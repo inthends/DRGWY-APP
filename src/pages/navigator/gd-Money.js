@@ -26,7 +26,8 @@ import NavigatorService from './navigator-service';
 import NoDataView from '../../components/no-data-view';
 import CommonView from '../../components/CommonView';
 
-let screen_width = ScreenUtil.deviceWidth()
+let screen_width = ScreenUtil.deviceWidth();
+
 class gdMoneyPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         //console.log(1, navigation);
@@ -70,12 +71,11 @@ class gdMoneyPage extends BasePage {
 
     getList = () => {
         const { estateId, text } = this.state;
-        const queryJson = {
-            keyword: text,
-            estateId: estateId
-        };
-
-        NavigatorService.gdzcList(this.state.pageIndex, this.state.refreshing, queryJson).then(dataInfo => {
+        // const queryJson = {
+        //     keyword: text,
+        //     estateId: estateId
+        // };
+        NavigatorService.gdzcList(this.state.pageIndex, estateId, text, this.state.refreshing).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -150,8 +150,7 @@ class gdMoneyPage extends BasePage {
         });
     };
 
-    _renderItem = ({ item, index }) => {
-
+    _renderItem = ({ item }) => { 
         return (
             <TouchableWithoutFeedback onPress={() => this.props.navigation.push('gdzcDetail', { data: item })}>
                 <Flex direction="column" style={styles.content}>
@@ -258,6 +257,10 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         marginBottom: 20,
     },
+    word: {
+        color: 'white',
+        fontSize: 16,
+    }
 });
 
 const mapStateToProps = ({ buildingReducer }) => {

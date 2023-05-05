@@ -1,6 +1,6 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import BasePage from '../../base/base';
-import { Flex, Accordion, Icon } from '@ant-design/react-native';
+import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View, TextInput } from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
@@ -9,7 +9,7 @@ import CommonView from '../../../components/CommonView';
 import GdzcService from './gdzc-service';
 import SelectImage from '../../../utils/select-image'
 import common from '../../../utils/common';
-import gdzcReducer from '../../../utils/store/reducers/gdzc-reducer';
+//import gdzcReducer from '../../../utils/store/reducers/gdzc-reducer';
 import gdzcAction from '../../../utils/store/actions/actions'
 import { connect } from 'react-redux';
 
@@ -48,22 +48,18 @@ class GdzcPandianPage extends BasePage {
                 this.setState({
                     data: res
                 }, () => {
-
                 })
             }
         })
-
     }
 
     selectImages = () => {
         SelectImage.select(this.state.assetsId, '/api/MobileMethod/MUploadAssetsCheck', this.props.hasNetwork).then(res => {
-            //console.log(1122, res);
             let images = [...this.state.images];
             images.splice(images.length - 1, 0, { 'icon': res });
             if (images.length > 4) {
                 images = images.filter((item, index) => index !== images.length - 1);
             }
-            console.log(images);
             this.setState({ images });
         }).catch(error => {
 
@@ -73,8 +69,14 @@ class GdzcPandianPage extends BasePage {
     success = () => {
         this.submit(1);
     };
+
+    //异常
     fail = () => {
-        this.submit(0);
+        //this.submit(0);
+        const { data } = this.state;
+        var value = data.name + '，' + data.code + '，' + data.brand + '，' + data.modelNo;
+        var selectItem = { id: data.pStructId, allName: data.address };
+        this.props.navigation.navigate('AddRepair', { data: { address: selectItem, value: value } });//传参到维修单页面
     };
 
     submit(status) {
@@ -94,11 +96,10 @@ class GdzcPandianPage extends BasePage {
                 // }
             });
         }
-
     }
 
     contentView = () => {
-        const { data, tfStr } = this.state 
+        const { data, tfStr } = this.state
         let statusText = data.latelyCheckStatus == 1 ? '正常' : '异常';
         let data1 = [
             { key: '编号', value: data.code },
@@ -110,12 +111,13 @@ class GdzcPandianPage extends BasePage {
             { key: '存放地址', value: data.address },
             { key: '保管人', value: data.custodianName },
             { key: '最近盘点', value: data.latelyCheckDate + '   ' + statusText }
-        ]
+        ];
+
         let data2 = [
-            { key: '本次盘点', value: data.description },
-            { key: '盘点人', value: data.custodianName },
-            { key: '盘点说明', value: data.description ?? '' }
-        ]
+            { key: '本次盘点', value: data.thisCheckDate },
+            { key: '盘点人', value: data.thisCheckUser }
+            //{ key: '盘点说明', value: data.description ?? '' }
+        ];
 
         return (
             <Flex>
@@ -123,7 +125,7 @@ class GdzcPandianPage extends BasePage {
                     {
                         data1.map((item) => {
                             return <Flex style={{ width: screen_width - 30 }}>
-                                <Text style={styles.desc}>{item.key + ': '}</Text>
+                                <Text style={styles.desc}>{item.key + '：'}</Text>
                                 <Text style={styles.desc}> {item.value}</Text>
                             </Flex>
                         })
@@ -132,11 +134,16 @@ class GdzcPandianPage extends BasePage {
                     {
                         data2.map((item) => {
                             return <Flex style={{ width: screen_width - 30 }}>
-                                <Text style={styles.desc}>{item.key + ': '}</Text>
+                                <Text style={styles.desc}>{item.key + '：'}</Text>
                                 <Text style={styles.desc}>{item.value}</Text>
                             </Flex>
                         })
                     }
+
+                    <Flex style={{ width: screen_width - 30 }}>
+                        <Text style={styles.desc}>盘点说明</Text>
+                    </Flex>
+
                     <TextInput
                         value={tfStr}
                         onChangeText={(txt) => {
@@ -150,8 +157,6 @@ class GdzcPandianPage extends BasePage {
 
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
         const { data, images } = this.state;
-
-        console.log(22, data);
         return (
             <CommonView style={{ flex: 1 }}>
                 <Text style={styles.title}>基本资料</Text>
@@ -300,8 +305,10 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         paddingBottom: 15,
     },
-
-
+    word: {
+        color: 'white',
+        fontSize: 16,
+    }
 });
 const mapStateToProps = ({ memberReducer, gdzcReducer }) => {
     return {

@@ -3,23 +3,13 @@ import {View, StyleSheet, FlatList, TouchableOpacity, TouchableWithoutFeedback, 
 import BasePage from '../base/base';
 import Macro from '../../utils/macro';
 import WorkService from './work-service';
-import NoDataView from '../../components/no-data-view';
-
-// import CommonView from '../../components/CommonView';
-// import {saveUser} from '../../utils/store/actions/actions';
-// import common from '../../utils/common';
-// import LoadImage from '../../components/load-image';
-// import {connect} from 'react-redux';
-// import BuildingHeader from '../../components/building/building-header';
-// import BuildingCell from '../../components/building/build-cell';
-
+import NoDataView from '../../components/no-data-view'; 
 import {Flex, Icon} from '@ant-design/react-native';
 
 
 class NewsList extends BasePage {
-    static navigationOptions = ({navigation}) => {
-
-        console.log(1, navigation);
+    static navigationOptions = ({navigation}) => { 
+        //console.log(1, navigation);
         return {
             title: '未读消息',
             headerForceInset:this.headerForceInset,

@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-
-import {
-    AppRegistry,
+import { 
     StyleSheet,
     Text,
-    TouchableOpacity,
-    Linking,
+    TouchableOpacity
 } from 'react-native';
 
 import QRCodeScanner from 'react-native-qrcode-scanner';
