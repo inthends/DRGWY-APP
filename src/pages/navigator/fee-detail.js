@@ -35,7 +35,7 @@ class FeeDetailPage extends BasePage {
         return {
             tabBarVisible: false,
             title: '上门收费',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
@@ -85,7 +85,6 @@ class FeeDetailPage extends BasePage {
         });
         let room = common.getValueFromProps(this.props);
         // let room = common.getValueFromProps(this.props);
-        //console.log('room123', room);
         this.state = {
             room,
             pageIndex: 1,
@@ -113,6 +112,7 @@ class FeeDetailPage extends BasePage {
             showPicker: false,
             isDigital: false//数字货币二维码
         };
+
         Date.prototype.getYearAndMonthAndDay = function () {
             let year = this.getFullYear();
             let month = this.getMonth() + 1 + '';
@@ -128,7 +128,7 @@ class FeeDetailPage extends BasePage {
         }
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
 
         //获取参数，根据是否兴生活缴费来加载按钮
         NavigatorService.getSettingInfo(this.state.room.organizeId).then((res) => {
@@ -175,7 +175,7 @@ class FeeDetailPage extends BasePage {
 
     }
 
-    componentWillUnmount(): void {
+    componentWillUnmount() {
         this.viewDidAppear.remove();
         this.needPrintListener.remove();
     }
@@ -241,8 +241,13 @@ class FeeDetailPage extends BasePage {
                                 "proc_cd": "660000", //拉卡拉消费
                                 "pay_tp": "1"
                             });
-
-                        } else if (posType === '威富通') {
+                        }
+                        else if (posType === '拉卡拉聚合') {
+                            this.props.navigation.push('lklscan', {
+                                out_trade_no: res.out_trade_no
+                            });
+                        }
+                        else if (posType === '威富通') {
                             this.props.navigation.push('scan', {
                                 // data: ids,
                                 // isML: isML,
@@ -253,7 +258,8 @@ class FeeDetailPage extends BasePage {
                                 printAgain: false,
                                 callBack: this.callBack
                             });
-                        } else if (posType === '嘉联') {
+                        }
+                        else if (posType === '嘉联') {
                             this.props.navigation.push('jlscan', {
                                 out_trade_no: res.out_trade_no
                             });
@@ -269,7 +275,8 @@ class FeeDetailPage extends BasePage {
                                 isDigital: isDigital,
                                 out_trade_no: res.out_trade_no
                             });
-                        } else if (posType === '南京银行') {
+                        }
+                        else if (posType === '南京银行') {
                             this.setState({
                                 nanjingRes: res,
                             });
@@ -291,7 +298,7 @@ class FeeDetailPage extends BasePage {
                                 }
                             });
                         }
-                    });
+                    }).catch(err => { UDToast.showError(err); });
                     break;
                 }
 
@@ -313,6 +320,7 @@ class FeeDetailPage extends BasePage {
                         //     }
                         // } else 
                         if (posType === '拉卡拉') {
+                            //提供给拉卡拉POS机使用
                             this.setState({
                                 out_trade_no: res.out_trade_no,
                             });
@@ -320,6 +328,20 @@ class FeeDetailPage extends BasePage {
                                 ...res,
                                 "proc_cd": "710000", //拉卡拉消费
                                 "pay_tp": "1"
+                            });
+                        }
+                        else if (posType === '拉卡拉聚合') {
+                            //拉卡拉聚合收银台支付
+                            NavigatorService.lklallqrcodePay(res.out_trade_no).then(code => {
+                                this.setState({
+                                    visible: true,
+                                    cancel: false,
+                                    code,
+                                    needPrint: true,
+                                    printAgain: false,
+                                }, () => {
+                                    this.getOrderStatus(res.out_trade_no);
+                                });
                             });
                         }
                         else if (posType === '威富通') {
@@ -372,7 +394,7 @@ class FeeDetailPage extends BasePage {
                                 },
                             );
                         }
-                    });
+                    }).catch(err => { UDToast.showError(err); });
                     break;
                 }
                 case '现金': {
@@ -428,13 +450,13 @@ class FeeDetailPage extends BasePage {
     cashPay = (ids, isML, mlType, mlScale) => {
         NavigatorService.cashPay(ids, isML, mlType, mlScale).then(res => {
             //if (this.state.isLKL || this.state.isYse) {
-                //支持蓝牙打印
-                NavigatorService.cashPayPrint(ids).then(res => {
-                    NativeModules.LHNToast.printTicket({
-                        ...res,
-                        username: res.userName,
-                    });
+            //支持蓝牙打印
+            NavigatorService.cashPayPrint(ids).then(res => {
+                NativeModules.LHNToast.printTicket({
+                    ...res,
+                    username: res.userName,
                 });
+            });
             //}
             this.onRefresh();//刷新数据
         });
@@ -459,7 +481,7 @@ class FeeDetailPage extends BasePage {
         });
     };
 
-    typeOnChange = (type, isShow) => { 
+    typeOnChange = (type, isShow) => {
         this.setState({
             type,
             isShow,
@@ -548,6 +570,7 @@ class FeeDetailPage extends BasePage {
         }
     };
 
+    //刷新
     onClose = () => {
         this.setState({
             visible: false,
@@ -580,16 +603,6 @@ class FeeDetailPage extends BasePage {
         });
     };
 
-    printInfo = (out_trade_no) => {
-        NavigatorService.printInfo(out_trade_no).then(res => {
-            //console.log(123456, res)
-            NativeModules.LHNToast.printTicket({
-                ...res,
-                username: res.userName,
-            });
-        });
-    };
-
     //嘉联查询订单状态
     getJLOrderStatus = (out_trade_no) => {
         clearTimeout(this.timeOut);
@@ -608,6 +621,16 @@ class FeeDetailPage extends BasePage {
                     }, 1000);
                 }
             }
+        });
+    };
+
+    printInfo = (out_trade_no) => {
+        NavigatorService.printInfo(out_trade_no).then(res => {
+            //console.log(123456, res)
+            NativeModules.LHNToast.printTicket({
+                ...res,
+                username: res.userName,
+            });
         });
     };
 

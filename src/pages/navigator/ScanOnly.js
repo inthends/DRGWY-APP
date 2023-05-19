@@ -57,7 +57,8 @@ export default class ScanOnly extends BasePage {
             },
         ).start(() => this.startAnimation());
     };
-    //  识别二维码
+
+    //识别二维码
     onBarCodeRead = (result) => {
         const {data, type} = result;
         let callBack = common.getValueFromProps(this.props).callBack;

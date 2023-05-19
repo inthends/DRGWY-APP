@@ -127,8 +127,8 @@ export default class BCMScanScreen extends Component {
 
     needQuery(out_trade_no) {
         //let callBack = common.getValueFromProps(this.props, 'callBack');
-        let count = this.state.count || 7;
-        if (count === 7) {
+        let count = this.state.count || 10;
+        if (count === 10) {
             this.showLoadingNumber = UDToast.showLoading('正在查询支付结果，请稍后...');
         }
         this.setState({

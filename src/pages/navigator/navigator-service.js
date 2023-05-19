@@ -194,11 +194,7 @@ export default {
       endTime
     });
   },
-
-  // createOrder(linkId) {
-  //     return api.postData('/api/MobileMethod/MCreateTradeno', {linkId});
-  // },
-
+  
   //创建预订单号
   createOrder(linkId, isML, mlType, mlScale) {
     return api.postData('/api/MobileMethod/MCreateTradeno', {
@@ -330,6 +326,36 @@ export default {
     return api.postData('/api/MobileMethod/CIBQrCode', { unitId, linkId });
   },
 
+  //拉卡拉聚合生成收款码
+  lklallqrcodePay(tbout_trade_no) {
+    return api.postData('/api/MobileMethod/LKLAllPay', { tbout_trade_no, isDigital });
+  },
+
+  //拉卡拉聚合扫码
+  lklScanPay(auth_code, tbout_trade_no) {
+    return api.postData('/api/MobileMethod/LKLScanPay', {
+      auth_code,
+      tbout_trade_no
+    });
+  },
+
+  //拉卡拉聚合扫码，查询支付结果
+  lklScanPayQuery(tbout_trade_no) {
+    return api.postData('/api/MobileMethod/LKLScanPayQuery',
+      { tbout_trade_no },
+      false
+    );
+  },
+
+  //拉卡拉聚合扫码，接口支付失败，则调用撤销接口
+  lklScanPayReserve(tbout_trade_no) {
+    return api.postData(
+      '/api/MobileMethod/LKLScanPayReserve',
+      { tbout_trade_no },
+      false
+    );
+  },
+
   //现金收款
   cashPay(linkId, isML, mlType, mlScale) {
     return api.postData('/api/MobileMethod/MCharge', {
@@ -344,6 +370,7 @@ export default {
     return api.postData('/api/MobileMethod/MGetCashPrintInfo', { linkId });
   },
 
+  //通用收款码收款后，查询预订单状态
   orderStatus(out_trade_no) {
     return api.postData('/api/MobileMethod/QueryPayResult',
       { out_trade_no },

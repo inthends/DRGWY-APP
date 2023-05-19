@@ -85,7 +85,6 @@ class LoginPage extends BasePage {
       // this.setState({
       //     registration_id: result.registerID,
       // });
-
       LoginService.getServiceUrl(usercode)
         .then((res) => {
           this.props.saveUrl(res);
@@ -95,7 +94,7 @@ class LoginPage extends BasePage {
               this.props.saveToken(res);
             })
             .catch((error) => {
-              console.log(error);
+              //console.log(error);
             });
         })
         .catch((err) => {});

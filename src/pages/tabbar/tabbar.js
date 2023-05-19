@@ -98,6 +98,7 @@ import ScanScreen from '../navigator/qrcode-scanner';
 import JLScanScreen from '../navigator/jlscanner';
 import BCMScanScreen from '../navigator/bcmscanner';
 import CIBScanScreen from '../navigator/cibscanner';
+import LKLScanScreen from '../navigator/lklscanner';
 
 import shenpi from '../shenpi';
 import fukuan from '../shenpi/fukuan';
@@ -200,7 +201,8 @@ const navigatorNavigator = createStackNavigator({
   scan: ScanScreen, //威富通扫码
   jlscan: JLScanScreen, //嘉联扫码
   bcmscan: BCMScanScreen, //交通银行扫码
-  cibscan: CIBScanScreen, //兴业银行扫码
+  cibscan: CIBScanScreen, //兴业银行扫码 
+  lklscan: LKLScanScreen, //拉卡拉聚合扫码
 
   service: FuWuDanListDetailPage,
   wancheng: WanChengListDetailPage,
