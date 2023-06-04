@@ -328,7 +328,7 @@ export default {
 
   //拉卡拉聚合生成收款码
   lklallqrcodePay(tbout_trade_no) {
-    return api.postData('/api/MobileMethod/LKLAllPay', { tbout_trade_no, isDigital });
+    return api.postData('/api/MobileMethod/LKLAllPay', { tbout_trade_no });
   },
 
   //拉卡拉聚合扫码
