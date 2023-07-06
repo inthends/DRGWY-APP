@@ -1,12 +1,26 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View, Animated, Easing } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View, Animated, Easing } from 'react-native';
+import BasePage from '../base/base';
+import { Icon } from '@ant-design/react-native';
 import common from '../../utils/common';
 import NavigatorService from './navigator-service';
 import Macro from '../../utils/macro';
 import { RNCamera } from 'react-native-camera';
 import UDToast from '../../utils/UDToast';
-//嘉联扫码
-export default class JLScanScreen extends Component {
+//嘉联扫码 
+export default class JLScanScreen extends BasePage {
+
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: '上门收费',
+            headerForceInset: this.headerForceInset,
+            headerLeft: (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
+                </TouchableOpacity>
+            )
+        };
+    };
 
     constructor(props) {
         super(props);

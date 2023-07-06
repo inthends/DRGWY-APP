@@ -172,7 +172,6 @@ const navigatorNavigator = createStackNavigator({
   feeDetail: FeeDetailPage,
   feeAdd: FeeAddPage,
   fuwuD: EfuwuDetailPage,
-
   weixiuD: EweixiuDetailPage, //服务单页面点击关联单据，跳转到维修单，只能查看
   tousuD: EtousuDetailPage, //投诉单详情，只能查看
 
@@ -198,6 +197,7 @@ const navigatorNavigator = createStackNavigator({
   tousu_s: TouSuPage,
   huifang_s: HuiFangRatePage,
 
+  //扫码支付
   scan: ScanScreen, //威富通扫码
   jlscan: JLScanScreen, //嘉联扫码
   bcmscan: BCMScanScreen, //交通银行扫码

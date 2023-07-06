@@ -30,8 +30,7 @@ import ChaiFei from '../../components/chai-fei';
 // import { upgrade } from 'rn-app-upgrade';
 
 class FeeDetailPage extends BasePage {
-    static navigationOptions = ({ navigation }) => {
-        // console.log(1, navigation);
+    static navigationOptions = ({ navigation }) => { 
         return {
             tabBarVisible: false,
             title: '上门收费',

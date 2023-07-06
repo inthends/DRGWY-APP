@@ -31,7 +31,6 @@ const Item = List.Item;
 
 class FeeAddPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
-        // console.log(1, navigation);
         return {
             tabBarVisible: false,
             title: '上门收费',

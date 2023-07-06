@@ -1,31 +1,29 @@
-import React from 'react'; 
+import React from 'react';
 import {
     StyleSheet,
     Text,
     TouchableOpacity,
-    // Linking,
-    // ScrollView,
     Animated,
     View,
-    Easing,
+    Easing
 } from 'react-native';
-
 // import QRCodeScanner from 'react-native-qrcode-scanner';
 import common from '../../utils/common';
 // import NavigatorService from './navigator-service';
-import { Icon} from '@ant-design/react-native';
-import {RNCamera} from 'react-native-camera';
+import { Icon } from '@ant-design/react-native';
+import { RNCamera } from 'react-native-camera';
 import Macro from '../../utils/macro';
 import BasePage from '../base/base';
 
 export default class ScanOnly extends BasePage {
-    static navigationOptions = ({navigation}) => {
+
+    static navigationOptions = ({ navigation }) => {
         return {
             title: '扫一扫',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
 
@@ -60,7 +58,7 @@ export default class ScanOnly extends BasePage {
 
     //识别二维码
     onBarCodeRead = (result) => {
-        const {data, type} = result;
+        const { data, type } = result;
         let callBack = common.getValueFromProps(this.props).callBack;
         let needBack = common.getValueFromProps(this.props).needBack;
         if (callBack && !!data) {
@@ -88,10 +86,10 @@ export default class ScanOnly extends BasePage {
                     onBarCodeRead={this.onBarCodeRead}
                 >
                     <View style={styles.rectangleContainer}>
-                        <View style={styles.rectangle}/>
+                        <View style={styles.rectangle} />
                         <Animated.View style={[
                             styles.border,
-                            {transform: [{translateY: this.state.moveAnim}]}]}/>
+                            { transform: [{ translateY: this.state.moveAnim }] }]} />
                         <Text style={styles.rectangleText}>将二维码放入框内，即可自动扫描</Text>
                     </View>
                 </RNCamera>

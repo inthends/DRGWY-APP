@@ -1,15 +1,8 @@
 //威富通扫码
-import React, { Component } from 'react';
-import {
-    StyleSheet,
-    Text,
-    View, Animated, Easing,
-    // TouchableOpacity,
-    // Linking,
-    // ScrollView,
-    // NativeModules,
-} from 'react-native';
-
+import React  from 'react'; 
+import { StyleSheet, Text, TouchableOpacity, View, Animated, Easing } from 'react-native';
+import BasePage from '../base/base';
+import { Icon } from '@ant-design/react-native';
 //import QRCodeScanner from 'react-native-qrcode-scanner';
 import common from '../../utils/common';
 import NavigatorService from './navigator-service';
@@ -18,7 +11,19 @@ import Macro from '../../utils/macro';
 import { RNCamera } from 'react-native-camera';
 import UDToast from '../../utils/UDToast';
 
-export default class ScanScreen extends Component {
+//export default class ScanScreen extends Component {
+export default class ScanScreen extends BasePage {
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: '上门收费',
+            headerForceInset: this.headerForceInset,
+            headerLeft: (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
+                </TouchableOpacity>
+            )
+        };
+    };
 
     // onSuccess = (e) => {
     //     let ids = common.getValueFromProps(this.props);

@@ -1,13 +1,29 @@
 //兴业银行扫码
-import React, { Component } from 'react';
-import { StyleSheet, Text, View, Animated, Easing } from 'react-native';
-import common from '../../utils/common';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View, Animated, Easing } from 'react-native';
+import BasePage from '../base/base';
+import { Icon } from '@ant-design/react-native';
+
+import common from '../../utils/common'; 
 import NavigatorService from './navigator-service';
 import Macro from '../../utils/macro';
 import { RNCamera } from 'react-native-camera';
 import UDToast from '../../utils/UDToast';
 
-export default class CIBScanScreen extends Component {
+// export default class CIBScanScreen extends Component {
+//2023-07-06 modify
+export default class CIBScanScreen extends BasePage {
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: '上门收费',
+            headerForceInset: this.headerForceInset,
+            headerLeft: (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
+                </TouchableOpacity>
+            )
+        };
+    };
 
     constructor(props) {
         super(props);
@@ -32,7 +48,7 @@ export default class CIBScanScreen extends Component {
             {
                 toValue: -200,
                 duration: 1500,
-                easing: Easing.linear,
+                easing: Easing.linear
             },
         ).start(() => this.startAnimation());
     };
@@ -48,7 +64,6 @@ export default class CIBScanScreen extends Component {
         }, () => {
             let out_trade_no = common.getValueFromProps(this.props, 'out_trade_no');
             let isDigital = common.getValueFromProps(this.props, 'isDigital');//是否是数字货币
-
             if (isDigital) {
                 //扫数字货币付款码
                 NavigatorService.bcmMisScanPay(result.data, out_trade_no).then(resp => {
