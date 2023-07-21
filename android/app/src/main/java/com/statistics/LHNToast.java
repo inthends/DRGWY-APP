@@ -181,20 +181,29 @@ public class LHNToast extends ReactContextBaseJavaModule {
                         break;
                     }
 
-                    case "银盛": {
-                        // if (isYse) {
-                        // 只有是银盛pos机才能扫码和收款码
-                        // yinshengBundle 银盛支付参数
+                    // case "银盛": {
+                    //     // if (isYse) {
+                    //     // 只有是银盛pos机才能扫码和收款码
+                    //     // yinshengBundle 银盛支付参数
+                    //     bundle.putInt("amount", order.getInt("amount"));
+                    //     bundle.putString("orderBelongTo", order.getString("orderBelongTo"));
+                    //     bundle.putString("orderId", order.getString("orderId"));
+                    //     // bundle.putString("createOrderRemark", order.getString("createOrderRemark"));
+                    //     // bundle.putString("notify_url", order.getString("notify_url"));
+                    //     bundle.putInt("transType", order.getInt("transType"));
+                    //     bundle.putString("posType", posType);
+                    //     intent.putExtras(bundle);
+                    //     currentActivity.startActivity(intent);
+                    //     // }
+                    //     break;
+
+                      case "南京银行": {
                         bundle.putInt("amount", order.getInt("amount"));
-                        bundle.putString("orderBelongTo", order.getString("orderBelongTo"));
-                        bundle.putString("orderId", order.getString("orderId"));
-                        // bundle.putString("createOrderRemark", order.getString("createOrderRemark"));
-                        // bundle.putString("notify_url", order.getString("notify_url"));
-                        bundle.putInt("transType", order.getInt("transType"));
                         bundle.putString("posType", posType);
+                        bundle.putString("transName", order.getString("transName"));
+                        bundle.putString("scanCodeData", order.getString("scanCodeData"));
                         intent.putExtras(bundle);
                         currentActivity.startActivity(intent);
-                        // }
                         break;
                     }
                 }
@@ -209,7 +218,15 @@ public class LHNToast extends ReactContextBaseJavaModule {
     public static void sendEventToRn(String eventName) {
         myContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, "");
     }
-    public static void sendEventAndDataToRn(String eventName, @Nullable WritableMap paramss) {
-        myContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, paramss);
+    
+    // public static void sendEventAndDataToRn(String eventName, @Nullable WritableMap paramss) {
+    //     myContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, paramss);
+    // }
+
+   public static void sendEventAndDataToRn(String eventName, String traceNo, String payChannel) {
+        WritableMap map = Arguments.createMap();
+        map.putString("traceNo",traceNo);
+        map.putString("payChannel",payChannel);
+        myContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, map);
     }
 }

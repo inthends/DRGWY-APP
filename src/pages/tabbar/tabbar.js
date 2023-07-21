@@ -337,16 +337,14 @@ const tabbar = createBottomTabNavigator(
         title: '导航',
         headerBackTitle: null,
       }),
-    },
-
+    }, 
     Work: {
       screen: WorkNavigator,
       navigationOptions: () => ({
         title: '工作台',
         headerBackTitle: null,
       }),
-    },
-
+    }, 
     Shenpi: {
       screen: ShenPiNavigator,
       navigationOptions: () => ({
@@ -399,13 +397,15 @@ const tabbar = createBottomTabNavigator(
             } else {
               imageUrl = require('../../static/images/tabbar/gz_n.png');
             }
-          } else if (routeName === 'Work') {
-            if (focused) {
-              imageUrl = require('../../static/images/tabbar/gz_h.png');
-            } else {
-              imageUrl = require('../../static/images/tabbar/gz_n.png');
-            }
-          } else {
+          } 
+          // else if (routeName === 'Work') {
+          //   if (focused) {
+          //     imageUrl = require('../../static/images/tabbar/gz_h.png');
+          //   } else {
+          //     imageUrl = require('../../static/images/tabbar/gz_n.png');
+          //   }
+          // } 
+          else {
             if (focused) {
               imageUrl = require('../../static/images/tabbar/me_h.png');
             } else {

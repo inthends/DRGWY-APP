@@ -21,6 +21,8 @@ public class LKLPayActivity extends Activity {
     private Bundle bundle;
     private Bundle yinshengBundle;
     private Button button;
+    private Bundle nanjingBundle;
+
     // 交易金额
     // private EditText mMoneyEt;
     // 调用收单应用
@@ -48,9 +50,14 @@ public class LKLPayActivity extends Activity {
 
                 break;
             }
-            case "银盛": {
-                this.yinshengBundle = bu;
-                yinshengPay();
+            // case "银盛": {
+            //     this.yinshengBundle = bu;
+            //     yinshengPay();
+            //     break;
+            // }
+              case "南京银行": {
+                this.nanjingBundle = bu;
+                nanjingPay();
                 break;
             }
         } 
@@ -87,31 +94,48 @@ public class LKLPayActivity extends Activity {
         return stringTokenizer.nextToken();
     }
 
-    // 银盛正扫和反扫
-    public void yinshengPay() {
-
-        int transType = this.yinshengBundle.getInt("transType");
-
-//        mShow.setText(String.valueOf(transType));
-//        String amount = this.yinshengBundle.getString("amount", "0");
+//     // 银盛正扫和反扫
+//     public void yinshengPay() { 
+//         int transType = this.yinshengBundle.getInt("transType"); 
+// //        mShow.setText(String.valueOf(transType));
+// //        String amount = this.yinshengBundle.getString("amount", "0");
  
+//         try {
+
+//             Intent intent = new Intent();
+//             intent.setAction("com.ys.smartpos.pay.sdk");
+//             intent.putExtra("transType", transType);
+// //            intent.putExtra("amount", Long.parseLong(amount));
+//             intent.putExtra("amount", (long)this.yinshengBundle.getInt("amount"));
+//             intent.putExtra("transAction", 1);
+//             intent.putExtra("orderBelongTo", this.yinshengBundle.getString("orderBelongTo"));
+//             intent.putExtra("orderId", this.yinshengBundle.getString("orderId"));// 客户订单号最大长度20
+//             // intent.putExtra("printContent",
+//             // this.yinshengBundle.getString("createOrderRemark"));
+//             intent.putExtra("syncFlag", "1");
+//             // intent.putExtra("notify_url", this.yinshengBundle.getString("notify_url"));
+//             //mShow.setText("开始调用银盛支付" + "transType=" + transType + ",amount=" + (long)this.yinshengBundle.getInt("amount")+ ",orderBelongTo=" + this.yinshengBundle.getString("orderBelongTo") + ",orderId=" + this.yinshengBundle.getString("orderId"));
+//             startActivityForResult(intent, transType);
+
+//         } catch (Exception e) {
+//             mShow.setText(e.getMessage());
+//         }
+//     }
+
+    //南京
+    public void nanjingPay() {
         try {
+            Intent intent = new Intent(); 
+            intent.setComponent(new ComponentName("cn.unionpay.national.njcbemv","cn.unionpay.national.njcbemv.MainActivity"));
+            intent.putExtra("transName", this.nanjingBundle.getString("transName"));
+            intent.putExtra("scanCodeData", this.nanjingBundle.getString("scanCodeData"));
+            intent.putExtra("amount", String.format("%012d", this.nanjingBundle.getInt("amount"))); 
+            if ( this.nanjingBundle.getString("transName").equals("打印")) {
+                startActivityForResult(intent, 1);
 
-            Intent intent = new Intent();
-            intent.setAction("com.ys.smartpos.pay.sdk");
-            intent.putExtra("transType", transType);
-//            intent.putExtra("amount", Long.parseLong(amount));
-            intent.putExtra("amount", (long)this.yinshengBundle.getInt("amount"));
-            intent.putExtra("transAction", 1);
-            intent.putExtra("orderBelongTo", this.yinshengBundle.getString("orderBelongTo"));
-            intent.putExtra("orderId", this.yinshengBundle.getString("orderId"));// 客户订单号最大长度20
-            // intent.putExtra("printContent",
-            // this.yinshengBundle.getString("createOrderRemark"));
-            intent.putExtra("syncFlag", "1");
-            // intent.putExtra("notify_url", this.yinshengBundle.getString("notify_url"));
-            //mShow.setText("开始调用银盛支付" + "transType=" + transType + ",amount=" + (long)this.yinshengBundle.getInt("amount")+ ",orderBelongTo=" + this.yinshengBundle.getString("orderBelongTo") + ",orderId=" + this.yinshengBundle.getString("orderId"));
-            startActivityForResult(intent, transType);
-
+            } else {
+                startActivityForResult(intent, 2);
+            }
         } catch (Exception e) {
             mShow.setText(e.getMessage());
         }
@@ -175,17 +199,47 @@ public class LKLPayActivity extends Activity {
 
                         break;
                 }
-            } else if (yinshengBundle != null) {
-                Integer result = data.getExtras().getInt("transResult", -1);
-                switch (result) {
-                    case 0:
-                        mShow.setText("支付成功");
-                        break;
-                    default:
-                        mShow.setText("支付失败");
-                        break;
-                }
             }
+            //  else if (yinshengBundle != null) {
+            //     Integer result = data.getExtras().getInt("transResult", -1);
+            //     switch (result) {
+            //         case 0:
+            //             mShow.setText("支付成功");
+            //             break;
+            //         default:
+            //             mShow.setText("支付失败");
+            //             break;
+            //     }
+            // }
+
+             else if (nanjingBundle != null) {
+                switch(resultCode) {
+                    case Activity.RESULT_CANCELED:
+                       String reason =  data.getExtras().getString("reason");//data.getStringExtra("reason");
+                        if (reason != null) {
+                            mShow.setText(reason);
+                        }
+                        break;
+                    case Activity.RESULT_OK:
+                        if (requestCode == 1) {
+                            return;
+                        }
+                        mShow.setText("支付成功");
+                         LHNToast.sendEventAndDataToRn(
+                             "nanjingCallback",
+                             data.getExtras().getString("traceNo"),
+                             data.getExtras().getString("payChannel")
+                             );
+                        break;
+                    }
+                super.onActivityResult(requestCode, resultCode, data);
+
+            }
+             else {
+                super.onActivityResult(requestCode, resultCode, data);
+
+            }
+
         }catch (Exception e) {
             mShow.setText(e.getMessage());
             e.printStackTrace();
