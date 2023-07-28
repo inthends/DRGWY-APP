@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React  from 'react';
 import {
     View,
     Text,
@@ -8,11 +8,11 @@ import {
     FlatList,
 } from 'react-native';
 import BasePage from '../../base/base';
-import {Button, Flex, Icon, List, WhiteSpace} from '@ant-design/react-native';
+import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
 import {connect} from 'react-redux';
-import ListHeader from '../../../components/list-header';
+//import ListHeader from '../../../components/list-header';
 import common from '../../../utils/common';
 import LoadImage from '../../../components/load-image';
 import ScrollTitle from '../../../components/scroll-title';
@@ -23,9 +23,8 @@ import CommonView from '../../../components/CommonView';
 
 
 class EstateTousuPage extends BasePage {
-    static navigationOptions = ({navigation}) => {
-
-        console.log(1, navigation);
+    static navigationOptions = ({navigation}) => { 
+        //console.log(1, navigation);
         return {
             tabBarVisible: false,
             title: '投诉单',
@@ -244,7 +243,7 @@ class EstateTousuPage extends BasePage {
 
 
     render() {
-        const {statistics, dataInfo, ym} = this.state;
+        const {  dataInfo, ym} = this.state;
         return (
             <View style={{flex: 1}}>
                 <CommonView style={{flex: 1}}>

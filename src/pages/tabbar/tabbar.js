@@ -211,6 +211,7 @@ const navigatorNavigator = createStackNavigator({
   jiedan: JieDanListDetailPage,
   paidan: PaiDanListDetailPage,
   huifang: HuiFangDetailPage,
+  
   xunjian: XunJianPage,
   xunjiantask: TaskPage,
   xunjianDetail: XunJianDetailPage,

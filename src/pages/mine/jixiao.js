@@ -248,7 +248,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = ({buildingReducer,memberReducer}) => {
     const user = memberReducer.user || {};
-
     return {
         selectBuilding: buildingReducer.selectBuilding || {},
         user: {

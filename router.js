@@ -33,7 +33,7 @@ class AppRouter extends Component<Props> {
 
 const mapStateToProps = ({memberReducer}) => {
     return {
-        token: memberReducer.token,
+        token: memberReducer.token
     };
 
 };
@@ -49,6 +49,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppRouter);
-
-
 // polyfillGlobal('XMLHttpRequest', () => require('../Network/XMLHttpRequest'));

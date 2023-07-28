@@ -424,8 +424,7 @@ class FeeDetailPage extends BasePage {
     };
 
     //兴生活缴费
-    clickCIB = () => {
-
+    clickCIB = () => { 
         const items = this.state.dataInfo.data.filter(item => item.select === true);
         if (items.length === 0) {
             UDToast.showError('请选择费用');

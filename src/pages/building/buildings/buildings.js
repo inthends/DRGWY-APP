@@ -80,17 +80,17 @@ class BuildingsPage extends BasePage {
 const styles = StyleSheet.create({
     content: {
         backgroundColor: Macro.color_white,
-        flex: 1,
+        flex: 1
         // height: ScreenUtil.contentHeightWithNoTabbar(),
     },
     list: {
         // marginBottom: ScreenUtil.tabbarHeight()
-        height: ScreenUtil.contentHeightWithNoTabbar(),
+        height: ScreenUtil.contentHeightWithNoTabbar()
     },
 });
 const mapStateToProps = ({buildingReducer}) => {
     return {
-        selectBuilding: buildingReducer.selectBuilding,
+        selectBuilding: buildingReducer.selectBuilding
     };
 };
 
