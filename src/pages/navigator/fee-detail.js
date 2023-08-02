@@ -30,7 +30,7 @@ import ChaiFei from '../../components/chai-fei';
 // import { upgrade } from 'rn-app-upgrade';
 
 class FeeDetailPage extends BasePage {
-    static navigationOptions = ({ navigation }) => { 
+    static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
             title: '上门收费',
@@ -337,7 +337,7 @@ class FeeDetailPage extends BasePage {
                                     cancel: false,
                                     code,
                                     needPrint: true,
-                                    printAgain: false,
+                                    printAgain: false
                                 }, () => {
                                     this.getOrderStatus(res.out_trade_no);
                                 });
@@ -350,7 +350,7 @@ class FeeDetailPage extends BasePage {
                                     cancel: false,
                                     code,
                                     needPrint: true,
-                                    printAgain: false,
+                                    printAgain: false
                                 }, () => {
                                     this.getOrderStatus(res.out_trade_no);
                                 });
@@ -362,9 +362,10 @@ class FeeDetailPage extends BasePage {
                                     cancel: false,
                                     code,
                                     needPrint: false,
-                                    printAgain: false,
+                                    printAgain: false
                                 }, () => {
-                                    this.getJLOrderStatus(res.out_trade_no);
+                                    this.getOrderStatus(res.out_trade_no);
+                                    //this.getJLOrderStatus(res.out_trade_no);
                                 });
                             });
                         }
@@ -375,12 +376,26 @@ class FeeDetailPage extends BasePage {
                                     cancel: false,
                                     code,
                                     needPrint: true,
-                                    printAgain: false,
+                                    printAgain: false
                                 }, () => {
                                     this.getOrderStatus(res.out_trade_no);
                                 });
                             });
-                        } else if (posType === '南京银行') {
+                        }
+                        else if (posType === '兴生活H5') {
+                            NavigatorService.cibH5CodePay(res.out_trade_no, isDigital).then(code => {
+                                this.setState({
+                                    visible: true,
+                                    cancel: false,
+                                    code,
+                                    needPrint: true,
+                                    printAgain: false
+                                }, () => {
+                                    this.getOrderStatus(res.out_trade_no);
+                                });
+                            });
+                        }
+                        else if (posType === '南京银行') {
                             this.setState({
                                 nanjingRes: res,
                             });
@@ -389,7 +404,7 @@ class FeeDetailPage extends BasePage {
                                 {
                                     ...res,
                                     transName: '二维码主扫',
-                                    scanCodeData: '',
+                                    scanCodeData: ''
                                 },
                             );
                         }
@@ -424,7 +439,7 @@ class FeeDetailPage extends BasePage {
     };
 
     //兴生活缴费
-    clickCIB = () => { 
+    clickCIB = () => {
         const items = this.state.dataInfo.data.filter(item => item.select === true);
         if (items.length === 0) {
             UDToast.showError('请选择费用');
@@ -602,29 +617,28 @@ class FeeDetailPage extends BasePage {
     };
 
     //嘉联查询订单状态
-    getJLOrderStatus = (out_trade_no) => {
-        clearTimeout(this.timeOut);
-        NavigatorService.orderStatus(out_trade_no).then(res => {
-            if (res) {
-                // if (this.state.needPrint) {
-                //     this.func = this.printInfo;
-                //     this.params = out_trade_no;
-                //     this.printInfo(out_trade_no);
-                // }
-                this.onClose();
-            } else {
-                if (!this.state.cancel) {
-                    this.timeOut = setTimeout(() => {
-                        this.getOrderStatus(out_trade_no);
-                    }, 1000);
-                }
-            }
-        });
-    };
+    // getJLOrderStatus = (out_trade_no) => {
+    //     clearTimeout(this.timeOut);
+    //     NavigatorService.orderStatus(out_trade_no).then(res => {
+    //         if (res) {
+    //             // if (this.state.needPrint) {
+    //             //     this.func = this.printInfo;
+    //             //     this.params = out_trade_no;
+    //             //     this.printInfo(out_trade_no);
+    //             // }
+    //             this.onClose();
+    //         } else {
+    //             if (!this.state.cancel) {
+    //                 this.timeOut = setTimeout(() => {
+    //                     this.getOrderStatus(out_trade_no);
+    //                 }, 1000);
+    //             }
+    //         }
+    //     });
+    // };
 
     printInfo = (out_trade_no) => {
         NavigatorService.printInfo(out_trade_no).then(res => {
-            //console.log(123456, res)
             NativeModules.LHNToast.printTicket({
                 ...res,
                 username: res.userName,

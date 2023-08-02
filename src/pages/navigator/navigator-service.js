@@ -252,7 +252,11 @@ export default {
     return api.postData('/api/MobileMethod/CIBPay', { tbout_trade_no, isDigital });
   },
 
-
+   //兴生活H5生成收款码
+   cibH5CodePay(tbout_trade_no, isDigital) {
+    return api.postData('/api/MobileMethod/CIBH5Pay', { tbout_trade_no, isDigital });
+  },
+  
   //交通银行人民币扫码
   bcmScanPay(auth_code, tbout_trade_no) {
     return api.postData('/api/MobileMethod/BCMScanPay', {
@@ -321,7 +325,7 @@ export default {
     return api.postData('/api/MobileMethod/JLQrcodePay', { tbout_trade_no });
   },
 
-  //兴生活小程序二维码
+  //兴生活H5二维码
   qrcodePayCIB(unitId, linkId) {
     return api.postData('/api/MobileMethod/CIBQrCode', { unitId, linkId });
   },
