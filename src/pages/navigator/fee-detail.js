@@ -171,7 +171,6 @@ class FeeDetailPage extends BasePage {
         // else {
         //     //方法待实现
         // }
-
     }
 
     componentWillUnmount() {
@@ -196,12 +195,13 @@ class FeeDetailPage extends BasePage {
             let ids = JSON.stringify((items.map(item => item.id)));
             const { isML, mlType, mlScale, isDigital } = this.state;
             switch (title) {
+                //app 不支持刷卡
                 // case '刷卡': {
                 //     if (common.isIOS()) {
                 //         UDToast.showInfo('功能暂未开放，敬请期待！');
                 //     } else {
                 //         //刷卡目前只支持拉卡拉
-                //         NavigatorService.createOrder(ids, isML, mlType, mlScale).then(res => {
+                //         NavigatorService.createOrder(ids, isML, mlType, mlScale,3).then(res => {
                 //             this.setState({
                 //                 out_trade_no: res.out_trade_no,
                 //             });
@@ -215,7 +215,7 @@ class FeeDetailPage extends BasePage {
                 //     break;
                 // }
                 case '扫码': {
-                    NavigatorService.createOrder(ids, isML, mlType, mlScale).then(res => {
+                    NavigatorService.createOrder(ids, isML, mlType, mlScale, 1).then(res => {
                         let posType = res.posType;
                         // if (posType === '银盛') {
                         //     if (!this.state.isYse) {
@@ -302,7 +302,7 @@ class FeeDetailPage extends BasePage {
                 }
 
                 case '收款码': {
-                    NavigatorService.createOrder(ids, isML, mlType, mlScale).then(res => {
+                    NavigatorService.createOrder(ids, isML, mlType, mlScale, 2).then(res => {
                         let posType = res.posType;
                         // if (posType === '银盛') {
                         //     if (!this.state.isYse) {
@@ -366,6 +366,19 @@ class FeeDetailPage extends BasePage {
                                 }, () => {
                                     this.getOrderStatus(res.out_trade_no);
                                     //this.getJLOrderStatus(res.out_trade_no);
+                                });
+                            });
+                        }
+                        else if (posType === '交通银行') {
+                            NavigatorService.bcmCodePay(res.out_trade_no, isDigital).then(code => {
+                                this.setState({
+                                    visible: true,
+                                    cancel: false,
+                                    code,
+                                    needPrint: true,
+                                    printAgain: false
+                                }, () => {
+                                    this.getOrderStatus(res.out_trade_no);
                                 });
                             });
                         }

@@ -194,14 +194,15 @@ export default {
       endTime
     });
   },
-  
-  //创建预订单号
-  createOrder(linkId, isML, mlType, mlScale) {
+
+  //创建预订单号 type 支付类型，1扫码、2被扫、3刷卡
+  createOrder(linkId, isML, mlType, mlScale, type) {
     return api.postData('/api/MobileMethod/MCreateTradeno', {
       linkId,
       isML,
       mlType,
       mlScale,
+      type
     });
   },
 
@@ -222,7 +223,6 @@ export default {
     );
   },
 
-
   //兴业银行人民币扫码
   cibScanPay(auth_code, tbout_trade_no) {
     return api.postData('/api/MobileMethod/CIBScanPay', {
@@ -230,6 +230,7 @@ export default {
       tbout_trade_no
     });
   },
+
   //兴业银行人民币扫码，查询支付结果
   cibScanPayQuery(tbout_trade_no) {
     return api.postData('/api/MobileMethod/CIBScanPayQuery',
@@ -252,11 +253,16 @@ export default {
     return api.postData('/api/MobileMethod/CIBPay', { tbout_trade_no, isDigital });
   },
 
-   //兴生活H5生成收款码
-   cibH5CodePay(tbout_trade_no, isDigital) {
+  //兴生活H5生成收款码
+  cibH5CodePay(tbout_trade_no, isDigital) {
     return api.postData('/api/MobileMethod/CIBH5Pay', { tbout_trade_no, isDigital });
   },
-  
+
+  //交通银行生成收款码
+  bcmCodePay(tbout_trade_no, isDigital) {
+    return api.postData('/api/MobileMethod/BCMPay', { tbout_trade_no, isDigital });
+  },
+
   //交通银行人民币扫码
   bcmScanPay(auth_code, tbout_trade_no) {
     return api.postData('/api/MobileMethod/BCMScanPay', {
