@@ -66,18 +66,15 @@ export default class JianFei extends BasePage {
                     Keyboard.dismiss();
                 }}>
                     <Flex direction={'column'}>
-
-                        <Flex align={'center'} style={{ width: '100%' }}>
+                        <Flex align={'center'} style={{ width: '100%' }} >
                             <Text style={styles.text}>减免类别</Text>
                             <MyPopover
                                 style={styles.input}
                                 onChange={value => this.setState({ reductionType: value })}
                                 titles={types}
                                 visible={true} />
-
                         </Flex>
                         <WhiteSpace size={'lg'} />
-
                         <Flex align={'center'} style={{ width: '100%' }}>
                             <Text style={styles.text}>减免金额</Text>
                             <TextInput
@@ -89,22 +86,21 @@ export default class JianFei extends BasePage {
                         </Flex>
 
                         <WhiteSpace size={'lg'} />
-
-                        <Flex direction={'column'} align={'start'}>
+                        <Flex align={'center'} style={{ width: '100%' }}>
                             <Flex>
                                 <Text style={styles.left}>说明</Text>
                             </Flex>
-                            <WhiteSpace size={'lg'} /> 
-                            <TextareaItem
-                                style={styles.area}
-                                placeholder={'请输入说明'}
-                                rows={3}
-                                onChange={memo => this.setState({ memo })}
-                                value={this.state.memo}
-                            />
                         </Flex>
-
-                        <Button style={{ width: '100%', marginTop: 10 }} type="primary"
+                        <WhiteSpace size={'lg'} />
+                        <TextareaItem
+                            style={styles.area}
+                            placeholder={'请输入说明'}
+                            rows={3}
+                            onChange={memo => this.setState({ memo })}
+                            value={this.state.memo}
+                        />
+                        <Button style={{ width: '100%', marginTop: 10 }}
+                            type="primary"
                             onPress={this.in}>确定</Button>
                     </Flex>
 
@@ -115,7 +111,6 @@ export default class JianFei extends BasePage {
 }
 
 const styles = StyleSheet.create({
-
     left: {
         fontSize: 17,
         width: '100%'
@@ -134,7 +129,7 @@ const styles = StyleSheet.create({
     area: {
         borderWidth: 1,
         borderColor: '#eeeeee',
-        width: ScreenUtil.deviceWidth() - 90,
+        width: ScreenUtil.deviceWidth() - 150,
         borderRadius: 10
     },
     // area2: { 

@@ -10,7 +10,7 @@ import Macro from '../../utils/macro';
 import { RNCamera } from 'react-native-camera';
 import UDToast from '../../utils/UDToast';
 
-// export default class CIBScanScreen extends Component {
+//export default class CIBScanScreen extends Component {
 //2023-07-06 modify
 export default class CIBScanScreen extends BasePage {
     static navigationOptions = ({ navigation }) => {

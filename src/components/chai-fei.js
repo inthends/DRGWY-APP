@@ -13,7 +13,6 @@ import api from '../utils/api';
 import DatePicker from 'react-native-datepicker'
 
 export default class ChaiFei extends BasePage {
-
     //onClose
     constructor(props) {
         super(props);
@@ -21,10 +20,9 @@ export default class ChaiFei extends BasePage {
             money: '',
             memo: '',
             last: '',
-            a: this.props.item.beginDate,
+            a: this.props.item.beginDate
         };
     }
-
 
     in = () => {
         let { money, memo, last, a } = this.state;
@@ -33,7 +31,6 @@ export default class ChaiFei extends BasePage {
             UDToast.showError('请输入金额');
             return;
         }
-
         let b = new Date(new Date(a).getTime() + 24 * 60 * 60 * 1000).getYearAndMonthAndDay();
         let data = {
             firstAmount: money,
@@ -58,7 +55,6 @@ export default class ChaiFei extends BasePage {
         const { item } = this.props;
         const { a } = this.state;
         let b = new Date(new Date(a).getTime() + 24 * 60 * 60 * 1000);
-
         return (
             <View style={{ flex: 1, width: '100%' }}>
                 <TouchableWithoutFeedback onPress={() => {
@@ -78,7 +74,7 @@ export default class ChaiFei extends BasePage {
                                     至
                                     </Text>
                                 {/*<Text onPress={()=>this.props.showP(true)} style={styles.enable}>*/}
-                                {/*    {a}*/}
+                                {/*{a}*/}
                                 {/*</Text>*/}
                                 <DatePicker
                                     style={{ width: 105 }}
@@ -157,8 +153,7 @@ export default class ChaiFei extends BasePage {
                                 rows={3}
                                 onChange={memo => this.setState({ memo })}
                                 value={this.state.memo}
-                            /> 
-
+                            />
                         </Flex>
 
                         <Button style={{ width: '100%', marginTop: 10 }} type="primary"

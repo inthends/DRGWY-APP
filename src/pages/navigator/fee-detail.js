@@ -300,7 +300,6 @@ class FeeDetailPage extends BasePage {
                     }).catch(err => { UDToast.showError(err); });
                     break;
                 }
-
                 case '收款码': {
                     NavigatorService.createOrder(ids, isML, mlType, mlScale, 2).then(res => {
                         let posType = res.posType;
@@ -443,7 +442,7 @@ class FeeDetailPage extends BasePage {
                                 }
                             }
                         ],
-                        { cancelable: false },
+                        { cancelable: false }
                     );
                     break;
                 }
@@ -694,7 +693,9 @@ class FeeDetailPage extends BasePage {
             titles = ['减免', '拆费'];
         }
         return (
-            <TouchableWithoutFeedback key={item.id} onPress={() => this.changeItem(item)}>
+            <TouchableWithoutFeedback
+                key={item.id}
+                onPress={() => this.changeItem(item)}>
                 <Flex style={styles.check}>
                     {type !== '已收' && <Checkbox
                         checked={item.select === true}

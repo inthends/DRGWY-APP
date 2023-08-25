@@ -1,16 +1,15 @@
-import React  from 'react';
+import React from 'react';
 import {
     Text,
     StyleSheet,
     TouchableOpacity,
-    TouchableWithoutFeedback, 
+    TouchableWithoutFeedback,
     ScrollView,
     // NativeModules,
     // Alert,
     // DeviceEventEmitter,
     TextInput,
-    View,
-
+    View
 } from 'react-native';
 import BasePage from '../base/base';
 import { Flex, Icon, List, DatePicker, Button } from '@ant-design/react-native';
@@ -26,15 +25,14 @@ import UDToast from '../../utils/UDToast';
 // import QRCode from 'react-native-qrcode-svg';
 import CommonView from '../../components/CommonView';
 import MyPopover from '../../components/my-popover';
-
 const Item = List.Item;
 
 class FeeAddPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
-            title: '上门收费',
-            headerForceInset:this.headerForceInset,
+            title: '上门收费2',
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
@@ -47,9 +45,9 @@ class FeeAddPage extends BasePage {
 
     constructor(props) {
         super(props);
-        // let room = common.getValueFromProps(this.props) || {id:'FY-XHF-01-0101'};
+        //let room = common.getValueFromProps(this.props) || {id:'FY-XHF-01-0101'};
         let room = common.getValueFromProps(this.props);
-        console.log('room456', room);
+        //console.log('room456', room);
         this.state = {
             room,
             pageIndex: 1,
@@ -63,14 +61,14 @@ class FeeAddPage extends BasePage {
             code: '',
             price: '0.00',
             needPrint: false,
-            printAgain: false, 
-            xishu: null, 
+            printAgain: false,
+            xishu: null,
             res: [],
             titles: [],
             items: [],
             big: null,
             small: null,
-            fee: null,
+            fee: null
         };
 
         Date.prototype.yearMonthDay = function () {
@@ -83,7 +81,6 @@ class FeeAddPage extends BasePage {
             if (day.length === 1) {
                 day = '0' + day;
             }
-
             return year + '-' + month + '-' + day + ' 00:00:00';
         };
     }
@@ -93,23 +90,21 @@ class FeeAddPage extends BasePage {
         let big;
         if (items.length === 0) {
             big = this.state.res[index];
-
         }
         this.setState({
             items,
             big,
             small: null,
-            fee: null,
+            fee: null
         });
     };
     save = () => {
-        let { fee } = this.state; 
+        let { fee } = this.state;
         fee = {
             ...fee,
             beginDate: fee.beginDate == null ? null : fee.beginDate.yearMonthDay(),
-            endDate: fee.endDate == null ? null : fee.endDate.yearMonthDay(),
+            endDate: fee.endDate == null ? null : fee.endDate.yearMonthDay()
         };
-
         NavigatorService.saveFee([fee]).then(res => {
             UDToast.showError('保存成功');
             setTimeout(() => {
@@ -137,7 +132,7 @@ class FeeAddPage extends BasePage {
                 res,
                 items: res[0].children,
                 big,
-                show: true,
+                show: true
             }, () => {
                 //console.log(1, this.state);
             });
@@ -157,7 +152,7 @@ class FeeAddPage extends BasePage {
         });
     };
     click = (item) => {
-        NavigatorService.getFeeItemDetail(this.state.room.id, item.key).then(res => { 
+        NavigatorService.getFeeItemDetail(this.state.room.id, item.key).then(res => {
             this.setState({
                 small: item,
                 fee: {
@@ -165,7 +160,7 @@ class FeeAddPage extends BasePage {
                     beginDate: (res.beginDate == null ? null : new Date(res.beginDate.split(' ')[0])),
                     endDate: (res.endDate == null ? null : new Date(res.endDate.split(' ')[0])),
                     number: res.number + '',
-                    amount: res.amount + '',
+                    amount: res.amount + ''
                 },
             }, () => {
                 //console.log(212, this.state);
@@ -187,9 +182,15 @@ class FeeAddPage extends BasePage {
         return (
             <CommonView style={{ flex: 1 }}>
                 <ScrollView>
-                    <MyPopover hiddenImage={true}
-                        style={{ width: '100%', borderWidth: 1, borderStyle: 'solid', borderColor: '#74BAF1' }}
-                        textStyle={{ fontSize: 15 }} onChange={this.typeChange}
+                    <MyPopover
+                        //hiddenImage={true}
+                        style={{
+                            width: '100%',
+                            borderWidth: 1,
+                            borderStyle: 'solid',
+                            borderColor: '#74BAF1'
+                        }}
+                        textStyle={{ fontSize: 18 }} onChange={this.typeChange}
                         titles={titles} visible={true} />
                     <Flex direction={'column'} align={'start'} style={styles.cell}>
                         <Flex wrap={'wrap'} justify={'start'} style={styles.cellContnent}>
@@ -204,7 +205,6 @@ class FeeAddPage extends BasePage {
                             ))}
                         </Flex>
                     </Flex>
-
                     {fee && (
                         <List style={{ flex: 1, marginTop: 10, width: '100%' }}>
                             <Item>
@@ -223,7 +223,7 @@ class FeeAddPage extends BasePage {
                             <Item extra={<TextInput onChangeText={amount => this.setState({
                                 fee: {
                                     ...this.state.fee,
-                                    amount,
+                                    amount
                                 }
                             })} value={fee.amount}
                                 placeholder={'请输入金额'} style={styles.input} />}>
@@ -256,11 +256,8 @@ class FeeAddPage extends BasePage {
                                     },
                                 })}
                             >
-                                <List.Item arrow={'empty'}
-
-                                    style={{ borderWidth: 0 }}><Text style={styles.word}>结束时间：</Text></List.Item>
+                                <List.Item arrow={'empty'} style={{ borderWidth: 0 }}><Text style={styles.word}>结束时间：</Text></List.Item>
                             </DatePicker>
-
                             <Item extra={<TextInput placeholder={'请输入备注'} onChangeText={memo => this.setState({
                                 fee: {
                                     ...this.state.fee,
@@ -275,40 +272,36 @@ class FeeAddPage extends BasePage {
                 {fee &&
                     <Button type={'primary'} style={{ margin: 20 }} onPress={this.save}>保 存</Button>}
             </CommonView>
-
         );
     }
 }
 
 const styles = StyleSheet.create({
     cell: {
-        marginTop: 8,
+        marginTop: 8
     },
     title: {
         color: '#000000',
         fontSize: 17.6,
-        paddingLeft: 6,
+        paddingLeft: 6
     },
     cellContnent: {
         marginLeft: 30,
-        marginRight: 30,
+        marginRight: 30
     },
     content: {
         color: '#404145',
         fontSize: 17.6,
         paddingTop: 6,
-        paddingBottom: 6,
+        paddingBottom: 6
     },
     left: {
-
         width: (ScreenUtil.deviceWidth() - 100) / 2,
-
         textAlign: 'center',
         marginTop: 10,
         borderWidth: 1,
         borderStyle: 'solid',
-        borderColor: '#74BAF1',
-
+        borderColor: '#74BAF1'
     },
     right: {
         width: (ScreenUtil.deviceWidth() - 100) / 2,
@@ -317,8 +310,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         borderWidth: 1,
         borderStyle: 'solid',
-        borderColor: '#74BAF1',
-
+        borderColor: '#74BAF1'
     },
     line: {
         marginTop: 20,
@@ -326,20 +318,19 @@ const styles = StyleSheet.create({
         marginRight: 15,
         width: ScreenUtil.deviceWidth() - 30,
         backgroundColor: '#E0E0E0',
-        height: 0.5,
+        height: 0.5
     },
     titleWord: {
         color: '#404145',
-        fontSize: 17.6,
+        fontSize: 17.6
     },
-
     word: {
         color: '#404145',
-        fontSize: 16,
+        fontSize: 16
     },
     aa: {
         color: '#aaa',
-        fontSize: 14,
+        fontSize: 14
     },
     input: {
         minWidth: 200,
@@ -347,11 +338,9 @@ const styles = StyleSheet.create({
         color: '#999',
         fontSize: 16,
         borderWidth: 0,
-    },
+    }
 });
-
 const mapStateToProps = ({ memberReducer }) => {
     return { userInfo: memberReducer.userInfo };
 };
-
 export default connect(mapStateToProps)(FeeAddPage);
