@@ -236,7 +236,6 @@ class LouDetail extends BasePage {
                             ))
                         }
                     </Flex>
-
                     {/*服务单*/}
                     <Flex style={[styles.bb, {borderLeftColor: '#74BAF1'}]}>
                         <Text style={styles.se}>服务单</Text>

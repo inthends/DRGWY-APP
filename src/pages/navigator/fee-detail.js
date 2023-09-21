@@ -128,7 +128,6 @@ class FeeDetailPage extends BasePage {
     }
 
     componentDidMount() {
-
         //获取参数，根据是否兴生活缴费来加载按钮
         NavigatorService.getSettingInfo(this.state.room.organizeId).then((res) => {
             this.setState({ isCIBLife: res });

@@ -6,7 +6,6 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
 } from 'react-native';
-
 import BasePage from '../../base/base';
 import { Flex } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
@@ -18,7 +17,7 @@ import CommonView from '../../../components/CommonView';
 
 export default class DetailBuildingPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
-    console.log(1, navigation);
+    //console.log(1, navigation);
     return {
       header: null,
     };
@@ -30,10 +29,8 @@ export default class DetailBuildingPage extends BasePage {
     this.state = {
       data: [],
       item,
-      detail: {},
+      detail: {}
     };
-
-    //
   }
 
   componentDidMount(): void {
@@ -60,23 +57,18 @@ export default class DetailBuildingPage extends BasePage {
   }
 
   open = (sectionIndex, roomIndex, index, isOpen) => {
-    console.log(this.state.data);
-    console.log(roomIndex);
-    console.log(index);
+    // console.log(this.state.data);
+    // console.log(roomIndex);
+    // console.log(index);
     let data = [...this.state.data];
-
     let sections = data[sectionIndex].rooms;
     let rooms = sections[roomIndex];
-    console.log(data);
-    console.log(rooms);
     rooms = rooms.map((item, i) => {
       return {
         ...item,
         open: isOpen ? (i === index ? isOpen : !isOpen) : false,
       };
     });
-    console.log('111', rooms);
-
     sections = sections.map((item, i) => {
       return i === roomIndex ? rooms : item;
     });
@@ -131,7 +123,7 @@ export default class DetailBuildingPage extends BasePage {
                 }}
               >
                 <Text style={styles.leftText}>管理数量：</Text>
-                <Text style={styles.rightText}>{detail.areasum}</Text>
+                <Text style={styles.rightText}>{detail.areasum}{Macro.meter_square}</Text>
               </Flex>
               <Flex
                 direction="row"
@@ -219,7 +211,7 @@ export default class DetailBuildingPage extends BasePage {
                   <View
                     style={[
                       styles.square,
-                      { backgroundColor: Macro.color_2022 },
+                      { backgroundColor: Macro.color_2022 }
                     ]}
                   />
                   <Text style={styles.top}>2022+</Text>
@@ -243,7 +235,7 @@ export default class DetailBuildingPage extends BasePage {
                         // backgroundColor: Macro.color_business,
                         borderWidth: 1,
                         borderColor: '#999',
-                        borderStyle: 'dotted',
+                        borderStyle: 'dotted'
                       },
                     ]}
                   />
@@ -264,32 +256,33 @@ export default class DetailBuildingPage extends BasePage {
                       style={{
                         paddingTop: 10,
                         paddingBottom: 10,
-                        paddingLeft: 15,
+                        paddingLeft: 15
                       }}
                     >
                       <Flex
                         justify="center"
                         style={{
-                          width: 24,
+                          // width: 24,
+                          width: 30,
                           height: 24,
                           backgroundColor: '#eee',
-                          borderRadius: 12,
+                          borderRadius: 12
                         }}
                       >
-                        <Text style={{ color: '#666' }}>
-                          {item.id.substring(
+                        <Text style={{ color: '#666', fontSize: 12 }}>
+                          {/* {item.id.substring(
                             item.id.length - 2,
                             item.id.length,
-                          )}
+                          )} */}
+                          {item.name}
                         </Text>
                       </Flex>
                       <Text
                         style={{
                           paddingLeft: 10,
-                          color: '#333',
+                          color: '#333'
                         }}
-                      >
-                        管理数量({Macro.meter_square})：{item.area}
+                      >管理数量({Macro.meter_square})：{item.area}
                       </Text>
                     </Flex>
 

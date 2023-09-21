@@ -95,15 +95,11 @@ export default class EfuwuDetailPage extends BasePage {
             <ShowText word="项目" title={detail.organizeName} />
             <ShowText word="合同号" title={detail.no} />
             <ShowText word="合同期限" title={detail.date} />
-            <ShowText word="客户名称" title={detail.customer} />
-
+            <ShowText word="客户名称" title={detail.customer} /> 
             <ShowText word="合同金额" title={detail.totalAmount} />
-            <ShowText word="合同面积" title={detail.totalArea} />
-
-            <ShowText word="合同房产" title={detail.houseName} />
-
-            <ShowLine />
-
+            <ShowText word="合同面积" title={detail.totalArea} /> 
+            <ShowText word="合同房产" title={detail.houseName} /> 
+            <ShowLine /> 
             <ShowText
               word="解约日期"
               title={detail.withdrawalDate}

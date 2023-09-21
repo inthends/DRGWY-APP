@@ -14,28 +14,28 @@ export default {
     // return api.getData('/api/MobileMethod/MGetPStructs', {keyvalue, type: 2});
     return api.getData('/api/MobileMethod/MGetFeePStructs', {
       keyvalue,
-      type: 2,
+      type: 2
     });
   },
   //楼层
   getFloors(keyvalue) {
     return api.getData('/api/MobileMethod/MGetFeePStructs', {
       keyvalue,
-      type: 4,
+      type: 4
     });
   },
   //车位
   getParkings(keyvalue) {
     return api.getData('/api/MobileMethod/MGetFeePStructs', {
       keyvalue,
-      type: 9,
+      type: 9
     });
   },
   //房间
   getRooms(keyvalue) {
     return api.getData('/api/MobileMethod/MGetFeePStructs', {
       keyvalue,
-      type: 5,
+      type: 5
     });
   },
 

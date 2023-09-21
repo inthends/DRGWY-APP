@@ -4,7 +4,6 @@ from 'react';
 import {View,  StyleSheet, FlatList, 
     //Text, SafeAreaView, StatusBar,TouchableOpacity, TextInput
 } from 'react-native';
-
 import BasePage from '../../base/base';
 //import BuildingHeader from '../../../components/building/building-header';
 import BuildingCell from '../../../components/building/build-cell';
@@ -22,7 +21,7 @@ class BuildingsPage extends BasePage {
     static navigationOptions = ({navigation}) => {
         return {
             tabBarVisible: false,
-            header: null,
+            header: null
         };
     };
 
@@ -31,7 +30,7 @@ class BuildingsPage extends BasePage {
         let item = common.getValueFromProps(this.props);
         this.state = {
             data: [],
-            item,
+            item
         };
     }
 

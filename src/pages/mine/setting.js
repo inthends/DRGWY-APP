@@ -20,7 +20,7 @@ class SettingPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
             title: '设置',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
@@ -45,7 +45,7 @@ class SettingPage extends BasePage {
     // }
 
     logout = () => {
-        this.showActionSheet(); 
+        this.showActionSheet();
     };
 
     showActionSheet = () => {
@@ -194,7 +194,6 @@ class SettingPage extends BasePage {
         } else {
             UDToast.showError('没有数据需要上传');
         }
-
     }
 
     render() {
@@ -228,16 +227,15 @@ class SettingPage extends BasePage {
                 </List>
                 {
                     !common.isIOS() && <List renderHeader={<View style={{ height: 10 }} />}>
-                    <TouchableWithoutFeedback onPress={() => this.changePrint()}>
-                        <List.Item>
-                            <Flex style={{ height: 40 }}>
-                                <Text style={{ color: '#666', fontSize: 16 }}>设置打印机</Text>
-                            </Flex>
-                        </List.Item>
-                    </TouchableWithoutFeedback>
-                </List>
+                        <TouchableWithoutFeedback onPress={() => this.changePrint()}>
+                            <List.Item>
+                                <Flex style={{ height: 40 }}>
+                                    <Text style={{ color: '#666', fontSize: 16 }}>设置打印机</Text>
+                                </Flex>
+                            </List.Item>
+                        </TouchableWithoutFeedback>
+                    </List>
                 }
-
                 <List renderHeader={<View style={{ height: 10 }} />}>
                     <TouchableWithoutFeedback onPress={() => this.uploading()}>
                         <List.Item>
@@ -290,7 +288,7 @@ class SettingPage extends BasePage {
 // });
 
 const mapStateToProps = ({ memberReducer, xunJianReducer }) => {
-    const user = memberReducer.user || {}; 
+    const user = memberReducer.user || {};
     return {
         hasNetwork: memberReducer.hasNetwork,
         user: {

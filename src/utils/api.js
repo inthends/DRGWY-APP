@@ -113,7 +113,7 @@ export default {
             axios.defaults.headers['Authorization'] = 'Bearer ' + ManualAction.getTokenBYStore();
             let showLoadingNumber = UDToast.showLoading('正在上传...');
             axios.post(uploadUrl, formData).then(res => {
-                console.log(1122,res)
+                //console.log(1122,res)
                 UDToast.hiddenLoading(showLoadingNumber);
                 const data = res.data;
                 // console.log(res);

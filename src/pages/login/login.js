@@ -13,7 +13,7 @@ import LoginService from './login-service';
 import {
   saveToken,
   saveUrl,
-  saveUserNameAndPsd,
+  saveUserNameAndPsd
 } from '../../utils/store/actions/actions';
 import { connect } from 'react-redux';
 import LoadImage from '../../components/load-image';
@@ -32,11 +32,13 @@ class LoginPage extends BasePage {
     super(props);
     this.state = { ...this.props.userInfo };
 
+    //test
     // this.state = {
     //   usercode: 'test',
-    //   username: 'kj',
+    //   username: 'system',
     //   password: '1234598',
     // };
+
   }
 
   componentDidMount() {
@@ -124,7 +126,7 @@ class LoginPage extends BasePage {
                 value={this.state.usercode}
                 onChange={(value) => {
                   this.setState({
-                    usercode: value,
+                    usercode: value
                   });
                 }}
                 placeholder="请输入编号"
@@ -137,7 +139,7 @@ class LoginPage extends BasePage {
                 value={this.state.username}
                 onChange={(value) => {
                   this.setState({
-                    username: value,
+                    username: value
                   });
                 }}
                 placeholder="请输入账号"
@@ -151,7 +153,7 @@ class LoginPage extends BasePage {
                 value={this.state.password}
                 onChange={(value) => {
                   this.setState({
-                    password: value,
+                    password: value
                   });
                 }}
                 placeholder="请输入密码"
