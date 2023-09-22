@@ -3,8 +3,7 @@ import {Text, StyleSheet} from 'react-native';
 import {Flex} from '@ant-design/react-native';
 import Macro from '../utils/macro';
 import ScreenUtil from '../utils/screen-util';
-import LoadImage from './load-image';
-// import DashLine from './dash-line';
+import LoadImage from './load-image'; 
 
 export default class AreaInfo extends Component {
 

@@ -1,13 +1,15 @@
 import React//, {Fragment} 
-from 'react';
-import {View, Text, StyleSheet, TouchableWithoutFeedback} from 'react-native';
+    from 'react';
+import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import BasePage from '../../pages/base/base';
 import Macro from '../../utils/macro';
-import { Flex,
+import {
+    Flex,
     //Button, WhiteSpace, WingBlank
 } from '@ant-design/react-native';
 import LoadImage from '../load-image';
 import ScreenUtil from '../../utils/screen-util';
+import numeral from 'numeral';
 
 export default class BuildingCell extends BasePage {
     constructor(props) {
@@ -23,29 +25,29 @@ export default class BuildingCell extends BasePage {
     //DetailBuilding
 
     render() {
-        const {item} = this.props;
+        const { item } = this.props;
         return (
             // <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('feeDetail',{})}>
             // <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('louDetail',{})}>
-             <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate(this.props.nextRouteName, {data: item})}>
+            <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate(this.props.nextRouteName, { data: item })}>
                 <View style={styles.content}>
                     <Flex direction="row">
                         <Flex style={styles.left}>
-                            <LoadImage img={item.mainpic} style={styles.image}/>
+                            <LoadImage img={item.mainpic} style={styles.image} />
                         </Flex>
                         <Flex direction="column" justify="between" style={styles.right}>
                             <Flex justify="between" style={styles.item}>
                                 <Text style={styles.name}>{item.name}</Text>
                                 <Text style={styles.area}>{item.averagerentprice}{Macro.yuan_meter_day}</Text>
                             </Flex>
-                            <Flex justify="between" style={[styles.item,{marginTop: 10}]}>
-                                <Text style={styles.complete}>入住率{item.checkrate}%</Text>
-                                <Text style={styles.number}>管理数量{item.areasum}{Macro.meter_square}</Text>
+                            <Flex justify="between" style={[styles.item, { marginTop: 10 }]}>
+                                <Text style={styles.complete}>入住率 {item.checkrate}%</Text>
+                                <Text style={styles.number}>面积 {numeral(item.areasum).format('0,0.0000')}{Macro.meter_square}</Text>
                             </Flex>
-                            <Flex style={[styles.item,{marginTop:15}]}>
-                                <Text style={styles.desc}>在租{item.rentareasum}{Macro.meter_square}</Text>
-                                <View style={styles.line}/>
-                                <Text style={styles.desc}>可招商{item.investmentareasum}{Macro.meter_square}</Text>
+                            <Flex style={[styles.item, { marginTop: 15 }]}>
+                                <Text style={styles.desc}>在租 {numeral(item.rentareasum).format('0,0.0000')}{Macro.meter_square}</Text>
+                                <View style={styles.line} />
+                                <Text style={styles.desc}>可招商 {numeral(item.investmentareasum).format('0,0.0000')}{Macro.meter_square}</Text>
                             </Flex>
                         </Flex>
                     </Flex>
@@ -64,12 +66,12 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
     },
     left: {
-        paddingTop:20,
-        paddingBottom:20, 
+        paddingTop: 20,
+        paddingBottom: 20,
         height: 140
     },
     right: {
-        width: ScreenUtil.deviceWidth()-100-20-10-20,
+        width: ScreenUtil.deviceWidth() - 100 - 20 - 10 - 20,
         height: 120,
         paddingTop: 10,
         paddingBottom: 20,
@@ -81,18 +83,18 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     item: {
-        marginTop:5,
-        width: '100%',
+        marginTop: 5,
+        width: '100%'
     },
     name: {
         fontSize: 17,
         // fontWeight: '600',
-        color:'#2c2c2c'
+        color: '#2c2c2c'
     },
     area: {
         // fontWeight: '600',
         fontSize: Macro.font_14,
-        color:'#2c2c2c'
+        color: '#2c2c2c'
     },
     complete: {
         color: 'white',
@@ -100,7 +102,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#74BAF1',
         padding: 3,
         paddingLeft: 5,
-        borderRadius: 3,
+        borderRadius: 3
     },
     number: {
         color: '#666',
@@ -115,6 +117,6 @@ const styles = StyleSheet.create({
         height: 15,
         backgroundColor: Macro.color_c2c1c5,
         marginLeft: 25,
-        marginRight: 25,
+        marginRight: 25
     }
 });

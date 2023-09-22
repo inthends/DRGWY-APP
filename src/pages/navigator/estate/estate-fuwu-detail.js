@@ -1,26 +1,20 @@
 //导航里面点击的服务单详情
-import React, { Fragment } from 'react';
+import React from 'react';
 import {
     View,
     Text,
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    Image,
     ScrollView,
-    RefreshControl, Modal,
+    Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Icon } from '@ant-design/react-native';
-import { List, WhiteSpace, Flex, TextareaItem, Grid, Button } from '@ant-design/react-native';
+import { List, Flex, TextareaItem } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
-import SelectImage from '../../../utils/select-image';
 import common from '../../../utils/common';
-import UDRecord from '../../../utils/UDRecord';
-import api from '../../../utils/api';
-import UDPlayer from '../../../utils/UDPlayer';
-
 import UDToast from '../../../utils/UDToast';
 import DashLine from '../../../components/dash-line';
 import WorkService from '../../work/work-service';
@@ -30,14 +24,13 @@ import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
-
 const Item = List.Item;
 
 export default class EfuwuDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
             title: '服务单详情',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
@@ -59,8 +52,7 @@ export default class EfuwuDetailPage extends BasePage {
             detail: {},
             communicates: [],
             lookImageIndex: 0,
-            visible: false,
-
+            visible: false
         };
     }
 
@@ -77,18 +69,18 @@ export default class EfuwuDetailPage extends BasePage {
                 detail: {
                     ...item.data,
                     businessId: item.businessId,
-                    statusName: item.statusName,
+                    statusName: item.statusName
                 },
             });
         });
         WorkService.serviceCommunicates(fuwu.id).then(res => {
             this.setState({
-                communicates: res,
+                communicates: res
             });
         });
         WorkService.serviceExtra(fuwu.id).then(images => {
             this.setState({
-                images,
+                images
             });
         });
     };
@@ -116,29 +108,27 @@ export default class EfuwuDetailPage extends BasePage {
             }
             return it;
         });
-        console.log(d);
-
+        //console.log(d);
         this.setState({
-            communicates: d,
+            communicates: d
         });
     };
 
     cancel = () => {
         this.setState({
-            visible: false,
+            visible: false
         });
     };
 
     lookImage = (lookImageIndex) => {
         this.setState({
             lookImageIndex,
-            visible: true,
+            visible: true
         });
     };
 
     render() {
         const { images, detail, communicates } = this.state;
-
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>

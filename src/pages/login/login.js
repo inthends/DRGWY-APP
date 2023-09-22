@@ -33,11 +33,11 @@ class LoginPage extends BasePage {
     this.state = { ...this.props.userInfo };
 
     //test
-    // this.state = {
-    //   usercode: 'test',
-    //   username: 'system',
-    //   password: '1234598',
-    // };
+    this.state = {
+      usercode: 'test',
+      username: 'system',
+      password: '1234598'
+    };
 
   }
 
@@ -183,21 +183,20 @@ const styles = StyleSheet.create({
   content: {
     // paddingLeft: 30,
     // paddingRight: 30,
-
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   login: {
     marginTop: 30,
     width: ScreenUtil.deviceWidth() - 60,
-    backgroundColor: Macro.work_blue,
+    backgroundColor: Macro.work_blue
   },
   version: {
     color: '#999',
     fontSize: 12,
-    paddingTop: 60,
-  },
+    paddingTop: 60
+  }
 });
 
 const mapStateToProps = ({ memberReducer }) => {
@@ -214,7 +213,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     saveNameAndPsd: (data) => {
       dispatch(saveUserNameAndPsd(data));
-    },
+    }
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

@@ -18,12 +18,12 @@ import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 
 class BuildingsPage extends BasePage {
-    static navigationOptions = ({navigation}) => {
-        return {
-            tabBarVisible: false,
-            header: null
-        };
-    };
+    // static navigationOptions = ({navigation}) => {
+    //     return {
+    //         tabBarVisible: false,
+    //         header: null
+    //     };
+    // };
 
     constructor(props) {
         super(props);
@@ -34,7 +34,7 @@ class BuildingsPage extends BasePage {
         };
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         this.getInitData();
     }
 
@@ -46,8 +46,7 @@ class BuildingsPage extends BasePage {
     _renderItem = ({item}) => {
         return <BuildingCell nextRouteName='DetailBuilding' {...this.props} item={item}/>;
     };
-
-
+ 
     render() {
         return (
             <CommonView style={{flex: 1}}>

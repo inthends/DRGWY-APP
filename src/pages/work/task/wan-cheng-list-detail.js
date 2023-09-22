@@ -142,9 +142,6 @@ export default class WanChengListDetailPage extends BasePage {
 
     render() {
         const { images, detail, communicates } = this.state;
-        // console.log(1122, detail);
-
-
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>

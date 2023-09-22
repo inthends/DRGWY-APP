@@ -5,6 +5,7 @@ import Macro from '../../utils/macro';
 import { Flex } from '@ant-design/react-native';
 import { Icon } from '@ant-design/react-native';
 //import NavigatorService from '../../pages/navigator/navigator-service';
+import numeral from 'numeral';
 
 export default class BuildingHeader extends BasePage {
     constructor(props) {
@@ -48,40 +49,39 @@ export default class BuildingHeader extends BasePage {
                         </TouchableOpacity>
                     </Flex>
                 </Flex> */}
- 
-                <Flex direction="row" justify='between' style={styles.top}> 
+
+                <Flex direction="row" justify='between' style={styles.top}>
                     <Flex justify='end' style={{ flex: 1 }}>
                         <TouchableOpacity onPress={() => this.props.navigation.openDrawer()}>
                             <Icon name='bars' color="white" />
                         </TouchableOpacity>
                     </Flex>
                 </Flex>
-
                 <Flex direction="column" style={styles.middle}>
                     <Flex justify="between" style={styles.area}>
-                        <Text style={styles.text}>管理数量{Macro.meter_square}</Text>
-                        <Text style={styles.text}>实时在租均价{statistics.averagerentprice}{Macro.yuan_meter_day}</Text>
+                        <Text style={styles.text}>总面积 {Macro.meter_square}</Text>
+                        <Text style={styles.text}>实时在租均价 {statistics.averagerentprice}{Macro.yuan_meter_day}</Text>
                     </Flex>
                     <Flex justify='start' style={styles.number}>
-                        <Text style={[styles.text, styles.big]}>{statistics.areasum}</Text>
+                        <Text style={[styles.text, styles.big]}>{numeral(statistics.areasum).format('0,0.0000')}</Text>
                     </Flex>
                 </Flex>
+
                 <Flex style={styles.bottom}>
                     <Flex.Item style={styles.item}>
-                        <Text size="small" style={styles.topText}>在租{statistics.rentarearate}%</Text>
-                        <Text size="small" style={styles.bottomText}>{statistics.rentareasum}{Macro.meter_square}</Text>
+                        <Text size="small" style={styles.topText}>在租 {statistics.rentarearate}%</Text>
+                        <Text size="small" style={styles.bottomText}>{numeral(statistics.rentareasum).format('0,0.0000')}{Macro.meter_square}</Text>
                     </Flex.Item>
                     <Flex.Item style={styles.item}>
-                        <Text size="small" style={styles.topText}>可招商{statistics.investmentarearate}%</Text>
+                        <Text size="small" style={styles.topText}>可招商 {statistics.investmentarearate}%</Text>
                         <Text size="small"
-                            style={styles.bottomText}>{statistics.investmentareasum}{Macro.meter_square}</Text>
+                            style={styles.bottomText}>{numeral(statistics.investmentareasum).format('0,0.0000')}{Macro.meter_square}</Text>
                     </Flex.Item>
                     <Flex.Item style={styles.item}>
                         <Text size="small" style={styles.topText}>入住率</Text>
                         <Text size="small" style={styles.bottomText}>{statistics.checkrate}%</Text>
                     </Flex.Item>
                 </Flex>
-
             </View>
         );
     }

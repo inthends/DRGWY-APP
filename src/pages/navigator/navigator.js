@@ -22,7 +22,7 @@ export default class NavigatorPage extends BasePage {
       headerForceInset:this.headerForceInset,
       headerTitleStyle: {
         flex: 1,
-        textAlign: 'center',
+        textAlign: 'center'
       },
     };
   };
@@ -30,17 +30,18 @@ export default class NavigatorPage extends BasePage {
   constructor(props) {
     super(props);
     this.state = {
-      count: 0,
+      count: 0
     };
   }
 
   componentDidMount(): void {}
 
   render() {
-    const { statistics, dataInfo } = this.state;
+    //const { statistics, dataInfo } = this.state;
     return (
       <CommonView style={{ flex: 1 }}>
         <ScrollView style={{ flex: 1 }}>
+          
           <Flex direction={'column'} align={'start'} style={styles.cell}>
             <Flex
               style={{
@@ -198,16 +199,16 @@ export default class NavigatorPage extends BasePage {
                 </Flex>
               </TouchableWithoutFeedback>
             </Flex>
-
             <Flex style={styles.line} />
           </Flex>
+
+
           <Flex direction={'column'} align={'start'} style={styles.cell}>
             <Flex
               style={{
                 paddingTop: 3,
                 paddingBottom: 3,
-              }}
-            >
+              }}>
               <Text style={styles.title}>查询分析</Text>
             </Flex>
             <Flex justify={'between'} style={styles.cellContnent}>
@@ -284,6 +285,13 @@ export default class NavigatorPage extends BasePage {
             </Flex>
             <Flex style={styles.line} />
           </Flex>
+
+
+
+         
+
+
+
         </ScrollView>
       </CommonView>
     );

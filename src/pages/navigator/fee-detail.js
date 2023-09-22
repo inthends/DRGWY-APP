@@ -845,7 +845,7 @@ class FeeDetailPage extends BasePage {
                                 }}
                                 titles={['抹去角', '抹去分']}
                                 visible={true} />
-
+                                
                             <MyPopover
                                 textStyle={{ fontSize: 14 }}
                                 onChange={(title) => {

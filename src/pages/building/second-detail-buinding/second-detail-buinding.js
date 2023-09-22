@@ -1,12 +1,11 @@
 import React from 'react';
 import {
-    View,
     Text,
     StyleSheet,
     ScrollView,
     TouchableWithoutFeedback,
     ImageBackground,
-    Animated,
+    Animated
 } from 'react-native';
 
 import BasePage from '../../base/base';
@@ -18,15 +17,16 @@ import { connect } from 'react-redux';
 import { saveSelectBuilding } from '../../../utils/store/actions/actions';
 import ScreenUtil from '../../../utils/screen-util';
 import common from '../../../utils/common';
-//import CommonView from '../../../components/CommonView';
+import CommonView from '../../../components/CommonView';
 const lineWidth = 30;
 
 class SecondDetailBuildingPage extends BasePage {
-    static navigationOptions = ({ navigation }) => {
-        return {
-            header: null,
-        };
-    };
+
+    // static navigationOptions = ({ navigation }) => {
+    //     return {
+    //         header: null,
+    //     };
+    // };
 
     constructor(props) {
         super(props);
@@ -50,7 +50,9 @@ class SecondDetailBuildingPage extends BasePage {
         };
     }
 
-    componentDidMount(): void {
+    //componentDidMount(): void {
+
+    componentDidMount() {
         BuildingService.roomDetail(this.state.item.id).then(room => {
             this.setState({
                 room: {
@@ -82,7 +84,7 @@ class SecondDetailBuildingPage extends BasePage {
             this.state.fadeAnim,            // 动画中的变量值
             {
                 toValue: value,                   // 透明度最终变为1，即完全不透明
-                duration: 200,              // 让动画持续一段时间
+                duration: 200              // 让动画持续一段时间
             },
         ).start();
         this.setState({ index: index });
@@ -92,39 +94,41 @@ class SecondDetailBuildingPage extends BasePage {
         const { room, contracts, customers } = this.state;
         let content;
         if (this.state.index === 0) {
-            content = <Flex direction='column' align='start' style={{ backgroundColor: 'white', borderRadius: 4 }}>
-                <Flex style={{
-                    borderBottomWidth: 1,
-                    borderBottomColor: '#eee',
-                    borderBottomStyle: 'solid',
-                    width: ScreenUtil.deviceWidth() - 20,
-                }}>
-                    <Flex style={{ padding: 10 }}>
-                        <LoadImage img={room.mainPic}
-                            style={{ width: 80, height: 60 }} />
+            content =
+                <Flex direction='column' align='start'
+                    style={{ backgroundColor: 'white', borderRadius: 4 }}>
+                    <Flex style={{
+                        borderBottomWidth: 1,
+                        borderBottomColor: '#eee',
+                        borderBottomStyle: 'solid',
+                        width: ScreenUtil.deviceWidth() - 20,
+                    }}>
+                        <Flex style={{ padding: 10 }}>
+                            <LoadImage img={room.mainPic}
+                                style={{ width: 80, height: 60 }} />
+                        </Flex>
+                        <Flex direction='column' align='start'>
+                            <Text style={styles.name}>{room.name}</Text>
+                            <Text style={styles.left}>{room.code}</Text>
+                        </Flex>
                     </Flex>
-                    <Flex direction='column' align='start'>
-                        <Text style={styles.name}>{room.name}</Text>
-                        <Text style={styles.left}>{room.code}</Text>
+                    <Flex justify='between' style={styles.single}>
+                        <Text style={styles.left}>面积</Text>
+                        <Text style={styles.right}>{room.area} {Macro.meter_square}</Text>
                     </Flex>
-                </Flex>
-                <Flex justify='between' style={styles.single}>
-                    <Text style={styles.left}>面积</Text>
-                    <Text style={styles.right}>{room.area} {Macro.meter_square}</Text>
-                </Flex>
-                <Flex justify='between' style={styles.single}>
+                    {/* <Flex justify='between' style={styles.single}>
                     <Text style={styles.left}>招商状态</Text>
                     <Text style={styles.right}>{room.investment}</Text>
-                </Flex>
-                <Flex justify='between' style={styles.single}>
-                    <Text style={styles.left}>预租单价</Text>
-                    <Text style={styles.right}>{room.averagerentprice}{Macro.yuan_meter_day}</Text>
-                </Flex>
-                <Flex justify='between' style={styles.single}>
-                    <Text style={styles.left}>状态</Text>
-                    <Text style={styles.right}>{room.statusName}</Text>
-                </Flex>
-            </Flex>;
+                   </Flex> */}
+                    <Flex justify='between' style={styles.single}>
+                        <Text style={styles.left}>预租单价</Text>
+                        <Text style={styles.right}>{room.averagerentprice}{Macro.yuan_meter_day}</Text>
+                    </Flex>
+                    <Flex justify='between' style={styles.single}>
+                        <Text style={styles.left}>状态</Text>
+                        <Text style={styles.right}>{room.statusName}</Text>
+                    </Flex>
+                </Flex>;
         }
         // else if (this.state.index === 1) {
         //     //合同
@@ -136,7 +140,7 @@ class SecondDetailBuildingPage extends BasePage {
         // } 
         else if (this.state.index === 1) {
             content =
-                <>
+                <Flex direction={'column'} align={'start'} >
                     {contracts.map((item, index) => (
                         <Flex key={item.id}
                             direction='column' align='start'
@@ -192,7 +196,7 @@ class SecondDetailBuildingPage extends BasePage {
                                 <Flex direction='column' align='start'
                                     style={{ paddingTop: 15, width: (ScreenUtil.deviceWidth() - 50) / 3.0 }}>
                                     <Text style={{ color: '#a8a7ab' }}>合同状态</Text>
-                                    <Text style={{ paddingTop: 10, color: '#302d39' }}>正常执行</Text>
+                                    <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.status}</Text>
                                 </Flex>
                             </Flex>
                             <Flex>
@@ -205,49 +209,68 @@ class SecondDetailBuildingPage extends BasePage {
                         </Flex>
                     ))
                     }
-                </>
+                </Flex>
         }
         else {
             content =
-                <>
-                    {customers.map((item, index) => (
-                        <Flex
-                            key={item.id}
-                            direction='column' align='start' style={{ backgroundColor: 'white', borderRadius: 4, padding: 15, marginBottom: 5 }}>
-                            <Flex justify='between' style={{ paddingBottom: 10, width: ScreenUtil.deviceWidth() - 50 }}>
-                                <Text style={{ color: '#88878c', fontSize: 14 }}>{item.name}</Text>
-                                <Text style={{ color: '#e7ad7c', paddingLeft: 5, fontSize: 14 }}>{item.customerType}</Text>
+                <Flex direction={'column'} align={'start'} >
+                    {
+                        customers.map((item, index) => (
+                            <Flex
+                                key={item.id}
+                                direction='column' align='start' style={{ backgroundColor: 'white', borderRadius: 4, padding: 15, marginBottom: 5 }}>
+                                <Flex justify='between' style={{ paddingBottom: 10, width: ScreenUtil.deviceWidth() - 50 }}>
+                                    <Text style={{ color: '#88878c', fontSize: 14 }}>{item.name}</Text>
+                                    <Text style={{ color: '#e7ad7c', paddingLeft: 5, fontSize: 14 }}>{item.customerType}</Text>
+                                </Flex>
+                                <Flex style={{
+                                    backgroundColor: '#dcdcdc',
+                                    height: 1,
+                                    width: ScreenUtil.deviceWidth() - 50,
+                                    marginTop: 5
+                                }} />
+                                <Flex>
+                                    <Flex direction='column' align='start'
+                                        style={{ paddingTop: 15, width: (ScreenUtil.deviceWidth() - 50) / 3.0 }}>
+                                        <Text style={{ color: '#a8a7ab' }}>类别</Text>
+                                        <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.type}</Text>
+                                    </Flex>
+                                    <Flex direction='column' align='start'
+                                        style={{ paddingTop: 15, width: (ScreenUtil.deviceWidth() - 50) / 3.0 }}>
+                                        <Text style={{ color: '#a8a7ab' }}>编号</Text>
+                                        <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.code}</Text>
+                                    </Flex>
+                                    <Flex direction='column' align='start'
+                                        style={{ paddingTop: 15, width: (ScreenUtil.deviceWidth() - 50) / 3.0 }}>
+                                        <Text style={{ color: '#a8a7ab' }}>手机号码</Text>
+                                        <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.phoneNum}</Text>
+                                    </Flex>
+                                </Flex>
+                                <Flex>
+                                    <Flex direction='column' align='start'
+                                        style={{ paddingTop: 15, width: (ScreenUtil.deviceWidth() - 50) / 3.0 }}>
+                                        <Text style={{ color: '#a8a7ab' }}>状态</Text>
+                                        <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.state}</Text>
+                                    </Flex>
+                                    <Flex direction='column' align='start'
+                                        style={{ paddingTop: 15, width: (ScreenUtil.deviceWidth() - 50) / 3.0 }}>
+                                        <Text style={{ color: '#a8a7ab' }}>联系人</Text>
+                                        <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.linkMan}</Text>
+                                    </Flex>
+                                    <Flex direction='column' align='start'
+                                        style={{ paddingTop: 15, width: (ScreenUtil.deviceWidth() - 50) / 3.0 }}>
+                                        <Text style={{ color: '#a8a7ab' }}>联系电话</Text>
+                                        <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.linkPhoneNum}</Text>
+                                    </Flex>
+                                </Flex>
                             </Flex>
-                            <Flex style={{
-                                backgroundColor: '#dcdcdc',
-                                height: 1,
-                                width: ScreenUtil.deviceWidth() - 50,
-                                marginTop: 5,
-                            }} />
-                            <Flex>
-                                <Flex direction='column' align='start'
-                                    style={{ paddingTop: 15, width: (ScreenUtil.deviceWidth() - 50) / 3.0 }}>
-                                    <Text style={{ color: '#a8a7ab' }}>状态</Text>
-                                    <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.state}</Text>
-                                </Flex>
-                                <Flex direction='column' align='start'
-                                    style={{ paddingTop: 15, width: (ScreenUtil.deviceWidth() - 50) / 3.0 }}>
-                                    <Text style={{ color: '#a8a7ab' }}>联系人</Text>
-                                    <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.linkMan}</Text>
-                                </Flex>
-                                <Flex direction='column' align='start'
-                                    style={{ paddingTop: 15, width: (ScreenUtil.deviceWidth() - 50) / 3.0 }}>
-                                    <Text style={{ color: '#a8a7ab' }}>联系电话</Text>
-                                    <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.linkPhoneNum}</Text>
-                                </Flex>
-                            </Flex>
-                        </Flex>
-                    ))
+                        ))
                     }
-                </>
+                </Flex>
         }
+
         return (
-            <View>
+            <CommonView style={{ flex: 1 }}>
                 <ImageBackground style={{ height: 150 }} source={room.mainPic ? { uri: room.mainPic } : ''}>
                     <Flex justify='between' align='start' direction='column'
                         style={{ height: 90, paddingLeft: 15, paddingRight: 15, marginTop: 44 }}>
@@ -281,17 +304,18 @@ class SecondDetailBuildingPage extends BasePage {
                             backgroundColor: '#5f96eb',
                             width: lineWidth,
                             height: 2,
-                            marginLeft: this.state.fadeAnim,
+                            marginLeft: this.state.fadeAnim
                         }} />
                 </Flex>
 
                 {/* <ScrollView style={{ padding: 10, backgroundColor: '#eee', height: ScreenUtil.deviceHeight() - 140 }}> */}
 
-                <ScrollView style={{ padding: 10, backgroundColor: '#eee', height: '100%' }}>
+                <ScrollView style={{ flex: 1, padding: 10, backgroundColor: '#eee' }}>
                     {content}
                 </ScrollView>
 
-            </View>
+            </CommonView>
+
         );
     }
 }

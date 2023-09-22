@@ -16,12 +16,11 @@ import BackTitleNavigationBar from '../../../components/back-title-navigation-ba
 import CommonView from '../../../components/CommonView';
 
 export default class DetailBuildingPage extends BasePage {
-  static navigationOptions = ({ navigation }) => {
-    //console.log(1, navigation);
-    return {
-      header: null,
-    };
-  };
+  // static navigationOptions = ({ navigation }) => { 
+  //   return {
+  //     header: null,
+  //   };
+  // };
 
   constructor(props) {
     super(props);
@@ -33,7 +32,7 @@ export default class DetailBuildingPage extends BasePage {
     };
   }
 
-  componentDidMount(): void {
+  componentDidMount() {
     let id = this.state.item.id;
     DetailBuildingService.getPStructs(id, 4).then((res) => {
       const floors = res || [];
@@ -81,9 +80,8 @@ export default class DetailBuildingPage extends BasePage {
     this.setState({ data: data });
   };
 
-  onSubmit = (value) => {
-    // alert(1);
-  };
+  // onSubmit = (value) => { 
+  // };
 
   render() {
     const { detail } = this.state;
@@ -111,6 +109,7 @@ export default class DetailBuildingPage extends BasePage {
                 {Macro.meter_square}
               </Text>
             </Flex>
+            
             <ScrollView>
               <Flex
                 direction="row"
@@ -122,7 +121,7 @@ export default class DetailBuildingPage extends BasePage {
                   paddingRight: 15,
                 }}
               >
-                <Text style={styles.leftText}>管理数量：</Text>
+                <Text style={styles.leftText}>管理面积：</Text>
                 <Text style={styles.rightText}>{detail.areasum}{Macro.meter_square}</Text>
               </Flex>
               <Flex
@@ -130,7 +129,7 @@ export default class DetailBuildingPage extends BasePage {
                 justify="between"
                 style={{ paddingBottom: 10, paddingLeft: 15, paddingRight: 15 }}
               >
-                <Text style={styles.leftText}>在租数量：</Text>
+                <Text style={styles.leftText}>在租面积：</Text>
                 <Text style={styles.rightText}>
                   {detail.rentareasum}
                   {Macro.meter_square}({detail.rentarearate}%)
@@ -141,7 +140,7 @@ export default class DetailBuildingPage extends BasePage {
                 justify="between"
                 style={{ paddingBottom: 10, paddingLeft: 15, paddingRight: 15 }}
               >
-                <Text style={styles.leftText}>可招商数量：</Text>
+                <Text style={styles.leftText}>可招商面积：</Text>
                 <Text style={styles.rightText}>
                   {detail.investmentareasum}
                   {Macro.meter_square}({detail.investmentarearate}%)
@@ -158,15 +157,17 @@ export default class DetailBuildingPage extends BasePage {
                   {Macro.yuan_meter_day}
                 </Text>
               </Flex>
+
               <Flex
                 direction="row"
                 justify="between"
-                style={{ paddingBottom: 10, paddingLeft: 15, paddingRight: 15 }}
-              >
+                style={{ paddingBottom: 10, paddingLeft: 15, paddingRight: 15 }}>
                 <Text style={styles.leftText}>入住率：</Text>
                 <Text style={styles.rightText}>{detail.completionRate}%</Text>
+
               </Flex>
-              <Flex direction="row" style={{ paddingTop: 30 }}>
+
+              {/* <Flex direction="row" style={{ paddingTop: 30 }}>
                 <Flex direction="column" style={styles.div}>
                   <View
                     style={[
@@ -232,7 +233,7 @@ export default class DetailBuildingPage extends BasePage {
                     style={[
                       styles.square,
                       {
-                        // backgroundColor: Macro.color_business,
+                        //backgroundColor: Macro.color_business,
                         borderWidth: 1,
                         borderColor: '#999',
                         borderStyle: 'dotted'
@@ -242,8 +243,11 @@ export default class DetailBuildingPage extends BasePage {
                   <Text style={styles.top}>可招商</Text>
                   <Text style={styles.bottom}>(0)</Text>
                 </Flex>
-              </Flex>
+              </Flex> */}
+
+ 
             </ScrollView>
+
             <ScrollView>
               {this.state.data.map((item, sectionIndex) => {
                 return (
@@ -260,29 +264,26 @@ export default class DetailBuildingPage extends BasePage {
                       }}
                     >
                       <Flex
-                        justify="center"
-                        style={{
-                          // width: 24,
-                          width: 30,
-                          height: 24,
-                          backgroundColor: '#eee',
-                          borderRadius: 12
-                        }}
+                      // justify="center"
+                      // style={{
+                      //   //width: 24,
+                      //   width: 30,
+                      //   height: 24,
+                      //   backgroundColor: '#eee',
+                      //   borderRadius: 12
+                      // }}
                       >
-                        <Text style={{ color: '#666', fontSize: 12 }}>
-                          {/* {item.id.substring(
-                            item.id.length - 2,
-                            item.id.length,
-                          )} */}
+                        <Text style={{ color: '#666' }}>
                           {item.name}
                         </Text>
                       </Flex>
+
                       <Text
                         style={{
                           paddingLeft: 10,
                           color: '#333'
                         }}
-                      >管理数量({Macro.meter_square})：{item.area}
+                      >面积({Macro.meter_square})：{item.area}
                       </Text>
                     </Flex>
 

@@ -28,6 +28,7 @@ import api from '../../utils/api';
 // import XunJianService from '../navigator/xunjian/xunjian-service';
 // import HomePage from '../home/home';
 
+
 class BuildingPage extends BasePage {
   constructor(props) {
     super(props);
@@ -42,7 +43,7 @@ class BuildingPage extends BasePage {
       dataInfo: {
         data: [],
       },
-      refreshing: true,
+      refreshing: true
     };
 
     addDownListener((progress) => {
