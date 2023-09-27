@@ -14,6 +14,7 @@ import ScreenUtil from '../../../utils/screen-util';
 import common from '../../../utils/common';
 import BackTitleNavigationBar from '../../../components/back-title-navigation-bar';
 import CommonView from '../../../components/CommonView';
+import numeral from 'numeral';
 
 export default class DetailBuildingPage extends BasePage {
   // static navigationOptions = ({ navigation }) => { 
@@ -28,6 +29,7 @@ export default class DetailBuildingPage extends BasePage {
     this.state = {
       data: [],
       item,
+      status: [],
       detail: {}
     };
   }
@@ -50,15 +52,20 @@ export default class DetailBuildingPage extends BasePage {
         this.setState({ data: res });
       });
     });
+
+    //获取资产状态
+    DetailBuildingService.getPropertyStatus(id).then((status) => {
+      this.setState({ status });
+    });
+
     DetailBuildingService.getBuildingDetail(id).then((detail) => {
       this.setState({ detail });
     });
+
   }
 
   open = (sectionIndex, roomIndex, index, isOpen) => {
-    // console.log(this.state.data);
-    // console.log(roomIndex);
-    // console.log(index);
+
     let data = [...this.state.data];
     let sections = data[sectionIndex].rooms;
     let rooms = sections[roomIndex];
@@ -84,7 +91,8 @@ export default class DetailBuildingPage extends BasePage {
   // };
 
   render() {
-    const { detail } = this.state;
+
+    const { status, data, detail } = this.state;
     return (
       <CommonView style={{ flex: 1 }}>
         <View>
@@ -97,7 +105,7 @@ export default class DetailBuildingPage extends BasePage {
               direction="row"
               justify="between"
               style={{
-                paddingTop: 30,
+                paddingTop: 10,
                 paddingBottom: 10,
                 paddingLeft: 15,
                 paddingRight: 15,
@@ -105,26 +113,26 @@ export default class DetailBuildingPage extends BasePage {
             >
               <Text style={styles.name}>{detail.name}</Text>
               <Text style={styles.name}>
-                {detail.rentareasum} / {detail.areasum}
-                {Macro.meter_square}
+                {/* {detail.rentareasum} / {detail.areasum} */}
+                {numeral(detail.areasum).format('0,0.00')}{Macro.meter_square}
               </Text>
             </Flex>
-            
+
             <ScrollView>
               <Flex
                 direction="row"
                 justify="between"
                 style={{
-                  paddingTop: 20,
+                  paddingTop: 10,
                   paddingBottom: 10,
                   paddingLeft: 15,
-                  paddingRight: 15,
+                  paddingRight: 15
                 }}
               >
-                <Text style={styles.leftText}>管理面积：</Text>
-                <Text style={styles.rightText}>{detail.areasum}{Macro.meter_square}</Text>
+                <Text style={styles.leftText}>在租面积：</Text>
+                <Text style={styles.rightText}>{numeral(detail.rentareasum).format('0,0.00')}{Macro.meter_square}({detail.rentarearate}%)</Text>
               </Flex>
-              <Flex
+              {/* <Flex
                 direction="row"
                 justify="between"
                 style={{ paddingBottom: 10, paddingLeft: 15, paddingRight: 15 }}
@@ -134,7 +142,7 @@ export default class DetailBuildingPage extends BasePage {
                   {detail.rentareasum}
                   {Macro.meter_square}({detail.rentarearate}%)
                 </Text>
-              </Flex>
+              </Flex> */}
               <Flex
                 direction="row"
                 justify="between"
@@ -142,8 +150,7 @@ export default class DetailBuildingPage extends BasePage {
               >
                 <Text style={styles.leftText}>可招商面积：</Text>
                 <Text style={styles.rightText}>
-                  {detail.investmentareasum}
-                  {Macro.meter_square}({detail.investmentarearate}%)
+                  {numeral(detail.investmentareasum).format('0,0.00')}{Macro.meter_square}({detail.investmentarearate}%)
                 </Text>
               </Flex>
               <Flex
@@ -153,18 +160,15 @@ export default class DetailBuildingPage extends BasePage {
               >
                 <Text style={styles.leftText}>在租均价：</Text>
                 <Text style={styles.rightText}>
-                  {detail.rentingaverprice}
-                  {Macro.yuan_meter_day}
+                  {detail.rentingaverprice} {Macro.yuan_meter_day}
                 </Text>
               </Flex>
-
               <Flex
                 direction="row"
                 justify="between"
                 style={{ paddingBottom: 10, paddingLeft: 15, paddingRight: 15 }}>
                 <Text style={styles.leftText}>入住率：</Text>
                 <Text style={styles.rightText}>{detail.completionRate}%</Text>
-
               </Flex>
 
               {/* <Flex direction="row" style={{ paddingTop: 30 }}>
@@ -245,11 +249,32 @@ export default class DetailBuildingPage extends BasePage {
                 </Flex>
               </Flex> */}
 
- 
+              {/* 从后台获取状态 */}
+              <Flex direction="row" style={{ paddingTop: 20 }}>
+                {status.map((item, i) => (
+                  <Flex
+                    key={'flex' + item.id}
+                    direction="column"
+                    style={styles.div}>
+                    <View
+                      key={'view' + item.id}
+                      style={[
+                        styles.square,
+                        {
+                          borderWidth: 1,
+                          borderColor: '#7C8384',
+                          backgroundColor: item.code
+                        }
+                      ]}
+                    />
+                    <Text style={styles.top}>{item.value}</Text>
+                  </Flex>
+                ))}
+              </Flex>
             </ScrollView>
 
             <ScrollView>
-              {this.state.data.map((item, sectionIndex) => {
+              {data.map((item, sectionIndex) => {
                 return (
                   <Flex
                     key={sectionIndex + 'item'}
@@ -258,7 +283,7 @@ export default class DetailBuildingPage extends BasePage {
                   >
                     <Flex
                       style={{
-                        paddingTop: 10,
+                        paddingTop: 15,
                         paddingBottom: 10,
                         paddingLeft: 15
                       }}
@@ -277,13 +302,11 @@ export default class DetailBuildingPage extends BasePage {
                           {item.name}
                         </Text>
                       </Flex>
-
                       <Text
                         style={{
                           paddingLeft: 10,
                           color: '#333'
-                        }}
-                      >面积({Macro.meter_square})：{item.area}
+                        }}>{item.area} ({Macro.meter_square})
                       </Text>
                     </Flex>
 
@@ -295,6 +318,9 @@ export default class DetailBuildingPage extends BasePage {
                           style={{ width: ScreenUtil.deviceWidth() }}
                         >
                           {room.map((it, index) => {
+                            //获取背景色
+                            const thisState = status.filter((item) => item.value == it.state);
+                            const color = thisState.length > 0 ? thisState[0].code : '';
                             return (
                               <View
                                 key={index + 'it'}
@@ -308,7 +334,7 @@ export default class DetailBuildingPage extends BasePage {
                                           sectionIndex,
                                           roomIndex,
                                           index,
-                                          false,
+                                          false
                                         )
                                       }
                                     >
@@ -318,25 +344,26 @@ export default class DetailBuildingPage extends BasePage {
                                         align="start"
                                         style={[
                                           {
-                                            height: 100,
-                                            backgroundColor: '#f5d14c',
+                                            height: 100, 
                                             paddingRight: 15,
                                             paddingLeft: 5,
                                             paddingBottom: 5,
+                                            backgroundColor: color,//设置颜色
+                                            borderWidth: 1,
+                                            borderColor: '#7C8384'
                                           },
-                                          it.state === 0 ? styles.dash : null,
+                                          //it.state === 0 ? styles.dash : null
                                         ]}
                                       >
                                         <Flex align="start" direction="column">
                                           <Text style={styles.color_top}>
-                                            {it.name}室
+                                            {it.name}
                                           </Text>
                                           <Text style={styles.color_top}>
-                                            {it.area}
-                                            {Macro.meter_square}/{it.tenantName}
+                                            {it.area}{Macro.meter_square}/{it.tenantName}
                                           </Text>
                                         </Flex>
-                                        <Flex align="start" direction="column">
+                                        {/* <Flex align="start" direction="column">
                                           {it.ContractCounts ? (
                                             <Text style={styles.color_top}>
                                               {it.ContractCounts}需求
@@ -347,30 +374,32 @@ export default class DetailBuildingPage extends BasePage {
                                               {it.RequireCounts}需求
                                             </Text>
                                           ) : null}
-                                        </Flex>
+                                        </Flex> */}
                                       </Flex>
+
                                     </TouchableWithoutFeedback>
+
                                     <TouchableWithoutFeedback
                                       onPress={() =>
                                         this.props.navigation.navigate(
                                           'SecondDetail',
                                           { data: it },
                                         )
-                                      }
-                                    >
+                                      }>
                                       <Flex
                                         style={[
-                                          {
-                                            backgroundColor: '#f5d14c',
+                                          { 
                                             marginLeft: 5,
                                             height: 100,
+
+                                            backgroundColor: color,//设置颜色
+                                            borderWidth: 1,
+                                            borderColor: '#7C8384'
                                           },
-                                          it.state === 0 ? styles.dash : null,
-                                        ]}
-                                      >
-                                        <Text style={{ color: 'white' }}>
-                                          {' '}
-                                          >{' '}
+                                          //it.state === 0 ? styles.dash : null,
+                                        ]}>
+                                        <Text style={{ color: 'black' }}>
+                                          {' '}&gt;{' '}
                                         </Text>
                                       </Flex>
                                     </TouchableWithoutFeedback>
@@ -382,10 +411,9 @@ export default class DetailBuildingPage extends BasePage {
                                         sectionIndex,
                                         roomIndex,
                                         index,
-                                        true,
+                                        true
                                       )
-                                    }
-                                  >
+                                    }>
                                     <Flex
                                       direction="column"
                                       justify="between"
@@ -393,27 +421,24 @@ export default class DetailBuildingPage extends BasePage {
                                       style={[
                                         {
                                           height: 100,
-                                          backgroundColor: '#f5d14c',
-                                          width:
-                                            (ScreenUtil.deviceWidth() -
-                                              30 -
-                                              5 * 4) /
-                                            5,
-                                          paddingLeft: 5,
+                                          backgroundColor: color,//设置颜色
+                                          borderWidth: 1,
+                                          borderColor: '#7C8384',
+                                          width: (ScreenUtil.deviceWidth() - 30 - 5 * 4) / 5,
+                                          paddingLeft: 5
                                         },
-                                        it.state === 0 ? styles.dash : null,
-                                      ]}
-                                    >
+                                        //it.state === 0 ? styles.dash : null,
+                                      ]}>
                                       <Flex align="start" direction="column">
                                         <Text style={styles.color_top}>
-                                          {it.name}室
+                                          {it.name}
                                         </Text>
                                         <Text style={styles.color_top}>
-                                          {it.area}
-                                          {Macro.meter_square}/{it.tenantName}
+                                          {it.area}{Macro.meter_square}/{it.tenantName}
                                         </Text>
                                       </Flex>
-                                      <Flex align="start" direction="column">
+
+                                      {/* <Flex align="start" direction="column">
                                         {it.ContractCounts ? (
                                           <Text style={styles.color_top}>
                                             {it.ContractCounts}需求
@@ -424,7 +449,8 @@ export default class DetailBuildingPage extends BasePage {
                                             {it.RequireCounts}需求
                                           </Text>
                                         ) : null}
-                                      </Flex>
+                                      </Flex> */}
+
                                     </Flex>
                                   </TouchableWithoutFeedback>
                                 )}
@@ -449,42 +475,42 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 18,
     color: '#2d3040',
-    fontWeight: '600',
+    fontWeight: '600'
   },
   leftText: {
     fontSize: 14,
-    color: '#7b7b7d',
+    color: '#7b7b7d'
   },
   rightText: {
     fontSize: 14,
     color: '#2b2d31',
-    fontWeight: '600',
+    fontWeight: '600'
   },
   div: {
     width: ScreenUtil.deviceWidth() / 7.0,
-    height: ScreenUtil.deviceWidth() / 7.0 + 30,
+    height: ScreenUtil.deviceWidth() / 7.0 + 20,
     borderBottomColor: '#ececec',
-    borderBottomWidth: 1,
+    borderBottomWidth: 1
   },
   square: {
     // backgroundColor: 'red',
     width: 20,
-    height: 20,
+    height: 20
   },
   top: {
     paddingTop: 5,
     paddingBottom: 5,
     color: '#565759',
-    fontSize: 12,
+    fontSize: 12
   },
   bottom: {
     color: '#565759',
-    fontSize: 12,
+    fontSize: 12
   },
   color_top: {
-    color: 'white',
+    //color: 'white',
     fontSize: 12,
-    paddingTop: 5,
+    paddingTop: 5
   },
   color_bottom: {
     color: '#333',
@@ -495,11 +521,11 @@ const styles = StyleSheet.create({
     paddingRight: 3,
     paddingTop: 2,
     paddingBottom: 5,
-    marginBottom: 4,
+    marginBottom: 4
   },
   dash: {
     borderColor: '#5c665b',
     borderWidth: 1,
-    borderStyle: 'dashed',
+    borderStyle: 'dashed'
   },
 });

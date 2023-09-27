@@ -59,7 +59,7 @@ import AddRepairPage from '../navigator/gdzc/add-repair';
 
 
 import OrderlistPage from '../work/order_center/order_list';
-import OrderDetailPage from '../work/order_center/order_detail'; 
+import OrderDetailPage from '../work/order_center/order_detail';
 import XunJianPointDetailPage from '../navigator/xunjian/xunjian-point-detail';
 import XunjianBeforeStart from '../navigator/xunjian/xunjian-before-start';
 import YiQingPage from '../building/yiqing/yiqing';
@@ -120,7 +120,7 @@ const BuildingNavigator = createStackNavigator(
     Building: {
       screen: BuildingPage,
       navigationOptions: (navigation) => ({
-        title: '楼宇',
+        title: '项目',
         headerBackTitle: null,
         header: null,
       }),
@@ -183,7 +183,7 @@ const navigatorNavigator = createStackNavigator({
   //固定资产
   gdzcPandian: GdzcPandianPage,
   gdzcDetail: GdzcDetailPage,
-  AddRepair:AddRepairPage,
+  AddRepair: AddRepairPage,
 
   //订单中心
   orderlist: OrderlistPage,
@@ -211,7 +211,7 @@ const navigatorNavigator = createStackNavigator({
   jiedan: JieDanListDetailPage,
   paidan: PaiDanListDetailPage,
   huifang: HuiFangDetailPage,
-  
+
   xunjian: XunJianPage,
   xunjiantask: TaskPage,
   xunjianDetail: XunJianDetailPage,
@@ -250,7 +250,7 @@ const WorkNavigator = createStackNavigator({
       headerBackTitle: null,
     }),
   },
-  
+
   AddWork: AddWorkPage,
   select: SelectAddressPage,
   service: FuWuDanListDetailPage,
@@ -328,7 +328,7 @@ const tabbar = createBottomTabNavigator(
     Building: {
       screen: BuildingNavigator,
       navigationOptions: () => ({
-        title: '楼宇',
+        title: '项目',
         headerBackTitle: null,
       }),
     },
@@ -338,14 +338,14 @@ const tabbar = createBottomTabNavigator(
         title: '导航',
         headerBackTitle: null,
       }),
-    }, 
+    },
     Work: {
       screen: WorkNavigator,
       navigationOptions: () => ({
         title: '工作台',
         headerBackTitle: null,
       }),
-    }, 
+    },
     Shenpi: {
       screen: ShenPiNavigator,
       navigationOptions: () => ({
@@ -377,7 +377,9 @@ const tabbar = createBottomTabNavigator(
       }
 
       return {
-        tabBarIcon: ({ focused, horizontal, tintColor }) => {
+        tabBarIcon: ({ focused
+          //, horizontal, tintColor 
+        }) => {
           const { routeName } = navigation.state;
           let imageUrl;
           if (routeName === 'Building') {
@@ -398,14 +400,15 @@ const tabbar = createBottomTabNavigator(
             } else {
               imageUrl = require('../../static/images/tabbar/gz_n.png');
             }
-          } 
-          // else if (routeName === 'Work') {
-          //   if (focused) {
-          //     imageUrl = require('../../static/images/tabbar/gz_h.png');
-          //   } else {
-          //     imageUrl = require('../../static/images/tabbar/gz_n.png');
-          //   }
-          // } 
+          }
+          else if (routeName === 'Shenpi') {
+            //审批
+            if (focused) {
+              imageUrl = require('../../static/images/tabbar/app_h.png');
+            } else {
+              imageUrl = require('../../static/images/tabbar/app_n.png');
+            }
+          }
           else {
             if (focused) {
               imageUrl = require('../../static/images/tabbar/me_h.png');
@@ -421,7 +424,7 @@ const tabbar = createBottomTabNavigator(
   },
 );
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 const Drawer = createDrawerNavigator(
   {
     TabBar: {
@@ -442,5 +445,4 @@ const Drawer = createDrawerNavigator(
     },
   },
 );
-
 export default createAppContainer(Drawer);

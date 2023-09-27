@@ -28,7 +28,6 @@ import api from '../../utils/api';
 // import XunJianService from '../navigator/xunjian/xunjian-service';
 // import HomePage from '../home/home';
 
-
 class BuildingPage extends BasePage {
   constructor(props) {
     super(props);
@@ -60,11 +59,7 @@ class BuildingPage extends BasePage {
       NativeModules.LHNToast.getVersionCode(
         (version, isYse, isLKL, brandName) => {
           //console.log(aa,bb,11)
-          api.getData(
-              '/api/Mobile/GetVersion',
-              { isYse, isLKL, brandName },
-              true,
-            )
+          api.getData('/api/Mobile/GetVersion',{ isYse, isLKL, brandName },true)
             .then((res) => {
               let netVersion = common.handlerVersionString(res.appVersionName);
               let localVersion = common.handlerVersionString(version);

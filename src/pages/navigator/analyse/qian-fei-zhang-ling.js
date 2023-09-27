@@ -47,7 +47,7 @@ class QianFeiZhangLingPage extends BasePage {
       count: 0,
       ym: common.getYM('2020-01'),
       time: common.getCurrentYearAndMonth(),
-      //selectBuilding: this.props.selectBuilding || {}//选择的管理处
+      //selectBuilding: this.props.selectBuilding || {}//选择的机构
       selectBuilding: {}//默认为空，防止别的报表选择了机构，带到当前报表
       // statistics: [],
     };

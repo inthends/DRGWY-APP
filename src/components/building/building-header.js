@@ -35,7 +35,7 @@ export default class BuildingHeader extends BasePage {
     render() {
         const { statistics } = this.props;
         return (
-            <View style={styles.content}>
+            <View style={styles.content}> 
                 {/* <Flex direction="row" justify='between' style={styles.top}>
                     <Flex style={{flex: 4}}>
                         <Text style={styles.title}>{title}</Text>
@@ -51,31 +51,36 @@ export default class BuildingHeader extends BasePage {
                 </Flex> */}
 
                 <Flex direction="row" justify='between' style={styles.top}>
+                    <Flex justify='start' style={{ flex: 4 }}>
+                        <Text style={[styles.text, styles.big]}>总面积 {numeral(statistics.areasum).format('0,0.00')}{Macro.meter_square}</Text>
+                    </Flex>
+
                     <Flex justify='end' style={{ flex: 1 }}>
                         <TouchableOpacity onPress={() => this.props.navigation.openDrawer()}>
                             <Icon name='bars' color="white" />
                         </TouchableOpacity>
                     </Flex>
                 </Flex>
-                <Flex direction="column" style={styles.middle}>
+
+                {/* <Flex direction="column" style={styles.middle}>
                     <Flex justify="between" style={styles.area}>
-                        <Text style={styles.text}>总面积 {Macro.meter_square}</Text>
-                        <Text style={styles.text}>实时在租均价 {statistics.averagerentprice}{Macro.yuan_meter_day}</Text>
+                        <Text style={styles.text}>总面积</Text> 
+                        <Text style={styles.text}>{numeral(statistics.areasum).format('0,0.00')}{Macro.meter_square}</Text>
                     </Flex>
                     <Flex justify='start' style={styles.number}>
-                        <Text style={[styles.text, styles.big]}>{numeral(statistics.areasum).format('0,0.0000')}</Text>
+                        <Text style={[styles.text, styles.big]}>{numeral(statistics.areasum).format('0,0.00')}</Text>
                     </Flex>
-                </Flex>
+                </Flex> */}
 
                 <Flex style={styles.bottom}>
                     <Flex.Item style={styles.item}>
                         <Text size="small" style={styles.topText}>在租 {statistics.rentarearate}%</Text>
-                        <Text size="small" style={styles.bottomText}>{numeral(statistics.rentareasum).format('0,0.0000')}{Macro.meter_square}</Text>
+                        <Text size="small" style={styles.bottomText}>{numeral(statistics.rentareasum).format('0,0.00')}{Macro.meter_square}</Text>
                     </Flex.Item>
                     <Flex.Item style={styles.item}>
                         <Text size="small" style={styles.topText}>可招商 {statistics.investmentarearate}%</Text>
                         <Text size="small"
-                            style={styles.bottomText}>{numeral(statistics.investmentareasum).format('0,0.0000')}{Macro.meter_square}</Text>
+                            style={styles.bottomText}>{numeral(statistics.investmentareasum).format('0,0.00')}{Macro.meter_square}</Text>
                     </Flex.Item>
                     <Flex.Item style={styles.item}>
                         <Text size="small" style={styles.topText}>入住率</Text>
@@ -90,10 +95,11 @@ export default class BuildingHeader extends BasePage {
 const styles = StyleSheet.create({
     content: {
         flexDirection: 'column',
-        height: 240,
+        height: 150,
         backgroundColor: Macro.color_sky_dark
     },
     top: {
+
         flex: 2,
         backgroundColor: Macro.color_sky_dark,
         paddingLeft: Macro.marginLeft_15,
@@ -130,7 +136,7 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     big: {
-        fontSize: 41.67,
+        fontSize: 25, //41.67,
         paddingLeft: Macro.marginLeft_15
     },
     item: {

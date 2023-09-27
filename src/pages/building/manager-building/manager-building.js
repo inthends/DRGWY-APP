@@ -95,7 +95,7 @@ const RowDD = (props) => {
 class ManagerBuildingPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: '管理处',
+      title: '机构'
     };
   };
 
@@ -332,7 +332,7 @@ class ManagerBuildingPage extends BasePage {
       <View style={styles.all}>
         <CommonView style={{ flex: 1 }}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.title}>{ this.selectDrawerType === DrawerType.building ? '管理处' : '单据类别'}</Text>
+            <Text style={styles.title}>{ this.selectDrawerType === DrawerType.building ? '机构' : '单据类别'}</Text>
             <ScrollView>{content}</ScrollView>
           </View>
         </CommonView>

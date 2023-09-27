@@ -104,8 +104,7 @@ class SecondDetailBuildingPage extends BasePage {
                         width: ScreenUtil.deviceWidth() - 20,
                     }}>
                         <Flex style={{ padding: 10 }}>
-                            <LoadImage img={room.mainPic}
-                                style={{ width: 80, height: 60 }} />
+                            <LoadImage img={room.mainPic} style={{ width: 80, height: 60 }} />
                         </Flex>
                         <Flex direction='column' align='start'>
                             <Text style={styles.name}>{room.name}</Text>
@@ -271,7 +270,7 @@ class SecondDetailBuildingPage extends BasePage {
 
         return (
             <CommonView style={{ flex: 1 }}>
-                <ImageBackground style={{ height: 150 }} source={room.mainPic ? { uri: room.mainPic } : ''}>
+                <ImageBackground style={{ height: 150 }} source={room.mainPic ? { uri: room.mainPic } : null}>
                     <Flex justify='between' align='start' direction='column'
                         style={{ height: 90, paddingLeft: 15, paddingRight: 15, marginTop: 44 }}>
                         <TouchableWithoutFeedback onPress={() => this.props.navigation.goBack()}>
@@ -285,7 +284,7 @@ class SecondDetailBuildingPage extends BasePage {
                     <Flex style={{ height: 40 }}>
                         <TouchableWithoutFeedback onPress={() => this.tap(0)}>
                             <Flex justify={'center'} style={{ width: ScreenUtil.deviceWidth() / 3, height: 40 }}>
-                                <Text style={this.state.index === 0 ? styles.selectText : styles.noSelect}>房源信息</Text>
+                                <Text style={this.state.index === 0 ? styles.selectText : styles.noSelect}>房产信息</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={() => this.tap(1)}>
