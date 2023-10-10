@@ -70,7 +70,7 @@ export default {
     return this.isIphoneX() ? 82 : 48;
   },
   navigationHeight() {
-    console.log('Header.HEIGHT', Header.HEIGHT);
+    //console.log('Header.HEIGHT', Header.HEIGHT);
     return Header.HEIGHT;
   },
 

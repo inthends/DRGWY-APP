@@ -63,15 +63,13 @@ export default class EfuwuDetailPage extends BasePage {
 
   getData = () => {
     const { id, instanceId } = this.state;
-    service.getFlowData(id).then((detail) => {
-      console.log('detail', detail);
+    service.getFlowData(id).then((detail) => { 
 
       this.setState({
         detail,
       });
     });
-    service.getApproveLog(instanceId).then((records) => {
-      console.log('log', records);
+    service.getApproveLog(instanceId).then((records) => { 
       this.setState({
         records,
       });

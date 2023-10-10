@@ -41,7 +41,7 @@ export default class LouDong extends BasePage {
         };
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         NavigatorService.getBuildings(this.state.housing.id).then(items => {
             this.setState({ items });
         });

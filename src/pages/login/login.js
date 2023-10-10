@@ -31,14 +31,12 @@ class LoginPage extends BasePage {
   constructor(props) {
     super(props);
     this.state = { ...this.props.userInfo };
-
-    //test
-    this.state = {
-      usercode: 'test',
-      username: 'system',
-      password: '1234598'
-    };
-
+    //test 
+    // this.state = {
+    //   usercode: 'txc',
+    //   username: 'system',
+    //   password: 'ty123456'
+    // };
   }
 
   componentDidMount() {
@@ -82,8 +80,7 @@ class LoginPage extends BasePage {
 
   login = () => {
     const { username, password, usercode } = this.state;
-    JPush.getRegistrationID((result) => {
-      // console.log('re', result);
+    JPush.getRegistrationID((result) => { 
       // this.setState({
       //     registration_id: result.registerID,
       // });
@@ -95,8 +92,7 @@ class LoginPage extends BasePage {
               this.props.saveNameAndPsd({ ...this.state });
               this.props.saveToken(res);
             })
-            .catch((error) => {
-              //console.log(error);
+            .catch((error) => { 
             });
         })
         .catch((err) => {});

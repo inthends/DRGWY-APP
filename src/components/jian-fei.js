@@ -25,8 +25,7 @@ export default class JianFei extends BasePage {
                 this.setState({
                     types: [...res.map(item => item.title)],
                     reductionType: res[0].title
-                }, () => {
-                    //console.log(this.state.dataInfo.data);
+                }, () => { 
                 });
             }
         });

@@ -162,8 +162,7 @@ class QianFeiZhangLingPage extends BasePage {
       yName,
       tableData = [],
       tableHead = [],
-    } = this.state.res || {};
-    // console.log(123456, tableHead, tableData); 
+    } = this.state.res || {}; 
     // option =
     // {
     //       "xAxis": {

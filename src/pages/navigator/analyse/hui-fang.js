@@ -106,8 +106,7 @@ class HuiFangRatePage extends BasePage {
   };
 
   // titleChange = (index) => {
-  //   const { statistics } = this.state;
-  //   console.log(this.state);
+  //   const { statistics } = this.state; 
   //   let estateId;
   //   if (index === 0) {
   //     estateId = this.state.selectBuilding.key;
@@ -138,11 +137,8 @@ class HuiFangRatePage extends BasePage {
   };
 
   render() {
-    const { titles = [] } = this.state;
-
-    let { option, tableData, tableHead } = this.state.res;
-
-    // console.log(123, option)
+    const { titles = [] } = this.state; 
+    let { option, tableData, tableHead } = this.state.res; 
 
     // option = {
     //   xAxis: {

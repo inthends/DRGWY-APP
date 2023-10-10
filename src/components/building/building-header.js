@@ -15,7 +15,7 @@ export default class BuildingHeader extends BasePage {
         };
     }
 
-    // componentDidMount(): void { 
+    // componentDidMount()  { 
     // }
 
     // scan = () => {
@@ -35,7 +35,7 @@ export default class BuildingHeader extends BasePage {
     render() {
         const { statistics } = this.props;
         return (
-            <View style={styles.content}> 
+            <View style={styles.content}>
                 {/* <Flex direction="row" justify='between' style={styles.top}>
                     <Flex style={{flex: 4}}>
                         <Text style={styles.title}>{title}</Text>
@@ -106,38 +106,38 @@ const styles = StyleSheet.create({
         paddingRight: Macro.marginRight_15,
         fontSize: 14
     },
-    title: {
-        color: Macro.color_white,
-        fontSize: Macro.font_20,
-        paddingRight: 5
-    },
-    middle: {
-        flex: 4,
-        backgroundColor: Macro.color_sky_dark
-    },
+    // title: {
+    //     color: Macro.color_white,
+    //     fontSize: Macro.font_20,
+    //     paddingRight: 5
+    // },
+    // middle: {
+    //     flex: 4,
+    //     backgroundColor: Macro.color_sky_dark
+    // },
     bottom: {
         flex: 2,
         backgroundColor: Macro.color_sky_dark,
         fontSize: 14,
         marginBottom: 8
     },
-    area: {
-        flex: 1,
-        width: '100%',
-        paddingLeft: Macro.marginLeft_15,
-        paddingRight: Macro.marginRight_15
-    },
+    // area: {
+    //     flex: 1,
+    //     width: '100%',
+    //     paddingLeft: Macro.marginLeft_15,
+    //     paddingRight: Macro.marginRight_15
+    // },
     text: {
         color: Macro.color_white,
         fontSize: 18.5
     },
-    number: {
-        flex: 3,
-        width: '100%'
-    },
+    // number: {
+    //     flex: 3,
+    //     width: '100%'
+    // },
     big: {
         fontSize: 25, //41.67,
-        paddingLeft: Macro.marginLeft_15
+        paddingLeft: 10//Macro.marginLeft_15
     },
     item: {
         alignItems: 'center'

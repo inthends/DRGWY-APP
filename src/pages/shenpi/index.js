@@ -112,9 +112,7 @@ class ContactDetail extends BasePage {
     });
   };
   loadMore = () => {
-    const { data, total, pageIndex } = this.state.dataInfo;
-
-    //console.log('loadmore', this.canAction);
+    const { data, total, pageIndex } = this.state.dataInfo;  
     if (!this.canAction && data.length < total) {
       // if (data.length < total) {
       this.canAction = true;

@@ -24,8 +24,7 @@ import CommonView from '../../components/CommonView';
 
 
 class FeeChargeDetail extends BasePage {
-    static navigationOptions = ({ navigation }) => { 
-        console.log(1, navigation);
+    static navigationOptions = ({ navigation }) => {  
         return {
             tabBarVisible: false,
             title: '收款单详情',
@@ -83,8 +82,7 @@ class FeeChargeDetail extends BasePage {
 
     render() {
         // const { statistics, dataInfo, data } = this.state;
-        // const { selectBuilding } = this.props;
-        // console.log('selet', selectBuilding);
+        // const { selectBuilding } = this.props; 
         const { data } = this.state;
 
         return (

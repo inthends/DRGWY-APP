@@ -26,8 +26,7 @@ import CommonView from '../../../components/CommonView';
 
 
 class EstateWeixiuPage extends BasePage {
-    static navigationOptions = ({ navigation }) => {
-        //console.log(1, navigation);
+    static navigationOptions = ({ navigation }) => { 
         return {
             tabBarVisible: false,
             title: '维修单',
@@ -69,7 +68,7 @@ class EstateWeixiuPage extends BasePage {
         };
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
@@ -84,9 +83,7 @@ class EstateWeixiuPage extends BasePage {
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
-        const nextSelectBuilding = nextProps.selectBuilding;
-        // console.log('selectBuilding', selectBuilding);
-        // console.log('nextSelectBuilding', nextSelectBuilding);
+        const nextSelectBuilding = nextProps.selectBuilding; 
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
             this.setState({ selectBuilding: nextProps.selectBuilding }, () => {
                 this.onRefresh();
@@ -122,8 +119,7 @@ class EstateWeixiuPage extends BasePage {
                     dataInfo: dataInfo,
                     refreshing: false,
                     //canLoadMore: true,
-                }, () => {
-                    //console.log(this.state.dataInfo.data);
+                }, () => { 
                 });
             });
     };
@@ -132,15 +128,13 @@ class EstateWeixiuPage extends BasePage {
         this.setState({
             refreshing: true,
             pageIndex: 1,
-        }, () => {
-            //console.log('state', this.state);
+        }, () => { 
             this.getList();
         });
     };
 
     loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo;
-        //console.log('loadmore', this.state.dataInfo);
+        const { data, total, pageIndex } = this.state.dataInfo; 
         // if (!this.state.canLoadMore) {
         //     return;
         // }

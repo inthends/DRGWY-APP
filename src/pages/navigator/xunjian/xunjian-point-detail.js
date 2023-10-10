@@ -40,10 +40,9 @@ export default class XunJianPointDetailPage extends BasePage {
         };
     }
 
-    componentDidMount(): void {
+    componentDidMount()  {
         const { lineId, pointId } = this.state;
-        XunJianService.xunjianPointDetail(lineId, pointId).then(items => {
-            console.log(11, items);
+        XunJianService.xunjianPointDetail(lineId, pointId).then(items => { 
             this.setState({
                 items,
             });

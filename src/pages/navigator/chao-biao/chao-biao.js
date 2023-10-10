@@ -80,9 +80,7 @@ class ChaoBiaoPage extends BasePage {
         };
     }
 
-    componentDidMount(): void {
-
-
+    componentDidMount() {
         this.onRefresh();
     }
 
@@ -107,16 +105,14 @@ class ChaoBiaoPage extends BasePage {
                 dataInfo: dataInfo,
                 refreshing: false,
                 pageIndex: dataInfo.pageIndex,
-            }, () => {
-                //console.log(this.state.dataInfo.data);
+            }, () => { 
             });
         });
 
     };
 
     loadMore = () => {
-        const {data, total, pageIndex} = this.state.dataInfo;
-        //console.log('loadmore', this.canAction);
+        const {data, total, pageIndex} = this.state.dataInfo; 
 
         if (!this.canAction && data.length < total) {
             // if (data.length < total) {

@@ -17,8 +17,7 @@ export default {
     },
     async stopRecord() {
         try {
-            let filePath = await AudioRecorder.stopRecording();
-            console.log(filePath);
+            let filePath = await AudioRecorder.stopRecording(); 
             // if (!common.isIOS()) {
             //     this._finishRecording(true, filePath);
             // }

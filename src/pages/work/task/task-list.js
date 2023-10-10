@@ -24,8 +24,7 @@ import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 
 class TaskListPage extends BasePage {
-    static navigationOptions = ({navigation}) => {
-        //console.log(1, navigation);
+    static navigationOptions = ({navigation}) => { 
         return {
             tabBarVisible: false,
             title: navigation.getParam('data') ? navigation.getParam('data').title : '',
@@ -48,8 +47,7 @@ class TaskListPage extends BasePage {
         this.selectBuilding = {
             key: null,
         };
-        // let pageParames = common.getValueFromProps(this.props);
-        // console.log('pageParames',pageParames)
+        // let pageParames = common.getValueFromProps(this.props); 
         const type = common.getValueFromProps(this.props).type;
         const overdue = common.getValueFromProps(this.props).overdue;
         const hiddenHeader = common.getValueFromProps(this.props).hiddenHeader;
@@ -69,7 +67,7 @@ class TaskListPage extends BasePage {
         };
     }
 
-    componentDidMount(): void {
+    componentDidMount()  {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
@@ -79,15 +77,14 @@ class TaskListPage extends BasePage {
     }
 
 
-    componentWillUnmount(): void {
+    componentWillUnmount()  {
         this.viewDidAppear.remove();
     }
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
         const nextSelectBuilding = nextProps.selectBuilding;
-        console.log('selectBuilding', selectBuilding);
-        console.log('nextSelectBuilding', nextSelectBuilding);
+        
 
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
             this.setState({selectBuilding: nextProps.selectBuilding}, () => {
@@ -110,8 +107,7 @@ class TaskListPage extends BasePage {
             this.setState({
                 dataInfo: dataInfo,
                 refreshing: false,
-            }, () => {
-                // console.log(this.state.dataInfo.data);
+            }, () => { 
             });
         });
     };
@@ -126,8 +122,7 @@ class TaskListPage extends BasePage {
         });
     };
     loadMore = () => {
-        const {data, total, pageIndex} = this.state.dataInfo;
-        //console.log('loadmore');
+        const {data, total, pageIndex} = this.state.dataInfo; 
         if (this.canAction && data.length < total) {
             this.setState({
                 refreshing: true,
@@ -171,8 +166,7 @@ class TaskListPage extends BasePage {
                             this.props.navigation.navigate('huifang', {data: item});
                             break;
                         }
-                        default:
-                            console.log(item);
+                        default: 
                             break;
                     }
                 }

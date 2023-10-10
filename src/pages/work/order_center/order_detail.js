@@ -34,11 +34,10 @@ export default class OrderDetailPage extends BasePage {
             dataInfo: {},
             communicatesDatas: [],
             inputMsg:''
-        };
-        console.log(this.state);
+        }; 
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         this.getOrderDetail()
         this.getOrderCommunicates()
     }
@@ -71,8 +70,7 @@ billCode, billDate, createUserName, status, allName
                     createUserName: dataInfo.createUserName,
                     status: dataInfo.status,
                     allName: dataInfo.allName,
-                }, () => {
-                    // console.log(this.state.dataInfo.data);
+                }, () => { 
                 });
             }
             
@@ -81,13 +79,11 @@ billCode, billDate, createUserName, status, allName
 
     getOrderCommunicates = () => {//查看获取的回复信息
         const { id } = this.state;
-        OrderService.getOrderCommunicates(id).then(dataInfo => {
-            console.log(dataInfo);
+        OrderService.getOrderCommunicates(id).then(dataInfo => { 
             if (dataInfo && dataInfo.length > 0) {
                 this.setState({
                     communicatesDatas: dataInfo,
-                }, () => {
-                    console.log(this.state.communicatesDatas);
+                }, () => { 
                 });
             }
 

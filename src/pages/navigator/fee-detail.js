@@ -64,8 +64,7 @@ class FeeDetailPage extends BasePage {
         });
     };
 
-    onSelect = (opt) => {
-        // console.log(opt.props.value);
+    onSelect = (opt) => { 
         this.setState({
             action: false,
             selected: opt.props.value,
@@ -121,8 +120,7 @@ class FeeDetailPage extends BasePage {
             let day = this.getDate() + '';
             if (day.length === 1) {
                 day = 0 + day;
-            }
-            //console.log(year + '-' + month + '-' + day)
+            } 
             return year + '-' + month + '-' + day;
         }
     }
@@ -499,8 +497,7 @@ class FeeDetailPage extends BasePage {
                 mlScale: '四舍五入',
                 price: 0.00,
                 mlAmount: 0.00
-            }, () => {
-                //console.log(this.state);
+            }, () => { 
             });
         });
     };
@@ -684,8 +681,7 @@ class FeeDetailPage extends BasePage {
     renderItem = (item) => {
         // const { dataInfo, type, room, price, mlAmount } = this.state;
         const { type } = this.state;
-        let titles = [];
-        //console.log(11, item);
+        let titles = []; 
         if (item.billSource === '临时加费' && item.rmid === null) {
             titles = ['删除', '减免', '拆费'];
         } else {
@@ -712,8 +708,7 @@ class FeeDetailPage extends BasePage {
                                     <ActionPopover
                                         textStyle={{ fontSize: 14 }}
                                         hiddenImage={true}
-                                        onChange={(title) => {
-                                            //console.log(1, title);
+                                        onChange={(title) => { 
                                             if (title === '删除') {
                                                 this.delete(item);
                                             } else if (title === '减免') {
@@ -788,8 +783,7 @@ class FeeDetailPage extends BasePage {
         );
     };
 
-    //dateonChange = (value) => {
-    //   console.log(11,value)
+    //dateonChange = (value) => { 
     // this.setState({
     //     chaifeiDate: value,
     // })

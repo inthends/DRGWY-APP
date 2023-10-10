@@ -12,21 +12,15 @@ export default class AreaInfo extends Component {
         return (
             <Flex direction={'column'} style={[{width: ScreenUtil.deviceWidth()},this.props.style]}>
                 <Flex justify={'between'} style={{width: ScreenUtil.deviceWidth() - 30,paddingBottom: 20,}}>
-                    <Text style={styles.name}>管理面积：7.8万{Macro.meter_square}</Text>
-
-                    <Text style={styles.name}>房屋套数：930套</Text>
-
-
+                    <Text style={styles.name}>管理面积：7.8万{Macro.meter_square}</Text> 
+                    <Text style={styles.name}>房屋套数：930套</Text>  
                 </Flex>
                 <Flex justify={'between'} style={{width: ScreenUtil.deviceWidth() - 30}}>
-                    <Text style={styles.name}>入住率：75%</Text>
-
+                    <Text style={styles.name}>入住率：75%</Text> 
                     <Flex>
                         <LoadImage style={{width:15,height:15}}/>
                         <Text style={styles.name}>收费类别</Text>
-                    </Flex>
-
-
+                    </Flex> 
                 </Flex>
             </Flex>
         );

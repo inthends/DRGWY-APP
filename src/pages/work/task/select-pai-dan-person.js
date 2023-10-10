@@ -36,8 +36,7 @@ class SelectPaiDanPerson extends BasePage {
         };
     }
 
-    componentDidMount() {
-        // console.log(111, this.props);
+    componentDidMount() { 
         this.initData();
     }
 

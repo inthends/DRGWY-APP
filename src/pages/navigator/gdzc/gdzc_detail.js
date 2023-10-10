@@ -44,16 +44,14 @@ export default class GdzcDetailPage extends BasePage {
                 pageIndex: 0
             }
         };
-        this.getInfo()
-        //console.log(this.state);
+        this.getInfo() 
     }
 
     getImages = () => {
         GdzcService.gdzcAssetsFileInfo(this.state.id).then(res => {
             this.setState({
                 imageDatas: res
-            }, () => {
-                //console.log(res);
+            }, () => { 
             })
         })
     }
@@ -100,8 +98,7 @@ export default class GdzcDetailPage extends BasePage {
                     datasList: res.data,
                     total: res.total,
                     refreshing: false
-                }, () => {
-                    //console.log(res);
+                }, () => { 
                 })
             })
         }
@@ -111,8 +108,7 @@ export default class GdzcDetailPage extends BasePage {
                     datasList: res.data,
                     total: res.total,
                     refreshing: false
-                }, () => {
-                    //console.log(res);
+                }, () => { 
                 })
             })
         }
@@ -122,15 +118,14 @@ export default class GdzcDetailPage extends BasePage {
                     datasList: res.data,
                     total: res.total,
                     refreshing: false
-                }, () => {
-                    //console.log(res);
+                }, () => { 
                 })
             })
         }
     }
 
-    componentDidMount(): void {
-    }
+    // componentDidMount() {
+    // }
 
     lookImage = (lookImageIndex) => {
         this.setState({
@@ -318,8 +313,7 @@ export default class GdzcDetailPage extends BasePage {
     }
 
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
-        const { indexType, titles } = this.state;
-        //console.log(22, data); 
+        const { indexType, titles } = this.state; 
         return (
             <CommonView style={{ flex: 1, justifyContent: 'flex-start' }}>
                 <TopTitle index={indexType} onChange={this.onChange} titles={titles} />

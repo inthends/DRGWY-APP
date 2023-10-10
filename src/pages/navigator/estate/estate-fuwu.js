@@ -22,8 +22,7 @@ import CommonView from '../../../components/CommonView';
 
 
 class EstateFuwuPage extends BasePage {
-    static navigationOptions = ({ navigation }) => {
-        //console.log(1, navigation);
+    static navigationOptions = ({ navigation }) => { 
         return {
             tabBarVisible: false,
             title: '服务单',
@@ -67,7 +66,7 @@ class EstateFuwuPage extends BasePage {
     }
 
 
-    componentDidMount(): void {
+    componentDidMount()  {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
@@ -76,15 +75,13 @@ class EstateFuwuPage extends BasePage {
         );
     }
 
-    componentWillUnmount(): void {
+    componentWillUnmount()  {
         this.viewDidAppear.remove();
     }
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
-        const nextSelectBuilding = nextProps.selectBuilding;
-        // console.log('selectBuilding', selectBuilding);
-        // console.log('nextSelectBuilding', nextSelectBuilding); 
+        const nextSelectBuilding = nextProps.selectBuilding; 
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
             this.setState({ selectBuilding: nextProps.selectBuilding }, () => {
                 this.onRefresh();
@@ -117,8 +114,7 @@ class EstateFuwuPage extends BasePage {
                 dataInfo: dataInfo,
                 refreshing: false,
                 //canLoadMore: true,
-            }, () => {
-                //console.log(this.state.dataInfo.data);
+            }, () => { 
             });
         });
     };
@@ -127,15 +123,13 @@ class EstateFuwuPage extends BasePage {
         this.setState({
             refreshing: true,
             pageIndex: 1,
-        }, () => {
-            //console.log('state', this.state);
+        }, () => { 
             this.getList();
         });
     };
 
     loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo;
-        // console.log('loadmore', this.state.dataInfo);
+        const { data, total, pageIndex } = this.state.dataInfo; 
         // if (!this.state.canLoadMore) {
         //     return;
         // }

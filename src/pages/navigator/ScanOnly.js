@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {
     StyleSheet,
@@ -67,7 +68,6 @@ export default class ScanOnly extends BasePage {
         if (needBack) {
             this.props.navigation.goBack();
         }
-
     };
 
     render() {
@@ -80,8 +80,7 @@ export default class ScanOnly extends BasePage {
                     style={styles.preview}
                     type={RNCamera.Constants.Type.back}
                     barCodeTypes={[RNCamera.Constants.BarCodeType.qr]}
-                    googleVisionBarcodeType={RNCamera.Constants.GoogleVisionBarcodeDetection.BarcodeType.QR_CODE}
-                    // flashMode={RNCamera.Constants.FlashMode.on}
+                    googleVisionBarcodeType={RNCamera.Constants.GoogleVisionBarcodeDetection.BarcodeType.QR_CODE} 
                     flashMode={RNCamera.Constants.FlashMode.auto}
                     onBarCodeRead={this.onBarCodeRead}
                 >

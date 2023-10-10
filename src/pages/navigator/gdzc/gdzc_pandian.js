@@ -37,11 +37,10 @@ class GdzcPandianPage extends BasePage {
             data: {},
             tfStr: '',
             images: [{ icon: '' }]
-        };
-        console.log(this.state);
+        }; 
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         const { assetsId } = this.state
         GdzcService.gdzcBaseInfo(assetsId).then(res => {
             if (!!res) {

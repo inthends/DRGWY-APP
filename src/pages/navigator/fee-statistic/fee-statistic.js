@@ -13,8 +13,7 @@ import CommonView from '../../../components/CommonView';
 
 
 export default class FeeStatisticPage extends BasePage {
-
-
+ 
     constructor(props) {
         super(props);
         this.state = {
@@ -22,9 +21,8 @@ export default class FeeStatisticPage extends BasePage {
         };
     }
 
-    componentDidMount(): void {
-
-    }
+    // componentDidMount() { 
+    // }
 
 
     render() {

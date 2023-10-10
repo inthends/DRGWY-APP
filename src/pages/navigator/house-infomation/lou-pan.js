@@ -20,8 +20,7 @@ import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 
 class LouPan extends BasePage {
-    static navigationOptions = ({ navigation }) => {
-        //console.log(1, navigation);
+    static navigationOptions = ({ navigation }) => { 
         return {
             tabBarVisible: false,
             title: '项目',
@@ -54,7 +53,7 @@ class LouPan extends BasePage {
         };
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         this.onRefresh();
     }
 
@@ -69,17 +68,14 @@ class LouPan extends BasePage {
             this.setState({
                 dataInfo: dataInfo,
                 refreshing: false,
-            }, () => {
-                console.log(this.state.dataInfo.data);
+            }, () => { 
             });
         });
     };
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
-        const nextSelectBuilding = nextProps.selectBuilding;
-        // console.log('selectBuilding', selectBuilding);
-        // console.log('nextSelectBuilding', nextSelectBuilding); 
+        const nextSelectBuilding = nextProps.selectBuilding; 
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
             this.setState({ selectBuilding: nextProps.selectBuilding }, () => {
                 this.onRefresh();
@@ -96,8 +92,7 @@ class LouPan extends BasePage {
         });
     };
     loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo;
-        //console.log('loadmore');
+        const { data, total, pageIndex } = this.state.dataInfo; 
         if (this.canAction && data.length < total) {
             this.setState({
                 refreshing: true,
@@ -143,8 +138,7 @@ class LouPan extends BasePage {
 
     render() {
         const { statistics, dataInfo } = this.state;
-        //const { selectBuilding } = this.props;
-        //console.log('selet', selectBuilding);
+        //const { selectBuilding } = this.props; 
         return (
             <View style={{ flex: 1 }}>
                 <CommonView style={{ flex: 1 }}>

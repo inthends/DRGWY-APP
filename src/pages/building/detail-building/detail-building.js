@@ -1,3 +1,4 @@
+//楼栋详情
 import React from 'react';
 import {
   View,
@@ -22,7 +23,6 @@ export default class DetailBuildingPage extends BasePage {
   //     header: null,
   //   };
   // };
-
   constructor(props) {
     super(props);
     let item = common.getValueFromProps(this.props);
@@ -36,9 +36,15 @@ export default class DetailBuildingPage extends BasePage {
 
   componentDidMount() {
     let id = this.state.item.id;
+    //获取楼层
     DetailBuildingService.getPStructs(id, 4).then((res) => {
       const floors = res || [];
+
+      //循环楼层
+
       const promises = floors.map((item) => {
+
+        //获取房产
         return DetailBuildingService.getPStructs(item.id, 5).then((res) => {
           const allRooms = res || [];
           const rooms = common.convertArrayToSmallArray(allRooms);
@@ -47,51 +53,57 @@ export default class DetailBuildingPage extends BasePage {
             rooms,
           };
         });
+
       });
+
       Promise.all(promises).then((res) => {
         this.setState({ data: res });
       });
+
     });
 
     //获取资产状态
-    DetailBuildingService.getPropertyStatus(id).then((status) => {
+    DetailBuildingService.getPropertyStatus().then((status) => {
       this.setState({ status });
     });
 
     DetailBuildingService.getBuildingDetail(id).then((detail) => {
       this.setState({ detail });
     });
-
   }
 
+  //点击
   open = (sectionIndex, roomIndex, index, isOpen) => {
 
-    let data = [...this.state.data];
+    let data = [...this.state.data];//获取data
+
     let sections = data[sectionIndex].rooms;
     let rooms = sections[roomIndex];
+
     rooms = rooms.map((item, i) => {
       return {
         ...item,
         open: isOpen ? (i === index ? isOpen : !isOpen) : false,
       };
     });
+
     sections = sections.map((item, i) => {
       return i === roomIndex ? rooms : item;
     });
+
     data = data.map((item, i) => {
       return {
         ...item,
         rooms: i === sectionIndex ? sections : item.rooms,
       };
     });
+
     this.setState({ data: data });
+
   };
 
-  // onSubmit = (value) => { 
-  // };
 
   render() {
-
     const { status, data, detail } = this.state;
     return (
       <CommonView style={{ flex: 1 }}>
@@ -130,7 +142,7 @@ export default class DetailBuildingPage extends BasePage {
                 }}
               >
                 <Text style={styles.leftText}>在租面积：</Text>
-                <Text style={styles.rightText}>{numeral(detail.rentareasum).format('0,0.00')}{Macro.meter_square}({detail.rentarearate}%)</Text>
+                <Text style={styles.rightText}>{numeral(detail.rentareasum).format('0,0.00')}{Macro.meter_square} ({detail.rentarearate}%)</Text>
               </Flex>
               {/* <Flex
                 direction="row"
@@ -150,10 +162,10 @@ export default class DetailBuildingPage extends BasePage {
               >
                 <Text style={styles.leftText}>可招商面积：</Text>
                 <Text style={styles.rightText}>
-                  {numeral(detail.investmentareasum).format('0,0.00')}{Macro.meter_square}({detail.investmentarearate}%)
+                  {numeral(detail.investmentareasum).format('0,0.00')}{Macro.meter_square} ({detail.investmentarearate}%)
                 </Text>
               </Flex>
-              <Flex
+              {/* <Flex
                 direction="row"
                 justify="between"
                 style={{ paddingBottom: 10, paddingLeft: 15, paddingRight: 15 }}
@@ -162,7 +174,7 @@ export default class DetailBuildingPage extends BasePage {
                 <Text style={styles.rightText}>
                   {detail.rentingaverprice} {Macro.yuan_meter_day}
                 </Text>
-              </Flex>
+              </Flex> */}
               <Flex
                 direction="row"
                 justify="between"
@@ -273,7 +285,11 @@ export default class DetailBuildingPage extends BasePage {
               </Flex>
             </ScrollView>
 
-            <ScrollView>
+            <ScrollView 
+              style={{
+                paddingBottom: 20
+              }}
+            >
               {data.map((item, sectionIndex) => {
                 return (
                   <Flex
@@ -306,7 +322,7 @@ export default class DetailBuildingPage extends BasePage {
                         style={{
                           paddingLeft: 10,
                           color: '#333'
-                        }}>{item.area} ({Macro.meter_square})
+                        }}>{numeral(item.area).format('0,0.00')}{Macro.meter_square}
                       </Text>
                     </Flex>
 
@@ -324,7 +340,7 @@ export default class DetailBuildingPage extends BasePage {
                             return (
                               <View
                                 key={index + 'it'}
-                                style={{ paddingLeft: index === 0 ? 15 : 5 }}
+                                style={{ paddingBottom: 5, paddingLeft: index === 0 ? 15 : 5 }}
                               >
                                 {it.open === true ? (
                                   <Flex>
@@ -344,10 +360,10 @@ export default class DetailBuildingPage extends BasePage {
                                         align="start"
                                         style={[
                                           {
-                                            height: 100, 
+                                            height: 100,
                                             paddingRight: 15,
                                             paddingLeft: 5,
-                                            paddingBottom: 5,
+                                            // paddingBottom: 5,
                                             backgroundColor: color,//设置颜色
                                             borderWidth: 1,
                                             borderColor: '#7C8384'
@@ -357,10 +373,13 @@ export default class DetailBuildingPage extends BasePage {
                                       >
                                         <Flex align="start" direction="column">
                                           <Text style={styles.color_top}>
-                                            {it.name}
+                                            {it.name} {it.area}{Macro.meter_square}
                                           </Text>
                                           <Text style={styles.color_top}>
-                                            {it.area}{Macro.meter_square}/{it.tenantName}
+                                            {it.tenantName}
+                                          </Text>
+                                          <Text style={styles.color_top}>
+                                            {it.signboardName}
                                           </Text>
                                         </Flex>
                                         {/* <Flex align="start" direction="column">
@@ -376,9 +395,7 @@ export default class DetailBuildingPage extends BasePage {
                                           ) : null}
                                         </Flex> */}
                                       </Flex>
-
                                     </TouchableWithoutFeedback>
-
                                     <TouchableWithoutFeedback
                                       onPress={() =>
                                         this.props.navigation.navigate(
@@ -388,10 +405,9 @@ export default class DetailBuildingPage extends BasePage {
                                       }>
                                       <Flex
                                         style={[
-                                          { 
+                                          {
                                             marginLeft: 5,
                                             height: 100,
-
                                             backgroundColor: color,//设置颜色
                                             borderWidth: 1,
                                             borderColor: '#7C8384'
@@ -431,13 +447,15 @@ export default class DetailBuildingPage extends BasePage {
                                       ]}>
                                       <Flex align="start" direction="column">
                                         <Text style={styles.color_top}>
-                                          {it.name}
+                                          {it.name} {it.area}{Macro.meter_square}
                                         </Text>
                                         <Text style={styles.color_top}>
-                                          {it.area}{Macro.meter_square}/{it.tenantName}
+                                          {it.tenantName}
+                                        </Text>
+                                        <Text style={styles.color_top}>
+                                          {it.signboardName}
                                         </Text>
                                       </Flex>
-
                                       {/* <Flex align="start" direction="column">
                                         {it.ContractCounts ? (
                                           <Text style={styles.color_top}>
@@ -450,7 +468,6 @@ export default class DetailBuildingPage extends BasePage {
                                           </Text>
                                         ) : null}
                                       </Flex> */}
-
                                     </Flex>
                                   </TouchableWithoutFeedback>
                                 )}

@@ -57,20 +57,17 @@ export default class JianYanListDetailPage extends BasePage {
             communicates: [],
             lookImageIndex: 0,
             visible: false,
-        };
-        // console.log(this.state);
+        }; 
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         this.getData();
     }
 
 
     getData = () => {
-        const {fuwu} = this.state;
-        // console.log('fuw', fuwu);
-        WorkService.weixiuDetail(fuwu.id).then(detail => {
-            // console.log('detail', detail);
+        const {fuwu} = this.state; 
+        WorkService.weixiuDetail(fuwu.id).then(detail => { 
             this.setState({
                 detail: {
                     ...detail.entity,

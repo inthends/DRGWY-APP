@@ -24,8 +24,7 @@ export default {
                 axios.defaults.baseURL = ManualAction.getUrl();
             }
 
-            // if (Object.keys(params).length > 0) {
-            //     console.log('参数', params);
+            // if (Object.keys(params).length > 0) { 
             // }
 
             if (method === 'GET') {
@@ -100,18 +99,15 @@ export default {
         return new Promise(resolve => {
             const formData = new FormData();//如果需要上传多张图片,需要遍历数组,把图片的路径数组放入formData中
             const name = isPicture ? 'picture.png' : 'file.aac';
-            let file = {uri: uri, type: 'multipart/form-data', name: name};   //这里的key(uri和type和name)不能改变,
-            //console.log('file', file);
+            let file = {uri: uri, type: 'multipart/form-data', name: name};   //这里的key(uri和type和name)不能改变, 
             formData.append('Files', file);   //这里的files就是后台需要的key
             formData.append('keyvalue', id);
             axios.defaults.headers['Content-Type'] = 'multipart/form-data';
             axios.defaults.headers['Authorization'] = 'Bearer ' + ManualAction.getTokenBYStore();
             let showLoadingNumber = UDToast.showLoading('正在上传...');
-            axios.post(uploadUrl, formData).then(res => {
-                //console.log(1122,res)
+            axios.post(uploadUrl, formData).then(res => { 
                 UDToast.hiddenLoading(showLoadingNumber);
-                const data = res.data;
-                // console.log(res);
+                const data = res.data; 
                 if (data.code !== 200) {
                     UDToast.showError(data.msg);
                     reject(null);

@@ -58,20 +58,17 @@ export default class TousuDetailPage extends BasePage {
             communicates: [],
             lookImageIndex: 0,
             visible: false,
-        };
-        console.log(this.state);
+        }; 
     }
 
-    componentDidMount(): void {
+    componentDidMount()  {
         this.getData();
     }
 
 
     getData = () => {
-        const {fuwu, type} = this.state;
-        console.log('fuw', fuwu);
-        WorkService.tousuDetail(fuwu.id).then(detail => {
-            //console.log('detail', detail);
+        const {fuwu, type} = this.state; 
+        WorkService.tousuDetail(fuwu.id).then(detail => { 
             this.setState({
                 detail: {
                     ...detail.entity,
@@ -98,8 +95,7 @@ export default class TousuDetailPage extends BasePage {
             UDToast.showInfo('请输入文字');
             return;
         }
-        WorkService.serviceHandle(handle, fuwu.id, value).then(res => {
-            //console.log(res);
+        WorkService.serviceHandle(handle, fuwu.id, value).then(res => { 
         });
     };
     communicateClick = (i) => {
@@ -129,10 +125,7 @@ export default class TousuDetailPage extends BasePage {
 
 
     render() {
-        const {images, detail, communicates} = this.state;
-        console.log(1122, detail);
-
-
+        const {images, detail, communicates} = this.state;   
         return (
             <CommonView style={{flex: 1, backgroundColor: '#fff', paddingBottom: 10}}>
                 <ScrollView>

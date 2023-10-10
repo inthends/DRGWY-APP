@@ -105,8 +105,7 @@ class ZiJinLiuPage extends BasePage {
   };
 
   // titleChange = (index) => {
-  //   const { statistics } = this.state;
-  //   console.log(this.state);
+  //   const { statistics } = this.state; 
   //   let estateId;
   //   if (index === 0) {
   //     estateId = this.state.selectBuilding.key;

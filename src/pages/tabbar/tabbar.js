@@ -13,7 +13,11 @@ import NavigatorPage from '../navigator/navigator';
 import HomePage from '../home/home';
 import SecondDetailBuildingPage from '../building/second-detail-buinding/second-detail-buinding';
 import ManagerBuildingPage from '../../pages/building/manager-building/manager-building';
+
 import DetailBuildingPage from '../building/detail-building/detail-building';
+
+import DetailParkingPage from '../building/detail-parking/detail-parking';
+
 import BuildingsPage from '../building/buildings/buildings';
 import FeeStatisticPage from '../navigator/fee-statistic/fee-statistic';
 // import {Icon} from '@ant-design/react-native';
@@ -57,13 +61,12 @@ import GdzcPandianPage from '../navigator/gdzc/gdzc_pandian';
 import GdzcDetailPage from '../navigator/gdzc/gdzc_detail';
 import AddRepairPage from '../navigator/gdzc/add-repair';
 
-
 import OrderlistPage from '../work/order_center/order_list';
 import OrderDetailPage from '../work/order_center/order_detail';
 import XunJianPointDetailPage from '../navigator/xunjian/xunjian-point-detail';
 import XunjianBeforeStart from '../navigator/xunjian/xunjian-before-start';
-import YiQingPage from '../building/yiqing/yiqing';
-import YiQingInfoPage from '../building/yiqing/yiqing-info';
+// import YiQingPage from '../building/yiqing/yiqing';
+// import YiQingInfoPage from '../building/yiqing/yiqing-info';
 import ChaoBiaoPage from '../navigator/chao-biao/chao-biao';
 import NewsList from '../work/news-list';
 import FeeChargeDetail from '../navigator/fee-charge-detail';
@@ -126,11 +129,15 @@ const BuildingNavigator = createStackNavigator(
       }),
     },
     SecondDetail: SecondDetailBuildingPage,
+
     DetailBuilding: DetailBuildingPage,
+
+    DetailParking: DetailParkingPage,
+
     Buildings: BuildingsPage,
     Home: HomePage,
-    yiqing: YiQingPage,
-    yiqinginfo: YiQingInfoPage,
+    // yiqing: YiQingPage,
+    // yiqinginfo: YiQingInfoPage,
     scanForHome: ScanOnly,
     newsList: NewsList,
     feeAdd: FeeAddPage,
@@ -140,8 +147,7 @@ const BuildingNavigator = createStackNavigator(
   {
     containerOptions: (options) => {
       const { navigation } = options;
-      DeviceEventEmitter.emit('currentNavigation', navigation);
-      //console.log('navigation 对象', navigation);
+      DeviceEventEmitter.emit('currentNavigation', navigation); 
       return {
         options,
       };
@@ -371,8 +377,7 @@ const tabbar = createBottomTabNavigator(
       tabStyle: {},
     },
     defaultNavigationOptions: ({ navigation }) => {
-      if (navigation.isFocused()) {
-        //console.log('navigation 对象', navigation);
+      if (navigation.isFocused()) { 
         DeviceEventEmitter.emit('currentNavigation', navigation);
       }
 

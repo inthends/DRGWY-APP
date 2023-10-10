@@ -13,8 +13,7 @@ export default class LoadImage extends Component {
         });
     };
 
-    componentWillReceiveProps(nextProps, nextContext) {
-        // console.log('nextProps', nextProps);
+    componentWillReceiveProps(nextProps, nextContext) { 
         if (nextProps.img !== this.state.img) {
             const state = this._handleImg(nextProps);
             this.setState({...state});
@@ -24,8 +23,7 @@ export default class LoadImage extends Component {
     _handleImg = (props) => {
         let {img, defaultImg, style} = props; 
 
-        if (img) {
-            console.log('img', img);
+        if (img) { 
             if (typeof (img) === 'string') {
                 return {
                     img: {uri: img},

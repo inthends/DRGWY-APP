@@ -34,11 +34,10 @@ export default class OrderlistPage extends BasePage {
             dataInfo: {},
             pageIndex:1,
             refreshing:false
-        };
-        console.log(this.state);
+        }; 
     }
     
-    componentDidMount(): void {
+    componentDidMount()  {
         this.onRefresh()
     }
 
@@ -54,8 +53,7 @@ export default class OrderlistPage extends BasePage {
             this.setState({
                 dataInfo: dataInfo,
                 refreshing: false,
-            }, () => {
-                // console.log(this.state.dataInfo.data);
+            }, () => { 
             });
         });
     };
@@ -69,8 +67,7 @@ export default class OrderlistPage extends BasePage {
         });
     };
     loadMore = () => {
-        const {data, total, pageIndex} = this.state.dataInfo;
-        //console.log('loadmore');
+        const {data, total, pageIndex} = this.state.dataInfo; 
         if (this.canAction && data.length < total) {
             this.setState({
                 refreshing: true,

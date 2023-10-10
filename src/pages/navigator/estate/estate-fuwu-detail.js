@@ -42,8 +42,7 @@ export default class EfuwuDetailPage extends BasePage {
     constructor(props) {
         super(props);
         let fuwu = common.getValueFromProps(this.props);
-        let type = common.getValueFromProps(this.props, 'type');
-        //console.log(fuwu, type, 11)
+        let type = common.getValueFromProps(this.props, 'type'); 
         this.state = {
             value: '',
             fuwu,
@@ -56,15 +55,13 @@ export default class EfuwuDetailPage extends BasePage {
         };
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         this.getData();
     }
 
     getData = () => {
-        const { fuwu, type } = this.state;
-        // console.log(fuwu);
-        WorkService.serviceDetail(type, fuwu.id).then(item => {
-            console.log('detail', item);
+        const { fuwu, type } = this.state; 
+        WorkService.serviceDetail(type, fuwu.id).then(item => { 
             this.setState({
                 detail: {
                     ...item.data,
@@ -85,8 +82,7 @@ export default class EfuwuDetailPage extends BasePage {
         });
     };
     click = (handle) => {
-        const { fuwu, value } = this.state;
-        // console.log(11111,value)
+        const { fuwu, value } = this.state; 
         if (handle === '回复' && !(value && value.length > 0)) {
             UDToast.showInfo('请输入文字');
             return;
@@ -98,17 +94,14 @@ export default class EfuwuDetailPage extends BasePage {
         });
     };
 
-    communicateClick = (i) => {
-
-        let c = this.state.communicates;
-        // console.log(c);
+    communicateClick = (i) => { 
+        let c = this.state.communicates; 
         let d = c.map(it => {
             if (it.id === i.id) {
                 it.show = i.show !== true;
             }
             return it;
-        });
-        //console.log(d);
+        }); 
         this.setState({
             communicates: d
         });

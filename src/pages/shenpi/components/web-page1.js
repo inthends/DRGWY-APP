@@ -4,8 +4,7 @@ import { WebView } from 'react-native-webview';
 import BasePage from '../../base/base';
 import common from '../../../utils/common';
 export default class webPage1 extends BasePage {
-  static navigationOptions = ({ navigation }) => {
-    // console.log(1, navigation);
+  static navigationOptions = ({ navigation }) => {  
     
     return {
       // tabBarVisible: false,

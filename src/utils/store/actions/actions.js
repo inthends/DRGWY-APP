@@ -9,8 +9,7 @@ import { ACTIONS } from '../action-types/action-types';
 //         let action = {type};
 //         argNames.forEach((arg, index) => {
 //             action[argNames[index]] = args[index];
-//         });
-//         console.log('action', action);
+//         }); 
 //         return action;
 //     };
 // }
@@ -21,7 +20,7 @@ import { ACTIONS } from '../action-types/action-types';
 function makeActionCreator(type) {
   return function (...args) {
     let action = { ...args, ...{ type } };
-    console.log('action', action);
+    //('action', action);
     return action;
   };
 }

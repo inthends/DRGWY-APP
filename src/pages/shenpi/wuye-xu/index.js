@@ -38,8 +38,7 @@ export default class EfuwuDetailPage extends BasePage {
   constructor(props) {
     super(props);
     // let fuwu = common.getValueFromProps(this.props);
-    // let type = common.getValueFromProps(this.props, 'type');
-    //console.log(fuwu, type, 11)
+    // let type = common.getValueFromProps(this.props, 'type'); 
     this.state = {
       value: '',
       fuwu: '',
@@ -53,7 +52,7 @@ export default class EfuwuDetailPage extends BasePage {
     this.companyDetailRef = null;
   }
 
-  componentDidMount(): void {
+  componentDidMount() {
     this.getData();
   }
 
@@ -61,8 +60,7 @@ export default class EfuwuDetailPage extends BasePage {
     const { fuwu, type } = this.state;
   };
   click = (handle) => {
-    const { fuwu, value } = this.state;
-    // console.log(11111,value)
+    const { fuwu, value } = this.state; 
     if (handle === '回复' && !(value && value.length > 0)) {
       UDToast.showInfo('请输入文字');
       return;

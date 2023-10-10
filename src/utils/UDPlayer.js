@@ -15,9 +15,9 @@ export default {
             // Play the sound with an onEnd callback
             whoosh.play((success) => {
                 if (success) {
-                    console.log('successfully finished playing');
+                    //console.log('successfully finished playing');
                 } else {
-                    console.log('playback failed due to audio decoding errors');
+                    //console.log('playback failed due to audio decoding errors');
                 }
                 whoosh.release();
             });

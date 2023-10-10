@@ -63,7 +63,7 @@ class AddRepairPage extends BasePage {
         this.keyboardDidHideListener = null;
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
@@ -120,20 +120,16 @@ class AddRepairPage extends BasePage {
                         AudioEncoding: 'aac',
                     });
 
-                    AudioRecorder.onProgress = (data) => {
-                        //console.log(Math.floor(data.currentTime));
+                    AudioRecorder.onProgress = (data) => { 
                         // this.setState({currentTime: Math.floor(data.currentTime)});
                     };
 
                     AudioRecorder.onFinished = (data) => {
-                        // Android callback comes in the form of a promise instead.
-                        // console.log('finish', data);
+                        // Android callback comes in the form of a promise instead. 
                         // if (common.isIOS()) {
                         //     resolve(data.audioFileURL);
-                        // }
-                        //console.log('recond', data);
-                        api.uploadFile(data.audioFileURL, this.state.id, '/api/MobileMethod/MUploadServiceDesk', false).then(res => {
-                            //console.log(res);
+                        // } 
+                        api.uploadFile(data.audioFileURL, this.state.id, '/api/MobileMethod/MUploadServiceDesk', false).then(res => { 
                             this.setState({ fileUrl: res });
                         }).catch(error => {
 
@@ -167,15 +163,13 @@ class AddRepairPage extends BasePage {
 
 
     selectImages = () => {
-        SelectImage.select(this.state.id, '/api/MobileMethod/MUploadServiceDesk').then(res => {
-            //console.log(1122, res);
+        SelectImage.select(this.state.id, '/api/MobileMethod/MUploadServiceDesk').then(res => { 
             let images = [...this.state.images];
             images.splice(images.length - 1, 0, { 'icon': res });
             if (images.length > 4) {
                 //最多五张
                 images = images.filter((item, index) => index !== images.length - 1);
-            }
-            //console.log(images);
+            } 
             this.setState({ images });
         }).catch(error => {
         });

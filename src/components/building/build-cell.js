@@ -19,7 +19,7 @@ export default class BuildingCell extends BasePage {
         };
     }
 
-    //componentDidMount(): void {}
+    //componentDidMount() {}
     //louDetail shebeiDetail
     //<TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('feeDetail',{})}>
     //DetailBuilding
@@ -28,8 +28,7 @@ export default class BuildingCell extends BasePage {
         const { item } = this.props;
         return (
             // <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('feeDetail',{})}>
-            // <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('louDetail',{})}>
-
+            // <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('louDetail',{})}> 
             <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate(this.props.nextRouteName, { data: item })}>
                 <View style={styles.content}>
                     <Flex direction="row">
@@ -117,8 +116,8 @@ const styles = StyleSheet.create({
     line: {
         width: 1,
         height: 15,
-        backgroundColor: Macro.color_c2c1c5,
-        marginLeft: 25,
-        marginRight: 25
+        backgroundColor: Macro.color_c2c1c5, 
+        marginLeft: 20,
+        marginRight: 20
     }
 });

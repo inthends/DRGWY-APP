@@ -31,14 +31,13 @@ class XunjianBeforeStart extends BasePage {
         };
     }
 
-    componentDidMount(): void {
+    componentDidMount()  {
         const { pointId } = this.state;
 
         if (this.props.hasNetwork) {
             this.initUI();
         } else {
-            const items = this.props.xunJianData.scanLists.filter(item => item.pointId === pointId);
-            //console.log(211, items);
+            const items = this.props.xunJianData.scanLists.filter(item => item.pointId === pointId); 
             this.setState({ items });
         }
 
@@ -47,16 +46,14 @@ class XunjianBeforeStart extends BasePage {
             () => {
                 if (this.props.hasNetwork) {
                     this.initUI(false);
-                } else {
-                    //console.log(11, this.props);
+                } else { 
                 }
             },
         );
     }
 
     initUI(showLoading = true) {
-        const { pointId } = this.state;
-        //console.log(321, this.state);
+        const { pointId } = this.state; 
         XunJianService.xunjianPointTasks(pointId, showLoading).then(items => {
             this.setState({ items });
         });

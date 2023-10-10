@@ -16,8 +16,7 @@ import NavigatorService from '../navigator-service';
 import CommonView from '../../../components/CommonView';
 
 export default class LouPark extends BasePage {
-    static navigationOptions = ({ navigation }) => {
-        // console.log(1, navigation);
+    static navigationOptions = ({ navigation }) => { 
         return {
             tabBarVisible: false,
             title: '车位',
@@ -40,7 +39,7 @@ export default class LouPark extends BasePage {
     }
 
 
-    componentDidMount(): void {
+    componentDidMount() {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
@@ -55,8 +54,7 @@ export default class LouPark extends BasePage {
                 //             };
                 //         });
                 //     });
-                //     Promise.all(promises).then(floors => {
-                //         // console.log('floors', floors);
+                //     Promise.all(promises).then(floors => { 
                 //         this.setState({ floors });
                 //     });
                 // });

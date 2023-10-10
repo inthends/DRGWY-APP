@@ -58,20 +58,17 @@ export default class WeixiuDetailPage extends BasePage {
             communicates: [],
             lookImageIndex: 0,
             visible: false,
-        };
-        console.log(this.state);
+        }; 
     }
 
-    componentDidMount(): void {
+    componentDidMount()  {
         this.getData();
     }
 
 
     getData = () => {
-        const {fuwu, type} = this.state;
-        // console.log('fuw', fuwu);
-        WorkService.weixiuDetail(fuwu.id).then(detail => {
-            // console.log('detail', detail);
+        const {fuwu, type} = this.state; 
+        WorkService.weixiuDetail(fuwu.id).then(detail => { 
             this.setState({
                 detail: {
                     ...detail.entity,
@@ -99,8 +96,7 @@ export default class WeixiuDetailPage extends BasePage {
             UDToast.showInfo('请输入文字');
             return;
         }
-        WorkService.serviceHandle(handle, fuwu.id, value).then(res => {
-            console.log(res);
+        WorkService.serviceHandle(handle, fuwu.id, value).then(res => { 
         });
     };
     communicateClick = (i) => {

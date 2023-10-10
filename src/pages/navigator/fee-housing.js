@@ -27,8 +27,7 @@ import CommonView from '../../components/CommonView';
 
 
 class FeeHousePage extends BasePage {
-    static navigationOptions = ({ navigation }) => {
-        //console.log(1, navigation);
+    static navigationOptions = ({ navigation }) => { 
         return {
             tabBarVisible: false,
             title: '上门收费',
@@ -79,7 +78,7 @@ class FeeHousePage extends BasePage {
                 dataInfo: dataInfo,
                 refreshing: false,
             }, () => {
-                console.log(this.state.dataInfo.data);
+                //console.log(this.state.dataInfo.data);
             });
         });
 
@@ -87,9 +86,7 @@ class FeeHousePage extends BasePage {
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
-        const nextSelectBuilding = nextProps.selectBuilding;
-        // console.log('selectBuilding', selectBuilding);
-        // console.log('nextSelectBuilding', nextSelectBuilding); 
+        const nextSelectBuilding = nextProps.selectBuilding; 
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
             this.setState({ selectBuilding: nextProps.selectBuilding }, () => {
                 this.onRefresh();
@@ -108,8 +105,7 @@ class FeeHousePage extends BasePage {
         });
     };
     loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo;
-        //console.log('loadmore');
+        const { data, total, pageIndex } = this.state.dataInfo; 
         if (this.canAction && data.length < total) {
             this.setState({
                 refreshing: true,
@@ -155,8 +151,7 @@ class FeeHousePage extends BasePage {
 
     render() {
         const { statistics, dataInfo } = this.state;
-        //const { selectBuilding } = this.props;
-        //console.log('selet', selectBuilding);
+        //const { selectBuilding } = this.props; 
         return (
             <View style={{ flex: 1 }}>
                 <CommonView style={{ flex: 1 }}>

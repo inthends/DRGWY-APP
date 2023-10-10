@@ -49,11 +49,8 @@ export default class WanChengListDetailPage extends BasePage {
     };
 
     constructor(props) {
-        super(props);
-
-
-        let fuwu = common.getValueFromProps(this.props);
-        console.log(11,fuwu)
+        super(props); 
+        let fuwu = common.getValueFromProps(this.props); 
         let type = common.getValueFromProps(this.props, 'type');
         this.state = {
             value: '',
@@ -64,20 +61,17 @@ export default class WanChengListDetailPage extends BasePage {
             communicates: [],
             lookImageIndex: 0,
             visible: false,
-        };
-        console.log(this.state);
+        }; 
     }
 
-    componentDidMount(): void {
+    componentDidMount()  {
         this.getData();
     }
 
 
     getData = () => {
-        const { fuwu, type } = this.state;
-        // console.log('fuw', fuwu);
-        WorkService.weixiuDetail(fuwu.id).then(detail => {
-            // console.log('detail', detail);
+        const { fuwu, type } = this.state; 
+        WorkService.weixiuDetail(fuwu.id).then(detail => { 
             this.setState({
                 detail: {
                     ...detail.entity,

@@ -10,6 +10,8 @@ import { connect } from 'react-redux';
 import XunJianService from './xunjian-service';
 // import memberReducer from '../../../utils/store/reducers/member-reducer'; 
 // import xunJianReducer from '../../../utils/store/reducers/xunjian-reducer';
+// import ImagePicker from 'react-native-image-picker';
+
 
 class XunJianPage extends BasePage {
 
@@ -26,8 +28,7 @@ class XunJianPage extends BasePage {
         };
     };
 
-    onSelect = (person) => {
-        // console.log(111, person);
+    onSelect = (person) => { 
         this.setState({
             person,
         }, () => {
@@ -66,6 +67,8 @@ class XunJianPage extends BasePage {
         });
     };
 
+
+    //开始巡检
     start = () => {
         // let person = this.state.person || {};
         // this.props.navigation.navigate('xunjianBeforeStart', {
@@ -74,18 +77,42 @@ class XunJianPage extends BasePage {
         //         pointId:'7681da78-e5da-4bbe-8d1e-15c78237be97',
         //     },
         // });
-        //
-        //
         // return;
+
+ 
+
+       
         this.props.navigation.push('scanForWork', {
             data: {
                 callBack: this.callBack,
                 needBack: '1'
             }
         });
+
+        //2023-10-06 由于不能放大，修改
+        // ImagePicker.launchCamera(
+        //     {
+        //         mediaType: 'photo',
+        //         includeBase64: false,
+        //         maxHeight: 200,
+        //         maxWidth: 200,
+        //     },
+        //     (response) => {
+        //         //读码
+        //         let person = this.state.person || {};
+        //         this.props.navigation.navigate('xunjianBeforeStart', {
+        //             'data': {
+        //                 person,
+        //                 pointId
+        //             }
+        //         });
+        //     },
+        // )
+
+
     };
 
-    componentDidMount(): void {
+    componentDidMount() {
         this.initUI();
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
@@ -102,12 +129,11 @@ class XunJianPage extends BasePage {
         );
     }
 
-    componentWillUnmount(): void {
+    componentWillUnmount()  {
         this.viewDidAppear.remove();
     }
 
-    initUI() {
-        //console.log(12,this.props)
+    initUI() { 
         if (this.props.hasNetwork) {
             this.hasNetwork();
         } else {
@@ -123,8 +149,7 @@ class XunJianPage extends BasePage {
             });
         });
 
-        XunJianService.xunjianIndexList(person.id).then(res => {
-            //console.log(12, res.data);
+        XunJianService.xunjianIndexList(person.id).then(res => { 
             Promise.all(res.data.map(item => XunJianService.xunjianIndexDetail(item.lineId))).then(all => {
                 let items = res.data.map((item, index) => {
                     return {
@@ -132,8 +157,7 @@ class XunJianPage extends BasePage {
                         items: all[index]
                     };
                 });
-                this.setState({ items: [...items] }, () => {
-                    //console.log(44, this.state);
+                this.setState({ items: [...items] }, () => {  
                 });
             });
             // Promise.all()
@@ -141,13 +165,11 @@ class XunJianPage extends BasePage {
     }
 
     noNetwork() {
-        const xunJianData = this.props.xunJianData;
-        //console.log(12,this.props); 
+        const xunJianData = this.props.xunJianData; 
         const params = {
             ...xunJianData.allData,
             items: xunJianData.lists
-        };
-        //console.log('before2',params)
+        }; 
         this.setState({
             ...params,
         });
@@ -273,8 +295,7 @@ class XunJianPage extends BasePage {
 }
 
 
-const mapStateToProps = ({ memberReducer, xunJianReducer }) => {
-    //console.log(1221,memberReducer,xunJianReducer)
+const mapStateToProps = ({ memberReducer, xunJianReducer }) => { 
     return {
         user: {
             ...memberReducer.user,

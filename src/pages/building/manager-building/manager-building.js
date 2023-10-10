@@ -189,8 +189,7 @@ class ManagerBuildingPage extends BasePage {
         };
       }
       return item;
-    });
-    console.log(allData);
+    }); 
     this.setState({ allData: allData });
   };
 
@@ -259,16 +258,13 @@ class ManagerBuildingPage extends BasePage {
         };
       }
       return item;
-    });
-    // console.log(123, allData);
+    }); 
     this.setState({ allData: allData });
   };
-  clickRow = (data) => {
-    console.log('selectBuilding', data);
+  clickRow = (data) => { 
     if (this.selectDrawerType === DrawerType.building) {
       this.props.saveBuilding(data);
-    } else {
-      console.log('heheda', data);
+    } else { 
       this.props.saveSelectTask(data);
     }
 

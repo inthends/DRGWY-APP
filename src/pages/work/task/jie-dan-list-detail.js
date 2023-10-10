@@ -58,20 +58,17 @@ export default class JieDanListDetailPage extends BasePage {
             communicates: [],
             lookImageIndex: 0,
             visible: false,
-        };
-        console.log(this.state);
+        }; 
     }
 
-    componentDidMount(): void {
+    componentDidMount()  {
         this.getData();
     }
 
 
     getData = () => {
-        const {fuwu, type} = this.state;
-        // console.log('fuw', fuwu);
-        WorkService.weixiuDetail(fuwu.id).then(detail => {
-            // console.log('detail', detail);
+        const {fuwu, type} = this.state; 
+        WorkService.weixiuDetail(fuwu.id).then(detail => { 
             this.setState({
                 detail: {
                     ...detail.entity,
@@ -134,10 +131,7 @@ export default class JieDanListDetailPage extends BasePage {
 
 
     render() {
-        const {images, detail, communicates} = this.state;
-        console.log(1122, detail);
-
-
+        const {images, detail, communicates} = this.state;  
         return (
             <CommonView style={{flex: 1, backgroundColor: '#fff', paddingBottom: 10}}>
                 <ScrollView>

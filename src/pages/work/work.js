@@ -75,12 +75,11 @@ export default class WorkPage extends BasePage {
         };
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
-                WorkService.workData(this.state.showLoading).then(data => {
-                    // console.log(123, data);
+                WorkService.workData(this.state.showLoading).then(data => { 
                     this.setState({
                         data,
                         showLoading: false,

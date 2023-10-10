@@ -23,9 +23,7 @@ type Props = {};
 
 class App extends Component<Props> {
   constructor(props) {
-    super(props);
-    console.log(123, process.env);
-
+    super(props);  
     DeviceEventEmitter.addListener('currentNavigation', (navigation) => {
       this.navigation = navigation;
     });
@@ -35,8 +33,7 @@ class App extends Component<Props> {
     JPush.init();
 
     //连接状态
-    this.connectListener = (result) => {
-      // console.log('connectListener:' + JSON.stringify(result));
+    this.connectListener = (result) => { 
     };
     JPush.addConnectEventListener(this.connectListener);
     //通知回调
@@ -71,24 +68,23 @@ class App extends Component<Props> {
     JPush.addLocalNotificationListener(this.localNotificationListener);
     //自定义消息回调
     this.customMessageListener = (result) => {
-      console.log('customMessageListener:' + JSON.stringify(result));
+      //console.log('customMessageListener:' + JSON.stringify(result));
     };
     JPush.addCustomMessagegListener(this.customMessageListener);
     //tag alias事件回调
     this.tagAliasListener = (result) => {
-      console.log('tagAliasListener:' + JSON.stringify(result));
+      //console.log('tagAliasListener:' + JSON.stringify(result));
     };
     JPush.addTagAliasListener(this.tagAliasListener);
     //手机号码事件回调
     this.mobileNumberListener = (result) => {
-      console.log('mobileNumberListener:' + JSON.stringify(result));
+      //console.log('mobileNumberListener:' + JSON.stringify(result));
     };
     JPush.addMobileNumberListener(this.mobileNumberListener);
 
     // JPush.getRegistrationID(res => {
     //     alert(JSON.stringify(res));
     // });
-
     JPush.setLoggerEnable(true);
   }
 

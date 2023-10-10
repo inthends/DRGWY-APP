@@ -17,8 +17,7 @@ import CommonView from '../../../components/CommonView';
 import api from '../../../utils/api';
 
 class ShebeiDetail extends BasePage {
-    static navigationOptions = ({ navigation }) => {
-        // console.log(1, navigation);
+    static navigationOptions = ({ navigation }) => { 
         return {
             tabBarVisible: false,
             title: '设备详情',
@@ -39,8 +38,7 @@ class ShebeiDetail extends BasePage {
     constructor(props) {
         super(props);
         let room = common.getValueFromProps(this.props) || { id: '' };
-        // let room = common.getValueFromProps(this.props);
-        //console.log('room123', room);
+        // let room = common.getValueFromProps(this.props); 
         this.state = {
             room,
             repaireDetail: null,
@@ -75,8 +73,7 @@ class ShebeiDetail extends BasePage {
             dateFrom: startTime2,
             dateTo: endTime2,
         }, false).then(res => {
-            this.setState({ maintenances: res }, () => {
-                console.log(12, this.state.maintenances);
+            this.setState({ maintenances: res }, () => { 
             });
         });
     };
@@ -92,8 +89,7 @@ class ShebeiDetail extends BasePage {
         const { detail, repairs = [], maintenances = [], repaireDetail, maintenanceDetail, ym } = this.state;
         if (!detail) {
             return null;
-        }
-        //console.log(11, repairs); 
+        } 
         return (
             <CommonView style={{ flex: 1 }}>
                 <ScrollView>

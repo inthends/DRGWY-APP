@@ -60,7 +60,7 @@ class AddWorkPage extends BasePage {
         this.keyboardDidHideListener = null;
     }
 
-    componentDidMount(): void {
+    componentDidMount(){
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
@@ -117,23 +117,18 @@ class AddWorkPage extends BasePage {
                         AudioEncoding: 'aac',
                     });
 
-                    AudioRecorder.onProgress = (data) => {
-                        //console.log(Math.floor(data.currentTime));
+                    AudioRecorder.onProgress = (data) => { 
                         // this.setState({currentTime: Math.floor(data.currentTime)});
                     };
 
                     AudioRecorder.onFinished = (data) => {
-                        // Android callback comes in the form of a promise instead.
-                        // console.log('finish', data);
+                        // Android callback comes in the form of a promise instead. 
                         // if (common.isIOS()) {
                         //     resolve(data.audioFileURL);
-                        // }
-                        //console.log('recond', data);
-                        api.uploadFile(data.audioFileURL, this.state.id, '/api/MobileMethod/MUploadServiceDesk', false).then(res => {
-                            //console.log(res);
+                        // } 
+                        api.uploadFile(data.audioFileURL, this.state.id, '/api/MobileMethod/MUploadServiceDesk', false).then(res => { 
                             this.setState({ fileUrl: res });
                         }).catch(error => {
-
                         });
                     };
                     this.recordId = UDToast.showLoading('正在录音中...');
@@ -164,14 +159,12 @@ class AddWorkPage extends BasePage {
 
 
     selectImages = () => {
-        SelectImage.select(this.state.id, '/api/MobileMethod/MUploadServiceDesk').then(res => {
-            //console.log(1122, res);
+        SelectImage.select(this.state.id, '/api/MobileMethod/MUploadServiceDesk').then(res => {  
             let images = [...this.state.images];
             images.splice(images.length - 1, 0, { 'icon': res });
             if (images.length > 4) {
                 images = images.filter((item, index) => index !== images.length - 1);
-            }
-            //console.log(images);
+            } 
             this.setState({ images });
         }).catch(error => {
         });
@@ -213,8 +206,7 @@ class AddWorkPage extends BasePage {
         } else {
             const { taskId } = this.state;
             const { xunJianAction } = this.props;
-            const data = xunJianAction[taskId];
-            //console.log(this.props, xunJianAction, taskId, data)
+            const data = xunJianAction[taskId]; 
             if (!data) {
                 UDToast.showSuccess('数据异常，请关闭app重新进入');
             } else {

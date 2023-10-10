@@ -65,16 +65,14 @@ export default class HuiFangDetailPage extends BasePage {
         };
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         this.getData();
     }
 
 
     // getData = () => {
-    //     const { fuwu, type } = this.state;
-    //     // console.log('fuw', fuwu);
-    //     WorkService.weixiuDetail(fuwu.id).then(detail => {
-    //         // console.log('detail', detail);
+    //     const { fuwu, type } = this.state; 
+    //     WorkService.weixiuDetail(fuwu.id).then(detail => { 
     //         this.setState({
     //             detail: {
     //                 ...detail.entity,
@@ -100,8 +98,7 @@ export default class HuiFangDetailPage extends BasePage {
 
     //获取服务单信息
     getData = () => {
-        const { fuwu, type } = this.state;
-        // console.log(fuwu);
+        const { fuwu, type } = this.state; 
         WorkService.serviceDetail(type, fuwu.id).then(item => {
             this.setState({
                 detail: {

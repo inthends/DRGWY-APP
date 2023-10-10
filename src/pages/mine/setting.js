@@ -40,8 +40,7 @@ class SettingPage extends BasePage {
         };
     }
 
-    // componentDidMount(): void {
-    //     console.log('network', this.props);
+    // componentDidMount(): void { 
     // }
 
     logout = () => {
@@ -79,8 +78,7 @@ class SettingPage extends BasePage {
         NativeModules.LHNToast.changeprint();
     }
 
-    update() {
-        //console.log(11, this.props);
+    update() { 
 
         this.loading = UDToast.showLoading('正在同步中...');
         XunJianService.xunjianData(this.props.user.userId, false).then(resp => {
@@ -98,8 +96,7 @@ class SettingPage extends BasePage {
                             allData: resp || {},
                             lists: rea || [],
                             scanLists: r || {},
-                        };
-                        console.log(1221, aaa);
+                        }; 
                         UDToast.showInfo('同步完成');
                         this.props.saveXunjian(aaa);
                     }).catch(err => {
@@ -140,8 +137,7 @@ class SettingPage extends BasePage {
                         let file = { uri: img.icon.fileUri, type: 'multipart/form-data', name: 'picture.png' };   //这里的key(uri和type和name)不能改变,
                         formData.append('Files', file);   //这里的files就是后台需要的key
                     }
-                    formData.append('keyvalue', id);
-                    console.log('formData', formData);
+                    formData.append('keyvalue', id); 
                     axios.defaults.headers['Content-Type'] = 'multipart/form-data';
                     axios.defaults.headers['Authorization'] = 'Bearer ' + ManualAction.getTokenBYStore();
                     return axios.post('/api/MobileMethod/MUploadPollingTask', formData);

@@ -24,8 +24,7 @@ import CommonView from '../../components/CommonView';
 //import WorkService from '../work/work-service';
 
 export default class FeeParkingsPage extends BasePage {
-    static navigationOptions = ({ navigation }) => {
-        // console.log(1, navigation);
+    static navigationOptions = ({ navigation }) => { 
         return {
             tabBarVisible: false,
             title: '上门收费',

@@ -59,8 +59,7 @@ export default class PaiDanListDetailPage extends BasePage {
             lookImageIndex: 0,
             visible: false,
             selectPerson: null,
-        };
-        console.log(this.state);
+        }; 
     }
 
     onSelect = ({ selectPerson }) => {
@@ -69,7 +68,7 @@ export default class PaiDanListDetailPage extends BasePage {
         })
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         this.getData();
     }
 
@@ -140,9 +139,7 @@ export default class PaiDanListDetailPage extends BasePage {
 
 
     render() {
-        const { images, detail, communicates, selectPerson } = this.state;
-        //console.log(1122, detail); 
-
+        const { images, detail, communicates, selectPerson } = this.state; 
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>

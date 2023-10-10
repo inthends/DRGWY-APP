@@ -42,7 +42,7 @@ export default class SelectAddressPage extends BasePage {
         };
     }
 
-    componentDidMount(): void {
+    componentDidMount()  {
         this.getData();
     }
 
@@ -109,8 +109,7 @@ export default class SelectAddressPage extends BasePage {
             this.setState({ items, refreshing: false });
         });
     };
-    next = (item) => {
-        //console.log(item);
+    next = (item) => { 
         if (item.type !== 5) {
             this.props.navigation.push('select', {
                 'data': {

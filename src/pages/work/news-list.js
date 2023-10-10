@@ -8,8 +8,7 @@ import {Flex, Icon} from '@ant-design/react-native';
 
 
 class NewsList extends BasePage {
-    static navigationOptions = ({navigation}) => { 
-        //console.log(1, navigation);
+    static navigationOptions = ({navigation}) => {  
         return {
             title: '未读消息',
             headerForceInset:this.headerForceInset,
@@ -38,7 +37,7 @@ class NewsList extends BasePage {
         };
     }
 
-    componentDidMount(): void { 
+    componentDidMount()  { 
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
@@ -47,7 +46,7 @@ class NewsList extends BasePage {
         );
     }
 
-    componentWillUnmount(): void {
+    componentWillUnmount()  {
         this.viewDidAppear.remove();
     }
 
@@ -63,8 +62,7 @@ class NewsList extends BasePage {
                 dataInfo: dataInfo,
                 refreshing: false,
                 pageIndex: dataInfo.pageIndex,
-            }, () => {
-                // console.log(this.state.dataInfo.data);
+            }, () => { 
             });
         });
     };
@@ -79,8 +77,7 @@ class NewsList extends BasePage {
         });
     };
     loadMore = () => {
-        const {data, total, pageIndex} = this.state.dataInfo;
-        // console.log('loadmore', this.canAction);
+        const {data, total, pageIndex} = this.state.dataInfo; 
 
         if (!this.canAction && data.length < total) {
             // if (data.length < total) {
@@ -167,8 +164,7 @@ class NewsList extends BasePage {
                 //             this.props.navigation.navigate('huifang', {data: item});
                 //             break;
                 //         }
-                //         default:
-                //             console.log(item);
+                //         default: 
                 //             break;
                 //
                 //     }

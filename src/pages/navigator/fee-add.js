@@ -46,8 +46,7 @@ class FeeAddPage extends BasePage {
     constructor(props) {
         super(props);
         //let room = common.getValueFromProps(this.props) || {id:'FY-XHF-01-0101'};
-        let room = common.getValueFromProps(this.props);
-        //console.log('room456', room);
+        let room = common.getValueFromProps(this.props); 
         this.state = {
             room,
             pageIndex: 1,
@@ -120,8 +119,7 @@ class FeeAddPage extends BasePage {
             if (res.length === 0) {
                 UDToast.showError('暂无可加费项目');
                 return;
-            }
-            //console.log(121, res);
+            } 
             const items = res[0].children;
             let big;
             if (items.length === 0) {
@@ -133,8 +131,7 @@ class FeeAddPage extends BasePage {
                 items: res[0].children,
                 big,
                 show: true
-            }, () => {
-                //console.log(1, this.state);
+            }, () => { 
             });
 
         });
@@ -162,8 +159,7 @@ class FeeAddPage extends BasePage {
                     number: res.number + '',
                     amount: res.amount + ''
                 },
-            }, () => {
-                //console.log(212, this.state);
+            }, () => { 
             });
         }).catch(error => {
             this.setState({

@@ -18,3 +18,11 @@ DownloadService 类，有bug
         String appName =  getApplicationInfo().nonLocalizedLabel.toString();
         int icon = getApplicationInfo().icon;
         mBuilder.setContentTitle(appName).setSmallIcon(icon);
+
+
+用VS Code 打开项目
+运行start命令
+
+打开android studio点击运行
+
+模拟运行 APP

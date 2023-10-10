@@ -38,11 +38,10 @@ class StartXunJianPage extends BasePage {
             data: {},
             inspectData: [],
             ...common.getValueFromProps(this.props), // lineId,pointId,person
-        };
-        //console.log(this.state);
+        }; 
     }
 
-    componentDidMount(): void {
+    componentDidMount()  {
         const { id, pointId, item } = this.state;
 
         if (this.props.hasNetwork) {
@@ -71,14 +70,12 @@ class StartXunJianPage extends BasePage {
     }
 
     selectImages = () => {
-        SelectImage.select(this.state.id, '/api/MobileMethod/MUploadPollingTask', this.props.hasNetwork).then(res => {
-            //console.log(1122, res);
+        SelectImage.select(this.state.id, '/api/MobileMethod/MUploadPollingTask', this.props.hasNetwork).then(res => { 
             let images = [...this.state.images];
             images.splice(images.length - 1, 0, { 'icon': res });
             if (images.length > 4) {
                 images = images.filter((item, index) => index !== images.length - 1);
-            }
-            //console.log(images);
+            } 
             if (images.length > 1) {
                 if (!!images[0]) {
                     this.setState({ images });
@@ -88,8 +85,7 @@ class StartXunJianPage extends BasePage {
                 this.setState({ images });
             }
 
-        }).catch(error => {
-            //console.log(error);
+        }).catch(error => { 
         });
     };
     submit = () => {
@@ -102,8 +98,7 @@ class StartXunJianPage extends BasePage {
                 data.contents.map((subItem) => {
                     newInspectData.push({ id: subItem.id, taskId: item.id, contentId: subItem.contentId, result: 1, memo: '' })
                 })
-            } catch (error) {
-                console.log(error)
+            } catch (error) { 
             }
         }
         else {
@@ -148,8 +143,7 @@ class StartXunJianPage extends BasePage {
             }
             return item;
         })
-        this.setState({ inspectData });
-        //console.log('888888888' + this.state);
+        this.setState({ inspectData }); 
     }
     
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {

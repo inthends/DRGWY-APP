@@ -30,8 +30,7 @@ class SecondDetailBuildingPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let item = common.getValueFromProps(this.props);
-        //console.log('detail2', item);
+        let item = common.getValueFromProps(this.props); 
         this.state = {
             item,
             index: 0,
@@ -96,7 +95,7 @@ class SecondDetailBuildingPage extends BasePage {
         if (this.state.index === 0) {
             content =
                 <Flex direction='column' align='start'
-                    style={{ backgroundColor: 'white', borderRadius: 4 }}>
+                    style={{ marginBottom: 20, backgroundColor: 'white', borderRadius: 4 }}>
                     <Flex style={{
                         borderBottomWidth: 1,
                         borderBottomColor: '#eee',
@@ -112,34 +111,70 @@ class SecondDetailBuildingPage extends BasePage {
                         </Flex>
                     </Flex>
                     <Flex justify='between' style={styles.single}>
-                        <Text style={styles.left}>面积</Text>
+                        <Text style={styles.left}>全称</Text>
+                        <Text style={styles.right}>{room.allName}</Text>
+                    </Flex>
+
+                    <Flex justify='between' style={styles.single}>
+                        <Text style={styles.left}>建筑面积</Text>
                         <Text style={styles.right}>{room.area} {Macro.meter_square}</Text>
                     </Flex>
+                    <Flex justify='between' style={styles.single}>
+                        <Text style={styles.left}>土地面积</Text>
+                        <Text style={styles.right}>{room.coverArea} {Macro.meter_square}</Text>
+                    </Flex>
+                    <Flex justify='between' style={styles.single}>
+                        <Text style={styles.left}>计费面积</Text>
+                        <Text style={styles.right}>{room.billArea} {Macro.meter_square}</Text>
+                    </Flex>
+                    <Flex justify='between' style={styles.single}>
+                        <Text style={styles.left}>套内面积</Text>
+                        <Text style={styles.right}>{room.insideArea} {Macro.meter_square}</Text>
+                    </Flex>
+
+                    <Flex justify='between' style={styles.single}>
+                        <Text style={styles.left}>产权面积</Text>
+                        <Text style={styles.right}>{room.propertyArea} {Macro.meter_square}</Text>
+                    </Flex>
+
                     {/* <Flex justify='between' style={styles.single}>
                     <Text style={styles.left}>招商状态</Text>
                     <Text style={styles.right}>{room.investment}</Text>
-                   </Flex> */}
+                   </Flex>
                     <Flex justify='between' style={styles.single}>
                         <Text style={styles.left}>预租单价</Text>
                         <Text style={styles.right}>{room.averagerentprice}{Macro.yuan_meter_day}</Text>
+                    </Flex>*/}
+
+                    <Flex justify='between' style={styles.single}>
+                        <Text style={styles.left}>业主名称</Text>
+                        <Text style={styles.right}>{room.ownerName}</Text>
                     </Flex>
+
+                    <Flex justify='between' style={styles.single}>
+                        <Text style={styles.left}>业主电话</Text>
+                        <Text style={styles.right}>{room.ownerPhone}</Text>
+                    </Flex>
+
+                    <Flex justify='between' style={styles.single}>
+                        <Text style={styles.left}>租户名称</Text>
+                        <Text style={styles.right}>{room.tenantName}</Text>
+                    </Flex>
+
+                    <Flex justify='between' style={styles.single}>
+                        <Text style={styles.left}>租户电话</Text>
+                        <Text style={styles.right}>{room.tenantPhone}</Text>
+                    </Flex>
+
                     <Flex justify='between' style={styles.single}>
                         <Text style={styles.left}>状态</Text>
-                        <Text style={styles.right}>{room.statusName}</Text>
+                        <Text style={styles.right}>{room.state}</Text>
                     </Flex>
                 </Flex>;
         }
-        // else if (this.state.index === 1) {
-        //     //合同
-        //     content = null;
-        // }
-        // else {
-        //     //客户
-        //     content = null;
-        // } 
         else if (this.state.index === 1) {
             content =
-                <Flex direction={'column'} align={'start'} >
+                <Flex direction={'column'} align={'start'} style={{ marginBottom: 15 }} >
                     {contracts.map((item, index) => (
                         <Flex key={item.id}
                             direction='column' align='start'
@@ -212,58 +247,57 @@ class SecondDetailBuildingPage extends BasePage {
         }
         else {
             content =
-                <Flex direction={'column'} align={'start'} >
-                    {
-                        customers.map((item, index) => (
-                            <Flex
-                                key={item.id}
-                                direction='column' align='start' style={{ backgroundColor: 'white', borderRadius: 4, padding: 15, marginBottom: 5 }}>
-                                <Flex justify='between' style={{ paddingBottom: 10, width: ScreenUtil.deviceWidth() - 50 }}>
-                                    <Text style={{ color: '#88878c', fontSize: 14 }}>{item.name}</Text>
-                                    <Text style={{ color: '#e7ad7c', paddingLeft: 5, fontSize: 14 }}>{item.customerType}</Text>
+                <Flex direction={'column'} align={'start'} style={{ marginBottom: 15 }}>
+                    {customers.map((item, index) => (
+                        <Flex
+                            key={item.id}
+                            direction='column' align='start' style={{ backgroundColor: 'white', borderRadius: 4, padding: 15, marginBottom: 5 }}>
+                            <Flex justify='between' style={{ paddingBottom: 10, width: ScreenUtil.deviceWidth() - 50 }}>
+                                <Text style={{ color: '#88878c', fontSize: 14 }}>{item.name}</Text>
+                                <Text style={{ color: '#e7ad7c', paddingLeft: 5, fontSize: 14 }}>{item.customerType}</Text>
+                            </Flex>
+                            <Flex style={{
+                                backgroundColor: '#dcdcdc',
+                                height: 1,
+                                width: ScreenUtil.deviceWidth() - 50,
+                                marginTop: 5
+                            }} />
+                            <Flex>
+                                <Flex direction='column' align='start'
+                                    style={{ paddingTop: 15, width: (ScreenUtil.deviceWidth() - 50) / 3.0 }}>
+                                    <Text style={{ color: '#a8a7ab' }}>类别</Text>
+                                    <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.type}</Text>
                                 </Flex>
-                                <Flex style={{
-                                    backgroundColor: '#dcdcdc',
-                                    height: 1,
-                                    width: ScreenUtil.deviceWidth() - 50,
-                                    marginTop: 5
-                                }} />
-                                <Flex>
-                                    <Flex direction='column' align='start'
-                                        style={{ paddingTop: 15, width: (ScreenUtil.deviceWidth() - 50) / 3.0 }}>
-                                        <Text style={{ color: '#a8a7ab' }}>类别</Text>
-                                        <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.type}</Text>
-                                    </Flex>
-                                    <Flex direction='column' align='start'
-                                        style={{ paddingTop: 15, width: (ScreenUtil.deviceWidth() - 50) / 3.0 }}>
-                                        <Text style={{ color: '#a8a7ab' }}>编号</Text>
-                                        <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.code}</Text>
-                                    </Flex>
-                                    <Flex direction='column' align='start'
-                                        style={{ paddingTop: 15, width: (ScreenUtil.deviceWidth() - 50) / 3.0 }}>
-                                        <Text style={{ color: '#a8a7ab' }}>手机号码</Text>
-                                        <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.phoneNum}</Text>
-                                    </Flex>
+                                <Flex direction='column' align='start'
+                                    style={{ paddingTop: 15, width: (ScreenUtil.deviceWidth() - 50) / 3.0 }}>
+                                    <Text style={{ color: '#a8a7ab' }}>编号</Text>
+                                    <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.code}</Text>
                                 </Flex>
-                                <Flex>
-                                    <Flex direction='column' align='start'
-                                        style={{ paddingTop: 15, width: (ScreenUtil.deviceWidth() - 50) / 3.0 }}>
-                                        <Text style={{ color: '#a8a7ab' }}>状态</Text>
-                                        <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.state}</Text>
-                                    </Flex>
-                                    <Flex direction='column' align='start'
-                                        style={{ paddingTop: 15, width: (ScreenUtil.deviceWidth() - 50) / 3.0 }}>
-                                        <Text style={{ color: '#a8a7ab' }}>联系人</Text>
-                                        <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.linkMan}</Text>
-                                    </Flex>
-                                    <Flex direction='column' align='start'
-                                        style={{ paddingTop: 15, width: (ScreenUtil.deviceWidth() - 50) / 3.0 }}>
-                                        <Text style={{ color: '#a8a7ab' }}>联系电话</Text>
-                                        <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.linkPhoneNum}</Text>
-                                    </Flex>
+                                <Flex direction='column' align='start'
+                                    style={{ paddingTop: 15, width: (ScreenUtil.deviceWidth() - 50) / 3.0 }}>
+                                    <Text style={{ color: '#a8a7ab' }}>手机号码</Text>
+                                    <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.phoneNum}</Text>
                                 </Flex>
                             </Flex>
-                        ))
+                            <Flex>
+                                <Flex direction='column' align='start'
+                                    style={{ paddingTop: 15, width: (ScreenUtil.deviceWidth() - 50) / 3.0 }}>
+                                    <Text style={{ color: '#a8a7ab' }}>状态</Text>
+                                    <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.state}</Text>
+                                </Flex>
+                                <Flex direction='column' align='start'
+                                    style={{ paddingTop: 15, width: (ScreenUtil.deviceWidth() - 50) / 3.0 }}>
+                                    <Text style={{ color: '#a8a7ab' }}>联系人</Text>
+                                    <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.linkMan}</Text>
+                                </Flex>
+                                <Flex direction='column' align='start'
+                                    style={{ paddingTop: 15, width: (ScreenUtil.deviceWidth() - 50) / 3.0 }}>
+                                    <Text style={{ color: '#a8a7ab' }}>联系电话</Text>
+                                    <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.linkPhoneNum}</Text>
+                                </Flex>
+                            </Flex>
+                        </Flex>
+                    ))
                     }
                 </Flex>
         }
@@ -306,15 +340,11 @@ class SecondDetailBuildingPage extends BasePage {
                             marginLeft: this.state.fadeAnim
                         }} />
                 </Flex>
-
                 {/* <ScrollView style={{ padding: 10, backgroundColor: '#eee', height: ScreenUtil.deviceHeight() - 140 }}> */}
-
                 <ScrollView style={{ flex: 1, padding: 10, backgroundColor: '#eee' }}>
                     {content}
                 </ScrollView>
-
             </CommonView>
-
         );
     }
 }
@@ -324,16 +354,16 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#333',
         paddingBottom: 6,
-        fontWeight: '600',
+        fontWeight: '600'
     },
     right: {
         fontSize: 14,
-        color: '#38393d',
+        color: '#38393d'
 
     },
     left: {
         fontSize: 14,
-        color: '#848388',
+        color: '#848388'
     },
     single: {
         borderBottomWidth: 1,
@@ -343,19 +373,17 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         paddingTop: 15,
         paddingBottom: 15,
-        width: ScreenUtil.deviceWidth() - 20,
+        width: ScreenUtil.deviceWidth() - 20
     },
     selectText: {
         fontSize: 14,
-        color: '#302f33',
+        color: '#302f33'
     },
     noSelect: {
         fontSize: 14,
-        color: '#b1b1b1',
-    },
+        color: '#b1b1b1'
+    }
 });
-
-
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         saveBuilding: (item) => {
@@ -363,5 +391,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
     };
 };
-
 export default connect(null, mapDispatchToProps)(SecondDetailBuildingPage);

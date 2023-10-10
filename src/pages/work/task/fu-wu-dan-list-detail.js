@@ -59,11 +59,10 @@ export default class FuWuDanListDetailPage extends BasePage {
             communicates: [],
             lookImageIndex: 0,
             visible: false,
-        };
-        console.log(this.state);
+        }; 
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         this.getData();
     }
 

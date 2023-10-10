@@ -25,8 +25,7 @@ import CommonView from '../../components/CommonView';
 
 
 export default class FeeRoomsPage extends BasePage {
-    static navigationOptions = ({ navigation }) => {
-        // console.log(1, navigation);
+    static navigationOptions = ({ navigation }) => { 
         return {
             tabBarVisible: false,
             title: '上门收费',
@@ -65,8 +64,7 @@ export default class FeeRoomsPage extends BasePage {
                             };
                         });
                     });
-                    Promise.all(promises).then(floors => {
-                        // console.log('floors', floors);
+                    Promise.all(promises).then(floors => { 
                         this.setState({ floors });
                     });
                 });

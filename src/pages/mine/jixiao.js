@@ -35,10 +35,7 @@ class Jixiao extends BasePage {
     };
 
     constructor(props) {
-        super(props);
-
-        console.log(11,this.props)
-
+        super(props); 
         Date.prototype.getYearAndMonth = function () {
             let year = this.getFullYear();
             let month = this.getMonth() + 1 + '';
@@ -57,14 +54,13 @@ class Jixiao extends BasePage {
         };
     }
 
-    componentDidMount(): void {
+    componentDidMount()  {
 this.getData()
     }
 
     getData = () => {
         const {begin,end} = this.state;
-        MineService.getMyAchievement(begin,end).then(res=>{
-            console.log(112,res)
+        MineService.getMyAchievement(begin,end).then(res=>{ 
             this.setState({
                 data: res,
             })

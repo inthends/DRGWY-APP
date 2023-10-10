@@ -23,8 +23,7 @@ import CommonView from '../../../components/CommonView';
 
 
 class EstateTousuPage extends BasePage {
-    static navigationOptions = ({navigation}) => { 
-        //console.log(1, navigation);
+    static navigationOptions = ({navigation}) => {  
         return {
             tabBarVisible: false,
             title: '投诉单',
@@ -82,9 +81,7 @@ class EstateTousuPage extends BasePage {
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
-        const nextSelectBuilding = nextProps.selectBuilding;
-        // console.log('selectBuilding', selectBuilding);
-        // console.log('nextSelectBuilding', nextSelectBuilding);
+        const nextSelectBuilding = nextProps.selectBuilding; 
 
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
             this.setState({selectBuilding: nextProps.selectBuilding}, () => {
@@ -120,8 +117,7 @@ class EstateTousuPage extends BasePage {
                 dataInfo: dataInfo,
                 refreshing: false,
                 //canLoadMore: true,
-            }, () => {
-                console.log(this.state.dataInfo.data);
+            }, () => { 
             });
         });
     };
@@ -131,15 +127,13 @@ class EstateTousuPage extends BasePage {
         this.setState({
             refreshing: true,
             pageIndex: 1,
-        }, () => {
-            //console.log('state', this.state);
+        }, () => { 
             this.getList();
         });
     };
 
     loadMore = () => {
-        const {data, total, pageIndex} = this.state.dataInfo;
-        //console.log('loadmore', this.state.dataInfo);
+        const {data, total, pageIndex} = this.state.dataInfo; 
         // if (!this.state.canLoadMore) {
         //     return;
         // }

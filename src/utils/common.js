@@ -13,9 +13,7 @@ export default {
         });
         return item;
     },
-    convertArrayToObject(array, key) {
-        console.log('array', array);
-
+    convertArrayToObject(array, key) { 
         if (!array) {
             return {};
         }
@@ -66,8 +64,7 @@ export default {
         let name, value;
         let num = str.indexOf('?');
         str = str.substr(num + 1); //取得所有参数   stringvar.substr(start [, length ]
-        let arr = str.split('&'); //各个参数放到数组里
-        console.log(arr);
+        let arr = str.split('&'); //各个参数放到数组里 
         let params = {};
         for (let i = 0; i < arr.length; i++) {
             num = arr[i].indexOf('=');
@@ -252,19 +249,14 @@ export default {
             m = '0' + m;
         }
         let d = new_date.getDate();
-        return y + '-' + m + '-' + d + ' 23:59:59';
-
-        // console.log('month',month)
-        // month += 1;
-        // console.log('mont2',month)
+        return y + '-' + m + '-' + d + ' 23:59:59'; 
+        // month += 1; 
         // if(month > 12) {
         //     month = 1       //月份减
         //     year += 1;            //年份增
         // }
-        // var new_date = new Date(year,month,1);                //取当年当月中的第一天
-        // console.log('new_date',new_date);
-        // let aaa = new Date(new_date.getTime()-1000);
-        // console.log(aaa);
+        // var new_date = new Date(year,month,1);                //取当年当月中的第一天 
+        // let aaa = new Date(new_date.getTime()-1000); 
         // return 1
         // return aaa.getFullYear() + '-' + aaa.getMonth();
         // return (new Date(new_date.getTime()-1000*60*60*24)).getDate();//获取当月最后一天日期

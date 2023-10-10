@@ -32,11 +32,10 @@ export default class TaskPage extends BasePage {
                 data: [],
             },
             titles: ['全部', '待完成', '漏检', '已完成'],
-        };
-        console.log(this.state);
+        }; 
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         this.initUI();
     }
 
@@ -60,19 +59,16 @@ export default class TaskPage extends BasePage {
                 break;
             }
             default: {
-
             }
         }
         this.setState({status}, () => {
             this.initUI();
         });
-
     };
 
     initUI() {
         const {status, userId} = this.state;
-        XunJianService.xunjianTaskList(status, userId).then(res => {
-            console.log(1, res);
+        XunJianService.xunjianTaskList(status, userId).then(res => { 
             this.setState({res});
         });
     }
@@ -89,8 +85,7 @@ export default class TaskPage extends BasePage {
             index = 2;
         } else if (status === '1') {
             index = 3;
-        }
-        console.log(22, res.data);
+        } 
 
         return (
             <CommonView style={{flex: 1}}>

@@ -96,8 +96,7 @@ class ContactDetail extends BasePage {
 
 
     render() {
-        const {data,type} = this.state;
-        //console.log(111, data);
+        const {data,type} = this.state; 
         return (
 
             <View style={{flex: 1}}>

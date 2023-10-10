@@ -8,8 +8,7 @@ this.props.navigation.navigate('wancheng');
 */
 
 const ShowFiles = (props) => {
-  const { files = [] } = props;
-  console.log(123,files)
+  const { files = [] } = props; 
   return (
     <View>
       <View style={{ height: 5 }} />

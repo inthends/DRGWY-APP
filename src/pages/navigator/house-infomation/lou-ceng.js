@@ -20,8 +20,7 @@ import NavigatorService from '../navigator-service';
 import CommonView from '../../../components/CommonView';
 
 export default class LouCeng extends BasePage {
-    static navigationOptions = ({ navigation }) => {
-        // console.log(1, navigation);
+    static navigationOptions = ({ navigation }) => { 
         return {
             tabBarVisible: false,
             title: '楼层',
@@ -44,7 +43,7 @@ export default class LouCeng extends BasePage {
     }
 
 
-    componentDidMount(): void {
+    componentDidMount() {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
@@ -59,8 +58,7 @@ export default class LouCeng extends BasePage {
                             };
                         });
                     });
-                    Promise.all(promises).then(floors => {
-                        // console.log('floors', floors);
+                    Promise.all(promises).then(floors => { 
                         this.setState({ floors });
                     });
                 });
@@ -68,7 +66,7 @@ export default class LouCeng extends BasePage {
         );
     }
 
-    componentWillUnmount(): void {
+    componentWillUnmount() {
         this.viewDidAppear.remove();
     }
 

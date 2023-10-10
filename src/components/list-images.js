@@ -7,12 +7,10 @@ import LoadImage from './load-image';
 export default class ListImages extends Component {
 
     constructor(props) {
-        super(props);
-
+        super(props); 
     }
 
-    render() {
-        console.log('images', this.props.images);
+    render() { 
         return (
             <Flex justify={'start'} align={'start'}
                   style={{width: ScreenUtil.deviceWidth() - 15, marginTop: 10}}>

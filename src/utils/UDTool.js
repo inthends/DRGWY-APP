@@ -19,8 +19,7 @@ export default class UDTool {
 
         if (Object.prototype.toString.call(object) === '[object Object]') {
             str = JSON.stringify(object);
-        }
-        console.log(object);
+        } 
         return object;
     }
 }
