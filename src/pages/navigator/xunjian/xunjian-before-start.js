@@ -59,7 +59,7 @@ class XunjianBeforeStart extends BasePage {
         });
     }
 
-    componentWillUnmount(): void {
+    componentWillUnmount() {
         this.viewDidAppear.remove();
     }
 

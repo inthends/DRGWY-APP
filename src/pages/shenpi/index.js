@@ -20,7 +20,7 @@ class ContactDetail extends BasePage {
   static navigationOptions = ({ navigation }) => {
     return {
       title: '审批',
-      headerForceInset:this.headerForceInset,
+      headerForceInset: this.headerForceInset,
       headerRight: (
         <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
           <Icon name="bars" style={{ marginRight: 15 }} color="black" />
@@ -112,7 +112,7 @@ class ContactDetail extends BasePage {
     });
   };
   loadMore = () => {
-    const { data, total, pageIndex } = this.state.dataInfo;  
+    const { data, total, pageIndex } = this.state.dataInfo;
     if (!this.canAction && data.length < total) {
       // if (data.length < total) {
       this.canAction = true;
@@ -137,7 +137,7 @@ class ContactDetail extends BasePage {
   };
 
   render() {
-    const { isCompleted, dataInfo = {}, type } = this.state;
+    const { isCompleted, dataInfo = {} } = this.state;
 
     return (
       <View style={{ flex: 1 }}>
@@ -215,7 +215,6 @@ class ContactDetail extends BasePage {
             <TouchableWithoutFeedback
               onPress={() => {
                 let url = '';
-
                 switch (item.code) {
                   case '1026': {
                     url = 'fukuan';
@@ -298,7 +297,8 @@ class ContactDetail extends BasePage {
                   <Text style={styles.left}>{item.title}</Text>
                 </Flex>
                 <Flex
-                  style={[styles.every, ScreenUtil.borderBottom()]}
+                  //style={[styles.every, ScreenUtil.borderBottom()]}
+                  style={styles.every}
                   justify="between"
                 >
                   <Text style={styles.left}>发送人：{item.senderName}</Text>
@@ -307,7 +307,7 @@ class ContactDetail extends BasePage {
               </View>
             </TouchableWithoutFeedback>
           )}
-          // style={styles.list}
+          style={styles.list}
           keyExtractor={(item, index) => item.id}
           refreshing={this.state.refreshing}
           onRefresh={() => this.onRefresh()}
@@ -322,6 +322,11 @@ class ContactDetail extends BasePage {
 }
 
 const styles = StyleSheet.create({
+
+  list: {
+    //height: ScreenUtil.contentHeightWithNoTabbar()
+    marginBottom: 15
+  },
   all: {
     backgroundColor: Macro.color_white,
   },

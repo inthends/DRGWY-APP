@@ -4,10 +4,8 @@ import {Flex} from '@ant-design/react-native';
 import ScreenUtil from '../utils/screen-util';
 import LoadImage from './load-image';
 
-export default class OperationRecords extends Component {
-
-    render() {
-
+export default class OperationRecords extends Component { 
+    render() { 
         return (
             <Fragment>
                 <Flex style={{

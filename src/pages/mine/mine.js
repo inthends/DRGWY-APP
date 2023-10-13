@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -6,15 +6,13 @@ import {
   TouchableWithoutFeedback,
   ScrollView,
   ImageBackground,
-  StatusBar,
 } from 'react-native';
 import BasePage from '../base/base';
-import { Flex, Icon } from '@ant-design/react-native';
+import { Flex } from '@ant-design/react-native';
 import Macro from '../../utils/macro';
 import ScreenUtil from '../../utils/screen-util';
 import LoadImage from '../../components/load-image';
 import MineService from './mine-service';
-import CommonView from '../../components/CommonView';
 
 export default class MinePage extends BasePage {
   constructor(props) {
@@ -24,7 +22,7 @@ export default class MinePage extends BasePage {
     };
   }
 
-  componentDidMount(): void {
+  componentDidMount() {
     MineService.getUserInfo().then((user) => {
       this.setState({ user });
     });

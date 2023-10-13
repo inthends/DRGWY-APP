@@ -1,22 +1,20 @@
 import React from 'react';
-import {View, Text, Button, TouchableWithoutFeedback, TouchableOpacity, StyleSheet} from 'react-native';
+import { View, Text, TouchableWithoutFeedback, TouchableOpacity, StyleSheet } from 'react-native';
 import BasePage from '../base/base';
-import {Icon} from '@ant-design/react-native';
-import {List, WhiteSpace, Flex, TextareaItem, Switch, ActionSheet} from '@ant-design/react-native';
+import { Flex, Icon, ActionSheet } from '@ant-design/react-native';
 import ScreenUtil from '../../utils/screen-util';
 import LoadImage from '../../components/load-image';
 import Macro from '../../utils/macro';
 import ManualAction from '../../utils/store/actions/manual-action';
-
-
+ 
 export default class PersonInfoPage extends BasePage {
-    static navigationOptions = ({navigation}) => {
+    static navigationOptions = ({ navigation }) => {
         return {
             title: '个人信息',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
 
@@ -62,47 +60,47 @@ export default class PersonInfoPage extends BasePage {
     };
 
     render() {
-        const {data} = this.state;
+        const { data } = this.state;
         return (
-            <View style={{flex: 1}}>
-                <Flex direction={'column'} style={{paddingTop: 30, paddingBottom: 30}}>
-                    <LoadImage style={{width: 50, height: 50}}/>
-                    <Text style={{paddingTop: 20, fontSize: 14, color: '#666'}}>张三</Text>
+            <View style={{ flex: 1 }}>
+                <Flex direction={'column'} style={{ paddingTop: 30, paddingBottom: 30 }}>
+                    <LoadImage style={{ width: 50, height: 50 }} />
+                    <Text style={{ paddingTop: 20, fontSize: 14, color: '#666' }}>张三</Text>
                 </Flex>
-                <Flex style={{paddingLeft: 20, paddingRight: 20, width: ScreenUtil.deviceWidth()}}>
+                <Flex style={{ paddingLeft: 20, paddingRight: 20, width: ScreenUtil.deviceWidth() }}>
                     <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Setting')}>
                         <Flex justify='between'
-                              style={[{
-                                  paddingTop: 15,
-                                  paddingBottom: 20,
-                                  width: ScreenUtil.deviceWidth() - 40,
-                              }, ScreenUtil.borderBottom()]}>
+                            style={[{
+                                paddingTop: 15,
+                                paddingBottom: 20,
+                                width: ScreenUtil.deviceWidth() - 40,
+                            }, ScreenUtil.borderBottom()]}>
 
                             <Text style={styles.item}>联系电话</Text>
 
                             <Flex>
                                 <Text style={styles.right}>132323234</Text>
-                                <LoadImage style={{width: 6, height: 11}}
-                                           defaultImg={require('../../static/images/address/right.png')}/>
+                                <LoadImage style={{ width: 6, height: 11 }}
+                                    defaultImg={require('../../static/images/address/right.png')} />
                             </Flex>
                         </Flex>
                     </TouchableWithoutFeedback>
                 </Flex>
-                <Flex style={{paddingLeft: 20, paddingRight: 20, width: ScreenUtil.deviceWidth()}}>
+                <Flex style={{ paddingLeft: 20, paddingRight: 20, width: ScreenUtil.deviceWidth() }}>
                     <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Setting')}>
                         <Flex justify='between'
-                              style={[{
-                                  paddingTop: 15,
-                                  paddingBottom: 20,
-                                  width: ScreenUtil.deviceWidth() - 40,
-                              }, ScreenUtil.borderBottom()]}>
+                            style={[{
+                                paddingTop: 15,
+                                paddingBottom: 20,
+                                width: ScreenUtil.deviceWidth() - 40,
+                            }, ScreenUtil.borderBottom()]}>
 
                             <Text style={styles.item}>微信号</Text>
 
                             <Flex>
                                 <Text style={styles.right}>132323234</Text>
-                                <LoadImage style={{width: 6, height: 11}}
-                                           defaultImg={require('../../static/images/address/right.png')}/>
+                                <LoadImage style={{ width: 6, height: 11 }}
+                                    defaultImg={require('../../static/images/address/right.png')} />
                             </Flex>
                         </Flex>
                     </TouchableWithoutFeedback>
@@ -145,7 +143,7 @@ const styles = StyleSheet.create({
     right: {
         fontSize: 16,
         color: '#333',
-        paddingRight:15
+        paddingRight: 15
     }
 
 });

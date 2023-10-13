@@ -1,7 +1,7 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import BasePage from '../../base/base';
-import { Flex, Accordion, List, Icon } from '@ant-design/react-native';
-import { StyleSheet, FlatList, Text, TouchableOpacity,TouchableWithoutFeedback,ScrollView } from 'react-native';
+import { Flex, Icon } from '@ant-design/react-native';
+import { StyleSheet, FlatList, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import CommonView from '../../../components/CommonView';
 import common from '../../../utils/common';
@@ -18,7 +18,7 @@ export default class OrderlistPage extends BasePage {
         return {
             tabBarVisible: false,
             title: navigation.state.params.data.title ?? '订单列表',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
@@ -32,17 +32,17 @@ export default class OrderlistPage extends BasePage {
         this.state = {
             ...(common.getValueFromProps(this.props)),
             dataInfo: {},
-            pageIndex:1,
-            refreshing:false
-        }; 
+            pageIndex: 1,
+            refreshing: false
+        };
     }
-    
-    componentDidMount()  {
+
+    componentDidMount() {
         this.onRefresh()
     }
 
     getList = () => {
-        const {type, pageIndex} = this.state;
+        const { type, pageIndex } = this.state;
         OrderService.getOrderDatas(type, pageIndex).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
@@ -53,11 +53,11 @@ export default class OrderlistPage extends BasePage {
             this.setState({
                 dataInfo: dataInfo,
                 refreshing: false,
-            }, () => { 
+            }, () => {
             });
         });
     };
-    
+
     onRefresh = () => {
         this.setState({
             refreshing: true,
@@ -67,7 +67,7 @@ export default class OrderlistPage extends BasePage {
         });
     };
     loadMore = () => {
-        const {data, total, pageIndex} = this.state.dataInfo; 
+        const { data, total, pageIndex } = this.state.dataInfo;
         if (this.canAction && data.length < total) {
             this.setState({
                 refreshing: true,
@@ -78,26 +78,26 @@ export default class OrderlistPage extends BasePage {
         }
     };
     //传入status  待查阅0，待回复1，已回复2，已关闭-1
-    _renderItem = ({item, index}) => {
+    _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.props.navigation.navigate('orderDetail', {data: item});
-    
+                this.props.navigation.navigate('orderDetail', { data: item });
+
             }}>
                 <Flex direction='column' align={'start'}
-                      style={[styles.card, index === 0 ? styles.blue : styles.orange]}>
-                    <Flex justify='between' style={{width: '100%'}}>
+                    style={[styles.card, index === 0 ? styles.blue : styles.orange]}>
+                    <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.type ?? ''}</Text>
                         <Text style={styles.aaa}>{item.createDate ?? ''}</Text>
                     </Flex>
-                    <Flex style={styles.line}/>
+                    <Flex style={styles.line} />
                     <Flex align={'start'} direction={'column'}>
                         <Flex justify='between'
-                              style={{width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20}}>
+                            style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>{item.billCode}</Text>
                             <TouchableWithoutFeedback
                                 onPress={() => common.call(item.phoneNum)}>
-                                <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{width: 20, height: 20}}/></Flex>
+                                <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 20, height: 20 }} /></Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
                         <Text style={{
@@ -114,9 +114,9 @@ export default class OrderlistPage extends BasePage {
 
 
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
-        const { dataInfo, type} = this.state;
+        const { dataInfo, type } = this.state;
         return (
-            <CommonView style={{flex: 1}}>
+            <CommonView style={{ flex: 1 }}>
                 <FlatList
                     data={dataInfo.data}
                     // ListHeaderComponent={}
@@ -131,7 +131,7 @@ export default class OrderlistPage extends BasePage {
                     onScrollEndDrag={() => this.canAction = false}
                     onMomentumScrollBegin={() => this.canAction = true}
                     onMomentumScrollEnd={() => this.canAction = false}
-                    ListEmptyComponent={<NoDataView/>}
+                    ListEmptyComponent={<NoDataView />}
                 />
             </CommonView>
 
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         backgroundColor: 'white',
         shadowColor: '#00000033',
-        shadowOffset: {h: 10, w: 10},
+        shadowOffset: { h: 10, w: 10 },
         shadowRadius: 5,
         shadowOpacity: 0.8,
     },

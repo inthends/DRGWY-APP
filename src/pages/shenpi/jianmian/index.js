@@ -1,19 +1,14 @@
 //导航里面点击的服务单详情
-import React, { Fragment } from 'react';
+import React  from 'react';
 import {
   View,
-  Text,
-  TouchableWithoutFeedback,
+  Text, 
   TouchableOpacity,
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import BasePage from '../../base/base';
-import { Icon } from '@ant-design/react-native';
-import { Flex, TextareaItem } from '@ant-design/react-native';
-import ScreenUtil from '../../../utils/screen-util';
-import UDToast from '../../../utils/UDToast';
-import WorkService from '../../work/work-service';
+import BasePage from '../../base/base'; 
+import { Flex, Icon } from '@ant-design/react-native'; 
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ShowTitle from '../components/show-title';

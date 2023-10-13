@@ -10,7 +10,7 @@ import ShowTitle from './show-title';
 const ShowActions = ({ state, click, isSpecial = false }) => {
   const [value, setValue] = useState('');
   const { detail = {} } = state;
-  const { executeType } = detail;
+  const { executeType, taskType } = detail;
   if (executeType != 0) {
     return <></>;
   }
@@ -21,7 +21,7 @@ const ShowActions = ({ state, click, isSpecial = false }) => {
     const { id: taskId, instanceId, code } = item;
     const { organizeId } = detail;
 
-    if (type === '同意') {
+    if (type === '通过') {
       service
         .approveForm({
           code,
@@ -29,25 +29,33 @@ const ShowActions = ({ state, click, isSpecial = false }) => {
           instanceId,
           organizeId: isSpecial ? organizeId : '',
           projectId: isSpecial ? '' : organizeId,
-          verifyMemo,
+          verifyMemo
         })
         .then((res) => {
-          UDToast.showInfo('同意成功');
+          UDToast.showInfo('通过成功');
           setTimeout(() => {
             setValue('');
             click && click();
           }, 2000);
         });
+    } else if (type === '退回') {
+      service.rejectForm({
+        code,
+        taskId,
+        instanceId,
+        verifyMemo
+      }).then((res) => {
+        UDToast.showInfo('退回成功');
+        setTimeout(() => {
+          setValue('');
+          click && click();
+        }, 2000);
+      });
     } else {
-      service
-        .rejectForm({
-          code,
-          taskId,
-          instanceId,
-          verifyMemo,
-        })
+      //查阅确定
+      service.readForm({ taskId })
         .then((res) => {
-          UDToast.showInfo('退回成功');
+          UDToast.showInfo('查阅成功');
           setTimeout(() => {
             setValue('');
             click && click();
@@ -58,44 +66,62 @@ const ShowActions = ({ state, click, isSpecial = false }) => {
   return (
     <View>
       <ShowTitle title="审批信息" />
-      <View style={styles.textarea}>
-        <TextareaItem
-          rows={4}
-          placeholder="输入审批意见"
-          style={{
-            fontSize: 14,
-            height: 100,
-            width: ScreenUtil.deviceWidth() - 45,
-          }}
-          onChange={(val) => setValue(val.trim())}
-          value={value}
-        />
-      </View>
+      {taskType == 5 ?//抄送
+        null :
+        <View style={styles.textarea}>
+          <TextareaItem
+            rows={4}
+            placeholder="输入审批意见"
+            style={{
+              fontSize: 14,
+              height: 100,
+              width: ScreenUtil.deviceWidth() - 45,
+            }}
+            onChange={(val) => setValue(val.trim())}
+            value={value}
+          />
+        </View>
+      } 
       <Flex justify="around" style={{ marginTop: 30 }}>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            onClick('退回');
-          }}
-        >
-          <Flex
-            justify={'center'}
-            style={[styles.ii, { backgroundColor: Macro.work_orange }]}
+        {taskType == 5 ?//抄送
+          <TouchableWithoutFeedback
+            onPress={() => {
+              onClick('查阅');
+            }}
           >
-            <Text style={styles.word}>退回</Text>
-          </Flex>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            onClick('同意');
-          }}
-        >
-          <Flex
-            justify={'center'}
-            style={[styles.ii, { backgroundColor: Macro.work_green }]}
-          >
-            <Text style={styles.word}>同意</Text>
-          </Flex>
-        </TouchableWithoutFeedback>
+            <Flex
+              justify={'center'}
+              style={[styles.ii, { backgroundColor: Macro.work_green }]}
+            >
+              <Text style={styles.word}>查阅</Text>
+            </Flex>
+          </TouchableWithoutFeedback> :
+          <>
+            <TouchableWithoutFeedback
+              onPress={() => {
+                onClick('退回');
+              }}
+            >
+              <Flex
+                justify={'center'}
+                style={[styles.ii, { backgroundColor: Macro.work_orange }]}
+              >
+                <Text style={styles.word}>退回</Text>
+              </Flex>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback
+              onPress={() => {
+                onClick('通过');
+              }}
+            >
+              <Flex
+                justify={'center'}
+                style={[styles.ii, { backgroundColor: Macro.work_green }]}
+              >
+                <Text style={styles.word}>通过</Text>
+              </Flex>
+            </TouchableWithoutFeedback>
+          </>}
       </Flex>
     </View>
   );

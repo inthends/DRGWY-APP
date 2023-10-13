@@ -1,23 +1,16 @@
 //导航里面点击的服务单详情
-import React, { Fragment } from 'react';
-import {
-  View,
-  Text,
-  TouchableWithoutFeedback,
+import React from 'react';
+import { 
   TouchableOpacity,
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import BasePage from '../../base/base';
-import { Icon } from '@ant-design/react-native';
-import { Flex, TextareaItem } from '@ant-design/react-native';
-import ScreenUtil from '../../../utils/screen-util';
-import UDToast from '../../../utils/UDToast';
-import WorkService from '../../work/work-service';
+import BasePage from '../../base/base'; 
+import { Flex, Icon } from '@ant-design/react-native';
+import ScreenUtil from '../../../utils/screen-util'; 
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
-import ShowTitle from '../components/show-title';
-import ShowLine from '../components/show-line';
+import ShowTitle from '../components/show-title'; 
 import ShowText from '../components/show-text';
 import ShowTextWithRight from '../components/show-text-with-right';
 import CompanyDetail from '../components/company-detail';
@@ -79,7 +72,7 @@ export default class EfuwuDetailPage extends BasePage {
       detail = {},
       records = [],
       customer = {},
-      hetong = {},
+      //hetong = {},
     } = this.state;
     const { list = [] } = detail;
 

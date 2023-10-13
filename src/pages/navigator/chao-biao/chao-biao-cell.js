@@ -1,34 +1,13 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import {
-    View,
     Text,
-    StyleSheet,
-    StatusBar,
-    ScrollView,
-    SectionList,
-    TouchableWithoutFeedback,
-    ImageBackground,
-    Animated,
-    FlatList,
-    Image, TouchableOpacity,
-    TextInput, Modal,
+    StyleSheet
 } from 'react-native';
 
 import BasePage from '../../base/base';
-import BuildingHeader from '../../../components/building/building-header';
-import BuildingCell from '../../../components/building/build-cell';
-import {Button, Flex, Icon, List, WhiteSpace, SegmentedControl, WingBlank} from '@ant-design/react-native';
+import { Flex, WhiteSpace, WingBlank } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
-import forge from 'node-forge';
-import LoadImage from '../../../components/load-image';
-import {connect} from 'react-redux';
-
-import CommonView from '../../../components/CommonView';
-import common from '../../../utils/common';
 import ScreenUtil from '../../../utils/screen-util';
-import NoDataView from '../../../components/no-data-view';
-import ChaoBiaoService from './chao-biao-service';
-import ImageViewer from 'react-native-image-zoom-viewer';
 
 
 class ChaoBiaoCell extends BasePage {
@@ -40,51 +19,51 @@ class ChaoBiaoCell extends BasePage {
 
 
     render() {
-        const {modal,item} = this.props;
+        const { modal, item } = this.props;
 
 
         return (
 
             <WingBlank size={'lg'}>
                 <Flex direction='column' align={'start'}
-                      style={[styles.card, modal ? {} : styles.blue]}>
+                    style={[styles.card, modal ? {} : styles.blue]}>
                     <Flex justify='between'>
                         <Text style={styles.title}>{item.meterName}</Text>
                     </Flex>
-                    <Flex style={styles.line}/>
+                    <Flex style={styles.line} />
                     <Flex align={'start'} direction={'column'}>
                         <Flex justify='between'
-                              style={{width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20}}>
+                            style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>编号：{item.meterCode}</Text>
                             <Text>倍率：{item.meterZoom}</Text>
 
                         </Flex>
                         <WingBlank size={'lg'}>
                             <WingBlank size={'lg'}>
-                                <Text style={{color: '#666'}}>
+                                <Text style={{ color: '#666' }}>
                                     上次度数：{item.lastReading}
                                 </Text>
                             </WingBlank>
                         </WingBlank>
-                        <WhiteSpace/>
+                        <WhiteSpace />
                         <WingBlank size={'lg'}>
                             <WingBlank size={'lg'}>
-                                <Text style={{color: '#666'}}>
+                                <Text style={{ color: '#666' }}>
                                     本次抄数：{item.nowReading}
                                 </Text>
                             </WingBlank>
                         </WingBlank>
-                        <WhiteSpace/>
+                        <WhiteSpace />
                         <WingBlank size={'lg'}>
                             <WingBlank size={'lg'}>
-                                <Text style={{color: '#666'}}>
+                                <Text style={{ color: '#666' }}>
                                     本次用量：{item.realUsage}
                                 </Text>
                             </WingBlank>
                         </WingBlank>
-                        <WhiteSpace/>
+                        <WhiteSpace />
                     </Flex>
-                    <WhiteSpace/>
+                    <WhiteSpace />
                 </Flex>
 
             </WingBlank>
@@ -165,7 +144,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         backgroundColor: 'white',
         shadowColor: '#00000033',
-        shadowOffset: {h: 10, w: 10},
+        shadowOffset: { h: 10, w: 10 },
         shadowRadius: 5,
         shadowOpacity: 0.8,
     },

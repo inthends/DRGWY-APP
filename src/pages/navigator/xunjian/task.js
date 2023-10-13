@@ -114,8 +114,6 @@ export default class TaskPage extends BasePage {
                         ))}
                     </Flex>
                 </ScrollView>
-
-
             </CommonView>
         );
     }

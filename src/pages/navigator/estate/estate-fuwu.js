@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -8,7 +8,7 @@ import {
     FlatList,
 } from 'react-native';
 import BasePage from '../../base/base';
-import {  Flex, Icon, List, WhiteSpace } from '@ant-design/react-native';
+import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
 import { connect } from 'react-redux';
@@ -22,11 +22,11 @@ import CommonView from '../../../components/CommonView';
 
 
 class EstateFuwuPage extends BasePage {
-    static navigationOptions = ({ navigation }) => { 
+    static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
             title: '服务单',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
@@ -66,7 +66,7 @@ class EstateFuwuPage extends BasePage {
     }
 
 
-    componentDidMount()  {
+    componentDidMount() {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
@@ -75,13 +75,13 @@ class EstateFuwuPage extends BasePage {
         );
     }
 
-    componentWillUnmount()  {
+    componentWillUnmount() {
         this.viewDidAppear.remove();
     }
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
-        const nextSelectBuilding = nextProps.selectBuilding; 
+        const nextSelectBuilding = nextProps.selectBuilding;
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
             this.setState({ selectBuilding: nextProps.selectBuilding }, () => {
                 this.onRefresh();
@@ -114,7 +114,7 @@ class EstateFuwuPage extends BasePage {
                 dataInfo: dataInfo,
                 refreshing: false,
                 //canLoadMore: true,
-            }, () => { 
+            }, () => {
             });
         });
     };
@@ -123,13 +123,13 @@ class EstateFuwuPage extends BasePage {
         this.setState({
             refreshing: true,
             pageIndex: 1,
-        }, () => { 
+        }, () => {
             this.getList();
         });
     };
 
     loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo; 
+        const { data, total, pageIndex } = this.state.dataInfo;
         // if (!this.state.canLoadMore) {
         //     return;
         // }
@@ -246,7 +246,7 @@ class EstateFuwuPage extends BasePage {
 
 
     render() {
-        const {  dataInfo, ym } = this.state;
+        const { dataInfo, ym } = this.state;
         return (
 
 

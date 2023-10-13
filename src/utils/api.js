@@ -6,7 +6,7 @@ import ManualAction from './store/actions/manual-action';
 export default {
     network(request) {
         // axios.defaults.withCredentials = true;
-        const {url, params, method, showLoading, showError} = request;
+        const { url, params, method, showLoading, showError } = request;
         let showLoadingNumber;
         if (showLoading) {
             showLoadingNumber = UDToast.showLoading();
@@ -22,13 +22,11 @@ export default {
                 axios.defaults.baseURL = 'http://hf.jslesoft.com:8008';
             } else {
                 axios.defaults.baseURL = ManualAction.getUrl();
-            }
-
+            } 
             // if (Object.keys(params).length > 0) { 
-            // }
-
+            // } 
             if (method === 'GET') {
-                axios.get(url, {params, headers}).then(res => {
+                axios.get(url, { params, headers }).then(res => {
                     UDToast.hiddenLoading(showLoadingNumber);
                     this.success(showError, res, resolve, reject);
                 }).catch(error => {
@@ -45,20 +43,19 @@ export default {
                     UDToast.hiddenLoading(showLoadingNumber);
                     this.fail(showError, error, reject);
                 });
-            }
-
+            } 
         });
     },
-    success(showError, res, resolve, reject) { 
+    success(showError, res, resolve, reject) {
         const data = res.data;
         if (data.code !== 200) {
-            data.msg.length>0 && UDToast.showError(data.msg);
+            data.msg.length > 0 && UDToast.showError(data.msg);
             reject(data);
         } else {
             resolve(data.data);
         }
     },
-    fail(showError, error, reject) { 
+    fail(showError, error, reject) {
         if (error) {
             let errorStr = JSON.stringify(error);
             if (errorStr.includes('401')) {
@@ -72,11 +69,8 @@ export default {
             }
         } else {
             reject(error);
-        }
-
-    },
-
-
+        } 
+    }, 
     getData(url, params = {}, showLoading = true, showError = true) {
         return this.network({
             url: url,
@@ -95,19 +89,21 @@ export default {
             showError,
         });
     },
-    uploadFile(uri, id, uploadUrl, isPicture = true) {
+    uploadFile(uri, id, type,
+        uploadUrl, isPicture = true) {
         return new Promise(resolve => {
             const formData = new FormData();//如果需要上传多张图片,需要遍历数组,把图片的路径数组放入formData中
             const name = isPicture ? 'picture.png' : 'file.aac';
-            let file = {uri: uri, type: 'multipart/form-data', name: name};   //这里的key(uri和type和name)不能改变, 
+            let file = { uri: uri, type: 'multipart/form-data', name: name };   //这里的key(uri和type和name)不能改变, 
             formData.append('Files', file);   //这里的files就是后台需要的key
             formData.append('keyvalue', id);
+            formData.append('type', type);
             axios.defaults.headers['Content-Type'] = 'multipart/form-data';
             axios.defaults.headers['Authorization'] = 'Bearer ' + ManualAction.getTokenBYStore();
             let showLoadingNumber = UDToast.showLoading('正在上传...');
-            axios.post(uploadUrl, formData).then(res => { 
+            axios.post(uploadUrl, formData).then(res => {
                 UDToast.hiddenLoading(showLoadingNumber);
-                const data = res.data; 
+                const data = res.data;
                 if (data.code !== 200) {
                     UDToast.showError(data.msg);
                     reject(null);
@@ -115,7 +111,7 @@ export default {
                     UDToast.showError('上传成功');
                     resolve(data.data.url);
                 }
-            }).catch(error => { 
+            }).catch(error => {
                 resolve(null);
                 UDToast.hiddenLoading(showLoadingNumber);
                 UDToast.showError('上传失败，请稍后重试');

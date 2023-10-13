@@ -1,37 +1,33 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import {
-    View,
     Text,
     StyleSheet,
-    StatusBar,
     FlatList,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    Linking,
 } from 'react-native';
 import BasePage from '../../base/base';
-import {Button, Flex, Icon, List, WhiteSpace} from '@ant-design/react-native';
+import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import ListHeader from '../../../components/list-header';
 import common from '../../../utils/common';
-import LoadImage from '../../../components/load-image';
-import ScrollTitle from '../../../components/scroll-title';
+import LoadImage from '../../../components/load-image'; 
 import WorkService from '../work-service';
 import ListJianYanHeader from '../../../components/list-jianyan-header';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 
 class TaskListPage extends BasePage {
-    static navigationOptions = ({navigation}) => { 
+    static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
             title: navigation.getParam('data') ? navigation.getParam('data').title : '',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
             // headerRight: (
@@ -67,7 +63,7 @@ class TaskListPage extends BasePage {
         };
     }
 
-    componentDidMount()  {
+    componentDidMount() {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
@@ -76,27 +72,22 @@ class TaskListPage extends BasePage {
         );
     }
 
-
-    componentWillUnmount()  {
+    componentWillUnmount() {
         this.viewDidAppear.remove();
     }
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
         const nextSelectBuilding = nextProps.selectBuilding;
-        
-
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
-            this.setState({selectBuilding: nextProps.selectBuilding}, () => {
+            this.setState({ selectBuilding: nextProps.selectBuilding }, () => {
                 this.onRefresh();
             });
         }
-
     }
 
-
     getList = () => {
-        const {type, overdue, pageIndex} = this.state;
+        const { type, overdue, pageIndex } = this.state;
         WorkService.workList(type, overdue, pageIndex).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
@@ -107,11 +98,10 @@ class TaskListPage extends BasePage {
             this.setState({
                 dataInfo: dataInfo,
                 refreshing: false,
-            }, () => { 
+            }, () => {
             });
         });
     };
-
 
     onRefresh = () => {
         this.setState({
@@ -122,7 +112,7 @@ class TaskListPage extends BasePage {
         });
     };
     loadMore = () => {
-        const {data, total, pageIndex} = this.state.dataInfo; 
+        const { data, total, pageIndex } = this.state.dataInfo;
         if (this.canAction && data.length < total) {
             this.setState({
                 refreshing: true,
@@ -133,60 +123,58 @@ class TaskListPage extends BasePage {
         }
     };
 
-    _renderItem = ({item, index}) => {
+    _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-                const {type} = this.state;
+                const { type } = this.state;
                 if (type === 'fuwu') {
-                    this.props.navigation.navigate('service', {data: item});
+                    this.props.navigation.navigate('service', { data: item });
 
                 } else {
                     switch (item.statusName) {
                         case '待派单': {
-                            this.props.navigation.navigate('paidan', {data: item});
+                            this.props.navigation.navigate('paidan', { data: item });
                             break;
                         }
                         case '待接单': {
-                            this.props.navigation.navigate('jiedan', {data: item});
+                            this.props.navigation.navigate('jiedan', { data: item });
                             break;
                         }
                         case '待开工': {
-                            this.props.navigation.navigate('kaigong', {data: item});
+                            this.props.navigation.navigate('kaigong', { data: item });
                             break;
                         }
                         case '待完成': {
-                            this.props.navigation.navigate('wancheng', {data: item});
+                            this.props.navigation.navigate('wancheng', { data: item });
                             break;
                         }
                         case '待检验': {
-                            this.props.navigation.navigate('jianyan', {data: item});
+                            this.props.navigation.navigate('jianyan', { data: item });
                             break;
                         }
                         case '待回访': {
-                            this.props.navigation.navigate('huifang', {data: item});
+                            this.props.navigation.navigate('huifang', { data: item });
                             break;
                         }
-                        default: 
+                        default:
                             break;
                     }
                 }
-
-
             }}>
                 <Flex direction='column' align={'start'}
-                      style={[styles.card, index === 0 ? styles.blue : styles.orange]}>
-                    <Flex justify='between' style={{width: '100%'}}>
+                    style={[styles.card, index === 0 ? styles.blue : styles.orange]}>
+                    <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.billCode}</Text>
                         <Text style={styles.aaa}>{item.statusName}</Text>
                     </Flex>
-                    <Flex style={styles.line}/>
+                    <Flex style={styles.line} />
                     <Flex align={'start'} direction={'column'}>
                         <Flex justify='between'
-                              style={{width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20}}>
+                            style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>{item.address} {item.contactName}</Text>
                             <TouchableWithoutFeedback
                                 onPress={() => common.call(item.contactLink || item.contactPhone)}>
-                                <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{width: 20, height: 20}}/></Flex>
+                                <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 20, height: 20 }} /></Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
                         <Text style={{
@@ -203,22 +191,20 @@ class TaskListPage extends BasePage {
 
 
     render() {
-        const {statistics, dataInfo, overdue, hiddenHeader, type} = this.state;
-        return (
-
-
-            <CommonView style={{flex: 1}}>
+        const {   dataInfo, overdue, hiddenHeader, type } = this.state;
+        return ( 
+            <CommonView style={{ flex: 1 }}>
                 {
                     hiddenHeader ? null :
                         (
                             type === '6' ?
                                 <ListJianYanHeader overdue={overdue}
-                                                   onChange={(overdue) => this.setState({overdue}, () => {
-                                                       this.onRefresh();
-                                                   })}/> :
-                                <ListHeader overdue={overdue} onChange={(overdue) => this.setState({overdue}, () => {
+                                    onChange={(overdue) => this.setState({ overdue }, () => {
+                                        this.onRefresh();
+                                    })} /> :
+                                <ListHeader overdue={overdue} onChange={(overdue) => this.setState({ overdue }, () => {
                                     this.onRefresh();
-                                })}/>
+                                })} />
                         )
                 }
                 <FlatList
@@ -235,10 +221,8 @@ class TaskListPage extends BasePage {
                     onScrollEndDrag={() => this.canAction = false}
                     onMomentumScrollBegin={() => this.canAction = true}
                     onMomentumScrollEnd={() => this.canAction = false}
-                    ListEmptyComponent={<NoDataView/>}
-                />
-
-
+                    ListEmptyComponent={<NoDataView />}
+                /> 
             </CommonView>
 
         );
@@ -248,17 +232,15 @@ class TaskListPage extends BasePage {
 const styles = StyleSheet.create({
     all: {
         backgroundColor: Macro.color_sky,
-        flex: 1,
+        flex: 1
     },
     content: {
         backgroundColor: Macro.color_white,
-        flex: 1,
-
-
+        flex: 1
     },
     list: {
         backgroundColor: Macro.color_white,
-        margin: 15,
+        margin: 15
     },
     title: {
         paddingTop: 15,
@@ -266,11 +248,8 @@ const styles = StyleSheet.create({
         color: '#333',
         fontSize: 16,
         paddingBottom: 10,
-        //
         marginLeft: 20,
-        marginRight: 20,
-
-        // width: ,
+        marginRight: 20
     },
     title2: {
         paddingTop: 15,
@@ -278,11 +257,7 @@ const styles = StyleSheet.create({
         color: '#333',
         fontSize: 16,
         paddingBottom: 10,
-        //
-
-        marginRight: 20,
-
-        // width: ,
+        marginRight: 20
     },
     line: {
         width: ScreenUtil.deviceWidth() - 30 - 15 * 2,
@@ -317,7 +292,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         backgroundColor: 'white',
         shadowColor: '#00000033',
-        shadowOffset: {h: 10, w: 10},
+        shadowOffset: { h: 10, w: 10 },
         shadowRadius: 5,
         shadowOpacity: 0.8,
     },
@@ -334,7 +309,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const mapStateToProps = ({buildingReducer}) => {
+const mapStateToProps = ({ buildingReducer }) => {
     return {
         selectBuilding: buildingReducer.selectBuilding,
     };

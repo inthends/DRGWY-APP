@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React  from 'react';
 import {
     View,
     StyleSheet,
@@ -9,9 +9,7 @@ import BasePage from '../../base/base';
 import SelectHeader from '../../../components/select-header';
 import Echarts from 'native-echarts';
 import CommonView from '../../../components/CommonView';
-
-
-
+ 
 export default class FeeStatisticPage extends BasePage {
  
     constructor(props) {

@@ -1,4 +1,4 @@
-import { ACTIONS, DrawerType } from '../action-types/action-types';
+import { ACTIONS } from '../action-types/action-types';
 
 const initialState = {
   selectDrawerType: '',

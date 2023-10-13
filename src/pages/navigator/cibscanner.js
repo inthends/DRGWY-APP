@@ -3,8 +3,7 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Animated, Easing } from 'react-native';
 import BasePage from '../base/base';
 import { Icon } from '@ant-design/react-native';
-
-import common from '../../utils/common'; 
+import common from '../../utils/common';
 import NavigatorService from './navigator-service';
 import Macro from '../../utils/macro';
 import { RNCamera } from 'react-native-camera';

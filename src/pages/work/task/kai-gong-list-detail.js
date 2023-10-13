@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -8,16 +8,13 @@ import {
     ScrollView, Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Icon } from '@ant-design/react-native/lib/index';
-import { List, WhiteSpace, Flex, TextareaItem, Grid, Button } from '@ant-design/react-native/lib/index';
+import { Icon, Flex, TextareaItem } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
-import SelectImage from '../../../utils/select-image';
-import common from '../../../utils/common';
-import UDRecord from '../../../utils/UDRecord';
-import api from '../../../utils/api';
-import UDPlayer from '../../../utils/UDPlayer';
-
+import common from '../../../utils/common'; 
+// import UDRecord from '../../../utils/UDRecord';
+// import api from '../../../utils/api';
+// import UDPlayer from '../../../utils/UDPlayer';
 import UDToast from '../../../utils/UDToast';
 import DashLine from '../../../components/dash-line';
 import WorkService from '../work-service';
@@ -30,47 +27,44 @@ import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
 
-const Item = List.Item;
-
 export default class KaiGongListDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
             title: '开始维修',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
-            ),
-
+            )
         };
     };
 
     constructor(props) {
         super(props);
-        let fuwu = common.getValueFromProps(this.props);
+        let data = common.getValueFromProps(this.props);//维修单
         let type = common.getValueFromProps(this.props, 'type');
         this.state = {
             value: '',
-            fuwu,
+            data,
             type,
             images: [],
+            isUpload: false,//是否上传了图片
             detail: {},
             communicates: [],
             lookImageIndex: 0,
             visible: false,
             backMemo: ''
-        }; 
+        };
     }
 
-    componentDidMount()  {
+    componentDidMount() {
         this.getData();
     }
 
-
     getData = () => {
-        const { fuwu, type } = this.state; 
-        WorkService.weixiuDetail(fuwu.id).then(detail => { 
+        const { data } = this.state;
+        WorkService.weixiuDetail(data.id).then(detail => {
             this.setState({
                 detail: {
                     ...detail.entity,
@@ -79,43 +73,48 @@ export default class KaiGongListDetailPage extends BasePage {
                     statusName: detail.statusName,
                 },
             });
-
             //获取维修单的单据动态
-            WorkService.getOperationRecord(fuwu.id).then(res => {
+            WorkService.getOperationRecord(data.id).then(res => {
                 this.setState({
                     communicates: res,
                 });
             });
         });
 
-        WorkService.weixiuExtra(fuwu.id).then(images => {
+        WorkService.weixiuExtra(data.id).then(images => {
             this.setState({
-                images,
+                images
             });
         });
     };
 
     click = (handle) => {
-        const { fuwu, type, value } = this.state;
+        const { data, images, value } = this.state;
         // if (handle === '回复' && !(value&&value.length > 0)) {
         if (!(value && value.length > 0)) {
             UDToast.showInfo('请输入故障判断');
             return;
         }
-        WorkService.serviceHandle(handle, fuwu.id, value).then(res => {
+
+        if (images.length == 0 || !isUpload) {
+            UDToast.showInfo('请上传开工图片');
+            return;
+        }
+
+        WorkService.serviceHandle(handle, data.id, value).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
         });
     };
 
     back = (handle) => {
-        const { fuwu,  backMemo } = this.state;
+        const { data, backMemo } = this.state;
         // if (handle === '回复' && !(value&&value.length > 0)) {
         if (!(backMemo && backMemo.length > 0)) {
             UDToast.showInfo('请输入退单原因');
             return;
         }
-        WorkService.serviceHandle(handle, fuwu.id, backMemo).then(res => {
+        WorkService.serviceHandle(handle, data.id, backMemo).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
         });
@@ -146,8 +145,14 @@ export default class KaiGongListDetailPage extends BasePage {
             visible: true,
         });
     };
-
-
+  
+    //刷新图片
+    reload = () => {
+        this.setState({
+            isUpload: true
+        });
+    }
+ 
     render() {
         const { images, detail, communicates } = this.state; 
         return (
@@ -179,7 +184,13 @@ export default class KaiGongListDetailPage extends BasePage {
                         </Flex>
                     </TouchableWithoutFeedback>
                     <DashLine />
-                    <UploadImageView style={{marginTop:10}} linkId={this.state.fuwu.id} />
+
+                    <UploadImageView style={{ marginTop: 10 }}
+                        linkId={this.state.data.id}
+                        reload={this.reload}
+                        type='开工'
+                    />
+
                     <View style={{
                         margin: 15,
                         borderStyle: 'solid',
@@ -188,9 +199,9 @@ export default class KaiGongListDetailPage extends BasePage {
                         borderRadius: 5,
                     }}>
                         <TextareaItem
-                            rows={4}
+                            rows={3}
                             placeholder='请输入故障判断'
-                            style={{ fontSize: 14, paddingTop: 10, height: 100, width: ScreenUtil.deviceWidth() - 32 }}
+                            style={{ fontSize: 14, paddingTop: 10, height: 60, width: ScreenUtil.deviceWidth() - 32 }}
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
@@ -205,35 +216,38 @@ export default class KaiGongListDetailPage extends BasePage {
                         borderRadius: 5,
                     }}>
                         <TextareaItem
-                            rows={4}
+                            rows={3}
                             placeholder='请输入退单原因'
-                            style={{ fontSize: 14, paddingTop: 10, height: 100, width: ScreenUtil.deviceWidth() - 32 }}
+                            style={{ fontSize: 14, paddingTop: 10, height: 60, width: ScreenUtil.deviceWidth() - 32 }}
                             onChange={value => this.setState({ backMemo: value })}
                             value={this.state.backMemo}
                         />
                     </View>
-                    <Flex justify={'center'}  style={{ marginBottom: 20 }} >
-
+                    <Flex justify={'center'} style={{ marginBottom: 20 }} >
                         <TouchableWithoutFeedback onPress={() => this.click('开始维修')}>
-                            <Flex justify={'center'}  style={[styles.ii, { backgroundColor: Macro.color_4d8fcc }]}>
+                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.color_4d8fcc }]}>
                                 <Text style={styles.word}>开始维修</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
 
                         <TouchableWithoutFeedback onPress={() => this.back('退单')}>
-                            <Flex  justify={'center'}  style={[styles.ii, { backgroundColor: 'red' }]}>
+                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: 'red' }]}>
                                 <Text style={styles.word}>退单</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
-
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
-
                 </ScrollView>
+
+
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
-                    <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
+                    <ImageViewer
+                        index={this.state.lookImageIndex}
+                        onCancel={this.cancel}
+                        onClick={this.cancel}
                         imageUrls={this.state.images} />
                 </Modal>
+
             </CommonView>
         );
     }

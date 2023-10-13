@@ -1,33 +1,23 @@
 import React from 'react';
-import {View, Text, Button, TouchableWithoutFeedback, TouchableOpacity, StyleSheet, ScrollView} from 'react-native';
-import BasePage from '../base/base';
-import {Icon} from '@ant-design/react-native';
-import {List, WhiteSpace, Flex, TextareaItem, Switch, ActionSheet} from '@ant-design/react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import BasePage from '../base/base'; 
+import { Flex, Icon } from '@ant-design/react-native';
 import ScreenUtil from '../../utils/screen-util';
-import LoadImage from '../../components/load-image';
 import Macro from '../../utils/macro';
-import ManualAction from '../../utils/store/actions/manual-action';
 import MineService from './mine-service';
-import {connect} from 'react-redux';
-import {savehasNetwork, saveUser, saveXunJian} from '../../utils/store/actions/actions';
-import XunJianService from '../navigator/xunjian/xunjian-service';
-import UDToast from '../../utils/UDToast';
-import WorkService from '../work/work-service';
-import axios from 'axios';
+import { connect } from 'react-redux';
 import Echarts from 'native-echarts';
-import DatePicker from 'react-native-datepicker';
 import common from '../../utils/common';
 import MyPopover from '../../components/my-popover';
-
-
+ 
 class Jixiao extends BasePage {
-    static navigationOptions = ({navigation}) => {
+    static navigationOptions = ({ navigation }) => {
         return {
             title: '我的绩效',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
 
@@ -35,7 +25,7 @@ class Jixiao extends BasePage {
     };
 
     constructor(props) {
-        super(props); 
+        super(props);
         Date.prototype.getYearAndMonth = function () {
             let year = this.getFullYear();
             let month = this.getMonth() + 1 + '';
@@ -50,17 +40,17 @@ class Jixiao extends BasePage {
             ym: common.getYM('2020-01'),
             begin: current,
             end: current,
-            data:{},
+            data: {},
         };
     }
 
-    componentDidMount()  {
-this.getData()
+    componentDidMount() {
+        this.getData()
     }
 
     getData = () => {
-        const {begin,end} = this.state;
-        MineService.getMyAchievement(begin,end).then(res=>{ 
+        const { begin, end } = this.state;
+        MineService.getMyAchievement(begin, end).then(res => {
             this.setState({
                 data: res,
             })
@@ -71,7 +61,7 @@ this.getData()
 
 
     render() {
-        const {ym,data} = this.state;
+        const { ym, data } = this.state;
 
         /*
         allreceive: 0
@@ -81,7 +71,7 @@ testandvisit: 0
 unfinish: 0
         */
 
-       const {allreceive = 0,going = 0,nottestandvisit = 0,testandvisit = 0,unfinish = 0} = data;
+        const { allreceive = 0, going = 0, nottestandvisit = 0, testandvisit = 0, unfinish = 0 } = data;
 
 
         const items = [
@@ -111,7 +101,7 @@ unfinish: 0
             legend: {
                 orient: 'vertical',
                 right: 0,
-                data: items.map(item=>item.name)
+                data: items.map(item => item.name)
             },
             series: [
                 {
@@ -147,7 +137,7 @@ unfinish: 0
                 <Flex style={styles.date} justify={'around'}>
                     {/*<Text style={styles.select}>2020-08</Text>*/}
                     <View style={styles.select}>
-                        <MyPopover hiddenImage={true} onChange={begin=>{
+                        <MyPopover hiddenImage={true} onChange={begin => {
                             this.setState({
                                 begin,
                             }, () => {
@@ -159,7 +149,7 @@ unfinish: 0
                     <Text style={styles.zhi}>至</Text>
                     {/*<Text style={styles.select}>2020-08</Text>*/}
                     <View style={styles.select}>
-                        <MyPopover hiddenImage={true} onChange={end=>{
+                        <MyPopover hiddenImage={true} onChange={end => {
                             this.setState({
                                 end,
                             }, () => {
@@ -172,7 +162,7 @@ unfinish: 0
 
                 <Text style={styles.jiedan}>总接单：{allreceive}</Text>
 
-                <Echarts option={option || {}} height={300}/>
+                <Echarts option={option || {}} height={300} />
 
 
             </View>
@@ -198,7 +188,7 @@ const styles = StyleSheet.create({
     name: {
         fontSize: 20,
         color: '#333',
-        paddingTop:15,
+        paddingTop: 15,
         paddingLeft: 15,
     },
     desc: {
@@ -212,37 +202,37 @@ const styles = StyleSheet.create({
 
     },
     date: {
-        marginTop:20,
-        width:'100%',
-        paddingLeft:30,
+        marginTop: 20,
+        width: '100%',
+        paddingLeft: 30,
         paddingRight: 30,
-        paddingTop:10,
+        paddingTop: 10,
         paddingBottom: 30
     },
     select: {
-        color:'#333',
-        fontSize:18,
-        paddingLeft:20,
-        paddingRight:20,
-        paddingTop:4,
-        paddingBottom:4,
-        borderStyle:'solid',
-        borderWidth:1,
+        color: '#333',
+        fontSize: 18,
+        paddingLeft: 20,
+        paddingRight: 20,
+        paddingTop: 4,
+        paddingBottom: 4,
+        borderStyle: 'solid',
+        borderWidth: 1,
         borderColor: '#EEE',
-        borderRadius:6,
+        borderRadius: 6,
     },
     zhi: {
         fontSize: 16,
-        color:'#666',
+        color: '#666',
     },
     jiedan: {
-        fontSize:18,
-        color:'green',
-        paddingLeft:15,
+        fontSize: 18,
+        color: 'green',
+        paddingLeft: 15,
     }
 });
 
-const mapStateToProps = ({buildingReducer,memberReducer}) => {
+const mapStateToProps = ({ buildingReducer, memberReducer }) => {
     const user = memberReducer.user || {};
     return {
         selectBuilding: buildingReducer.selectBuilding || {},

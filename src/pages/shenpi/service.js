@@ -14,14 +14,19 @@ export default {
     return api.getData('/api/MobileMethod/MGetFlowData', { taskId });
   },
 
-  // 通过
+  //通过
   approveForm(params) {
     return api.postData('/api/MobileMethod/MApproveForm', params);
   },
 
-  // 退回
+  //退回
   rejectForm(params) {
     return api.postData('/api/MobileMethod/MRejectForm', params);
+  },
+
+  //查阅
+  readForm(params) {
+    return api.postData('/api/MobileMethod/MReadForm', params);
   },
 
   getApproveLog(keyvalue) {

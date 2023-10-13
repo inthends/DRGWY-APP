@@ -1,8 +1,7 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import BasePage from '../base/base';
-import {Icon} from '@ant-design/react-native';
-import { WhiteSpace, Flex, InputItem, Button} from '@ant-design/react-native';
+import BasePage from '../base/base'; 
+import { WhiteSpace, Flex, InputItem,Icon, Button} from '@ant-design/react-native';
 import ScreenUtil from '../../utils/screen-util'; 
 import Macro from '../../utils/macro';
 import MineService from './mine-service';

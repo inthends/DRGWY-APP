@@ -9,8 +9,7 @@ import {
     //ScrollView,
 } from 'react-native';
 import BasePage from '../base/base';
-import { Icon } from '@ant-design/react-native';
-import { Flex, TextareaItem, Button } from '@ant-design/react-native';
+import { Icon, Flex, TextareaItem, Button } from '@ant-design/react-native';
 import ScreenUtil from '../../utils/screen-util';
 import LoadImage from '../../components/load-image';
 import SelectImage from '../../utils/select-image';
@@ -60,7 +59,7 @@ class AddWorkPage extends BasePage {
         this.keyboardDidHideListener = null;
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
@@ -117,7 +116,7 @@ class AddWorkPage extends BasePage {
                         AudioEncoding: 'aac',
                     });
 
-                    AudioRecorder.onProgress = (data) => { 
+                    AudioRecorder.onProgress = (data) => {
                         // this.setState({currentTime: Math.floor(data.currentTime)});
                     };
 
@@ -126,10 +125,12 @@ class AddWorkPage extends BasePage {
                         // if (common.isIOS()) {
                         //     resolve(data.audioFileURL);
                         // } 
-                        api.uploadFile(data.audioFileURL, this.state.id, '/api/MobileMethod/MUploadServiceDesk', false).then(res => { 
-                            this.setState({ fileUrl: res });
-                        }).catch(error => {
-                        });
+                        api.uploadFile(data.audioFileURL,
+                            this.state.id, '',
+                            '/api/MobileMethod/MUploadServiceDesk', false).then(res => {
+                                this.setState({ fileUrl: res });
+                            }).catch(error => {
+                            });
                     };
                     this.recordId = UDToast.showLoading('正在录音中...');
                     this.setState({ recording: true }, () => {
@@ -137,11 +138,9 @@ class AddWorkPage extends BasePage {
                     });
                 }
             }
-
         });
-
-
     };
+
     stopRecord = () => {
         if (this.state.isAuthorised && this.state.recording) {
             setTimeout(() => {
@@ -151,20 +150,19 @@ class AddWorkPage extends BasePage {
                 });
             }, 1000);
         }
-
     };
+
     play = () => {
         UDPlayer.play(this.state.fileUrl);
     };
 
-
     selectImages = () => {
-        SelectImage.select(this.state.id, '/api/MobileMethod/MUploadServiceDesk').then(res => {  
+        SelectImage.select(this.state.id, '/api/MobileMethod/MUploadServiceDesk').then(res => {
             let images = [...this.state.images];
             images.splice(images.length - 1, 0, { 'icon': res });
             if (images.length > 4) {
                 images = images.filter((item, index) => index !== images.length - 1);
-            } 
+            }
             this.setState({ images });
         }).catch(error => {
         });
@@ -206,7 +204,7 @@ class AddWorkPage extends BasePage {
         } else {
             const { taskId } = this.state;
             const { xunJianAction } = this.props;
-            const data = xunJianAction[taskId]; 
+            const data = xunJianAction[taskId];
             if (!data) {
                 UDToast.showSuccess('数据异常，请关闭app重新进入');
             } else {
@@ -329,6 +327,7 @@ class AddWorkPage extends BasePage {
                                     })}
                                 </Flex>
                             </Flex>
+
                         </Flex>
                         <Flex justify={'center'} align={'start'} style={{
                             height: 80,

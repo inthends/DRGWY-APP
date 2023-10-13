@@ -8,9 +8,8 @@ import {
     StyleSheet,
     ScrollView,Modal,
 } from 'react-native';
-import BasePage from '../../base/base';
-import { Icon } from '@ant-design/react-native/lib/index';
-import {  Flex, TextareaItem } from '@ant-design/react-native/lib/index';
+import BasePage from '../../base/base'; 
+import { Icon, Flex, TextareaItem } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';

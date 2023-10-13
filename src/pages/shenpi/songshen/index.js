@@ -1,9 +1,7 @@
 //导航里面点击的服务单详情
-import React, { Fragment } from 'react';
-import {
-  View,
-  Text,
-  TouchableWithoutFeedback,
+import React  from 'react';
+import { 
+  Text, 
   TouchableOpacity,
   StyleSheet,
   ScrollView,

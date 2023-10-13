@@ -6,17 +6,11 @@ import {
     StyleSheet,
     ScrollView, Modal,
 } from 'react-native';
-import BasePage from '../../base/base';
-import {Icon} from '@ant-design/react-native';
-import {List, WhiteSpace, Flex, TextareaItem, Grid, Button} from '@ant-design/react-native';
+import BasePage from '../../base/base'; 
+import {List, Icon, Flex  } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
-import LoadImage from '../../../components/load-image';
-import SelectImage from '../../../utils/select-image';
+import LoadImage from '../../../components/load-image'; 
 import common from '../../../utils/common';
-import UDRecord from '../../../utils/UDRecord';
-import api from '../../../utils/api';
-import UDPlayer from '../../../utils/UDPlayer';
-
 import UDToast from '../../../utils/UDToast';
 import DashLine from '../../../components/dash-line';
 import WorkService from '../../work/work-service';
@@ -25,10 +19,6 @@ import Communicates from '../../../components/communicates';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
-
-
-const Item = List.Item;
-
 
 export default class EtousuDetailPage extends BasePage {
     static navigationOptions = ({navigation}) => {

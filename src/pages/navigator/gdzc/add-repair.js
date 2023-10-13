@@ -7,7 +7,6 @@ import {
     StyleSheet,
     Keyboard
 } from 'react-native';
-
 import { Icon } from '@ant-design/react-native';
 import { connect } from 'react-redux';
 import BasePage from '../../base/base';
@@ -120,7 +119,7 @@ class AddRepairPage extends BasePage {
                         AudioEncoding: 'aac',
                     });
 
-                    AudioRecorder.onProgress = (data) => { 
+                    AudioRecorder.onProgress = (data) => {
                         // this.setState({currentTime: Math.floor(data.currentTime)});
                     };
 
@@ -129,11 +128,13 @@ class AddRepairPage extends BasePage {
                         // if (common.isIOS()) {
                         //     resolve(data.audioFileURL);
                         // } 
-                        api.uploadFile(data.audioFileURL, this.state.id, '/api/MobileMethod/MUploadServiceDesk', false).then(res => { 
-                            this.setState({ fileUrl: res });
-                        }).catch(error => {
-
-                        });
+                        api.uploadFile(data.audioFileURL,
+                            this.state.id,
+                            '',
+                            '/api/MobileMethod/MUploadServiceDesk', false).then(res => {
+                                this.setState({ fileUrl: res });
+                            }).catch(error => { 
+                            });
                     };
                     this.recordId = UDToast.showLoading('正在录音中...');
                     this.setState({ recording: true }, () => {
@@ -141,11 +142,9 @@ class AddRepairPage extends BasePage {
                     });
                 }
             }
-
         });
-
-
     };
+
     stopRecord = () => {
         if (this.state.isAuthorised && this.state.recording) {
             setTimeout(() => {
@@ -157,19 +156,19 @@ class AddRepairPage extends BasePage {
         }
 
     };
+
     play = () => {
         UDPlayer.play(this.state.fileUrl);
     };
 
-
     selectImages = () => {
-        SelectImage.select(this.state.id, '/api/MobileMethod/MUploadServiceDesk').then(res => { 
+        SelectImage.select(this.state.id, '/api/MobileMethod/MUploadServiceDesk').then(res => {
             let images = [...this.state.images];
             images.splice(images.length - 1, 0, { 'icon': res });
             if (images.length > 4) {
                 //最多五张
                 images = images.filter((item, index) => index !== images.length - 1);
-            } 
+            }
             this.setState({ images });
         }).catch(error => {
         });

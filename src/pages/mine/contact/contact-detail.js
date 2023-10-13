@@ -7,28 +7,27 @@ import {
     StyleSheet,
     ScrollView
 } from 'react-native';
-import {Icon} from '@ant-design/react-native';
-import {List,  Flex,  Accordion} from '@ant-design/react-native'; 
+import { List, Icon, Flex, Accordion } from '@ant-design/react-native';
 import LoadImage from '../../../components/load-image';
-import Macro from '../../../utils/macro'; 
-import common from '../../../utils/common'; 
+import Macro from '../../../utils/macro';
+import common from '../../../utils/common';
 import BasePage from '../../base/base';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import api from '../../../utils/api';
 
 class ContactDetail extends BasePage {
-    static navigationOptions = ({navigation}) => {
+    static navigationOptions = ({ navigation }) => {
         return {
             title: '通讯录',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
             headerRight: (
                 <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
-                    <Icon name='bars' style={{marginRight: 15}} color="black"/>
+                    <Icon name='bars' style={{ marginRight: 15 }} color="black" />
                 </TouchableWithoutFeedback>
             ),
 
@@ -48,7 +47,7 @@ class ContactDetail extends BasePage {
             data: [],
         };
         this.onChange = activeSections => {
-            this.setState({activeSections});
+            this.setState({ activeSections });
         };
 
     }
@@ -72,7 +71,7 @@ class ContactDetail extends BasePage {
     }
 
     initData = () => {
-        const {type} = this.state;
+        const { type } = this.state;
         let url = '';
         let url2 = '';
         if (type === '1') {
@@ -83,25 +82,25 @@ class ContactDetail extends BasePage {
             url2 = '/api/MobileMethod/MGetVendorList';
         }
 
-        api.getData(url, this.state.selectBuilding ? {organizeId: this.state.selectBuilding.key} : {}).then(res => {
-            Promise.all(res.map(item => api.getData(url2, {departmentId: item.departmentId,vendorTypeId:item.itemDetailId}))).then(ress => {
+        api.getData(url, this.state.selectBuilding ? { organizeId: this.state.selectBuilding.key } : {}).then(res => {
+            Promise.all(res.map(item => api.getData(url2, { departmentId: item.departmentId, vendorTypeId: item.itemDetailId }))).then(ress => {
                 let data = res.map((item, index) => ({
                     ...item,
                     children: ress[index],
                 }));
-                this.setState({data});
+                this.setState({ data });
             });
         });
     };
 
 
     render() {
-        const {data,type} = this.state; 
+        const { data, type } = this.state;
         return (
 
-            <View style={{flex: 1}}>
-                <ScrollView style={{flex: 1}}>
-                    <View style={styles.content}> 
+            <View style={{ flex: 1 }}>
+                <ScrollView style={{ flex: 1 }}>
+                    <View style={styles.content}>
                         <Accordion
                             onChange={this.onChange}
                             activeSections={this.state.activeSections}
@@ -109,7 +108,7 @@ class ContactDetail extends BasePage {
                             {data.map(item => (
                                 <Accordion.Panel key={item.departmentId || item.itemId} header={item.fullName || item.itemName}>
                                     <List>
-                                        {item.children.map(i=>(
+                                        {item.children.map(i => (
                                             <Flex justify={'start'} key={i.id} align={'start'} style={styles.aa} direction={'column'}>
                                                 {
                                                     type === '2' && (
@@ -120,13 +119,13 @@ class ContactDetail extends BasePage {
                                                         </Flex>
                                                     )
                                                 }
-                                                <Flex style={{width: '100%'}} justify={'between'}>
+                                                <Flex style={{ width: '100%' }} justify={'between'}>
                                                     <Flex>
                                                         <Text style={styles.desc}>{i.name || i.linkMan}</Text>
                                                         <Text style={styles.desc2}>{i.dutyName}</Text>
                                                     </Flex>
-                                                    <TouchableWithoutFeedback onPress={()=>common.call(i.phoneNum || i.linkPhone)}>
-                                                        <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{width: 18, height: 18}}/></Flex>
+                                                    <TouchableWithoutFeedback onPress={() => common.call(i.phoneNum || i.linkPhone)}>
+                                                        <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 18, height: 18 }} /></Flex>
                                                     </TouchableWithoutFeedback>
                                                 </Flex>
                                             </Flex>
@@ -199,7 +198,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const mapStateToProps = ({buildingReducer}) => {
+const mapStateToProps = ({ buildingReducer }) => {
     return {
         selectBuilding: buildingReducer.selectBuilding,
     };

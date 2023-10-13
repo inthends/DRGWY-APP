@@ -5,17 +5,12 @@ import {
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    ScrollView,
-    ImageBackground,
-} from 'react-native';
-import {Icon} from '@ant-design/react-native';
-import {List, WhiteSpace, Flex, TextareaItem, InputItem, Button} from '@ant-design/react-native';
+    ScrollView, 
+} from 'react-native'; 
+import {Icon, Flex} from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import Macro from '../../../utils/macro';
-import MineService from '../mine-service';
-import common from '../../../utils/common';
-import UDToast from '../../../utils/UDToast';
 import BasePage from '../../base/base';
 
 export default class Contact extends BasePage {
@@ -27,28 +22,19 @@ export default class Contact extends BasePage {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{width: 30, marginLeft: 15}}/>
                 </TouchableOpacity>
-            ),
-
+            )
         };
     };
 
     constructor(props) {
         super(props);
-        this.state = {
-
-        };
-
+        // this.state = { 
+        // };
     }
 
-
-
-
-
-
     render() {
-        const {data} = this.state;
-        return (
-
+        //const {data} = this.state;
+        return ( 
             <View style={{flex: 1}}>
                 <ScrollView>
                     <View style={styles.content}>

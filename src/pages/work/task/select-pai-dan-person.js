@@ -1,6 +1,6 @@
-import React, { Fragment } from 'react';
+import React  from 'react';
 import BasePage from '../../base/base';
-import { Button, Flex, Icon, List, WhiteSpace } from '@ant-design/react-native';
+import {  Flex, Icon  } from '@ant-design/react-native';
 import { TouchableWithoutFeedback, View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import CommonView from '../../../components/CommonView';
 import Macro from '../../../utils/macro';

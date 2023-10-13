@@ -53,7 +53,7 @@ class QianFeiZhangLingPage extends BasePage {
     };
   }
 
-  componentDidMount(): void {
+  componentDidMount()  {
     NavigatorService.GetReceiveFeeItems().then((res) => {
       const titles = (res || []).map((item) => item.title);
       this.setState({

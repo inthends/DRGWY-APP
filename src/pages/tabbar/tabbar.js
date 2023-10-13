@@ -12,20 +12,15 @@ import MinePage from '../mine/mine';
 import NavigatorPage from '../navigator/navigator';
 import HomePage from '../home/home';
 import SecondDetailBuildingPage from '../building/second-detail-buinding/second-detail-buinding';
-import ManagerBuildingPage from '../../pages/building/manager-building/manager-building';
-
-import DetailBuildingPage from '../building/detail-building/detail-building';
-
-import DetailParkingPage from '../building/detail-parking/detail-parking';
-
+import ManagerBuildingPage from '../../pages/building/manager-building/manager-building'; 
+import DetailBuildingPage from '../building/detail-building/detail-building'; 
+import DetailParkingPage from '../building/detail-parking/detail-parking'; 
 import BuildingsPage from '../building/buildings/buildings';
-import FeeStatisticPage from '../navigator/fee-statistic/fee-statistic';
-// import {Icon} from '@ant-design/react-native';
+import FeeStatisticPage from '../navigator/fee-statistic/fee-statistic'; 
 import AddWorkPage from '../work/add-work';
 import PersonInfoPage from '../mine/person-info';
 import SettingPage from '../mine/setting';
-import ModifyPsdPage from '../mine/modify-psd';
-
+import ModifyPsdPage from '../mine/modify-psd'; 
 //导航
 import FeeHousePage from '../navigator/fee-housing';
 import gdMoneyPage from '../navigator/gd-Money';

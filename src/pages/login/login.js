@@ -37,6 +37,12 @@ class LoginPage extends BasePage {
     //   username: 'system',
     //   password: 'ty123456'
     // };
+
+    // this.state = {
+    //   usercode: 'test',
+    //   username: 'csr',
+    //   password: '1234598'
+    // };
   }
 
   componentDidMount() {
@@ -51,8 +57,7 @@ class LoginPage extends BasePage {
     }
   }
 
-  initUI() {}
-
+  initUI() { }
   // componentWillMount() {
   //     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
   //     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
@@ -80,7 +85,8 @@ class LoginPage extends BasePage {
 
   login = () => {
     const { username, password, usercode } = this.state;
-    JPush.getRegistrationID((result) => { 
+    //注册极光推送id
+    JPush.getRegistrationID((result) => {
       // this.setState({
       //     registration_id: result.registerID,
       // });
@@ -92,16 +98,15 @@ class LoginPage extends BasePage {
               this.props.saveNameAndPsd({ ...this.state });
               this.props.saveToken(res);
             })
-            .catch((error) => { 
+            .catch((error) => {
             });
         })
-        .catch((err) => {});
+        .catch((err) => { });
     });
   };
 
   render() {
     const { version } = this.state;
-
     return (
       <Fragment>
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -111,7 +116,7 @@ class LoginPage extends BasePage {
                 width: 120,
                 height: 120,
                 borderRadius: 5,
-                marginBottom: 50,
+                marginBottom: 50
               }}
               img={require('../../static/images/logo.png')}
             />

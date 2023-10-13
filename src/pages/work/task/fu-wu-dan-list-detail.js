@@ -1,5 +1,5 @@
 //工作台点击服务单详情
-import React  from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -9,16 +9,13 @@ import {
     ScrollView, Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Icon } from '@ant-design/react-native';
-import { Flex, TextareaItem } from '@ant-design/react-native';
+import { Icon, Flex, TextareaItem } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
-import LoadImage from '../../../components/load-image';
-
+import LoadImage from '../../../components/load-image'; 
 // import SelectImage from '../../../utils/select-image';
 // import UDRecord from '../../../utils/UDRecord';
 // import api from '../../../utils/api';
-// import UDPlayer from '../../../utils/UDPlayer';
-
+// import UDPlayer from '../../../utils/UDPlayer'; 
 import common from '../../../utils/common';
 import UDToast from '../../../utils/UDToast';
 import DashLine from '../../../components/dash-line';
@@ -35,7 +32,7 @@ export default class FuWuDanListDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
             title: '服务单详情',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
@@ -59,7 +56,7 @@ export default class FuWuDanListDetailPage extends BasePage {
             communicates: [],
             lookImageIndex: 0,
             visible: false,
-        }; 
+        };
     }
 
     componentDidMount() {
@@ -68,8 +65,8 @@ export default class FuWuDanListDetailPage extends BasePage {
 
 
     getData = () => {
-        const { fuwu, type } = this.state; 
-        WorkService.serviceDetail(type, fuwu.id).then(item => { 
+        const { fuwu, type } = this.state;
+        WorkService.serviceDetail(type, fuwu.id).then(item => {
             this.setState({
                 detail: {
                     ...item.data,

@@ -1,5 +1,5 @@
 //工作台里面，待回访点击跳转的投诉单，只能查看
-import React, {Fragment} from 'react';
+import React from 'react';
 import {
     Text,
     TouchableWithoutFeedback,
@@ -7,23 +7,17 @@ import {
     StyleSheet,
     ScrollView, Modal,
 } from 'react-native';
-import BasePage from '../../base/base';
-import {Icon} from '@ant-design/react-native';
-import {List, WhiteSpace, Flex, TextareaItem, Grid, Button} from '@ant-design/react-native';
+import BasePage from '../../base/base'; 
+import {List, Icon, Flex } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
-import LoadImage from '../../../components/load-image';
-import SelectImage from '../../../utils/select-image';
-import common from '../../../utils/common';
-import UDRecord from '../../../utils/UDRecord';
-import api from '../../../utils/api';
-import UDPlayer from '../../../utils/UDPlayer';
+import LoadImage from '../../../components/load-image'; 
+import common from '../../../utils/common'; 
 
 import UDToast from '../../../utils/UDToast';
 import DashLine from '../../../components/dash-line';
 import WorkService from '../../work/work-service';
 import ListImages from '../../../components/list-images';
-import Communicates from '../../../components/communicates';
-import Macro from '../../../utils/macro';
+import Communicates from '../../../components/communicates'; 
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 

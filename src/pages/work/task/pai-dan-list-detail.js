@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React  from 'react';
 import {
     View,
     Text,
@@ -7,17 +7,11 @@ import {
     StyleSheet,
     ScrollView, Modal,
 } from 'react-native';
-import BasePage from '../../base/base';
-import { Icon } from '@ant-design/react-native/lib/index';
-import { List, WhiteSpace, Flex, TextareaItem, Grid, Button } from '@ant-design/react-native/lib/index';
+import BasePage from '../../base/base'; 
+import { List, Icon, Flex, TextareaItem } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
-import LoadImage from '../../../components/load-image';
-import SelectImage from '../../../utils/select-image';
-import common from '../../../utils/common';
-import UDRecord from '../../../utils/UDRecord';
-import api from '../../../utils/api';
-import UDPlayer from '../../../utils/UDPlayer';
-
+import LoadImage from '../../../components/load-image'; 
+import common from '../../../utils/common';  
 import UDToast from '../../../utils/UDToast';
 import DashLine from '../../../components/dash-line';
 import WorkService from '../work-service';

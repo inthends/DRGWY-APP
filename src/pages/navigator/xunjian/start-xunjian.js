@@ -65,7 +65,7 @@ class StartXunJianPage extends BasePage {
         );
     }
 
-    componentWillUnmount(): void {
+    componentWillUnmount() {
         this.viewDidAppear.remove();
     }
 

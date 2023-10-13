@@ -1,32 +1,23 @@
 //导航里面点击的服务单详情
-import React, { Fragment } from 'react';
-import {
-  View,
-  Text,
-  TouchableWithoutFeedback,
+import React  from 'react';
+import { 
   TouchableOpacity,
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import BasePage from '../../base/base';
-import { Icon } from '@ant-design/react-native';
-import { Flex, TextareaItem } from '@ant-design/react-native';
-import ScreenUtil from '../../../utils/screen-util';
-import UDToast from '../../../utils/UDToast';
-import WorkService from '../../work/work-service';
+import BasePage from '../../base/base'; 
+import { Flex, Icon } from '@ant-design/react-native';
+import ScreenUtil from '../../../utils/screen-util'; 
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
-import ShowTitle from '../components/show-title';
-import ShowLine from '../components/show-line';
-import ShowText from '../components/show-text';
-import ShowTextWithRight from '../components/show-text-with-right';
+import ShowTitle from '../components/show-title'; 
+import ShowText from '../components/show-text'; 
 import CompanyDetail from '../components/company-detail';
 import common from '../../../utils/common';
 import service from '../service';
 import ShowActions from '../components/show-actions';
 import ShowFiles from '../components/show-files';
-import ShowRecord from '../components/show-record';
-import ShowMingXi from '../components/show-mingxi';
+import ShowRecord from '../components/show-record'; 
 import ShowMingXi2 from '../components/show-mingxi2';
 
 export default class EfuwuDetailPage extends BasePage {

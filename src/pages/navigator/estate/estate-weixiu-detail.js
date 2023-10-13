@@ -6,9 +6,8 @@ import {
     StyleSheet,
     ScrollView, Modal,
 } from 'react-native';
-import BasePage from '../../base/base';
-import {Icon} from '@ant-design/react-native';
-import {List,  Flex } from '@ant-design/react-native';
+import BasePage from '../../base/base'; 
+import {Icon,  Flex } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 // import SelectImage from '../../../utils/select-image';
@@ -23,8 +22,7 @@ import ListImages from '../../../components/list-images';
 import Communicates from '../../../components/communicates';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
-import ImageViewer from 'react-native-image-zoom-viewer';
-const Item = List.Item;
+import ImageViewer from 'react-native-image-zoom-viewer'; 
 
 export default class EweixiuDetailPage extends BasePage {
     static navigationOptions = ({navigation}) => {
@@ -60,7 +58,7 @@ export default class EweixiuDetailPage extends BasePage {
     }
 
     getData = () => {
-        const {fuwu, type} = this.state; 
+        const {fuwu} = this.state; 
         WorkService.weixiuDetail(fuwu.id).then(detail => { 
             this.setState({
                 detail: {
@@ -84,6 +82,7 @@ export default class EweixiuDetailPage extends BasePage {
             });
         });
     };
+
     click = (handle) => {
         const {fuwu, type, value} = this.state;
         if (handle === '回复' && !(value&&value.length > 0)) {
@@ -93,6 +92,7 @@ export default class EweixiuDetailPage extends BasePage {
         WorkService.serviceHandle(handle, fuwu.id, value).then(res => { 
         });
     };
+
     communicateClick = (i) => {
         let c = this.state.communicates;
         let d = c.map(it => {

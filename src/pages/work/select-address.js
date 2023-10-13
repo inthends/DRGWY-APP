@@ -9,9 +9,8 @@ import {
     ScrollView,
     RefreshControl,
 } from 'react-native';
-import BasePage from '../base/base';
-import { Icon } from '@ant-design/react-native';
-import { List, Flex, Button } from '@ant-design/react-native';
+import BasePage from '../base/base'; 
+import { List,Icon, Flex, Button } from '@ant-design/react-native';
 import common from '../../utils/common';
 import WorkService from './work-service';
 import UDToast from '../../utils/UDToast';

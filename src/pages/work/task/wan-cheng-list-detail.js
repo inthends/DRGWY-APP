@@ -1,30 +1,20 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import {
     View,
     Text,
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    Image,
-    ScrollView,
-    RefreshControl, Modal,
+    ScrollView, Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Icon } from '@ant-design/react-native/lib/index';
-import { List, WhiteSpace, Flex, TextareaItem, Grid, Button } from '@ant-design/react-native/lib/index';
+import { Icon, Flex, TextareaItem } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
-import LoadImage from '../../../components/load-image';
-import SelectImage from '../../../utils/select-image';
+import LoadImage from '../../../components/load-image'; 
 import common from '../../../utils/common';
-import UDRecord from '../../../utils/UDRecord';
-import api from '../../../utils/api';
-import UDPlayer from '../../../utils/UDPlayer';
-
 import UDToast from '../../../utils/UDToast';
 import DashLine from '../../../components/dash-line';
 import WorkService from '../work-service';
-import UploadImageView from '../../../components/upload-image-view';
-// import Communicates from '../../../components/communicates';
 import OperationRecords from '../../../components/operationrecords';
 import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
@@ -32,46 +22,44 @@ import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
 
-const Item = List.Item;
-
 export default class WanChengListDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
             title: '完成维修',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
-            ),
-
+            )
         };
     };
 
     constructor(props) {
-        super(props); 
-        let fuwu = common.getValueFromProps(this.props); 
+        super(props);
+        let data = common.getValueFromProps(this.props);
         let type = common.getValueFromProps(this.props, 'type');
         this.state = {
             value: '',
-            fuwu,
+            data,
             type,
             images: [],
+            isUpload: false,//是否上传了图片
             detail: {},
             communicates: [],
             lookImageIndex: 0,
             visible: false,
-        }; 
+        };
     }
 
-    componentDidMount()  {
+    componentDidMount() {
         this.getData();
     }
 
 
     getData = () => {
-        const { fuwu, type } = this.state; 
-        WorkService.weixiuDetail(fuwu.id).then(detail => { 
+        const { data } = this.state;
+        WorkService.weixiuDetail(data.id).then(detail => {
             this.setState({
                 detail: {
                     ...detail.entity,
@@ -82,7 +70,7 @@ export default class WanChengListDetailPage extends BasePage {
             });
 
             //获取维修单的单据动态
-            WorkService.getOperationRecord(fuwu.id).then(res => {
+            WorkService.getOperationRecord(data.id).then(res => {
                 this.setState({
                     communicates: res,
                 });
@@ -90,24 +78,31 @@ export default class WanChengListDetailPage extends BasePage {
 
         });
 
-        WorkService.weixiuExtra(fuwu.id).then(images => {
+        WorkService.weixiuExtra(data.id).then(images => {
             this.setState({
-                images,
+                images
             });
         });
     };
 
     click = (handle) => {
-        const { fuwu, type, value } = this.state;
+        const { data, images, value } = this.state;
         if (handle === '回复' && !(value && value.length > 0)) {
             UDToast.showInfo('请输入文字');
             return;
         }
-        WorkService.serviceHandle(handle, fuwu.id, value).then(res => {
+
+        if (images.length == 0 || !isUpload) {
+            UDToast.showInfo('请上传完成图片');
+            return;
+        }
+
+        WorkService.serviceHandle(handle, data.id, value).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
         });
     };
+
     communicateClick = (i) => {
         let c = this.state.communicates;
         let d = c.map(it => {
@@ -132,10 +127,11 @@ export default class WanChengListDetailPage extends BasePage {
             visible: true,
         });
     };
-
+ 
 
     render() {
         const { images, detail, communicates } = this.state;
+
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
@@ -167,7 +163,14 @@ export default class WanChengListDetailPage extends BasePage {
                         </Flex>
                     </TouchableWithoutFeedback>
                     <DashLine />
-                    <UploadImageView style={{ marginTop: 10 }} linkId={this.state.fuwu.id} />
+
+                    <UploadImageView style={{ marginTop: 10 }}
+                        linkId={this.state.data.id}
+                        reload={this.reload}
+                        type='完成'
+                    />
+
+
                     <View style={{
                         margin: 15,
                         borderStyle: 'solid',
@@ -176,7 +179,7 @@ export default class WanChengListDetailPage extends BasePage {
                         borderRadius: 5,
                     }}>
                         <TextareaItem
-                            rows={4}
+                            rows={3}
                             placeholder='请输入'
                             style={{ fontSize: 14, paddingTop: 10, height: 100, width: ScreenUtil.deviceWidth() - 32 }}
                             onChange={value => this.setState({ value })}

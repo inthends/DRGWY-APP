@@ -1,6 +1,6 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import BasePage from '../../base/base';
-import { Flex, Accordion, List, Icon } from '@ant-design/react-native';
+import { Flex,  Icon } from '@ant-design/react-native';
 import { StyleSheet, FlatList, Text, TouchableOpacity,TouchableWithoutFeedback, LoadImage,ScrollView } from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import CommonView from '../../../components/CommonView';
@@ -9,7 +9,7 @@ import OrderService from './order-service';
 import NoDataView from '../../../components/no-data-view';
 import Macro from '../../../utils/macro';
 
-let screen_width = ScreenUtil.deviceWidth()
+//let screen_width = ScreenUtil.deviceWidth()
 
 export default class OrderlistPage extends BasePage {
     static navigationOptions = ({ navigation }) => {

@@ -1,10 +1,7 @@
 import React from 'react';
-import { View, Text, Button, NativeModules, TouchableWithoutFeedback, TouchableOpacity, StyleSheet } from 'react-native';
-import BasePage from '../base/base';
-import { Icon } from '@ant-design/react-native';
-import { List, WhiteSpace, Flex, TextareaItem, Switch, ActionSheet } from '@ant-design/react-native';
-import ScreenUtil from '../../utils/screen-util';
-import LoadImage from '../../components/load-image';
+import { View, Text, NativeModules, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
+import BasePage from '../base/base'; 
+import { List, Icon, Flex, Switch, ActionSheet } from '@ant-design/react-native';
 import Macro from '../../utils/macro';
 import ManualAction from '../../utils/store/actions/manual-action';
 import MineService from './mine-service';
@@ -78,7 +75,7 @@ class SettingPage extends BasePage {
         NativeModules.LHNToast.changeprint();
     }
 
-    update() { 
+    update() {
 
         this.loading = UDToast.showLoading('正在同步中...');
         XunJianService.xunjianData(this.props.user.userId, false).then(resp => {
@@ -96,7 +93,7 @@ class SettingPage extends BasePage {
                             allData: resp || {},
                             lists: rea || [],
                             scanLists: r || {},
-                        }; 
+                        };
                         UDToast.showInfo('同步完成');
                         this.props.saveXunjian(aaa);
                     }).catch(err => {
@@ -137,7 +134,7 @@ class SettingPage extends BasePage {
                         let file = { uri: img.icon.fileUri, type: 'multipart/form-data', name: 'picture.png' };   //这里的key(uri和type和name)不能改变,
                         formData.append('Files', file);   //这里的files就是后台需要的key
                     }
-                    formData.append('keyvalue', id); 
+                    formData.append('keyvalue', id);
                     axios.defaults.headers['Content-Type'] = 'multipart/form-data';
                     axios.defaults.headers['Authorization'] = 'Bearer ' + ManualAction.getTokenBYStore();
                     return axios.post('/api/MobileMethod/MUploadPollingTask', formData);

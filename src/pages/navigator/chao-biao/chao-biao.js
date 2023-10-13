@@ -1,50 +1,36 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import {
     View,
     Text,
     StyleSheet,
-    StatusBar,
-    ScrollView,
-    SectionList,
     TouchableWithoutFeedback,
-    ImageBackground,
-    Animated,
-    FlatList,
-    Image, TouchableOpacity,
-    TextInput, Modal,
+    FlatList, TouchableOpacity,
+    TextInput
 } from 'react-native';
 
 import BasePage from '../../base/base';
-import BuildingHeader from '../../../components/building/building-header';
-import BuildingCell from '../../../components/building/build-cell';
-import {Button, Flex, Icon, List, WhiteSpace, SegmentedControl, WingBlank, DatePicker} from '@ant-design/react-native';
+import { Button, Flex, Icon, List, WhiteSpace, WingBlank, DatePicker } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
-import forge from 'node-forge';
-import LoadImage from '../../../components/load-image';
-import {connect} from 'react-redux';
-
-import CommonView from '../../../components/CommonView';
-import common from '../../../utils/common';
+import { connect } from 'react-redux';
 import ScreenUtil from '../../../utils/screen-util';
 import NoDataView from '../../../components/no-data-view';
 import ChaoBiaoService from './chao-biao-service';
-import ImageViewer from 'react-native-image-zoom-viewer';
 import ChaoBiaoCell from './chao-biao-cell';
 import UDToast from '../../../utils/UDToast';
 
 
 class ChaoBiaoPage extends BasePage {
 
-    static navigationOptions = ({navigation}) => {
+    static navigationOptions = ({ navigation }) => {
 
 
         return {
             tabBarVisible: false,
             title: '移动抄表',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
             // headerRight: (
@@ -105,14 +91,14 @@ class ChaoBiaoPage extends BasePage {
                 dataInfo: dataInfo,
                 refreshing: false,
                 pageIndex: dataInfo.pageIndex,
-            }, () => { 
+            }, () => {
             });
         });
 
     };
 
     loadMore = () => {
-        const {data, total, pageIndex} = this.state.dataInfo; 
+        const { data, total, pageIndex } = this.state.dataInfo;
 
         if (!this.canAction && data.length < total) {
             // if (data.length < total) {
@@ -168,7 +154,7 @@ class ChaoBiaoPage extends BasePage {
 
     };
     submit = () => {
-        const {date} = this.state;
+        const { date } = this.state;
         if (date) {
             ChaoBiaoService.saveMeter(date.getYearAndMonth()).then(res => {
                 this.setState({
@@ -183,7 +169,7 @@ class ChaoBiaoPage extends BasePage {
         }
     };
     tanchuangSubmit = () => {
-        const {nowRead, current} = this.state;
+        const { nowRead, current } = this.state;
         if (nowRead.length === 0) {
             UDToast.showError('请输入本次表度数');
             return;
@@ -200,34 +186,34 @@ class ChaoBiaoPage extends BasePage {
 
 
     render() {
-        const {dataInfo, current} = this.state;
+        const { dataInfo, current } = this.state;
 
         return (
 
-            <View style={{flex: 1}}>
-                <WhiteSpace size={'xl'}/>
+            <View style={{ flex: 1 }}>
+                <WhiteSpace size={'xl'} />
 
                 <FlatList
                     data={dataInfo.data}
                     // ListHeaderComponent={}
-                    renderItem={({item, index}) => <ChaoBiaoCell item={item}/>}
-                    style={{height: ScreenUtil.deviceHeight() - 300}}
+                    renderItem={({ item, index }) => <ChaoBiaoCell item={item} />}
+                    style={{ height: ScreenUtil.deviceHeight() - 300 }}
                     keyExtractor={(item, index) => (item.id + '')}
                     refreshing={this.state.refreshing}
                     // onRefresh={() => this.onRefresh()}
                     onEndReached={() => this.loadMore()}
                     onEndReachedThreshold={0.1}
                     onMomentumScrollBegin={() => this.canAction = false}
-                    ListEmptyComponent={<NoDataView/>}
+                    ListEmptyComponent={<NoDataView />}
                 />
 
-                <Flex style={{minHeight: 40, marginBottom: 30}}>
+                <Flex style={{ minHeight: 40, marginBottom: 30 }}>
                     <TouchableWithoutFeedback onPress={this.scan}>
-                        <Flex justify={'center'} style={[styles.ii, {backgroundColor: Macro.color_4d8fcc}]}>
+                        <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.color_4d8fcc }]}>
                             <Text style={styles.word}>开始扫码</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback onPress={() => this.setState({showSubmit: true, date: new Date()})}>
+                    <TouchableWithoutFeedback onPress={() => this.setState({ showSubmit: true, date: new Date() })}>
                         <Flex justify={'center'} style={[styles.ii]}>
                             <Text style={styles.word}>提交抄表</Text>
                         </Flex>
@@ -237,40 +223,40 @@ class ChaoBiaoPage extends BasePage {
                 {this.state.scan && (
                     <View style={styles.mengceng}>
                         <Flex justify={'center'} align={'center'}
-                              style={{flex: 1, padding: 50, backgroundColor: 'rgba(178,178,178,0.5)'}}>
+                            style={{ flex: 1, padding: 50, backgroundColor: 'rgba(178,178,178,0.5)' }}>
                             <WingBlank size={'lg'}>
                                 <Flex direction='column' align={'start'}
-                                      style={[styles.card]}>
+                                    style={[styles.card]}>
                                     <Flex justify='between'>
                                         <Text style={styles.title}>{current.meterName}</Text>
                                     </Flex>
-                                    <Flex style={styles.line}/>
+                                    <Flex style={styles.line} />
                                     <Flex align={'start'} direction={'column'}>
                                         <Flex justify='between'
-                                              style={{width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20}}>
+                                            style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
                                             <Text>编号：{current.meterCode}</Text>
                                             <Text>倍率：{current.meterZoom}</Text>
 
                                         </Flex>
                                         <WingBlank size={'lg'}>
                                             <WingBlank size={'lg'}>
-                                                <Text style={{color: '#666'}}>
+                                                <Text style={{ color: '#666' }}>
                                                     上次度数：{current.lastRead}
                                                 </Text>
                                             </WingBlank>
                                         </WingBlank>
-                                        <WhiteSpace/>
+                                        <WhiteSpace />
                                     </Flex>
-                                    <WhiteSpace/>
-                                    <Flex direction={'column'} style={{width: '100%'}}>
-                                        <Flex justify={'around'} style={{marginBottom: 10}}>
+                                    <WhiteSpace />
+                                    <Flex direction={'column'} style={{ width: '100%' }}>
+                                        <Flex justify={'around'} style={{ marginBottom: 10 }}>
                                             <TextInput value={this.state.nowRead}
-                                                       onChangeText={nowRead => this.setState({nowRead})}
-                                                       style={{fontSize: 20}} placeholder={'请输入本次表度数'}/>
+                                                onChangeText={nowRead => this.setState({ nowRead })}
+                                                style={{ fontSize: 20 }} placeholder={'请输入本次表度数'} />
                                         </Flex>
-                                        <WhiteSpace/>
+                                        <WhiteSpace />
                                         <WingBlank size={'lg'}>
-                                            <Flex style={{marginBottom: 15}}>
+                                            <Flex style={{ marginBottom: 15 }}>
                                                 <Button type={'primary'} style={{
                                                     backgroundColor: Macro.work_blue,
                                                     width: 100,
@@ -279,14 +265,14 @@ class ChaoBiaoPage extends BasePage {
                                                 }} onPress={this.tanchuangSubmit}>
                                                     确定
                                                 </Button>
-                                                <Button activeStyle={{backgroundColor: '#CCCCCC'}} type={'primary'}
-                                                        style={{
-                                                            marginLeft: 50,
-                                                            backgroundColor: '#CCCCCC',
-                                                            width: 100,
-                                                            height: 44,
-                                                            borderWidth: 0,
-                                                        }} onPress={() => this.setState({scan: false})}>
+                                                <Button activeStyle={{ backgroundColor: '#CCCCCC' }} type={'primary'}
+                                                    style={{
+                                                        marginLeft: 50,
+                                                        backgroundColor: '#CCCCCC',
+                                                        width: 100,
+                                                        height: 44,
+                                                        borderWidth: 0,
+                                                    }} onPress={() => this.setState({ scan: false })}>
                                                     取消
                                                 </Button>
 
@@ -306,47 +292,47 @@ class ChaoBiaoPage extends BasePage {
                 {this.state.showSubmit && (
                     <View style={styles.mengceng}>
                         <Flex direction={'column'} justify={'center'} align={'center'}
-                              style={{flex: 1, padding: 25, backgroundColor: 'rgba(178,178,178,0.5)'}}>
+                            style={{ flex: 1, padding: 25, backgroundColor: 'rgba(178,178,178,0.5)' }}>
                             <Flex direction={'column'}
-                                  style={{backgroundColor: 'white', borderRadius: 10, padding: 15}}>
-                                <Text style={{fontSize: 20}}>说明</Text>
-                                <WhiteSpace/>
+                                style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
+                                <Text style={{ fontSize: 20 }}>说明</Text>
+                                <WhiteSpace />
                                 <Text style={{
                                     fontSize: 18,
                                     color: 'red',
                                     lineHeight: 22,
                                     textAlign: 'center',
                                 }}>提交结束抄表后本次读数将不允许修改，请确认所有表读数是否全部抄写完成，谨慎操作</Text>
-                                <WhiteSpace/>
-                                <List style={{height: 50, width: 300, borderWidth: 0}}>
+                                <WhiteSpace />
+                                <List style={{ height: 50, width: 300, borderWidth: 0 }}>
                                     <DatePicker
                                         mode="month"
                                         title="选择年月"
                                         value={this.state.date}
-                                        onChange={date => this.setState({date})}
-                                        style={{backgroundColor: 'white'}}
+                                        onChange={date => this.setState({ date })}
+                                        style={{ backgroundColor: 'white' }}
                                         format={value => value.getYearAndMonth()}
 
                                     >
                                         <List.Item arrow="horizontal"
-                                                   style={{borderWidth: 0}}><Text>抄表年月：</Text></List.Item>
+                                            style={{ borderWidth: 0 }}><Text>抄表年月：</Text></List.Item>
                                     </DatePicker>
                                 </List>
-                                <Flex style={{marginTop: 15, marginBottom: 0}}>
+                                <Flex style={{ marginTop: 15, marginBottom: 0 }}>
                                     <Button onPress={this.submit} type={'primary'}
-                                            activeStyle={{backgroundColor: Macro.work_blue}} style={{
-                                        width: 110,
-                                        backgroundColor: Macro.work_blue,
-                                        height: 44,
-                                    }}>确认提交</Button>
-                                    <Button onPress={() => this.setState({showSubmit: false})} type={'primary'}
-                                            activeStyle={{backgroundColor: '#ccc'}} style={{
-                                        marginLeft: 30,
-                                        width: 110,
-                                        backgroundColor: '#ccc',
-                                        borderWidth: 0,
-                                        height: 44,
-                                    }}>取消</Button>
+                                        activeStyle={{ backgroundColor: Macro.work_blue }} style={{
+                                            width: 110,
+                                            backgroundColor: Macro.work_blue,
+                                            height: 44,
+                                        }}>确认提交</Button>
+                                    <Button onPress={() => this.setState({ showSubmit: false })} type={'primary'}
+                                        activeStyle={{ backgroundColor: '#ccc' }} style={{
+                                            marginLeft: 30,
+                                            width: 110,
+                                            backgroundColor: '#ccc',
+                                            borderWidth: 0,
+                                            height: 44,
+                                        }}>取消</Button>
                                 </Flex>
                             </Flex>
                         </Flex>
@@ -433,7 +419,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         backgroundColor: 'white',
         shadowColor: '#00000033',
-        shadowOffset: {h: 10, w: 10},
+        shadowOffset: { h: 10, w: 10 },
         shadowRadius: 5,
         shadowOpacity: 0.8,
     },
@@ -471,7 +457,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const mapStateToProps = ({buildingReducer}) => {
+const mapStateToProps = ({ buildingReducer }) => {
     return {
         selectBuilding: buildingReducer.selectBuilding,
     };
