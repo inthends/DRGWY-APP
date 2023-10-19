@@ -1,4 +1,3 @@
-//导航里面点击的服务单详情
 import React  from 'react';
 import {
   View,

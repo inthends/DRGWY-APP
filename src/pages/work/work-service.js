@@ -12,7 +12,7 @@ export default {
         return api.postData('/api/MobileMethod/MSaveServiceDeskForm', params,showLoading);
     },
     //服务单详情
-    serviceDetail(type, keyvalue) {
+    serviceDetail(keyvalue) {
         return api.getData('/api/MobileMethod/MGetServicedeskEntity', { keyvalue });
     },
     //服务单附件
@@ -89,12 +89,16 @@ export default {
     workList(type, overdue, pageIndex) {
         let url = '/api/MobileMethod/MGetRepairPageList';
         if (type === '3') {
+            //待完成的维修单
             url = '/api/MobileMethod/MGetUnFinishRepairPageList';
-        } else if (type === '6') {
+        } 
+        else if (type === '6') {
+            //待检验的维修单
             url = '/api/MobileMethod/MGetTestRepairPageList';
             type = overdue;
             overdue = null;
-        } else if (type === 'fuwu') {
+        } 
+        else if (type === 'fuwu') {
             if (overdue === -1) {
                 //已回复，已经回复不判断是否逾期
                 url = '/api/MobileMethod/MGetReplyServiceDeskPageList';
@@ -104,12 +108,12 @@ export default {
                 url = '/api/MobileMethod/MGetUnReplyServiceDeskPageList';
                 type = null;
             }
-        } else if (type === 'visit') {
-            //服务单回访
+        } 
+        else if (type === 'visit') {
+            //待回访的服务单
             url = '/api/MobileMethod/MGetUnVisitServiceDeskPageList';
             type = null;
         }
-
         return api.postData(url, { status: type, isOverdue: overdue , pageIndex, pageSize: 100});
     },
 

@@ -155,7 +155,7 @@ class GdzcPandianPage extends BasePage {
     }
 
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
-        const { data, images } = this.state;
+        const {  images } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
                 <Text style={styles.title}>基本资料</Text>

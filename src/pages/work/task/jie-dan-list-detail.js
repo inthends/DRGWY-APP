@@ -8,7 +8,7 @@ import {
     ScrollView, Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
-import { List, Flex, TextareaItem, Icon } from '@ant-design/react-native';
+import {  Flex, TextareaItem, Icon } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';
@@ -20,10 +20,7 @@ import OperationRecords from '../../../components/operationrecords';
 import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
-import ImageViewer from 'react-native-image-zoom-viewer';
-
-
-const Item = List.Item;
+import ImageViewer from 'react-native-image-zoom-viewer'; 
 
 export default class JieDanListDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -41,12 +38,11 @@ export default class JieDanListDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let fuwu = common.getValueFromProps(this.props);
-        let type = common.getValueFromProps(this.props, 'type');
+        let id = common.getValueFromProps(this.props);
+        //let type = common.getValueFromProps(this.props, 'type');
         this.state = {
+            id,
             value: '',
-            fuwu,
-            type,
             images: [],
             detail: {},
             communicates: [],
@@ -60,38 +56,38 @@ export default class JieDanListDetailPage extends BasePage {
     }
 
     getData = () => {
-        const { fuwu, type } = this.state;
-        WorkService.weixiuDetail(fuwu.id).then(detail => {
+        const { id } = this.state;
+        WorkService.weixiuDetail(id).then(detail => {
             this.setState({
                 detail: {
                     ...detail.entity,
                     serviceDeskCode: detail.serviceDeskCode,
                     relationId: detail.relationId,
-                    statusName: detail.statusName,
+                    statusName: detail.statusName
                 },
             });
 
             //获取维修单的单据动态
-            WorkService.getOperationRecord(fuwu.id).then(res => {
+            WorkService.getOperationRecord(id).then(res => {
                 this.setState({
-                    communicates: res,
+                    communicates: res
                 });
             });
         });
 
-        WorkService.weixiuExtra(fuwu.id).then(images => {
+        WorkService.weixiuExtra(id).then(images => {
             this.setState({
-                images,
+                images
             });
         });
     };
     click = (handle) => {
-        const { fuwu, value } = this.state;
+        const { id, value } = this.state;
         if (handle === '回复' && !(value && value.length > 0)) {
             UDToast.showInfo('请输入文字');
             return;
         }
-        WorkService.serviceHandle(handle, fuwu.id, value).then(res => {
+        WorkService.serviceHandle(handle, id, value).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
 
@@ -106,22 +102,21 @@ export default class JieDanListDetailPage extends BasePage {
             return it;
         });
         this.setState({
-            communicates: d,
+            communicates: d
         });
     }
     cancel = () => {
         this.setState({
-            visible: false,
+            visible: false
         });
     };
 
     lookImage = (lookImageIndex) => {
         this.setState({
             lookImageIndex,
-            visible: true,
+            visible: true
         });
     };
-
 
     render() {
         const { images, detail, communicates } = this.state;
@@ -194,8 +189,7 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
         paddingLeft: 15,
         paddingRight: 15,
-        backgroundColor: '#F3F4F2',
-
+        backgroundColor: '#F3F4F2'
     },
     every: {
         marginLeft: 15,
@@ -207,19 +201,19 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         marginRight: 15,
         paddingBottom: 10,
-        paddingTop: 10,
+        paddingTop: 10
     },
     left: {
         fontSize: 14,
-        color: '#333',
+        color: '#333'
     },
     right: {
         fontSize: 14,
-        color: '#333',
+        color: '#333'
     },
     desc: {
         padding: 15,
-        paddingBottom: 40,
+        paddingBottom: 40
     },
     ii: {
         paddingTop: 10,
@@ -229,11 +223,10 @@ const styles = StyleSheet.create({
         width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
         backgroundColor: '#999',
         borderRadius: 6,
-        marginBottom: 20,
+        marginBottom: 20
     },
     word: {
         color: 'white',
-        fontSize: 16,
-    },
-
+        fontSize: 16
+    }
 });

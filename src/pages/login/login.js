@@ -38,11 +38,11 @@ class LoginPage extends BasePage {
     //   password: 'ty123456'
     // };
 
-    // this.state = {
-    //   usercode: 'test',
-    //   username: 'csr',
-    //   password: '1234598'
-    // };
+    this.state = {
+      usercode: 'test',
+      username: 'system',
+      password: '1234598'
+    };
   }
 
   componentDidMount() {

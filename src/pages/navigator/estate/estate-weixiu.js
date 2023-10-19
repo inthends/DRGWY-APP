@@ -24,13 +24,12 @@ import NavigatorService from '../navigator-service';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 
-
 class EstateWeixiuPage extends BasePage {
-    static navigationOptions = ({ navigation }) => { 
+    static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
             title: '维修单',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
@@ -47,7 +46,7 @@ class EstateWeixiuPage extends BasePage {
     constructor(props) {
         super(props);
         this.selectBuilding = {
-            key: null,
+            key: null
         };
 
         this.state = {
@@ -56,7 +55,7 @@ class EstateWeixiuPage extends BasePage {
             pageIndex: 1,
             statistics: {},
             dataInfo: {
-                data: [],
+                data: []
             },
             refreshing: false,
             ym: common.getYM('2020-01'),
@@ -64,7 +63,7 @@ class EstateWeixiuPage extends BasePage {
             //canLoadMore: true,
             time: common.getCurrentYearAndMonth(),
             selectBuilding: this.props.selectBuilding,
-            repairArea: '',
+            repairArea: ''
         };
     }
 
@@ -73,7 +72,7 @@ class EstateWeixiuPage extends BasePage {
             'didFocus',
             (obj) => {
                 this.onRefresh();
-            },
+            }
         );
     }
 
@@ -83,7 +82,7 @@ class EstateWeixiuPage extends BasePage {
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
-        const nextSelectBuilding = nextProps.selectBuilding; 
+        const nextSelectBuilding = nextProps.selectBuilding;
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
             this.setState({ selectBuilding: nextProps.selectBuilding }, () => {
                 this.onRefresh();
@@ -91,8 +90,7 @@ class EstateWeixiuPage extends BasePage {
         }
     }
 
-
-    getList = () => { 
+    getList = () => {
         const { billStatus, selectBuilding, time, repairArea } = this.state;
         let treeType;
         let organizeId;
@@ -101,10 +99,10 @@ class EstateWeixiuPage extends BasePage {
             organizeId = selectBuilding.key;
         }
         let startTime = common.getMonthFirstDay(time);
-        let endTime = common.getMonthLastDay(time); 
+        let endTime = common.getMonthLastDay(time);
         NavigatorService.weixiuList(this.state.pageIndex,
             billStatus,
-            // treeType,
+            //treeType,
             organizeId,
             startTime,
             endTime,
@@ -117,9 +115,9 @@ class EstateWeixiuPage extends BasePage {
                 }
                 this.setState({
                     dataInfo: dataInfo,
-                    refreshing: false,
+                    refreshing: false
                     //canLoadMore: true,
-                }, () => { 
+                }, () => {
                 });
             });
     };
@@ -127,14 +125,14 @@ class EstateWeixiuPage extends BasePage {
     onRefresh = () => {
         this.setState({
             refreshing: true,
-            pageIndex: 1,
-        }, () => { 
+            pageIndex: 1
+        }, () => {
             this.getList();
         });
     };
 
     loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo; 
+        const { data, total, pageIndex } = this.state.dataInfo;
         // if (!this.state.canLoadMore) {
         //     return;
         // }
@@ -152,7 +150,7 @@ class EstateWeixiuPage extends BasePage {
     _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.props.navigation.navigate('weixiuD', { data: item });
+                this.props.navigation.navigate('weixiuD', { data: item.id });
             }}>
                 <Flex direction='column' align={'start'}
                     style={[styles.card, index === 0 ? styles.blue : styles.orange]}>
@@ -248,12 +246,11 @@ class EstateWeixiuPage extends BasePage {
                     {/*<Tabs tabs={tabs2} initialPage={1} tabBarPosition="top">*/}
                     {/*    {renderContent}*/}
                     {/*</Tabs>*/}
-                    <Flex justify={'between'} style={{ marginTop: 15, paddingRight: 15, height: 30 }}>
+                    <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
                         <MyPopover onChange={this.areaChange} titles={['全部', '客户区域', '公共区域']}
                             visible={true} />
                         <MyPopover onChange={this.timeChange} titles={ym} visible={true} />
                     </Flex>
-
                     <FlatList
                         data={dataInfo.data}
                         // ListHeaderComponent={}

@@ -29,8 +29,8 @@ export default {
     return api.postData('/api/MobileMethod/MReadForm', params);
   },
 
-  getApproveLog(keyvalue) {
-    return api.getData('/api/MobileMethod/MGetApproveLog', { keyvalue });
+  getApproveLog(taskId) {
+    return api.getData('/api/MobileMethod/MGetApproveLog', { taskId });
   },
 
   getReceiveEntity(keyvalue) {

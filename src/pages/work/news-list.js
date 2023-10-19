@@ -1,23 +1,22 @@
-import React  from 'react';
-import {View, StyleSheet, FlatList, TouchableOpacity, TouchableWithoutFeedback, Text} from 'react-native';
+import React from 'react';
+import { View, StyleSheet, FlatList, TouchableOpacity, TouchableWithoutFeedback, Text } from 'react-native';
 import BasePage from '../base/base';
 import Macro from '../../utils/macro';
 import WorkService from './work-service';
-import NoDataView from '../../components/no-data-view'; 
-import {Flex, Icon} from '@ant-design/react-native';
+import NoDataView from '../../components/no-data-view';
+import { Flex, Icon } from '@ant-design/react-native';
 
 
 class NewsList extends BasePage {
-    static navigationOptions = ({navigation}) => {  
+    static navigationOptions = ({ navigation }) => {
         return {
             title: '未读消息',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
-            ),
-
+            )
         };
     };
 
@@ -33,20 +32,20 @@ class NewsList extends BasePage {
             dataInfo: {
                 data: [],
             },
-            refreshing: true,
+            refreshing: true
         };
     }
 
-    componentDidMount()  { 
+    componentDidMount() {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
-                this.onRefresh(); 
+                this.onRefresh();
             }
         );
     }
 
-    componentWillUnmount()  {
+    componentWillUnmount() {
         this.viewDidAppear.remove();
     }
 
@@ -62,11 +61,10 @@ class NewsList extends BasePage {
                 dataInfo: dataInfo,
                 refreshing: false,
                 pageIndex: dataInfo.pageIndex,
-            }, () => { 
+            }, () => {
             });
         });
     };
-
 
     onRefresh = () => {
         this.setState({
@@ -76,9 +74,9 @@ class NewsList extends BasePage {
             this.getList();
         });
     };
-    loadMore = () => {
-        const {data, total, pageIndex} = this.state.dataInfo; 
 
+    loadMore = () => {
+        const { data, total, pageIndex } = this.state.dataInfo;
         if (!this.canAction && data.length < total) {
             // if (data.length < total) {
             this.canAction = true;
@@ -99,109 +97,81 @@ class NewsList extends BasePage {
         // }
     };
 
-    _renderItem = ({item, index}) => {
+    _renderItem = ({ item }) => {
         return (
-            <TouchableWithoutFeedback key={item.id + ''} onPress={() => { 
-                WorkService.readNews(item.id); 
-                const {type} = item; 
-                const d = {
-                    ...item,
-                    id: item.linkId
-                };
+            <TouchableWithoutFeedback key={item.id + 'touch'}
+                onPress={() => {
+                    WorkService.readNews(item.id);
+                    const { appUrlName, linkId } = item;
+                    
+                    // const d = {
+                    //     ...item,
+                    //     id: item.linkId
+                    // };
 
-                switch (type) {
-                    case 1:
-                    case 2: {
-                        this.props.navigation.navigate('service', {data: d});
-                        break;
-                    }
-                    case 3: {
-                        this.props.navigation.navigate('paidan', {data: d});
-                        break;
-                    }
-                    case 4: {
-                        this.props.navigation.navigate('jiedan', {data: d});
-                        break;
-                    }
-                    case 5: {
-                        this.props.navigation.navigate('huifang', {data: d});
-                        break;
-                    }
+                    // switch (type) {
+                    //     case 1:
+                    //     case 2: {
+                    //         this.props.navigation.navigate('service', { data: d });
+                    //         break;
+                    //     }
+                    //     case 3: {
+                    //         this.props.navigation.navigate('paidan', { data: d });
+                    //         break;
+                    //     }
+                    //     case 4: {
+                    //         this.props.navigation.navigate('jiedan', { data: d });
+                    //         break;
+                    //     }
+                    //     case 5: {
+                    //         this.props.navigation.navigate('huifang', { data: d });
+                    //         break;
+                    //     }
+                    //     case 6: {
+                    //         //检验
+                    //         this.props.navigation.navigate('jianyan', { data: d });
+                    //         break;
+                    //     } 
+                    //     case 98: //评审回复
+                    //     case 99: //催办消息
+                    //         {
+                    //             //跳转到待审批
+                    //             this.props.navigation.navigate('shenpi');
+                    //             break;
+                    //         }
+                    // }
 
-                    case 6: {
-                        //检验
-                        this.props.navigation.navigate('jianyan', {data: d});
-                        break;
-                    } 
-                }
-
-                // if (type === 'fuwu') {
-                //     this.props.navigation.navigate('service', {data: item});
-                //
-                // } else {
-                //     switch (item.statusName) {
-                //         case '待派单': {
-                //             this.props.navigation.navigate('paidan', {data: item});
-                //             break;
-                //         }
-                //         case '待接单': {
-                //             this.props.navigation.navigate('jiedan', {data: item});
-                //             break;
-                //         }
-                //         case '待开工': {
-                //             this.props.navigation.navigate('kaigong', {data: item});
-                //             break;
-                //         }
-                //         case '待完成': {
-                //             this.props.navigation.navigate('wancheng', {data: item});
-                //             break;
-                //         }
-                //         case '待检验': {
-                //             this.props.navigation.navigate('jianyan', {data: item});
-                //             break;
-                //         }
-                //         case '待回访': {
-                //             this.props.navigation.navigate('huifang', {data: item});
-                //             break;
-                //         }
-                //         default: 
-                //             break;
-                //
-                //     }
-                // } 
-            }}>
+                    //根据url跳转
+                    this.props.navigation.navigate(appUrlName, { data: linkId });
+                }}>
                 <Flex direction='column' align={'start'}
-                      style={[styles.card, styles.blue]}>
-                    <Flex justify='between' style={{width: '100%'}}>
+                    style={[styles.card, styles.blue]}>
+                    <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.title}</Text>
                         {/* <Text style={item.isRead === 0 ? styles.unread : styles.read}>{item.isRead ? '已读' : '未读'}</Text> */}
                         <Text style={styles.read}>{item.sendUserName}，{item.sdtime}</Text>
                     </Flex>
-                    <Flex style={styles.line}/>
+                    <Flex style={styles.line} />
                     <Flex align={'start'} direction={'column'}>
                         <Flex justify='between'
-                              style={{width: '100%', paddingTop: 15, paddingLeft: 20, paddingRight: 20}}>
+                            style={{
+                                width: '100%',
+                                paddingTop: 10//, paddingLeft: 20, paddingRight: 20
+                            }}
+                        >
                             <Text style={{
                                 color: '#666',
                                 fontSize: 15,
                             }}>{item.contents}</Text>
-
                         </Flex>
-                        {/*<Text style={{*/}
-                        {/*    paddingLeft: 20,*/}
-                        {/*    paddingRight: 20,*/}
-                        {/*    color: '#666',*/}
-                        {/*    fontSize: 15,*/}
-                        {/*}}>{item.contents}</Text>*/}
                     </Flex>
                 </Flex>
             </TouchableWithoutFeedback>
         );
     };
 
-
     render() {
-        const {dataInfo} = this.state;
+        const { dataInfo } = this.state;
         return (
             <View style={styles.content}>
                 <FlatList
@@ -209,13 +179,13 @@ class NewsList extends BasePage {
                     // ListHeaderComponent={}
                     renderItem={this._renderItem}
                     style={styles.list}
-                    keyExtractor={(item, index) => item.id}
+                    keyExtractor={(item) => item.id}
                     refreshing={this.state.refreshing}
                     onRefresh={() => this.onRefresh()}
                     onEndReached={() => this.loadMore()}
                     onEndReachedThreshold={0.1}
                     onMomentumScrollBegin={() => this.canAction = false}
-                    ListEmptyComponent={<NoDataView/>}
+                    ListEmptyComponent={<NoDataView />}
                 />
             </View>
         );
@@ -225,38 +195,35 @@ class NewsList extends BasePage {
 const styles = StyleSheet.create({
     all: {
         backgroundColor: Macro.color_sky_dark,
-        flex: 1,
+        flex: 1
     },
     content: {
         backgroundColor: Macro.color_white,
-        flex: 1,
-
-
+        flex: 1
     },
     list: {
         backgroundColor: Macro.color_white,
-        margin: 15,
-
+        margin: 15
     },
     blue: {
         borderLeftColor: Macro.work_blue,
-        borderLeftWidth: 5,
+        borderLeftWidth: 5
     },
     orange: {
         borderLeftColor: '#F7A51E',
-        borderLeftWidth: 5,
+        borderLeftWidth: 5
     },
     title: {
         color: '#333',
-        fontSize: 18,
+        fontSize: 18
     },
     unread: {
         color: Macro.color_FA3951,
-        fontSize: 16,
+        fontSize: 16
     },
     read: {
         color: '#666',
-        fontSize: 16,
+        fontSize: 16
     },
     card: {
         borderTopWidth: 1,
@@ -269,11 +236,10 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         backgroundColor: 'white',
         shadowColor: '#00000033',
-        shadowOffset: {h: 10, w: 10},
+        shadowOffset: { h: 10, w: 10 },
         shadowRadius: 5,
         shadowOpacity: 0.8,
-        padding: 15,
-    },
+        padding: 15
+    }
 });
-
 export default NewsList;

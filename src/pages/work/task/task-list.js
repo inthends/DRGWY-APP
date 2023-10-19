@@ -13,7 +13,7 @@ import ScreenUtil from '../../../utils/screen-util';
 import { connect } from 'react-redux';
 import ListHeader from '../../../components/list-header';
 import common from '../../../utils/common';
-import LoadImage from '../../../components/load-image'; 
+import LoadImage from '../../../components/load-image';
 import WorkService from '../work-service';
 import ListJianYanHeader from '../../../components/list-jianyan-header';
 import NoDataView from '../../../components/no-data-view';
@@ -41,7 +41,7 @@ class TaskListPage extends BasePage {
     constructor(props) {
         super(props);
         this.selectBuilding = {
-            key: null,
+            key: null
         };
         // let pageParames = common.getValueFromProps(this.props); 
         const type = common.getValueFromProps(this.props).type;
@@ -59,7 +59,7 @@ class TaskListPage extends BasePage {
             },
             overdue,
             hiddenHeader,
-            refreshing: false,
+            refreshing: false
         };
     }
 
@@ -68,7 +68,7 @@ class TaskListPage extends BasePage {
             'didFocus',
             (obj) => {
                 this.onRefresh();
-            },
+            }
         );
     }
 
@@ -111,6 +111,7 @@ class TaskListPage extends BasePage {
             this.getList();
         });
     };
+    
     loadMore = () => {
         const { data, total, pageIndex } = this.state.dataInfo;
         if (this.canAction && data.length < total) {
@@ -128,32 +129,31 @@ class TaskListPage extends BasePage {
             <TouchableWithoutFeedback onPress={() => {
                 const { type } = this.state;
                 if (type === 'fuwu') {
-                    this.props.navigation.navigate('service', { data: item });
-
+                    this.props.navigation.navigate('service', { data: item.id });
                 } else {
                     switch (item.statusName) {
                         case '待派单': {
-                            this.props.navigation.navigate('paidan', { data: item });
+                            this.props.navigation.navigate('paidan', { data: item.id });
                             break;
                         }
                         case '待接单': {
-                            this.props.navigation.navigate('jiedan', { data: item });
+                            this.props.navigation.navigate('jiedan', { data: item.id });
                             break;
                         }
                         case '待开工': {
-                            this.props.navigation.navigate('kaigong', { data: item });
+                            this.props.navigation.navigate('kaigong', { data: item.id });
                             break;
                         }
                         case '待完成': {
-                            this.props.navigation.navigate('wancheng', { data: item });
+                            this.props.navigation.navigate('wancheng', { data: item.id });
                             break;
                         }
                         case '待检验': {
-                            this.props.navigation.navigate('jianyan', { data: item });
+                            this.props.navigation.navigate('jianyan', { data: item.id });
                             break;
                         }
                         case '待回访': {
-                            this.props.navigation.navigate('huifang', { data: item });
+                            this.props.navigation.navigate('huifang', { data: item.id });
                             break;
                         }
                         default:
@@ -191,8 +191,8 @@ class TaskListPage extends BasePage {
 
 
     render() {
-        const {   dataInfo, overdue, hiddenHeader, type } = this.state;
-        return ( 
+        const { dataInfo, overdue, hiddenHeader, type } = this.state;
+        return (
             <CommonView style={{ flex: 1 }}>
                 {
                     hiddenHeader ? null :
@@ -212,7 +212,7 @@ class TaskListPage extends BasePage {
                     // ListHeaderComponent={}
                     renderItem={this._renderItem}
                     style={styles.list}
-                    keyExtractor={(item, index) => item.id}
+                    keyExtractor={(item) => item.id}
                     // refreshing={this.state.refreshing}
                     // onRefresh={() => this.onRefresh()}
                     onEndReached={() => this.loadMore()}
@@ -222,7 +222,7 @@ class TaskListPage extends BasePage {
                     onMomentumScrollBegin={() => this.canAction = true}
                     onMomentumScrollEnd={() => this.canAction = false}
                     ListEmptyComponent={<NoDataView />}
-                /> 
+                />
             </CommonView>
 
         );

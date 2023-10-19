@@ -1,5 +1,4 @@
-//导航里面点击的服务单详情
-import React  from 'react';
+ import React  from 'react';
 import { 
   TouchableOpacity,
   StyleSheet,
@@ -20,12 +19,12 @@ import ShowFiles from '../components/show-files';
 import ShowRecord from '../components/show-record'; 
 import ShowMingXi2 from '../components/show-mingxi2';
 
-export default class EfuwuDetailPage extends BasePage {
+export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
+     //是否完成
+     var isCompleted = navigation.getParam('isCompleted');
     return {
-      title: navigation.getParam('data')
-        ? navigation.getParam('data').codeName
-        : '',
+      title: isCompleted ? '租赁规划详情' : '租赁规划审批',
       headerForceInset:this.headerForceInset,
             headerLeft: (
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -37,14 +36,13 @@ export default class EfuwuDetailPage extends BasePage {
 
   constructor(props) {
     super(props);
-    const item = common.getValueFromProps(props) || {};
-    const { id, instanceId } = item;
-    this.state = {
-      item,
-      id,
-      instanceId,
+    // const item = common.getValueFromProps(props) || {};
+    // const { id, instanceId } = item;
+    const id = common.getValueFromProps(props, 'id');
+    this.state = { 
+      id, 
       detail: {},
-      records: [],
+      records: []
     };
   }
 
@@ -53,19 +51,17 @@ export default class EfuwuDetailPage extends BasePage {
   }
 
   getData = () => {
-    const { id, instanceId } = this.state;
-    service.getFlowData(id).then((detail) => { 
-
-      const { setParams } = this.props.navigation;
-      setParams({ title: detail.statusName });
-
+    const { id } = this.state;
+    service.getFlowData(id).then((detail) => {  
+      // const { setParams } = this.props.navigation;
+      // setParams({ title: detail.statusName }); 
       this.setState({
-        detail,
+        detail
       });
     });
-    service.getApproveLog(instanceId).then((records) => { 
+    service.getApproveLog(id).then((records) => { 
       this.setState({
-        records,
+        records
       });
     });
   };
@@ -73,9 +69,7 @@ export default class EfuwuDetailPage extends BasePage {
   render() {
     const {
       detail = {},
-      records = [],
-      customer = {},
-      hetong = {},
+      records = []
     } = this.state;
     const { list = [] } = detail;
 
@@ -91,7 +85,7 @@ export default class EfuwuDetailPage extends BasePage {
             <ShowText word="发起人" title={detail.createUserName} />
             <ShowText word="规划说明" title={(detail.memo || '').trim()} />
           </Flex>
-
+          <ShowMingXi2 list={list} />
           <ShowActions
             state={this.state}
             click={() => {
@@ -103,17 +97,12 @@ export default class EfuwuDetailPage extends BasePage {
           <ShowFiles files={detail.files || []} onPress={
             (fileStr)=>{
               this.props.navigation.navigate('webPage',{
-                data: fileStr,
+                data: fileStr
               });
             }
           }/>
-          <ShowRecord records={records} />
-          <ShowMingXi2 list={list} />
-        </ScrollView>
-        <CompanyDetail
-          customer={customer}
-          ref={(ref) => (this.companyDetailRef = ref)}
-        />
+          <ShowRecord records={records} /> 
+        </ScrollView> 
       </CommonView>
     );
   }

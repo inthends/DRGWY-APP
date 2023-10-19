@@ -1,3 +1,4 @@
+//事项申请
 import React from 'react';
 import {
   TouchableOpacity,
@@ -17,14 +18,17 @@ import common from '../../../utils/common';
 import ShowActions from '../components/show-actions';
 import ShowFiles from '../components/show-files';
 import ShowRecord from '../components/show-record';
-import ShowMingXiBaoXiao from '../components/show-mingxi-baoxiao';
 
-export default class DetailPage extends BasePage {
-  static navigationOptions = ({ navigation }) => {
+export default class MatterDetailPage extends BasePage {
+  
+  static navigationOptions = ({ navigation }) => { 
     //是否完成
-    var isCompleted = navigation.getParam('isCompleted');
+    var isCompleted = navigation.getParam('isCompleted'); 
     return {
-      title: isCompleted ? '报销单详情' : '报销单审批',
+      // title: navigation.getParam('data')
+      //   ? navigation.getParam('data').codeName
+      //   : '',
+      title: isCompleted ? '事项详情' : '事项审批',
       headerForceInset: this.headerForceInset,
       headerLeft: (
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -37,11 +41,10 @@ export default class DetailPage extends BasePage {
   constructor(props) {
     super(props);
     const id = common.getValueFromProps(props, 'id');
-    //const { id } = myid;
-    this.state = {
-      id,
+    this.state = { 
+      id, 
       detail: {},
-      records: []
+      records: [],
     };
   }
 
@@ -56,9 +59,10 @@ export default class DetailPage extends BasePage {
         detail
       });
     });
+
     service.getApproveLog(id).then((records) => {
       this.setState({
-        records
+        records,
       });
     });
   };
@@ -68,26 +72,24 @@ export default class DetailPage extends BasePage {
       detail = {},
       records = []
     } = this.state;
-    const { list = [] } = detail;
 
     return (
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
         <ScrollView style={{ padding: 15, paddingBottom: 30 }}>
           <ShowTitle title="基础信息" />
           <Flex style={styles.card} direction="column" align="start">
-            <ShowText word="报销单号" title={detail.billCode} />
+            <ShowText word="单号" title={detail.billCode} />
             <ShowText word="机构" title={detail.organizeName} />
             <ShowText word="部门" title={detail.departmentName} />
             <ShowTextWithRight
-              word="发起人"
-              title={detail.createUserName}
+              word="申报人"
+              title={detail.applyUser}
               right={detail.date}
             />
-            <ShowText word="报销类型" title={detail.billType} />
-            <ShowText word="报销金额" title={detail.totalAmount} />
-            <ShowText word="报销说明" title={(detail.memo || '').trim()} />
+            <ShowText word="事项类别" title={detail.matterType} />
+            <ShowText word="事项说明" title={detail.memo} />
           </Flex>
-          <ShowMingXiBaoXiao list={list} />
+
           <ShowActions
             isSpecial={true}
             state={this.state}
@@ -104,7 +106,7 @@ export default class DetailPage extends BasePage {
               });
             }
           } />
-          <ShowRecord records={records} /> 
+          <ShowRecord records={records} />
         </ScrollView>
       </CommonView>
     );
@@ -179,6 +181,6 @@ const styles = StyleSheet.create({
     width: 60
   },
   txt2: {
-    color: Macro.work_blue
+    color: Macro.work_blue,
   }
 });

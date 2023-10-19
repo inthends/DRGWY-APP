@@ -31,14 +31,14 @@ export default class WorkPage extends BasePage {
                     <TouchableWithoutFeedback onPress={() => navigation.push('scanonly')}>
                         <Flex direction='column' style={{ marginLeft: 20 }}>
                             <LoadImage defaultImg={require('../../static/images/scan2.png')}
-                                style={{ width: 27, height: 20 }} />
+                                style={{ width: 20, height: 19 }} />
                             <Text style={styles.button}>扫一扫</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback onPress={() => navigation.push('AddWork')}>
                         <Flex direction='column' style={{ marginLeft: 20 }}>
                             <LoadImage defaultImg={require('../../static/images/paiyipai.png')}
-                                style={{ width: 22, height: 20 }} />
+                                style={{ width: 20, height: 20 }} />
                             <Text style={styles.button}>拍一拍</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
@@ -55,7 +55,7 @@ export default class WorkPage extends BasePage {
                     <TouchableWithoutFeedback>
                         <Flex direction='column' style={{ marginRight: 20 }}>
                             <LoadImage defaultImg={require('../../static/images/qiandao.png')}
-                                style={{ width: 19, height: 20 }} />
+                                style={{ width: 20, height: 20 }} />
                             <Text style={styles.button}>签到</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
@@ -71,7 +71,7 @@ export default class WorkPage extends BasePage {
             count: 0,
             refreshing: false,
             data: {},
-            news: '0',
+            news: '0'
         };
     }
 
@@ -96,7 +96,6 @@ export default class WorkPage extends BasePage {
         );
     }
 
-
     componentWillUnmount(): void {
         this.viewDidAppear.remove();
     }
@@ -108,7 +107,6 @@ export default class WorkPage extends BasePage {
             }, 2000);
         });
     };
-
 
     render() {
         const { data } = this.state;
@@ -129,7 +127,7 @@ export default class WorkPage extends BasePage {
                                 <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task', {
                                     'data': {
                                         'type': 'fuwu',
-                                        title: '服务单待回复列表',
+                                        title: '待回复列表',
                                     },
                                 })}>
                                     <Flex direction='column' style={{ width: '25%' }}>
@@ -137,14 +135,13 @@ export default class WorkPage extends BasePage {
                                         <Text style={styles.bottom}>待回复</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback> 
-
-
+ 
                                 <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task', {
                                     'data': {
                                         'type': 'fuwu',
                                         overdue: -1,//已经回复不判断是否逾期
                                         hiddenHeader: true,
-                                        title: '服务单已回复列表',
+                                        title: '已回复列表',
                                     },
                                 })}>
                                     <Flex direction='column' style={{ width: '25%' }}>
@@ -152,13 +149,12 @@ export default class WorkPage extends BasePage {
                                         <Text style={styles.bottom}>已回复</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
-
-
+ 
                                 <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task', {
                                     'data': {
                                         'type': 'visit', 
                                         hiddenHeader: true,
-                                        title: '服务单待回访列表',
+                                        title: '待回访列表',
                                     },
                                 })}>
                                     <Flex direction='column' style={{ width: '25%' }}>
@@ -167,7 +163,6 @@ export default class WorkPage extends BasePage {
                                     </Flex>
                                 </TouchableWithoutFeedback>
 
-                          
                                 <Flex direction='column' style={{ width: '25%' }}>
                                     <Text style={styles.top} />
                                     <Text style={styles.bottom} />
@@ -257,7 +252,6 @@ export default class WorkPage extends BasePage {
                                         title: '接单逾期列表',
                                     },
                                 })}>
-
                                     <Flex direction='column' style={{ width: '33.3%' }}>
                                         <Text style={styles.top}>{data.overdueorder}</Text>
                                         <Text style={styles.bottom}>接单逾期</Text>
@@ -271,7 +265,6 @@ export default class WorkPage extends BasePage {
                                         title: '接单列表',
                                     },
                                 })}>
-
                                     <Flex direction='column' style={{ width: '33.3%' }}>
                                         <Text style={styles.top}>{data.overduefinish}</Text>
                                         <Text style={styles.bottom}>完成逾期</Text>
@@ -355,24 +348,23 @@ const styles = StyleSheet.create({
     line: {
         width: ScreenUtil.deviceWidth() - 30,
         backgroundColor: '#E0E0E0',
-        height: 1,
+        height: 1
     },
     top: {
         paddingTop: 20,
         color: '#74BAF1',
         fontSize: 14.67,
-        paddingBottom: 3,
+        paddingBottom: 3
     },
     bottom: {
         color: '#999999',
         fontSize: 14.67,
-        paddingBottom: 20,
+        paddingBottom: 20
     },
     button: {
         color: '#2C2C2C',
         fontSize: 8,
-        paddingTop: 4,
-
+        paddingTop: 4
     },
     buttonInfo: {
         color: Macro.color_FA3951,
@@ -387,16 +379,16 @@ const styles = StyleSheet.create({
         shadowColor: '#00000033',
         shadowOffset: { h: 10, w: 10 },
         shadowRadius: 5,
-        shadowOpacity: 0.8,
+        shadowOpacity: 0.8
     },
     blue: {
         borderLeftColor: Macro.color_4d8fcc,
         borderLeftWidth: 8,
-        borderStyle: 'solid',
+        borderStyle: 'solid'
     },
     orange: {
         borderLeftColor: Macro.color_f39d39,
         borderLeftWidth: 8,
-        borderStyle: 'solid', 
-    },
+        borderStyle: 'solid'
+    }
 });

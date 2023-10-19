@@ -42,12 +42,11 @@ export default class KaiGongListDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let data = common.getValueFromProps(this.props);//维修单
-        let type = common.getValueFromProps(this.props, 'type');
+        let id = common.getValueFromProps(this.props);//维修单
+        //let type = common.getValueFromProps(this.props, 'type');
         this.state = {
-            value: '',
-            data,
-            type,
+            id,
+            value: '',  
             images: [],
             isUpload: false,//是否上传了图片
             detail: {},
@@ -63,25 +62,25 @@ export default class KaiGongListDetailPage extends BasePage {
     }
 
     getData = () => {
-        const { data } = this.state;
-        WorkService.weixiuDetail(data.id).then(detail => {
+        const { id } = this.state;
+        WorkService.weixiuDetail(id).then(detail => {
             this.setState({
                 detail: {
                     ...detail.entity,
                     serviceDeskCode: detail.serviceDeskCode,
                     relationId: detail.relationId,
-                    statusName: detail.statusName,
+                    statusName: detail.statusName
                 },
             });
             //获取维修单的单据动态
-            WorkService.getOperationRecord(data.id).then(res => {
+            WorkService.getOperationRecord(id).then(res => {
                 this.setState({
-                    communicates: res,
+                    communicates: res
                 });
             });
         });
 
-        WorkService.weixiuExtra(data.id).then(images => {
+        WorkService.weixiuExtra(id).then(images => {
             this.setState({
                 images
             });
@@ -89,7 +88,7 @@ export default class KaiGongListDetailPage extends BasePage {
     };
 
     click = (handle) => {
-        const { data, images, value } = this.state;
+        const { id,isUpload, images, value } = this.state;
         // if (handle === '回复' && !(value&&value.length > 0)) {
         if (!(value && value.length > 0)) {
             UDToast.showInfo('请输入故障判断');
@@ -101,20 +100,20 @@ export default class KaiGongListDetailPage extends BasePage {
             return;
         }
 
-        WorkService.serviceHandle(handle, data.id, value).then(res => {
+        WorkService.serviceHandle(handle, id, value).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
         });
     };
 
     back = (handle) => {
-        const { data, backMemo } = this.state;
+        const { id, backMemo } = this.state;
         // if (handle === '回复' && !(value&&value.length > 0)) {
         if (!(backMemo && backMemo.length > 0)) {
             UDToast.showInfo('请输入退单原因');
             return;
         }
-        WorkService.serviceHandle(handle, data.id, backMemo).then(res => {
+        WorkService.serviceHandle(handle, id, backMemo).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
         });
@@ -130,19 +129,19 @@ export default class KaiGongListDetailPage extends BasePage {
             return it;
         });
         this.setState({
-            communicates: d,
+            communicates: d
         });
     }
     cancel = () => {
         this.setState({
-            visible: false,
+            visible: false
         });
     };
 
     lookImage = (lookImageIndex) => {
         this.setState({
             lookImageIndex,
-            visible: true,
+            visible: true
         });
     };
   
@@ -183,10 +182,9 @@ export default class KaiGongListDetailPage extends BasePage {
                                 style={[styles.right, { color: Macro.color_4d8fcc }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-                    <DashLine />
-
+                    <DashLine /> 
                     <UploadImageView style={{ marginTop: 10 }}
-                        linkId={this.state.data.id}
+                        linkId={this.state.id}
                         reload={this.reload}
                         type='开工'
                     />
@@ -229,7 +227,6 @@ export default class KaiGongListDetailPage extends BasePage {
                                 <Text style={styles.word}>开始维修</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
-
                         <TouchableWithoutFeedback onPress={() => this.back('退单')}>
                             <Flex justify={'center'} style={[styles.ii, { backgroundColor: 'red' }]}>
                                 <Text style={styles.word}>退单</Text>
@@ -238,8 +235,6 @@ export default class KaiGongListDetailPage extends BasePage {
                     </Flex>
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
-
-
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer
                         index={this.state.lookImageIndex}
@@ -247,7 +242,6 @@ export default class KaiGongListDetailPage extends BasePage {
                         onClick={this.cancel}
                         imageUrls={this.state.images} />
                 </Modal>
-
             </CommonView>
         );
     }
@@ -259,32 +253,32 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
         paddingLeft: 15,
         paddingRight: 15,
-        backgroundColor: '#F3F4F2',
+        backgroundColor: '#F3F4F2'
 
     },
     every: {
         marginLeft: 15,
         marginRight: 15,
         paddingTop: 15,
-        paddingBottom: 15,
+        paddingBottom: 15
     },
     every2: {
         marginLeft: 15,
         marginRight: 15,
         paddingBottom: 10,
-        paddingTop: 10,
+        paddingTop: 10
     },
     left: {
         fontSize: 14,
-        color: '#333',
+        color: '#333'
     },
     right: {
         fontSize: 14,
-        color: '#333',
+        color: '#333'
     },
     desc: {
         padding: 15,
-        paddingBottom: 40,
+        paddingBottom: 40
     },
     ii: {
         paddingTop: 10,
@@ -294,11 +288,10 @@ const styles = StyleSheet.create({
         width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
         backgroundColor: '#999',
         borderRadius: 6,
-        marginBottom: 20,
+        marginBottom: 20
     },
     word: {
         color: 'white',
-        fontSize: 16,
-    },
-
+        fontSize: 16
+    }
 });

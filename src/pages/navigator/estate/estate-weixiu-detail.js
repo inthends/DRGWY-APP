@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import {
     Text,
     TouchableWithoutFeedback,
@@ -6,8 +6,8 @@ import {
     StyleSheet,
     ScrollView, Modal,
 } from 'react-native';
-import BasePage from '../../base/base'; 
-import {Icon,  Flex } from '@ant-design/react-native';
+import BasePage from '../../base/base';
+import { Icon, Flex } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 // import SelectImage from '../../../utils/select-image';
@@ -22,16 +22,16 @@ import ListImages from '../../../components/list-images';
 import Communicates from '../../../components/communicates';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
-import ImageViewer from 'react-native-image-zoom-viewer'; 
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 export default class EweixiuDetailPage extends BasePage {
-    static navigationOptions = ({navigation}) => {
+    static navigationOptions = ({ navigation }) => {
         return {
             title: '维修单详情',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             )
         };
@@ -39,18 +39,17 @@ export default class EweixiuDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let fuwu = common.getValueFromProps(this.props);
-        let type = common.getValueFromProps(this.props, 'type');
+        let id = common.getValueFromProps(this.props);
+        //let type = common.getValueFromProps(this.props, 'type');
         this.state = {
+            id,
             value: '',
-            fuwu,
-            type,
             images: [],
             detail: {},
             communicates: [],
             lookImageIndex: 0,
-            visible: false,
-        }; 
+            visible: false
+        };
     }
 
     componentDidMount() {
@@ -58,8 +57,8 @@ export default class EweixiuDetailPage extends BasePage {
     }
 
     getData = () => {
-        const {fuwu} = this.state; 
-        WorkService.weixiuDetail(fuwu.id).then(detail => { 
+        const { id } = this.state;
+        WorkService.weixiuDetail(id).then(detail => {
             this.setState({
                 detail: {
                     ...detail.entity,
@@ -76,7 +75,7 @@ export default class EweixiuDetailPage extends BasePage {
         });
 
         //维修单附件
-        WorkService.weixiuExtra(fuwu.id).then(images => {
+        WorkService.weixiuExtra(id).then(images => {
             this.setState({
                 images,
             });
@@ -84,12 +83,12 @@ export default class EweixiuDetailPage extends BasePage {
     };
 
     click = (handle) => {
-        const {fuwu, type, value} = this.state;
-        if (handle === '回复' && !(value&&value.length > 0)) {
+        const { id, value } = this.state;
+        if (handle === '回复' && !(value && value.length > 0)) {
             UDToast.showInfo('请输入文字');
             return;
         }
-        WorkService.serviceHandle(handle, fuwu.id, value).then(res => { 
+        WorkService.serviceHandle(handle, id, value).then(res => {
         });
     };
 
@@ -102,58 +101,58 @@ export default class EweixiuDetailPage extends BasePage {
             return it;
         });
         this.setState({
-            communicates: d,
+            communicates: d
         });
     };
     cancel = () => {
         this.setState({
-            visible: false,
+            visible: false
         });
     };
 
     lookImage = (lookImageIndex) => {
         this.setState({
             lookImageIndex,
-            visible: true,
+            visible: true
         });
     };
 
     render() {
-        const {images, detail, communicates} = this.state;
+        const { images, detail, communicates } = this.state;
         return (
-            <CommonView style={{flex: 1, backgroundColor: '#fff', paddingBottom: 10}}>
+            <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
-                        <Flex style={[styles.every2]} justify='between'>
-                            <Text style={styles.left}>{detail.address}   {detail.contactName}</Text>
-                            <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
-                                <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{width: 30, height: 30}}/></Flex>
-                            </TouchableWithoutFeedback>
-                        </Flex>
-                    <DashLine/>
+                    <Flex style={[styles.every2]} justify='between'>
+                        <Text style={styles.left}>{detail.address}   {detail.contactName}</Text>
+                        <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
+                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 30, height: 30 }} /></Flex>
+                        </TouchableWithoutFeedback>
+                    </Flex>
+                    <DashLine />
                     <Text style={styles.desc}>{detail.repairContent}</Text>
-                    <DashLine/>
-                    <ListImages images={images} lookImage={this.lookImage}/>
+                    <DashLine />
+                    <ListImages images={images} lookImage={this.lookImage} />
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
                     </Flex>
 
-                    {detail.relationId&&<TouchableWithoutFeedback>
+                    {detail.relationId && <TouchableWithoutFeedback>
                         <Flex style={[styles.every]}>
                             <Text style={styles.left}>关联单：</Text>
-                            <Text onPress={()=>this.props.navigation.navigate('fuwuD', {data: {id:detail.relationId}})}
-                            style={[styles.right, {color: Macro.color_4d8fcc}]}>{detail.serviceDeskCode}</Text>
+                            <Text onPress={() => this.props.navigation.navigate('fuwuD', { data: { id: detail.relationId } })}
+                                style={[styles.right, { color: Macro.color_4d8fcc }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
-                    </TouchableWithoutFeedback>}  
-                    <DashLine/>
-                    <Communicates communicateClick={this.communicateClick} communicates={communicates}/>
+                    </TouchableWithoutFeedback>}
+                    <DashLine />
+                    <Communicates communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
-                                 imageUrls={this.state.images}/>
+                        imageUrls={this.state.images} />
                 </Modal>
             </CommonView>
         );
@@ -166,32 +165,31 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
         paddingLeft: 15,
         paddingRight: 15,
-        backgroundColor: '#F3F4F2',
-
+        backgroundColor: '#F3F4F2'
     },
     every: {
         marginLeft: 15,
         marginRight: 15,
         paddingTop: 15,
-        paddingBottom: 15,
+        paddingBottom: 15
     },
     every2: {
         marginLeft: 15,
         marginRight: 15,
         paddingBottom: 10,
-        paddingTop: 10,
+        paddingTop: 10
     },
     left: {
         fontSize: 14,
-        color: '#666',
+        color: '#666'
     },
     right: {
         fontSize: 14,
-        color: '#666',
+        color: '#666'
     },
     desc: {
         padding: 15,
-        paddingBottom: 40,
+        paddingBottom: 40
     },
     ii: {
         paddingTop: 10,
@@ -201,11 +199,10 @@ const styles = StyleSheet.create({
         width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
         backgroundColor: '#999',
         borderRadius: 6,
-        marginBottom: 20,
+        marginBottom: 20
     },
     word: {
         color: 'white',
-        fontSize: 16,
-    },
-
+        fontSize: 16
+    }
 });

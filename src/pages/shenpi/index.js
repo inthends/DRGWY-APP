@@ -16,7 +16,7 @@ import NoDataView from '../../components/no-data-view';
 import { saveSelectDrawerType } from '../../utils/store/actions/actions';
 import { DrawerType } from '../../utils/store/action-types/action-types';
 
-class ContactDetail extends BasePage {
+class ApprovePage extends BasePage {
   static navigationOptions = ({ navigation }) => {
     return {
       title: '审批',
@@ -254,22 +254,39 @@ class ContactDetail extends BasePage {
                     url = 'wuyetui';
                     break;
                   }
+
                   case '1020': {
-                    url = 'zulinplan';
+                    url = 'zulinplan';//规划单审批
                     break;
                   }
+
                   case '1011': {
                     url = 'caigou';
                     break;
                   }
+
                   case '1027': {
                     url = 'baoxiao';
                     break;
                   }
+
+                  case '1035': {
+                    url = 'matter';
+                    break;
+                  }
+
+                  case '1037': {
+                    url = 'task';
+                    break;
+                  }
                 }
+
+                //传递参数
                 this.props.navigation.push(url, {
-                  data: item,
-                  refresh: this.onRefresh,
+                  //data: item,
+                  id: item.id,
+                  isCompleted: isCompleted,
+                  refresh: this.onRefresh
                 });
               }}
             >
@@ -404,4 +421,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContactDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(ApprovePage);

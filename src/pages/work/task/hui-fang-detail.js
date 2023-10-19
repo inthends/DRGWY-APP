@@ -49,18 +49,18 @@ export default class HuiFangDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let fuwu = common.getValueFromProps(this.props);
-        let type = common.getValueFromProps(this.props, 'type');
+        let id = common.getValueFromProps(this.props);
+        //let type = common.getValueFromProps(this.props, 'type');
         this.state = {
+            id,
             value: '',
-            fuwu,
-            type,
+            // type,
             images: [],
             detail: {},
             communicates: [],
             star: 3,
             lookImageIndex: 0,
-            visible: false,
+            visible: false
         };
     }
 
@@ -97,8 +97,8 @@ export default class HuiFangDetailPage extends BasePage {
 
     //获取服务单信息
     getData = () => {
-        const { fuwu, type } = this.state; 
-        WorkService.serviceDetail(type, fuwu.id).then(item => {
+        const { id } = this.state; 
+        WorkService.serviceDetail(id).then(item => {
             this.setState({
                 detail: {
                     ...item.data,
@@ -107,12 +107,12 @@ export default class HuiFangDetailPage extends BasePage {
                 },
             });
         });
-        WorkService.serviceCommunicates(fuwu.id).then(res => {
+        WorkService.serviceCommunicates(id).then(res => {
             this.setState({
                 communicates: res,
             });
         });
-        WorkService.serviceExtra(fuwu.id).then(images => {
+        WorkService.serviceExtra(id).then(images => {
             this.setState({
                 images,
             });
@@ -120,12 +120,12 @@ export default class HuiFangDetailPage extends BasePage {
     };
 
     click = (handle) => {
-        const { fuwu,  value, star } = this.state;
+        const { id,  value, star } = this.state;
         if (handle === '回复' && !(value && value.length > 0)) {
             UDToast.showInfo('请输入文字');
             return;
         }
-        WorkService.serviceHandle(handle, fuwu.id, value, { grade: star }).then(res => {
+        WorkService.serviceHandle(handle, id, value, { grade: star }).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
         });

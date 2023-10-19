@@ -29,7 +29,7 @@ import ShowFiles from '../components/show-files';
 import ShowRecord from '../components/show-record';
 import ShowMingXi from '../components/show-mingxi';
 
-export default class EfuwuDetailPage extends BasePage {
+export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
     return {
       title: navigation.getParam('data')

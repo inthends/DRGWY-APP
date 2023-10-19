@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -8,7 +8,7 @@ import {
     ScrollView, Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Icon, List, Flex, TextareaItem } from '@ant-design/react-native';
+import { Icon, Flex, TextareaItem } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 // import SelectImage from '../../../utils/select-image';
@@ -26,7 +26,6 @@ import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
-const Item = List.Item;
 
 export default class JianYanListDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -37,25 +36,23 @@ export default class JianYanListDetailPage extends BasePage {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
-            ),
-
+            )
         };
     };
 
     constructor(props) {
         super(props);
-        let fuwu = common.getValueFromProps(this.props);
-        let type = common.getValueFromProps(this.props, 'type');
+        let id = common.getValueFromProps(this.props);
+        //let type = common.getValueFromProps(this.props, 'type');
         this.state = {
+            id,
             value: '',
-            fuwu,
-            type,
             result: 1,
             images: [],
             detail: {},
             communicates: [],
             lookImageIndex: 0,
-            visible: false,
+            visible: false
         };
     }
 
@@ -63,17 +60,16 @@ export default class JianYanListDetailPage extends BasePage {
         this.getData();
     }
 
-
     getData = () => {
-        const { fuwu } = this.state;
-        WorkService.weixiuDetail(fuwu.id).then(detail => {
+        const { id } = this.state;
+        WorkService.weixiuDetail(id).then(detail => {
             this.setState({
                 detail: {
                     ...detail.entity,
                     serviceDeskCode: detail.serviceDeskCode,
                     relationId: detail.relationId,
-                    statusName: detail.statusName,
-                },
+                    statusName: detail.statusName
+                }
             });
 
             // WorkService.serviceCommunicates(detail.relationId).then(res => {
@@ -83,29 +79,28 @@ export default class JianYanListDetailPage extends BasePage {
             // });
 
             //获取维修单的单据动态
-            WorkService.getOperationRecord(fuwu.id).then(res => {
+            WorkService.getOperationRecord(id).then(res => {
                 this.setState({
-                    communicates: res,
+                    communicates: res
                 });
             });
 
         });
-
-        // WorkService.serviceExtra(fuwu.id).then(images => {
-        WorkService.weixiuExtra(fuwu.id).then(images => {
+ 
+        WorkService.weixiuExtra(id).then(images => {
             this.setState({
-                images,
+                images
             });
         });
     };
 
     click = (handle) => {
-        const { fuwu, value, result } = this.state;
+        const { id, value, result } = this.state;
         if (handle === '完成检验' && !(value && value.length > 0)) {
             UDToast.showInfo('请输入文字');
             return;
         }
-        WorkService.serviceHandle(handle, fuwu.id, value, { result }).then(res => {
+        WorkService.serviceHandle(handle,  id, value, { result }).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
         });
@@ -132,13 +127,12 @@ export default class JianYanListDetailPage extends BasePage {
     lookImage = (lookImageIndex) => {
         this.setState({
             lookImageIndex,
-            visible: true,
+            visible: true
         });
     };
 
     render() {
-        const { images, detail, communicates, result } = this.state;
-
+        const { images, detail, communicates, result } = this.state; 
         const selectImg = require('../../../static/images/select.png');
         const noselectImg = require('../../../static/images/no-select.png');
         return (
@@ -184,14 +178,11 @@ export default class JianYanListDetailPage extends BasePage {
                                     style={{ width: 15, height: 15 }} />
                                 <Text style={{ color: '#666', fontSize: 15, paddingLeft: 15 }}>不合格</Text>
                             </Flex>
-                        </TouchableWithoutFeedback>
-
-
+                        </TouchableWithoutFeedback> 
                         {/*<Radio>*/}
                         {/*    <Text onPress={() => this.setState({ result: 1 })} style={{ color: '#666', fontSize: 15, paddingLeft: 15 }}>合格</Text>*/}
                         {/*    <Text onPress={() => this.setState({ result: 0 })} style={{ color: '#666', fontSize: 15, paddingLeft: 15 }}>不合格</Text>*/}
-                        {/*</Radio>*/}
-
+                        {/*</Radio>*/} 
                     </Flex>
                     <View style={{
                         margin: 15,
@@ -219,8 +210,7 @@ export default class JianYanListDetailPage extends BasePage {
                         </Flex>
                     </TouchableWithoutFeedback>
                     {/* <Communicates communicateClick={this.communicateClick} communicates={communicates} /> */}
-                    <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
-
+                    <OperationRecords communicateClick={this.communicateClick} communicates={communicates} /> 
 
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
@@ -238,32 +228,32 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
         paddingLeft: 15,
         paddingRight: 15,
-        backgroundColor: '#F3F4F2',
+        backgroundColor: '#F3F4F2'
 
     },
     every: {
         marginLeft: 15,
         marginRight: 15,
         paddingTop: 15,
-        paddingBottom: 15,
+        paddingBottom: 15
     },
     every2: {
         marginLeft: 15,
         marginRight: 15,
         paddingBottom: 10,
-        paddingTop: 10,
+        paddingTop: 10
     },
     left: {
         fontSize: 14,
-        color: '#333',
+        color: '#333'
     },
     right: {
         fontSize: 14,
-        color: '#333',
+        color: '#333'
     },
     desc: {
         padding: 15,
-        paddingBottom: 40,
+        paddingBottom: 40
     },
     ii: {
         paddingTop: 10,
@@ -273,11 +263,10 @@ const styles = StyleSheet.create({
         width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
         backgroundColor: '#999',
         borderRadius: 6,
-        marginBottom: 20,
+        marginBottom: 20
     },
     word: {
         color: 'white',
-        fontSize: 16,
-    },
-
+        fontSize: 16
+    }
 });

@@ -1,17 +1,16 @@
-//导航里面点击的服务单详情
-import React  from 'react';
-import { 
+import React from 'react';
+import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import BasePage from '../../base/base'; 
+import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
-import ScreenUtil from '../../../utils/screen-util';  
+import ScreenUtil from '../../../utils/screen-util';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
-import ShowTitle from '../components/show-title'; 
-import ShowText from '../components/show-text'; 
+import ShowTitle from '../components/show-title';
+import ShowText from '../components/show-text';
 import CompanyDetail from '../components/company-detail';
 import HeTongDetail from '../components/he-tong-detail';
 import service from '../service';
@@ -21,14 +20,14 @@ import ShowRecord from '../components/show-record';
 import common from '../../../utils/common';
 import ShowPrices from '../components/show-prices';
 
-export default class EfuwuDetailPage extends BasePage {
+export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
+    //是否完成
+    var isCompleted = navigation.getParam('isCompleted');
     return {
-      title: navigation.getParam('data')
-        ? navigation.getParam('data').codeName
-        : '',
-      headerForceInset:this.headerForceInset,
-            headerLeft: (
+      title: isCompleted ? '合同变更详情' : '合同变更审批',
+      headerForceInset: this.headerForceInset,
+      headerLeft: (
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="left" style={{ width: 30, marginLeft: 15 }} />
         </TouchableOpacity>
@@ -38,14 +37,11 @@ export default class EfuwuDetailPage extends BasePage {
 
   constructor(props) {
     super(props);
-    const item = common.getValueFromProps(props) || {};
-    const { id, instanceId } = item;
-    this.state = {
-      item,
-      id,
-      instanceId,
+    const id = common.getValueFromProps(props, 'id'); 
+    this.state = { 
+      id, 
       detail: {},
-      records: [],
+      records: []
     };
   }
 
@@ -54,16 +50,15 @@ export default class EfuwuDetailPage extends BasePage {
   }
 
   getData = () => {
-    const { id, instanceId } = this.state;
-    service.getFlowData(id).then((detail) => { 
-
+    const { id } = this.state;
+    service.getFlowData(id).then((detail) => {
       this.setState({
-        detail,
+        detail
       });
     });
-    service.getApproveLog(instanceId).then((records) => { 
+    service.getApproveLog(id).then((records) => {
       this.setState({
-        records,
+        records
       });
     });
   };
@@ -315,7 +310,7 @@ export default class EfuwuDetailPage extends BasePage {
               <ShowPrices prices={prices} />
             )
           }
-          
+
           <ShowActions
             state={this.state}
             click={() => {

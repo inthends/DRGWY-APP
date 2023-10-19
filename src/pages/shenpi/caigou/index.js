@@ -7,8 +7,6 @@ import {
 } from 'react-native';
 import BasePage from '../../base/base'; 
 import { Flex, Icon } from '@ant-design/react-native';
-import ScreenUtil from '../../../utils/screen-util'; 
-import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ShowTitle from '../components/show-title'; 
 import ShowText from '../components/show-text';  
@@ -18,12 +16,15 @@ import ShowActions from '../components/show-actions';
 import ShowRecord from '../components/show-record';
 import ShowMingXiCaiGou from '../components/show-mingxi-caigou';
 
-export default class EfuwuDetailPage extends BasePage {
+export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
+     //是否完成
+     var isCompleted = navigation.getParam('isCompleted');
     return {
-      title: navigation.getParam('data')
-        ? navigation.getParam('data').codeName
-        : '',
+      // title: navigation.getParam('data')
+      //   ? navigation.getParam('data').codeName
+      //   : '',
+      title: isCompleted ? '采购单详情' : '采购单审批',
       headerForceInset:this.headerForceInset,
             headerLeft: (
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -35,14 +36,11 @@ export default class EfuwuDetailPage extends BasePage {
 
   constructor(props) {
     super(props);
-    const item = common.getValueFromProps(props) || {};
-    const { id, instanceId } = item;
-    this.state = {
-      item,
-      id,
-      instanceId,
+    const id = common.getValueFromProps(props, 'id'); 
+    this.state = { 
+      id, 
       detail: {},
-      records: [],
+      records: []
     };
   }
 
@@ -51,15 +49,15 @@ export default class EfuwuDetailPage extends BasePage {
   }
 
   getData = () => {
-    const { id, instanceId } = this.state;
+    const { id } = this.state;
     service.getFlowData(id).then((detail) => { 
       this.setState({
-        detail,
+        detail
       });
     });
-    service.getApproveLog(instanceId).then((records) => { 
+    service.getApproveLog(id).then((records) => { 
       this.setState({
-        records,
+        records
       });
     });
   };
@@ -74,18 +72,14 @@ export default class EfuwuDetailPage extends BasePage {
           <ShowTitle title="基础信息" />
           <Flex style={styles.card} direction="column" align="start">
             <ShowText word="采购单号" title={detail.billCode} />
-            <ShowText word="机构" title={detail.organizeName} />
-
-            <ShowText word="仓库" title={detail.warehouseName} />
-
-            <ShowText word="发起人" title={detail.createUserName} />
-
-            <ShowText word="采购类型" title={detail.purchaseType} />
-
+            <ShowText word="机构" title={detail.organizeName} /> 
+            <ShowText word="仓库" title={detail.warehouseName} /> 
+            <ShowText word="发起人" title={detail.createUserName} /> 
+            <ShowText word="采购类型" title={detail.purchaseType} /> 
             <ShowText word="采购金额" title={detail.totalAmount} />
             <ShowText word="采购说明" title={detail.memo} />
           </Flex>
-
+          <ShowMingXiCaiGou list={list} />
           <ShowActions
             isSpecial={true}
             state={this.state}
@@ -97,7 +91,6 @@ export default class EfuwuDetailPage extends BasePage {
           />
           {/* <ShowFiles /> */}
           <ShowRecord records={records} />
-          <ShowMingXiCaiGou list={list} />
         </ScrollView>
       </CommonView>
     );
@@ -105,49 +98,14 @@ export default class EfuwuDetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-  header: {
-    paddingTop: 15,
-    paddingBottom: 15,
-    paddingLeft: 15,
-    paddingRight: 15,
-    backgroundColor: '#F3F4F2',
-  },
-  every: {
-    marginLeft: 15,
-    marginRight: 15,
-    paddingTop: 15,
-    paddingBottom: 15,
-  },
-  every2: {
-    marginLeft: 15,
-    marginRight: 15,
-
-    paddingBottom: 10,
-  },
   left: {
     fontSize: 14,
-    color: '#666',
-  },
-  right: {},
-  desc: {
-    padding: 15,
-    paddingBottom: 40,
-  },
-  ii: {
-    paddingTop: 10,
-    paddingBottom: 10,
-    marginLeft: 10,
-    marginRight: 10,
-    width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
-    backgroundColor: '#999',
-    borderRadius: 6,
-    marginBottom: 20,
-  },
+    color: '#666'
+  }, 
   word: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 16
   },
-
   card: {
     marginTop: 5,
     borderWidth: 1,
@@ -157,24 +115,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingTop: 15,
     paddingBottom: 5,
-    marginBottom: 15,
-  },
-  txt: {
-    fontSize: 14,
-    paddingBottom: 10,
-  },
-  textarea: {
-    marginTop: 5,
-    borderStyle: 'solid',
-    borderColor: '#F3F4F2',
-    borderWidth: 1,
-    borderRadius: 5,
-  },
-
-  fixedWidth: {
-    width: 60,
-  },
-  txt2: {
-    color: Macro.work_blue,
-  },
+    marginBottom: 15
+  }
 });

@@ -7,7 +7,6 @@ import Macro from '../../../utils/macro';
 import WorkService from '../work-service';
 import { connect } from 'react-redux';
 
-
 class SelectPaiDanPerson extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
@@ -32,7 +31,7 @@ class SelectPaiDanPerson extends BasePage {
         this.state = {
             //selectBuilding: this.props.selectBuilding || {},
             selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
-            items: [],
+            items: []
         };
     }
 
@@ -57,7 +56,7 @@ class SelectPaiDanPerson extends BasePage {
     initData() {
         WorkService.paidanPersons(this.state.selectBuilding.key).then(res => {
             this.setState({
-                items: res,
+                items: res
             });
         });
     }
@@ -67,7 +66,6 @@ class SelectPaiDanPerson extends BasePage {
         navigation.state.params.onSelect({ selectPerson });
         navigation.goBack();
     };
-
 
     render() {
         const { items } = this.state;
@@ -108,38 +106,38 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         paddingBottom: 15,
         paddingTop: 15,
-        paddingRight: 20,
+        paddingRight: 20
     },
     square: {
         height: 30,
         width: 30,
         borderRadius: 15,
-        backgroundColor: Macro.work_blue,
+        backgroundColor: Macro.work_blue
     },
     number: {
         fontSize: 16,
-        color: '#333',
+        color: '#333'
     },
     name: {
         fontSize: 16,
         color: '#333',
-        paddingBottom: 5,
+        paddingBottom: 5
 
     },
     company: {
         fontSize: 16,
-        color: '#999',
+        color: '#999'
     },
     identifier: {
         fontSize: 16,
         color: '#333',
-        paddingLeft: 30,
+        paddingLeft: 30
     },
     state: {
         fontSize: 16,
         color: Macro.work_blue,
-        paddingLeft: 15,
-    },
+        paddingLeft: 15
+    }
 });
 
 const mapStateToProps = ({ buildingReducer }) => {

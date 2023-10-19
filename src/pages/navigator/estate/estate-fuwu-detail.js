@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Icon } from '@ant-design/react-native';
-import { List, Flex, TextareaItem } from '@ant-design/react-native';
+import { Flex, TextareaItem } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';
@@ -23,8 +23,6 @@ import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
-
-const Item = List.Item;
 
 export default class EfuwuDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -41,12 +39,13 @@ export default class EfuwuDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let fuwu = common.getValueFromProps(this.props);
-        let type = common.getValueFromProps(this.props, 'type'); 
+        let id = common.getValueFromProps(this.props);
+        //let type = common.getValueFromProps(this.props, 'type'); 
         this.state = {
+            id,
             value: '',
-            fuwu,
-            type,
+            // fuwu,
+            // type,
             images: [],
             detail: {},
             communicates: [],
@@ -60,8 +59,8 @@ export default class EfuwuDetailPage extends BasePage {
     }
 
     getData = () => {
-        const { fuwu, type } = this.state; 
-        WorkService.serviceDetail(type, fuwu.id).then(item => { 
+        const { id } = this.state;
+        WorkService.serviceDetail(id).then(item => {
             this.setState({
                 detail: {
                     ...item.data,
@@ -70,38 +69,38 @@ export default class EfuwuDetailPage extends BasePage {
                 },
             });
         });
-        WorkService.serviceCommunicates(fuwu.id).then(res => {
+        WorkService.serviceCommunicates(id).then(res => {
             this.setState({
                 communicates: res
             });
         });
-        WorkService.serviceExtra(fuwu.id).then(images => {
+        WorkService.serviceExtra(id).then(images => {
             this.setState({
                 images
             });
         });
     };
     click = (handle) => {
-        const { fuwu, value } = this.state; 
+        const { id, value } = this.state;
         if (handle === '回复' && !(value && value.length > 0)) {
             UDToast.showInfo('请输入文字');
             return;
         }
-        WorkService.serviceHandle(handle, fuwu.id, value).then(res => {
+        WorkService.serviceHandle(handle, id, value).then(res => {
             this.props.navigation.goBack();
         }).catch(err => {
             UDToast.showError(err);
         });
     };
 
-    communicateClick = (i) => { 
-        let c = this.state.communicates; 
+    communicateClick = (i) => {
+        let c = this.state.communicates;
         let d = c.map(it => {
             if (it.id === i.id) {
                 it.show = i.show !== true;
             }
             return it;
-        }); 
+        });
         this.setState({
             communicates: d
         });
@@ -175,8 +174,7 @@ export default class EfuwuDetailPage extends BasePage {
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
-                    </View>
-
+                    </View> 
                     <TouchableWithoutFeedback onPress={() => this.click('回复')}>
                         <Flex justify={'center'} style={[styles.ii, {
                             width: '80%',
@@ -186,8 +184,7 @@ export default class EfuwuDetailPage extends BasePage {
                         }, { backgroundColor: Macro.color_4d8fcc }]}>
                             <Text style={styles.word}>回复</Text>
                         </Flex>
-                    </TouchableWithoutFeedback>
-
+                    </TouchableWithoutFeedback> 
                     {detail.status === 1 && <Flex>
                         <TouchableWithoutFeedback onPress={() => this.click('转维修')}>
                             <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.color_f39d39 }]}>
@@ -224,29 +221,27 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
         paddingLeft: 15,
         paddingRight: 15,
-        backgroundColor: '#F3F4F2',
-
+        backgroundColor: '#F3F4F2'
     },
     every: {
         marginLeft: 15,
         marginRight: 15,
         paddingTop: 15,
-        paddingBottom: 15,
+        paddingBottom: 15
     },
     every2: {
         marginLeft: 15,
         marginRight: 15,
-
-        paddingBottom: 10,
+        paddingBottom: 10
     },
     left: {
         fontSize: 14,
-        color: '#666',
+        color: '#666'
     },
     right: {},
     desc: {
         padding: 15,
-        paddingBottom: 40,
+        paddingBottom: 40
     },
     ii: {
         paddingTop: 10,
@@ -256,11 +251,10 @@ const styles = StyleSheet.create({
         width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
         backgroundColor: '#999',
         borderRadius: 6,
-        marginBottom: 20,
+        marginBottom: 20
     },
     word: {
         color: 'white',
-        fontSize: 16,
-    },
-
+        fontSize: 16
+    }
 });

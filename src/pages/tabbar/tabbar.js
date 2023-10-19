@@ -12,15 +12,15 @@ import MinePage from '../mine/mine';
 import NavigatorPage from '../navigator/navigator';
 import HomePage from '../home/home';
 import SecondDetailBuildingPage from '../building/second-detail-buinding/second-detail-buinding';
-import ManagerBuildingPage from '../../pages/building/manager-building/manager-building'; 
-import DetailBuildingPage from '../building/detail-building/detail-building'; 
-import DetailParkingPage from '../building/detail-parking/detail-parking'; 
+import ManagerBuildingPage from '../../pages/building/manager-building/manager-building';
+import DetailBuildingPage from '../building/detail-building/detail-building';
+import DetailParkingPage from '../building/detail-parking/detail-parking';
 import BuildingsPage from '../building/buildings/buildings';
-import FeeStatisticPage from '../navigator/fee-statistic/fee-statistic'; 
+import FeeStatisticPage from '../navigator/fee-statistic/fee-statistic';
 import AddWorkPage from '../work/add-work';
 import PersonInfoPage from '../mine/person-info';
 import SettingPage from '../mine/setting';
-import ModifyPsdPage from '../mine/modify-psd'; 
+import ModifyPsdPage from '../mine/modify-psd';
 //导航
 import FeeHousePage from '../navigator/fee-housing';
 import gdMoneyPage from '../navigator/gd-Money';
@@ -41,7 +41,6 @@ import EtousuDetailPage from '../navigator/estate/estate-tousu-detail';
 import EweixiuDetailPage from '../navigator/estate/estate-weixiu-detail';
 import EstateWeixiuPage from '../navigator/estate/estate-weixiu';
 import EstateTousuPage from '../navigator/estate/estate-tousu';
-
 
 import ScanOnly from '../navigator/ScanOnly';
 import ScanSS from '../navigator/scan-ss';
@@ -98,20 +97,24 @@ import BCMScanScreen from '../navigator/bcmscanner';
 import CIBScanScreen from '../navigator/cibscanner';
 import LKLScanScreen from '../navigator/lklscanner';
 
-import shenpi from '../shenpi';
+//import shenpi from '../shenpi';
+import ApprovePage from '../shenpi';
+
 import fukuan from '../shenpi/fukuan';
 import jianmian from '../shenpi/jianmian';
 import songshen from '../shenpi/songshen';
-import chuzunew from '../shenpi/chuzun-new';
-import chuzuchange from '../shenpi/chuzun-change';
+import chuzunew from '../shenpi/chuzu-new';
+import chuzuchange from '../shenpi/chuzu-change';
+import chuzutui from '../shenpi/chuzu-tui';
 import webPage from '../shenpi/components/web-page';
-import chuzutui from '../shenpi/chuzun-tui';
 import wuyenew from '../shenpi/wuye-new';
 import wuyexu from '../shenpi/wuye-xu';
 import wuyetui from '../shenpi/wuye-tui';
 import zulinplan from '../shenpi/zulin-plan';
 import caigou from '../shenpi/caigou';
 import baoxiao from '../shenpi/baoxiao';
+import matter from '../shenpi/matter';
+import task from '../shenpi/task';
 
 const BuildingNavigator = createStackNavigator(
   {
@@ -126,9 +129,7 @@ const BuildingNavigator = createStackNavigator(
     SecondDetail: SecondDetailBuildingPage,
 
     DetailBuilding: DetailBuildingPage,
-
     DetailParking: DetailParkingPage,
-
     Buildings: BuildingsPage,
     Home: HomePage,
     // yiqing: YiQingPage,
@@ -142,7 +143,7 @@ const BuildingNavigator = createStackNavigator(
   {
     containerOptions: (options) => {
       const { navigation } = options;
-      DeviceEventEmitter.emit('currentNavigation', navigation); 
+      DeviceEventEmitter.emit('currentNavigation', navigation);
       return {
         options,
       };
@@ -235,6 +236,8 @@ const navigatorNavigator = createStackNavigator({
   shebeiList: SheBeiList,
   shebeiDetail: ShebeiDetail,
 });
+
+
 navigatorNavigator.navigationOptions = ({ navigation }) => ({
   tabBarVisible: navigation.state.index === 0,
 });
@@ -255,10 +258,8 @@ const WorkNavigator = createStackNavigator({
   AddWork: AddWorkPage,
   select: SelectAddressPage,
   service: FuWuDanListDetailPage,
-
   weixiuView: WeixiuDetailPage, //工作台里面，待回访点击跳转的维修单，只能查看
-  tousuView: TousuDetailPage, //工作台里面，待回访点击跳转的投诉单，只能查看
-
+  tousuView: TousuDetailPage, //工作台里面，待回访点击跳转的投诉单，只能查看 
   wancheng: WanChengListDetailPage,
   jianyan: JianYanListDetailPage,
   kaigong: KaiGongListDetailPage,
@@ -270,6 +271,7 @@ const WorkNavigator = createStackNavigator({
   scandemo: ScanSS,
   Task: TaskListPage,
   newsList: NewsList,
+  //shenpi: shenpi//跳转到审批中心
 });
 
 WorkNavigator.navigationOptions = ({ navigation }) => ({
@@ -278,7 +280,7 @@ WorkNavigator.navigationOptions = ({ navigation }) => ({
 
 const ShenPiNavigator = createStackNavigator({
   Shenpi: {
-    screen: shenpi,
+    screen: ApprovePage,//跳转到审批中心
     navigationOptions: () => ({
       title: '审批',
       headerBackTitle: null,
@@ -296,6 +298,8 @@ const ShenPiNavigator = createStackNavigator({
   zulinplan,
   caigou,
   baoxiao,
+  matter,
+  task,
   webPage
 });
 
@@ -372,7 +376,7 @@ const tabbar = createBottomTabNavigator(
       tabStyle: {},
     },
     defaultNavigationOptions: ({ navigation }) => {
-      if (navigation.isFocused()) { 
+      if (navigation.isFocused()) {
         DeviceEventEmitter.emit('currentNavigation', navigation);
       }
 
@@ -404,9 +408,9 @@ const tabbar = createBottomTabNavigator(
           else if (routeName === 'Shenpi') {
             //审批
             if (focused) {
-              imageUrl = require('../../static/images/tabbar/app_h.png');
+              imageUrl = require('../../static/images/tabbar/me_h.png');
             } else {
-              imageUrl = require('../../static/images/tabbar/app_n.png');
+              imageUrl = require('../../static/images/tabbar/me_n.png');
             }
           }
           else {

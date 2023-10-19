@@ -20,10 +20,9 @@ import ShowMingXi from '../components/show-mingxi';
 
 export default class EfuwuDetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
+    var isCompleted = navigation.getParam('isCompleted');
     return {
-      title: navigation.getParam('data')
-        ? navigation.getParam('data').codeName
-        : '',
+      title: isCompleted ? '付款单详情' : '付款单审批',
       headerForceInset:this.headerForceInset,
             headerLeft: (
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -35,14 +34,11 @@ export default class EfuwuDetailPage extends BasePage {
 
   constructor(props) {
     super(props);
-    const item = common.getValueFromProps(props) || {};
-    const { id, instanceId } = item;
-    this.state = {
-      item,
-      id,
-      instanceId,
+    const id = common.getValueFromProps(props, 'id');
+    this.state = { 
+      id, 
       detail: {},
-      records: [],
+      records: []
     };
   }
 
@@ -51,15 +47,15 @@ export default class EfuwuDetailPage extends BasePage {
   }
 
   getData = () => {
-    const { id, instanceId } = this.state;
+    const { id } = this.state;
     service.getFlowData(id).then((detail) => { 
       this.setState({
-        detail,
+        detail
       });
     });
-    service.getApproveLog(instanceId).then((records) => { 
+    service.getApproveLog(id).then((records) => { 
       this.setState({
-        records,
+        records
       });
     });
   };

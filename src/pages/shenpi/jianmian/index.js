@@ -38,14 +38,11 @@ export default class EfuwuDetailPage extends BasePage {
 
   constructor(props) {
     super(props);
-    const item = common.getValueFromProps(props) || {};
-    const { id, instanceId } = item;
-    this.state = {
-      item,
-      id,
-      instanceId,
+    const id = common.getValueFromProps(props, 'id');
+    this.state = { 
+      id, 
       detail: {},
-      records: [],
+      records: []
     };
   }
 
@@ -54,15 +51,15 @@ export default class EfuwuDetailPage extends BasePage {
   }
 
   getData = () => {
-    const { id, instanceId } = this.state;
+    const { id } = this.state;
     service.getFlowData(id).then((detail) => { 
       this.setState({
-        detail,
+        detail
       });
     });
-    service.getApproveLog(instanceId).then((records) => {
+    service.getApproveLog(id).then((records) => {
       this.setState({
-        records,
+        records
       });
     });
   };

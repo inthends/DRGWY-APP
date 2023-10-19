@@ -10,7 +10,7 @@ import {
 import BasePage from '../../base/base';
 import { Icon, Flex, TextareaItem } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
-import LoadImage from '../../../components/load-image'; 
+import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';
 import UDToast from '../../../utils/UDToast';
 import DashLine from '../../../components/dash-line';
@@ -20,7 +20,7 @@ import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
-
+import UploadImageView from '../../../components/upload-image-view';
 
 export default class WanChengListDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -37,12 +37,11 @@ export default class WanChengListDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let data = common.getValueFromProps(this.props);
-        let type = common.getValueFromProps(this.props, 'type');
+        let id = common.getValueFromProps(this.props);
+        //let type = common.getValueFromProps(this.props, 'type');
         this.state = {
+            id,
             value: '',
-            data,
-            type,
             images: [],
             isUpload: false,//是否上传了图片
             detail: {},
@@ -56,10 +55,9 @@ export default class WanChengListDetailPage extends BasePage {
         this.getData();
     }
 
-
     getData = () => {
-        const { data } = this.state;
-        WorkService.weixiuDetail(data.id).then(detail => {
+        const { id } = this.state;
+        WorkService.weixiuDetail(id).then(detail => {
             this.setState({
                 detail: {
                     ...detail.entity,
@@ -70,7 +68,7 @@ export default class WanChengListDetailPage extends BasePage {
             });
 
             //获取维修单的单据动态
-            WorkService.getOperationRecord(data.id).then(res => {
+            WorkService.getOperationRecord(id).then(res => {
                 this.setState({
                     communicates: res,
                 });
@@ -78,7 +76,7 @@ export default class WanChengListDetailPage extends BasePage {
 
         });
 
-        WorkService.weixiuExtra(data.id).then(images => {
+        WorkService.weixiuExtra(id).then(images => {
             this.setState({
                 images
             });
@@ -86,7 +84,7 @@ export default class WanChengListDetailPage extends BasePage {
     };
 
     click = (handle) => {
-        const { data, images, value } = this.state;
+        const { id,isUpload, images, value } = this.state;
         if (handle === '回复' && !(value && value.length > 0)) {
             UDToast.showInfo('请输入文字');
             return;
@@ -97,7 +95,7 @@ export default class WanChengListDetailPage extends BasePage {
             return;
         }
 
-        WorkService.serviceHandle(handle, data.id, value).then(res => {
+        WorkService.serviceHandle(handle, id, value).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
         });
@@ -127,7 +125,7 @@ export default class WanChengListDetailPage extends BasePage {
             visible: true,
         });
     };
- 
+
 
     render() {
         const { images, detail, communicates } = this.state;
@@ -162,15 +160,12 @@ export default class WanChengListDetailPage extends BasePage {
                                 style={[styles.right, { color: Macro.color_4d8fcc }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-                    <DashLine />
-
+                    <DashLine /> 
                     <UploadImageView style={{ marginTop: 10 }}
-                        linkId={this.state.data.id}
+                        linkId={this.state.id}
                         reload={this.reload}
                         type='完成'
-                    />
-
-
+                    /> 
                     <View style={{
                         margin: 15,
                         borderStyle: 'solid',
@@ -185,8 +180,7 @@ export default class WanChengListDetailPage extends BasePage {
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
-                    </View>
-
+                    </View> 
                     <TouchableWithoutFeedback onPress={() => this.click('完成维修')}>
                         <Flex justify={'center'} style={[styles.ii, {
                             width: '80%',
@@ -214,32 +208,31 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
         paddingLeft: 15,
         paddingRight: 15,
-        backgroundColor: '#F3F4F2',
-
+        backgroundColor: '#F3F4F2'
     },
     every: {
         marginLeft: 15,
         marginRight: 15,
         paddingTop: 15,
-        paddingBottom: 15,
+        paddingBottom: 15
     },
     every2: {
         marginLeft: 15,
         marginRight: 15,
         paddingBottom: 10,
-        paddingTop: 10,
+        paddingTop: 10
     },
     left: {
         fontSize: 14,
-        color: '#333',
+        color: '#333'
     },
     right: {
         fontSize: 14,
-        color: '#333',
+        color: '#333'
     },
     desc: {
         padding: 15,
-        paddingBottom: 40,
+        paddingBottom: 40
     },
     ii: {
         paddingTop: 10,
@@ -249,11 +242,10 @@ const styles = StyleSheet.create({
         width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
         backgroundColor: '#999',
         borderRadius: 6,
-        marginBottom: 20,
+        marginBottom: 20
     },
     word: {
         color: 'white',
-        fontSize: 16,
-    },
-
+        fontSize: 16
+    }
 });

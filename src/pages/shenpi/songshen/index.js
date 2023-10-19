@@ -1,7 +1,7 @@
-//导航里面点击的服务单详情
-import React  from 'react';
-import { 
-  Text, 
+
+import React from 'react';
+import {
+  Text,
   TouchableOpacity,
   StyleSheet,
   ScrollView,
@@ -24,14 +24,14 @@ import service from '../service';
 import ShowMingXiLook from '../components/show-mingxi-look';
 import ShowFiles from '../components/show-files'
 
-export default class EfuwuDetailPage extends BasePage {
+export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
+    //是否完成
+    var isCompleted = navigation.getParam('isCompleted');
     return {
-      title: navigation.getParam('data')
-        ? navigation.getParam('data').codeName
-        : '',
-      headerForceInset:this.headerForceInset,
-            headerLeft: (
+      title: isCompleted ? '收款单详情' : '收款单审批',
+      headerForceInset: this.headerForceInset,
+      headerLeft: (
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="left" style={{ width: 30, marginLeft: 15 }} />
         </TouchableOpacity>
@@ -41,15 +41,12 @@ export default class EfuwuDetailPage extends BasePage {
 
   constructor(props) {
     super(props);
-    const item = common.getValueFromProps(props) || {};
-    const { id, instanceId } = item;
+    const id = common.getValueFromProps(props, 'id');
     this.state = {
-      item,
       id,
-      instanceId,
       detail: {},
       records: [],
-      showItem: null,
+      showItem: null
     };
     this.shouDetailRef = null;
     this.chongDiDetailRef = null;
@@ -60,8 +57,8 @@ export default class EfuwuDetailPage extends BasePage {
   }
 
   getData = () => {
-    const { id, instanceId } = this.state;
-    service.getFlowData(id).then((detail) => { 
+    const { id } = this.state;
+    service.getFlowData(id).then((detail) => {
       this.setState({
         detail: {
           ...detail,
@@ -70,21 +67,21 @@ export default class EfuwuDetailPage extends BasePage {
             word: item.billCode,
             word2: '收款',
             word3: item.billDate,
-            word4: item.detail,
+            word4: item.detail
           })),
           offsetList: (detail.offsetList || []).map((item) => ({
             id: item.billId,
             word: item.billCode,
             word2: '冲抵',
             word3: item.billDate,
-            word4: `应付冲抵：${item.amount}`,
-          })),
-        },
+            word4: `应付冲抵：${item.amount}`
+          }))
+        }
       });
     });
-    service.getApproveLog(instanceId).then((records) => { 
+    service.getApproveLog(id).then((records) => {
       this.setState({
-        records,
+        records
       });
     });
   };
@@ -117,23 +114,7 @@ export default class EfuwuDetailPage extends BasePage {
               {detail.receiveDetail}
             </Text>
           </Flex>
-         <ShowFiles files={detail.list} onPress={
-            (fileStr)=>{
-              this.props.navigation.navigate('webPage',{
-                data: fileStr,
-              });
-            }
-          }/>
-          <ShowActions
-            state={this.state}
-            click={() => {
-              const refresh = common.getValueFromProps(this.props, 'refresh');
-              refresh && refresh();
-              this.props.navigation.goBack();
-            }}
-          />
 
-          <ShowRecord records={records} />
 
           <ShowMingXiLook
             title="收款明细"
@@ -151,6 +132,7 @@ export default class EfuwuDetailPage extends BasePage {
               });
             }}
           />
+
           <ShowMingXiLook
             title="冲抵明细"
             list={offsetList}
@@ -167,6 +149,23 @@ export default class EfuwuDetailPage extends BasePage {
               });
             }}
           />
+
+          <ShowFiles files={detail.list} onPress={
+            (fileStr) => {
+              this.props.navigation.navigate('webPage', {
+                data: fileStr,
+              });
+            }
+          } />
+          <ShowActions
+            state={this.state}
+            click={() => {
+              const refresh = common.getValueFromProps(this.props, 'refresh');
+              refresh && refresh();
+              this.props.navigation.goBack();
+            }}
+          />
+          <ShowRecord records={records} />
         </ScrollView>
         <ShouDetail
           detail={showItem || {}}
@@ -182,44 +181,7 @@ export default class EfuwuDetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-  header: {
-    paddingTop: 15,
-    paddingBottom: 15,
-    paddingLeft: 15,
-    paddingRight: 15,
-    backgroundColor: '#F3F4F2',
-  },
-  every: {
-    marginLeft: 15,
-    marginRight: 15,
-    paddingTop: 15,
-    paddingBottom: 15,
-  },
-  every2: {
-    marginLeft: 15,
-    marginRight: 15,
 
-    paddingBottom: 10,
-  },
-  left: {
-    fontSize: 14,
-    color: '#666',
-  },
-  right: {},
-  desc: {
-    padding: 15,
-    paddingBottom: 40,
-  },
-  ii: {
-    paddingTop: 10,
-    paddingBottom: 10,
-    marginLeft: 10,
-    marginRight: 10,
-    width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
-    backgroundColor: '#999',
-    borderRadius: 6,
-    marginBottom: 20,
-  },
   word: {
     color: 'white',
     fontSize: 16,
@@ -239,16 +201,5 @@ const styles = StyleSheet.create({
   txt: {
     fontSize: 14,
     paddingBottom: 10,
-  },
-  textarea: {
-    marginTop: 5,
-    borderStyle: 'solid',
-    borderColor: '#F3F4F2',
-    borderWidth: 1,
-    borderRadius: 5,
-  },
-
-  fixedWidth: {
-    width: 60,
-  },
+  }
 });
