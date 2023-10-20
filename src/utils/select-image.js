@@ -9,7 +9,7 @@ const options: ImagePickerOptions = {
     takePhotoButtonTitle: '相机',
     chooseFromLibraryButtonTitle: '相册',
     //maxWidth:600,
-    quality: 0.5,//0到1，低质量，减少网络传输时间
+    quality: 0.3,//0到1，低质量，减少网络传输时间
     storageOptions: {
         skipBackup: true,
         path: 'images',

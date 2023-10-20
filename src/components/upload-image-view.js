@@ -1,11 +1,10 @@
-//废弃
+ 
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { Flex } from '@ant-design/react-native';
 import ScreenUtil from '../utils/screen-util';
 import SelectImage from '../utils/select-image';
 import LoadImage from './load-image';
-
 //const single_width = 60;
 
 export default class UploadImageView extends Component {

@@ -163,7 +163,7 @@ class AddRepairPage extends BasePage {
     };
 
     selectImages = () => {
-        SelectImage.select(this.state.id, '/api/MobileMethod/MUploadServiceDesk').then(res => {
+        SelectImage.select(this.state.id,'', '/api/MobileMethod/MUploadServiceDesk').then(res => {
             let images = [...this.state.images];
             images.splice(images.length - 1, 0, { 'icon': res });
             if (images.length > 4) {
