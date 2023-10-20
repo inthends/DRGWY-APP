@@ -1,5 +1,5 @@
 import React, {Component } from 'react';
-import {View, Text,   StyleSheet, TouchableWithoutFeedback,  ScrollView} from 'react-native';
+import {View, Text, StyleSheet, TouchableWithoutFeedback,  ScrollView} from 'react-native';
 //import LoadImage from './load-image';
 import {Flex} from '@ant-design/react-native';
 import Popover from 'react-native-popover-view';
@@ -32,12 +32,11 @@ export default class ActionPopover extends Component {
     };
 
     render() {
-        const {titles, index} = this.state;
+        const {titles} = this.state;
         return (
             <View style={[styles.container, this.props.style]}>
                 <TouchableWithoutFeedback ref={ref => this.touchable = ref} onPress={() => this.showPopover()}>
-                    <Flex style={{height: 40}}>
-
+                    <Flex style={{height: 40}}> 
                         <Text style={[{
                             paddingRight: 10,
                             color: '#74BAF1',

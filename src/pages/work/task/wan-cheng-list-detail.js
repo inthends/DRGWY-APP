@@ -84,7 +84,7 @@ export default class WanChengListDetailPage extends BasePage {
     };
 
     click = (handle) => {
-        const { id,isUpload, images, value } = this.state;
+        const { id, isUpload, images, value } = this.state;
         if (handle === '回复' && !(value && value.length > 0)) {
             UDToast.showInfo('请输入文字');
             return;
@@ -160,12 +160,12 @@ export default class WanChengListDetailPage extends BasePage {
                                 style={[styles.right, { color: Macro.color_4d8fcc }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-                    <DashLine /> 
+                    <DashLine />
                     <UploadImageView style={{ marginTop: 10 }}
                         linkId={this.state.id}
                         reload={this.reload}
                         type='完成'
-                    /> 
+                    />
                     <View style={{
                         margin: 15,
                         borderStyle: 'solid',
@@ -176,11 +176,11 @@ export default class WanChengListDetailPage extends BasePage {
                         <TextareaItem
                             rows={3}
                             placeholder='请输入'
-                            style={{ fontSize: 14, paddingTop: 10, height: 100, width: ScreenUtil.deviceWidth() - 32 }}
+                            style={{ paddingTop: 10, width: ScreenUtil.deviceWidth() - 32 }}
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
-                    </View> 
+                    </View>
                     <TouchableWithoutFeedback onPress={() => this.click('完成维修')}>
                         <Flex justify={'center'} style={[styles.ii, {
                             width: '80%',

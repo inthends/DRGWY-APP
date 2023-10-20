@@ -1,7 +1,7 @@
 import React from 'react';
 import BasePage from '../../base/base';
 import { Flex, Icon, TextareaItem } from '@ant-design/react-native';
-import { StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View, FlatList,Alert } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View, FlatList, Alert } from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import CommonView from '../../../components/CommonView';
 import common from '../../../utils/common';
@@ -18,7 +18,7 @@ export default class OrderDetailPage extends BasePage {
         return {
             tabBarVisible: false,
             title: navigation.state.params.data.title ?? '订单详情',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
@@ -33,32 +33,32 @@ export default class OrderDetailPage extends BasePage {
             ...(common.getValueFromProps(this.props)),
             dataInfo: {},
             communicatesDatas: [],
-            inputMsg:''
-        }; 
+            inputMsg: ''
+        };
     }
 
     componentDidMount() {
         this.getOrderDetail()
         this.getOrderCommunicates()
     }
-/*
-allName: "测试项目/第01栋/第01层/1-101"
-billCode: "TESTNo202304090000"
-billDate: "2023-04-09 16:20:58"
-createDate: "2023-04-09 16:20:58"
-createUserId: "732ba1e3-d86a-4b82-8b27-790c1f06c9de"
-createUserName: "朱信保"
-customer: "朱信保"
-id: "0afccd37-73ea-42e5-9f69-9a171ad42a6c"
-linkId: null
-memo: "2023-04-09 00:00"
-modifyDate: "2023-04-15 06:51:14"
-modifyUserId: "bed2b997-3c4b-42e6-8fb3-a9ae144dc3f4"
-modifyUserName: "kj"
-otherId: null
-
-billCode, billDate, createUserName, status, allName 
-*/
+    /*
+    allName: "测试项目/第01栋/第01层/1-101"
+    billCode: "TESTNo202304090000"
+    billDate: "2023-04-09 16:20:58"
+    createDate: "2023-04-09 16:20:58"
+    createUserId: "732ba1e3-d86a-4b82-8b27-790c1f06c9de"
+    createUserName: "朱信保"
+    customer: "朱信保"
+    id: "0afccd37-73ea-42e5-9f69-9a171ad42a6c"
+    linkId: null
+    memo: "2023-04-09 00:00"
+    modifyDate: "2023-04-15 06:51:14"
+    modifyUserId: "bed2b997-3c4b-42e6-8fb3-a9ae144dc3f4"
+    modifyUserName: "kj"
+    otherId: null
+    
+    billCode, billDate, createUserName, status, allName 
+    */
     getOrderDetail = () => {
         const { id } = this.state;
         OrderService.getOrderDetail(id).then(dataInfo => {
@@ -70,20 +70,20 @@ billCode, billDate, createUserName, status, allName
                     createUserName: dataInfo.createUserName,
                     status: dataInfo.status,
                     allName: dataInfo.allName,
-                }, () => { 
+                }, () => {
                 });
             }
-            
+
         });
     }
 
     getOrderCommunicates = () => {//查看获取的回复信息
         const { id } = this.state;
-        OrderService.getOrderCommunicates(id).then(dataInfo => { 
+        OrderService.getOrderCommunicates(id).then(dataInfo => {
             if (dataInfo && dataInfo.length > 0) {
                 this.setState({
                     communicatesDatas: dataInfo,
-                }, () => { 
+                }, () => {
                 });
             }
 
@@ -91,29 +91,29 @@ billCode, billDate, createUserName, status, allName
     };
 
     _btnClick = (tag) => {
-        const { id,inputMsg } = this.state;
+        const { id, inputMsg } = this.state;
         if (tag == 0) {//查阅
             OrderService.getReadForm(id).then(dataInfo => {
                 this.setState({
-                    inputMsg:''
+                    inputMsg: ''
                 }, () => {
                     this.getOrderDetail()
                 });
             });
         }
         else if (tag === 1) {//回复
-            OrderService.getReplyCommunicate(id,inputMsg).then(dataInfo => {
+            OrderService.getReplyCommunicate(id, inputMsg).then(dataInfo => {
                 this.setState({
-                    inputMsg:''
+                    inputMsg: ''
                 }, () => {
                     this.getOrderDetail()
                 });
             });
         }
         else if (tag === 2) {//关闭
-            OrderService.getCloseOrder(id,inputMsg).then(dataInfo => {
+            OrderService.getCloseOrder(id, inputMsg).then(dataInfo => {
                 this.setState({
-                    inputMsg:''
+                    inputMsg: ''
                 }, () => {
                     this.getOrderDetail()
                 });
@@ -181,7 +181,7 @@ billCode, billDate, createUserName, status, allName
                             <TextareaItem
                                 rows={4}
                                 placeholder='请输入'
-                                style={{ fontSize: 14, paddingTop: 10, height: 100, width: ScreenUtil.deviceWidth() - 32, borderColor: '#eee', borderRadius: 5, borderWidth: 1 }}
+                                style={{ paddingTop: 10, width: ScreenUtil.deviceWidth() - 32 }}
                                 onChange={inputMsg => this.setState({ inputMsg })}
                                 value={this.state.inputMsg}
                             />
@@ -204,7 +204,7 @@ billCode, billDate, createUserName, status, allName
                             <TextareaItem
                                 rows={4}
                                 placeholder='请输入'
-                                style={{ fontSize: 14, paddingTop: 10, height: 100, width: ScreenUtil.deviceWidth() - 32, borderColor: '#eee', borderRadius: 5, borderWidth: 1 }}
+                                style={{ paddingTop: 10, width: ScreenUtil.deviceWidth() - 32 }}
                                 onChange={inputMsg => this.setState({ inputMsg })}
                                 value={this.state.inputMsg}
                             />
@@ -227,7 +227,7 @@ billCode, billDate, createUserName, status, allName
                             <TextareaItem
                                 rows={4}
                                 placeholder='请输入'
-                                style={{ fontSize: 14, paddingTop: 10, height: 100, width: ScreenUtil.deviceWidth() - 32, borderColor: '#eee', borderRadius: 5, borderWidth: 1 }}
+                                style={{  paddingTop: 10,  width: ScreenUtil.deviceWidth() - 32  }}
                                 onChange={inputMsg => this.setState({ inputMsg })}
                                 value={this.state.inputMsg}
                             />
@@ -249,9 +249,9 @@ billCode, billDate, createUserName, status, allName
     _renderItem = ({ item, index }) => {
         return (
             <Flex direction='column' align={'start'}>
-                <Flex justify='start' style={{ width: '100%',marginVertical:5 }}>
-                    {index%2 === 0  && <LoadImage defaultImg={require('../../../static/images/person2.png')} style={{ width: 18, height: 18 }} />}
-                    {index%2 === 1  && <LoadImage defaultImg={require('../../../static/images/person1.png')} style={{ width: 18, height: 18 }} />}
+                <Flex justify='start' style={{ width: '100%', marginVertical: 5 }}>
+                    {index % 2 === 0 && <LoadImage defaultImg={require('../../../static/images/person2.png')} style={{ width: 18, height: 18 }} />}
+                    {index % 2 === 1 && <LoadImage defaultImg={require('../../../static/images/person1.png')} style={{ width: 18, height: 18 }} />}
                     <Text style={{ marginHorizontal: 10 }}>{item.author}</Text>
                     <Text>{item.datetime}</Text>
                 </Flex>

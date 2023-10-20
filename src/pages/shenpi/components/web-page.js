@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { WebView } from 'react-native-webview';
-
 const webPage = props => {
   let urlStr = props.navigation.state.params.data;
   if (typeof urlStr !== 'string') {
@@ -16,5 +15,4 @@ const webPage = props => {
   }
   return <WebView source={{ uri: urlStr }} />;
 }
-
 export default webPage;

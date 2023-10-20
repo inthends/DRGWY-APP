@@ -88,11 +88,10 @@ export default class DetailPage extends BasePage {
 
   render() {
     const { detail = {}, records = [], showItem = {} } = this.state;
-    const { billList = [], offsetList = [] } = detail;
-
+    const { billList = [], offsetList = [] } = detail; 
     return (
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
-        <ScrollView style={{ padding: 15, paddingBottom: 30 }}>
+        <ScrollView style={{ flex: 1, padding: 10 }}>
           <ShowTitle title="基础信息" />
           <Flex style={styles.card} direction="column" align="start">
             <ShowText word="送审项目" title={detail.organizeName} />
@@ -104,7 +103,6 @@ export default class DetailPage extends BasePage {
             />
             <ShowText word="送审说明" title={(detail.memo || '').trim()} />
           </Flex>
-
           <ShowTitle title="送审金额" />
           <Flex style={styles.card} direction="column" align="start">
             <Text style={[styles.txt, { color: Macro.work_blue }]}>
@@ -114,8 +112,6 @@ export default class DetailPage extends BasePage {
               {detail.receiveDetail}
             </Text>
           </Flex>
-
-
           <ShowMingXiLook
             title="收款明细"
             list={billList}
@@ -132,7 +128,6 @@ export default class DetailPage extends BasePage {
               });
             }}
           />
-
           <ShowMingXiLook
             title="冲抵明细"
             list={offsetList}
@@ -149,7 +144,6 @@ export default class DetailPage extends BasePage {
               });
             }}
           />
-
           <ShowFiles files={detail.list} onPress={
             (fileStr) => {
               this.props.navigation.navigate('webPage', {
@@ -181,12 +175,7 @@ export default class DetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-
-  word: {
-    color: 'white',
-    fontSize: 16,
-  },
-
+  
   card: {
     marginTop: 5,
     borderWidth: 1,

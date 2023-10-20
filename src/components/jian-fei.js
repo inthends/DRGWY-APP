@@ -6,7 +6,7 @@ import ScreenUtil from '../utils/screen-util';
 import MyPopover from '../components/my-popover';
 import UDToast from '../utils/UDToast';
 import api from '../utils/api';
-
+import Macro from '../utils/macro';
 
 export default class JianFei extends BasePage {
     constructor(props) {
@@ -25,7 +25,7 @@ export default class JianFei extends BasePage {
                 this.setState({
                     types: [...res.map(item => item.title)],
                     reductionType: res[0].title
-                }, () => { 
+                }, () => {
                 });
             }
         });
@@ -85,24 +85,30 @@ export default class JianFei extends BasePage {
                         </Flex>
 
                         <WhiteSpace size={'lg'} />
-                        <Flex align={'center'} style={{ width: '100%' }}>
+                        {/* <Flex align={'center'} style={{ width: '100%' }}>
                             <Flex>
                                 <Text style={styles.left}>说明</Text>
                             </Flex>
                         </Flex>
-                        <WhiteSpace size={'lg'} />
+                        <WhiteSpace size={'lg'} /> */}
                         <TextareaItem
-                            style={styles.area}
+                            //style={styles.area}
                             placeholder={'请输入说明'}
-                            rows={3}
+                            style={{ 
+                                width: ScreenUtil.deviceWidth() - 150
+                            }}
+                            rows={4}
                             onChange={memo => this.setState({ memo })}
                             value={this.state.memo}
                         />
-                        <Button style={{ width: '100%', marginTop: 10 }}
+                        <Button
+                            style={{
+                                width: '100%', marginTop: 10,
+                                backgroundColor: Macro.work_blue
+                            }}
                             type="primary"
                             onPress={this.in}>确定</Button>
                     </Flex>
-
                 </TouchableWithoutFeedback>
             </View>
         );
@@ -125,12 +131,12 @@ const styles = StyleSheet.create({
         fontSize: 17,
         paddingLeft: 10,
     },
-    area: {
-        borderWidth: 1,
-        borderColor: '#eeeeee',
-        width: ScreenUtil.deviceWidth() - 150,
-        borderRadius: 10
-    },
+    //area: {
+    // borderWidth: 1,
+    // borderColor: '#eeeeee',
+    // borderRadius: 10
+    //width: ScreenUtil.deviceWidth() - 150, 
+    //},
     // area2: { 
     //     borderBottomColor: '#eee',
     //     borderBottomWidth: 2,

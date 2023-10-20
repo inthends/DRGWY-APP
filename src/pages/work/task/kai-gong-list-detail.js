@@ -199,7 +199,7 @@ export default class KaiGongListDetailPage extends BasePage {
                         <TextareaItem
                             rows={3}
                             placeholder='请输入故障判断'
-                            style={{ fontSize: 14, paddingTop: 10, height: 60, width: ScreenUtil.deviceWidth() - 32 }}
+                            style={{   paddingTop: 10, width: ScreenUtil.deviceWidth() - 32 }}
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
@@ -216,7 +216,7 @@ export default class KaiGongListDetailPage extends BasePage {
                         <TextareaItem
                             rows={3}
                             placeholder='请输入退单原因'
-                            style={{ fontSize: 14, paddingTop: 10, height: 60, width: ScreenUtil.deviceWidth() - 32 }}
+                            style={{  paddingTop: 10,  width: ScreenUtil.deviceWidth() - 32 }}
                             onChange={value => this.setState({ backMemo: value })}
                             value={this.state.backMemo}
                         />

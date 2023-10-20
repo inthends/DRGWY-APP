@@ -11,15 +11,16 @@ const ShowActions = ({ state, click, isSpecial = false }) => {
   const [value, setValue] = useState('');
   const { detail = {} } = state;
   const { executeType, taskType } = detail;
+  //alert('executeType:' + executeType + ',taskType:' + taskType);
+
   if (executeType != 0) {
     return <></>;
   }
 
   const onClick = (type) => {
     const verifyMemo = value;
-    const { item = {}, detail = {} } = state;
-    const { id: taskId, instanceId, code } = item;
-    const { organizeId } = detail;
+    const { detail = {} } = state;
+    const { id: taskId, instanceId, code, organizeId } = detail;
 
     if (type === '通过') {
       service
@@ -63,25 +64,24 @@ const ShowActions = ({ state, click, isSpecial = false }) => {
         });
     }
   };
+
   return (
     <View>
       <ShowTitle title="审批信息" />
       {taskType == 5 ?//抄送
         null :
-        <View style={styles.textarea}>
-          <TextareaItem
-            rows={4}
-            placeholder="输入审批意见"
-            style={{
-              fontSize: 14,
-              height: 100,
-              width: ScreenUtil.deviceWidth() - 45,
-            }}
-            onChange={(val) => setValue(val.trim())}
-            value={value}
-          />
-        </View>
-      } 
+        // <View style={styles.textarea} >
+        <TextareaItem
+          rows={4}
+          placeholder="输入审批意见"
+          style={{ 
+            width: ScreenUtil.deviceWidth() - 45
+          }}
+          onChange={(val) => setValue(val)}
+          value={value}
+        />
+        // </View>
+      }
       <Flex justify="around" style={{ marginTop: 30 }}>
         {taskType == 5 ?//抄送
           <TouchableWithoutFeedback
@@ -91,7 +91,7 @@ const ShowActions = ({ state, click, isSpecial = false }) => {
           >
             <Flex
               justify={'center'}
-              style={[styles.ii, { backgroundColor: Macro.work_green }]}
+              style={[styles.ii, { backgroundColor: Macro.work_blue }]}
             >
               <Text style={styles.word}>查阅</Text>
             </Flex>
@@ -104,7 +104,9 @@ const ShowActions = ({ state, click, isSpecial = false }) => {
             >
               <Flex
                 justify={'center'}
-                style={[styles.ii, { backgroundColor: Macro.work_orange }]}
+                style={[styles.ii, {
+                  backgroundColor: Macro.work_orange
+                }]}
               >
                 <Text style={styles.word}>退回</Text>
               </Flex>
@@ -116,7 +118,7 @@ const ShowActions = ({ state, click, isSpecial = false }) => {
             >
               <Flex
                 justify={'center'}
-                style={[styles.ii, { backgroundColor: Macro.work_green }]}
+                style={[styles.ii, { backgroundColor: Macro.work_blue }]}
               >
                 <Text style={styles.word}>通过</Text>
               </Flex>
@@ -128,24 +130,13 @@ const ShowActions = ({ state, click, isSpecial = false }) => {
 };
 
 const styles = StyleSheet.create({
-  card: {
-    marginTop: 5,
-    borderWidth: 1,
-    borderRadius: 4,
-    borderStyle: 'solid',
-    borderColor: '#eee',
-    paddingHorizontal: 10,
-    paddingTop: 15,
-    paddingBottom: 5,
-    marginBottom: 15,
-  },
-  textarea: {
-    marginTop: 5,
-    borderStyle: 'solid',
-    borderColor: '#F3F4F2',
-    borderWidth: 1,
-    borderRadius: 5,
-  },
+  // textarea: {
+  //   marginTop: 5,
+  //   borderStyle: 'solid',
+  //   borderColor: '#F3F4F2',
+  //   borderWidth: 1,
+  //   borderRadius: 5
+  // },
   ii: {
     paddingTop: 10,
     paddingBottom: 10,
@@ -154,12 +145,12 @@ const styles = StyleSheet.create({
     width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
     backgroundColor: '#999',
     borderRadius: 6,
-    marginBottom: 20,
+    marginBottom: 20
   },
   word: {
     color: 'white',
-    fontSize: 16,
-  },
+    fontSize: 16
+  }
 });
 
 export default ShowActions;

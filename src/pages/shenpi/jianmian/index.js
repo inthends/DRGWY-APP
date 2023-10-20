@@ -1,4 +1,4 @@
-//导航里面点击的服务单详情
+
 import React  from 'react';
 import {
   View,
@@ -21,12 +21,11 @@ import ShowRecord from '../components/show-record';
 import ShowActions from '../components/show-actions';
 import ShowFiles from '../components/show-files';
 
-export default class EfuwuDetailPage extends BasePage {
+export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
+    var isCompleted = navigation.getParam('isCompleted');
     return {
-      title: navigation.getParam('data')
-        ? navigation.getParam('data').codeName
-        : '',
+      title: isCompleted ? '减免单详情' : '减免单审批',
       headerForceInset:this.headerForceInset,
             headerLeft: (
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -70,7 +69,7 @@ export default class EfuwuDetailPage extends BasePage {
 
     return (
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
-        <ScrollView style={{ padding: 15, paddingBottom: 30 }}>
+        <ScrollView style={{ flex: 1, padding: 10 }}>
           <ShowTitle title="基础信息" />
           <Flex style={styles.card} direction="column" align="start">
             <ShowText word="减免单号" title={detail.billCode} />
@@ -123,36 +122,7 @@ export default class EfuwuDetailPage extends BasePage {
   }
 }
 
-const styles = StyleSheet.create({
-  header: {
-    paddingTop: 15,
-    paddingBottom: 15,
-    paddingLeft: 15,
-    paddingRight: 15,
-    backgroundColor: '#F3F4F2',
-  },
-  every: {
-    marginLeft: 15,
-    marginRight: 15,
-    paddingTop: 15,
-    paddingBottom: 15,
-  },
-  every2: {
-    marginLeft: 15,
-    marginRight: 15,
-
-    paddingBottom: 10,
-  },
-  left: {
-    fontSize: 14,
-    color: '#666',
-  },
-  right: {},
-  desc: {
-    padding: 15,
-    paddingBottom: 40,
-  },
-
+const styles = StyleSheet.create({ 
   card: {
     marginTop: 5,
     borderWidth: 1,
@@ -170,9 +140,5 @@ const styles = StyleSheet.create({
   },
   txt2: {
     color: Macro.work_blue,
-  },
-
-  fixedWidth: {
-    width: 60,
-  },
+  }, 
 });

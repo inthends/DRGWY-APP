@@ -1,13 +1,13 @@
 import { Flex } from '@ant-design/react-native';
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import ScreenUtil from '../../../utils/screen-util';
+import { View, StyleSheet } from 'react-native'; 
 import ShowLine from './show-line';
 import ShowText from './show-text';
 import ShowTextWithRight from './show-text-with-right';
 import ShowTitle from './show-title';
 
 const ShowRecord = ({ records = [], open = false }) => {
+  
   if (records.length === 0) {
     return <></>;
   }
@@ -15,6 +15,7 @@ const ShowRecord = ({ records = [], open = false }) => {
   useEffect(() => {
     setIsopen(open);
   }, []);
+
   return (
     <View>
       <ShowTitle
@@ -43,13 +44,7 @@ const ShowRecord = ({ records = [], open = false }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  line: {
-    backgroundColor: '#eee',
-    marginBottom: 10,
-    height: 1,
-    width: ScreenUtil.deviceWidth() - 54,
-  },
+const styles = StyleSheet.create({ 
   card: {
     marginTop: 5,
     borderWidth: 1,
@@ -59,8 +54,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingTop: 15,
     paddingBottom: 5,
-    marginBottom: 15,
-  },
+    marginBottom: 15
+  }
 });
 
 export default ShowRecord;

@@ -48,9 +48,7 @@ const ShowTextWithRight = ({
 };
 
 const styles = StyleSheet.create({
-  fixedWidth: {
-    width: 60,
-  },
+ 
   txt: {
     fontSize: 14,
     paddingBottom: 10,

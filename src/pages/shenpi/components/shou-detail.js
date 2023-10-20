@@ -62,78 +62,13 @@ const ShouDetail = forwardRef(({ detail }, ref) => {
 });
 
 const styles = StyleSheet.create({
-  header: {
-    paddingTop: 15,
-    paddingBottom: 15,
-    paddingLeft: 15,
-    paddingRight: 15,
-    backgroundColor: '#F3F4F2',
-  },
-  every: {
-    marginLeft: 15,
-    marginRight: 15,
-    paddingTop: 15,
-    paddingBottom: 15,
-  },
-  every2: {
-    marginLeft: 15,
-    marginRight: 15,
-
-    paddingBottom: 10,
-  },
-  left: {
-    fontSize: 14,
-    color: '#666',
-  },
-  right: {},
-  desc: {
-    padding: 15,
-    paddingBottom: 40,
-  },
-  ii: {
-    paddingTop: 10,
-    paddingBottom: 10,
-    marginLeft: 10,
-    marginRight: 10,
-    width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
-    backgroundColor: '#999',
-    borderRadius: 6,
-    marginBottom: 20,
-  },
-  word: {
-    color: 'white',
-    fontSize: 16,
-  },
-
-  card: {
-    marginTop: 5,
-    borderWidth: 1,
-    borderRadius: 4,
-    borderStyle: 'solid',
-    borderColor: '#eee',
-    paddingHorizontal: 10,
-    paddingTop: 15,
-    paddingBottom: 5,
-    marginBottom: 15,
-  },
   txt: {
     fontSize: 14,
     paddingBottom: 10,
   },
   txt2: {
-    color: Macro.work_blue,
-  },
-  textarea: {
-    marginTop: 5,
-    borderStyle: 'solid',
-    borderColor: '#F3F4F2',
-    borderWidth: 1,
-    borderRadius: 5,
-  },
-
-  fixedWidth: {
-    width: 60,
-  },
+    color: Macro.work_blue
+  }
 });
 
 export default ShouDetail;

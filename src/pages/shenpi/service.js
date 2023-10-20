@@ -51,4 +51,10 @@ export default {
   geFiles(keyvalue) {
     return api.getData('/api/MobileMethod/MGetServiceDeskFiles', { keyvalue });
   },
+ 
+  //获取评审内容
+  getReviews(taskId) {
+    return api.getData('/api/MobileMethod/MGetReviews', { taskId })
+  }
+
 };

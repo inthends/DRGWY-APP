@@ -1,7 +1,6 @@
 import { Flex } from '@ant-design/react-native';
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import ScreenUtil from '../../../utils/screen-util';
 import ShowLine from './show-line';
 import ShowTitle from './show-title';
 
@@ -23,17 +22,23 @@ const ShowMingXiBaoXiao = ({ title = '明细', list = [], open = false }) => {
       {isOpen && (
         <Flex style={styles.card} direction="column" align="start">
           {list.map((item, index) => (
-            <View key={index} style={{ paddingBottom: 8 }}>
+            <View key={index}
+            //style={{ paddingBottom: 8 }} 
+            >
               <Flex
                 justify="between"
-                style={{ width: '100%', paddingBottom: 4 }}
+                style={{ paddingBottom: 8, width: '100%' }}
               >
-                <Text style={styles.txt}>{(item.memo || '').trim()}</Text>
+                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>{item.memo}</Text>
                 <Text style={styles.txt}>{item.amount}</Text>
               </Flex>
-              <Flex justify="between">
+              <Flex justify="between" style={{ paddingBottom: 8, width: '100%' }}>
                 <Text style={styles.txt}>单价：{item.price}</Text>
-                <Text style={[styles.txt]}> 数量：{item.quantity}</Text>
+                <Text style={[styles.txt]}>数量：{item.quantity}</Text>
+              </Flex>
+              <Flex justify="between" style={{ width: '100%' }}>
+                <Text style={styles.txt}>预算科目：{item.budgetTypeName}</Text>
+                <Text style={[styles.txt]}>预算余额：{item.lastAmount}</Text>
               </Flex>
               {index < list.length - 1 && (
                 <ShowLine style={{ marginTop: 8, marginBottom: 8 }} />
@@ -47,12 +52,6 @@ const ShowMingXiBaoXiao = ({ title = '明细', list = [], open = false }) => {
 };
 
 const styles = StyleSheet.create({
-  line: {
-    backgroundColor: '#eee',
-    marginBottom: 10,
-    height: 1,
-    width: ScreenUtil.deviceWidth() - 54,
-  },
   card: {
     marginTop: 5,
     borderWidth: 1,

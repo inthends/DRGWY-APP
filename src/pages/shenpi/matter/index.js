@@ -1,14 +1,8 @@
 //事项申请
 import React from 'react';
-import {
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-} from 'react-native';
 import BasePage from '../../base/base';
-import { Flex, Icon } from '@ant-design/react-native';
-import ScreenUtil from '../../../utils/screen-util';
-import Macro from '../../../utils/macro';
+import { Flex, Icon, Modal, Button, TextareaItem } from '@ant-design/react-native';
+import { View, StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
 import CommonView from '../../../components/CommonView';
 import ShowTitle from '../components/show-title';
 import ShowText from '../components/show-text';
@@ -18,12 +12,15 @@ import common from '../../../utils/common';
 import ShowActions from '../components/show-actions';
 import ShowFiles from '../components/show-files';
 import ShowRecord from '../components/show-record';
+import ShowReviews from '../components/show-reviews';
+import Macro from '../../../utils/macro';
+import ScreenUtil from '../../../utils/screen-util';
 
 export default class MatterDetailPage extends BasePage {
-  
-  static navigationOptions = ({ navigation }) => { 
+
+  static navigationOptions = ({ navigation }) => {
     //是否完成
-    var isCompleted = navigation.getParam('isCompleted'); 
+    var isCompleted = navigation.getParam('isCompleted');
     return {
       // title: navigation.getParam('data')
       //   ? navigation.getParam('data').codeName
@@ -41,10 +38,11 @@ export default class MatterDetailPage extends BasePage {
   constructor(props) {
     super(props);
     const id = common.getValueFromProps(props, 'id');
-    this.state = { 
-      id, 
+    this.state = {
+      id,
       detail: {},
       records: [],
+      reviews: []
     };
   }
 
@@ -62,20 +60,35 @@ export default class MatterDetailPage extends BasePage {
 
     service.getApproveLog(id).then((records) => {
       this.setState({
-        records,
+        records
       });
     });
+
+    //评审记录
+    service.getReviews(id).then(res => {
+      this.setState({
+        reviews: res
+      });
+    });
+  };
+
+  //回复
+  reply = () => {
+    const { messageId, memo } = this.state;
+    alert('messageId:' + messageId + 'memo:' + memo);
+    //保存 to do
   };
 
   render() {
     const {
       detail = {},
-      records = []
+      records = [],
+      reviews = []
     } = this.state;
 
     return (
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
-        <ScrollView style={{ padding: 15, paddingBottom: 30 }}>
+        <ScrollView style={{ flex: 1, padding: 10 }}>
           <ShowTitle title="基础信息" />
           <Flex style={styles.card} direction="column" align="start">
             <ShowText word="单号" title={detail.billCode} />
@@ -90,6 +103,21 @@ export default class MatterDetailPage extends BasePage {
             <ShowText word="事项说明" title={detail.memo} />
           </Flex>
 
+          <ShowFiles files={detail.files} onPress={
+            (fileStr) => {
+              this.props.navigation.navigate('webPage', {
+                data: fileStr,
+              });
+            }
+          } />
+
+          <ShowReviews reviews={reviews} onClick={(id) => this.setState({
+            replyVisible: true,
+            memo: '',
+            messageId: id
+          })} />
+
+          <ShowRecord records={records} />
           <ShowActions
             isSpecial={true}
             state={this.state}
@@ -99,62 +127,56 @@ export default class MatterDetailPage extends BasePage {
               this.props.navigation.goBack();
             }}
           />
-          <ShowFiles files={detail.files} onPress={
-            (fileStr) => {
-              this.props.navigation.navigate('webPage', {
-                data: fileStr,
-              });
-            }
-          } />
-          <ShowRecord records={records} />
         </ScrollView>
+
+        <Modal
+          //弹出回复页面
+          transparent
+          onClose={() => this.setState({ replyVisible: false })}
+          onRequestClose={() => this.setState({ replyVisible: false })}
+          maskClosable
+          visible={this.state.replyVisible}>
+          <Flex justify={'center'} align={'center'}>
+            <View style={{ flex: 1, width: '100%' }}>
+              <TouchableWithoutFeedback onPress={() => {
+                Keyboard.dismiss();
+              }}>
+                <Flex direction={'column'}>
+                  <TextareaItem
+                    style={{ 
+                      width: ScreenUtil.deviceWidth() - 150
+                    }}
+                    placeholder={'请输入说明'}
+                    rows={6}
+                    onChange={memo => this.setState({ memo })}
+                    value={this.state.memo}
+                  />
+                  <Button
+                    style={{
+                      width: '100%',
+                      marginTop: 10,
+                      backgroundColor: Macro.work_blue
+                    }}
+                    type="primary"
+                    onPress={this.reply}>确定</Button>
+                </Flex>
+              </TouchableWithoutFeedback>
+            </View>
+          </Flex>
+        </Modal>
       </CommonView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  header: {
-    paddingTop: 15,
-    paddingBottom: 15,
-    paddingLeft: 15,
-    paddingRight: 15,
-    backgroundColor: '#F3F4F2'
-  },
-  every: {
-    marginLeft: 15,
-    marginRight: 15,
-    paddingTop: 15,
-    paddingBottom: 15
-  },
-  every2: {
-    marginLeft: 15,
-    marginRight: 15,
-    paddingBottom: 10
-  },
-  left: {
-    fontSize: 14,
-    color: '#666'
-  },
-  right: {},
-  desc: {
-    padding: 15,
-    paddingBottom: 40
-  },
-  ii: {
-    paddingTop: 10,
-    paddingBottom: 10,
-    marginLeft: 10,
-    marginRight: 10,
-    width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
-    backgroundColor: '#999',
-    borderRadius: 6,
-    marginBottom: 20
-  },
-  word: {
-    color: 'white',
-    fontSize: 16
-  },
+  // area: {  
+  //   width: ScreenUtil.deviceWidth() - 150,
+  // borderStyle: 'solid',
+  // borderColor: '#F3F4F2',
+  // borderWidth: 1,
+  // borderRadius: 5
+  //},
   card: {
     marginTop: 5,
     borderWidth: 1,
@@ -165,22 +187,5 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 5,
     marginBottom: 15
-  },
-  txt: {
-    fontSize: 14,
-    paddingBottom: 10
-  },
-  textarea: {
-    marginTop: 5,
-    borderStyle: 'solid',
-    borderColor: '#F3F4F2',
-    borderWidth: 1,
-    borderRadius: 5
-  },
-  fixedWidth: {
-    width: 60
-  },
-  txt2: {
-    color: Macro.work_blue,
   }
 });

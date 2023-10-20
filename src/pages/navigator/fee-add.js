@@ -25,6 +25,8 @@ import UDToast from '../../utils/UDToast';
 // import QRCode from 'react-native-qrcode-svg';
 import CommonView from '../../components/CommonView';
 import MyPopover from '../../components/my-popover';
+import Macro from '../../utils/macro';
+
 const Item = List.Item;
 
 class FeeAddPage extends BasePage {
@@ -113,7 +115,7 @@ class FeeAddPage extends BasePage {
 
     };
 
-    componentDidMount(): void {
+    componentDidMount() {
         NavigatorService.getFeeItemTreeJson(this.state.room.id).then(resp => {
             const res = resp.filter(item => item.children.length > 0);
             if (res.length === 0) {
@@ -266,7 +268,7 @@ class FeeAddPage extends BasePage {
                     )}
                 </ScrollView>
                 {fee &&
-                    <Button type={'primary'} style={{ margin: 20 }} onPress={this.save}>保 存</Button>}
+                    <Button type={'primary'} style={{ margin: 20,backgroundColor: Macro.work_blue  }} onPress={this.save}>保 存</Button>}
             </CommonView>
         );
     }

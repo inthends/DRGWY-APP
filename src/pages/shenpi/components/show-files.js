@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import ScreenUtil from '../../../utils/screen-util';
-import service from '../service';
+import React  from 'react';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'; 
 import ShowTitle from './show-title';
 /*
 this.props.navigation.navigate('wancheng');
@@ -20,7 +18,6 @@ const ShowFiles = (props) => {
             if (!!item.filePath){
               props.onPress ? props.onPress(item.filePath) :undefined
             }
-            
           }}>
           <View style={{justifyContent:'space-between',flexDirection:'row'}}>
           <Text style={{color:'blue',borderBottomColor:'blue',borderBottomWidth:1}}>{item.fileName }</Text>
@@ -35,10 +32,8 @@ const ShowFiles = (props) => {
 };
 
 const styles = StyleSheet.create({
-  file: {
-
-    paddingBottom: 15,
- 
+  file: { 
+    paddingBottom: 15
   },
 });
 

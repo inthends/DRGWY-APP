@@ -99,16 +99,14 @@ class NewsList extends BasePage {
 
     _renderItem = ({ item }) => {
         return (
-            <TouchableWithoutFeedback key={item.id + 'touch'}
+            <TouchableWithoutFeedback key={item.id}
                 onPress={() => {
-                    WorkService.readNews(item.id);
+                    //WorkService.readNews(item.id);
                     const { appUrlName, linkId } = item;
-                    
                     // const d = {
                     //     ...item,
                     //     id: item.linkId
-                    // };
-
+                    // }; 
                     // switch (type) {
                     //     case 1:
                     //     case 2: {
@@ -142,7 +140,7 @@ class NewsList extends BasePage {
                     // }
 
                     //根据url跳转
-                    this.props.navigation.navigate(appUrlName, { data: linkId });
+                    this.props.navigation.navigate(appUrlName, { id: linkId });
                 }}>
                 <Flex direction='column' align={'start'}
                     style={[styles.card, styles.blue]}>
@@ -179,7 +177,7 @@ class NewsList extends BasePage {
                     // ListHeaderComponent={}
                     renderItem={this._renderItem}
                     style={styles.list}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(item) => item.id + 'cell'}
                     refreshing={this.state.refreshing}
                     onRefresh={() => this.onRefresh()}
                     onEndReached={() => this.loadMore()}
@@ -207,10 +205,6 @@ const styles = StyleSheet.create({
     },
     blue: {
         borderLeftColor: Macro.work_blue,
-        borderLeftWidth: 5
-    },
-    orange: {
-        borderLeftColor: '#F7A51E',
         borderLeftWidth: 5
     },
     title: {

@@ -29,6 +29,8 @@ const styles = StyleSheet.create({
   word: {
     color: '#666',
     fontSize: 14,
+    fontWeight: 'bold'
   },
 });
+
 export default ShowTitle;

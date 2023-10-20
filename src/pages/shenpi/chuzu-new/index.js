@@ -71,7 +71,7 @@ export default class DetailPage extends BasePage {
 
     return (
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
-        <ScrollView style={{ padding: 15, paddingBottom: 30 }}>
+        <ScrollView style={{ flex: 1, padding: 10 }}>
           <ShowTitle title="基础信息" />
           <Flex style={styles.card} direction="column" align="start">
             <ShowText word="项目" title={detail.organizeName} />
@@ -133,14 +133,7 @@ export default class DetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-  left: {
-    fontSize: 14,
-    color: '#666'
-  },
-  word: {
-    color: 'white',
-    fontSize: 16
-  },
+ 
   card: {
     marginTop: 5,
     borderWidth: 1,

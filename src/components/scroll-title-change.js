@@ -10,7 +10,7 @@ import {
 import { Flex } from '@ant-design/react-native';
 import ScreenUtil from '../utils/screen-util';
 
-const item_width = ScreenUtil.deviceWidth() / 5.0;
+//const item_width = ScreenUtil.deviceWidth() / 5.0;
 const single_width = 50;
 
 export default class ScrollTitleChange extends Component {

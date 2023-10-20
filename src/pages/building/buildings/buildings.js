@@ -66,7 +66,7 @@ class BuildingsPage extends BasePage {
                         // ListHeaderComponent={}
                         renderItem={this._renderItem}
                         style={styles.list}
-                        keyExtractor={(item, index) => item.id}
+                        keyExtractor={(item) => item.id}
                         ListEmptyComponent={<NoDataView />}
                     // refreshing={this.state.refreshing}
                     // onRefresh={() => this.onRefresh()}

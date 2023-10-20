@@ -5,7 +5,6 @@ import BasePage from '../../base/base';
 import common from '../../../utils/common';
 export default class webPage1 extends BasePage {
   static navigationOptions = ({ navigation }) => {  
-    
     return {
       // tabBarVisible: false,
       title: '查看附件',
@@ -19,7 +18,6 @@ export default class webPage1 extends BasePage {
       isShow: true,
       urlStr: ''
     };
-    
   };
   
   constructor(props) {
@@ -28,7 +26,6 @@ export default class webPage1 extends BasePage {
     this.state = {
       urlStr,
     }
-
     return (
       <WebView source={{ uri: this.state.urlStr }} />
     );

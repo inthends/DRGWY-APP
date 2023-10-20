@@ -9,12 +9,13 @@ import {
     ScrollView,
     RefreshControl,
 } from 'react-native';
-import BasePage from '../base/base'; 
-import { List,Icon, Flex, Button } from '@ant-design/react-native';
+import BasePage from '../base/base';
+import { List, Icon, Flex, Button } from '@ant-design/react-native';
 import common from '../../utils/common';
 import WorkService from './work-service';
 import UDToast from '../../utils/UDToast';
 import CommonView from '../../components/CommonView';
+import Macro from '../../utils/macro';
 
 const Item = List.Item;
 
@@ -41,7 +42,7 @@ export default class SelectAddressPage extends BasePage {
         };
     }
 
-    componentDidMount()  {
+    componentDidMount() {
         this.getData();
     }
 
@@ -108,7 +109,7 @@ export default class SelectAddressPage extends BasePage {
             this.setState({ items, refreshing: false });
         });
     };
-    next = (item) => { 
+    next = (item) => {
         if (item.type !== 5) {
             this.props.navigation.push('select', {
                 'data': {
@@ -125,7 +126,6 @@ export default class SelectAddressPage extends BasePage {
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#eee' }}>
                 <View style={{ flex: 1 }}>
-
                     <Item arrow="empty">
                         {parent ? parent.allName : '/'}
                     </Item>
@@ -155,7 +155,11 @@ export default class SelectAddressPage extends BasePage {
                         </List>
                     </ScrollView>
                     <Flex justify={'center'} style={{ height: 80, backgroundColor: '#eee' }}>
-                        <Button style={{ width: '90%' }} type="primary" onPress={() => this.submit()}>确定</Button>
+                        <Button style={{
+                            width: '90%',
+                            backgroundColor: Macro.work_blue
+                        }} type="primary"
+                            onPress={() => this.submit()}>确定</Button>
                     </Flex>
 
                 </View>
@@ -164,14 +168,13 @@ export default class SelectAddressPage extends BasePage {
     }
 }
 
-const styles = StyleSheet.create({
-    header: {
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 15,
-        paddingRight: 15,
-        backgroundColor: '#F3F4F2',
+// const styles = StyleSheet.create({
+//     header: {
+//         paddingTop: 15,
+//         paddingBottom: 15,
+//         paddingLeft: 15,
+//         paddingRight: 15,
+//         backgroundColor: '#F3F4F2',
 
-    },
-
-});
+//     }, 
+// });

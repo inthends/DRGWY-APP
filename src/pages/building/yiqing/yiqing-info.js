@@ -94,8 +94,7 @@ class YiQingInfoPage extends BasePage {
                         </Flex>
                         <WhiteSpace size={'xl'}/>
 
-                        <TextareaItem
-                            style={styles.area}
+                        <TextareaItem 
                             placeholder={'请输入说明'}
                             rows={5}
                             onChange={memo => this.setState({memo})}
@@ -127,15 +126,15 @@ const styles = StyleSheet.create({
         fontSize: 17,
         paddingLeft: 10,
     },
-    area: {
+    // area: {
 
-        borderWidth: 1,
-        borderColor: '#eeeeee',
-        width: ScreenUtil.deviceWidth() - 30,
+    //     borderWidth: 1,
+    //     borderColor: '#eeeeee',
+    //     width: ScreenUtil.deviceWidth() - 30,
 
-        borderRadius: 10,
+    //     borderRadius: 10,
 
-    },
+    // },
 });
 
 

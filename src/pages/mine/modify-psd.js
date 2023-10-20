@@ -148,6 +148,6 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
     },
     button: {
-        backgroundColor: Macro.work_blue,
+        backgroundColor: Macro.work_blue
     },
 });

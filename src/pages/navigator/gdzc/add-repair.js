@@ -24,6 +24,7 @@ import GdzcService from './gdzc-service';
 import { AudioRecorder, AudioUtils } from 'react-native-audio';
 import CommonView from '../../../components/CommonView';
 import { saveXunJianAction } from '../../../utils/store/actions/actions';
+import Macro from '../../../utils/macro';
 
 //固定资产盘点，异常的时候弹出报修单页面
 class AddRepairPage extends BasePage {
@@ -288,7 +289,7 @@ class AddRepairPage extends BasePage {
                                     rows={9}
                                     placeholder={title2}
                                     autoHeight
-                                    style={{ paddingTop: 15, minHeight: 120, width: ScreenUtil.deviceWidth() - 30 }}
+                                    style={{ paddingTop: 15,   width: ScreenUtil.deviceWidth() - 30 }}
                                     onChange={value => this.setState({ value })}
                                     value={this.state.value}
                                 />
@@ -343,7 +344,7 @@ class AddRepairPage extends BasePage {
                             flex: 1,
                             paddingTop: 40,
                         }}>
-                            <Button style={{ width: '90%' }} type="primary" onPress={() => this.submit()}>确定</Button>
+                            <Button style={{ width: '90%',backgroundColor: Macro.work_blue  }} type="primary" onPress={() => this.submit()}>确定</Button>
                         </Flex>
                     </View>
                 </TouchableWithoutFeedback>

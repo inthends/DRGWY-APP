@@ -6,8 +6,7 @@ import LoadImage from './load-image';
  
 export default class Communicates extends Component {
  
-    render() {
-
+    render() { 
         return (
             <Fragment>
                 <Flex style={{

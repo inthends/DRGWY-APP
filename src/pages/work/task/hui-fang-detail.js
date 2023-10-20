@@ -212,7 +212,7 @@ export default class HuiFangDetailPage extends BasePage {
                         <TextareaItem
                             rows={4}
                             placeholder='输入业主建议'
-                            style={{ fontSize: 14, paddingTop: 10, height: 100, width: ScreenUtil.deviceWidth() - 32 }}
+                            style={{   paddingTop: 10, width: ScreenUtil.deviceWidth() - 32 }}
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />

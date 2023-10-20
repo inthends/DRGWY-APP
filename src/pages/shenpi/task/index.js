@@ -1,4 +1,4 @@
-//导航里面点击的服务单详情
+ 
 import React from 'react';
 import { 
   TouchableOpacity,
@@ -13,7 +13,6 @@ import CommonView from '../../../components/CommonView';
 import ShowTitle from '../components/show-title'; 
 import ShowText from '../components/show-text';
 import ShowTextWithRight from '../components/show-text-with-right';
-import CompanyDetail from '../components/company-detail';
 import service from '../service';
 import common from '../../../utils/common';
 import ShowActions from '../components/show-actions';
@@ -21,12 +20,12 @@ import ShowFiles from '../components/show-files';
 import ShowRecord from '../components/show-record';
 import ShowMingXiBaoXiao from '../components/show-mingxi-baoxiao';
 
-export default class EfuwuDetailPage extends BasePage {
+export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
+    //是否完成
+    var isCompleted = navigation.getParam('isCompleted');
     return {
-      title: navigation.getParam('data')
-        ? navigation.getParam('data').codeName
-        : '',
+      title: isCompleted ? '任务详情' : '任务审批',
       headerForceInset:this.headerForceInset,
             headerLeft: (
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -38,14 +37,11 @@ export default class EfuwuDetailPage extends BasePage {
 
   constructor(props) {
     super(props);
-    const item = common.getValueFromProps(props) || {};
-    const { id, instanceId } = item;
-    this.state = {
-      item,
-      id,
-      instanceId,
+    const id = common.getValueFromProps(props, 'id');
+    this.state = { 
+      id, 
       detail: {},
-      records: [],
+      records: []
     };
   }
 
@@ -54,15 +50,15 @@ export default class EfuwuDetailPage extends BasePage {
   }
 
   getData = () => {
-    const { id, instanceId } = this.state;
+    const { id } = this.state;
     service.getFlowData(id).then((detail) => { 
       this.setState({
-        detail,
+        detail
       });
     });
-    service.getApproveLog(instanceId).then((records) => { 
+    service.getApproveLog(id).then((records) => { 
       this.setState({
-        records,
+        records
       });
     });
   };
@@ -70,15 +66,13 @@ export default class EfuwuDetailPage extends BasePage {
   render() {
     const {
       detail = {},
-      records = [],
-      customer = {},
-      //hetong = {},
+      records = [],  
     } = this.state;
     const { list = [] } = detail;
 
     return (
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
-        <ScrollView style={{ padding: 15, paddingBottom: 30 }}>
+        <ScrollView style={{ flex: 1, padding: 10 }}>
           <ShowTitle title="基础信息" />
           <Flex style={styles.card} direction="column" align="start">
             <ShowText word="报销单号" title={detail.billCode} /> 
@@ -113,59 +107,13 @@ export default class EfuwuDetailPage extends BasePage {
           <ShowRecord records={records} />
           <ShowMingXiBaoXiao list={list} />
         </ScrollView>
-        <CompanyDetail
-          customer={customer}
-          ref={(ref) => (this.companyDetailRef = ref)}
-        />
+
       </CommonView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  header: {
-    paddingTop: 15,
-    paddingBottom: 15,
-    paddingLeft: 15,
-    paddingRight: 15,
-    backgroundColor: '#F3F4F2',
-  },
-  every: {
-    marginLeft: 15,
-    marginRight: 15,
-    paddingTop: 15,
-    paddingBottom: 15,
-  },
-  every2: {
-    marginLeft: 15,
-    marginRight: 15,
-
-    paddingBottom: 10,
-  },
-  left: {
-    fontSize: 14,
-    color: '#666',
-  },
-  right: {},
-  desc: {
-    padding: 15,
-    paddingBottom: 40,
-  },
-  ii: {
-    paddingTop: 10,
-    paddingBottom: 10,
-    marginLeft: 10,
-    marginRight: 10,
-    width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
-    backgroundColor: '#999',
-    borderRadius: 6,
-    marginBottom: 20,
-  },
-  word: {
-    color: 'white',
-    fontSize: 16,
-  },
-
   card: {
     marginTop: 5,
     borderWidth: 1,
@@ -176,23 +124,5 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 5,
     marginBottom: 15,
-  },
-  txt: {
-    fontSize: 14,
-    paddingBottom: 10,
-  },
-  textarea: {
-    marginTop: 5,
-    borderStyle: 'solid',
-    borderColor: '#F3F4F2',
-    borderWidth: 1,
-    borderRadius: 5,
-  },
-
-  fixedWidth: {
-    width: 60,
-  },
-  txt2: {
-    color: Macro.work_blue,
-  },
+  }
 });

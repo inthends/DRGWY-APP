@@ -226,7 +226,7 @@ export default class GdzcDetailPage extends BasePage {
                     data={datasList}
                     // ListHeaderComponent={}
                     renderItem={this._renderItem}
-                    keyExtractor={(item, index) => item.id}
+                    keyExtractor={(item) => item.id}
                     refreshing={this.state.refreshing}
                     onRefresh={() => this.onRefresh()}
                     onEndReached={() => this.loadMore()}

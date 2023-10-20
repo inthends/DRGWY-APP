@@ -11,6 +11,7 @@ import ScreenUtil from '../utils/screen-util';
 import UDToast from '../utils/UDToast';
 import api from '../utils/api';
 import DatePicker from 'react-native-datepicker'
+import Macro from '../utils/macro';
 
 export default class ChaiFei extends BasePage {
     //onClose
@@ -72,7 +73,7 @@ export default class ChaiFei extends BasePage {
                                 </Text>
                                 <Text>
                                     至
-                                    </Text>
+                                </Text>
                                 {/*<Text onPress={()=>this.props.showP(true)} style={styles.enable}>*/}
                                 {/*{a}*/}
                                 {/*</Text>*/}
@@ -103,8 +104,8 @@ export default class ChaiFei extends BasePage {
 
                         <WhiteSpace size={'lg'} />
 
-                        <Flex align={'center'} style={{ width: '100%' }}> 
-                            <Text style={styles.text}>金额</Text> 
+                        <Flex align={'center'} style={{ width: '100%' }}>
+                            <Text style={styles.text}>金额</Text>
                             <TextInput
                                 value={this.state.money}
                                 keyboardType={'decimal-pad'}
@@ -135,20 +136,23 @@ export default class ChaiFei extends BasePage {
                             </Flex>
                         </Flex>
 
-                        <WhiteSpace size={'lg'} /> 
-                        <Flex align={'center'} style={{ width: '100%' }}> 
+                        <WhiteSpace size={'lg'} />
+                        <Flex align={'center'} style={{ width: '100%' }}>
                             <Text style={styles.text}>金额</Text>
-                            <Text style={styles.input}>{this.state.last}</Text>  
+                            <Text style={styles.input}>{this.state.last}</Text>
                         </Flex>
 
                         <WhiteSpace size={'lg'} />
                         <Flex direction={'column'} align={'start'}>
-                            <Flex>
+                            {/* <Flex>
                                 <Text style={styles.left}>说明</Text>
                             </Flex>
-                            <WhiteSpace size={'lg'} /> 
+                            <WhiteSpace size={'lg'} /> */}
                             <TextareaItem
-                                style={styles.area}
+                                //style={styles.area}
+                                style={{ 
+                                    width: ScreenUtil.deviceWidth() - 90
+                                }}
                                 placeholder={'请输入说明'}
                                 rows={3}
                                 onChange={memo => this.setState({ memo })}
@@ -156,12 +160,12 @@ export default class ChaiFei extends BasePage {
                             />
                         </Flex>
 
-                        <Button style={{ width: '100%', marginTop: 10 }} type="primary"
+                        <Button style={{ width: '100%', marginTop: 10, backgroundColor: Macro.work_blue }} type="primary"
                             onPress={this.in}>确定</Button>
                     </Flex>
 
-                </TouchableWithoutFeedback> 
-            </View> 
+                </TouchableWithoutFeedback>
+            </View>
         );
     }
 }
@@ -177,18 +181,18 @@ const styles = StyleSheet.create({
     },
     input: {
         fontSize: 17,
-        marginLeft: 10 
+        marginLeft: 10
     },
     state: {
         fontSize: 17,
         paddingLeft: 10,
     },
-    area: {
-        borderWidth: 1,
-        borderColor: '#eeeeee',
-        width: ScreenUtil.deviceWidth() - 90, 
-        borderRadius: 10
-    },
+    //area: {
+    // borderWidth: 1,
+    // borderColor: '#eeeeee',
+    // borderRadius: 10,
+    // width: ScreenUtil.deviceWidth() - 90
+    //},
 
     unenable: {
         fontSize: 17,
@@ -199,18 +203,18 @@ const styles = StyleSheet.create({
         paddingTop: 6,
         paddingBottom: 6,
         borderRadius: 10,
-        overflow: 'hidden' 
+        overflow: 'hidden'
     },
     enable: {
         fontSize: 17,
         color: '#333',
-        backgroundColor: '#fff', 
+        backgroundColor: '#fff',
         paddingTop: 6,
         paddingBottom: 6,
         borderRadius: 10,
         borderWidth: 1,
         borderColor: '#eeeeee',
         borderStyle: 'solid'
-    }, 
+    },
 });
 

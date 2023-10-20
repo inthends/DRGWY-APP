@@ -21,10 +21,10 @@ import ShowText from '../components/show-text';
 import ShowTextWithRight from '../components/show-text-with-right';
 import CompanyDetail from '../components/company-detail';
 
-export default class EfuwuDetailPage extends BasePage {
+export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: '出租合同续签审批',
+      title: '物业合同续签审批',
       headerForceInset:this.headerForceInset,
             headerLeft: (
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -78,7 +78,7 @@ export default class EfuwuDetailPage extends BasePage {
 
     return (
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
-        <ScrollView style={{ padding: 15, paddingBottom: 30 }}>
+        <ScrollView style={{ flex: 1, padding: 10}}>
           <ShowTitle title="基础信息" />
           <Flex style={styles.card} direction="column" align="start">
             <ShowText word="项目" title="祥和府" />
@@ -115,9 +115,7 @@ export default class EfuwuDetailPage extends BasePage {
             <TextareaItem
               rows={4}
               placeholder="输入审批意见"
-              style={{
-                fontSize: 14,
-                height: 100,
+              style={{ 
                 width: ScreenUtil.deviceWidth() - 45,
               }}
               onChange={(value) => this.setState({ value })}

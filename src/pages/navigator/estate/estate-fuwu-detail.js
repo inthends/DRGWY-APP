@@ -170,11 +170,11 @@ export default class EfuwuDetailPage extends BasePage {
                         <TextareaItem
                             rows={4}
                             placeholder='请输入'
-                            style={{ fontSize: 14, paddingTop: 10, height: 100, width: ScreenUtil.deviceWidth() - 32 }}
+                            style={{ paddingTop: 10, width: ScreenUtil.deviceWidth() - 32 }}
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
-                    </View> 
+                    </View>
                     <TouchableWithoutFeedback onPress={() => this.click('回复')}>
                         <Flex justify={'center'} style={[styles.ii, {
                             width: '80%',
@@ -184,7 +184,7 @@ export default class EfuwuDetailPage extends BasePage {
                         }, { backgroundColor: Macro.color_4d8fcc }]}>
                             <Text style={styles.word}>回复</Text>
                         </Flex>
-                    </TouchableWithoutFeedback> 
+                    </TouchableWithoutFeedback>
                     {detail.status === 1 && <Flex>
                         <TouchableWithoutFeedback onPress={() => this.click('转维修')}>
                             <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.color_f39d39 }]}>
@@ -204,8 +204,8 @@ export default class EfuwuDetailPage extends BasePage {
                     </Flex>}
                     <DashLine />
                     <Communicates communicateClick={this.communicateClick} communicates={communicates} />
-
                 </ScrollView>
+
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                         imageUrls={this.state.images} />

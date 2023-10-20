@@ -37,9 +37,9 @@ export default class DetailPage extends BasePage {
 
   constructor(props) {
     super(props);
-    const id = common.getValueFromProps(props, 'id'); 
-    this.state = { 
-      id, 
+    const id = common.getValueFromProps(props, 'id');
+    this.state = {
+      id,
       detail: {},
       records: []
     };
@@ -75,7 +75,9 @@ export default class DetailPage extends BasePage {
 
     return (
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
-        <ScrollView style={{ padding: 15, paddingBottom: 30 }}>
+        <ScrollView style={{
+          flex: 1, padding: 10//滚动条到底 
+        }}>
           <ShowTitle title="基础信息" />
           {detail.operationType === '变更客户' && (
             <Flex style={styles.card} direction="column" align="start">
@@ -336,48 +338,6 @@ export default class DetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-  header: {
-    paddingTop: 15,
-    paddingBottom: 15,
-    paddingLeft: 15,
-    paddingRight: 15,
-    backgroundColor: '#F3F4F2',
-  },
-  every: {
-    marginLeft: 15,
-    marginRight: 15,
-    paddingTop: 15,
-    paddingBottom: 15,
-  },
-  every2: {
-    marginLeft: 15,
-    marginRight: 15,
-
-    paddingBottom: 10,
-  },
-  left: {
-    fontSize: 14,
-    color: '#666',
-  },
-  right: {},
-  desc: {
-    padding: 15,
-    paddingBottom: 40,
-  },
-  ii: {
-    paddingTop: 10,
-    paddingBottom: 10,
-    marginLeft: 10,
-    marginRight: 10,
-    width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
-    backgroundColor: '#999',
-    borderRadius: 6,
-    marginBottom: 20,
-  },
-  word: {
-    color: 'white',
-    fontSize: 16,
-  },
 
   card: {
     marginTop: 5,
@@ -389,23 +349,5 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 5,
     marginBottom: 15,
-  },
-  txt: {
-    fontSize: 14,
-    paddingBottom: 10,
-  },
-  textarea: {
-    marginTop: 5,
-    borderStyle: 'solid',
-    borderColor: '#F3F4F2',
-    borderWidth: 1,
-    borderRadius: 5,
-  },
-
-  fixedWidth: {
-    width: 60,
-  },
-  txt2: {
-    color: Macro.work_blue,
-  },
+  }
 });

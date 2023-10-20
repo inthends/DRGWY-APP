@@ -50,12 +50,7 @@ const ShowMingXi = ({ title = '明细', list = [], open = false }) => {
 };
 
 const styles = StyleSheet.create({
-  line: {
-    backgroundColor: '#eee',
-    marginBottom: 10,
-    height: 1,
-    width: ScreenUtil.deviceWidth() - 54,
-  },
+ 
   card: {
     marginTop: 5,
     borderWidth: 1,

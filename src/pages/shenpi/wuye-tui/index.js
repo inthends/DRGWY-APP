@@ -1,17 +1,17 @@
 import React from 'react';
-import { 
+import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import BasePage from '../../base/base'; 
+import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
-import ScreenUtil from '../../../utils/screen-util'; 
+import ScreenUtil from '../../../utils/screen-util';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ShowTitle from '../components/show-title';
 import ShowLine from '../components/show-line';
-import ShowText from '../components/show-text'; 
+import ShowText from '../components/show-text';
 import CompanyDetail from '../components/company-detail';
 import HeTongDetail from '../components/he-tong-detail';
 import common from '../../../utils/common';
@@ -23,12 +23,12 @@ import ShowMingXi from '../components/show-mingxi';
 
 export default class EfuwuDetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
+    //是否完成
+    var isCompleted = navigation.getParam('isCompleted');
     return {
-      title: navigation.getParam('data')
-        ? navigation.getParam('data').codeName
-        : '',
-      headerForceInset:this.headerForceInset,
-            headerLeft: (
+      title: isCompleted ? '物业合同解约详情' : '物业合同解约审批',
+      headerForceInset: this.headerForceInset,
+      headerLeft: (
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="left" style={{ width: 30, marginLeft: 15 }} />
         </TouchableOpacity>
@@ -38,14 +38,11 @@ export default class EfuwuDetailPage extends BasePage {
 
   constructor(props) {
     super(props);
-    const item = common.getValueFromProps(props) || {};
-    const { id, instanceId } = item;
+    const id = common.getValueFromProps(props, 'id');
     this.state = {
-      item,
       id,
-      instanceId,
       detail: {},
-      records: [],
+      records: []
     };
   }
 
@@ -54,15 +51,15 @@ export default class EfuwuDetailPage extends BasePage {
   }
 
   getData = () => {
-    const { id, instanceId } = this.state;
-    service.getFlowData(id).then((detail) => {  
+    const { id } = this.state;
+    service.getFlowData(id).then((detail) => {
       this.setState({
-        detail,
+        detail
       });
     });
-    service.getApproveLog(instanceId).then((records) => {  
+    service.getApproveLog(id).then((records) => {
       this.setState({
-        records,
+        records
       });
     });
   };
@@ -78,24 +75,24 @@ export default class EfuwuDetailPage extends BasePage {
 
     return (
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
-        <ScrollView style={{ padding: 15, paddingBottom: 30 }}>
+        <ScrollView style={{flex: 1, padding: 10}}>
           <ShowTitle title="基础信息" />
           <Flex style={styles.card} direction="column" align="start">
             <ShowText word="项目" title={detail.organizeName} />
             <ShowText word="合同号" title={detail.no} />
             <ShowText word="合同期限" title={detail.date} />
-            <ShowText word="客户名称" title={detail.customer} /> 
+            <ShowText word="客户名称" title={detail.customer} />
             <ShowText word="合同金额" title={detail.totalAmount} />
-            <ShowText word="合同面积" title={detail.totalArea} /> 
-            <ShowText word="合同房产" title={detail.houseName} /> 
-            <ShowLine /> 
+            <ShowText word="合同面积" title={detail.totalArea} />
+            <ShowText word="合同房产" title={detail.houseName} />
+            <ShowLine />
             <ShowText
               word="解约日期"
               title={detail.withdrawalDate}
               wordColor={Macro.work_orange}
               titleColor={Macro.work_orange}
               pointColor={Macro.work_orange}
-              onClick={() => {}}
+              onClick={() => { }}
             />
             <ShowText
               word="经办人"
@@ -103,7 +100,7 @@ export default class EfuwuDetailPage extends BasePage {
               wordColor={Macro.work_orange}
               titleColor={Macro.work_orange}
               pointColor={Macro.work_orange}
-              onClick={() => {}}
+              onClick={() => { }}
             />
 
             <ShowText
@@ -112,9 +109,12 @@ export default class EfuwuDetailPage extends BasePage {
               wordColor={Macro.work_orange}
               titleColor={Macro.work_orange}
               pointColor={Macro.work_orange}
-              onClick={() => {}}
+              onClick={() => { }}
             />
           </Flex>
+
+          <ShowMingXi title="合同未收" list={receiveList} />
+          <ShowMingXi title="合同未退" list={payList} />
 
           <ShowActions
             state={this.state}
@@ -125,15 +125,14 @@ export default class EfuwuDetailPage extends BasePage {
             }}
           />
           <ShowFiles files={detail.files || []} onPress={
-            (fileStr)=>{
-              this.props.navigation.navigate('webPage',{
+            (fileStr) => {
+              this.props.navigation.navigate('webPage', {
                 data: fileStr,
               });
             }
-          }/>
+          } />
           <ShowRecord records={records} />
-          <ShowMingXi title="合同未收" list={receiveList} />
-          <ShowMingXi title="合同未退" list={payList} />
+
         </ScrollView>
 
         <CompanyDetail

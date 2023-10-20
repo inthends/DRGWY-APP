@@ -1,8 +1,7 @@
 import { Flex } from '@ant-design/react-native';
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import Macro from '../../../utils/macro';
-import ScreenUtil from '../../../utils/screen-util';
+import Macro from '../../../utils/macro'; 
 import ShowLine from './show-line';
 import ShowText from './show-text';
 import ShowTitle from './show-title';
@@ -15,6 +14,7 @@ const ShowMingXiCaiGou = ({ title = '明细', list = [], open = false }) => {
   useEffect(() => {
     setIsopen(open);
   }, []);
+
   return (
     <View>
       <ShowTitle
@@ -54,12 +54,7 @@ const ShowMingXiCaiGou = ({ title = '明细', list = [], open = false }) => {
 };
 
 const styles = StyleSheet.create({
-  line: {
-    backgroundColor: '#eee',
-    marginBottom: 10,
-    height: 1,
-    width: ScreenUtil.deviceWidth() - 54,
-  },
+ 
   card: {
     marginTop: 5,
     borderWidth: 1,

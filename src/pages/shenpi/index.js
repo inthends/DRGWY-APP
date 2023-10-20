@@ -188,7 +188,7 @@ class ApprovePage extends BasePage {
                 },
                 () => {
                   this.onRefresh();
-                },
+                }
               )
             }
           >
@@ -279,8 +279,7 @@ class ApprovePage extends BasePage {
                     url = 'task';
                     break;
                   }
-                }
-
+                } 
                 //传递参数
                 this.props.navigation.push(url, {
                   //data: item,
@@ -300,7 +299,7 @@ class ApprovePage extends BasePage {
                   style={[styles.every, ScreenUtil.borderBottom()]}
                   justify="between"
                 >
-                  <Text style={styles.left}>{item.flowName}</Text>
+                  <Text style={styles.txt}>{item.flowName}</Text>
                   {item.note && (
                     <Text style={[styles.right, styles.special]}>
                       {item.note}
@@ -311,21 +310,21 @@ class ApprovePage extends BasePage {
                   style={[styles.every, ScreenUtil.borderBottom()]}
                   justify="between"
                 >
-                  <Text style={styles.left}>{item.title}</Text>
+                  <Text style={styles.txt}>{item.title}</Text>
                 </Flex>
                 <Flex
                   //style={[styles.every, ScreenUtil.borderBottom()]}
                   style={styles.every}
                   justify="between"
                 >
-                  <Text style={styles.left}>发送人：{item.senderName}</Text>
-                  <Text style={styles.left}>{item.receiveTime}</Text>
+                  <Text style={styles.txt}>发送人：{item.senderName}</Text>
+                  <Text style={styles.txt}>{item.receiveTime}</Text>
                 </Flex>
               </View>
             </TouchableWithoutFeedback>
           )}
           style={styles.list}
-          keyExtractor={(item, index) => item.id}
+          keyExtractor={(item) => item.id}
           refreshing={this.state.refreshing}
           onRefresh={() => this.onRefresh()}
           onEndReached={() => this.loadMore()}
@@ -344,51 +343,21 @@ const styles = StyleSheet.create({
     //height: ScreenUtil.contentHeightWithNoTabbar()
     marginBottom: 15
   },
-  all: {
-    backgroundColor: Macro.color_white,
-  },
-  content: {
-    backgroundColor: Macro.color_white,
-    paddingLeft: 15,
-    paddingRight: 20,
-  },
-
+   
   every: {
     marginLeft: 15,
     marginRight: 15,
     paddingTop: 15,
     paddingBottom: 15,
   },
-  every2: {
-    marginLeft: 15,
-    marginRight: 15,
-
-    paddingBottom: 5,
-  },
-  left: {
+   
+  txt: {
     fontSize: 14,
   },
   right: {
     color: '#666',
-  },
-  desc: {
-    padding: 15,
-    paddingBottom: 40,
-  },
-  ii: {
-    paddingTop: 10,
-    paddingBottom: 10,
-    marginLeft: 10,
-    marginRight: 10,
-    width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
-    backgroundColor: '#999',
-    borderRadius: 6,
-    marginBottom: 20,
-  },
-  word: {
-    color: 'white',
-    fontSize: 16,
-  },
+  }, 
+  
   bottom: {
     color: '#333',
     fontSize: 16,
