@@ -1,16 +1,9 @@
 
 import React from 'react';
-import {
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-} from 'react-native';
+import { Flex, Icon, Modal, Button, TextareaItem } from '@ant-design/react-native';
+import { Text, View, StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native'; 
 import BasePage from '../../base/base';
-import { Icon } from '@ant-design/react-native';
-import { Flex } from '@ant-design/react-native';
-import ScreenUtil from '../../../utils/screen-util';
-import Macro from '../../../utils/macro';
+import ScreenUtil from '../../../utils/screen-util'; 
 import CommonView from '../../../components/CommonView';
 import ShowTitle from '../components/show-title';
 import ShowText from '../components/show-text';
@@ -22,7 +15,10 @@ import ShowActions from '../components/show-actions';
 import common from '../../../utils/common';
 import service from '../service';
 import ShowMingXiLook from '../components/show-mingxi-look';
-import ShowFiles from '../components/show-files'
+import ShowFiles from '../components/show-files';
+import UDToast from '../../../utils/UDToast';
+import ShowReviews from '../components/show-reviews';
+import Macro from '../../../utils/macro';
 
 export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
@@ -46,7 +42,8 @@ export default class DetailPage extends BasePage {
       id,
       detail: {},
       records: [],
-      showItem: null
+      showItem: null,
+      reviews: []
     };
     this.shouDetailRef = null;
     this.chongDiDetailRef = null;
@@ -84,11 +81,40 @@ export default class DetailPage extends BasePage {
         records
       });
     });
+    //评审记录
+    service.getReviews(id).then(res => {
+      this.setState({
+        reviews: res
+      });
+    });
+  };
+
+  //回复
+  reply = () => {
+    const { id, messageId, memo } = this.state;
+    if (!memo) {
+      UDToast.showError('请输入回复内容');
+      return;
+    }
+    let params = {
+      messageId: messageId,
+      memo: memo,
+    };
+    service.saveReply(params).then(res => {
+      UDToast.showInfo('回复成功');
+      this.setState({ replyVisible: false, memo: '', messageId: '' });
+      //刷新评审记录
+      service.getReviews(id).then(res => {
+        this.setState({
+          reviews: res
+        });
+      });
+    });
   };
 
   render() {
-    const { detail = {}, records = [], showItem = {} } = this.state;
-    const { billList = [], offsetList = [] } = detail; 
+    const { detail = {}, records = [], showItem = {}, reviews = [] } = this.state;
+    const { billList = [], offsetList = [] } = detail;
     return (
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
         <ScrollView style={{ flex: 1, padding: 10 }}>
@@ -151,6 +177,13 @@ export default class DetailPage extends BasePage {
               });
             }
           } />
+          <ShowReviews reviews={reviews}
+            onClick={(id) => this.setState({
+              replyVisible: true,
+              memo: '',
+              messageId: id
+            })} />
+          <ShowRecord records={records} />
           <ShowActions
             state={this.state}
             click={() => {
@@ -159,7 +192,6 @@ export default class DetailPage extends BasePage {
               this.props.navigation.goBack();
             }}
           />
-          <ShowRecord records={records} />
         </ScrollView>
         <ShouDetail
           detail={showItem || {}}
@@ -169,13 +201,48 @@ export default class DetailPage extends BasePage {
           detail={showItem || {}}
           ref={(ref) => (this.chongDiDetailRef = ref)}
         />
+        <Modal
+          //弹出回复页面
+          transparent
+          onClose={() => this.setState({ replyVisible: false })}
+          onRequestClose={() => this.setState({ replyVisible: false })}
+          maskClosable
+          visible={this.state.replyVisible}>
+          <Flex justify={'center'} align={'center'}>
+            <View style={{ flex: 1, width: '100%' }}>
+              <TouchableWithoutFeedback onPress={() => {
+                Keyboard.dismiss();
+              }}>
+                <Flex direction={'column'}>
+                  <TextareaItem
+                    style={{
+                      width: ScreenUtil.deviceWidth() - 150
+                    }}
+                    placeholder={'请输入'}
+                    rows={6}
+                    onChange={memo => this.setState({ memo })}
+                    value={this.state.memo}
+                  />
+                  <Button
+                    style={{
+                      width: '100%',
+                      marginTop: 10,
+                      backgroundColor: Macro.work_blue
+                    }}
+                    type="primary"
+                    onPress={this.reply}>确定</Button>
+                </Flex>
+              </TouchableWithoutFeedback>
+            </View>
+          </Flex>
+        </Modal>
       </CommonView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  
+
   card: {
     marginTop: 5,
     borderWidth: 1,

@@ -13,11 +13,12 @@ import ShowActions from '../components/show-actions';
 import ShowFiles from '../components/show-files';
 import ShowRecord from '../components/show-record';
 import ShowReviews from '../components/show-reviews';
-import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
+import UDToast from '../../../utils/UDToast';
+import Macro from '../../../utils/macro';
+//import AddReview from '../components/add-review'; 
 
-export default class MatterDetailPage extends BasePage {
-
+export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
     //是否完成
     var isCompleted = navigation.getParam('isCompleted');
@@ -74,16 +75,33 @@ export default class MatterDetailPage extends BasePage {
 
   //回复
   reply = () => {
-    const { messageId, memo } = this.state;
-    alert('messageId:' + messageId + 'memo:' + memo);
-    //保存 to do
+    const { id, messageId, memo } = this.state;
+    if (!memo) {
+      UDToast.showError('请输入回复内容');
+      return;
+    }
+    let params = {
+      messageId: messageId,
+      memo: memo,
+    };
+    service.saveReply(params).then(res => {
+      UDToast.showInfo('回复成功');
+      this.setState({ replyVisible: false, memo: '', messageId: '' });
+      //刷新评审记录
+      service.getReviews(id).then(res => {
+        this.setState({
+          reviews: res
+        });
+      });
+    });
   };
 
   render() {
     const {
       detail = {},
       records = [],
-      reviews = []
+      reviews = [],
+      //flowUsers
     } = this.state;
 
     return (
@@ -102,7 +120,6 @@ export default class MatterDetailPage extends BasePage {
             <ShowText word="事项类别" title={detail.matterType} />
             <ShowText word="事项说明" title={detail.memo} />
           </Flex>
-
           <ShowFiles files={detail.files} onPress={
             (fileStr) => {
               this.props.navigation.navigate('webPage', {
@@ -111,11 +128,15 @@ export default class MatterDetailPage extends BasePage {
             }
           } />
 
-          <ShowReviews reviews={reviews} onClick={(id) => this.setState({
-            replyVisible: true,
-            memo: '',
-            messageId: id
-          })} />
+          <ShowReviews reviews={reviews}
+            // onAddClick={() => this.setState({
+            //   addVisible: true
+            // })}
+            onClick={(id) => this.setState({
+              replyVisible: true,
+              memo: '',
+              messageId: id
+            })} />
 
           <ShowRecord records={records} />
           <ShowActions
@@ -143,10 +164,10 @@ export default class MatterDetailPage extends BasePage {
               }}>
                 <Flex direction={'column'}>
                   <TextareaItem
-                    style={{ 
+                    style={{
                       width: ScreenUtil.deviceWidth() - 150
                     }}
-                    placeholder={'请输入说明'}
+                    placeholder={'请输入'}
                     rows={6}
                     onChange={memo => this.setState({ memo })}
                     value={this.state.memo}
@@ -164,6 +185,19 @@ export default class MatterDetailPage extends BasePage {
             </View>
           </Flex>
         </Modal>
+
+        {/* <Modal
+          //弹出沟通页面
+          transparent
+          onClose={() => this.setState({ addVisible: false })}
+          onRequestClose={() => this.setState({ addVisible: false })}
+          maskClosable
+          visible={this.state.addVisible}>
+          <Flex justify={'center'} align={'center'}>
+            <AddReview />
+          </Flex>
+        </Modal> */}
+
       </CommonView>
     );
   }
@@ -176,7 +210,7 @@ const styles = StyleSheet.create({
   // borderColor: '#F3F4F2',
   // borderWidth: 1,
   // borderRadius: 5
-  //},
+  //}, 
   card: {
     marginTop: 5,
     borderWidth: 1,

@@ -1,15 +1,8 @@
 
-import React  from 'react';
-import {
-  View,
-  Text, 
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-} from 'react-native';
-import BasePage from '../../base/base'; 
-import { Flex, Icon } from '@ant-design/react-native'; 
-import Macro from '../../../utils/macro';
+import React from 'react';
+import { Flex, Icon, Modal, Button, TextareaItem } from '@ant-design/react-native';
+import { Text, View, StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';  
+import BasePage from '../../base/base';  
 import CommonView from '../../../components/CommonView';
 import ShowTitle from '../components/show-title';
 import ShowLine from '../components/show-line';
@@ -20,14 +13,17 @@ import service from '../service';
 import ShowRecord from '../components/show-record';
 import ShowActions from '../components/show-actions';
 import ShowFiles from '../components/show-files';
+import UDToast from '../../../utils/UDToast';
+import ShowReviews from '../components/show-reviews';
+import Macro from '../../../utils/macro';
 
 export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
     var isCompleted = navigation.getParam('isCompleted');
     return {
       title: isCompleted ? '减免单详情' : '减免单审批',
-      headerForceInset:this.headerForceInset,
-            headerLeft: (
+      headerForceInset: this.headerForceInset,
+      headerLeft: (
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="left" style={{ width: 30, marginLeft: 15 }} />
         </TouchableOpacity>
@@ -38,10 +34,11 @@ export default class DetailPage extends BasePage {
   constructor(props) {
     super(props);
     const id = common.getValueFromProps(props, 'id');
-    this.state = { 
-      id, 
+    this.state = {
+      id,
       detail: {},
-      records: []
+      records: [],
+      reviews: []
     };
   }
 
@@ -51,7 +48,7 @@ export default class DetailPage extends BasePage {
 
   getData = () => {
     const { id } = this.state;
-    service.getFlowData(id).then((detail) => { 
+    service.getFlowData(id).then((detail) => {
       this.setState({
         detail
       });
@@ -61,10 +58,39 @@ export default class DetailPage extends BasePage {
         records
       });
     });
+    //评审记录
+    service.getReviews(id).then(res => {
+      this.setState({
+        reviews: res
+      });
+    });
+  };
+
+  //回复
+  reply = () => {
+    const { id, messageId, memo } = this.state;
+    if (!memo) {
+      UDToast.showError('请输入回复内容');
+      return;
+    }
+    let params = {
+      messageId: messageId,
+      memo: memo,
+    };
+    service.saveReply(params).then(res => {
+      UDToast.showInfo('回复成功');
+      this.setState({ replyVisible: false, memo: '', messageId: '' });
+      //刷新评审记录
+      service.getReviews(id).then(res => {
+        this.setState({
+          reviews: res
+        });
+      });
+    });
   };
 
   render() {
-    const { detail = {}, records = [] } = this.state;
+    const { detail = {}, records = [], reviews = [] } = this.state;
     const { list = [] } = detail;
 
     return (
@@ -99,7 +125,20 @@ export default class DetailPage extends BasePage {
               </View>
             ))}
           </Flex>
-
+          <ShowFiles files={detail.files || []} onPress={
+            (fileStr) => {
+              this.props.navigation.navigate('webPage', {
+                data: fileStr,
+              });
+            }
+          } />
+          <ShowReviews reviews={reviews}
+            onClick={(id) => this.setState({
+              replyVisible: true,
+              memo: '',
+              messageId: id
+            })} />
+          <ShowRecord records={records} />
           <ShowActions
             state={this.state}
             click={() => {
@@ -107,22 +146,49 @@ export default class DetailPage extends BasePage {
               refresh && refresh();
               this.props.navigation.goBack();
             }}
-          />
-          <ShowFiles files={detail.files || []} onPress={
-            (fileStr)=>{
-              this.props.navigation.navigate('webPage',{
-                data: fileStr,
-              });
-            }
-          }/>
-          <ShowRecord records={records} />
+          /> 
         </ScrollView>
+        <Modal
+          //弹出回复页面
+          transparent
+          onClose={() => this.setState({ replyVisible: false })}
+          onRequestClose={() => this.setState({ replyVisible: false })}
+          maskClosable
+          visible={this.state.replyVisible}>
+          <Flex justify={'center'} align={'center'}>
+            <View style={{ flex: 1, width: '100%' }}>
+              <TouchableWithoutFeedback onPress={() => {
+                Keyboard.dismiss();
+              }}>
+                <Flex direction={'column'}>
+                  <TextareaItem
+                    style={{
+                      width: ScreenUtil.deviceWidth() - 150
+                    }}
+                    placeholder={'请输入'}
+                    rows={6}
+                    onChange={memo => this.setState({ memo })}
+                    value={this.state.memo}
+                  />
+                  <Button
+                    style={{
+                      width: '100%',
+                      marginTop: 10,
+                      backgroundColor: Macro.work_blue
+                    }}
+                    type="primary"
+                    onPress={this.reply}>确定</Button>
+                </Flex>
+              </TouchableWithoutFeedback>
+            </View>
+          </Flex>
+        </Modal>
       </CommonView>
     );
   }
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
   card: {
     marginTop: 5,
     borderWidth: 1,
@@ -140,5 +206,5 @@ const styles = StyleSheet.create({
   },
   txt2: {
     color: Macro.work_blue,
-  }, 
+  },
 });

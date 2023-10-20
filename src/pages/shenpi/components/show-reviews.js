@@ -46,10 +46,10 @@ export default class ShowReviews extends Component {
         />
         {isOpen && (
           <Flex style={styles.card} direction="column" align="start"> 
-            <TouchableWithoutFeedback
+            {/* <TouchableWithoutFeedback
               onPress={() => {
-                if (this.props.add) {
-                  this.props.add();
+                if (this.props.onAddClick) {
+                  this.props.onAddClick();
                 }
               }}>
               <View >
@@ -57,7 +57,7 @@ export default class ShowReviews extends Component {
                   添加
                 </Text>
               </View>
-            </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback> */}
             
             {this.props.reviews.map((item, index) => (
               <TouchableWithoutFeedback

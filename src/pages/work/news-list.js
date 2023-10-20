@@ -101,7 +101,7 @@ class NewsList extends BasePage {
         return (
             <TouchableWithoutFeedback key={item.id}
                 onPress={() => {
-                    //WorkService.readNews(item.id);
+                    WorkService.readNews(item.id);
                     const { appUrlName, linkId } = item;
                     // const d = {
                     //     ...item,

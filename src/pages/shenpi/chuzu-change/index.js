@@ -1,13 +1,8 @@
 import React from 'react';
-import {
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-} from 'react-native';
+import { Flex, Icon, Modal, Button, TextareaItem } from '@ant-design/react-native';
+import { View, StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
 import BasePage from '../../base/base';
-import { Flex, Icon } from '@ant-design/react-native';
-import ScreenUtil from '../../../utils/screen-util';
-import Macro from '../../../utils/macro';
+import ScreenUtil from '../../../utils/screen-util'; 
 import CommonView from '../../../components/CommonView';
 import ShowTitle from '../components/show-title';
 import ShowText from '../components/show-text';
@@ -19,6 +14,9 @@ import ShowFiles from '../components/show-files';
 import ShowRecord from '../components/show-record';
 import common from '../../../utils/common';
 import ShowPrices from '../components/show-prices';
+import UDToast from '../../../utils/UDToast';
+import ShowReviews from '../components/show-reviews';
+import Macro from '../../../utils/macro';
 
 export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
@@ -41,7 +39,8 @@ export default class DetailPage extends BasePage {
     this.state = {
       id,
       detail: {},
-      records: []
+      records: [],
+      reviews: []
     };
   }
 
@@ -61,6 +60,35 @@ export default class DetailPage extends BasePage {
         records
       });
     });
+    //评审记录
+    service.getReviews(id).then(res => {
+      this.setState({
+        reviews: res
+      });
+    });
+  };
+
+  //回复
+  reply = () => {
+    const { id, messageId, memo } = this.state;
+    if (!memo) {
+      UDToast.showError('请输入回复内容');
+      return;
+    }
+    let params = {
+      messageId: messageId,
+      memo: memo,
+    };
+    service.saveReply(params).then(res => {
+      UDToast.showInfo('回复成功');
+      this.setState({ replyVisible: false, memo: '', messageId: '' });
+      //刷新评审记录
+      service.getReviews(id).then(res => {
+        this.setState({
+          reviews: res
+        });
+      });
+    });
   };
 
   render() {
@@ -69,6 +97,7 @@ export default class DetailPage extends BasePage {
       records = [],
       customer = {},
       hetong = {},
+      reviews = []
     } = this.state;
 
     const { prices = [] } = detail;
@@ -306,13 +335,19 @@ export default class DetailPage extends BasePage {
               />
             </Flex>
           )}
-
           {
             detail.operationType != '变更客户' && (
               <ShowPrices prices={prices} />
             )
           }
-
+          <ShowFiles files={detail.files || []} />
+          <ShowReviews reviews={reviews}
+            onClick={(id) => this.setState({
+              replyVisible: true,
+              memo: '',
+              messageId: id
+            })} />
+          <ShowRecord records={records} />
           <ShowActions
             state={this.state}
             click={() => {
@@ -321,8 +356,6 @@ export default class DetailPage extends BasePage {
               this.props.navigation.goBack();
             }}
           />
-          <ShowFiles files={detail.files || []} />
-          <ShowRecord records={records} />
         </ScrollView>
         <CompanyDetail
           customer={customer}
@@ -332,13 +365,47 @@ export default class DetailPage extends BasePage {
           hetong={hetong}
           ref={(ref) => (this.hetongDetailRef = ref)}
         />
+        <Modal
+          //弹出回复页面
+          transparent
+          onClose={() => this.setState({ replyVisible: false })}
+          onRequestClose={() => this.setState({ replyVisible: false })}
+          maskClosable
+          visible={this.state.replyVisible}>
+          <Flex justify={'center'} align={'center'}>
+            <View style={{ flex: 1, width: '100%' }}>
+              <TouchableWithoutFeedback onPress={() => {
+                Keyboard.dismiss();
+              }}>
+                <Flex direction={'column'}>
+                  <TextareaItem
+                    style={{
+                      width: ScreenUtil.deviceWidth() - 150
+                    }}
+                    placeholder={'请输入'}
+                    rows={6}
+                    onChange={memo => this.setState({ memo })}
+                    value={this.state.memo}
+                  />
+                  <Button
+                    style={{
+                      width: '100%',
+                      marginTop: 10,
+                      backgroundColor: Macro.work_blue
+                    }}
+                    type="primary"
+                    onPress={this.reply}>确定</Button>
+                </Flex>
+              </TouchableWithoutFeedback>
+            </View>
+          </Flex>
+        </Modal>
       </CommonView>
     );
   }
 }
 
-const styles = StyleSheet.create({
-
+const styles = StyleSheet.create({ 
   card: {
     marginTop: 5,
     borderWidth: 1,
