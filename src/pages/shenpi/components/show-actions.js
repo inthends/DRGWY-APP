@@ -75,7 +75,8 @@ const ShowActions = ({ state, click, isSpecial = false }) => {
           rows={4}
           placeholder="输入审批意见"
           style={{ 
-            width: ScreenUtil.deviceWidth() - 45
+            width: ScreenUtil.deviceWidth() - 45,
+            fontSize:14
           }}
           onChange={(val) => setValue(val)}
           value={value}

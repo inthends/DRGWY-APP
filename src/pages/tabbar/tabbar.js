@@ -408,9 +408,9 @@ const tabbar = createBottomTabNavigator(
           else if (routeName === 'Shenpi') {
             //审批
             if (focused) {
-              imageUrl = require('../../static/images/tabbar/me_h.png');
+              imageUrl = require('../../static/images/tabbar/app_h.png');
             } else {
-              imageUrl = require('../../static/images/tabbar/me_n.png');
+              imageUrl = require('../../static/images/tabbar/app_n.png');
             }
           }
           else {

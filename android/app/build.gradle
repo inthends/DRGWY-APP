@@ -73,7 +73,12 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-        entryFile: "index.js"
+        entryFile: "index.js",
+
+        //配置了，可以在Android studio里面模拟运行
+        bundleAssetName: "index.android.bundle",
+        bundleInDebug: true,
+        bundleInRelease: true
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"

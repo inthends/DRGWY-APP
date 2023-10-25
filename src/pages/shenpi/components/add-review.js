@@ -81,7 +81,8 @@ export default class AddReview extends Component {
  
             <TextareaItem
               style={{
-                width: ScreenUtil.deviceWidth() - 150
+                width: ScreenUtil.deviceWidth() - 150,
+                fontSize:14
               }}
               placeholder={'请输入说明'}
               rows={6}

@@ -52,7 +52,7 @@ class ContactDetail extends BasePage {
 
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         this.initData();
     }
 
@@ -97,7 +97,6 @@ class ContactDetail extends BasePage {
     render() {
         const { data, type } = this.state;
         return (
-
             <View style={{ flex: 1 }}>
                 <ScrollView style={{ flex: 1 }}>
                     <View style={styles.content}>
@@ -129,8 +128,6 @@ class ContactDetail extends BasePage {
                                                     </TouchableWithoutFeedback>
                                                 </Flex>
                                             </Flex>
-
-
                                         ))}
                                     </List>
                                 </Accordion.Panel>

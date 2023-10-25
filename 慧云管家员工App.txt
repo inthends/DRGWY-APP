@@ -26,3 +26,32 @@ DownloadService 类，有bug
 打开android studio点击运行
 
 模拟运行 APP
+
+
+
+Unable to load script from assets 'index.android.bundle'
+错误7：Unable to load script from assets 'index.android.bundle'. Make sure your bundle is packaged correctly or you're running a packager server. App crash in release build only
+
+搜索关键词：that your bundle index.android.bunde is packaged correctly for release
+
+错误原因：这里报错原因是没有找到index.android.bundle
+
+解决方案：
+
+https://segmentfault.com/a/1190000019529044
+
+https://github.com/facebook/react-native/issues/22076
+
+https://cloud.tencent.com/developer/ask/151569/answer/263098
+
+找到app/build.gradle:
+
+project.ext.react = [
+        entryFile: "index.js",
+        bundleAssetName: "index.android.bundle",
+        bundleInDebug: true,
+        bundleInRelease: true
+]
+
+ReactNative报错记录以及原因分析 ReactNative报错记录
+https://cloud.tencent.com/developer/article/1486429?areaSource=102001.11&traceId=2c-M51f5C6GRSpU1bkOWK
