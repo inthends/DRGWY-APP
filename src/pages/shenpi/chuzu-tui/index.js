@@ -2,8 +2,7 @@
 import React from 'react';
 import { Flex, Icon, Modal, Button, TextareaItem } from '@ant-design/react-native';
 import { View, StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
-import BasePage from '../../base/base';
-import ScreenUtil from '../../../utils/screen-util';
+import BasePage from '../../base/base'; 
 import CommonView from '../../../components/CommonView';
 import ShowTitle from '../components/show-title';
 import ShowLine from '../components/show-line';
@@ -18,6 +17,7 @@ import ShowMingXi from '../components/show-mingxi';
 import UDToast from '../../../utils/UDToast';
 import ShowReviews from '../components/show-reviews';
 import Macro from '../../../utils/macro';
+import ScreenUtil from '../../../utils/screen-util';
 
 export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {

@@ -9,8 +9,7 @@ import {
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Icon } from '@ant-design/react-native';
-import { Flex, TextareaItem } from '@ant-design/react-native';
-import ScreenUtil from '../../../utils/screen-util';
+import { Flex, TextareaItem } from '@ant-design/react-native'; 
 import UDToast from '../../../utils/UDToast';
 import WorkService from '../../work/work-service';
 import Macro from '../../../utils/macro';
@@ -20,6 +19,7 @@ import ShowLine from '../components/show-line';
 import ShowText from '../components/show-text';
 import ShowTextWithRight from '../components/show-text-with-right';
 import CompanyDetail from '../components/company-detail';
+import ScreenUtil from '../../../utils/screen-util';
 
 export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {

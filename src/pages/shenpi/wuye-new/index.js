@@ -17,6 +17,7 @@ import ShowMingXi from '../components/show-mingxi';
 import UDToast from '../../../utils/UDToast';
 import ShowReviews from '../components/show-reviews';
 import Macro from '../../../utils/macro';
+import ScreenUtil from '../../../utils/screen-util';
 
 export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {

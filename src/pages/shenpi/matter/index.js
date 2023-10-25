@@ -16,6 +16,7 @@ import ShowReviews from '../components/show-reviews';
 import ScreenUtil from '../../../utils/screen-util';
 import UDToast from '../../../utils/UDToast';
 import Macro from '../../../utils/macro';
+import ScreenUtil from '../../../utils/screen-util';
 //import AddReview from '../components/add-review'; 
 
 export default class DetailPage extends BasePage {
