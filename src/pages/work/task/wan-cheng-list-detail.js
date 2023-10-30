@@ -89,12 +89,16 @@ export default class WanChengListDetailPage extends BasePage {
             UDToast.showInfo('请输入文字');
             return;
         }
+        const wcimages = images.filter(t => t.type === '完成');
 
-        if (images.length == 0 || !isUpload) {
+        // console.log('wcimages:' + wcimages.length);
+        // console.log('isUpload:' + isUpload); 
+        // return;
+
+        if (wcimages.length == 0 && !isUpload) {
             UDToast.showInfo('请上传完成图片');
             return;
         }
-
         WorkService.serviceHandle(handle, id, value).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
@@ -126,10 +130,15 @@ export default class WanChengListDetailPage extends BasePage {
         });
     };
 
+    //刷新图片上传状态
+    reload = () => {
+        this.setState({
+            isUpload: true
+        });
+    }
 
     render() {
         const { images, detail, communicates } = this.state;
-
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
@@ -146,12 +155,10 @@ export default class WanChengListDetailPage extends BasePage {
                     <DashLine />
                     <Text style={styles.desc}>{detail.repairContent}</Text>
                     <DashLine />
-                    <ListImages images={images} lookImage={this.lookImage} />
-
+                    <ListImages images={images} lookImage={this.lookImage} /> 
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
-                    </Flex>
-
+                    </Flex> 
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every]}>
                             <Text style={styles.left}>关联单：</Text>

@@ -416,6 +416,11 @@ export default {
   invalidBillForm(keyvalue) {
     return api.postData('/api/MobileMethod/InvalidBillForm', { keyvalue });
   },
+ 
+  //验证费用
+  checkBillFee(keyvalue) {
+    return api.getData('/api/MobileMethod/CheckBillFee', { keyvalue });
+  },
 
   billDetailList(billId) {
     return api.postData('/api/MobileMethod/MGetChargeBillDetailList', {

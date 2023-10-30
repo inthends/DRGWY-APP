@@ -55,3 +55,9 @@ project.ext.react = [
 
 ReactNative报错记录以及原因分析 ReactNative报错记录
 https://cloud.tencent.com/developer/article/1486429?areaSource=102001.11&traceId=2c-M51f5C6GRSpU1bkOWK
+
+
+ios
+1、VS Code build ios
+2、xcode run
+3、xcode archive 上架

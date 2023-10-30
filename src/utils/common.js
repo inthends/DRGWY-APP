@@ -87,6 +87,9 @@ export default {
     isIOS() {
         return Platform.OS === 'ios';
     },
+    isAndroid() {
+        return Platform.OS === 'android';
+    },
     filtEmoji(str) {
         var ranges = [
             '\ud83c[\udf00-\udfff]',

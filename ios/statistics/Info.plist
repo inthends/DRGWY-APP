@@ -2,6 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -39,6 +40,10 @@
 			</dict>
 		</dict>
 	</dict>
+
+
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+ 	<string>需要您同意，才能访问位置信息</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>想使用蓝牙连接无线打印设备</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>

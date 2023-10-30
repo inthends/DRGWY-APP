@@ -1,7 +1,7 @@
 import React from 'react';
-import BasePage from '../../base/base'; 
+import BasePage from '../../base/base';
 import { Flex, Icon, Modal, Button, TextareaItem } from '@ant-design/react-native';
-import {  
+import {
   ScrollView, View, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, Keyboard
 } from 'react-native';
 import CommonView from '../../../components/CommonView';
@@ -37,7 +37,7 @@ export default class DetailPage extends BasePage {
     super(props);
     // const item = common.getValueFromProps(props) || {};
     // const { id, instanceId } = item;
-    const id = common.getValueFromProps(props, 'id');
+    const id = common.getValueFromProps(props);
     this.state = {
       id,
       detail: {},

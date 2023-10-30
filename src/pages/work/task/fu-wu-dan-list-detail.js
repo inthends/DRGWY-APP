@@ -1,4 +1,4 @@
-//工作台点击服务单详情
+//未读消息列表点击，打开服务单详情
 import React from 'react';
 import {
     View,

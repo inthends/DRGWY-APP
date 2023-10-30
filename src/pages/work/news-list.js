@@ -140,7 +140,7 @@ class NewsList extends BasePage {
                     // }
 
                     //根据url跳转
-                    this.props.navigation.navigate(appUrlName, { id: linkId });
+                    this.props.navigation.navigate(appUrlName, { data: { id: linkId } });
                 }}>
                 <Flex direction='column' align={'start'}
                     style={[styles.card, styles.blue]}>

@@ -11,7 +11,7 @@ import BasePage from '../../base/base';
 import { Icon, Flex, TextareaItem } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
-import common from '../../../utils/common'; 
+import common from '../../../utils/common';
 // import UDRecord from '../../../utils/UDRecord';
 // import api from '../../../utils/api';
 // import UDPlayer from '../../../utils/UDPlayer';
@@ -46,7 +46,7 @@ export default class KaiGongListDetailPage extends BasePage {
         //let type = common.getValueFromProps(this.props, 'type');
         this.state = {
             id,
-            value: '',  
+            value: '',
             images: [],
             isUpload: false,//是否上传了图片
             detail: {},
@@ -63,6 +63,7 @@ export default class KaiGongListDetailPage extends BasePage {
 
     getData = () => {
         const { id } = this.state;
+        //查看维修单
         WorkService.weixiuDetail(id).then(detail => {
             this.setState({
                 detail: {
@@ -88,14 +89,16 @@ export default class KaiGongListDetailPage extends BasePage {
     };
 
     click = (handle) => {
-        const { id,isUpload, images, value } = this.state;
+        const { id, isUpload, images, value } = this.state;
         // if (handle === '回复' && !(value&&value.length > 0)) {
         if (!(value && value.length > 0)) {
             UDToast.showInfo('请输入故障判断');
             return;
         }
 
-        if (images.length == 0 || !isUpload) {
+        const kgimages = images.filter(t => t.type === '开工'); 
+
+        if (kgimages.length == 0 && !isUpload) {
             UDToast.showInfo('请上传开工图片');
             return;
         }
@@ -144,16 +147,16 @@ export default class KaiGongListDetailPage extends BasePage {
             visible: true
         });
     };
-  
-    //刷新图片
+
+    //刷新图片上传状态
     reload = () => {
         this.setState({
             isUpload: true
         });
     }
- 
+
     render() {
-        const { images, detail, communicates } = this.state; 
+        const { images, detail, communicates } = this.state;
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
@@ -182,7 +185,7 @@ export default class KaiGongListDetailPage extends BasePage {
                                 style={[styles.right, { color: Macro.color_4d8fcc }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-                    <DashLine /> 
+                    <DashLine />
                     <UploadImageView style={{ marginTop: 10 }}
                         linkId={this.state.id}
                         reload={this.reload}
@@ -199,7 +202,7 @@ export default class KaiGongListDetailPage extends BasePage {
                         <TextareaItem
                             rows={3}
                             placeholder='请输入故障判断'
-                            style={{   paddingTop: 10, width: ScreenUtil.deviceWidth() - 32 }}
+                            style={{ paddingTop: 10, width: ScreenUtil.deviceWidth() - 32 }}
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
@@ -216,7 +219,7 @@ export default class KaiGongListDetailPage extends BasePage {
                         <TextareaItem
                             rows={3}
                             placeholder='请输入退单原因'
-                            style={{  paddingTop: 10,  width: ScreenUtil.deviceWidth() - 32 }}
+                            style={{ paddingTop: 10, width: ScreenUtil.deviceWidth() - 32 }}
                             onChange={value => this.setState({ backMemo: value })}
                             value={this.state.backMemo}
                         />

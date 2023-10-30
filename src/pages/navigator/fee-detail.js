@@ -64,7 +64,7 @@ class FeeDetailPage extends BasePage {
         });
     };
 
-    onSelect = (opt) => { 
+    onSelect = (opt) => {
         this.setState({
             action: false,
             selected: opt.props.value,
@@ -120,7 +120,7 @@ class FeeDetailPage extends BasePage {
             let day = this.getDate() + '';
             if (day.length === 1) {
                 day = 0 + day;
-            } 
+            }
             return year + '-' + month + '-' + day;
         }
     }
@@ -497,7 +497,7 @@ class FeeDetailPage extends BasePage {
                 mlScale: '四舍五入',
                 price: 0.00,
                 mlAmount: 0.00
-            }, () => { 
+            }, () => {
             });
         });
     };
@@ -656,7 +656,7 @@ class FeeDetailPage extends BasePage {
 
     delete = (item) => {
         Alert.alert(
-            '确认删除',
+            '确认作废',
             '',
             [
                 {
@@ -681,9 +681,16 @@ class FeeDetailPage extends BasePage {
     renderItem = (item) => {
         // const { dataInfo, type, room, price, mlAmount } = this.state;
         const { type } = this.state;
-        let titles = []; 
-        if (item.billSource === '临时加费' && item.rmid === null) {
-            titles = ['删除', '减免', '拆费'];
+        let titles = [];
+
+        if (item.billSource === '临时加费') {
+            if (item.reductionAmount == 0 && item.offsetAmount == 0) {
+                titles = ['作废', '减免', '拆费'];
+            } else {
+                //有减免和冲抵，不允许作废
+                titles = ['减免', '拆费'];
+            }
+
         } else {
             titles = ['减免', '拆费'];
         }
@@ -708,8 +715,8 @@ class FeeDetailPage extends BasePage {
                                     <ActionPopover
                                         textStyle={{ fontSize: 14 }}
                                         hiddenImage={true}
-                                        onChange={(title) => { 
-                                            if (title === '删除') {
+                                        onChange={(title) => {
+                                            if (title === '作废') {
                                                 this.delete(item);
                                             } else if (title === '减免') {
                                                 this.setState({
@@ -717,11 +724,30 @@ class FeeDetailPage extends BasePage {
                                                     jianfeiAlert: true,
                                                 });
                                             } else {
-                                                this.setState({
-                                                    selectItem: item,
-                                                    chaifeiAlert: true,
-                                                    chaifeiDate: new Date(item.beginDate)
-                                                });
+
+                                                //需要验证权限
+                                                NavigatorService.checkBillFee(item.id).then(res => {
+                                                    if (res == 0) {
+                                                        //拆费 
+                                                        this.setState({
+                                                            selectItem: item,
+                                                            chaifeiAlert: true,
+                                                            chaifeiDate: new Date(item.beginDate)
+                                                        });
+                                                    } else { 
+                                                        if (res == 1) {
+                                                            UDToast.showError('该费用已经生成了通知单，不允许拆费');
+                                                        } else if (res == 2) {
+                                                            UDToast.showError('该费用已经生成了减免单，不允许拆费');
+                                                        } else if (res == 3) {
+                                                            UDToast.showError('该费用已经生成了冲抵单，不允许拆费');
+                                                        }
+                                                        else {
+                                                            UDToast.showError('该费用已经生成了优惠单，不允许拆费');
+                                                        } 
+                                                    }
+
+                                                });  
                                             }
                                         }}
                                         titles={titles}
@@ -839,7 +865,7 @@ class FeeDetailPage extends BasePage {
                                 }}
                                 titles={['抹去角', '抹去分']}
                                 visible={true} />
-                                
+
                             <MyPopover
                                 textStyle={{ fontSize: 14 }}
                                 onChange={(title) => {

@@ -9,17 +9,17 @@ const options: ImagePickerOptions = {
     takePhotoButtonTitle: '相机',
     chooseFromLibraryButtonTitle: '相册',
     //maxWidth:600,
-    quality: 0.3,//0到1，低质量，减少网络传输时间
+    quality: 0.2,//0到1，低质量，减少网络传输时间
     storageOptions: {
         skipBackup: true,
-        path: 'images',
+        path: 'images'
     },
     permissionDenied: {
         title: '暂无权限',
         text: '请在系统设置中打开拍照或选择图片的权限',
         reTryTitle: '重试',
-        okTitle: '取消',
-    },
+        okTitle: '取消'
+    }
 };
  
 export default class SelectImage {

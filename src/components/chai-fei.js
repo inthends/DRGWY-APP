@@ -12,33 +12,37 @@ import UDToast from '../utils/UDToast';
 import api from '../utils/api';
 import DatePicker from 'react-native-datepicker'
 import Macro from '../utils/macro';
+import moment from 'moment';
 
 export default class ChaiFei extends BasePage {
-    //onClose
+
     constructor(props) {
         super(props);
         this.state = {
-            money: '',
-            memo: '',
-            last: '',
-            a: this.props.item.beginDate
+            firstAmount: null,
+            firstEndDate: null,
+            secondAmount: null,
+            secondBeginDate: null,
+            secondEndDate: null,
+            memo: null,
+            //a: this.props.item.beginDate
         };
     }
 
     in = () => {
-        let { money, memo, last, a } = this.state;
+        let { firstAmount, firstEndDate, secondAmount, secondBeginDate, memo } = this.state;
         const { item } = this.props;
-        if (!money) {
+        if (!firstAmount) {
             UDToast.showError('请输入金额');
             return;
         }
-        let b = new Date(new Date(a).getTime() + 24 * 60 * 60 * 1000).getYearAndMonthAndDay();
+        //let b = new Date(new Date(a).getTime() + 24 * 60 * 60 * 1000).getYearAndMonthAndDay();
         let data = {
-            firstAmount: money,
+            firstAmount: firstAmount,
             firstBeginDate: item.beginDate,
-            firstEndDate: a,
-            secondAmount: last,
-            secondBeginDate: b,
+            firstEndDate: firstEndDate,
+            secondAmount: secondAmount,
+            secondBeginDate: secondBeginDate,
             secondEndDate: item.endDate,
             memo: memo
         }
@@ -54,8 +58,8 @@ export default class ChaiFei extends BasePage {
 
     render() {
         const { item } = this.props;
-        const { a } = this.state;
-        let b = new Date(new Date(a).getTime() + 24 * 60 * 60 * 1000);
+        //const { firstEndDate } = this.state;
+        //let b = new Date(new Date(a).getTime() + 24 * 60 * 60 * 1000);
         return (
             <View style={{ flex: 1, width: '100%' }}>
                 <TouchableWithoutFeedback onPress={() => {
@@ -74,17 +78,17 @@ export default class ChaiFei extends BasePage {
                                 <Text>
                                     至
                                 </Text>
-                                {/*<Text onPress={()=>this.props.showP(true)} style={styles.enable}>*/}
-                                {/*{a}*/}
-                                {/*</Text>*/}
                                 <DatePicker
-                                    style={{ width: 105 }}
-                                    date={a}
+                                    style={{ 
+                                        width: 108//105
+                                     }}
+                                    date={this.state.firstEndDate ? this.state.firstEndDate.format('YYYY-MM-DD') : ''}
                                     mode="date"
-                                    placeholder="select date"
+                                    placeholder="请选择日期"
                                     format="YYYY-MM-DD"
                                     minDate={item.beginDate}
-                                    maxDate={new Date(new Date(item.endDate).getTime() - 24 * 60 * 60 * 1000)}
+                                    //maxDate={new Date(new Date(item.endDate).getTime() - 24 * 60 * 60 * 1000)}
+                                    maxDate={item.endDate}
                                     showIcon={false}
                                     customStyles={{
                                         dateIcon: {
@@ -95,26 +99,63 @@ export default class ChaiFei extends BasePage {
                                             // marginLeft: 0
                                         },
                                         dateInput: styles.enable
-                                        // ... You can check the source to find the other keys.
                                     }}
-                                    onDateChange={(a) => { this.setState({ a: a }) }}
+                                    onDateChange={(value) => {
+                                        if (value) {
+                                            let a = moment(item.beginDate);
+                                            let b = moment(item.endDate);
+                                            let iDays = b.diff(a, 'days') + 1;
+                                            let firstEndDate = moment(value);
+                                            this.setState({ firstEndDate: firstEndDate });
+
+                                            let firstDays = firstEndDate.diff(a, 'days') + 1;
+                                            let firstamount = (item.amount / iDays * firstDays).toFixed(2);
+                                            this.setState({ firstAmount: firstamount, secondAmount: (item.amount - Number(firstamount)).toFixed(2) });
+                                            if (firstEndDate < b) {
+                                                let tempday = moment(firstEndDate.format('YYYY-MM-DD'));//重新赋值，防止传址引用
+                                                tempday = tempday.add(1, 'days');
+                                                this.setState({ secondBeginDate: tempday });
+                                            } else {
+                                                this.setState({ secondBeginDate: firstEndDate });
+                                            }
+                                        } else {
+                                            this.setState({ firstEndDate: null, firstAmount: null, secondBeginDate: null, secondAmount: null });
+                                        }
+                                    }}
                                 />
                             </Flex>
                         </Flex>
 
                         <WhiteSpace size={'lg'} />
-
                         <Flex align={'center'} style={{ width: '100%' }}>
                             <Text style={styles.text}>金额</Text>
                             <TextInput
-                                value={this.state.money}
+                                value={this.state.firstAmount}
                                 keyboardType={'decimal-pad'}
-                                onChangeText={money => {
-                                    if (!isNaN(money) && money >= 0 && money <= item.amount) {
-                                        this.setState({ money, last: (item.amount - money).toFixed(2) })
+                                onChangeText={value => {
+                                    if (!isNaN(value) && value >= 0 && value <= item.amount) {
+                                        this.setState({ firstAmount: value, secondAmount: (item.amount - value).toFixed(2) });
+                                        //修改金额的时候，改变日期 
+                                        let a = moment(item.beginDate);
+                                        let b = moment(item.endDate);
+                                        let iDays = b.diff(a, 'days');
+                                        let firstdays = Math.ceil(iDays * Number(value) / item.amount);
+                                        let firstEndDate = a.add(firstdays, 'days');
+                                        this.setState({ firstEndDate: firstEndDate });
+                                        //console.log('firstEndDate1,firstEndDate:' + firstEndDate.format('YYYY-MM-DD'));
+                                        if (firstEndDate < b) {
+                                            let tempday = moment(firstEndDate.format('YYYY-MM-DD'));//重新赋值，防止传址引用
+                                            tempday = tempday.add(1, 'days');
+                                            this.setState({ secondBeginDate: tempday });
+                                            //console.log('firstEndDate2,firstEndDate.:' + firstEndDate.format('YYYY-MM-DD'));
+                                        } else {
+                                            this.setState({ secondBeginDate: firstEndDate });
+                                        }
+                                    } else {
+                                        this.setState({ firstEndDate: null, firstAmount: null, secondBeginDate: null, secondAmount: null });
                                     }
                                 }} style={styles.input}
-                                placeholder={'输入金额'} />
+                                placeholder={'请输入金额'} />
 
                         </Flex>
                         <WhiteSpace size={'lg'} />
@@ -124,8 +165,9 @@ export default class ChaiFei extends BasePage {
                         <WhiteSpace size={'lg'} />
                         <Flex align={'start'} style={{ width: '100%' }}>
                             <Flex justify={'between'} style={{ width: '100%' }}>
-                                <Text style={styles.unenable}>
-                                    {b.getYearAndMonthAndDay()}
+                                <Text style={styles.secondDate}>
+                                    {/* {b.getYearAndMonthAndDay()} */}
+                                    {this.state.secondBeginDate ? this.state.secondBeginDate.format('YYYY-MM-DD') : ''}
                                 </Text>
                                 <Text>
                                     至
@@ -139,7 +181,7 @@ export default class ChaiFei extends BasePage {
                         <WhiteSpace size={'lg'} />
                         <Flex align={'center'} style={{ width: '100%' }}>
                             <Text style={styles.text}>金额</Text>
-                            <Text style={styles.input}>{this.state.last}</Text>
+                            <Text style={styles.input}>{this.state.secondAmount}</Text>
                         </Flex>
 
                         <WhiteSpace size={'lg'} />
@@ -150,7 +192,7 @@ export default class ChaiFei extends BasePage {
                             <WhiteSpace size={'lg'} /> */}
                             <TextareaItem
                                 //style={styles.area}
-                                style={{ 
+                                style={{
                                     width: ScreenUtil.deviceWidth() - 90
                                 }}
                                 placeholder={'请输入说明'}
@@ -159,11 +201,9 @@ export default class ChaiFei extends BasePage {
                                 value={this.state.memo}
                             />
                         </Flex>
-
                         <Button style={{ width: '100%', marginTop: 10, backgroundColor: Macro.work_blue }} type="primary"
                             onPress={this.in}>确定</Button>
                     </Flex>
-
                 </TouchableWithoutFeedback>
             </View>
         );
@@ -215,6 +255,20 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#eeeeee',
         borderStyle: 'solid'
+    },
+
+    secondDate: {
+        width: 108,
+
+        fontSize: 17,
+        color: '#333',
+        backgroundColor: '#eeeeee',
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop: 6,
+        paddingBottom: 6,
+        borderRadius: 10,
+        overflow: 'hidden'
     },
 });
 

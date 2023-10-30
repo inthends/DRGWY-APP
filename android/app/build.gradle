@@ -254,8 +254,7 @@ task copyDownloadableDepsToLibs(type: Copy) {
 
 //上传到蒲公英task
 task myUploadApkTask(type: Exec) {
-    commandLine 'sh', '-c', './uploadApk.sh'
-    //test
+    commandLine 'sh', '-c', './uploadApk.sh' 
     executable "sh"
     args "-c", "echo 'shell say hello to you'"
 }

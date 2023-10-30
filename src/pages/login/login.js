@@ -31,18 +31,11 @@ class LoginPage extends BasePage {
   constructor(props) {
     super(props);
     this.state = { ...this.props.userInfo };
-    //test 
     // this.state = {
-    //   usercode: 'txc',
+    //   usercode: 'test',
     //   username: 'system',
-    //   password: 'ty123456'
+    //   password: '1234598'
     // };
-
-    this.state = {
-      usercode: 'test',
-      username: 'system',
-      password: '1234598'
-    };
   }
 
   componentDidMount() {
