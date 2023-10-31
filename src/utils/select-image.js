@@ -8,8 +8,10 @@ const options: ImagePickerOptions = {
     cancelButtonTitle: '取消',
     takePhotoButtonTitle: '相机',
     chooseFromLibraryButtonTitle: '相册',
-    //maxWidth:600,
-    quality: 0.2,//0到1，低质量，减少网络传输时间
+    //设置照片最大尺寸，压缩照片，减少上传时间
+    maxWidth: 1000,
+    maxWidth: 1000, 
+    quality: 0.5,//0到1，低质量，减少网络传输时间
     storageOptions: {
         skipBackup: true,
         path: 'images'
@@ -21,9 +23,13 @@ const options: ImagePickerOptions = {
         okTitle: '取消'
     }
 };
- 
+
 export default class SelectImage {
     static select(id, type, uploadUrl, hasNetwork = true) {
+        if (uploadUrl == '/api/MobileMethod/MUploadPollingTask') {
+            //如果是巡检，则禁止选择相册，防止作弊 2023-10-30
+            options.chooseFromLibraryButtonTitle = '';//标题为空，就不显示按钮了
+        }
         return new Promise((resolve, reject) => {
             ImagePicker.showImagePicker(options, (response) => {
                 if (response.didCancel) {

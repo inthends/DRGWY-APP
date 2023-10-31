@@ -43,6 +43,8 @@ export default class FuWuDanListDetailPage extends BasePage {
     constructor(props) {
         super(props);
         let id = common.getValueFromProps(this.props);
+        //console.log('sercerid:' + id);
+
         //let type = common.getValueFromProps(this.props, 'type');
         this.state = {
             id,
@@ -59,7 +61,7 @@ export default class FuWuDanListDetailPage extends BasePage {
     componentDidMount() {
         this.getData();
     }
- 
+
     getData = () => {
         const { id } = this.state;
         WorkService.serviceDetail(id).then(item => {
@@ -78,7 +80,7 @@ export default class FuWuDanListDetailPage extends BasePage {
         });
         WorkService.serviceExtra(id).then(images => {
             this.setState({
-                images,
+                images
             });
         });
     };
@@ -200,7 +202,7 @@ export default class FuWuDanListDetailPage extends BasePage {
                         <TextareaItem
                             rows={4}
                             placeholder='请输入'
-                            style={{  paddingTop: 10, width: ScreenUtil.deviceWidth() - 32 }}
+                            style={{ paddingTop: 10, width: ScreenUtil.deviceWidth() - 32 }}
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />

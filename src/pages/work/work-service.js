@@ -10,8 +10,7 @@ export default {
     },
     saveForm(params,showLoading=true) {
         return api.postData('/api/MobileMethod/MSaveServiceDeskForm', params,showLoading);
-    },
-    //服务单详情
+    }, 
     serviceDetail(keyvalue) {
         return api.getData('/api/MobileMethod/MGetServicedeskEntity', { keyvalue });
     },

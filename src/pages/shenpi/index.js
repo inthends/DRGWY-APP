@@ -269,21 +269,18 @@ class ApprovePage extends BasePage {
                     url = 'baoxiao';
                     break;
                   }
-
                   case '1035': {
                     url = 'matter';
                     break;
                   }
-
                   case '1037': {
                     url = 'task';
                     break;
                   }
-                } 
+                }
                 //传递参数
                 this.props.navigation.push(url, {
-                  //data: item,
-                  id: item.id,
+                  data: item.id,
                   isCompleted: isCompleted,
                   refresh: this.onRefresh
                 });
@@ -343,21 +340,21 @@ const styles = StyleSheet.create({
     //height: ScreenUtil.contentHeightWithNoTabbar()
     marginBottom: 15
   },
-   
+
   every: {
     marginLeft: 15,
     marginRight: 15,
     paddingTop: 15,
     paddingBottom: 15,
   },
-   
+
   txt: {
     fontSize: 14,
   },
   right: {
     color: '#666',
-  }, 
-  
+  },
+
   bottom: {
     color: '#333',
     fontSize: 16,

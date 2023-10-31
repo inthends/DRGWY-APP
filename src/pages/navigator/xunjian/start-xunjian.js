@@ -27,7 +27,7 @@ class StartXunJianPage extends BasePage {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
-            ),
+            )
         };
     };
 
@@ -43,7 +43,6 @@ class StartXunJianPage extends BasePage {
 
     componentDidMount()  {
         const { id, pointId, item } = this.state;
-
         if (this.props.hasNetwork) {
             XunJianService.xunjianAddress(pointId).then(address => {
                 XunJianService.xunjianDetail(id).then(data => {
@@ -53,15 +52,14 @@ class StartXunJianPage extends BasePage {
             });
         } else {
             this.setState({ data: item, address: { allName: item.allName, id: item.pointId } });
-        }
-
+        } 
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
                 if (this.needBack === true) {
                     this.props.navigation.goBack();
                 }
-            },
+            }
         );
     }
 
@@ -84,10 +82,10 @@ class StartXunJianPage extends BasePage {
             else {
                 this.setState({ images });
             }
-
         }).catch(error => { 
         });
     };
+
     submit = () => {
         const { id, person, address, item, inspectData } = this.state;
         const { data } = this.state;
@@ -127,13 +125,12 @@ class StartXunJianPage extends BasePage {
                     },
                     idForUploadImage: item.taskId,
                     images,
-                    address,
+                    address
                 },
             });
             UDToast.showSuccess('已保存，稍后可在我的-设置中同步巡检数据');
             this.props.navigation.goBack();
         }
-
     }
 
     _inspecting(newdata) {
