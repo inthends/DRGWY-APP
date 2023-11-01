@@ -59,5 +59,9 @@ export default {
   
   saveReply(params) {
     return api.postData('/api/MobileMethod/MSaveReply', params);
+  },
+
+  addReview(params) {
+    return api.postData('/api/MobileMethod/MAddReview', params);
   } 
 };

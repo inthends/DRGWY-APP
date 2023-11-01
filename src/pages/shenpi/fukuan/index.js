@@ -13,6 +13,7 @@ import ShowActions from '../components/show-actions';
 import service from '../service';
 import ShowMingXi from '../components/show-mingxi';
 import UDToast from '../../../utils/UDToast';
+import AddReview from '../components/add-review';
 import ShowReviews from '../components/show-reviews';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
@@ -33,7 +34,7 @@ export default class DetailPage extends BasePage {
 
   constructor(props) {
     super(props);
-    const id = common.getValueFromProps(props );
+    const id = common.getValueFromProps(props);
     this.state = {
       id,
       detail: {},
@@ -53,11 +54,13 @@ export default class DetailPage extends BasePage {
         detail
       });
     });
+
     service.getApproveLog(id).then((records) => {
       this.setState({
         records
       });
     });
+    
     //评审记录
     service.getReviews(id).then(res => {
       this.setState({
@@ -163,6 +166,30 @@ export default class DetailPage extends BasePage {
             </View>
           </Flex>
         </Modal>
+
+        <Modal
+          //弹出沟通页面
+          transparent
+          onClose={() => this.setState({ addVisible: false })}
+          onRequestClose={() => this.setState({ addVisible: false })}
+          maskClosable
+          visible={this.state.addVisible}>
+          <Flex justify={'center'} align={'center'}>
+            <AddReview
+              taskId={this.state.id}
+              users={detail.users}
+              onClose={() => {
+                this.setState({ addVisible: false });
+                //刷新评审记录
+                service.getReviews(this.state.id).then(res => {
+                  this.setState({
+                    reviews: res
+                  });
+                });
+              }}
+            />
+          </Flex>
+        </Modal> 
       </CommonView>
     );
   }

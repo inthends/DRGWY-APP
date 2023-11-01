@@ -14,6 +14,7 @@ import ShowRecord from '../components/show-record';
 import common from '../../../utils/common';
 import ShowPrices from '../components/show-prices';
 import UDToast from '../../../utils/UDToast';
+import AddReview from '../components/add-review';
 import ShowReviews from '../components/show-reviews';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
@@ -400,6 +401,30 @@ export default class DetailPage extends BasePage {
             </View>
           </Flex>
         </Modal>
+
+        <Modal
+          //弹出沟通页面
+          transparent
+          onClose={() => this.setState({ addVisible: false })}
+          onRequestClose={() => this.setState({ addVisible: false })}
+          maskClosable
+          visible={this.state.addVisible}>
+          <Flex justify={'center'} align={'center'}>
+            <AddReview
+              taskId={this.state.id}
+              users={detail.users}
+              onClose={() => {
+                this.setState({ addVisible: false });
+                //刷新评审记录
+                service.getReviews(this.state.id).then(res => {
+                  this.setState({
+                    reviews: res
+                  });
+                });
+              }}
+            />
+          </Flex>
+        </Modal> 
       </CommonView>
     );
   }

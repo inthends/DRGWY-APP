@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { Flex } from '@ant-design/react-native';
 import ShowTitle from './show-title';
-import ShowLine from './show-title';
+import ShowLine from './show-line';
 
 //沟通记录
 //const ShowReviews = ({ instanceId = '', isCompleted = false, open = false }) => { 
@@ -45,26 +45,28 @@ export default class ShowReviews extends Component {
           }
         />
         {isOpen && (
-          <Flex style={styles.card} direction="column" align="start"> 
-            {/* <TouchableWithoutFeedback
+          <Flex style={styles.card} direction="column" align="start">
+            <TouchableWithoutFeedback
               onPress={() => {
                 if (this.props.onAddClick) {
                   this.props.onAddClick();
                 }
               }}>
-              <View >
+              <View>
                 <Text style={styles.txt2}>
-                  添加
+                  咨询
                 </Text>
               </View>
-            </TouchableWithoutFeedback> */}
-            
+            </TouchableWithoutFeedback>
+
             {this.props.reviews.map((item, index) => (
               <TouchableWithoutFeedback
                 key={item.id}
                 onPress={() => {
-                  if (this.props.onClick) {
-                    this.props.onClick(item.id);
+                  if (item.status == 0) {
+                    if (this.props.onClick) {
+                      this.props.onClick(item.id);
+                    }
                   }
                 }}>
                 <View key={index}>
@@ -81,6 +83,7 @@ export default class ShowReviews extends Component {
                 </View>
               </TouchableWithoutFeedback>
             ))}
+
           </Flex>
         )}
       </View>

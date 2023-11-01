@@ -11,8 +11,7 @@ const ShowActions = ({ state, click, isSpecial = false }) => {
   const [value, setValue] = useState('');
   const { detail = {} } = state;
   const { executeType, taskType } = detail;
-  //alert('executeType:' + executeType + ',taskType:' + taskType);
-
+  //alert('executeType:' + executeType + ',taskType:' + taskType); 
   if (executeType != 0) {
     return <></>;
   }
@@ -20,8 +19,8 @@ const ShowActions = ({ state, click, isSpecial = false }) => {
   const onClick = (type) => {
     const verifyMemo = value;
     const { detail = {} } = state;
-    const { id: taskId, instanceId, code, organizeId } = detail;
-
+    const { taskId, instanceId, code, organizeId } = detail;
+    //console.log('taskId:' + taskId + ',instanceId:' + instanceId + ',code:' + code + ',organizeId:' + organizeId);  
     if (type === '通过') {
       service
         .approveForm({
@@ -74,9 +73,9 @@ const ShowActions = ({ state, click, isSpecial = false }) => {
         <TextareaItem
           rows={4}
           placeholder="输入审批意见"
-          style={{ 
+          style={{
             width: ScreenUtil.deviceWidth() - 45,
-            fontSize:14
+            fontSize: 14
           }}
           onChange={(val) => setValue(val)}
           value={value}

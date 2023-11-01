@@ -11,12 +11,12 @@ import service from '../service';
 import common from '../../../utils/common';
 import ShowActions from '../components/show-actions';
 import ShowFiles from '../components/show-files';
-import ShowRecord from '../components/show-record';
-import ShowReviews from '../components/show-reviews'; 
+import ShowRecord from '../components/show-record'; 
 import UDToast from '../../../utils/UDToast';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
-//import AddReview from '../components/add-review'; 
+import AddReview from '../components/add-review'; 
+import ShowReviews from '../components/show-reviews'; 
 
 export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
@@ -186,7 +186,7 @@ export default class DetailPage extends BasePage {
           </Flex>
         </Modal>
 
-        {/* <Modal
+        <Modal
           //弹出沟通页面
           transparent
           onClose={() => this.setState({ addVisible: false })}
@@ -194,9 +194,21 @@ export default class DetailPage extends BasePage {
           maskClosable
           visible={this.state.addVisible}>
           <Flex justify={'center'} align={'center'}>
-            <AddReview />
+            <AddReview
+              taskId={this.state.id}
+              users={detail.users}
+              onClose={() => {
+                this.setState({ addVisible: false });
+                //刷新评审记录
+                service.getReviews(this.state.id).then(res => {
+                  this.setState({
+                    reviews: res
+                  });
+                });
+              }}
+            />
           </Flex>
-        </Modal> */}
+        </Modal> 
 
       </CommonView>
     );

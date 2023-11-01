@@ -1,45 +1,49 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Picker, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { Icon, Button, Flex, TextareaItem } from '@ant-design/react-native';
+import { View, Text, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { Button, Flex, TextareaItem } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import Macro from '../../../utils/macro';
-//暂时废弃，没有多选框，无法实现
-
-// const DATA = [
-//   {
-//     titleId: "1",
-//     titleName: "水果",
-//     data: [
-//       { id: '01', name: '香蕉', selected: false },
-//       { id: '02', name: '梨', selected: false },
-//       { id: '03', name: '葡萄', selected: false },
-//       { id: '04', name: '猕猴桃', selected: false },
-//       { id: '05', name: '苹果', selected: false },
-//       { id: '06', name: '桃子', selected: false },
-//       { id: '07', name: '西瓜', selected: false },
-//       { id: '08', name: '橘子', selected: false },
-//     ]
-//   }]
-
-const DATA = [
-  { id: '01', name: '香蕉', selected: false },
-  { id: '02', name: '梨', selected: false },
-  { id: '03', name: '葡萄', selected: false },
-  { id: '04', name: '猕猴桃', selected: false },
-  { id: '05', name: '苹果', selected: false },
-  { id: '06', name: '桃子', selected: false },
-  { id: '07', name: '西瓜', selected: false },
-  { id: '08', name: '橘子', selected: false },
-]
+import MyPopoverNew from '../../../components/my-popovernew';
+import service from '../service';
+import UDToast from '../../../utils/UDToast';
 
 //添加沟通
 export default class AddReview extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      flowUsers: DATA,//流程参与人
-      selectedItem: []//选中的项
+      taskId: this.props.taskId,
+      userId: this.props.users[0].id,
+      memo: '',
+      users: this.props.users//流程参与人 
     }
+  };
+
+  save = () => {
+    const { taskId, userId, memo } = this.state;
+
+    if (!userId) {
+      UDToast.showError('请选择人员');
+      return;
+    }
+
+    if (!memo) {
+      UDToast.showError('请输入内容');
+      return;
+    }
+
+    //save
+    let params = {
+      taskId: taskId,
+      userId: userId,
+      memo: memo
+    };
+
+    service.addReview(params).then(res => {
+      UDToast.showInfo('添加成功');
+      //刷新评审记录
+      this.props.onClose();
+    });
   };
 
   render() {
@@ -48,105 +52,52 @@ export default class AddReview extends Component {
         <TouchableWithoutFeedback onPress={() => {
           Keyboard.dismiss();
         }}>
-          <Flex direction={'column'}>
-            {/* <SectionList
-              sections={this.state.flowUsers}
-              keyExtractor={(item) => item.id}
-              extraData={this.state}
-              stickySectionHeadersEnabled={true}//吸顶效果
-              renderItem={this._renderItem}//cell
-              renderSectionHeader={({ section: { titleName } }) => (
-                <View style={{ height: 40, justifyContent: 'center', backgroundColor: 'rgba(232,240,248,1)' }}>
-                  <Text style={{ color: "#0a3989", textAlign: 'center' }}>{titleName}</Text>
-                </View>
-              )}
-              ItemSeparatorComponent={() => {
-                return <View style={{ borderWidth: 0.2, borderColor: "#d2d2d2" }} />
-              }}
-            /> */}
+          <Flex direction={'column'} >
+            <Flex align={'center'} style={{ width: '100%' }} >
+              <Text style={styles.text}>接收人</Text>
+              <MyPopoverNew
+                style={styles.input}
+                onChange={item => this.setState({ userId: item.id })}
+                data={this.state.users}
+                visible={true} />
+            </Flex>
 
-
-            <Picker
-              mode={'dropdown'}
-              
-              style={{ width: ScreenUtil.deviceWidth() - 150 }}
-              //selectedValue={this.state.dropdown}
-              //</Flex>onValueChange={(value) => this.onValueChange(2, value)}
-              >
-              <Picker.Item label="我是下拉菜单1" value="key0" />
-              <Picker.Item label="我是下拉菜单2" value="key1" />
-              <Picker.Item label="我是下拉菜单3" value="key2" />
-              <Picker.Item label="我是下拉菜单4" value="key3" />
-            </Picker>
- 
-            <TextareaItem
-              style={{
-                width: ScreenUtil.deviceWidth() - 150,
-                fontSize:14
-              }}
-              placeholder={'请输入说明'}
-              rows={6}
-              onChange={memo => this.setState({ memo })}
-              value={this.state.memo}
-            />
+            <Flex align={'center'} style={{ width: '100%' }} >
+              <TextareaItem
+                style={{
+                  width: ScreenUtil.deviceWidth() - 150,
+                  fontSize: 14
+                }}
+                placeholder={'请输入'}
+                rows={6}
+                onChange={memo => this.setState({ memo })}
+                value={this.state.memo}
+              />
+            </Flex>
             <Button
               style={{
                 width: '100%',
                 marginTop: 10,
                 backgroundColor: Macro.work_blue
               }}
-              type="primary" >确定</Button>
+              type="primary"
+              onPress={this.save} >确定</Button>
           </Flex>
         </TouchableWithoutFeedback>
       </View>
     )
   }
-
-  _renderItem = (info) => {
-    if (info.item.selected == true) {
-      return <TouchableOpacity onPress={this._itemPress.bind(this, info.item, info.index)}>
-        <View style={{ height: 45, flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#FFFFFF' }}>
-          <Text style={{ marginLeft: 10, alignSelf: 'center', color: "#000000" }}>{info.item.name}</Text>
-          <Icon name="ios-checkmark-outline" color='blue' size={25} style={{ alignSelf: 'center', marginRight: 5 }} />
-        </View>
-      </TouchableOpacity>
-    } else {
-      return <TouchableOpacity onPress={this._itemPress.bind(this, info.item, info.index)}>
-        <View style={{ height: 45, flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#FFFFFF' }}>
-          <Text style={{ marginLeft: 10, alignSelf: 'center', color: "#000000" }}>{info.item.name}</Text>
-          <Icon name="ios-square-outline" color='#d2d2d2' size={25} style={{ alignSelf: 'center', marginRight: 5 }} />
-        </View>
-      </TouchableOpacity>
-    }
-  }
-
-  _itemPress(selectItem, index) {
-    var $this = this;
-    this.state.flowUsers.forEach(function (item1, lev1Index) {
-      item1.data.forEach(function (item2, lev2Index) {
-        if (item2.id == selectItem.id) {
-          //循环数据是否存在，存在就移除
-          var isExist = false;
-          $this.state.selectedItem.forEach(function (obj, objIndex) {
-            if (obj.id == selectItem.id && obj.titleId == item1.titleId) {
-              //找到存在的对象删除掉
-              $this.state.selectedItem.splice(objIndex, 1);
-              isExist = true;
-            }
-          })
-          if (isExist == false) {
-            //不存在就加到集合中去
-            $this.state.selectedItem.push({ id: selectItem.id, titleId: item1.titleId });
-          }
-          $this.state.flowUsers[lev1Index].data[index].selected = !selectItem.selected;
-        }
-      })
-    })
-    this.setState({ flowUsers: this.state.flowUsers })
-  }
 }
 
 const styles = StyleSheet.create({
+  text: {
+    fontSize: 16
+  },
+  input: {
+    fontSize: 17,
+    marginLeft: 10
+  },
+
   container: {
     flex: 1,
     backgroundColor: "#FFFFFF"
