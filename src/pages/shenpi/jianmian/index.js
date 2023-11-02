@@ -92,7 +92,9 @@ export default class DetailPage extends BasePage {
   };
 
   render() {
-    const { detail = {}, records = [], reviews = [] } = this.state;
+    const {
+      item = {},//咨询信息
+      detail = {}, records = [], reviews = [] } = this.state;
     const { list = [] } = detail;
 
     return (
@@ -134,11 +136,16 @@ export default class DetailPage extends BasePage {
               });
             }
           } />
+
           <ShowReviews reviews={reviews}
-            onClick={(id) => this.setState({
+            onAddClick={() => this.setState({
+              addVisible: true
+            })}
+            onReplyClick={(item) => this.setState({
               replyVisible: true,
               memo: '',
-              messageId: id
+              item: item,
+              messageId: item.id
             })} />
           <ShowRecord records={records} />
           <ShowActions
@@ -150,6 +157,7 @@ export default class DetailPage extends BasePage {
             }}
           /> 
         </ScrollView>
+       
         <Modal
           //弹出回复页面
           transparent
@@ -163,15 +171,34 @@ export default class DetailPage extends BasePage {
                 Keyboard.dismiss();
               }}>
                 <Flex direction={'column'}>
-                  <TextareaItem
-                    style={{
-                      width: ScreenUtil.deviceWidth() - 150
-                    }}
-                    placeholder={'请输入'}
-                    rows={6}
-                    onChange={memo => this.setState({ memo })}
-                    value={this.state.memo}
-                  />
+                  <Flex align={'center'} style={{ width: '100%' }}>
+                    <Text style={styles.txt}>
+                      {item.author}
+                    </Text>
+                  </Flex>
+                  <Flex align={'center'} style={{ width: '100%' }}>
+                    <Text style={styles.txt}>
+                      时间：{item.datetime}
+                    </Text>
+                  </Flex>
+                  <Flex align={'center'} style={{ width: '100%' }}>
+                    <Text style={styles.txt}>
+                      内容：{item.content}
+                    </Text>
+                  </Flex>
+                  <Flex align={'center'} style={{ width: '100%' }} >
+                    <TextareaItem
+                      maxLength={500}
+                      style={{
+                        width: ScreenUtil.deviceWidth() - 150,
+                        fontSize: 14
+                      }}
+                      placeholder={'请输入'}
+                      rows={6}
+                      onChange={memo => this.setState({ memo })}
+                      value={this.state.memo}
+                    />
+                  </Flex>
                   <Button
                     style={{
                       width: '100%',
@@ -185,7 +212,7 @@ export default class DetailPage extends BasePage {
             </View>
           </Flex>
         </Modal>
-
+ 
         <Modal
           //弹出沟通页面
           transparent
@@ -229,6 +256,9 @@ const styles = StyleSheet.create({
   txt: {
     fontSize: 14,
     paddingBottom: 10,
+  }, 
+  text: {
+    fontSize: 14
   },
   txt2: {
     color: Macro.work_blue,

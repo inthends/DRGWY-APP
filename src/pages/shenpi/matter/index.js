@@ -2,7 +2,7 @@
 import React from 'react';
 import BasePage from '../../base/base';
 import { Flex, Icon, Modal, Button, TextareaItem } from '@ant-design/react-native';
-import { View, StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
+import { View,Text, StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
 import CommonView from '../../../components/CommonView';
 import ShowTitle from '../components/show-title';
 import ShowText from '../components/show-text';
@@ -11,12 +11,12 @@ import service from '../service';
 import common from '../../../utils/common';
 import ShowActions from '../components/show-actions';
 import ShowFiles from '../components/show-files';
-import ShowRecord from '../components/show-record'; 
+import ShowRecord from '../components/show-record';
 import UDToast from '../../../utils/UDToast';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
-import AddReview from '../components/add-review'; 
-import ShowReviews from '../components/show-reviews'; 
+import AddReview from '../components/add-review';
+import ShowReviews from '../components/show-reviews';
 
 export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
@@ -38,7 +38,7 @@ export default class DetailPage extends BasePage {
 
   constructor(props) {
     super(props);
-    const id = common.getValueFromProps(props );
+    const id = common.getValueFromProps(props);
     this.state = {
       id,
       detail: {},
@@ -98,6 +98,7 @@ export default class DetailPage extends BasePage {
 
   render() {
     const {
+      item = {},//咨询信息
       detail = {},
       records = [],
       reviews = [],
@@ -129,13 +130,14 @@ export default class DetailPage extends BasePage {
           } />
 
           <ShowReviews reviews={reviews}
-            // onAddClick={() => this.setState({
-            //   addVisible: true
-            // })}
-            onClick={(id) => this.setState({
+            onAddClick={() => this.setState({
+              addVisible: true
+            })}
+            onReplyClick={(item) => this.setState({
               replyVisible: true,
               memo: '',
-              messageId: id
+              item: item,
+              messageId: item.id
             })} />
 
           <ShowRecord records={records} />
@@ -163,15 +165,34 @@ export default class DetailPage extends BasePage {
                 Keyboard.dismiss();
               }}>
                 <Flex direction={'column'}>
-                  <TextareaItem
-                    style={{
-                      width: ScreenUtil.deviceWidth() - 150
-                    }}
-                    placeholder={'请输入'}
-                    rows={6}
-                    onChange={memo => this.setState({ memo })}
-                    value={this.state.memo}
-                  />
+                  <Flex align={'center'} style={{ width: '100%' }}>
+                    <Text style={styles.txt}>
+                      {item.author}
+                    </Text>
+                  </Flex>
+                  <Flex align={'center'} style={{ width: '100%' }}>
+                    <Text style={styles.txt}>
+                      时间：{item.datetime}
+                    </Text>
+                  </Flex>
+                  <Flex align={'center'} style={{ width: '100%' }}>
+                    <Text style={styles.txt}>
+                      内容：{item.content}
+                    </Text>
+                  </Flex>
+                  <Flex align={'center'} style={{ width: '100%' }} >
+                    <TextareaItem
+                      maxLength={500}
+                      style={{
+                        width: ScreenUtil.deviceWidth() - 150,
+                        fontSize: 14
+                      }}
+                      placeholder={'请输入'}
+                      rows={6}
+                      onChange={memo => this.setState({ memo })}
+                      value={this.state.memo}
+                    />
+                  </Flex>
                   <Button
                     style={{
                       width: '100%',
@@ -185,6 +206,7 @@ export default class DetailPage extends BasePage {
             </View>
           </Flex>
         </Modal>
+
 
         <Modal
           //弹出沟通页面
@@ -208,7 +230,7 @@ export default class DetailPage extends BasePage {
               }}
             />
           </Flex>
-        </Modal> 
+        </Modal>
 
       </CommonView>
     );
@@ -223,6 +245,15 @@ const styles = StyleSheet.create({
   // borderWidth: 1,
   // borderRadius: 5
   //}, 
+
+  txt: {
+    fontSize: 14,
+    paddingBottom: 10,
+  },
+
+  text: {
+    fontSize: 14
+  },
   card: {
     marginTop: 5,
     borderWidth: 1,

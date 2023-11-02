@@ -64,6 +64,7 @@ export default class AddReview extends Component {
 
             <Flex align={'center'} style={{ width: '100%' }} >
               <TextareaItem
+                maxLength={500}
                 style={{
                   width: ScreenUtil.deviceWidth() - 150,
                   fontSize: 14

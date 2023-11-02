@@ -1,8 +1,8 @@
 
 import React from 'react';
 import { Flex, Icon, Modal, Button, TextareaItem } from '@ant-design/react-native';
-import {  View, StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native'; 
-import BasePage from '../../base/base';   
+import { View,Text, StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
+import BasePage from '../../base/base';
 import CommonView from '../../../components/CommonView';
 import ShowTitle from '../components/show-title';
 import ShowText from '../components/show-text';
@@ -37,7 +37,7 @@ export default class DetailPage extends BasePage {
 
   constructor(props) {
     super(props);
-    const id = common.getValueFromProps(props );
+    const id = common.getValueFromProps(props);
     this.state = {
       id,
       detail: {},
@@ -94,7 +94,8 @@ export default class DetailPage extends BasePage {
   };
 
   render() {
-    const { detail = {}, records = [], customer = {}, reviews = [] } = this.state;
+    const { item = {},//咨询信息
+      detail = {}, records = [], customer = {}, reviews = [] } = this.state;
     const { prices = [], fees: list = [] } = detail;
 
     return (
@@ -140,10 +141,14 @@ export default class DetailPage extends BasePage {
             }
           } />
           <ShowReviews reviews={reviews}
-            onClick={(id) => this.setState({
+            onAddClick={() => this.setState({
+              addVisible: true
+            })}
+            onReplyClick={(item) => this.setState({
               replyVisible: true,
               memo: '',
-              messageId: id
+              item: item,
+              messageId: item.id
             })} />
           <ShowRecord records={records} />
           <ShowActions
@@ -155,6 +160,7 @@ export default class DetailPage extends BasePage {
             }}
           />
         </ScrollView>
+          
         <Modal
           //弹出回复页面
           transparent
@@ -168,15 +174,34 @@ export default class DetailPage extends BasePage {
                 Keyboard.dismiss();
               }}>
                 <Flex direction={'column'}>
-                  <TextareaItem
-                    style={{
-                      width: ScreenUtil.deviceWidth() - 150
-                    }}
-                    placeholder={'请输入'}
-                    rows={6}
-                    onChange={memo => this.setState({ memo })}
-                    value={this.state.memo}
-                  />
+                  <Flex align={'center'} style={{ width: '100%' }}>
+                    <Text style={styles.txt}>
+                      {item.author}
+                    </Text>
+                  </Flex>
+                  <Flex align={'center'} style={{ width: '100%' }}>
+                    <Text style={styles.txt}>
+                      时间：{item.datetime}
+                    </Text>
+                  </Flex>
+                  <Flex align={'center'} style={{ width: '100%' }}>
+                    <Text style={styles.txt}>
+                      内容：{item.content}
+                    </Text>
+                  </Flex>
+                  <Flex align={'center'} style={{ width: '100%' }} >
+                    <TextareaItem
+                      maxLength={500}
+                      style={{
+                        width: ScreenUtil.deviceWidth() - 150,
+                        fontSize: 14
+                      }}
+                      placeholder={'请输入'}
+                      rows={6}
+                      onChange={memo => this.setState({ memo })}
+                      value={this.state.memo}
+                    />
+                  </Flex>
                   <Button
                     style={{
                       width: '100%',
@@ -190,6 +215,7 @@ export default class DetailPage extends BasePage {
             </View>
           </Flex>
         </Modal>
+
 
         <Modal
           //弹出沟通页面
@@ -213,7 +239,7 @@ export default class DetailPage extends BasePage {
               }}
             />
           </Flex>
-        </Modal> 
+        </Modal>
         <CompanyDetail
           customer={customer}
           ref={(ref) => (this.companyDetailRef = ref)}
@@ -224,7 +250,14 @@ export default class DetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
+  txt: {
+    fontSize: 14,
+    paddingBottom: 10,
+  },
 
+  text: {
+    fontSize: 14
+  },
   card: {
     marginTop: 5,
     borderWidth: 1,

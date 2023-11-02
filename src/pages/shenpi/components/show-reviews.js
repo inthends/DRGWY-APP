@@ -3,10 +3,14 @@ import { Text, View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { Flex } from '@ant-design/react-native';
 import ShowTitle from './show-title';
 import ShowLine from './show-line';
+import { connect } from 'react-redux';
 
 //沟通记录
-//const ShowReviews = ({ instanceId = '', isCompleted = false, open = false }) => { 
-export default class ShowReviews extends Component {
+//const ShowReviews = ({ instanceId = '', isCompleted = false, open = false }) => {
+
+// export default class ShowReviews extends Component {
+class ShowReviews extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -62,10 +66,10 @@ export default class ShowReviews extends Component {
             {this.props.reviews.map((item, index) => (
               <TouchableWithoutFeedback
                 key={item.id}
-                onPress={() => {
-                  if (item.status == 0) {
-                    if (this.props.onClick) {
-                      this.props.onClick(item.id);
+                onPress={() => { 
+                  if (item.status == 0 && item.toUserId == this.props.user.id) {
+                    if (this.props.onReplyClick) {
+                      this.props.onReplyClick(item);
                     }
                   }
                 }}>
@@ -90,6 +94,21 @@ export default class ShowReviews extends Component {
     );
   };
 }
+
+//获取当前登录信息
+const mapStateToProps = ({ memberReducer }) => {
+  return {
+    user: {
+      ...memberReducer.user,
+      id: memberReducer.user.userId
+    },
+    //hasNetwork: memberReducer.hasNetwork,
+    //xunJianData: xunJianReducer.xunJianData
+  };
+};
+
+export default connect(mapStateToProps)(ShowReviews);
+
 
 const styles = StyleSheet.create({
   txt: {

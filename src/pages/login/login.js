@@ -93,8 +93,7 @@ class LoginPage extends BasePage {
             })
             .catch((error) => {
             });
-        })
-        .catch((err) => { });
+        }).catch((err) => { });
     });
   };
 
