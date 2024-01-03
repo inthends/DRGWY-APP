@@ -246,7 +246,6 @@ const WorkNavigator = createStackNavigator({
   // select: SelectAddressPage,
   // AddWork: AddWorkPage,
   // Task: TaskListPage,
-
   Work: {
     screen: WorkPage,
     navigationOptions: () => ({

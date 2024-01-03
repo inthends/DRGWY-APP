@@ -3,6 +3,8 @@ import {View, Text,StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import { Flex} from '@ant-design/react-native';
 import ScreenUtil from '../utils/screen-util';
 import LoadImage from './load-image';
+import UpImage from '../static/images/address/up.png';
+import DownImage from '../static/images/address/down.png';
  
 export default class Communicates extends Component {
  
@@ -27,7 +29,9 @@ export default class Communicates extends Component {
                             <Flex style={[styles.every]} justify='between'>
                                 <LoadImage img={i.avatar} style={{width: 30, height: 30}}/>
                                 <Text style={styles.left}>{i.author} {i.datetime}</Text>
-                                <LoadImage style={{width: 30, height: 30}}/>
+                                {/* <LoadImage style={{width: 30, height: 30}}/> */}
+                                <LoadImage style={{ width: 15, height: 8 }}
+                                    img={i.show ? UpImage : DownImage}  />
                             </Flex>
                         </TouchableWithoutFeedback>
                         {i.show === true ? <View style={{

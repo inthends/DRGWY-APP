@@ -33,7 +33,6 @@ class XunjianBeforeStart extends BasePage {
 
     componentDidMount()  {
         const { pointId } = this.state;
-
         if (this.props.hasNetwork) {
             this.initUI();
         } else {

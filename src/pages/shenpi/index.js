@@ -36,8 +36,13 @@ class ApprovePage extends BasePage {
       activeSections: [],
       selectTask: this.props.selectTask || {},
       refreshing: false,
-      dataInfo: {},
+      // dataInfo: {},
+      dataInfo: {
+        data: [],
+      },
       pageIndex: 1,
+      todo: 0,//总数量
+      done: 0
     };
     this.onChange = (activeSections) => {
       this.setState({ activeSections });
@@ -78,39 +83,66 @@ class ApprovePage extends BasePage {
   }
 
   onRefresh = () => {
+    this.getCounts();
     this.setState(
       {
         refreshing: true,
-        pageIndex: 1,
+        pageIndex: 1
       },
       () => {
         this.getList();
-      },
+      }
     );
+  };
+
+  getCounts = () => {
+    const { selectTask = {} } = this.props;
+    Service.getCounts({
+      code: selectTask.value || ''
+    }).then((res) => {
+      this.setState({ todo: res.todo, done: res.done });
+    });
   };
 
   getList = () => {
     const { selectTask = {} } = this.props;
     Service.getFlowTask({
       isCompleted: this.state.isCompleted,
-      pagination: this.state.pageIndex,
-      code: selectTask.value || '',
+      pageIndex: this.state.pageIndex,
       pageSize: 10,
+      code: selectTask.value || ''
     }).then((dataInfo) => {
+
+      //分页有问题
+      // if (dataInfo.pageIndex > 1) {
+      //   const { data: oldData = [] } = this.state.dataInfo || {};
+      //   const { data = [] } = dataInfo || {};
+      //   dataInfo = {
+      //     ...dataInfo,
+      //     data: [...oldData, ...data],
+      //   };
+      // }
+      // this.setState({
+      //   dataInfo,
+      //   refreshing: false,
+      // });
+
       if (dataInfo.pageIndex > 1) {
-        const { data: oldData = [] } = this.state.dataInfo || {};
-        const { data = [] } = dataInfo || {};
         dataInfo = {
           ...dataInfo,
-          data: [...oldData, ...data],
+          data: [...this.state.dataInfo.data, ...dataInfo.data]
         };
       }
-      this.setState({
-        dataInfo,
-        refreshing: false,
-      });
+
+      this.setState(
+        {
+          dataInfo: dataInfo,
+          refreshing: false,
+          pageIndex: dataInfo.pageIndex
+        });
     });
   };
+
   loadMore = () => {
     const { data, total, pageIndex } = this.state.dataInfo;
     if (!this.canAction && data.length < total) {
@@ -119,11 +151,11 @@ class ApprovePage extends BasePage {
       this.setState(
         {
           refreshing: true,
-          pageIndex: pageIndex + 1,
+          pageIndex: pageIndex + 1
         },
         () => {
           this.getList();
-        },
+        }
       );
     }
     // if (data.length < total) {
@@ -137,7 +169,7 @@ class ApprovePage extends BasePage {
   };
 
   render() {
-    const { isCompleted, dataInfo = {} } = this.state;
+    const { isCompleted, todo, done, dataInfo = {} } = this.state;
 
     return (
       <View style={{ flex: 1 }}>
@@ -176,7 +208,7 @@ class ApprovePage extends BasePage {
                   { color: isCompleted ? '#333' : Macro.work_blue },
                 ]}
               >
-                待办任务
+                待办任务 ({todo})
               </Text>
             </Flex>
           </TouchableWithoutFeedback>
@@ -204,7 +236,7 @@ class ApprovePage extends BasePage {
                   { color: isCompleted ? Macro.work_blue : '#333' },
                 ]}
               >
-                已办任务
+                已办任务 ({done})
               </Text>
             </Flex>
           </TouchableWithoutFeedback>
@@ -217,11 +249,11 @@ class ApprovePage extends BasePage {
                 let url = '';
                 switch (item.code) {
                   case '1026': {
-                    url = 'fukuan';
+                    url = 'fukuan';//付款
                     break;
                   }
                   case '1025': {
-                    url = 'jianmian';
+                    url = 'jianmian';//减免
                     break;
                   }
                   case '1006': {
@@ -233,17 +265,14 @@ class ApprovePage extends BasePage {
                     url = 'chuzunew';
                     break;
                   }
-
                   case '1004': {
                     url = 'chuzuchange';
                     break;
                   }
-
                   case '1003': {
                     url = 'chuzutui';
                     break;
                   }
-
                   case '1013':
                   case '1016': {
                     url = 'wuyenew';
@@ -270,13 +299,15 @@ class ApprovePage extends BasePage {
                     break;
                   }
                   case '1035': {
-                    url = 'matter';
+                    url = 'matter';//事项
                     break;
                   }
                   case '1037': {
                     url = 'task';
                     break;
                   }
+
+
                 }
                 //传递参数
                 this.props.navigation.push(url, {
@@ -296,7 +327,7 @@ class ApprovePage extends BasePage {
                   style={[styles.every, ScreenUtil.borderBottom()]}
                   justify="between"
                 >
-                  <Text style={styles.txt}>{item.flowName}</Text>
+                  <Text style={styles.title}>{item.flowName}</Text>
                   {item.note && (
                     <Text style={[styles.right, styles.special]}>
                       {item.note}
@@ -348,6 +379,10 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
   },
 
+  title: {
+    color: Macro.color_sky,
+    fontSize: 14,
+  },
   txt: {
     fontSize: 14,
   },

@@ -62,8 +62,7 @@ export default class PaiDanListDetailPage extends BasePage {
     componentDidMount() {
         this.getData();
     }
-
-
+ 
     getData = () => {
         const { id } = this.state;
         WorkService.weixiuDetail(id).then(detail => {
@@ -73,7 +72,7 @@ export default class PaiDanListDetailPage extends BasePage {
                     serviceDeskCode: detail.serviceDeskCode,
                     relationId: detail.relationId,
                     statusName: detail.statusName
-                },
+                }
             });
 
             //获取维修单的单据动态
@@ -82,7 +81,6 @@ export default class PaiDanListDetailPage extends BasePage {
                     communicates: res,
                 });
             });
-
         });
 
         WorkService.weixiuExtra( id).then(images => {

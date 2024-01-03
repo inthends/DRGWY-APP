@@ -9,6 +9,13 @@ export default {
       : '/api/MobileMethod/MGetFlowTaskPageList';
     return api.postData(url, params);
   },
+
+
+  //获取待办和已办数量
+  getCounts(params) { 
+    return api.postData('/api/MobileMethod/MGetFlowCounts',params);
+  },
+ 
   // 获取流程详情
   getFlowData(taskId) {
     return api.getData('/api/MobileMethod/MGetFlowData', { taskId });

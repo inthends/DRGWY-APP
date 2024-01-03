@@ -35,16 +35,14 @@ export default class FuWuDanListDetailPage extends BasePage {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
-            ),
-
+            )
         };
     };
 
     constructor(props) {
         super(props);
-        let id = common.getValueFromProps(this.props);
-        //console.log('sercerid:' + id);
-
+        let id = common.getValueFromProps(this.props); 
+        console.log('sercerid:' + id);
         //let type = common.getValueFromProps(this.props, 'type');
         this.state = {
             id,

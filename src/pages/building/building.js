@@ -168,10 +168,10 @@ class BuildingPage extends BasePage {
         {
           dataInfo: dataInfo,
           refreshing: false,
-          pageIndex: dataInfo.pageIndex,
+          pageIndex: dataInfo.pageIndex
         },
         () => { 
-        },
+        }
       );
     });
   };
@@ -179,18 +179,20 @@ class BuildingPage extends BasePage {
   openDrawer = () => {
     this.drawer && this.drawer.openDrawer();
   };
+
   onRefresh = () => {
     this.getInitData();
     this.setState(
       {
         refreshing: true,
-        pageIndex: 1,
+        pageIndex: 1
       },
       () => {
         this.getList();
       },
     );
   };
+
   loadMore = () => {
     const { data, total, pageIndex } = this.state.dataInfo; 
     if (!this.canAction && data.length < total) {
@@ -203,7 +205,7 @@ class BuildingPage extends BasePage {
         },
         () => {
           this.getList();
-        },
+        }
       );
     }
     // if (data.length < total) {

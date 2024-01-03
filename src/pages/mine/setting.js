@@ -22,8 +22,7 @@ class SettingPage extends BasePage {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
-            ),
-
+            )
         };
     };
 
@@ -33,7 +32,7 @@ class SettingPage extends BasePage {
             index: 0,
             data: ['报修', '报事', '巡场'],
             value: '',
-            checked: false,
+            //checked: false,
         };
     }
 
@@ -67,7 +66,6 @@ class SettingPage extends BasePage {
     };
 
     componentWillUnmount() {
-
         UDToast.hiddenLoading(this.loading);
     }
 
@@ -76,12 +74,10 @@ class SettingPage extends BasePage {
     }
 
     update() {
-
         this.loading = UDToast.showLoading('正在同步中...');
         XunJianService.xunjianData(this.props.user.userId, false).then(resp => {
             XunJianService.xunjianIndexList(this.props.user.userId, false).then(res => {
                 const items = res.data;
-
                 Promise.all(items.map(item => XunJianService.xunjianIndexDetail(item.lineId).then(res => ({
                     ...item,
                     items: res,
@@ -141,7 +137,6 @@ class SettingPage extends BasePage {
                 }));
             }
         });
-
     }
 
     uploading() {
@@ -162,6 +157,7 @@ class SettingPage extends BasePage {
                 }
             }
         }
+
         if (xunJians.length > 0) {
             this.loading = UDToast.showLoading('正在上传中...');
             Promise.all(xunJians.map(item => {
@@ -193,14 +189,14 @@ class SettingPage extends BasePage {
         //const { data } = this.state;
         return (
             <View style={{ backgroundColor: '#E8E8E8', flex: 1 }}>
-                <List renderHeader={<View style={{ height: 10 }} />}>
+                {/* <List renderHeader={<View style={{ height: 10 }} />}>
                     <List.Item extra={<Switch color='#447FEA' checked={this.state.checked}
                         onChange={checked => this.setState({ checked })} />}>
                         <Flex style={{ height: 40 }}>
                             <Text style={{ color: '#666', fontSize: 16 }}>消息推送</Text>
                         </Flex>
                     </List.Item>
-                </List>
+                </List> */}
                 <List renderHeader={<View style={{ height: 10 }} />}>
                     <List.Item extra={<Switch color='#447FEA' checked={this.props.hasNetwork}
                         onChange={checked => this.props.savehasNetwork(checked)} />}>
@@ -267,7 +263,6 @@ class SettingPage extends BasePage {
 //     name: {
 //         fontSize: 20,
 //         color: '#333',
-
 //     },
 //     desc: {
 //         fontSize: 16,
@@ -288,7 +283,7 @@ const mapStateToProps = ({ memberReducer, xunJianReducer }) => {
             ...user,
             id: user.userId,
         },
-        ...xunJianReducer,
+        ...xunJianReducer
     };
 };
 
@@ -299,8 +294,7 @@ const mapDispatchToProps = (dispatch) => {
         },
         saveXunjian(data) {
             dispatch(saveXunJian(data));
-        },
-
+        }
     };
 };
 

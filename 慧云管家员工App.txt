@@ -1,3 +1,9 @@
+android studio
+close project。
+删除要导入项目工程下的.idea文件夹,以及所有的.iml文件。
+import project,在选择文件中 选中项目"android"目录。下一个界面，选择import。
+AS自动下载、导入、编译完成。
+
 打包失败
 提示 程序包android.support.v4.content不存在
 找到java文件

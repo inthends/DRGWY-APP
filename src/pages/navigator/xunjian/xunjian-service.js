@@ -62,7 +62,6 @@ export default {
     //无网络
     MGetPollingUserPointTasks() {
         return api.getData('/api/MobileMethod/MGetPollingUserPointTasks', {}, false);
-    },
-
+    } 
 
 };
