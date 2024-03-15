@@ -159,7 +159,7 @@ class NewsList extends BasePage {
                         >
                             <Text style={{
                                 color: '#666',
-                                fontSize: 15,
+                                fontSize: 16,
                             }}>{item.contents}</Text>
                         </Flex>
                     </Flex>
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     },
     title: {
         color: '#333',
-        fontSize: 18
+        fontSize: 16
     },
     unread: {
         color: Macro.color_FA3951,

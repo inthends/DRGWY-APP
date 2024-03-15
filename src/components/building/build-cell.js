@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     name: {
-        fontSize: 17,
+        fontSize: 16,
         // fontWeight: '600',
         color: '#2c2c2c'
     },

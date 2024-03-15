@@ -215,13 +215,13 @@ const styles = StyleSheet.create({
         fontSize: Macro.font_14
     },
     top: {
-        fontSize: 18,
+        fontSize: 16,
         paddingTop: 10,
         paddingBottom: 10,
     },
     bottom: {
         color: '#868688',
-        fontSize: 18,
+        fontSize: 16,
 
     },
     button: {
@@ -254,11 +254,8 @@ const styles = StyleSheet.create({
     item: {
         width: '100%'
     },
-    name: {
-        // fontSize: 18,
-        // fontWeight: '600',
-        // paddingBottom: 15,
-        fontSize: 17,
+    name: { 
+        fontSize: 16,
         color: '#2c2c2c',
         paddingBottom: 15
     },

@@ -8,7 +8,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Flex } from '@ant-design/react-native';
+import { Flex,WhiteSpace } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import DetailBuildingService from './detail-parking-service';
 import ScreenUtil from '../../../utils/screen-util';
@@ -159,12 +159,14 @@ export default class DetailParkingPage extends BasePage {
               </Flex>
             </ScrollView>
 
+            <WhiteSpace />
+
             <ScrollView>
               <Flex
                 key={'sectionIndexitem'}
                 direction="column"
                 align="start"
-              > 
+              >
                 <Flex
                   style={{
                     paddingTop: 15,
@@ -196,7 +198,7 @@ export default class DetailParkingPage extends BasePage {
                     return (
                       <View
                         key={index + 'it'}
-                        style={{ paddingBottom: 5,paddingLeft: index === 0 ? 15 : 5 }}
+                        style={{ paddingBottom: 5, paddingLeft: index === 0 ? 15 : 5 }}
                       >
                         {it.open === true ? (
                           <Flex>
@@ -313,7 +315,7 @@ export default class DetailParkingPage extends BasePage {
 
 const styles = StyleSheet.create({
   name: {
-    fontSize: 18,
+    fontSize: 16,
     color: '#2d3040',
     fontWeight: '600'
   },
@@ -329,8 +331,8 @@ const styles = StyleSheet.create({
   div: {
     width: ScreenUtil.deviceWidth() / 7.0,
     height: ScreenUtil.deviceWidth() / 7.0 + 20,
-    borderBottomColor: '#ececec',
-    borderBottomWidth: 1
+    // borderBottomColor: '#ececec',
+    // borderBottomWidth: 1
   },
   square: {
     // backgroundColor: 'red',

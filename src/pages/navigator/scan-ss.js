@@ -36,7 +36,7 @@ export default class ScanSS extends Component {
 const styles = StyleSheet.create({
     centerText: {
         flex: 1,
-        fontSize: 18,
+        fontSize: 16,
         padding: 32,
         color: '#777',
     },

@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     },
     word: {
         color: '#333',
-        fontSize: 18,
+        fontSize: 16,
     },
 
 });

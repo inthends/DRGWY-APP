@@ -822,7 +822,7 @@ class FeeDetailPage extends BasePage {
                 <ScrollView
                 //onScrollBeginDrag={() => console.log('onScrollBeginDrag')}
                 >
-                    <Text style={{ paddingLeft: 10, paddingTop: 10, fontSize: 18, color: '#2c2c2c' }}>{room.allName} {room.tenantName}</Text>
+                    <Text style={{ paddingLeft: 10, paddingTop: 10, fontSize: 16, color: '#2c2c2c' }}>{room.allName} {room.tenantName}</Text>
                     <TwoChange onChange={this.typeOnChange} />
                     <Flex style={{ backgroundColor: '#eee', height: 1, marginLeft: 10, marginRight: 10, marginTop: 10 }} />
                     {dataInfo.data.map(item => {
@@ -877,18 +877,18 @@ class FeeDetailPage extends BasePage {
                         </Flex>
 
                         <Flex align={'center'}>
-                            <Text style={{ paddingLeft: 10, fontSize: 18, color: '#666' }}>抹零：</Text>
+                            <Text style={{ paddingLeft: 10, fontSize: 16, color: '#666' }}>抹零：</Text>
                             <Text style={{
                                 paddingLeft: 5,
-                                fontSize: 18,
+                                fontSize: 16,
                                 color: Macro.color_FA3951,
                             }}>¥{mlAmount}</Text>
 
-                            <Text style={{ paddingLeft: 10, fontSize: 18, color: '#666' }}>合计：</Text>
+                            <Text style={{ paddingLeft: 10, fontSize: 16, color: '#666' }}>合计：</Text>
                             <Text
                                 style={{
                                     paddingLeft: 5,
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     color: Macro.color_FA3951,
                                 }}>¥{price}</Text>
                         </Flex>
@@ -1036,12 +1036,12 @@ const styles = StyleSheet.create({
     },
 
     top: {
-        fontSize: 18,
+        fontSize: 16,
         paddingBottom: 10
     },
     bottom: {
         color: '#868688',
-        fontSize: 18,
+        fontSize: 16,
         paddingBottom: 10
     },
     button: {

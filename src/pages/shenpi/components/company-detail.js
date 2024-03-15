@@ -33,7 +33,7 @@ const CompanyDetail = forwardRef(({ customer = {} }, ref) => {
     >
       <View>
         <View>
-          <Text style={[styles.txt, { fontSize: 18 }]}>{customer.name}</Text>
+          <Text style={[styles.txt, { fontSize: 16 }]}>{customer.name}</Text>
           <ShowLine />
           <ShowText word="联系人" title={customer.linkMan} />
           <ShowText word="联系地址" showInModal title={customer.address} />

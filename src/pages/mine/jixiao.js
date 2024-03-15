@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     },
     select: {
         color: '#333',
-        fontSize: 18,
+        fontSize: 16,
         paddingLeft: 20,
         paddingRight: 20,
         paddingTop: 4,
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
         color: '#666',
     },
     jiedan: {
-        fontSize: 18,
+        fontSize: 16,
         color: 'green',
         paddingLeft: 15,
     }

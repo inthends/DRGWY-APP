@@ -4,7 +4,6 @@ import {
     Text,
     TouchableWithoutFeedback,
     TouchableOpacity,
-    StyleSheet,
     Image,
     ScrollView,
     RefreshControl,
@@ -16,20 +15,19 @@ import WorkService from './work-service';
 import UDToast from '../../utils/UDToast';
 import CommonView from '../../components/CommonView';
 import Macro from '../../utils/macro';
-
 const Item = List.Item;
 
 export default class SelectAddressPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
-            title: navigation.getParam('title'),
+            //title: navigation.getParam('title'),
+            title: '选择位置',
             headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
-            ),
-
+            )
         };
     };
 
@@ -38,7 +36,7 @@ export default class SelectAddressPage extends BasePage {
         this.state = {
             items: [],
             selectItem: {},
-            refreshing: false,
+            refreshing: false
         };
     }
 
@@ -46,10 +44,23 @@ export default class SelectAddressPage extends BasePage {
         this.getData();
     }
 
+    // submit = () => {
+    //     const { selectItem } = this.state;
+    //     if (selectItem && selectItem.id) {
+    //         this.props.navigation.navigate('AddWork', { data: { address: selectItem } });
+    //     } else {
+    //         UDToast.showInfo('请先选择');
+    //     }
+    // };
+
+
     submit = () => {
         const { selectItem } = this.state;
-        if (selectItem && selectItem.id) {
-            this.props.navigation.navigate('AddWork', { data: { address: selectItem } });
+        if (selectItem) { 
+            const { navigation } = this.props;
+            navigation.state.params.onSelect({ selectItem });
+            navigation.goBack();
+
         } else {
             UDToast.showInfo('请先选择');
         }
@@ -109,9 +120,10 @@ export default class SelectAddressPage extends BasePage {
             this.setState({ items, refreshing: false });
         });
     };
+
     next = (item) => {
         if (item.type !== 5) {
-            this.props.navigation.push('select', {
+            this.props.navigation.push('SelectAddress', {
                 'data': {
                     ...item,
                 },
@@ -167,14 +179,3 @@ export default class SelectAddressPage extends BasePage {
         );
     }
 }
-
-// const styles = StyleSheet.create({
-//     header: {
-//         paddingTop: 15,
-//         paddingBottom: 15,
-//         paddingLeft: 15,
-//         paddingRight: 15,
-//         backgroundColor: '#F3F4F2',
-
-//     }, 
-// });

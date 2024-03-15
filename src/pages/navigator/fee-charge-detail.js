@@ -92,7 +92,7 @@ class FeeChargeDetail extends BasePage {
                         <Text style={{
                             paddingLeft: 15,
                             paddingTop: 10,
-                            fontSize: 18,
+                            fontSize: 16,
                         }}>{data.allName} {data.createUserName}</Text>
                         <Text style={{
                             paddingLeft: 15,
@@ -125,7 +125,7 @@ class FeeChargeDetail extends BasePage {
                         <WhiteSpace />
                         <Flex justify={'center'}>
                             <Text style={{
-                                fontSize: 18,
+                                fontSize: 16,
                             }}>抹零：{data.mlAmount}，合计：{data.amount}</Text>
                         </Flex>
                     </ScrollView>
@@ -149,14 +149,13 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
 
-    top: {
-
-        fontSize: 18,
+    top: { 
+        fontSize: 16,
         paddingBottom: 10,
     },
     bottom: {
         color: '#868688',
-        fontSize: 18,
+        fontSize: 16,
         paddingBottom: 10,
     },
     button: {

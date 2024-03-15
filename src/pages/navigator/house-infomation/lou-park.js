@@ -124,12 +124,12 @@ const styles = StyleSheet.create({
 
     top: {
 
-        fontSize: 18,
+        fontSize: 16,
         paddingBottom: 15,
     },
     bottom: {
         color: '#868688',
-        fontSize: 18,
+        fontSize: 16,
         paddingBottom: 20,
     },
     button: {
@@ -143,12 +143,10 @@ const styles = StyleSheet.create({
     },
 
     left: {
-        flex: 1,
-
+        flex: 1, 
     },
     right: {
-        flex: 3,
-
+        flex: 3, 
         paddingTop: 20,
         paddingBottom: 20,
         marginLeft: 20,
@@ -162,7 +160,7 @@ const styles = StyleSheet.create({
     },
     se: {
         paddingLeft: 10,
-        fontSize: 18,
+        fontSize: 16,
         color: '#666',
     },
     image: {

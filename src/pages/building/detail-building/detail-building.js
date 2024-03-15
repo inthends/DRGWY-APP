@@ -262,7 +262,7 @@ export default class DetailBuildingPage extends BasePage {
               </Flex> */}
 
               {/* 从后台获取状态 */}
-              <Flex direction="row" style={{ paddingTop: 20 }}>
+              <Flex direction="row" style={[{ paddingTop: 20 }, ScreenUtil.borderBottom()]}>
                 {status.map((item, i) => (
                   <Flex
                     key={'flex' + item.id}
@@ -285,7 +285,7 @@ export default class DetailBuildingPage extends BasePage {
               </Flex>
             </ScrollView>
 
-            <ScrollView 
+            <ScrollView
               style={{
                 paddingBottom: 20
               }}
@@ -490,7 +490,7 @@ export default class DetailBuildingPage extends BasePage {
 
 const styles = StyleSheet.create({
   name: {
-    fontSize: 18,
+    fontSize: 16,
     color: '#2d3040',
     fontWeight: '600'
   },
@@ -506,8 +506,8 @@ const styles = StyleSheet.create({
   div: {
     width: ScreenUtil.deviceWidth() / 7.0,
     height: ScreenUtil.deviceWidth() / 7.0 + 20,
-    borderBottomColor: '#ececec',
-    borderBottomWidth: 1
+    // borderBottomColor: '#ececec',
+    // borderBottomWidth: 1
   },
   square: {
     // backgroundColor: 'red',

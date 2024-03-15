@@ -28,7 +28,7 @@ const ShowTitle = ({ title = '', isOpen, click }) => {
 const styles = StyleSheet.create({
   word: {
     color: '#666',
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 'bold'
   },
 });

@@ -24,7 +24,7 @@ export default {
         return api.postData('/api/MobileMethod/MGetContractList', { keyvalue });
     },
     //获取客户
-    getCustomerList(keyvalue) {
-        return api.postData('/api/MobileMethod/MGetCustomerList', { keyvalue });
+    getCustomerList(keyvalue, isShow) {
+        return api.postData('/api/MobileMethod/MGetCustomerList', { keyvalue, isShow });
     }
 };

@@ -129,14 +129,14 @@ const styles = StyleSheet.create({
     // },
     text: {
         color: Macro.color_white,
-        fontSize: 18.5
+        fontSize: 16
     },
     // number: {
     //     flex: 3,
     //     width: '100%'
     // },
     big: {
-        fontSize: 25, //41.67,
+        fontSize: 25,  
         paddingLeft: 10//Macro.marginLeft_15
     },
     item: {
@@ -144,11 +144,11 @@ const styles = StyleSheet.create({
     },
     topText: {
         color: Macro.color_a0b0f3,
-        fontSize: 17.67
+        fontSize: 16
     },
     bottomText: {
         color: Macro.color_white,
-        fontSize: 17.67,
+        fontSize: 16,
         paddingTop: 5
     }
 });

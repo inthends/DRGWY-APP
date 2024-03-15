@@ -60,7 +60,7 @@ export default class ModifyPsdPage extends BasePage {
                 </Flex>
 
                 <Flex direction='column' align='start' style={{marginLeft: -15}}>
-                    <Text style={{color: '#666', fontSize: 15, paddingLeft: 15}}>原密码</Text>
+                    <Text style={{color: '#666', fontSize: 16, paddingLeft: 15}}>原密码</Text>
                     <InputItem
                         clear
                         type="password"
@@ -77,7 +77,7 @@ export default class ModifyPsdPage extends BasePage {
                 </Flex>
 
                 <Flex direction='column' align='start' style={{marginLeft: -15}}>
-                    <Text style={{color: '#666', fontSize: 15, paddingLeft: 15, paddingTop: 15}}>新密码</Text>
+                    <Text style={{color: '#666', fontSize: 16, paddingLeft: 15, paddingTop: 15}}>新密码</Text>
                     <InputItem
                         clear
                         type="password"
@@ -94,7 +94,7 @@ export default class ModifyPsdPage extends BasePage {
                 </Flex>
 
                 <Flex direction='column' align='start' style={{marginLeft: -15}}>
-                    <Text style={{color: '#666', fontSize: 15, paddingLeft: 15, paddingTop: 15}}>确认新密码</Text>
+                    <Text style={{color: '#666', fontSize: 16, paddingLeft: 15, paddingTop: 15}}>确认新密码</Text>
                     <InputItem
                         clear
                         type="password"  

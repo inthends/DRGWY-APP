@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
         paddingTop: 14.67,
         textAlign: 'left',
         color: '#3E3E3E',
-        fontSize: 17.6,
+        fontSize: 16,
         paddingBottom: 12.67,
         marginLeft: 20,
         marginRight: 20,
@@ -249,14 +249,14 @@ const styles = StyleSheet.create({
     top: {
         paddingTop: 10,
         color: '#74BAF1',
-        fontSize: 15,
+        fontSize: 16,
         paddingBottom: 10,
         paddingLeft: 20,
         paddingRight: 20,
     },
     bottom: {
         color: '#999999',
-        fontSize: 14.67,
+        fontSize: 16,
         paddingBottom: 20,
     },
     button: {
@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
     },
     personText: {
         color: '#666',
-        fontSize: 18,
+        fontSize: 16,
         width: ScreenUtil.deviceWidth() - 40,
         textAlign: 'center',
         paddingBottom: 15,

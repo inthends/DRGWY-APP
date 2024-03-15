@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   input: {
-    fontSize: 17,
+    fontSize: 16,
     marginLeft: 10
   },
 

@@ -6,7 +6,7 @@ export default {
     return api.postData('/api/MobileMethod/MGetFeeStatistics', {
       pageIndex,
       pageSize,
-      organizeId,
+      organizeId
     });
   },
   //楼栋或者车库
@@ -56,9 +56,30 @@ export default {
       pageIndex,
       pageSize,
       unitId: id,
-      isShow: isShow,
+      isShow: isShow
     });
   },
+
+  //检查单
+  checkList(
+    pageIndex,
+    billStatus,
+    billType,
+    organizeId,
+    startTime,
+    endTime
+  ) { 
+    return api.postData('/api/MobileMethod/MGetCheckPageList', {
+      pageIndex,
+      pageSize: 10,
+      billStatus,
+      billType,
+      organizeId,
+      startTime,
+      endTime
+    });
+  },
+
   //服务单
   serviceList(
     pageIndex,
@@ -67,7 +88,7 @@ export default {
     organizeId,
     billType,
     startTime,
-    endTime,
+    endTime
   ) {
     /*
         {:,treeType:,organizeId:billType:,startTime:,endTime:,}

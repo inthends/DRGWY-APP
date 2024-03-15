@@ -340,7 +340,7 @@ const styles = StyleSheet.create({
         paddingTop: 14.67,
         textAlign: 'left',
         color: '#3E3E3E',
-        fontSize: 17.6,
+        fontSize: 16,
         paddingBottom: 12.67,
         marginLeft: 20,
         marginRight: 20
@@ -353,17 +353,17 @@ const styles = StyleSheet.create({
     top: {
         paddingTop: 20,
         color: '#74BAF1',
-        fontSize: 14.67,
+        fontSize: 16,
         paddingBottom: 3
     },
     bottom: {
         color: '#999999',
-        fontSize: 14.67,
+        fontSize: 16,
         paddingBottom: 20
     },
     button: {
         color: '#2C2C2C',
-        fontSize: 8,
+        fontSize: 16,
         paddingTop: 4
     },
     buttonInfo: {

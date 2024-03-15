@@ -42,6 +42,11 @@ import EweixiuDetailPage from '../navigator/estate/estate-weixiu-detail';
 import EstateWeixiuPage from '../navigator/estate/estate-weixiu';
 import EstateTousuPage from '../navigator/estate/estate-tousu';
 
+//现场检查
+import EstateCheckPage from '../navigator/estate/estate-check';
+import EcheckDetailPage from '../navigator/estate/estate-check-detail';
+import EcheckAddPage from '../navigator/estate/estate-check-add';
+
 import ScanOnly from '../navigator/ScanOnly';
 import ScanSS from '../navigator/scan-ss';
 import XunJianPage from '../navigator/xunjian/xunjian';
@@ -67,7 +72,7 @@ import FeeChargeDetail from '../navigator/fee-charge-detail';
 
 //工作台
 import SelectAddressPage from '../work/select-address';
-import SelectPaiDanPerson from '../work/task/select-pai-dan-person';
+import SelectPerson from '../work/select-person';
 import TaskListPage from '../work/task/task-list';
 import FuWuDanListDetailPage from '../work/task/fu-wu-dan-list-detail';
 import PaiDanListDetailPage from '../work/task/pai-dan-list-detail';
@@ -161,7 +166,7 @@ const navigatorNavigator = createStackNavigator({
   FeeStatistic: {
     screen: FeeStatisticPage,
     navigationOptions: () => ({
-      title: '统计分析',
+      title: '统计分析'
     }),
   },
   addTaskWork: AddWorkPage,
@@ -179,8 +184,16 @@ const navigatorNavigator = createStackNavigator({
 
   e_weixiu: EstateWeixiuPage,
   e_tousu: EstateTousuPage,
-  selectPaidanPerson: SelectPaiDanPerson,
+
+  SelectAddress: SelectAddressPage,
+  SelectPerson: SelectPerson,
+
   charge: FeeChargeDetail,
+
+  //现场检查
+  check: EstateCheckPage,
+  checkDetail: EcheckDetailPage,
+  checkAdd: EcheckAddPage,
 
   //固定资产
   gdzcPandian: GdzcPandianPage,
@@ -242,10 +255,7 @@ navigatorNavigator.navigationOptions = ({ navigation }) => ({
   tabBarVisible: navigation.state.index === 0,
 });
 
-const WorkNavigator = createStackNavigator({
-  // select: SelectAddressPage,
-  // AddWork: AddWorkPage,
-  // Task: TaskListPage,
+const WorkNavigator = createStackNavigator({ 
   Work: {
     screen: WorkPage,
     navigationOptions: () => ({
@@ -255,7 +265,7 @@ const WorkNavigator = createStackNavigator({
   },
 
   AddWork: AddWorkPage,
-  select: SelectAddressPage,
+  SelectAddress: SelectAddressPage,
   service: FuWuDanListDetailPage,
   weixiuView: WeixiuDetailPage, //工作台里面，待回访点击跳转的维修单，只能查看
   tousuView: TousuDetailPage, //工作台里面，待回访点击跳转的投诉单，只能查看 
@@ -265,12 +275,11 @@ const WorkNavigator = createStackNavigator({
   jiedan: JieDanListDetailPage,
   paidan: PaiDanListDetailPage,
   huifang: HuiFangDetailPage,
-  selectPaidanPerson: SelectPaiDanPerson,
+  SelectPerson: SelectPerson,
   scanonly: ScanOnly,
   scandemo: ScanSS,
   Task: TaskListPage,
-  newsList: NewsList,
-  //shenpi: shenpi//跳转到审批中心
+  newsList: NewsList
 });
 
 WorkNavigator.navigationOptions = ({ navigation }) => ({

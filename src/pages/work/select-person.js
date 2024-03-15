@@ -1,16 +1,16 @@
 import React  from 'react';
-import BasePage from '../../base/base';
+import BasePage from '../base/base';
 import {  Flex, Icon  } from '@ant-design/react-native';
 import { TouchableWithoutFeedback, View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import CommonView from '../../../components/CommonView';
-import Macro from '../../../utils/macro';
-import WorkService from '../work-service';
+import CommonView from '../../components/CommonView';
+import Macro from '../../utils/macro';
+import WorkService from './work-service';
 import { connect } from 'react-redux';
 
-class SelectPaiDanPerson extends BasePage {
+class SelectPerson extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
-            title: '选择接单人',
+            title: '选择人员',
             headerForceInset:this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -21,8 +21,7 @@ class SelectPaiDanPerson extends BasePage {
                 <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
                     <Icon name='bars' style={{ marginRight: 15 }} color="black" />
                 </TouchableWithoutFeedback>
-            ),
-
+            )
         };
     };
 
@@ -61,9 +60,9 @@ class SelectPaiDanPerson extends BasePage {
         });
     }
 
-    click = (selectPerson) => {
+    click = (selectItem) => {
         const { navigation } = this.props;
-        navigation.state.params.onSelect({ selectPerson });
+        navigation.state.params.onSelect({ selectItem });
         navigation.goBack();
     };
 
@@ -89,9 +88,7 @@ class SelectPaiDanPerson extends BasePage {
                                         <Text style={styles.identifier}>{item.dutyName}</Text>
                                         <Text style={styles.state}>{item.state === 1 ? '在线' : '离线'}</Text>
                                     </Flex>
-
                                 </Flex>
-
                             </TouchableWithoutFeedback>
                         ))}
                     </View>
@@ -145,4 +142,4 @@ const mapStateToProps = ({ buildingReducer }) => {
         selectBuilding: buildingReducer.selectBuilding,
     };
 };
-export default connect(mapStateToProps)(SelectPaiDanPerson);
+export default connect(mapStateToProps)(SelectPerson);

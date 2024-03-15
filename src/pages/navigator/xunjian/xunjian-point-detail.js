@@ -101,13 +101,13 @@ export default class XunJianPointDetailPage extends BasePage {
 const styles = StyleSheet.create({
     content: {
         paddingLeft: 15,
-        paddingRight: 15,
+        paddingRight: 15
     },
     title: {
         color: '#333',
-        fontSize: 18,
+        fontSize: 16,
         textAlign: 'left',
         paddingTop: 10,
-        paddingBottom: 10,
+        paddingBottom: 10
     },
 });

@@ -213,18 +213,18 @@ export default class ChaiFei extends BasePage {
 const styles = StyleSheet.create({
 
     left: {
-        fontSize: 17,
+        fontSize: 16,
         width: '100%'
     },
     text: {
-        fontSize: 17,
+        fontSize: 16,
     },
     input: {
-        fontSize: 17,
+        fontSize: 16,
         marginLeft: 10
     },
     state: {
-        fontSize: 17,
+        fontSize: 16,
         paddingLeft: 10,
     },
     //area: {
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
     //},
 
     unenable: {
-        fontSize: 17,
+        fontSize: 16,
         color: '#333',
         backgroundColor: '#eeeeee',
         paddingLeft: 10,
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden'
     },
     enable: {
-        fontSize: 17,
+        fontSize: 16,
         color: '#333',
         backgroundColor: '#fff',
         paddingTop: 6,
@@ -258,9 +258,8 @@ const styles = StyleSheet.create({
     },
 
     secondDate: {
-        width: 108,
-
-        fontSize: 17,
+        width: 108, 
+        fontSize: 16,
         color: '#333',
         backgroundColor: '#eeeeee',
         paddingLeft: 10,

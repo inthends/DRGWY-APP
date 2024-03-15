@@ -158,7 +158,7 @@ export default class PaiDanListDetailPage extends BasePage {
                         </Flex>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback
-                        onPress={() => this.props.navigation.navigate('selectPaidanPerson', { onSelect: this.onSelect })}>
+                        onPress={() => this.props.navigation.navigate('SelectPerson', { onSelect: this.onSelect })}>
                         <Flex style={[styles.every]} justify='between'>
                             <Flex>
                                 <Text style={styles.left}>接单人：</Text>

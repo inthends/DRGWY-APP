@@ -8,18 +8,18 @@ import {
 } from 'react-native';
 
 import BasePage from '../base/base';
-import { Flex } from '@ant-design/react-native'; 
+import { Flex } from '@ant-design/react-native';
 import LoadImage from '../../components/load-image';
 import CommonView from '../../components/CommonView';
 import ScreenUtil from '../../utils/screen-util';
 // import ChaoBiaoPage from './chao-biao/chao-biao';
 
 export default class NavigatorPage extends BasePage {
-  
+
   static navigationOptions = ({ navigation }) => {
     return {
       title: '导航',
-      headerForceInset:this.headerForceInset,
+      headerForceInset: this.headerForceInset,
       headerTitleStyle: {
         flex: 1,
         textAlign: 'center'
@@ -34,14 +34,14 @@ export default class NavigatorPage extends BasePage {
     };
   }
 
-  componentDidMount(): void {}
+  componentDidMount(): void { }
 
   render() {
     //const { statistics, dataInfo } = this.state;
     return (
       <CommonView style={{ flex: 1 }}>
         <ScrollView style={{ flex: 1 }}>
-          
+
           <Flex direction={'column'} align={'start'} style={styles.cell}>
             <Flex
               style={{
@@ -199,10 +199,23 @@ export default class NavigatorPage extends BasePage {
                 </Flex>
               </TouchableWithoutFeedback>
             </Flex>
+ 
+            <Flex justify={'between'} style={styles.cellContnent}>
+              <TouchableWithoutFeedback
+                onPress={() => this.props.navigation.push('check')}
+              >
+                <Flex style={styles.left}>
+                  <LoadImage
+                    style={{ width: 22, height: 22 }}
+                    defaultImg={require('../../static/images/navigator/zonghexunjian.png')}
+                  />
+                  <Text style={styles.content}>现场检查</Text>
+                </Flex>
+              </TouchableWithoutFeedback>
+            </Flex>
             <Flex style={styles.line} />
           </Flex>
-
-
+ 
           <Flex direction={'column'} align={'start'} style={styles.cell}>
             <Flex
               style={{
@@ -285,13 +298,6 @@ export default class NavigatorPage extends BasePage {
             </Flex>
             <Flex style={styles.line} />
           </Flex>
-
-
-
-         
-
-
-
         </ScrollView>
       </CommonView>
     );
@@ -305,7 +311,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#000000',
-    fontSize: 19.44,
+    fontSize: 16,
     paddingLeft: 6,
   },
   cellContnent: {
@@ -314,7 +320,7 @@ const styles = StyleSheet.create({
   },
   content: {
     color: '#404145',
-    fontSize: 17.6,
+    fontSize: 16,
     paddingLeft: 15,
   },
   left: {

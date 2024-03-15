@@ -130,16 +130,14 @@ const styles = StyleSheet.create({
         color: '#333',
         fontSize: 16,
     },
-
-
-    top: {
-
-        fontSize: 18,
+ 
+    top: { 
+        fontSize: 16,
         paddingBottom: 15,
     },
     bottom: {
         color: '#868688',
-        fontSize: 18,
+        fontSize: 16,
         paddingBottom: 20,
     },
     button: {
@@ -172,7 +170,7 @@ const styles = StyleSheet.create({
     },
     se: {
         paddingLeft: 10,
-        fontSize: 18,
+        fontSize: 16,
         color: '#666',
     },
     image: {

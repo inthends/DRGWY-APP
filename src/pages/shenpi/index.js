@@ -305,9 +305,7 @@ class ApprovePage extends BasePage {
                   case '1037': {
                     url = 'task';
                     break;
-                  }
-
-
+                  } 
                 }
                 //传递参数
                 this.props.navigation.push(url, {
@@ -380,8 +378,8 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    color: Macro.color_sky,
-    fontSize: 14,
+    color: Macro.work_blue,
+    fontSize: 16,
   },
   txt: {
     fontSize: 14,

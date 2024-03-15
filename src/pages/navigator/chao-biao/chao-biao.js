@@ -23,7 +23,6 @@ class ChaoBiaoPage extends BasePage {
 
     static navigationOptions = ({ navigation }) => {
 
-
         return {
             tabBarVisible: false,
             title: '移动抄表',
@@ -51,8 +50,7 @@ class ChaoBiaoPage extends BasePage {
             }
             return year + '-' + month;
         }
-        this.state = {
-            count: 0,
+        this.state = { 
             //selectBuilding: this.props.selectBuilding || {},
             selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
             dataInfo: {
@@ -62,7 +60,7 @@ class ChaoBiaoPage extends BasePage {
             scan: false,
             nowRead: '',
             showSubmit: false,
-            current: {},
+            current: {}
         };
     }
 
@@ -79,7 +77,6 @@ class ChaoBiaoPage extends BasePage {
     }
 
     getList = (showLoading = true) => {
-
         ChaoBiaoService.lists(this.state.pageIndex).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
@@ -147,12 +144,11 @@ class ChaoBiaoPage extends BasePage {
                 needBack: '1'
             },
         });
-
-
         // this.callBack();
 
 
     };
+
     submit = () => {
         const { date } = this.state;
         if (date) {
@@ -168,6 +164,7 @@ class ChaoBiaoPage extends BasePage {
             UDToast.showError('请选择日期');
         }
     };
+
     tanchuangSubmit = () => {
         const { nowRead, current } = this.state;
         if (nowRead.length === 0) {
@@ -183,22 +180,18 @@ class ChaoBiaoPage extends BasePage {
             });
         });
     };
-
-
+ 
     render() {
-        const { dataInfo, current } = this.state;
-
+        const { dataInfo, current } = this.state; 
         return (
-
             <View style={{ flex: 1 }}>
-                <WhiteSpace size={'xl'} />
-
+                <WhiteSpace size={'xl'} /> 
                 <FlatList
                     data={dataInfo.data}
                     // ListHeaderComponent={}
-                    renderItem={({ item, index }) => <ChaoBiaoCell item={item} />}
+                    renderItem={({ item }) => <ChaoBiaoCell item={item} />}
                     style={{ height: ScreenUtil.deviceHeight() - 300 }}
-                    keyExtractor={(item, index) => (item.id + '')}
+                    keyExtractor={(item) => (item.id + '')}
                     refreshing={this.state.refreshing}
                     // onRefresh={() => this.onRefresh()}
                     onEndReached={() => this.loadMore()}
@@ -206,7 +199,6 @@ class ChaoBiaoPage extends BasePage {
                     onMomentumScrollBegin={() => this.canAction = false}
                     ListEmptyComponent={<NoDataView />}
                 />
-
                 <Flex style={{ minHeight: 40, marginBottom: 30 }}>
                     <TouchableWithoutFeedback onPress={this.scan}>
                         <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.color_4d8fcc }]}>
@@ -219,7 +211,6 @@ class ChaoBiaoPage extends BasePage {
                         </Flex>
                     </TouchableWithoutFeedback>
                 </Flex>
-
                 {this.state.scan && (
                     <View style={styles.mengceng}>
                         <Flex justify={'center'} align={'center'}
@@ -236,7 +227,6 @@ class ChaoBiaoPage extends BasePage {
                                             style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
                                             <Text>编号：{current.meterCode}</Text>
                                             <Text>倍率：{current.meterZoom}</Text>
-
                                         </Flex>
                                         <WingBlank size={'lg'}>
                                             <WingBlank size={'lg'}>
@@ -283,7 +273,6 @@ class ChaoBiaoPage extends BasePage {
                                 </Flex>
                             </WingBlank>
                         </Flex>
-
                     </View>
 
                 )}
@@ -295,10 +284,10 @@ class ChaoBiaoPage extends BasePage {
                             style={{ flex: 1, padding: 25, backgroundColor: 'rgba(178,178,178,0.5)' }}>
                             <Flex direction={'column'}
                                 style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
-                                <Text style={{ fontSize: 20 }}>说明</Text>
+                                <Text style={{ fontSize: 16 }}>说明</Text>
                                 <WhiteSpace />
                                 <Text style={{
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     color: 'red',
                                     lineHeight: 22,
                                     textAlign: 'center',
@@ -325,7 +314,7 @@ class ChaoBiaoPage extends BasePage {
                                             height: 44,
                                         }}>确认提交</Button>
                                     <Button onPress={() => this.setState({ showSubmit: false })} type={'primary'}
-                                        activeStyle={{ backgroundColor: '#ccc' }} style={{
+                                        activeStyle={{ backgroundColor: Macro.work_blue  }} style={{
                                             marginLeft: 30,
                                             width: 110,
                                             backgroundColor: '#ccc',
@@ -335,8 +324,7 @@ class ChaoBiaoPage extends BasePage {
                                 </Flex>
                             </Flex>
                         </Flex>
-                    </View>
-
+                    </View> 
                 )}
 
 
@@ -349,17 +337,15 @@ class ChaoBiaoPage extends BasePage {
 const styles = StyleSheet.create({
     all: {
         backgroundColor: Macro.color_sky,
-        flex: 1,
+        flex: 1
     },
     content: {
         backgroundColor: Macro.color_white,
-        flex: 1,
-
-
+        flex: 1
     },
     list: {
         backgroundColor: Macro.color_white,
-        margin: 15,
+        margin: 15
     },
     title: {
         paddingTop: 15,
@@ -367,11 +353,8 @@ const styles = StyleSheet.create({
         color: '#333',
         fontSize: 16,
         paddingBottom: 10,
-        //
         marginLeft: 20,
-        marginRight: 20,
-
-        // width: ,
+        marginRight: 20
     },
     title2: {
         paddingTop: 15,
@@ -379,33 +362,29 @@ const styles = StyleSheet.create({
         color: '#333',
         fontSize: 16,
         paddingBottom: 10,
-        //
-
-        marginRight: 20,
-
-        // width: ,
+        marginRight: 20
     },
     line: {
         width: ScreenUtil.deviceWidth() - 30 - 15 * 2,
         marginLeft: 15,
         backgroundColor: '#eee',
-        height: 1,
+        height: 1
     },
     top: {
         paddingTop: 20,
         color: '#000',
-        fontSize: 18,
-        paddingBottom: 15,
+        fontSize: 16,
+        paddingBottom: 15
     },
     bottom: {
         color: '#868688',
-        fontSize: 18,
-        paddingBottom: 20,
+        fontSize: 16,
+        paddingBottom: 20
     },
     button: {
         color: '#868688',
         fontSize: 16,
-        paddingTop: 10,
+        paddingTop: 10
     },
     card: {
         borderTopWidth: 1,

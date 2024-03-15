@@ -108,42 +108,41 @@ const mapStateToProps = ({ memberReducer, xunJianReducer }) => {
         xunJianAction: xunJianReducer.xunJianAction,
     };
 };
+
 export default connect(mapStateToProps)(XunjianBeforeStart);
 
 const styles = StyleSheet.create({
     title: {
-        paddingTop: 14.67,
+        paddingTop: 14,
         textAlign: 'left',
         color: '#3E3E3E',
-        fontSize: 17.6,
-        paddingBottom: 12.67,
+        fontSize: 16,
+        paddingBottom: 12,
         marginLeft: 20,
-        marginRight: 20,
-
+        marginRight: 20
     },
     line: {
         width: ScreenUtil.deviceWidth() - 30,
         backgroundColor: '#E0E0E0',
-        height: 1,
+        height: 1
     },
     top: {
         paddingTop: 10,
         color: '#74BAF1',
-        fontSize: 15,
+        fontSize: 16,
         paddingBottom: 10,
         paddingLeft: 20,
-        paddingRight: 20,
+        paddingRight: 20
     },
     bottom: {
         color: '#999999',
-        fontSize: 14.67,
-        paddingBottom: 20,
+        fontSize: 16,
+        paddingBottom: 20
     },
     button: {
         color: '#2C2C2C',
         fontSize: 8,
-        paddingTop: 4,
-
+        paddingTop: 4
     },
     card: {
         borderRadius: 5,
@@ -159,31 +158,28 @@ const styles = StyleSheet.create({
     blue: {
         borderLeftColor: Macro.color_4d8fcc,
         borderLeftWidth: 8,
-        borderStyle: 'solid',
+        borderStyle: 'solid'
     },
     orange: {
         borderLeftColor: Macro.color_f39d39,
         borderLeftWidth: 8,
-        borderStyle: 'solid',
-
+        borderStyle: 'solid'
     },
     location: {
         paddingTop: 15,
         paddingBottom: 10,
         textAlign: 'center',
-        width: '100%',
+        width: '100%'
     },
     person: {
         marginTop: 10,
-        marginRight: 15,
+        marginRight: 15
     },
     personText: {
         color: '#666',
-        fontSize: 18,
+        fontSize: 16,
         width: ScreenUtil.deviceWidth() - 40,
         textAlign: 'center',
-        paddingBottom: 15,
-    },
-
-
+        paddingBottom: 15
+    }
 });

@@ -94,8 +94,8 @@ class ShebeiDetail extends BasePage {
             <CommonView style={{ flex: 1 }}>
                 <ScrollView>
                     <Flex justify={'between'} style={{ paddingLeft: 15, paddingTop: 15, paddingRight: 15 }}>
-                        <Text style={{ fontSize: 18, color: '#333' }}>视频分配器</Text>
-                        <Text style={{ fontSize: 18, color: '#333' }}>{detail.code}</Text>
+                        <Text style={{ fontSize: 16, color: '#333' }}>视频分配器</Text>
+                        <Text style={{ fontSize: 16, color: '#333' }}>{detail.code}</Text>
                     </Flex>
 
                     <Flex direction={'column'} justify={'between'} align={'start'}
@@ -593,7 +593,7 @@ const styles = StyleSheet.create({
     },
     se: {
         paddingLeft: 10,
-        fontSize: 18,
+        fontSize: 16,
         color: '#666',
     },
     text2: {
@@ -602,7 +602,7 @@ const styles = StyleSheet.create({
         color: '#999',
     },
     text3: {
-        fontSize: 18,
+        fontSize: 16,
         color: '#333',
     },
     a: {

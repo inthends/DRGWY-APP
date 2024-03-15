@@ -27,8 +27,7 @@ import { saveXunJianAction } from '../../../utils/store/actions/actions';
 import Macro from '../../../utils/macro';
 
 //固定资产盘点，异常的时候弹出报修单页面
-class AddRepairPage extends BasePage {
-
+class AddRepairPage extends BasePage { 
     static navigationOptions = ({ navigation }) => {
         return {
             title: '新增',
@@ -228,7 +227,14 @@ class AddRepairPage extends BasePage {
             }
         }
     };
-
+    
+    
+    onSelectAddress = ({ selectItem }) => {
+        this.setState({
+            address: selectItem
+        })
+    }
+    
     render() {
         const { data, index, images, fileUrl, address, canSelectAddress } = this.state;
         const title = data[index];
@@ -262,7 +268,7 @@ class AddRepairPage extends BasePage {
                                 <TouchableWithoutFeedback
                                     onPress={() => {
                                         if (canSelectAddress) {
-                                            this.props.navigation.push('select');
+                                            this.props.navigation.push('SelectAddress', { onSelect: this.onSelectAddress });
                                         }
                                     }
                                     }>
@@ -280,8 +286,7 @@ class AddRepairPage extends BasePage {
                                         {/* <LoadImage style={{ width: 6, height: 11 }}
                                             defaultImg={require('../../../static/images/address/right.png')} /> */}
                                     </Flex>
-                                </TouchableWithoutFeedback>
-
+                                </TouchableWithoutFeedback> 
                             </Flex>
 
                             <View style={{ marginLeft: -15 }}>

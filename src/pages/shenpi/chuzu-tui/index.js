@@ -110,6 +110,7 @@ export default class DetailPage extends BasePage {
           <ShowTitle title="基础信息" />
           <Flex style={styles.card} direction="column" align="start">
             <ShowText word="项目" title={detail.organizeName} />
+            <ShowLine />
             <ShowText
               word="合同号"
               title={detail.no}
@@ -126,12 +127,16 @@ export default class DetailPage extends BasePage {
             //   });
             // }}
             />
+             <ShowLine />
             <ShowText word="租期" title={detail.date} />
+            <ShowLine />
             <ShowText word="客户名称" title={detail.customer} />
+            <ShowLine />
             <ShowText word="合同金额" title={detail.totalAmount} />
+            <ShowLine />
             <ShowText word="租赁面积" title={detail.totalArea} />
-            <ShowText word="租赁房产" title={detail.houseName} />
-
+            <ShowLine />
+            <ShowText word="租赁房产" title={detail.houseName} /> 
             <ShowLine />
             <ShowText
               word="退租类型"
@@ -291,7 +296,7 @@ export default class DetailPage extends BasePage {
 const styles = StyleSheet.create({
 
   txt: {
-    fontSize: 14,
+    fontSize: 16,
     paddingBottom: 10,
   },
 

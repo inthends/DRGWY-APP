@@ -201,38 +201,33 @@ const styles = StyleSheet.create({
         // width: ,
     },
     title2: {
-        paddingTop: 15,
-        // textAlign: 'left',
+        paddingTop: 15, 
         color: '#333',
         fontSize: 16,
         paddingBottom: 10,
-        //
-
-        marginRight: 20,
-
-        // width: ,
+        marginRight: 20
     },
     line: {
         width: ScreenUtil.deviceWidth() - 30 - 15 * 2,
         marginLeft: 15,
         backgroundColor: '#eee',
-        height: 1,
+        height: 1
     },
     top: {
         paddingTop: 20,
         color: '#000',
-        fontSize: 18,
-        paddingBottom: 15,
+        fontSize: 16,
+        paddingBottom: 15
     },
     bottom: {
         color: '#868688',
-        fontSize: 18,
-        paddingBottom: 20,
+        fontSize: 16,
+        paddingBottom: 20
     },
     button: {
         color: '#868688',
         fontSize: 16,
-        paddingTop: 10,
+        paddingTop: 10
     },
     card: {
         borderTopWidth: 1,

@@ -59,7 +59,7 @@ export default class ScanOnly extends BasePage {
 
     //识别二维码
     onBarCodeRead = (result) => {
-        const { data, type } = result;
+        const { data } = result;
         let callBack = common.getValueFromProps(this.props).callBack;
         let needBack = common.getValueFromProps(this.props).needBack;
         if (callBack && !!data) {

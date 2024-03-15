@@ -78,7 +78,6 @@ class XunJianPage extends BasePage {
         //     },
         // });
         // return;
- 
         this.props.navigation.push('scanForWork', {
             data: {
                 callBack: this.callBack,
@@ -105,8 +104,6 @@ class XunJianPage extends BasePage {
         //         });
         //     },
         // )
-
-
     };
 
     componentDidMount() {
@@ -307,11 +304,11 @@ export default connect(mapStateToProps)(XunJianPage);
 
 const styles = StyleSheet.create({
     title: {
-        paddingTop: 14.67,
+        paddingTop: 14,
         textAlign: 'left',
         color: '#3E3E3E',
-        fontSize: 17.6,
-        paddingBottom: 12.67,
+        fontSize: 16,
+        paddingBottom: 12,
         marginLeft: 20,
         marginRight: 20
         // width: ,
@@ -325,12 +322,12 @@ const styles = StyleSheet.create({
     top: {
         paddingTop: 20,
         color: '#74BAF1',
-        fontSize: 14.67,
+        fontSize: 16,
         paddingBottom: 3
     },
     bottom: {
         color: '#999999',
-        fontSize: 14.67,
+        fontSize: 16,
         paddingBottom: 20
     },
     button: {
@@ -372,7 +369,7 @@ const styles = StyleSheet.create({
     },
     personText: {
         color: '#666',
-        fontSize: 18,
+        fontSize: 16,
         width: ScreenUtil.deviceWidth() - 40,
         textAlign: 'center'
     },

@@ -1,6 +1,54 @@
 import api from '../../utils/api';
 
 export default {
+
+    //检查单详情
+    checkDetail(keyvalue) {
+        return api.getData('/api/MobileMethod/MGetCheckEntity', { keyvalue });
+    },
+
+    //检查单明细
+    checkDetailList(
+        pageIndex,
+        billId
+    ) {
+        return api.postData('/api/MobileMethod/MGetCheckDetailPageList', {
+            pageIndex,
+            pageSize: 10,
+            billId
+        });
+    },
+
+    saveCheck(
+        billId,
+        mainMemo) {
+        return api.postData('/api/MobileMethod/MSaveCheck', {
+            billId,
+            mainMemo
+        });
+    },
+ 
+    addCheckDetail(
+        billId,
+        mainMemo,
+        unitId,
+        allName,
+        dutyUserId,
+        dutyUserName,
+        checkMemo) {
+        return api.postData('/api/MobileMethod/MAddCheckDetail', {
+            billId,
+            mainMemo,
+            unitId,
+            allName,
+            dutyUserId,
+            dutyUserName,
+            checkMemo
+        });
+    },
+
+
+
     workData(showLoading) {
         return api.postData('/api/MobileMethod/MGetDeskStatistics', {}, showLoading);
     },
@@ -8,9 +56,9 @@ export default {
     getPStructs(params) {
         return api.getData('/api/MobileMethod/MGetPStructs', params);
     },
-    saveForm(params,showLoading=true) {
-        return api.postData('/api/MobileMethod/MSaveServiceDeskForm', params,showLoading);
-    }, 
+    saveForm(params, showLoading = true) {
+        return api.postData('/api/MobileMethod/MSaveServiceDeskForm', params, showLoading);
+    },
     serviceDetail(keyvalue) {
         return api.getData('/api/MobileMethod/MGetServicedeskEntity', { keyvalue });
     },
@@ -90,13 +138,13 @@ export default {
         if (type === '3') {
             //待完成的维修单
             url = '/api/MobileMethod/MGetUnFinishRepairPageList';
-        } 
+        }
         else if (type === '6') {
             //待检验的维修单
             url = '/api/MobileMethod/MGetTestRepairPageList';
             type = overdue;
             overdue = null;
-        } 
+        }
         else if (type === 'fuwu') {
             if (overdue === -1) {
                 //已回复，已经回复不判断是否逾期
@@ -107,13 +155,13 @@ export default {
                 url = '/api/MobileMethod/MGetUnReplyServiceDeskPageList';
                 type = null;
             }
-        } 
+        }
         else if (type === 'visit') {
             //待回访的服务单
             url = '/api/MobileMethod/MGetUnVisitServiceDeskPageList';
             type = null;
         }
-        return api.postData(url, { status: type, isOverdue: overdue , pageIndex, pageSize: 100});
+        return api.postData(url, { status: type, isOverdue: overdue, pageIndex, pageSize: 100 });
     },
 
     paidanPersons(organizeId, keyword = null, type = '员工') {

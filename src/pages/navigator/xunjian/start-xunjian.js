@@ -202,28 +202,26 @@ class StartXunJianPage extends BasePage {
 const styles = StyleSheet.create({
     content: {
         paddingLeft: 15,
-        paddingRight: 15,
+        paddingRight: 15
     },
     title: {
         color: '#333',
-        fontSize: 18,
+        fontSize: 16,
         textAlign: 'left',
         paddingTop: 10,
-        paddingBottom: 10,
-
+        paddingBottom: 10
     },
     ii: {
         paddingTop: 10,
         paddingBottom: 10,
         backgroundColor: '#999',
         borderRadius: 6,
-        marginTop: 30,
+        marginTop: 30
     },
     word: {
         color: 'white',
-        fontSize: 16,
-    },
-
+        fontSize: 16
+    }
 
 });
 

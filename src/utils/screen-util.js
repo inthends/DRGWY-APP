@@ -23,7 +23,7 @@ const h2 = 1334 / defaultPixel;
 const deviceWidth = Dimensions.get('window').width; //设备的宽度
 const deviceHeight = Dimensions.get('window').height; //设备的高度
 const scale = Math.min(deviceHeight / h2, deviceWidth / w2); //获取缩放比例
-const pixelRatio = PixelRatio.get(); //当前设备的像素密度
+//const pixelRatio = PixelRatio.get(); //当前设备的像素密度
 const fontScale = PixelRatio.getFontScale(); //返回字体大小缩放比例
 
 const X_WIDTH = 375;

@@ -188,7 +188,7 @@ class FeeAddPage extends BasePage {
                             borderStyle: 'solid',
                             borderColor: '#74BAF1'
                         }}
-                        textStyle={{ fontSize: 18 }} onChange={this.typeChange}
+                        textStyle={{ fontSize: 16 }} onChange={this.typeChange}
                         titles={titles} visible={true} />
                     <Flex direction={'column'} align={'start'} style={styles.cell}>
                         <Flex wrap={'wrap'} justify={'start'} style={styles.cellContnent}>
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
     },
     title: {
         color: '#000000',
-        fontSize: 17.6,
+        fontSize: 16,
         paddingLeft: 6
     },
     cellContnent: {
@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
     },
     content: {
         color: '#404145',
-        fontSize: 17.6,
+        fontSize: 16,
         paddingTop: 6,
         paddingBottom: 6
     },
@@ -320,7 +320,7 @@ const styles = StyleSheet.create({
     },
     titleWord: {
         color: '#404145',
-        fontSize: 17.6
+        fontSize:16
     },
     word: {
         color: '#404145',

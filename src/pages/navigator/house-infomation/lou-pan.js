@@ -183,37 +183,12 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         marginLeft: 20,
         marginRight: 20
-    },
-    // title2: {
-    //     paddingTop: 15,
-    //     // textAlign: 'left',
-    //     color: '#333',
-    //     fontSize: 16,
-    //     paddingBottom: 10,
-    //     marginRight: 20
-    // },
+    }, 
     top: {
-        fontSize: 18,
+        fontSize: 16,
         paddingTop: 10,
         paddingBottom: 10
-    },
-    // bottom: {
-    //     color: '#868688',
-    //     fontSize: 18,
-    // },
-    // button: {
-    //     color: '#868688',
-    //     fontSize: 16,
-    //     paddingTop: 10,
-    // },
-    // blue: {
-    //     borderLeftColor: Macro.color_4d8fcc,
-    //     borderLeftWidth: 8,
-    // },
-    // orange: {
-    //     borderLeftColor: Macro.color_f39d39,
-    //     borderLeftWidth: 8,
-    // },
+    }, 
     left: {
         flex: 1,
         paddingLeft: 15
@@ -230,11 +205,8 @@ const styles = StyleSheet.create({
     item: {
         width: '100%'
     },
-    name: {
-        // fontSize: 18,
-        // fontWeight: '600',
-        // paddingBottom: 15,
-        fontSize: 17,
+    name: {  
+        fontSize: 16,
         color: '#2c2c2c',
         paddingBottom: 15
     },
@@ -247,33 +219,7 @@ const styles = StyleSheet.create({
         color: '#999999',
         fontSize: Macro.font_14
     },
-    // area: {
-    //     color: Macro.color_636470,
-    //     fontSize: Macro.font_14,
-    // },
-    // complete: {
-    //     color: Macro.color_80aae2,
-    //     fontSize: Macro.font_14,
-    //     backgroundColor: Macro.color_dae9ff,
-    //     padding: 3,
-    //     paddingLeft: 5,
-    //     borderRadius: 1,
-    // },
-    // number: {
-    //     color: Macro.color_9c9ca5,
-    //     fontSize: Macro.font_14,
-    // },
-    // desc: {
-    //     color: Macro.color_c2c1c5,
-    //     fontSize: Macro.font_14,
-    // },
-    // line: {
-    //     width: 1,
-    //     height: 15,
-    //     backgroundColor: Macro.color_c2c1c5,
-    //     marginLeft: 5,
-    //     marginRight: 5
-    // },
+   
 });
 
 const mapStateToProps = ({ buildingReducer }) => {

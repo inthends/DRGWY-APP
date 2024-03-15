@@ -41,7 +41,7 @@ export default class FuWuDanListDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let id = common.getValueFromProps(this.props); 
+        let id = common.getValueFromProps(this.props);
         console.log('sercerid:' + id);
         //let type = common.getValueFromProps(this.props, 'type');
         this.state = {
@@ -131,12 +131,9 @@ export default class FuWuDanListDetailPage extends BasePage {
                         <Text style={styles.left}>{detail.address}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
-                    <DashLine />
-                    <Text style={styles.desc}>{detail.contents}</Text>
-                    <DashLine />
-                    <ListImages images={images} lookImage={this.lookImage} />
-
-                    <Flex style={[styles.every2]} justify='between'>
+                    <Text style={[styles.desc, ScreenUtil.borderBottom()]}>{detail.contents}</Text>
+                    <ListImages images={images} lookImage={this.lookImage} /> 
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>报单人：{detail.contactName} {detail.createDate}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactPhone)}>
                             <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 30, height: 30 }} /></Flex>
@@ -206,28 +203,29 @@ export default class FuWuDanListDetailPage extends BasePage {
                         />
                     </View>
                     <TouchableWithoutFeedback onPress={() => this.click('回复')}>
-                        <Flex justify={'center'} style={[styles.ii, { width: '80%', marginLeft: '10%', marginRight: '10%', marginBottom: 20 }, { backgroundColor: Macro.color_4d8fcc }]}>
+                        <Flex justify={'center'} style={[styles.ii, { width: '80%',
+                         marginLeft: '10%', marginRight: '10%', marginBottom: 20 }, 
+                         { backgroundColor: Macro.work_blue }]}>
                             <Text style={styles.word}>回复</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
                     {detail.status === 1 && <Flex>
                         <TouchableWithoutFeedback onPress={() => this.click('转维修')}>
-                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: '#F7A51E' }]}>
+                            <Flex justify={'center'} style={[styles.ii, { backgroundColor:  Macro.work_blue }]}>
                                 <Text style={styles.word}>转维修</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={() => this.click('转投诉')}>
-                            <Flex justify={'center'} style={styles.ii}>
+                            <Flex justify={'center'} style={[styles.ii, { backgroundColor:  Macro.work_blue }]}>
                                 <Text style={styles.word}>转投诉</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={() => this.click('关闭')}>
-                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.color_4d8fcc }]}>
+                            <Flex justify={'center'} style={[styles.ii, { backgroundColor:  Macro.work_blue }]}>
                                 <Text style={styles.word}>关闭</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
-                    </Flex>}
-                    <DashLine />
+                    </Flex>} 
                     <Communicates communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>

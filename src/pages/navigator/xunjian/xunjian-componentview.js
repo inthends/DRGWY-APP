@@ -61,7 +61,7 @@ export default class XunJianDetailViewPage extends BasePage {
                                             <Flex>
                                                 <LoadImage img={item.result === 1 ? selectImg : noselectImg}
                                                     style={{ width: 15, height: 15 }} />
-                                                <Text style={{ color: '#666', fontSize: 15, marginLeft: 15 }}>正常</Text>
+                                                <Text style={{ color: '#666', fontSize: 16, marginLeft: 15 }}>正常</Text>
                                             </Flex>
                                         </TouchableWithoutFeedback>
 
@@ -70,7 +70,7 @@ export default class XunJianDetailViewPage extends BasePage {
                                                 <Flex>
                                                     <LoadImage img={item.result === 0 ? selectImg : noselectImg}
                                                         style={{ width: 15, height: 15 }} />
-                                                    <Text style={{ color: '#666', fontSize: 15, paddingLeft: 15 }}>异常</Text>
+                                                    <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>异常</Text>
                                                 </Flex>
                                             </TouchableWithoutFeedback>
 
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     },
     title: {
         color: '#333',
-        fontSize: 18,
+        fontSize: 16,
         paddingTop: 15,
     },
     desc: {

@@ -202,7 +202,7 @@ class gdMoneyPage extends BasePage {
                             marginLeft: '10%',
                             marginRight: '10%',
                             marginBottom: 20,
-                        }, { backgroundColor: Macro.color_4d8fcc }]}>
+                        }, { backgroundColor: Macro.work_blue }]}>
                             <Text style={styles.word}>开始盘点</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
         marginVertical: 10
     },
     top: {
-        fontSize: 14,
+        fontSize: 16,
         color: '#666'
     },
     desc: {

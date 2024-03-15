@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
         paddingBottom: 5
     },
     text: {
-        fontSize: 15,
+        fontSize: 16,
         color: '#666'
     },
     bb: {
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
     },
     se: {
         paddingLeft: 10,
-        fontSize: 18,
+        fontSize: 16,
         color: '#666'
     },
     text2: {
@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
         color: '#999'
     },
     text3: {
-        fontSize: 18,
+        fontSize: 16,
         color: '#333'
     },
     a: {

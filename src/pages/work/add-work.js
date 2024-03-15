@@ -5,8 +5,7 @@ import {
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    Keyboard,
-    //ScrollView,
+    Keyboard
 } from 'react-native';
 import BasePage from '../base/base';
 import { Icon, Flex, TextareaItem, Button } from '@ant-design/react-native';
@@ -158,7 +157,7 @@ class AddWorkPage extends BasePage {
     };
 
     selectImages = () => {
-        SelectImage.select(this.state.id,'', '/api/MobileMethod/MUploadServiceDesk').then(res => {
+        SelectImage.select(this.state.id, '', '/api/MobileMethod/MUploadServiceDesk').then(res => {
             let images = [...this.state.images];
             images.splice(images.length - 1, 0, { 'icon': res });
             if (images.length > 4) {
@@ -220,11 +219,17 @@ class AddWorkPage extends BasePage {
         }
     };
 
+
+    onSelectAddress = ({ selectItem }) => {
+        this.setState({
+            address: selectItem
+        })
+    }
+
     render() {
         const { data, index, images, fileUrl, address, canSelectAddress } = this.state;
         const title = data[index];
         const title2 = '输入' + title + '内容';
-
         const width = (ScreenUtil.deviceWidth() - 5 * 20) / 4.0;
         const height = (ScreenUtil.deviceWidth() - 5 * 20) / 4.0;
         return (
@@ -241,10 +246,10 @@ class AddWorkPage extends BasePage {
                                         <Flex justify='center' style={[{
                                             marginLeft: 5,
                                             marginRight: 5,
-                                            backgroundColor: '#0325FD',
-                                            height: 30,
+                                            backgroundColor: Macro.work_blue,//'#0325FD',
+                                            height: 40,
                                             width: (ScreenUtil.deviceWidth() / 3.0 - 20),
-                                            borderRadius: 4,
+                                            borderRadius: 4
                                         }, index === i && { backgroundColor: '#E67942' }]}>
                                             <Text style={{ color: 'white', fontSize: 14 }}>{item}</Text>
                                         </Flex>
@@ -255,7 +260,7 @@ class AddWorkPage extends BasePage {
                                 <TouchableWithoutFeedback
                                     onPress={() => {
                                         if (canSelectAddress) {
-                                            this.props.navigation.push('select');
+                                            this.props.navigation.push('SelectAddress', { onSelect: this.onSelectAddress });
                                         }
                                     }
                                     }>
@@ -274,15 +279,17 @@ class AddWorkPage extends BasePage {
                                             defaultImg={require('../../static/images/address/right.png')} />
                                     </Flex>
                                 </TouchableWithoutFeedback>
-
                             </Flex>
 
-                            <View style={{ marginLeft: -15 }}>
+                            <View>
                                 <TextareaItem
                                     rows={9}
                                     placeholder={title2}
                                     autoHeight
-                                    style={{ paddingTop: 15,  width: ScreenUtil.deviceWidth() - 30 }}
+                                    style={{
+                                        color: '#333', fontSize: 16, paddingTop: 15,
+                                        width: ScreenUtil.deviceWidth() - 30
+                                    }}
                                     onChange={value => this.setState({ value })}
                                     value={this.state.value}
                                 />
@@ -338,7 +345,8 @@ class AddWorkPage extends BasePage {
                             flex: 1,
                             paddingTop: 40,
                         }}>
-                            <Button style={{ width: '90%',backgroundColor: Macro.work_blue }} type="primary" onPress={() => this.submit()}>确定</Button>
+                            <Button style={{ width: '90%', backgroundColor: Macro.work_blue }} type="primary"
+                                onPress={() => this.submit()}>确定</Button>
                         </Flex>
                     </View>
                 </TouchableWithoutFeedback>

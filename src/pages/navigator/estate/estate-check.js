@@ -1,34 +1,30 @@
-import React//, {Fragment}
-    from 'react';
+import React from 'react';
 import {
     View,
     Text,
     StyleSheet,
-    //StatusBar,
-    FlatList,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    //Linking,
+    FlatList
 } from 'react-native';
+import { Flex, Icon, Button } from '@ant-design/react-native';
 import BasePage from '../../base/base';
-import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
 import { connect } from 'react-redux';
-//import ListHeader from '../../../components/list-header';
 import common from '../../../utils/common';
-import LoadImage from '../../../components/load-image';
 import ScrollTitle from '../../../components/scroll-title';
 import MyPopover from '../../../components/my-popover';
 import NavigatorService from '../navigator-service';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 
-class EstateWeixiuPage extends BasePage {
+class EstateCheckPage extends BasePage {
+
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
-            title: '维修单',
+            title: '检查单',
             headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -39,7 +35,7 @@ class EstateWeixiuPage extends BasePage {
                 <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
                     <Icon name='bars' style={{ marginRight: 15 }} color="black" />
                 </TouchableWithoutFeedback>
-            ),
+            )
         };
     };
 
@@ -50,20 +46,16 @@ class EstateWeixiuPage extends BasePage {
         };
 
         this.state = {
-            count: 0,
-            showTabbar: true,
             pageIndex: 1,
-            statistics: {},
             dataInfo: {
-                data: []
+                data: [],
             },
             refreshing: false,
             ym: common.getYM('2020-01'),
+            billType: '全部',
             billStatus: -1,
-            //canLoadMore: true,
             time: common.getCurrentYearAndMonth(),
             selectBuilding: this.props.selectBuilding,
-            repairArea: ''
         };
     }
 
@@ -91,8 +83,8 @@ class EstateWeixiuPage extends BasePage {
     }
 
     getList = () => {
-        const { billStatus, selectBuilding, time, repairArea } = this.state;
-        //let treeType;
+        const { billStatus, selectBuilding, billType, time } = this.state;
+        let treeType;
         let organizeId;
         if (selectBuilding) {
             treeType = selectBuilding.type;
@@ -100,13 +92,13 @@ class EstateWeixiuPage extends BasePage {
         }
         let startTime = common.getMonthFirstDay(time);
         let endTime = common.getMonthLastDay(time);
-        NavigatorService.weixiuList(this.state.pageIndex,
+        NavigatorService.checkList(
+            this.state.pageIndex,
             billStatus,
-            //treeType,
+            billType,
             organizeId,
             startTime,
-            endTime,
-            repairArea).then(dataInfo => {
+            endTime).then(dataInfo => {
                 if (dataInfo.pageIndex > 1) {
                     dataInfo = {
                         ...dataInfo,
@@ -115,7 +107,7 @@ class EstateWeixiuPage extends BasePage {
                 }
                 this.setState({
                     dataInfo: dataInfo,
-                    refreshing: false
+                    refreshing: false,
                     //canLoadMore: true,
                 }, () => {
                 });
@@ -125,7 +117,7 @@ class EstateWeixiuPage extends BasePage {
     onRefresh = () => {
         this.setState({
             refreshing: true,
-            pageIndex: 1
+            pageIndex: 1,
         }, () => {
             this.getList();
         });
@@ -140,7 +132,7 @@ class EstateWeixiuPage extends BasePage {
             this.setState({
                 refreshing: true,
                 pageIndex: pageIndex + 1,
-                //canLoadMore: false,
+                // canLoadMore: false,
             }, () => {
                 this.getList();
             });
@@ -150,7 +142,7 @@ class EstateWeixiuPage extends BasePage {
     _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.props.navigation.navigate('weixiuD', { data: item.id });
+                this.props.navigation.push('checkDetail', { data: item.billId });
             }}>
                 <Flex direction='column' align={'start'}
                     style={[styles.card, index === 0 ? styles.blue : styles.orange]}>
@@ -160,21 +152,25 @@ class EstateWeixiuPage extends BasePage {
                     </Flex>
                     <Flex style={styles.line} />
                     <Flex align={'start'} direction={'column'}>
-                        <Flex justify='between'
+                        {/* <Flex justify='between'
                             style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
-                            <Text>{item.address} {item.contactName}</Text>
-                            <TouchableWithoutFeedback onPress={() => common.call(item.contactLink)}>
-                                <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 20, height: 20 }} /></Flex>
-                            </TouchableWithoutFeedback>
-                        </Flex>
+                            <Text>{item.address} </Text>
+                            <Text>{item.statusName}</Text>
+                        </Flex> */}
                         <Text style={{
                             paddingLeft: 20,
                             paddingRight: 20,
-                            paddingBottom: 40,
+                            paddingBottom: 20,
                             color: '#666',
-                        }}>{item.repairContent}</Text>
-
-
+                        }}>{item.memo}</Text>
+                        <Flex justify='between'
+                            style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
+                            <Text>检查人：{item.checkUserName} {item.postName}</Text>
+                            <Text>{item.billDate}</Text>
+                            {/*<TouchableWithoutFeedback onPress={() => common.call(item.contactPhone)}>
+                                <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 15, height: 15 }} /></Flex>
+                            </TouchableWithoutFeedback> */}
+                        </Flex>
                     </Flex>
                 </Flex>
             </TouchableWithoutFeedback>
@@ -184,35 +180,27 @@ class EstateWeixiuPage extends BasePage {
     statusChange = (title) => {
         let billStatus;
         switch (title) {
-            case '待派单': {
+            case '待评审': {
                 billStatus = 1;
                 break;
             }
-            case '待接单': {
+            case '待闭单': {
                 billStatus = 2;
                 break;
             }
-            case '待完成': {
-                billStatus = 4;
-                break;
-            }
-            case '待回访': {
-                billStatus = 5;
-                break;
-            }
-            default: {
-                billStatus = -1;
+            case '已闭单': {
+                billStatus = 3;
                 break;
             }
         }
         this.setState({
             billStatus,
-            pageIndex: 1,
+            pageIndex: 1
         }, () => {
             this.onRefresh();
         });
-    };
 
+    };
     timeChange = (time) => {
         this.setState({
             time,
@@ -220,56 +208,72 @@ class EstateWeixiuPage extends BasePage {
         }, () => {
             this.onRefresh();
         });
-
     };
-
-    areaChange = (area) => {
-        let repairArea = area;
-        if (repairArea === '全部') {
-            repairArea = '';
-        }
+    billType = (billType) => {
         this.setState({
-            repairArea,
+            billType,
             pageIndex: 1,
         }, () => {
             this.onRefresh();
         });
     };
 
-
     render() {
         const { dataInfo, ym } = this.state;
         return (
             <View style={{ flex: 1 }}>
                 <CommonView style={{ flex: 1 }}>
-                    <ScrollTitle onChange={this.statusChange} titles={['全部', '待派单', '待接单', '待完成', '待回访']} />
+                    <ScrollTitle onChange={this.billType} titles={['我的', '全部']} />
                     {/*<Tabs tabs={tabs2} initialPage={1} tabBarPosition="top">*/}
                     {/*    {renderContent}*/}
                     {/*</Tabs>*/}
                     <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
-                        <MyPopover onChange={this.areaChange} titles={['全部', '客户区域', '公共区域']}
+                        <MyPopover onChange={this.statusChange}
+                            titles={['全部', '待评审', '待闭单', '已闭单']}
                             visible={true} />
                         <MyPopover onChange={this.timeChange} titles={ym} visible={true} />
                     </Flex>
+
                     <FlatList
                         data={dataInfo.data}
-                        // ListHeaderComponent={}
                         renderItem={this._renderItem}
                         style={styles.list}
-                        keyExtractor={(item, index) => item.id}
-                        // refreshing={this.state.refreshing}
-                        // onRefresh={() => this.onRefresh()}
+                        keyExtractor={(item) => item.billId}
                         onEndReached={() => this.loadMore()}
                         onEndReachedThreshold={0.1}
-                        // onScrollBeginDrag={() => this.canAction = true}
-                        // onScrollEndDrag={() => this.canAction = false}
                         onMomentumScrollBegin={() => this.canAction = true}
                         onMomentumScrollEnd={() => this.canAction = false}
                         ListEmptyComponent={<NoDataView />}
                     />
-                </CommonView>
-            </View>
 
+                    {/* <TouchableWithoutFeedback onPress={() => this.props.navigation.push('checkAdd')}>
+                        <Flex justify={'center'} style={[styles.ii, {
+                            width: '80%',
+                            marginLeft: '10%',
+                            marginRight: '10%',
+                            marginBottom: 20
+                        }, { backgroundColor: Macro.work_blue }]}>
+                            <Text style={styles.word}>开始检查</Text>
+                        </Flex>
+                    </TouchableWithoutFeedback> */}
+
+
+                    <Flex justify={'center'}>
+                        <Button
+                            onPress={() => this.props.navigation.push('checkAdd')}
+                            type={'primary'}
+                            activeStyle={{ backgroundColor: Macro.work_blue }} style={{
+                                width: 350,
+                                marginBottom: 20,
+                                backgroundColor: Macro.work_blue,
+                                height: 40
+                            }}>开始检查</Button>
+                    </Flex>
+
+                </CommonView>
+
+
+            </View>
         );
     }
 }
@@ -277,63 +281,52 @@ class EstateWeixiuPage extends BasePage {
 const styles = StyleSheet.create({
     all: {
         backgroundColor: Macro.color_sky,
-        flex: 1,
+        flex: 1
     },
     content: {
         backgroundColor: Macro.color_white,
-        flex: 1,
-
-
+        flex: 1
     },
     list: {
         backgroundColor: Macro.color_white,
-        margin: 15,
+        margin: 15
     },
     title: {
         paddingTop: 15,
-        // textAlign: 'left',
         color: '#333',
         fontSize: 16,
         paddingBottom: 10,
-        //
         marginLeft: 20,
-        marginRight: 20,
-
-        // width: ,
+        marginRight: 20
     },
     title2: {
         paddingTop: 15,
-        // textAlign: 'left',
         color: '#333',
         fontSize: 16,
         paddingBottom: 10,
-        //
-
-        marginRight: 20,
-
-        // width: ,
+        marginRight: 20
     },
     line: {
         width: ScreenUtil.deviceWidth() - 30 - 15 * 2,
         marginLeft: 15,
         backgroundColor: '#eee',
-        height: 1,
+        height: 1
     },
     top: {
         paddingTop: 20,
         color: '#000',
         fontSize: 16,
-        paddingBottom: 15,
+        paddingBottom: 15
     },
     bottom: {
         color: '#868688',
         fontSize: 16,
-        paddingBottom: 20,
+        paddingBottom: 20
     },
     button: {
         color: '#868688',
         fontSize: 16,
-        paddingTop: 10,
+        paddingTop: 10
     },
     card: {
         borderTopWidth: 1,
@@ -348,7 +341,7 @@ const styles = StyleSheet.create({
         shadowColor: '#00000033',
         shadowOffset: { h: 10, w: 10 },
         shadowRadius: 5,
-        shadowOpacity: 0.8,
+        shadowOpacity: 0.8
     },
     blue: {
         borderLeftColor: Macro.work_blue,
@@ -358,14 +351,25 @@ const styles = StyleSheet.create({
         borderLeftColor: Macro.work_orange,
         borderLeftWidth: 5,
     },
-    aaa: {
-        paddingRight: 20,
+    ii: {
+        paddingTop: 10,
+        paddingBottom: 10,
+        marginLeft: 10,
+        marginRight: 10,
+        width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
+        backgroundColor: '#999',
+        borderRadius: 6
     },
-
+    word: {
+        color: 'white',
+        fontSize: 16
+    }
 });
+
 const mapStateToProps = ({ buildingReducer }) => {
     return {
-        selectBuilding: buildingReducer.selectBuilding,
+        selectBuilding: buildingReducer.selectBuilding
     };
 };
-export default connect(mapStateToProps)(EstateWeixiuPage);
+
+export default connect(mapStateToProps)(EstateCheckPage);

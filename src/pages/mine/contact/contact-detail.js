@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
         paddingTop: 5,
     },
     item: {
-        fontSize: 18,
+        fontSize: 16,
         color: '#333',
     },
     button: {

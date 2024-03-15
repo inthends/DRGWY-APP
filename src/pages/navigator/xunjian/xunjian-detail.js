@@ -1,12 +1,8 @@
 import React  from 'react';
 import BasePage from '../../base/base';
 import { Flex , Icon } from '@ant-design/react-native';
-//import Macro from '../../../utils/macro';
 import { Modal, ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
-// import ScreenUtil from '../../../utils/screen-util';
-// import LoadImage from '../../../components/load-image';
-import CommonView from '../../../components/CommonView';
-// import ScrollTitle from '../../../components/scroll-title'; 
+import CommonView from '../../../components/CommonView'; 
 import XunJianViewComponent from './xunjian-componentview';
 import ListImages from '../../../components/list-images';
 import common from '../../../utils/common';
@@ -82,14 +78,13 @@ export default class XunJianDetailPage extends BasePage {
 const styles = StyleSheet.create({
     content: {
         paddingLeft: 15,
-        paddingRight: 15,
+        paddingRight: 15
     },
     title: {
         color: '#333',
-        fontSize: 18,
+        fontSize: 16,
         textAlign: 'left',
         paddingTop: 10,
-        paddingBottom: 10,
-
+        paddingBottom: 10
     }
 });

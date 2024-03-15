@@ -20,7 +20,6 @@ import NavigatorService from '../navigator-service';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 
-
 class EstateFuwuPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
@@ -334,12 +333,12 @@ const styles = StyleSheet.create({
     top: {
         paddingTop: 20,
         color: '#000',
-        fontSize: 18,
+        fontSize: 16,
         paddingBottom: 15,
     },
     bottom: {
         color: '#868688',
-        fontSize: 18,
+        fontSize: 16,
         paddingBottom: 20,
     },
     button: {

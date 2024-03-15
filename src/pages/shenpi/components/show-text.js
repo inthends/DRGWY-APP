@@ -5,7 +5,7 @@ import Macro from '../../../utils/macro';
 import screenUtil from '../../../utils/screen-util';
 
 const ShowText = ({
-  fixedWidth = 60,
+  fixedWidth = 65,
   word = '',
   title = '',
   onClick,
@@ -50,8 +50,8 @@ const ShowText = ({
 
 const styles = StyleSheet.create({
   txt: {
-    fontSize: 14,
-    paddingBottom: 10,
+    fontSize: 16,
+    paddingBottom: 10
   },
 });
 

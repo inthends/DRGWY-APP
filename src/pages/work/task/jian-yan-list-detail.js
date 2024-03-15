@@ -169,20 +169,16 @@ export default class JianYanListDetailPage extends BasePage {
                             <Flex>
                                 <LoadImage img={result === 1 ? selectImg : noselectImg}
                                     style={{ width: 15, height: 15 }} />
-                                <Text style={{ color: '#666', fontSize: 15, paddingLeft: 15 }}>合格</Text>
+                                <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>合格</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={() => this.setState({ result: 0 })}>
                             <Flex>
                                 <LoadImage img={result === 0 ? selectImg : noselectImg}
                                     style={{ width: 15, height: 15 }} />
-                                <Text style={{ color: '#666', fontSize: 15, paddingLeft: 15 }}>不合格</Text>
+                                <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>不合格</Text>
                             </Flex>
-                        </TouchableWithoutFeedback> 
-                        {/*<Radio>*/}
-                        {/*    <Text onPress={() => this.setState({ result: 1 })} style={{ color: '#666', fontSize: 15, paddingLeft: 15 }}>合格</Text>*/}
-                        {/*    <Text onPress={() => this.setState({ result: 0 })} style={{ color: '#666', fontSize: 15, paddingLeft: 15 }}>不合格</Text>*/}
-                        {/*</Radio>*/} 
+                        </TouchableWithoutFeedback>  
                     </Flex>
                     <View style={{
                         margin: 15,

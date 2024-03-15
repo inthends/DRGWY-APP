@@ -187,12 +187,12 @@ const styles = StyleSheet.create({
     top: {
         paddingTop: 20,
         color: '#000',
-        fontSize: 18,
+        fontSize: 16,
         paddingBottom: 15,
     },
     bottom: {
         color: '#868688',
-        fontSize: 18,
+        fontSize: 16,
         paddingBottom: 20,
     },
     button: {

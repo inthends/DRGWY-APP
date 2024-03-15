@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 import BasePage from '../../base/base';
-import { Flex, Icon } from '@ant-design/react-native';
+import { Flex, Icon, Checkbox } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import BuildingService from '../building_service';
 import LoadImage from '../../../components/load-image';
@@ -30,27 +30,27 @@ class SecondDetailBuildingPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let item = common.getValueFromProps(this.props); 
+        let item = common.getValueFromProps(this.props);
         this.state = {
             item,
             index: 0,
             fadeAnim: new Animated.Value((ScreenUtil.deviceWidth() / 6.0) - lineWidth / 2),
             allData: [
-                // {title: '向远公司', show: false, data: ['幸福小区']},
+                // {title: '元度江苏', show: false, data: ['幸福小区']},
                 // {
-                //     title: '远大ABC',
+                //     title: '元度ABC',
                 //     show: false,
                 //     data: ['棋联苑', '富康苑', '金秋元', 'Jimmy', 'Joel', 'John', 'Julie'],
                 // },
             ],
             room: {},
             contracts: [],//合同
-            customers: []//客户
+            customers: [],//客户
+            isShow: false//是否显示历史客户
         };
     }
 
     //componentDidMount(): void {
-
     componentDidMount() {
         BuildingService.roomDetail(this.state.item.id).then(room => {
             this.setState({
@@ -70,7 +70,7 @@ class SecondDetailBuildingPage extends BasePage {
         });
 
         //获取客户
-        BuildingService.getCustomerList(this.state.item.id).then(res => {
+        BuildingService.getCustomerList(this.state.item.id, this.state.isShow).then(res => {
             this.setState({
                 customers: res || []
             });
@@ -87,6 +87,18 @@ class SecondDetailBuildingPage extends BasePage {
             },
         ).start();
         this.setState({ index: index });
+    };
+
+
+    //显示历史客户
+    showAll = (e) => {
+        this.setState({ isShow: e.target.checked });
+        //获取客户
+        BuildingService.getCustomerList(this.state.item.id, e.target.checked).then(res => {
+            this.setState({
+                customers: res || []
+            });
+        });
     };
 
     render() {
@@ -110,6 +122,7 @@ class SecondDetailBuildingPage extends BasePage {
                             <Text style={styles.left}>{room.code}</Text>
                         </Flex>
                     </Flex>
+
                     <Flex justify='between' style={styles.single}>
                         <Text style={styles.left}>全称</Text>
                         <Text style={styles.right}>{room.allName}</Text>
@@ -180,8 +193,18 @@ class SecondDetailBuildingPage extends BasePage {
                             direction='column' align='start'
                             style={{ backgroundColor: 'white', borderRadius: 4, padding: 15, marginBottom: 5 }}>
                             <Flex style={{ paddingBottom: 10 }}>
-                                <Text style={{ color: '#88878c', fontSize: 14 }}>{item.no}</Text>
-                                <Text style={{ color: '#999', paddingLeft: 5, fontSize: 14 }}>{item.customer}</Text>
+                                <Text style={{
+                                    fontSize: 16,
+                                    color: '#333',
+                                    fontWeight: '600',
+                                }}>{item.no}</Text>
+                                <Text style={{
+                                    fontSize: 16,
+                                    color: '#333',
+                                    fontWeight: '600',
+                                    paddingLeft: 5,
+                                    fontSize: 14
+                                }}>{item.customer}</Text>
                             </Flex>
                             <Flex justify={'center'} style={{
                                 width: 26,
@@ -248,6 +271,19 @@ class SecondDetailBuildingPage extends BasePage {
         else {
             content =
                 <Flex direction={'column'} align={'start'} style={{ marginBottom: 15 }}>
+                    <Flex
+                        direction='column' align='start' style={{ backgroundColor: 'white', borderRadius: 4, padding: 15, marginBottom: 5 }}>
+                        <Flex justify='between' style={{ paddingBottom: 10, width: ScreenUtil.deviceWidth() - 50 }} >
+                            <Text style={styles.name} >{customers.length > 0 ? customers[0].name : ''}</Text>
+                            <Flex>
+                                <Checkbox defaultChecked={false}
+                                    onChange={(e) => this.showAll(e)} >
+                                    <Text style={{ paddingTop: 3, paddingLeft: 3, color: '#2c2c2c' }}>历史</Text>
+                                </Checkbox>
+                            </Flex>
+                        </Flex>
+                    </Flex>
+
                     {customers.map((item, index) => (
                         <Flex
                             key={item.id}
@@ -283,7 +319,7 @@ class SecondDetailBuildingPage extends BasePage {
                                 <Flex direction='column' align='start'
                                     style={{ paddingTop: 15, width: (ScreenUtil.deviceWidth() - 50) / 3.0 }}>
                                     <Text style={{ color: '#a8a7ab' }}>状态</Text>
-                                    <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.state}</Text>
+                                    <Text style={{ paddingTop: 10, color: '#e7ad7c' }}>{item.state}</Text>
                                 </Flex>
                                 <Flex direction='column' align='start'
                                     style={{ paddingTop: 15, width: (ScreenUtil.deviceWidth() - 50) / 3.0 }}>
@@ -353,8 +389,8 @@ const styles = StyleSheet.create({
     name: {
         fontSize: 16,
         color: '#333',
-        paddingBottom: 6,
-        fontWeight: '600'
+        fontWeight: '600',
+        paddingBottom: 6
     },
     right: {
         fontSize: 14,

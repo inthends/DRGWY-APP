@@ -113,27 +113,14 @@ const styles = StyleSheet.create({
     },
     top: {
 
-        fontSize: 18,
+        fontSize: 16,
         paddingBottom: 15,
     },
     bottom: {
         color: '#868688',
-        fontSize: 18,
+        fontSize: 16,
         paddingBottom: 20,
-    },
-    // button: {
-    //     color: '#868688',
-    //     fontSize: 16,
-    //     paddingTop: 10,
-    // },
-    // blue: {
-    //     borderLeftColor: Macro.color_4d8fcc,
-    //     borderLeftWidth: 8,
-    // },
-    // orange: {
-    //     borderLeftColor: Macro.color_f39d39,
-    //     borderLeftWidth: 8,
-    // }, 
+    }, 
     left: {
         flex: 1
     },

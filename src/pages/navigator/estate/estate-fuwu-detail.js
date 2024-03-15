@@ -25,6 +25,7 @@ import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
 export default class EfuwuDetailPage extends BasePage {
+
     static navigationOptions = ({ navigation }) => {
         return {
             title: '服务单详情',
@@ -128,15 +129,15 @@ export default class EfuwuDetailPage extends BasePage {
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.billType}</Text>
                     </Flex>
-                    <Flex style={[styles.every]} justify='between'>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.address}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
-                    <DashLine />
-                    <Text style={styles.desc}>{detail.contents}</Text>
-                    <DashLine />
+
+                    <Text style={[styles.desc, ScreenUtil.borderBottom()]}>{detail.contents}</Text>
+
                     <ListImages images={images} lookImage={this.lookImage} />
-                    <Flex style={[styles.every2]} justify='between'>
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>报单人：{detail.contactName} {detail.createDate}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactPhone)}>
                             <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 30, height: 30 }} /></Flex>
@@ -159,7 +160,7 @@ export default class EfuwuDetailPage extends BasePage {
                             </Flex>
                         </TouchableWithoutFeedback>
                     ) : null}
-                    <DashLine />
+
                     <View style={{
                         margin: 15,
                         borderStyle: 'solid',
@@ -181,18 +182,18 @@ export default class EfuwuDetailPage extends BasePage {
                             marginLeft: '10%',
                             marginRight: '10%',
                             marginBottom: 20,
-                        }, { backgroundColor: Macro.color_4d8fcc }]}>
+                        }, { backgroundColor: Macro.work_blue }]}>
                             <Text style={styles.word}>回复</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
                     {detail.status === 1 && <Flex>
                         <TouchableWithoutFeedback onPress={() => this.click('转维修')}>
-                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.color_f39d39 }]}>
+                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
                                 <Text style={styles.word}>转维修</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={() => this.click('转投诉')}>
-                            <Flex justify={'center'} style={styles.ii}>
+                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
                                 <Text style={styles.word}>转投诉</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
@@ -202,7 +203,7 @@ export default class EfuwuDetailPage extends BasePage {
                             </Flex>
                         </TouchableWithoutFeedback>
                     </Flex>}
-                    <DashLine />
+
                     <Communicates communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
 
@@ -224,6 +225,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#F3F4F2'
     },
     every: {
+        fontSize: 16,
         marginLeft: 15,
         marginRight: 15,
         paddingTop: 15,
@@ -240,8 +242,13 @@ const styles = StyleSheet.create({
     },
     right: {},
     desc: {
-        padding: 15,
-        paddingBottom: 40
+        fontSize: 16,
+        marginLeft: 15,
+        marginRight: 15,
+        paddingTop: 15,
+        paddingBottom: 15
+        // padding: 15,
+        // paddingBottom: 40
     },
     ii: {
         paddingTop: 10,
