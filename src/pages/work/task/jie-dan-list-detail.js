@@ -1,26 +1,25 @@
-import React  from 'react';
+import React from 'react';
 import {
-    View,
     Text,
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
+    TextInput,
     ScrollView, Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
-import {  Flex, TextareaItem, Icon } from '@ant-design/react-native';
+import { Flex, Icon, Button } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';
 import UDToast from '../../../utils/UDToast';
-import DashLine from '../../../components/dash-line';
 import WorkService from '../work-service';
 // import Communicates from '../../../components/communicates';
 import OperationRecords from '../../../components/operationrecords';
 import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
-import ImageViewer from 'react-native-image-zoom-viewer'; 
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 export default class JieDanListDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -127,30 +126,30 @@ export default class JieDanListDetailPage extends BasePage {
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
-                    <Flex style={[styles.every2]} justify='between'>
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.address} {detail.contactName}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
-                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 30, height: 30 }} /></Flex>
+                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
+                                style={{ width: 16, height: 16 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
-                    <DashLine />
                     <Text style={styles.desc}>{detail.repairContent}</Text>
-                    <DashLine />
+
                     <ListImages images={images} lookImage={this.lookImage} />
 
-                    <Flex style={[styles.every2]} justify='between'>
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
                     </Flex>
 
                     <TouchableWithoutFeedback>
-                        <Flex style={[styles.every]}>
+                        <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                             <Text style={styles.left}>关联单：</Text>
-                            <Text onPress={() => this.props.navigation.navigate('service', { data: { id: detail.relationId } })}
-                                style={[styles.right, { color: Macro.color_4d8fcc }]}>{detail.serviceDeskCode}</Text>
+                            <Text onPress={() => this.props.navigation.navigate('service', { data: detail.relationId })}
+                                style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-                    <DashLine />
-                    <View style={{
+
+                    {/* <View style={{
                         margin: 15,
                         borderStyle: 'solid',
                         borderColor: '#F3F4F2',
@@ -160,17 +159,47 @@ export default class JieDanListDetailPage extends BasePage {
                         <TextareaItem
                             rows={4}
                             placeholder='请输入'
-                            style={{  paddingTop: 10,  width: ScreenUtil.deviceWidth() - 32 }}
+                            style={{ paddingTop: 10, width: ScreenUtil.deviceWidth() - 32 }}
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
-                    </View>
+                    </View> */}
 
-                    <TouchableWithoutFeedback onPress={() => this.click('接单')}>
-                        <Flex justify={'center'} style={[styles.ii, { width: '80%', marginLeft: '10%', marginRight: '10%', marginBottom: 20 }, { backgroundColor: Macro.color_4d8fcc }]}>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <TextInput
+                            maxLength={500}
+                            placeholder='请输入'
+                            multiline
+                            onChangeText={value => this.setState({ value })}
+                            value={this.state.value}
+                            style={{ fontSize: 16, textAlignVertical: 'top' }}
+                            numberOfLines={4}>
+                        </TextInput>
+                    </Flex>
+
+                    {/* <TouchableWithoutFeedback onPress={() => this.click('接单')}>
+                        <Flex justify={'center'} 
+                        style={[styles.ii, {
+                            width: '80%',
+                            marginLeft: '10%',
+                            marginRight: '10%',
+                            marginTop: 10
+                        }, { backgroundColor: Macro.work_blue }]}>
                             <Text style={styles.word}>接单</Text>
                         </Flex>
-                    </TouchableWithoutFeedback>
+                    </TouchableWithoutFeedback> */}
+
+                    <Flex justify={'center'}>
+                        <Button onPress={() => this.click('接单')} type={'primary'}
+                            activeStyle={{ backgroundColor: Macro.work_blue }} style={{
+                                width: 300,
+                                backgroundColor: Macro.work_blue,
+                                marginTop: 20,
+                                marginBottom: 10,
+                                height: 40
+                            }}>接单</Button>
+                    </Flex>
+
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
 
                 </ScrollView>
@@ -184,13 +213,7 @@ export default class JieDanListDetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-    header: {
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 15,
-        paddingRight: 15,
-        backgroundColor: '#F3F4F2'
-    },
+ 
     every: {
         marginLeft: 15,
         marginRight: 15,
@@ -204,27 +227,20 @@ const styles = StyleSheet.create({
         paddingTop: 10
     },
     left: {
-        fontSize: 14,
+        fontSize: 16,
         color: '#333'
     },
     right: {
-        fontSize: 14,
+        fontSize: 16,
         color: '#333'
     },
     desc: {
+        fontSize: 16,
+        color: '#333',
         padding: 15,
         paddingBottom: 40
     },
-    ii: {
-        paddingTop: 10,
-        paddingBottom: 10,
-        marginLeft: 10,
-        marginRight: 10,
-        width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
-        backgroundColor: '#999',
-        borderRadius: 6,
-        marginBottom: 20
-    },
+   
     word: {
         color: 'white',
         fontSize: 16

@@ -5,16 +5,18 @@ import {
     TouchableOpacity,
     StyleSheet,
     ScrollView,
-    FlatList
+    FlatList,
+    Modal
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import common from '../../../utils/common';
-import DashLine from '../../../components/dash-line';
 import WorkService from '../../work/work-service';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
+import ListImages from '../../../components/list-images';
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 export default class EcheckDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -39,6 +41,7 @@ export default class EcheckDetailPage extends BasePage {
             dataInfo: {
                 data: [],
             },
+            lookImageIndex: 0,
             visible: false
         };
     }
@@ -59,16 +62,12 @@ export default class EcheckDetailPage extends BasePage {
 
     getData = () => {
         const { id } = this.state;
-        WorkService.checkDetail(id).then(item => {
+        WorkService.checkDetail(id).then(detail => {
             this.setState({
-                detail: {
-                    ...item.data,
-                    statusName: item.statusName
-                },
+                detail
             });
         });
     };
-
 
     onRefresh = () => {
         this.setState({
@@ -114,7 +113,28 @@ export default class EcheckDetailPage extends BasePage {
     };
 
 
+    lookImage = (lookImageIndex, files) => {
+        this.setState({
+            lookImageIndex,
+            images: files,
+            visible: true
+        });
+    };
+
+
+    cancel = () => {
+        this.setState({
+            visible: false
+        });
+    };
+
     _renderItem = ({ item, index }) => {
+        //获取附件
+        // WorkService.checkFiles(item.id).then(images => {
+        //     this.setState({
+        //         images
+        //     });
+        // });
         return (
             <Flex direction='column' align={'start'}
                 style={[styles.card, index === 0 ? styles.blue : styles.orange]}>
@@ -125,8 +145,7 @@ export default class EcheckDetailPage extends BasePage {
                 <Flex align={'start'} direction={'column'}>
                     <Flex justify='between'
                         style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
-                        <Text>检查人：{item.dutyUserName} {item.postName}</Text>
-                        <Text>{item.billDate}</Text>
+                        <Text>责任人：{item.dutyUserName} {item.postName}</Text>
                     </Flex>
                     <Text style={{
                         paddingLeft: 20,
@@ -135,6 +154,7 @@ export default class EcheckDetailPage extends BasePage {
                         color: '#666'
                     }}>{item.memo}</Text>
                 </Flex>
+                <ListImages images={item.images} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, item.images)} />
             </Flex>
         );
     };
@@ -150,6 +170,7 @@ export default class EcheckDetailPage extends BasePage {
                     </Flex>
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text>检查人：{detail.checkUserName} {detail.postName}</Text>
+                        <Text>{detail.billDate}</Text>
                     </Flex>
                     <Text style={[styles.every, ScreenUtil.borderBottom()]}>{detail.memo}</Text>
                     <FlatList
@@ -165,51 +186,37 @@ export default class EcheckDetailPage extends BasePage {
                     />
 
                 </ScrollView>
+
+                <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
+                    <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
+                        imageUrls={this.state.images} />
+                </Modal>
+
             </CommonView>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    header: {
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 15,
-        paddingRight: 15,
-        backgroundColor: '#F3F4F2'
-    },
+    
     every: {
         fontSize: 16,
+        color: '#333',
         marginLeft: 15,
         marginRight: 15,
         paddingTop: 15,
         paddingBottom: 15
-    }, 
+    },
     left: {
         fontSize: 16,
-        color: '#666'
+        color: '#333'
     },
     right: {
         fontSize: 16,
-        color: '#666'
+        color: '#333'
     }, 
-    ii: {
-        paddingTop: 10,
-        paddingBottom: 10,
-        marginLeft: 10,
-        marginRight: 10,
-        width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
-        backgroundColor: '#999',
-        borderRadius: 6,
-        marginBottom: 20
-    },
-    word: {
-        color: 'white',
-        fontSize: 16
-    },
-
+     
     list: {
-
         backgroundColor: Macro.color_white,
         margin: 15
     },

@@ -43,6 +43,7 @@ import EstateWeixiuPage from '../navigator/estate/estate-weixiu';
 import EstateTousuPage from '../navigator/estate/estate-tousu';
 
 //现场检查
+import SelectAllPerson from '../work/select-all-person';
 import EstateCheckPage from '../navigator/estate/estate-check';
 import EcheckDetailPage from '../navigator/estate/estate-check-detail';
 import EcheckAddPage from '../navigator/estate/estate-check-add';
@@ -160,9 +161,11 @@ BuildingNavigator.navigationOptions = ({ navigation }) => ({
 });
 
 const navigatorNavigator = createStackNavigator({
+  
   Navigator: {
     screen: NavigatorPage,
   },
+
   FeeStatistic: {
     screen: FeeStatisticPage,
     navigationOptions: () => ({
@@ -191,9 +194,11 @@ const navigatorNavigator = createStackNavigator({
   charge: FeeChargeDetail,
 
   //现场检查
+  SelectAllPerson: SelectAllPerson,
   check: EstateCheckPage,
   checkDetail: EcheckDetailPage,
   checkAdd: EcheckAddPage,
+  
 
   //固定资产
   gdzcPandian: GdzcPandianPage,
@@ -371,8 +376,8 @@ const tabbar = createBottomTabNavigator(
       navigationOptions: () => ({
         title: '我',
         headerBackTitle: null,
-      }),
-    },
+      })
+    }
   },
   {
     tabBarOptions: {
@@ -381,7 +386,7 @@ const tabbar = createBottomTabNavigator(
       labelStyle: {
         fontSize: 14,
       },
-      tabStyle: {},
+      tabStyle: {}
     },
     defaultNavigationOptions: ({ navigation }) => {
       if (navigation.isFocused()) {
@@ -442,9 +447,9 @@ const Drawer = createDrawerNavigator(
     TabBar: {
       screen: tabbar,
       navigationOptions: {
-        header: null,
-      },
-    },
+        header: null
+      }
+    }
   },
   {
     drawerPosition: 'left',
@@ -452,9 +457,11 @@ const Drawer = createDrawerNavigator(
     drawerLockMode: 'locked-closed',
     useNativeAnimations: true,
     overlayColor: '#000000b3',
+    
     contentComponent: (props) => {
       return <ManagerBuildingPage {...props} />;
-    },
-  },
+    }
+  }
 );
 export default createAppContainer(Drawer);
+

@@ -104,7 +104,8 @@ class LouDetail extends BasePage {
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>{detail.tenantName}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.tenantPhone)}>
-                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 30, height: 30 }} /></Flex>
+                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
+                             style={{ width: 16, height: 16 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
                     <View style={styles.line} />
@@ -152,7 +153,8 @@ class LouDetail extends BasePage {
                                 style={{ marginLeft: 20, marginTop: 5, marginRight: 20 }}>
                                 <Text style={styles.text2}>{item.name}</Text>
                                 <TouchableWithoutFeedback onPress={() => common.call(item.phoneNum)}>
-                                    <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 30, height: 30 }} /></Flex>
+                                    <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} 
+                                    style={{ width: 16, height: 16 }} /></Flex>
                                 </TouchableWithoutFeedback>
                             </Flex>
                         ))
@@ -170,7 +172,8 @@ class LouDetail extends BasePage {
                                 style={{ marginLeft: 20, marginTop: 5, marginRight: 20 }}>
                                 <Text style={styles.text2}>{item.name}</Text>
                                 <TouchableWithoutFeedback onPress={() => common.call(item.phoneNum)}>
-                                    <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 30, height: 30 }} /></Flex>
+                                    <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
+                                     style={{ width: 16, height: 16 }} /></Flex>
                                 </TouchableWithoutFeedback>
                             </Flex>
                         ))

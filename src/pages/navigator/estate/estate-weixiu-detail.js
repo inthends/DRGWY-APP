@@ -16,7 +16,7 @@ import common from '../../../utils/common';
 // import api from '../../../utils/api';
 // import UDPlayer from '../../../utils/UDPlayer';
 import UDToast from '../../../utils/UDToast';
-import DashLine from '../../../components/dash-line';
+// import DashLine from '../../../components/dash-line';
 import WorkService from '../../work/work-service';
 import ListImages from '../../../components/list-images';
 import Communicates from '../../../components/communicates';
@@ -40,7 +40,6 @@ export default class EweixiuDetailPage extends BasePage {
     constructor(props) {
         super(props);
         let id = common.getValueFromProps(this.props);
-        //let type = common.getValueFromProps(this.props, 'type');
         this.state = {
             id,
             value: '',
@@ -126,28 +125,38 @@ export default class EweixiuDetailPage extends BasePage {
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
-                    <Flex style={[styles.every2]} justify='between'>
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.address}   {detail.contactName}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
-                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 30, height: 30 }} /></Flex>
+                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
+                                style={{ width: 15, height: 15 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
-                    <DashLine />
-                    <Text style={styles.desc}>{detail.repairContent}</Text>
-                    <DashLine />
+
+                    <Text style={[styles.desc, ScreenUtil.borderBottom()]}>{detail.repairContent}</Text>
+
                     <ListImages images={images} lookImage={this.lookImage} />
-                    <Flex style={[styles.every2]} justify='between'>
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
                     </Flex>
 
                     {detail.relationId && <TouchableWithoutFeedback>
-                        <Flex style={[styles.every]}>
+                        <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                             <Text style={styles.left}>关联单：</Text>
-                            <Text onPress={() => this.props.navigation.navigate('fuwuD', { data: { id: detail.relationId } })}
-                                style={[styles.right, { color: Macro.color_4d8fcc }]}>{detail.serviceDeskCode}</Text>
+                            <Text onPress={() => {
+                                if (detail.sourceType === '服务总台') {
+                                    this.props.navigation.navigate('fuwuD', { data: detail.relationId });
+                                }
+                                else {
+                                    //检查单
+                                    this.props.navigation.navigate('checkDetail', { data: detail.relationId });
+                                }
+                            }}
+                                style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text> 
                         </Flex>
                     </TouchableWithoutFeedback>}
-                    <DashLine />
+
+                    {/* <DashLine /> */}
                     <Communicates communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
@@ -180,16 +189,18 @@ const styles = StyleSheet.create({
         paddingTop: 10
     },
     left: {
-        fontSize: 14,
-        color: '#666'
+        fontSize: 16,
+        color: '#333'
     },
     right: {
-        fontSize: 14,
-        color: '#666'
+        fontSize: 16,
+        color: '#333'
     },
     desc: {
         padding: 15,
-        paddingBottom: 40
+        paddingBottom: 40,
+        fontSize: 16,
+        color: '#333'
     },
     ii: {
         paddingTop: 10,

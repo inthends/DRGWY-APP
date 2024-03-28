@@ -37,19 +37,16 @@ class ContactDetail extends BasePage {
     constructor(props) {
         super(props);
         const type = common.getValueFromProps(this.props, 'type');
-
-
         this.state = {
             type,
             activeSections: [],
             //selectBuilding: this.props.selectBuilding || {},
             selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
-            data: [],
+            data: []
         };
         this.onChange = activeSections => {
             this.setState({ activeSections });
         };
-
     }
 
     componentDidMount() {
@@ -136,9 +133,7 @@ class ContactDetail extends BasePage {
                         </Accordion>
                     </View>
                 </ScrollView>
-            </View>
-
-
+            </View> 
         );
     }
 }

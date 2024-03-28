@@ -1,7 +1,7 @@
-//未读消息列表点击，打开服务单详情
+//未读消息列表点击
 import React from 'react';
 import {
-    View,
+    TextInput,
     Text,
     TouchableWithoutFeedback,
     TouchableOpacity,
@@ -9,16 +9,15 @@ import {
     ScrollView, Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Icon, Flex, TextareaItem } from '@ant-design/react-native';
+import { Icon, Flex,Button } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 // import SelectImage from '../../../utils/select-image';
 // import UDRecord from '../../../utils/UDRecord';
 // import api from '../../../utils/api';
-// import UDPlayer from '../../../utils/UDPlayer'; 
+// import UDPlayer from '../../../utils/UDPlayer';
 import common from '../../../utils/common';
 import UDToast from '../../../utils/UDToast';
-import DashLine from '../../../components/dash-line';
 import WorkService from '../work-service';
 import Communicates from '../../../components/communicates';
 import ListImages from '../../../components/list-images';
@@ -42,8 +41,6 @@ export default class FuWuDanListDetailPage extends BasePage {
     constructor(props) {
         super(props);
         let id = common.getValueFromProps(this.props);
-        console.log('sercerid:' + id);
-        //let type = common.getValueFromProps(this.props, 'type');
         this.state = {
             id,
             value: '',
@@ -82,6 +79,7 @@ export default class FuWuDanListDetailPage extends BasePage {
             });
         });
     };
+
     click = (handle) => {
         const { id, value } = this.state;
         if (handle === '回复' && !(value && value.length > 0)) {
@@ -122,21 +120,27 @@ export default class FuWuDanListDetailPage extends BasePage {
         const { images, detail, communicates } = this.state;
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
+
                 <ScrollView>
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.billType}</Text>
                     </Flex>
-                    <Flex style={[styles.every]} justify='between'>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.address}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
-                    <Text style={[styles.desc, ScreenUtil.borderBottom()]}>{detail.contents}</Text>
-                    <ListImages images={images} lookImage={this.lookImage} /> 
+
+                    <Text style={[styles.desc]}>{detail.contents}</Text>
+
+                    <ListImages images={images} lookImage={this.lookImage} />
+
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>报单人：{detail.contactName} {detail.createDate}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactPhone)}>
-                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 30, height: 30 }} /></Flex>
+                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
+                                style={{ width: 16, height: 16 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
 
@@ -186,8 +190,7 @@ export default class FuWuDanListDetailPage extends BasePage {
                         </TouchableWithoutFeedback>
                     ):null} */}
 
-                    <DashLine />
-                    <View style={{
+                    {/* <View style={{
                         margin: 15,
                         borderStyle: 'solid',
                         borderColor: '#F3F4F2',
@@ -201,31 +204,59 @@ export default class FuWuDanListDetailPage extends BasePage {
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
-                    </View>
-                    <TouchableWithoutFeedback onPress={() => this.click('回复')}>
-                        <Flex justify={'center'} style={[styles.ii, { width: '80%',
-                         marginLeft: '10%', marginRight: '10%', marginBottom: 20 }, 
-                         { backgroundColor: Macro.work_blue }]}>
+                    </View> */}
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <TextInput
+                            maxLength={500}
+                            placeholder='请输入'
+                            multiline
+                            onChangeText={value => this.setState({ value })}
+                            value={this.state.value}
+                            style={{ fontSize: 16, textAlignVertical: 'top' }}
+                            numberOfLines={4}>
+                        </TextInput>
+                    </Flex>
+
+                    {/* <TouchableWithoutFeedback onPress={() => this.click('回复')}>
+                        <Flex justify={'center'} style={[styles.ii, {
+                            width: '60%',
+                            marginLeft: '10%', marginRight: '10%', marginBottom: 20
+                        },
+                        { backgroundColor: Macro.work_blue }]}>
                             <Text style={styles.word}>回复</Text>
                         </Flex>
-                    </TouchableWithoutFeedback>
+                    </TouchableWithoutFeedback> */}
+
+                    <Flex justify={'center'}>
+                        <Button onPress={() => this.click('回复')} type={'primary'}
+                            activeStyle={{ backgroundColor: Macro.work_blue }} style={{
+                                width: 300,
+                                backgroundColor: Macro.work_blue,
+                                marginTop: 10,
+                                marginBottom:10,
+                                height: 40
+                            }}>回复</Button>
+                    </Flex>
+
+
                     {detail.status === 1 && <Flex>
                         <TouchableWithoutFeedback onPress={() => this.click('转维修')}>
-                            <Flex justify={'center'} style={[styles.ii, { backgroundColor:  Macro.work_blue }]}>
+                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
                                 <Text style={styles.word}>转维修</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={() => this.click('转投诉')}>
-                            <Flex justify={'center'} style={[styles.ii, { backgroundColor:  Macro.work_blue }]}>
+                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
                                 <Text style={styles.word}>转投诉</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={() => this.click('关闭')}>
-                            <Flex justify={'center'} style={[styles.ii, { backgroundColor:  Macro.work_blue }]}>
+                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
                                 <Text style={styles.word}>关闭</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
-                    </Flex>} 
+                    </Flex>}
                     <Communicates communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
@@ -246,7 +277,6 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
         paddingRight: 15,
         backgroundColor: '#F3F4F2'
-
     },
     every: {
         marginLeft: 15,
@@ -260,11 +290,18 @@ const styles = StyleSheet.create({
         paddingBottom: 5
     },
     left: {
-        fontSize: 14,
-        color: '#666'
+        fontSize: 16,
+        color: '#333'
     },
-    right: {},
+
+    right: {
+        fontSize: 16,
+        color: '#333'
+    },
+
     desc: {
+        fontSize: 16,
+        color: '#333',
         padding: 15,
         paddingBottom: 40
     },

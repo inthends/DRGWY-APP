@@ -39,16 +39,25 @@ export function saveUrl(url) {
   return { type: ACTIONS.url, url: url };
 }
 
+//设置机构管理处
 export function saveSelectBuilding(selectBuilding) {
   return { type: ACTIONS.selectBuilding, selectBuilding: selectBuilding };
 }
 
+//设置部门
+// export function saveSelectDepartment(selectDepartment) {
+//   return { type: ACTIONS.selectDepartment, selectDepartment: selectDepartment };
+// }
+
 export function saveSelectTask(selectTask) {
   return { type: ACTIONS.selectTask, selectTask: selectTask };
 }
+
+//设置右侧树类型
 export function saveSelectDrawerType(selectDrawerType) {
   return { type: ACTIONS.selectDrawerType, selectDrawerType: selectDrawerType };
 }
+ 
 
 export function saveUser(user) {
   return { type: ACTIONS.user, user };

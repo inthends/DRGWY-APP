@@ -95,10 +95,10 @@ export default class OrderlistPage extends BasePage {
                         <Flex justify='between'
                             style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>{item.billCode}</Text>
-                            <TouchableWithoutFeedback
+                            {/* <TouchableWithoutFeedback
                                 onPress={() => common.call(item.phoneNum)}>
                                 <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 20, height: 20 }} /></Flex>
-                            </TouchableWithoutFeedback>
+                            </TouchableWithoutFeedback> */}
                         </Flex>
                         <Text style={{
                             paddingLeft: 20,

@@ -41,7 +41,6 @@ export default class NavigatorPage extends BasePage {
     return (
       <CommonView style={{ flex: 1 }}>
         <ScrollView style={{ flex: 1 }}>
-
           <Flex direction={'column'} align={'start'} style={styles.cell}>
             <Flex
               style={{
@@ -321,16 +320,16 @@ const styles = StyleSheet.create({
   content: {
     color: '#404145',
     fontSize: 16,
-    paddingLeft: 15,
+    paddingLeft: 15
   },
   left: {
     flex: 1,
-    paddingTop: 30,
+    paddingTop: 30
   },
   right: {
     flex: 1,
     paddingLeft: 25,
-    paddingTop: 30,
+    paddingTop: 30
   },
   line: {
     marginTop: 20,
@@ -338,6 +337,6 @@ const styles = StyleSheet.create({
     marginRight: 15,
     width: ScreenUtil.deviceWidth() - 30,
     backgroundColor: '#E0E0E0',
-    height: 0.5,
-  },
+    height: 0.5
+  }
 });

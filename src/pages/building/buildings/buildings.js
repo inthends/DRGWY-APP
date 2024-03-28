@@ -20,6 +20,7 @@ import BuildingCell from '../../../components/building/build-cell';
 
 
 class BuildingsPage extends BasePage {
+    
     // static navigationOptions = ({navigation}) => {
     //     return {
     //         tabBarVisible: false,

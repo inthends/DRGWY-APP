@@ -20,8 +20,6 @@ import Communicates from '../../../components/communicates';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
-
-
 export default class WeixiuDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
@@ -47,14 +45,13 @@ export default class WeixiuDetailPage extends BasePage {
             detail: {},
             communicates: [],
             lookImageIndex: 0,
-            visible: false,
+            visible: false
         };
     }
 
     componentDidMount() {
         this.getData();
     }
-
 
     getData = () => {
         const { id } = this.state;
@@ -80,15 +77,7 @@ export default class WeixiuDetailPage extends BasePage {
             });
         });
     };
-    click = (handle) => {
-        const { id, value } = this.state;
-        if (handle === '回复' && !(value && value.length > 0)) {
-            UDToast.showInfo('请输入文字');
-            return;
-        }
-        WorkService.serviceHandle(handle, id, value).then(res => {
-        });
-    };
+
     communicateClick = (i) => {
         let c = this.state.communicates;
         let d = c.map(it => {
@@ -124,27 +113,19 @@ export default class WeixiuDetailPage extends BasePage {
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
-                    <Flex style={[styles.every2]} justify='between'>
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.address}   {detail.contactName}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
-                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 30, height: 30 }} /></Flex>
+                            <Flex><LoadImage
+                                defaultImg={require('../../../static/images/phone.png')}
+                                style={{ width: 16, height: 16 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
-                    <DashLine />
                     <Text style={styles.desc}>{detail.repairContent}</Text>
-                    <DashLine />
                     <ListImages images={images} lookImage={this.lookImage} />
-                    <Flex style={[styles.every2]} justify='between'>
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
                     </Flex>
-                    {/* {detail.relationId&&<TouchableWithoutFeedback>
-                        <Flex style={[styles.every]}>
-                            <Text style={styles.left}>关联单：</Text>
-                            <Text onPress={()=>this.props.navigation.navigate('fuwuD', {data: {id:detail.relationId}})}
-                            style={[styles.right, {color: Macro.color_4d8fcc}]}>{detail.serviceDeskCode}</Text>
-                        </Flex>
-                    </TouchableWithoutFeedback>} */}
-                    <DashLine />
                     <Communicates communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
@@ -157,13 +138,7 @@ export default class WeixiuDetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-    header: {
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 15,
-        paddingRight: 15,
-        backgroundColor: '#F3F4F2'
-    },
+   
     every: {
         marginLeft: 15,
         marginRight: 15,
@@ -177,29 +152,15 @@ const styles = StyleSheet.create({
         paddingTop: 10
     },
     left: {
-        fontSize: 14,
-        color: '#666'
+        fontSize: 16,
+        color: '#333'
     },
     right: {
-        fontSize: 14,
-        color: '#666'
+        fontSize: 16,
+        color: '#333'
     },
     desc: {
         padding: 15,
         paddingBottom: 40
-    },
-    ii: {
-        paddingTop: 10,
-        paddingBottom: 10,
-        marginLeft: 10,
-        marginRight: 10,
-        width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
-        backgroundColor: '#999',
-        borderRadius: 6,
-        marginBottom: 20
-    },
-    word: {
-        color: 'white',
-        fontSize: 16
     }
 });

@@ -1,15 +1,15 @@
 //服务单回访
-import React  from 'react';
+import React from 'react';
 import {
-    View,
+    TextInput,
     Text,
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    ScrollView,Modal,
+    ScrollView, Modal,
 } from 'react-native';
-import BasePage from '../../base/base'; 
-import { Icon, Flex, TextareaItem } from '@ant-design/react-native';
+import BasePage from '../../base/base';
+import { Icon, Flex, Button } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';
@@ -37,7 +37,7 @@ export default class HuiFangDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
             title: '服务单回访',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
@@ -97,12 +97,12 @@ export default class HuiFangDetailPage extends BasePage {
 
     //获取服务单信息
     getData = () => {
-        const { id } = this.state; 
+        const { id } = this.state;
         WorkService.serviceDetail(id).then(item => {
             this.setState({
                 detail: {
                     ...item.data,
-                    businessId: item.businessId,
+                    //businessId: item.businessId,
                     statusName: item.statusName
                 },
             });
@@ -120,7 +120,7 @@ export default class HuiFangDetailPage extends BasePage {
     };
 
     click = (handle) => {
-        const { id,  value, star } = this.state;
+        const { id, value, star } = this.state;
         if (handle === '回复' && !(value && value.length > 0)) {
             UDToast.showInfo('请输入文字');
             return;
@@ -154,7 +154,7 @@ export default class HuiFangDetailPage extends BasePage {
     lookImage = (lookImageIndex) => {
         this.setState({
             lookImageIndex,
-            visible: true,
+            visible: true
         });
     };
 
@@ -168,41 +168,36 @@ export default class HuiFangDetailPage extends BasePage {
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
-                    <Flex style={[styles.every2]} justify='between'>
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.address} {detail.contactName}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
-                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 30, height: 30 }} /></Flex>
+                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 16, height: 16 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
-                    <DashLine />
                     <Text style={styles.desc}>{detail.repairContent}</Text>
-                    <DashLine />
                     <ListImages images={images} lookImage={this.lookImage} />
-                    <Flex style={[styles.every2]} justify='between'>
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
                     </Flex>
 
                     <TouchableWithoutFeedback>
-                        <Flex style={[styles.every]}>
+                        <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                             <Text style={styles.left}>关联单：</Text>
-                            {/* <Text onPress={() => this.props.navigation.navigate('service', { data: { id: detail.relationId } })}
-                                style={[styles.right, { color: Macro.color_4d8fcc }]}>{detail.businessCode}</Text> */}
-
                             <Text onPress={() => {
                                 if (detail.businessType === 'Repair') {
-                                    this.props.navigation.navigate('weixiuView', { data: { id: detail.businessId } });
+                                    this.props.navigation.navigate('weixiuView', { data: detail.businessId });
                                 }
                                 else {
-                                    this.props.navigation.navigate('tousuView', { data: { id: detail.businessId } });
+                                    this.props.navigation.navigate('tousuView', { data: detail.businessId });
                                 }
-                            }} style={[styles.right, { color: Macro.color_4d8fcc }]}>{detail.businessCode}</Text>
+                            }} style={[styles.right, { color: Macro.work_blue }]}>{detail.businessCode}</Text>
 
                         </Flex>
                     </TouchableWithoutFeedback>
-                    <DashLine />
+
                     <Star star={this.state.star} onChange={this.changeStar} />
 
-                    <View style={{
+                    {/* <View style={{
                         margin: 15,
                         borderStyle: 'solid',
                         borderColor: '#F3F4F2',
@@ -216,12 +211,37 @@ export default class HuiFangDetailPage extends BasePage {
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
-                    </View>
-                    <TouchableWithoutFeedback onPress={() => this.click('完成回访')}>
-                        <Flex justify={'center'} style={[styles.ii, { width: '80%', marginLeft: '10%', marginRight: '10%', marginBottom: 20 }, { backgroundColor: Macro.color_4d8fcc }]}>
+                    </View> */}
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <TextInput
+                            maxLength={500}
+                            placeholder='请输入'
+                            multiline
+                            onChangeText={value => this.setState({ value })}
+                            value={this.state.value}
+                            style={{ fontSize: 16, textAlignVertical: 'top' }}
+                            numberOfLines={4}>
+                        </TextInput>
+                    </Flex>
+
+
+                    {/* <TouchableWithoutFeedback onPress={() => this.click('完成回访')}>
+                        <Flex justify={'center'} style={[styles.ii, { width: '80%', marginLeft: '10%', marginRight: '10%', marginBottom: 20 }, { backgroundColor: Macro.work_blue }]}>
                             <Text style={styles.word}>完成回访</Text>
                         </Flex>
-                    </TouchableWithoutFeedback>
+                    </TouchableWithoutFeedback> */}
+
+                    <Flex justify={'center'}>
+                        <Button onPress={() => this.click('完成回访')} type={'primary'}
+                            activeStyle={{ backgroundColor: Macro.work_blue }} style={{
+                                width: 300,
+                                backgroundColor: Macro.work_blue,
+                                marginTop: 20,
+                                height: 40
+                            }}>完成回访</Button>
+                    </Flex>
+
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
@@ -234,14 +254,7 @@ export default class HuiFangDetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-    header: {
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 15,
-        paddingRight: 15,
-        backgroundColor: '#F3F4F2',
 
-    },
     every: {
         marginLeft: 15,
         marginRight: 15,
@@ -255,11 +268,11 @@ const styles = StyleSheet.create({
         paddingTop: 10,
     },
     left: {
-        fontSize: 14,
+        fontSize: 16,
         color: '#333',
     },
     right: {
-        fontSize: 14,
+        fontSize: 16,
         color: '#333',
     },
     desc: {
@@ -274,11 +287,10 @@ const styles = StyleSheet.create({
         width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
         backgroundColor: '#999',
         borderRadius: 6,
-        marginBottom: 20,
+        marginBottom: 20
     },
     word: {
         color: 'white',
-        fontSize: 16,
-    },
-
+        fontSize: 16
+    }
 });

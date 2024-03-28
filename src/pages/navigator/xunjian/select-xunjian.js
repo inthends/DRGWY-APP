@@ -2,7 +2,7 @@ import React from 'react';
 import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
 // import Macro from '../../../utils/macro';
-import { StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, ScrollView } from 'react-native';
 // import ScreenUtil from '../../../utils/screen-util';
 // import LoadImage from '../../../components/load-image';
 import CommonView from '../../../components/CommonView';
@@ -108,11 +108,10 @@ const styles = StyleSheet.create({
     hang: {
         paddingTop: 20,
         paddingLeft: 15,
-        paddingRight: 15,
+        paddingRight: 15
     },
     word: {
         color: '#333',
-        fontSize: 16,
-    },
-
+        fontSize: 16
+    }
 });

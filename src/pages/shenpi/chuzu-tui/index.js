@@ -1,4 +1,4 @@
-//导航里面点击的服务单详情
+ 
 import React from 'react';
 import { Flex, Icon, Modal, Button, TextareaItem } from '@ant-design/react-native';
 import { View,Text, StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';

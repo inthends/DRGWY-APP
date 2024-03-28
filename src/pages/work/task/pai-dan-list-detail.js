@@ -1,14 +1,15 @@
 import React from 'react';
 import {
-    View,
+    //View,
     Text,
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
+    TextInput,
     ScrollView, Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Icon, Flex, TextareaItem } from '@ant-design/react-native';
+import { Button, Icon, Flex } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';
@@ -53,16 +54,16 @@ export default class PaiDanListDetailPage extends BasePage {
         };
     }
 
-    onSelect = ({ selectPerson }) => {
+    onSelect = ({ selectItem }) => {
         this.setState({
-            selectPerson
+            selectPerson: selectItem
         })
     }
 
     componentDidMount() {
         this.getData();
     }
- 
+
     getData = () => {
         const { id } = this.state;
         WorkService.weixiuDetail(id).then(detail => {
@@ -76,20 +77,21 @@ export default class PaiDanListDetailPage extends BasePage {
             });
 
             //获取维修单的单据动态
-            WorkService.getOperationRecord( id).then(res => {
+            WorkService.getOperationRecord(id).then(res => {
                 this.setState({
                     communicates: res,
                 });
             });
         });
 
-        WorkService.weixiuExtra( id).then(images => {
+        WorkService.weixiuExtra(id).then(images => {
             this.setState({
                 images,
             });
         });
     };
-    click = (handle) => {
+
+    click = () => {
         const { id, selectPerson } = this.state;
         if (selectPerson) {
             WorkService.paidan(id, selectPerson.name, selectPerson.id).then(res => {
@@ -135,16 +137,18 @@ export default class PaiDanListDetailPage extends BasePage {
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
-                    <Flex style={[styles.every2]} justify='between'>
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.address} {detail.contactName}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
-                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 30, height: 30 }} /></Flex>
+                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
+                                style={{ width: 16, height: 16 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
-                    <DashLine />
-                    <Text style={styles.desc}>{detail.repairContent}</Text>
-                    <DashLine />
+
+                    <Text style={[styles.desc]}>{detail.repairContent}</Text>
+ 
                     <ListImages images={images} lookImage={this.lookImage} />
+
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
                     </Flex>
@@ -154,21 +158,22 @@ export default class PaiDanListDetailPage extends BasePage {
                             <Text style={styles.left}>关联单：</Text>
                             <Text
                                 onPress={() => this.props.navigation.navigate('service', { data: { id: detail.relationId } })}
-                                style={[styles.right, { color: Macro.color_4d8fcc }]}>{detail.serviceDeskCode}</Text>
+                                style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback
                         onPress={() => this.props.navigation.navigate('SelectPerson', { onSelect: this.onSelect })}>
-                        <Flex style={[styles.every]} justify='between'>
+                        <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                             <Flex>
                                 <Text style={styles.left}>接单人：</Text>
                                 <Text
-                                    style={[styles.right, selectPerson ? { color: Macro.color_4d8fcc } : { color: '#666' }]}>{selectPerson ? selectPerson.name : "请选择接单人"}</Text>
+                                    style={[styles.right, selectPerson ? { color: Macro.work_blue } :
+                                        { color: '#666' }]}>{selectPerson ? selectPerson.name : "请选择接单人"}</Text>
                             </Flex>
-                            <LoadImage style={{ width: 15, height: 15 }} />
+                            <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
                         </Flex>
                     </TouchableWithoutFeedback>
-                    <DashLine />
+                    {/* <DashLine />
                     <View style={{
                         margin: 15,
                         borderStyle: 'solid',
@@ -179,21 +184,48 @@ export default class PaiDanListDetailPage extends BasePage {
                         <TextareaItem
                             rows={4}
                             placeholder='请输入'
-                            style={{   paddingTop: 10,  width: ScreenUtil.deviceWidth() - 32 }}
+                            style={{ paddingTop: 10, width: ScreenUtil.deviceWidth() - 32 }}
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
-                    </View>
-                    <TouchableWithoutFeedback onPress={() => this.click('派单')}>
+                    </View> */}
+
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <TextInput
+                            maxLength={500}
+                            placeholder='请输入'
+                            multiline
+                            onChangeText={value => this.setState({ value })}
+                            value={this.state.value}
+                            style={{ fontSize: 16, textAlignVertical: 'top' }}
+                            numberOfLines={4}>
+                        </TextInput>
+                    </Flex>
+
+                    {/* <TouchableWithoutFeedback onPress={() => this.click('派单')}>
                         <Flex justify={'center'} style={[styles.ii, {
-                            width: '80%',
+                            width: '60%',
                             marginLeft: '10%',
                             marginRight: '10%',
-                            marginBottom: 20
-                        }, { backgroundColor: Macro.color_4d8fcc }]}>
+                            marginTop: 10,
+                            marginBottom: 5
+
+                        }, { backgroundColor: Macro.work_blue }]}>
                             <Text style={styles.word}>派单</Text>
                         </Flex>
-                    </TouchableWithoutFeedback>
+                    </TouchableWithoutFeedback> */}
+
+                    <Flex justify={'center'}>
+                        <Button onPress={() => this.click()} type={'primary'}
+                            activeStyle={{ backgroundColor: Macro.work_blue }} style={{
+                                width: 300,
+                                backgroundColor: Macro.work_blue,
+                                marginTop: 20,
+                                height: 40
+                            }}>派单</Button>
+                    </Flex>
+
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
@@ -226,15 +258,17 @@ const styles = StyleSheet.create({
         paddingTop: 10
     },
     left: {
-        fontSize: 14,
+        fontSize: 16,
         color: '#333'
     },
     right: {
-        fontSize: 14,
+        fontSize: 16,
         color: '#333'
     },
     desc: {
+        fontSize: 16,
         padding: 15,
+        color: '#333',
         paddingBottom: 40
     },
     ii: {

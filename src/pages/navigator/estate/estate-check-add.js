@@ -8,7 +8,8 @@ import {
     StyleSheet,
     ScrollView,
     FlatList,
-    TextInput
+    TextInput,
+    Modal
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Button, Flex, Icon } from '@ant-design/react-native';
@@ -19,7 +20,10 @@ import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import { connect } from 'react-redux';
 import LoadImage from '../../../components/load-image';
+import SelectImage from '../../../utils/select-image';
 import UDToast from '../../../utils/UDToast';
+import ListImages from '../../../components/list-images';
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 class EcheckAddPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -36,16 +40,20 @@ class EcheckAddPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let id = common.getValueFromProps(this.props);
+        const { id, address } = common.getValueFromProps(this.props) || {};
         this.state = {
             id,
+            detailId: '',
             detail: {},
             showAdd: false,
             pageIndex: 1,
             memo: '',
-            address: null,
+            address,
             selectPerson: null,
             checkMemo: '',
+            visible: false,
+            images: [{ icon: '' }],
+            lookImageIndex: 0,
             dataInfo: {
                 data: []
             }
@@ -60,24 +68,28 @@ class EcheckAddPage extends BasePage {
         });
     };
 
-    componentDidMount() {
+    componentDidMount() { 
+        this.viewDidAppear = this.props.navigation.addListener(
+            'didFocus',
+            (obj) => {
+                if (obj.state.params) {
+                    const { address } = obj.state.params.data || {};
+                    this.setState({ address });
+                }
+            }
+        );
+ 
         const { id } = this.state;
         if (id) {
             this.getData();
-            this.viewDidAppear = this.props.navigation.addListener(
-                'didFocus',
-                (obj) => {
-                    this.onRefresh();
-                }
-            );
+            this.onRefresh();
         } else {
             let myid = this.guid();
             const { user } = this.props;
             //初始值
             this.setState({
-                id: myid,
+                id: myid,//主单id
                 detail: {
-                    billId: myid,
                     billCode: '自动生成单号',
                     statusName: '待评审',
                     checkUserName: user.showName,
@@ -93,12 +105,13 @@ class EcheckAddPage extends BasePage {
 
     getData = () => {
         const { id } = this.state;
-        WorkService.checkDetail(id).then(item => {
+        WorkService.checkDetail(id).then(detail => {
             this.setState({
-                detail: {
-                    ...item.data,
-                    statusName: item.statusName
-                },
+                detail
+                // detail: {
+                //     ...item.data,
+                //     statusName: item.statusName
+                // },
             });
         });
     };
@@ -149,6 +162,14 @@ class EcheckAddPage extends BasePage {
     };
 
 
+    lookImage = (lookImageIndex, files) => {
+        this.setState({
+            lookImageIndex,
+            images: files,
+            visible: true
+        });
+    };
+
     _renderItem = ({ item, index }) => {
         return (
             <Flex direction='column' align={'start'}
@@ -160,8 +181,7 @@ class EcheckAddPage extends BasePage {
                 <Flex align={'start'} direction={'column'}>
                     <Flex justify='between'
                         style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
-                        <Text style={styles.title}>责任人：{item.dutyUserName} {item.postName}</Text>
-                        <Text style={styles.title}>{item.billDate}</Text>
+                        <Text>责任人：{item.dutyUserName} {item.postName}</Text>
                     </Flex>
                     <Text style={{
                         paddingLeft: 20,
@@ -169,16 +189,17 @@ class EcheckAddPage extends BasePage {
                         paddingBottom: 20,
                         color: '#666',
                     }}>{item.memo}</Text>
-                </Flex>
+                </Flex> 
+                <ListImages images={item.images} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, item.images)} />
             </Flex>
         );
     };
 
-    onSelectAddress = ({ selectItem }) => {
-        this.setState({
-            address: selectItem
-        })
-    }
+    // onSelectAddress = ({ selectItem }) => {
+    //     this.setState({
+    //         address: selectItem
+    //     })
+    // }
 
     onSelectPerson = ({ selectItem }) => {
         this.setState({
@@ -204,7 +225,7 @@ class EcheckAddPage extends BasePage {
 
 
     addDetail = () => {
-        const { id, memo, address, selectPerson, checkMemo } = this.state;
+        const { id, detailId, memo, address, selectPerson, checkMemo } = this.state;
         if (!address) {
             UDToast.showError('请选择位置');
             return;
@@ -219,11 +240,12 @@ class EcheckAddPage extends BasePage {
             UDToast.showError('请输入内容');
             return;
         }
-
+ 
         //保存数据
         WorkService.addCheckDetail(
             id,
             memo,
+            detailId,
             address.id,
             address.allName,
             selectPerson.id,
@@ -231,16 +253,35 @@ class EcheckAddPage extends BasePage {
             checkMemo
         ).then(res => {
             UDToast.showError('添加成功');
-            this.setState({ showAdd: false, address: null, selectPerson: null, checkMemo: '' });
+            this.setState({ showAdd: false });
             this.getData();
             this.onRefresh();
         });
     };
 
+    //上传图片
+    selectImages = () => {
+        SelectImage.select(this.state.detailId, '', '/api/MobileMethod/MUploadCheckDesk').then(res => {
+            let images = [...this.state.images];
+            images.splice(images.length - 1, 0, { 'icon': res });
+            if (images.length > 4) {
+                //最多五张
+                images = images.filter((item, index) => index !== images.length - 1);
+            }
+            this.setState({ images });
+            this.onRefresh();
+        }).catch(error => {
+        });
+    };
 
+    cancel = () => {
+        this.setState({
+            visible: false
+        });
+    };
 
     render() {
-        const { detail, dataInfo, address, selectPerson } = this.state;
+        const { detail, dataInfo, address, selectPerson, images } = this.state;
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
@@ -250,6 +291,7 @@ class EcheckAddPage extends BasePage {
                     </Flex>
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>检查人：{detail.checkUserName} {detail.postName}</Text>
+                        <Text>{detail.billDate}</Text>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
@@ -287,7 +329,17 @@ class EcheckAddPage extends BasePage {
                     </Flex>
 
                     <Flex justify={'center'}>
-                        <Button onPress={() => this.setState({ showAdd: true })}
+                        <Button onPress={() => {
+                            let mydetailId = this.guid();
+                            this.setState({
+                                showAdd: true,
+                                detailId: mydetailId,
+                                images: [{ icon: '' }],
+                                address: null,
+                                selectPerson: null,
+                                checkMemo: ''
+                            });
+                        }}
                             type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }}
                             style={{
@@ -304,26 +356,22 @@ class EcheckAddPage extends BasePage {
                         <Flex direction={'column'} justify={'center'} align={'center'}
                             style={{ flex: 1, padding: 25, backgroundColor: 'rgba(178,178,178,0.5)' }}>
                             <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
-                                <CommonView style={{ height: 250, width: 300 }}>
+                                <CommonView style={{ height: 300, width: 300 }}>
                                     <TouchableWithoutFeedback
-                                        onPress={() => this.props.navigation.navigate('SelectAddress', { onSelect: this.onSelectAddress })}>
+                                        onPress={() => this.props.navigation.navigate('SelectAddress', { parentName: 'checkAdd' })}>
                                         <Flex justify="between" style={[{
                                             paddingTop: 15,
                                             paddingBottom: 15,
                                             marginLeft: 10,
                                             marginRight: 10,
                                         }, ScreenUtil.borderBottom()]}>
-                                            <Text style={[address ? { fontSize: 16, color: '#333' } :
-                                                {
-                                                    color: '#999',
-                                                    //fontSize: 16,
-                                                }]}>{address ? address.allName : `请选择位置`}</Text>
-                                            <LoadImage style={{ width: 6, height: 11 }}
-                                                defaultImg={require('../../../static/images/address/right.png')} />
+                                            <Text style={[address ? { color: '#333' } :
+                                                { color: '#999' }]}>{address ? address.allName : `请选择位置`}</Text>
+                                            <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
                                         </Flex>
                                     </TouchableWithoutFeedback>
                                     <TouchableWithoutFeedback
-                                        onPress={() => this.props.navigation.navigate('SelectPerson', { onSelect: this.onSelectPerson })}>
+                                        onPress={() => this.props.navigation.navigate('SelectAllPerson', { onSelect: this.onSelectPerson })}>
                                         <Flex justify='between' style={[{
                                             paddingTop: 15,
                                             paddingBottom: 15,
@@ -332,8 +380,7 @@ class EcheckAddPage extends BasePage {
                                         }, ScreenUtil.borderBottom()]}>
                                             <Text style={[selectPerson ? { fontSize: 16, color: '#333' } :
                                                 { color: '#999' }]}>{selectPerson ? selectPerson.name : "请选择责任人"}</Text>
-                                            <LoadImage style={{ width: 6, height: 11 }}
-                                                defaultImg={require('../../../static/images/address/right.png')} />
+                                            <LoadImage style={{ width: 6, height: 11 }}  defaultImg={require('../../../static/images/address/right.png')} />
                                         </Flex>
                                     </TouchableWithoutFeedback>
 
@@ -348,7 +395,36 @@ class EcheckAddPage extends BasePage {
                                             numberOfLines={4}>
                                         </TextInput>
                                     </Flex>
-
+ 
+                                    <Flex justify={'start'} align={'start'} style={{ width: ScreenUtil.deviceWidth() }}>
+                                        <Flex wrap={'wrap'}>
+                                            {images.map((item, index) => {
+                                                return (
+                                                    <TouchableWithoutFeedback key={index} onPress={() => {
+                                                        if (index === images.length - 1 && item.icon.length === 0) {
+                                                            this.selectImages();
+                                                        }
+                                                    }}>
+                                                        <View style={{
+                                                            paddingLeft: 15,
+                                                            paddingRight: 5,
+                                                            paddingBottom: 10,
+                                                            paddingTop: 10
+                                                        }}>
+                                                            <LoadImage
+                                                                style={{
+                                                                    width: (ScreenUtil.deviceWidth() - 15) / 5.0 - 20,
+                                                                    height: (ScreenUtil.deviceWidth() - 15) / 5.0 - 20,
+                                                                    borderRadius: 5
+                                                                }}
+                                                                defaultImg={require('../../../static/images/add_pic.png')}
+                                                                img={item.icon} />
+                                                        </View>
+                                                    </TouchableWithoutFeedback>
+                                                );
+                                            })}
+                                        </Flex>
+                                    </Flex>
                                 </CommonView>
 
                                 <Flex style={{ marginTop: 15 }}>
@@ -377,6 +453,12 @@ class EcheckAddPage extends BasePage {
                         </Flex>
                     </View>
                 )}
+
+                <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
+                    <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
+                        imageUrls={this.state.images} />
+                </Modal>
+
             </CommonView>
         );
     }

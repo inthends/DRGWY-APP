@@ -165,7 +165,7 @@ class StartXunJianPage extends BasePage {
                                             paddingLeft: 15,
                                             paddingRight: 5,
                                             paddingBottom: 10,
-                                            paddingTop: 10,
+                                            paddingTop: 10
                                         }}>
                                             <LoadImage style={{
                                                 width: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,

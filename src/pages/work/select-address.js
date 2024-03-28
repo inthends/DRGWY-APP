@@ -34,6 +34,7 @@ export default class SelectAddressPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
+            parentName: null,
             items: [],
             selectItem: {},
             refreshing: false
@@ -41,6 +42,10 @@ export default class SelectAddressPage extends BasePage {
     }
 
     componentDidMount() {
+        const { navigation } = this.props;
+        //获取父页面的名称
+        var parentName = navigation.state.params.parentName;
+        this.setState({ parentName });
         this.getData();
     }
 
@@ -55,14 +60,32 @@ export default class SelectAddressPage extends BasePage {
 
 
     submit = () => {
-        const { selectItem } = this.state;
-        if (selectItem) { 
-            const { navigation } = this.props;
-            navigation.state.params.onSelect({ selectItem });
-            navigation.goBack();
+        const { selectItem, parentName } = this.state;
+        if (selectItem) {
+            // const { navigation } = this.props;
+            // navigation.state.params.onSelect({ selectItem });
+            // navigation.goBack();
+            //第一层可以调用，到楼栋，楼层就无法调用事件
+            //this.props.navigation.navigate('AddWork', { data: { address: selectItem } });
+
+            if (parentName) {
+                this.props.navigation.navigate(parentName, { data: { address: selectItem } });
+            }
 
         } else {
             UDToast.showInfo('请先选择');
+        }
+    };
+
+    next = (item) => {
+        if (item.type !== 5) {
+            const { parentName } = this.state;
+            this.props.navigation.push('SelectAddress', {
+                'data': {
+                    ...item,
+                },
+                parentName//传递主页面到楼栋、楼层
+            });
         }
     };
 
@@ -119,17 +142,6 @@ export default class SelectAddressPage extends BasePage {
         WorkService.getPStructs(params).then(items => {
             this.setState({ items, refreshing: false });
         });
-    };
-
-    next = (item) => {
-        if (item.type !== 5) {
-            this.props.navigation.push('SelectAddress', {
-                'data': {
-                    ...item,
-                },
-
-            });
-        }
     };
 
 

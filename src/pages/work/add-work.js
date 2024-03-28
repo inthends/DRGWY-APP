@@ -220,11 +220,11 @@ class AddWorkPage extends BasePage {
     };
 
 
-    onSelectAddress = ({ selectItem }) => {
-        this.setState({
-            address: selectItem
-        })
-    }
+    // onSelectAddress = ({ selectItem }) => {
+    //     this.setState({
+    //         address: selectItem
+    //     })
+    // }
 
     render() {
         const { data, index, images, fileUrl, address, canSelectAddress } = this.state;
@@ -260,7 +260,8 @@ class AddWorkPage extends BasePage {
                                 <TouchableWithoutFeedback
                                     onPress={() => {
                                         if (canSelectAddress) {
-                                            this.props.navigation.push('SelectAddress', { onSelect: this.onSelectAddress });
+                                            //this.props.navigation.push('SelectAddress', { onSelect: this.onSelectAddress });
+                                            this.props.navigation.push('SelectAddress', { parentName: 'AddWork' });
                                         }
                                     }
                                     }>

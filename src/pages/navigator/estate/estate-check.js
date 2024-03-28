@@ -18,6 +18,8 @@ import MyPopover from '../../../components/my-popover';
 import NavigatorService from '../navigator-service';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
+import { DrawerType } from '../../../utils/store/action-types/action-types';
+import { saveSelectDrawerType } from '../../../utils/store/actions/actions';
 
 class EstateCheckPage extends BasePage {
 
@@ -46,6 +48,7 @@ class EstateCheckPage extends BasePage {
         };
 
         this.state = {
+            selectBuilding: {},//默认为空，防止别地方选择了机构
             pageIndex: 1,
             dataInfo: {
                 data: [],
@@ -63,8 +66,16 @@ class EstateCheckPage extends BasePage {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
+                this.props.saveSelectDrawerType(DrawerType.department);
                 this.onRefresh();
             }
+        );
+
+        this.viewDidDisappear = this.props.navigation.addListener(
+            'didBlur',
+            (obj) => {
+                this.props.saveSelectDrawerType(DrawerType.building);
+            },
         );
     }
 
@@ -84,10 +95,9 @@ class EstateCheckPage extends BasePage {
 
     getList = () => {
         const { billStatus, selectBuilding, billType, time } = this.state;
-        let treeType;
         let organizeId;
         if (selectBuilding) {
-            treeType = selectBuilding.type;
+            //treeType = selectBuilding.type;
             organizeId = selectBuilding.key;
         }
         let startTime = common.getMonthFirstDay(time);
@@ -159,13 +169,14 @@ class EstateCheckPage extends BasePage {
                         </Flex> */}
                         <Text style={{
                             paddingLeft: 20,
-                            paddingRight: 20,
-                            paddingBottom: 20,
+                            paddingTop: 10,
+                            paddingRight: 10,
+                            paddingBottom: 10,
                             color: '#666',
                         }}>{item.memo}</Text>
                         <Flex justify='between'
                             style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
-                            <Text>检查人：{item.checkUserName} {item.postName}</Text>
+                            <Text>检查人：{item.organizeName} {item.departmentName} {item.checkUserName} {item.postName}</Text>
                             <Text>{item.billDate}</Text>
                             {/*<TouchableWithoutFeedback onPress={() => common.call(item.contactPhone)}>
                                 <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 15, height: 15 }} /></Flex>
@@ -181,15 +192,15 @@ class EstateCheckPage extends BasePage {
         let billStatus;
         switch (title) {
             case '待评审': {
-                billStatus = 1;
+                billStatus = 0;
                 break;
             }
             case '待闭单': {
-                billStatus = 2;
+                billStatus = 1;
                 break;
             }
             case '已闭单': {
-                billStatus = 3;
+                billStatus = 2;
                 break;
             }
         }
@@ -257,7 +268,6 @@ class EstateCheckPage extends BasePage {
                         </Flex>
                     </TouchableWithoutFeedback> */}
 
-
                     <Flex justify={'center'}>
                         <Button
                             onPress={() => this.props.navigation.push('checkAdd')}
@@ -269,10 +279,7 @@ class EstateCheckPage extends BasePage {
                                 height: 40
                             }}>开始检查</Button>
                     </Flex>
-
                 </CommonView>
-
-
             </View>
         );
     }
@@ -372,4 +379,13 @@ const mapStateToProps = ({ buildingReducer }) => {
     };
 };
 
-export default connect(mapStateToProps)(EstateCheckPage);
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        saveSelectDrawerType: (item) => {
+            dispatch(saveSelectDrawerType(item));
+        },
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EstateCheckPage);

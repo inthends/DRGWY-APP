@@ -30,7 +30,7 @@ class XunJianPage extends BasePage {
 
     onSelect = (person) => { 
         this.setState({
-            person,
+            person
         }, () => {
             this.initUI();
         });

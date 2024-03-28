@@ -90,11 +90,8 @@ class EstateFuwuPage extends BasePage {
 
 
     getList = () => {
-        /*
-        pageIndex, billStatus, treeType, organizeId, billType, startTime, endTime
-         */
         const { billStatus, selectBuilding, billType, time } = this.state;
-        let treeType;
+        //let treeType;
         let organizeId;
         if (selectBuilding) {
             treeType = selectBuilding.type;
@@ -102,7 +99,7 @@ class EstateFuwuPage extends BasePage {
         }
         let startTime = common.getMonthFirstDay(time);
         let endTime = common.getMonthLastDay(time);
-        NavigatorService.serviceList(this.state.pageIndex, billStatus, treeType, organizeId, billType, startTime, endTime).then(dataInfo => {
+        NavigatorService.serviceList(this.state.pageIndex, billStatus, organizeId, billType, startTime, endTime).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -165,12 +162,12 @@ class EstateFuwuPage extends BasePage {
                             paddingLeft: 20,
                             paddingRight: 20,
                             paddingBottom: 20,
-                            color: '#666',
+                            color: '#666'
                         }}>{item.contents}</Text>
 
                         <Flex justify='between'
                             style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
-                            <Text>{item.contactName} {item.contactPhone}</Text>
+                            <Text>{item.contactName} {item.billDate}</Text>
                             <TouchableWithoutFeedback onPress={() => common.call(item.contactPhone)}>
                                 <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 15, height: 15 }} /></Flex>
                             </TouchableWithoutFeedback>

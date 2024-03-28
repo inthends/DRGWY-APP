@@ -147,7 +147,7 @@ class NewsList extends BasePage {
                     <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.title}</Text>
                         {/* <Text style={item.isRead === 0 ? styles.unread : styles.read}>{item.isRead ? '已读' : '未读'}</Text> */}
-                        <Text style={styles.read}>{item.sendUserName}，{item.sdtime}</Text>
+                        <Text style={styles.read}>{item.sendUserName} {item.sdtime}</Text>
                     </Flex>
                     <Flex style={styles.line} />
                     <Flex align={'start'} direction={'column'}>
@@ -159,7 +159,7 @@ class NewsList extends BasePage {
                         >
                             <Text style={{
                                 color: '#666',
-                                fontSize: 16,
+                                fontSize: 15
                             }}>{item.contents}</Text>
                         </Flex>
                     </Flex>
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     },
     read: {
         color: '#666',
-        fontSize: 16
+        fontSize: 15
     },
     card: {
         borderTopWidth: 1,

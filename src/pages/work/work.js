@@ -352,12 +352,12 @@ const styles = StyleSheet.create({
     },
     top: {
         paddingTop: 20,
-        color: '#74BAF1',
+        color:Macro.work_blue, //'#74BAF1',
         fontSize: 16,
         paddingBottom: 3
     },
     bottom: {
-        color: '#999999',
+        color:'#333', //'#999999',
         fontSize: 16,
         paddingBottom: 20
     },

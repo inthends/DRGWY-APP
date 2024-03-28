@@ -135,7 +135,7 @@ export default class DetailPage extends BasePage {
             <TouchableWithoutFeedback onPress={() => this.click('回复')}>
               <Flex
                 justify={'center'}
-                style={[styles.ii, { backgroundColor: Macro.work_green }]}
+                style={[styles.ii, { backgroundColor: Macro.work_blue }]}
               >
                 <Text style={styles.word}>同意</Text>
               </Flex>

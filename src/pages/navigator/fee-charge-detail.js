@@ -22,7 +22,6 @@ import NavigatorService from './navigator-service';
 //import NoDataView from '../../components/no-data-view';
 import CommonView from '../../components/CommonView';
 
-
 class FeeChargeDetail extends BasePage {
     static navigationOptions = ({ navigation }) => {  
         return {

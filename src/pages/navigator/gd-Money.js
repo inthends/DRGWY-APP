@@ -87,7 +87,6 @@ class gdMoneyPage extends BasePage {
             }, () => { 
             });
         });
-
     };
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
@@ -167,7 +166,7 @@ class gdMoneyPage extends BasePage {
     };
 
     render() {
-        const { statistics, dataInfo } = this.state;
+        const { dataInfo } = this.state;
         //const { selectBuilding } = this.props; 
         return (
             <View style={{ flex: 1 }}>

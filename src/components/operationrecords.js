@@ -82,29 +82,27 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
         paddingLeft: 15,
         paddingRight: 15,
-        backgroundColor: '#F3F4F2',
-
+        backgroundColor: '#F3F4F2'
     },
     every: {
         marginLeft: 15,
         marginRight: 15,
         paddingTop: 5,
-        paddingBottom: 5,
+        paddingBottom: 5
     },
     every2: {
         marginLeft: 15,
         marginRight: 15,
-
-        paddingBottom: 5,
+        paddingBottom: 5
     },
     left: {
-        fontSize: 16,
-        color: '#333',
+        fontSize: 14,
+        color: '#666'
     },
     right: {},
     desc: {
         padding: 15,
-        paddingBottom: 40,
+        paddingBottom: 40
     },
     ii: {
         paddingTop: 10,
@@ -114,16 +112,13 @@ const styles = StyleSheet.create({
         width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
         backgroundColor: '#333',
         borderRadius: 6,
-        marginBottom: 20,
+        marginBottom: 20
     },
     word: {
         color: 'white',
-        fontSize: 16,
-
-
+        fontSize: 16
     },
     content: {
         color: '#999'
     }
-
 });

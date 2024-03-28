@@ -1,7 +1,7 @@
 //导航里面点击的服务单详情
 import React from 'react';
 import {
-    View,
+    TextInput,
     Text,
     TouchableWithoutFeedback,
     TouchableOpacity,
@@ -10,13 +10,12 @@ import {
     Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Icon } from '@ant-design/react-native';
-import { Flex, TextareaItem } from '@ant-design/react-native';
+import {Button, Icon } from '@ant-design/react-native';
+import { Flex } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';
 import UDToast from '../../../utils/UDToast';
-import DashLine from '../../../components/dash-line';
 import WorkService from '../../work/work-service';
 import Communicates from '../../../components/communicates';
 import ListImages from '../../../components/list-images';
@@ -45,8 +44,6 @@ export default class EfuwuDetailPage extends BasePage {
         this.state = {
             id,
             value: '',
-            // fuwu,
-            // type,
             images: [],
             detail: {},
             communicates: [],
@@ -65,7 +62,7 @@ export default class EfuwuDetailPage extends BasePage {
             this.setState({
                 detail: {
                     ...item.data,
-                    businessId: item.businessId,
+                    //businessId: item.businessId,
                     statusName: item.statusName
                 },
             });
@@ -125,43 +122,47 @@ export default class EfuwuDetailPage extends BasePage {
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
+
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.billType}</Text>
                     </Flex>
+
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.address}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
 
-                    <Text style={[styles.desc, ScreenUtil.borderBottom()]}>{detail.contents}</Text>
+                    <Text style={[styles.desc ]}>{detail.contents}</Text>
 
                     <ListImages images={images} lookImage={this.lookImage} />
+
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>报单人：{detail.contactName} {detail.createDate}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactPhone)}>
-                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 30, height: 30 }} /></Flex>
+                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
+                                style={{ width: 16, height: 16 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
 
                     {detail.businessCode ? (
                         <TouchableWithoutFeedback>
-                            <Flex style={[styles.every]}>
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                                 <Text style={styles.left}>关联单：</Text>
                                 <Text onPress={() => {
                                     if (detail.businessType === 'Repair') {
-                                        this.props.navigation.navigate('weixiuD', { data: { id: detail.businessId } });
+                                        this.props.navigation.navigate('weixiuD', { data: detail.businessId });
                                     }
                                     else //if (detail.businessType === 'Complaint')
                                     {
-                                        this.props.navigation.navigate('tousuD', { data: { id: detail.businessId } });
+                                        this.props.navigation.navigate('tousuD', { data: detail.businessId });
                                     }
-                                }} style={[styles.right, { color: Macro.color_4d8fcc }]}>{detail.businessCode}</Text>
+                                }} style={[styles.right, { color: Macro.work_blue }]}>{detail.businessCode}</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
                     ) : null}
 
-                    <View style={{
+                    {/* <View style={{
                         margin: 15,
                         borderStyle: 'solid',
                         borderColor: '#F3F4F2',
@@ -175,17 +176,42 @@ export default class EfuwuDetailPage extends BasePage {
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
-                    </View>
-                    <TouchableWithoutFeedback onPress={() => this.click('回复')}>
+                    </View> */}
+ 
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <TextInput
+                            maxLength={500}
+                            placeholder='请输入'
+                            multiline
+                            onChangeText={value => this.setState({ value })}
+                            value={this.state.value}
+                            style={{ fontSize: 16, textAlignVertical: 'top' }}
+                            numberOfLines={4}>
+                        </TextInput>
+                    </Flex>
+
+                    {/* <TouchableWithoutFeedback onPress={() => this.click('回复')}>
                         <Flex justify={'center'} style={[styles.ii, {
-                            width: '80%',
+                            width: '50%',
                             marginLeft: '10%',
                             marginRight: '10%',
-                            marginBottom: 20,
+                            marginTop: 10, 
+                            marginBottom: 10,
                         }, { backgroundColor: Macro.work_blue }]}>
                             <Text style={styles.word}>回复</Text>
                         </Flex>
-                    </TouchableWithoutFeedback>
+                    </TouchableWithoutFeedback> */}
+
+                    <Flex justify={'center'}>
+                        <Button onPress={() => this.click('回复')} type={'primary'}
+                            activeStyle={{ backgroundColor: Macro.work_blue }} style={{
+                                width: 300,
+                                backgroundColor: Macro.work_blue,
+                                marginTop: 20,
+                                height: 40
+                            }}>回复</Button>
+                    </Flex>
+ 
                     {detail.status === 1 && <Flex>
                         <TouchableWithoutFeedback onPress={() => this.click('转维修')}>
                             <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
@@ -237,16 +263,20 @@ const styles = StyleSheet.create({
         paddingBottom: 10
     },
     left: {
-        fontSize: 14,
-        color: '#666'
-    },
-    right: {},
-    desc: {
         fontSize: 16,
+        color: '#333'
+    },
+    right: {
+        fontSize: 16,
+        color: '#333'
+    },
+    desc: { 
         marginLeft: 15,
         marginRight: 15,
         paddingTop: 15,
-        paddingBottom: 15
+        paddingBottom: 15,
+        fontSize: 16,
+        color: '#333'
         // padding: 15,
         // paddingBottom: 40
     },

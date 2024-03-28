@@ -31,6 +31,7 @@ export default {
     addCheckDetail(
         billId,
         mainMemo,
+        detailId,
         unitId,
         allName,
         dutyUserId,
@@ -39,6 +40,7 @@ export default {
         return api.postData('/api/MobileMethod/MAddCheckDetail', {
             billId,
             mainMemo,
+            detailId,
             unitId,
             allName,
             dutyUserId,
@@ -66,6 +68,13 @@ export default {
     serviceExtra(keyvalue) {
         return api.getData('/api/MobileMethod/MGetFilesData', { keyvalue });
     },
+
+    //附件
+    checkFiles(keyvalue) {
+        return api.getData('/api/MobileMethod/MGetCheckFilesData', { keyvalue });
+    },
+    
+
     //服务单操作
     serviceHandle(handle, keyvalue, content, extra = null) {
         let url = '';
@@ -114,8 +123,7 @@ export default {
     getOperationRecord(keyvalue) {
         return api.getData('/api/MobileMethod/MGetOperationRecordList', { keyvalue, pageIndex: 1, pageSize: 100 });
     },
-
-    //维修单详情
+ 
     weixiuDetail(keyvalue) {
         return api.getData('/api/MobileMethod/MGetRepairEntity', { keyvalue });
     },
@@ -163,10 +171,14 @@ export default {
         }
         return api.postData(url, { status: type, isOverdue: overdue, pageIndex, pageSize: 100 });
     },
+ 
 
-    paidanPersons(organizeId, keyword = null, type = '员工') {
-        return api.getData('/api/MobileMethod/MGetUserList', { organizeId, keyword, type });
-    },
+    //获取人员
+    // getWorkers(organizeId, keyword = null, type = '员工') {
+    //     return api.getData('/api/MobileMethod/MGetUserList', { organizeId, keyword, type });
+    // },
+
+
     paidan(keyvalue, receiverName, receiverId) {
         return api.postData('/api/MobileMethod/MRepairDispatch', { keyvalue, receiverName, receiverId });
     },

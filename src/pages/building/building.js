@@ -176,6 +176,7 @@ class BuildingPage extends BasePage {
     });
   };
 
+  //打开机构
   openDrawer = () => {
     this.drawer && this.drawer.openDrawer();
   };
@@ -254,7 +255,7 @@ class BuildingPage extends BasePage {
                 />
               )}
               style={styles.list}
-              keyExtractor={(item, index) => item.id}
+              keyExtractor={(item) => item.id}
               refreshing={this.state.refreshing}
               onRefresh={() => this.onRefresh()}
               onEndReached={() => this.loadMore()}

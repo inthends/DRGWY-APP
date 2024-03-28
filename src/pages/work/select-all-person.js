@@ -8,19 +8,13 @@ import {
     TouchableOpacity,
     StyleSheet,
     ScrollView
-} from 'react-native';
-// import CommonView from '../../components/CommonView';
-import Macro from '../../utils/macro';
-// import WorkService from './work-service';
-import { connect } from 'react-redux';
-// import LoadImage from '../../components/load-image';
-// import common from '../../utils/common';
+} from 'react-native'; 
+import Macro from '../../utils/macro'; 
+import { connect } from 'react-redux'; 
 import api from '../../utils/api';
+class SelectAllPerson extends BasePage {
 
-class SelectPerson extends BasePage {
-
-    //选择接单人员
-
+    //选择所有人员
     static navigationOptions = ({ navigation }) => {
         return {
             title: '选择人员',
@@ -56,19 +50,15 @@ class SelectPerson extends BasePage {
     }
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
-
-
         const selectBuilding = this.state.selectBuilding;
         const nextSelectBuilding = nextProps.selectBuilding;
-
-        console.log('nextSelectBuilding:' + nextSelectBuilding);
-
-        if (!(selectBuilding
-            && nextSelectBuilding
+        
+        if (!(selectBuilding 
+            && nextSelectBuilding 
             && selectBuilding.key === nextSelectBuilding.key)) {
             this.setState({
                 selectBuilding: nextProps.selectBuilding
-                // estateId: nextProps.selectBuilding.key,
+                //estateId: nextProps.selectBuilding.key,
                 //index: 0,
             }, () => {
                 this.initData();
@@ -76,15 +66,10 @@ class SelectPerson extends BasePage {
         }
     }
 
-    initData() {
-        // WorkService.paidanPersons(this.state.selectBuilding.key).then(res => {
-        //     this.setState({
-        //         items: res
-        //     });
-        // });
-
+  
+    initData() {  
         let url = '/api/MobileMethod/MGetDepartmentList';
-        let url2 = '/api/MobileMethod/MGetReceiveUserList';
+        let url2 = '/api/MobileMethod/MGetAllUserList';
 
         api.getData(url, this.state.selectBuilding ? { organizeId: this.state.selectBuilding.key } : {}).then(res => {
             Promise.all(res.map(item => api.getData(url2, { departmentId: item.departmentId }))).then(ress => {
@@ -102,38 +87,7 @@ class SelectPerson extends BasePage {
         navigation.state.params.onSelect({ selectItem });
         navigation.goBack();
     };
-
-    // render() {
-    //     const { items } = this.state;
-    //     return (
-    //         <CommonView>
-    //             <ScrollView>
-    //                 <View >
-    //                     {items.map(item => (
-    //                         <TouchableWithoutFeedback key={item.id} onPress={() => this.click(item)}>
-    //                             <Flex style={styles.content} justify={'between'} align={'center'}>
-    //                                 <Flex>
-    //                                     <Flex style={styles.square} justify={'center'} align={'center'}>
-    //                                         <Text style={styles.number}>{item.count}</Text>
-    //                                     </Flex>
-    //                                     <Flex direction={'column'} style={{marginLeft: 15}}>
-    //                                         <Text style={styles.name}>{item.name}</Text>
-    //                                         <Text style={styles.company}>{item.orgName}</Text>
-    //                                     </Flex>
-    //                                 </Flex>
-    //                                 <Flex direction={'column'}>
-    //                                     <Text style={styles.identifier}>{item.dutyName}</Text>
-    //                                     <Text style={styles.state}>{item.state === 1 ? '在线' : '离线'}</Text>
-    //                                 </Flex>
-    //                             </Flex>
-    //                         </TouchableWithoutFeedback>
-    //                     ))}
-    //                 </View>
-    //             </ScrollView>
-    //         </CommonView>
-    //     );
-    // }
-
+ 
     //2024-03-21 改为通讯录样式
     render() {
         const { data } = this.state;
@@ -220,50 +174,11 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: ' rgb(244,244,244)'
     }
-});
-
-// const styles = StyleSheet.create({
-//     content: {
-//         paddingLeft: 20,
-//         paddingBottom: 15,
-//         paddingTop: 15,
-//         paddingRight: 20
-//     },
-//     square: {
-//         height: 30,
-//         width: 30,
-//         borderRadius: 15,
-//         backgroundColor: Macro.work_blue
-//     },
-//     number: {
-//         fontSize: 16,
-//         color: '#333'
-//     },
-//     name: {
-//         fontSize: 16,
-//         color: '#333',
-//         paddingBottom: 5
-
-//     },
-//     company: {
-//         fontSize: 16,
-//         color: '#999'
-//     },
-//     identifier: {
-//         fontSize: 16,
-//         color: '#333',
-//         paddingLeft: 30
-//     },
-//     state: {
-//         fontSize: 16,
-//         color: Macro.work_blue,
-//         paddingLeft: 15
-//     }
-// });
+}); 
 
 const mapStateToProps = ({ buildingReducer }) => {
     return {
-        selectBuilding: buildingReducer.selectBuilding,
+        selectBuilding: buildingReducer.selectBuilding
     };
 };
-export default connect(mapStateToProps)(SelectPerson);
+export default connect(mapStateToProps)(SelectAllPerson);

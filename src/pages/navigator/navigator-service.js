@@ -83,29 +83,18 @@ export default {
   //服务单
   serviceList(
     pageIndex,
-    billStatus,
-    treeType,
+    billStatus, 
     organizeId,
     billType,
     startTime,
     endTime
   ) {
-    /*
-        {:,treeType:,organizeId:billType:,startTime:,endTime:,}
-         */
-
-    // if (billType === '报修') {
-    //     url = '/api/MobileMethod/MGetRepairPageList';
-    // } else if (billType === '投诉') {
-    //     url = '/api/MobileMethod/MGetComplaintPageList';
-    // }
 
     return api.postData('/api/MobileMethod/MGetServiceDeskPageList', {
       pageIndex,
       pageSize: 10,
       billStatus,
-      status: billStatus,
-      //treeType,
+      status: billStatus, 
       organizeId,
       billType,
       startTime,
@@ -115,29 +104,17 @@ export default {
 
   weixiuList(
     pageIndex,
-    billStatus,
-    //treeType,
+    billStatus, 
     organizeId,
     startTime,
     endTime,
     repairArea,
-  ) {
-
-    /*
-        {:,treeType:,organizeId:billType:,startTime:,endTime:,}
-         */
-    // if (billType === '报修') {
-    //     url = '';
-    // } else if (billType === '投诉') {
-    //     url = '/api/MobileMethod/MGetComplaintPageList';
-    // }
+  ) { 
 
     return api.postData('/api/MobileMethod/MGetRepairPageListForNavigator', {
       pageIndex,
-      pageSize: 10,
-      //billStatus,
-      status: billStatus,
-      //treeType,
+      pageSize: 10, 
+      status: billStatus, 
       organizeId,
       startTime,
       endTime,
@@ -147,8 +124,7 @@ export default {
 
   tousuList(
     pageIndex,
-    billStatus,
-    //treeType,
+    billStatus, 
     organizeId,
     billType,
     startTime,
@@ -156,10 +132,8 @@ export default {
   ) {
     return api.postData('/api/MobileMethod/MGetComplaintPageList', {
       pageIndex,
-      pageSize: 10,
-      //billStatus,
-      status: billStatus,
-      //treeType,
+      pageSize: 10, 
+      status: billStatus, 
       organizeId,
       billType,
       startTime,
