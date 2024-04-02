@@ -4,18 +4,30 @@ export default {
   // 获取待办任务列表
   getFlowTask(params) {
     // pagination, queryJson
-    const url = params.isCompleted
-      ? '/api/MobileMethod/MGetFlowCompletedPageList'
-      : '/api/MobileMethod/MGetFlowTaskPageList';
+    // const url = params.isCompleted
+    //   ? '/api/MobileMethod/MGetFlowCompletedPageList'
+    //   : '/api/MobileMethod/MGetFlowTaskPageList';
+
+    var url = '/api/MobileMethod/';
+    if (params.taskType == 1)//待办
+    {
+      url += 'MGetFlowTaskPageList';
+    }
+    else if (params.taskType == 2) { 
+      url += 'MGetFlowReadPageList';//待查阅
+    }
+    else {
+      url += 'MGetFlowCompletedPageList';//已办
+    }
     return api.postData(url, params);
   },
 
 
   //获取待办和已办数量
-  getCounts(params) { 
-    return api.postData('/api/MobileMethod/MGetFlowCounts',params);
+  getCounts(params) {
+    return api.postData('/api/MobileMethod/MGetFlowCounts', params);
   },
- 
+
   // 获取流程详情
   getFlowData(taskId) {
     return api.getData('/api/MobileMethod/MGetFlowData', { taskId });
@@ -62,13 +74,13 @@ export default {
   //获取评审内容
   getReviews(taskId) {
     return api.getData('/api/MobileMethod/MGetReviews', { taskId })
-  }, 
-  
+  },
+
   saveReply(params) {
     return api.postData('/api/MobileMethod/MSaveReply', params);
   },
 
   addReview(params) {
     return api.postData('/api/MobileMethod/MAddReview', params);
-  } 
+  }
 };

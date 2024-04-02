@@ -86,7 +86,7 @@ export default {
             params: params,
             showLoading: showLoading,
             method: 'POST',
-            showError,
+            showError
         });
     },
     uploadFile(uri, id, type,

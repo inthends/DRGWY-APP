@@ -25,20 +25,21 @@ export default class WorkPage extends BasePage {
                 flex: 1,
                 textAlign: 'center',
             },
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <Fragment>
                     <TouchableWithoutFeedback onPress={() => navigation.push('scanonly')}>
                         <Flex direction='column' style={{ marginLeft: 20 }}>
                             <LoadImage defaultImg={require('../../static/images/scan2.png')}
                                 style={{ width: 20, height: 19 }} />
+                            
                             <Text style={styles.button}>扫一扫</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback onPress={() => navigation.push('AddWork')}>
                         <Flex direction='column' style={{ marginLeft: 20 }}>
                             <LoadImage defaultImg={require('../../static/images/paiyipai.png')}
-                                style={{ width: 20, height: 20 }} />
+                                style={{ width: 20, height: 21 }} /> 
                             <Text style={styles.button}>拍一拍</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
@@ -55,11 +56,11 @@ export default class WorkPage extends BasePage {
                     <TouchableWithoutFeedback>
                         <Flex direction='column' style={{ marginRight: 20 }}>
                             <LoadImage defaultImg={require('../../static/images/qiandao.png')}
-                                style={{ width: 20, height: 20 }} />
+                                style={{ width: 20, height: 19 }} /> 
                             <Text style={styles.button}>签到</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-                </Fragment> 
+                </Fragment>
             )
         };
     };
@@ -79,7 +80,7 @@ export default class WorkPage extends BasePage {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
-                WorkService.workData(this.state.showLoading).then(data => { 
+                WorkService.workData(this.state.showLoading).then(data => {
                     this.setState({
                         data,
                         showLoading: false,
@@ -96,7 +97,7 @@ export default class WorkPage extends BasePage {
         );
     }
 
-    componentWillUnmount(): void {
+    componentWillUnmount() {
         this.viewDidAppear.remove();
     }
 
@@ -134,8 +135,8 @@ export default class WorkPage extends BasePage {
                                         <Text style={styles.top}>{data.pendingreply}</Text>
                                         <Text style={styles.bottom}>待回复</Text>
                                     </Flex>
-                                </TouchableWithoutFeedback> 
- 
+                                </TouchableWithoutFeedback>
+
                                 <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task', {
                                     'data': {
                                         'type': 'fuwu',
@@ -149,10 +150,10 @@ export default class WorkPage extends BasePage {
                                         <Text style={styles.bottom}>已回复</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
- 
+
                                 <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task', {
                                     'data': {
-                                        'type': 'visit', 
+                                        'type': 'visit',
                                         hiddenHeader: true,
                                         title: '待回访列表',
                                     },
@@ -352,12 +353,12 @@ const styles = StyleSheet.create({
     },
     top: {
         paddingTop: 20,
-        color:Macro.work_blue, //'#74BAF1',
+        color: Macro.work_blue, //'#74BAF1',
         fontSize: 16,
         paddingBottom: 3
     },
     bottom: {
-        color:'#333', //'#999999',
+        color: '#333', //'#999999',
         fontSize: 16,
         paddingBottom: 20
     },

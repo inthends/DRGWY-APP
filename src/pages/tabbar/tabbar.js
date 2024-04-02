@@ -6,6 +6,10 @@ import {
   createStackNavigator,
   createDrawerNavigator,
 } from 'react-navigation';
+
+import { Icon } from '@ant-design/react-native';
+import Macro from '../../utils/macro';
+
 import BuildingPage from '../building/building';
 import WorkPage from '../work/work';
 import MinePage from '../mine/mine';
@@ -161,7 +165,7 @@ BuildingNavigator.navigationOptions = ({ navigation }) => ({
 });
 
 const navigatorNavigator = createStackNavigator({
-  
+
   Navigator: {
     screen: NavigatorPage,
   },
@@ -198,7 +202,7 @@ const navigatorNavigator = createStackNavigator({
   check: EstateCheckPage,
   checkDetail: EcheckDetailPage,
   checkAdd: EcheckAddPage,
-  
+
 
   //固定资产
   gdzcPandian: GdzcPandianPage,
@@ -260,7 +264,7 @@ navigatorNavigator.navigationOptions = ({ navigation }) => ({
   tabBarVisible: navigation.state.index === 0,
 });
 
-const WorkNavigator = createStackNavigator({ 
+const WorkNavigator = createStackNavigator({
   Work: {
     screen: WorkPage,
     navigationOptions: () => ({
@@ -393,50 +397,92 @@ const tabbar = createBottomTabNavigator(
         DeviceEventEmitter.emit('currentNavigation', navigation);
       }
 
+      // return {
+      //   tabBarIcon: ({ focused
+      //     //, horizontal, tintColor 
+      //   }) => {
+      //     const { routeName } = navigation.state;
+      //     let imageUrl;
+      //     if (routeName === 'Building') {
+      //       if (focused) {
+      //         imageUrl = require('../../static/images/tabbar/ly_h.png');
+      //       } else {
+      //         imageUrl = require('../../static/images/tabbar/ly_n.png');
+      //       }
+      //     } else if (routeName === 'Navigator') {
+      //       if (focused) {
+      //         imageUrl = require('../../static/images/tabbar/dh_h.png');
+      //       } else {
+      //         imageUrl = require('../../static/images/tabbar/dh_n.png');
+      //       }
+      //     } else if (routeName === 'Work') {
+      //       if (focused) {
+      //         imageUrl = require('../../static/images/tabbar/gz_h.png');
+      //       } else {
+      //         imageUrl = require('../../static/images/tabbar/gz_n.png');
+      //       }
+      //     }
+      //     else if (routeName === 'Shenpi') {
+      //       //审批
+      //       if (focused) {
+      //         imageUrl = require('../../static/images/tabbar/app_h.png');
+      //       } else {
+      //         imageUrl = require('../../static/images/tabbar/app_n.png');
+      //       }
+      //     }
+      //     else {
+      //       if (focused) {
+      //         imageUrl = require('../../static/images/tabbar/me_h.png');
+      //       } else {
+      //         imageUrl = require('../../static/images/tabbar/me_n.png');
+      //       }
+      //     }
+      //     // You can return any component that you like here!
+      //     return <Image style={{ width: 15, height: 18 }} source={imageUrl} />;
+      //   }
+      // };
+
+
+
+
+
       return {
-        tabBarIcon: ({ focused
-          //, horizontal, tintColor 
-        }) => {
+        tabBarIcon: ({ focused }) => {
           const { routeName } = navigation.state;
-          let imageUrl;
-          if (routeName === 'Building') {
-            if (focused) {
-              imageUrl = require('../../static/images/tabbar/ly_h.png');
-            } else {
-              imageUrl = require('../../static/images/tabbar/ly_n.png');
-            }
-          } else if (routeName === 'Navigator') {
-            if (focused) {
-              imageUrl = require('../../static/images/tabbar/dh_h.png');
-            } else {
-              imageUrl = require('../../static/images/tabbar/dh_n.png');
-            }
-          } else if (routeName === 'Work') {
-            if (focused) {
-              imageUrl = require('../../static/images/tabbar/gz_h.png');
-            } else {
-              imageUrl = require('../../static/images/tabbar/gz_n.png');
-            }
+          let name;
+
+          switch (routeName) {
+            case 'Building':
+              name = 'bank';
+              break;
+
+            case 'Navigator':
+              name = 'star';
+              break;
+
+            case 'Work':
+              name = 'desktop';
+              break;
+
+            case 'Shenpi':
+              name = 'form';
+              break;
+
+            case 'Mine':
+              name = 'user';
+              break;
           }
-          else if (routeName === 'Shenpi') {
-            //审批
-            if (focused) {
-              imageUrl = require('../../static/images/tabbar/app_h.png');
-            } else {
-              imageUrl = require('../../static/images/tabbar/app_n.png');
-            }
-          }
-          else {
-            if (focused) {
-              imageUrl = require('../../static/images/tabbar/me_h.png');
-            } else {
-              imageUrl = require('../../static/images/tabbar/me_n.png');
-            }
-          }
-          // You can return any component that you like here!
-          return <Image style={{ width: 15, height: 18 }} source={imageUrl} />;
-        },
+
+          let color='black';
+          if (focused) {
+            color = Macro.work_blue;
+          } 
+          return <Icon name={name} size={22} color={color} />
+        }
+        
+
       };
+ 
     },
   },
 );
@@ -457,7 +503,6 @@ const Drawer = createDrawerNavigator(
     drawerLockMode: 'locked-closed',
     useNativeAnimations: true,
     overlayColor: '#000000b3',
-    
     contentComponent: (props) => {
       return <ManagerBuildingPage {...props} />;
     }

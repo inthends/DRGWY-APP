@@ -26,7 +26,7 @@ export default class ModifyPsdPage extends BasePage {
         this.state = {
             oldPassword: '',
             newPassword: '',
-            confirmPassword: '',
+            confirmPassword: ''
         }; 
     }
 
@@ -120,12 +120,12 @@ const styles = StyleSheet.create({
     all: {
         backgroundColor: Macro.color_white,
     },
+    
     content: {
         backgroundColor: Macro.color_white,
         paddingLeft: 20,
         paddingRight: 20,
-        height: ScreenUtil.contentHeight(),
-
+        height: ScreenUtil.contentHeight()
         // height: ScreenUtil.contentHeightWithNoTabbar(),
     },
     header: {

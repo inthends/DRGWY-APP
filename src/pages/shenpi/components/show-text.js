@@ -12,7 +12,7 @@ const ShowText = ({
   showInModal,
   wordColor,
   titleColor = Macro.work_blue,
-  pointColor,
+  pointColor
 }) => {
   const words = word.split('');
   return (

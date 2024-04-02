@@ -32,16 +32,17 @@ class ApprovePage extends BasePage {
   constructor(props) {
     super(props);
     this.state = {
-      isCompleted: false,
+      //isCompleted: false,
+      taskType: 1,//页签类型
       activeSections: [],
       selectTask: this.props.selectTask || {},
       refreshing: false,
-      // dataInfo: {},
       dataInfo: {
         data: [],
       },
       pageIndex: 1,
-      todo: 0,//总数量
+      todo: 0,
+      read: 0,
       done: 0
     };
     this.onChange = (activeSections) => {
@@ -77,7 +78,7 @@ class ApprovePage extends BasePage {
         },
         () => {
           this.onRefresh();
-        },
+        }
       );
     }
   }
@@ -100,14 +101,14 @@ class ApprovePage extends BasePage {
     Service.getCounts({
       code: selectTask.value || ''
     }).then((res) => {
-      this.setState({ todo: res.todo, done: res.done });
+      this.setState({ todo: res.todo, read: res.read, done: res.done });
     });
   };
 
   getList = () => {
     const { selectTask = {} } = this.props;
     Service.getFlowTask({
-      isCompleted: this.state.isCompleted,
+      taskType: this.state.taskType,
       pageIndex: this.state.pageIndex,
       pageSize: 10,
       code: selectTask.value || ''
@@ -169,7 +170,7 @@ class ApprovePage extends BasePage {
   };
 
   render() {
-    const { isCompleted, todo, done, dataInfo = {} } = this.state;
+    const { todo, read, done, taskType, dataInfo = {} } = this.state;
 
     return (
       <View style={{ flex: 1 }}>
@@ -178,9 +179,9 @@ class ApprovePage extends BasePage {
             {
               paddingTop: 30,
               width: ScreenUtil.deviceWidth() - 30,
-              marginLeft: 15,
+              marginLeft: 15
             },
-            ScreenUtil.borderBottom(),
+            ScreenUtil.borderBottom()
           ]}
           justify="around"
         >
@@ -188,35 +189,7 @@ class ApprovePage extends BasePage {
             onPress={() =>
               this.setState(
                 {
-                  isCompleted: false,
-                },
-                () => {
-                  this.onRefresh();
-                },
-              )
-            }
-          >
-            <Flex direction="column">
-              <Icon
-                name="database"
-                size={30}
-                color={isCompleted ? '#333' : Macro.work_blue}
-              />
-              <Text
-                style={[
-                  styles.bottom,
-                  { color: isCompleted ? '#333' : Macro.work_blue },
-                ]}
-              >
-                待办任务 ({todo})
-              </Text>
-            </Flex>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback
-            onPress={() =>
-              this.setState(
-                {
-                  isCompleted: true,
+                  taskType: 1
                 },
                 () => {
                   this.onRefresh();
@@ -226,21 +199,81 @@ class ApprovePage extends BasePage {
           >
             <Flex direction="column">
               <Icon
-                name="file-zip"
+                name="form"
                 size={30}
-                color={isCompleted ? Macro.work_blue : '#333'}
+                color={taskType == 1 ? Macro.work_blue : '#333'}
               />
               <Text
                 style={[
                   styles.bottom,
-                  { color: isCompleted ? Macro.work_blue : '#333' },
+                  { color: taskType == 1 ? Macro.work_blue : '#333' },
                 ]}
               >
-                已办任务 ({done})
+                待办 ({todo})
+              </Text>
+            </Flex>
+          </TouchableWithoutFeedback>
+
+
+          <TouchableWithoutFeedback
+            onPress={() =>
+              this.setState(
+                {
+                  taskType: 2
+                },
+                () => {
+                  this.onRefresh();
+                }
+              )
+            }
+          >
+            <Flex direction="column">
+              <Icon
+                name="eye"
+                size={30}
+                color={taskType == 2 ? Macro.work_blue : '#333'}
+              />
+              <Text
+                style={[
+                  styles.bottom,
+                  { color: taskType == 2 ? Macro.work_blue : '#333' },
+                ]}
+              >
+                待查阅 ({read})
+              </Text>
+            </Flex>
+          </TouchableWithoutFeedback>
+ 
+          <TouchableWithoutFeedback
+            onPress={() =>
+              this.setState(
+                {
+                  taskType: 3,
+                },
+                () => {
+                  this.onRefresh();
+                }
+              )
+            }
+          >
+            <Flex direction="column">
+              <Icon
+                name="check-square"
+                size={30}
+                color={taskType == 3 ? Macro.work_blue : '#333'}
+              />
+              <Text
+                style={[
+                  styles.bottom,
+                  { color: taskType == 3 ? Macro.work_blue : '#333' },
+                ]}
+              >
+                已办 ({done})
               </Text>
             </Flex>
           </TouchableWithoutFeedback>
         </Flex>
+
         <FlatList
           data={dataInfo.data || []}
           renderItem={({ item }) => (
@@ -248,31 +281,38 @@ class ApprovePage extends BasePage {
               onPress={() => {
                 let url = '';
                 switch (item.code) {
-                  case '1026': {
-                    url = 'fukuan';//付款
+
+                  case '1006': {
+                    url = 'songshen';//送审单
                     break;
                   }
+
                   case '1025': {
                     url = 'jianmian';//减免
                     break;
                   }
-                  case '1006': {
-                    url = 'songshen';
+
+                  case '1026': {
+                    url = 'fukuan';//付款单
                     break;
                   }
+                  
                   case '1002':
                   case '1005': {
-                    url = 'chuzunew';
+                    url = 'chuzunew';//出租合同
                     break;
                   }
+                  
                   case '1004': {
-                    url = 'chuzuchange';
+                    url = 'chuzuchange';//合同变更
                     break;
                   }
+
                   case '1003': {
-                    url = 'chuzutui';
+                    url = 'chuzutui';//合同退租
                     break;
                   }
+
                   case '1013':
                   case '1016': {
                     url = 'wuyenew';
@@ -290,29 +330,36 @@ class ApprovePage extends BasePage {
                   }
 
                   case '1011': {
-                    url = 'caigou';
+                    url = 'caigou';//采购单
                     break;
                   }
 
                   case '1027': {
-                    url = 'baoxiao';
+                    url = 'baoxiao';//报销单
                     break;
                   }
+
                   case '1035': {
-                    url = 'matter';//事项
+                    url = 'matter';//事项申请
                     break;
                   }
+
                   case '1037': {
-                    url = 'task';
+                    url = 'task';//任务单
                     break;
-                  } 
+                  }
+
+                  
+
                 }
+
                 //传递参数
                 this.props.navigation.push(url, {
                   data: item.id,
-                  isCompleted: isCompleted,
+                  isCompleted: taskType == 3 ? true : false,
                   refresh: this.onRefresh
                 });
+                
               }}
             >
               <View
@@ -364,35 +411,31 @@ class ApprovePage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-
   list: {
     //height: ScreenUtil.contentHeightWithNoTabbar()
     marginBottom: 15
   },
-
   every: {
     marginLeft: 15,
     marginRight: 15,
     paddingTop: 15,
-    paddingBottom: 15,
+    paddingBottom: 15
   },
-
   title: {
     color: Macro.work_blue,
-    fontSize: 16,
+    fontSize: 16
   },
   txt: {
-    fontSize: 14,
+    fontSize: 14
   },
   right: {
-    color: '#666',
+    color: '#666'
   },
-
   bottom: {
     color: '#333',
     fontSize: 16,
     paddingTop: 10,
-    paddingBottom: 20,
+    paddingBottom: 20
   },
   special: {
     borderRadius: 4,
@@ -402,8 +445,8 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     borderWidth: 1,
     borderStyle: 'solid',
-    overflow: 'hidden',
-  },
+    overflow: 'hidden'
+  }
 });
 
 const mapStateToProps = ({ buildingReducer }) => {

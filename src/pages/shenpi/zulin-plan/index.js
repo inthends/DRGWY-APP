@@ -202,8 +202,7 @@ export default class DetailPage extends BasePage {
             </View>
           </Flex>
         </Modal>
-
-
+        
         <Modal
           //弹出沟通页面
           transparent

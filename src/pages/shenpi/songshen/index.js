@@ -26,7 +26,7 @@ export default class DetailPage extends BasePage {
     //是否完成
     var isCompleted = navigation.getParam('isCompleted');
     return {
-      title: isCompleted ? '收款单详情' : '收款单审批',
+      title: isCompleted ? '送审单详情' : '送审单审批',
       headerForceInset: this.headerForceInset,
       headerLeft: (
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -137,7 +137,7 @@ export default class DetailPage extends BasePage {
             <Text style={[styles.txt, { color: Macro.work_blue }]}>
               {detail.groupTotal}
             </Text>
-            <Text style={[styles.txt, { color: Macro.work_orange }]}>
+            <Text style={[styles.txt, { color:'red' }]}>
               {detail.receiveDetail}
             </Text>
           </Flex>
@@ -193,6 +193,7 @@ export default class DetailPage extends BasePage {
             })} />
 
           <ShowRecord records={records} />
+          
           <ShowActions
             state={this.state}
             click={() => {

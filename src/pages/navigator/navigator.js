@@ -8,10 +8,11 @@ import {
 } from 'react-native';
 
 import BasePage from '../base/base';
-import { Flex } from '@ant-design/react-native';
+import { Flex, Icon } from '@ant-design/react-native';
 import LoadImage from '../../components/load-image';
 import CommonView from '../../components/CommonView';
 import ScreenUtil from '../../utils/screen-util';
+import Macro from '../../utils/macro';
 // import ChaoBiaoPage from './chao-biao/chao-biao';
 
 export default class NavigatorPage extends BasePage {
@@ -56,9 +57,10 @@ export default class NavigatorPage extends BasePage {
                 onPress={() => this.props.navigation.navigate('louPan')}
               >
                 <Flex style={styles.left}>
-                  <LoadImage
-                    style={{ width: 19, height: 25 }}
-                    defaultImg={require('../../static/images/navigator/shangmen.png')}
+                <Icon
+                    name="home"
+                    size={20}
+                    color={Macro.work_blue}
                   />
                   <Text style={styles.content}>房产资料</Text>
                 </Flex>
@@ -99,9 +101,10 @@ export default class NavigatorPage extends BasePage {
                 onPress={() => this.props.navigation.navigate('gdMoney')}
               >
                 <Flex style={styles.left}>
-                  <LoadImage
-                    style={{ width: 19, height: 25 }}
-                    defaultImg={require('../../static/images/navigator/shangmen.png')}
+                <Icon
+                    name="laptop"
+                    size={22}
+                    color={Macro.work_blue}
                   />
                   <Text style={styles.content}>固定资产</Text>
                 </Flex>
@@ -174,47 +177,67 @@ export default class NavigatorPage extends BasePage {
                 </Flex>
               </TouchableWithoutFeedback>
             </Flex>
-            <Flex justify={'between'} style={styles.cellContnent}>
-              <TouchableWithoutFeedback
-                onPress={() => this.props.navigation.push('chaobiao')}
-              >
-                <Flex style={styles.left}>
-                  <LoadImage
-                    style={{ width: 22, height: 22 }}
-                    defaultImg={require('../../static/images/navigator/zonghexunjian.png')}
-                  />
-                  <Text style={styles.content}>移动抄表</Text>
-                </Flex>
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback
-                onPress={() => this.props.navigation.push('shebeiList')}
-              >
-                <Flex style={styles.right}>
-                  <LoadImage
-                    style={{ width: 22, height: 22 }}
-                    defaultImg={require('../../static/images/navigator/zonghexunjian.png')}
-                  />
-                  <Text style={styles.content}>设备资料</Text>
-                </Flex>
-              </TouchableWithoutFeedback>
-            </Flex>
- 
+
             <Flex justify={'between'} style={styles.cellContnent}>
               <TouchableWithoutFeedback
                 onPress={() => this.props.navigation.push('check')}
               >
                 <Flex style={styles.left}>
-                  <LoadImage
+                  {/* <LoadImage
                     style={{ width: 22, height: 22 }}
                     defaultImg={require('../../static/images/navigator/zonghexunjian.png')}
+                  /> */}
+
+                  <Icon
+                    name="flag"
+                    size={22}
+                    color={Macro.work_blue}
                   />
+
                   <Text style={styles.content}>现场检查</Text>
                 </Flex>
               </TouchableWithoutFeedback>
+
+              <TouchableWithoutFeedback
+                onPress={() => this.props.navigation.push('shebeiList')}
+              >
+                <Flex style={styles.right}>
+                  {/* <LoadImage
+                    style={{ width: 22, height: 22 }}
+                    defaultImg={require('../../static/images/navigator/zonghexunjian.png')}
+                  /> */}
+                   <Icon
+                    name="desktop"
+                    size={20}
+                    color={Macro.work_blue}
+                  />
+                  <Text style={styles.content}>设备资料</Text>
+                </Flex>
+              </TouchableWithoutFeedback> 
             </Flex>
-            <Flex style={styles.line} />
-          </Flex>
  
+            <Flex justify={'between'} style={styles.cellContnent}>
+              <TouchableWithoutFeedback
+                onPress={() => this.props.navigation.push('chaobiao')}
+              >
+                <Flex style={styles.left}>
+                  {/* <LoadImage
+                    style={{ width: 22, height: 22 }}
+                    defaultImg={require('../../static/images/navigator/zonghexunjian.png')}
+                  /> */} 
+                  <Icon
+                    name="form"
+                    size={22}
+                    color={Macro.work_blue}
+                  />
+
+                  <Text style={styles.content}>移动抄表</Text>
+                </Flex>
+              </TouchableWithoutFeedback> 
+            </Flex> 
+            <Flex style={styles.line} /> 
+          </Flex>
+
           <Flex direction={'column'} align={'start'} style={styles.cell}>
             <Flex
               style={{

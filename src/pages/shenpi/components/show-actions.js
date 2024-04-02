@@ -93,7 +93,7 @@ const ShowActions = ({ state, click, isSpecial = false }) => {
               justify={'center'}
               style={[styles.ii, { backgroundColor: Macro.work_blue }]}
             >
-              <Text style={styles.word}>查阅</Text>
+              <Text style={styles.word}>确定</Text>
             </Flex>
           </TouchableWithoutFeedback> :
           <>
