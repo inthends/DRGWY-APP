@@ -1,12 +1,11 @@
 import React//, {Fragment} 
     from 'react';
 import {
-    View, StyleSheet, FlatList,
-    //Text, SafeAreaView, StatusBar,TouchableOpacity, TextInput
+    View, StyleSheet, FlatList
+    //Text, SafeAreaView, StatusBar, TextInput
 } from 'react-native';
 import BasePage from '../../base/base';
 //import BuildingHeader from '../../../components/building/building-header';
-//import {Button, Flex, Icon, List, WhiteSpace} from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import BuildingsService from './buildings-service';
 import ScreenUtil from '../../../utils/screen-util';
@@ -15,18 +14,16 @@ import common from '../../../utils/common';
 import BackTitleNavigationBar from '../../../components/back-title-navigation-bar';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
-
 import BuildingCell from '../../../components/building/build-cell';
 
-
 class BuildingsPage extends BasePage {
-    
-    // static navigationOptions = ({navigation}) => {
-    //     return {
-    //         tabBarVisible: false,
-    //         header: null
-    //     };
-    // };
+
+    static navigationOptions = ({ navigation }) => {
+        return {
+            tabBarVisible: false,
+            header: null
+        };
+    };
 
     constructor(props) {
         super(props);
@@ -79,7 +76,6 @@ class BuildingsPage extends BasePage {
                     // onMomentumScrollEnd={() => this.canAction = false}
                     />
                 </View>
-
             </CommonView>
         );
     }
@@ -94,8 +90,9 @@ const styles = StyleSheet.create({
     list: {
         // marginBottom: ScreenUtil.tabbarHeight()
         height: ScreenUtil.contentHeightWithNoTabbar()
-    },
+    }
 });
+
 const mapStateToProps = ({ buildingReducer }) => {
     return {
         selectBuilding: buildingReducer.selectBuilding

@@ -27,18 +27,19 @@ export default class BuildingCell extends BasePage {
     render() {
         const { item } = this.props;
         return (
-            // <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('feeDetail',{})}>
-            // <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('louDetail',{})}> 
+
+            //<TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('feeDetail',{})}>
+            //<TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('louDetail',{})}> 
             <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate(this.props.nextRouteName, { data: item })}>
                 <View style={styles.content}>
-                    <Flex direction="row">
+                    <Flex direction="row">  
                         <Flex style={styles.left}>
                             <LoadImage img={item.mainpic} style={styles.image} />
                         </Flex> 
                         <Flex direction="column" justify="between" style={styles.right}>
                             <Flex justify="between" style={styles.item}>
                                 <Text style={styles.name}>{item.name}</Text>
-                                {/* <Text style={styles.area}>{item.averagerentprice}{Macro.yuan_meter_day}</Text> */}
+                                 {/* <Text style={styles.area}>{item.averagerentprice}{Macro.yuan_meter_day}</Text> */}
                                 <Text style={styles.area}>{item.code}</Text>
                             </Flex>
                             <Flex justify="between" style={[styles.item, { marginTop: 10 }]}>

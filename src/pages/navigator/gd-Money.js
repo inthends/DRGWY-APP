@@ -29,6 +29,7 @@ import CommonView from '../../components/CommonView';
 let screen_width = ScreenUtil.deviceWidth();
 
 class gdMoneyPage extends BasePage {
+    
     static navigationOptions = ({ navigation }) => { 
         return {
             tabBarVisible: false,

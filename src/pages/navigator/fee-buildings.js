@@ -23,6 +23,7 @@ import NavigatorService from './navigator-service';
 import CommonView from '../../components/CommonView';
 
 export default class FeeBuildingsPage extends BasePage {
+    
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
