@@ -1,10 +1,12 @@
 import React from 'react';
 import {
     Text,
+    View,
     StyleSheet,
     ScrollView,
-    TouchableWithoutFeedback,
     ImageBackground,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
     Animated
 } from 'react-native';
 
@@ -12,26 +14,41 @@ import BasePage from '../../base/base';
 import { Flex, Icon, Checkbox } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import BuildingService from '../building_service';
-import LoadImage from '../../../components/load-image';
+// import LoadImage from '../../../components/load-image';
 import { connect } from 'react-redux';
 import { saveSelectBuilding } from '../../../utils/store/actions/actions';
 import ScreenUtil from '../../../utils/screen-util';
 import common from '../../../utils/common';
 import CommonView from '../../../components/CommonView';
+import SelectImage from '../../../utils/select-image';
 const lineWidth = 30;
 
 class SecondDetailBuildingPage extends BasePage {
 
     // static navigationOptions = ({ navigation }) => {
     //     return {
-    //         header: null,
+    //         tabBarVisible: false,
+    //         header: null
     //     };
     // };
+
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: '资产详情',
+            headerForceInset: this.headerForceInset,
+            headerLeft: (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
+                </TouchableOpacity>
+            )
+        };
+    };
 
     constructor(props) {
         super(props);
         let item = common.getValueFromProps(this.props);
         this.state = {
+            image: '',//资产图片
             item,
             index: 0,
             fadeAnim: new Animated.Value((ScreenUtil.deviceWidth() / 6.0) - lineWidth / 2),
@@ -58,7 +75,8 @@ class SecondDetailBuildingPage extends BasePage {
                     ...room.entity,
                     statusName: room.statusName,
                     investment: room.investment,
-                }
+                },
+                image: room.entity.mainPic
             });
         });
 
@@ -101,26 +119,49 @@ class SecondDetailBuildingPage extends BasePage {
         });
     };
 
+    selectImages = () => {
+        SelectImage.select(this.state.item.id, '', '/api/MobileMethod/MUploadPStructs').then(res => {
+            console.log('MUploadPStructs:', ...res);
+            this.setState({ image: res });
+        }).catch(error => {
+        });
+    };
+
+
     render() {
-        const { room, contracts, customers } = this.state;
+        const { room, image, contracts, customers } = this.state;
         let content;
+        const width = (ScreenUtil.deviceWidth() - 5 * 20) / 4.0;
+        const height = (ScreenUtil.deviceWidth() - 5 * 20) / 4.0;
+
         if (this.state.index === 0) {
             content =
                 <Flex direction='column' align='start'
                     style={{ marginBottom: 20, backgroundColor: 'white', borderRadius: 4 }}>
-                    <Flex style={{
+
+                    {/* <Flex style={{
                         borderBottomWidth: 1,
                         borderBottomColor: '#eee',
                         borderBottomStyle: 'solid',
                         width: ScreenUtil.deviceWidth() - 20,
                     }}>
                         <Flex style={{ padding: 10 }}>
-                            <LoadImage img={room.mainPic} style={{ width: 80, height: 60 }} />
+                          <LoadImage img={room.mainPic} style={{ width: 80, height: 60 }} />
                         </Flex>
                         <Flex direction='column' align='start'>
                             <Text style={styles.name}>{room.name}</Text>
                             <Text style={styles.left}>{room.code}</Text>
                         </Flex>
+                    </Flex> */}
+
+                    <Flex justify='between' style={styles.single}>
+                        <Text style={styles.left}>名称</Text>
+                        <Text style={styles.right}>{room.name}</Text>
+                    </Flex>
+
+                    <Flex justify='between' style={styles.single}>
+                        <Text style={styles.left}>编号</Text>
+                        <Text style={styles.right}>{room.code}</Text>
                     </Flex>
 
                     <Flex justify='between' style={styles.single}>
@@ -129,9 +170,35 @@ class SecondDetailBuildingPage extends BasePage {
                     </Flex>
 
                     <Flex justify='between' style={styles.single}>
+                        <Text style={styles.left}>业主名称</Text>
+                        <Text style={styles.right}>{room.ownerName}</Text>
+                    </Flex>
+
+                    <Flex justify='between' style={styles.single}>
+                        <Text style={styles.left}>业主电话</Text>
+                        <Text style={styles.right}>{room.ownerPhone}</Text>
+                    </Flex>
+
+                    <Flex justify='between' style={styles.single}>
+                        <Text style={styles.left}>租户名称</Text>
+                        <Text style={styles.right}>{room.tenantName}</Text>
+                    </Flex>
+
+                    <Flex justify='between' style={styles.single}>
+                        <Text style={styles.left}>租户电话</Text>
+                        <Text style={styles.right}>{room.tenantPhone}</Text>
+                    </Flex>
+
+                    <Flex justify='between' style={styles.single}>
+                        <Text style={styles.left}>状态</Text>
+                        <Text style={styles.right}>{room.state}</Text>
+                    </Flex>
+
+                    <Flex justify='between' style={styles.single}>
                         <Text style={styles.left}>建筑面积</Text>
                         <Text style={styles.right}>{room.area} {Macro.meter_square}</Text>
                     </Flex>
+
                     <Flex justify='between' style={styles.single}>
                         <Text style={styles.left}>土地面积</Text>
                         <Text style={styles.right}>{room.coverArea} {Macro.meter_square}</Text>
@@ -158,31 +225,6 @@ class SecondDetailBuildingPage extends BasePage {
                         <Text style={styles.left}>预租单价</Text>
                         <Text style={styles.right}>{room.averagerentprice}{Macro.yuan_meter_day}</Text>
                     </Flex>*/}
-
-                    <Flex justify='between' style={styles.single}>
-                        <Text style={styles.left}>业主名称</Text>
-                        <Text style={styles.right}>{room.ownerName}</Text>
-                    </Flex>
-
-                    <Flex justify='between' style={styles.single}>
-                        <Text style={styles.left}>业主电话</Text>
-                        <Text style={styles.right}>{room.ownerPhone}</Text>
-                    </Flex>
-
-                    <Flex justify='between' style={styles.single}>
-                        <Text style={styles.left}>租户名称</Text>
-                        <Text style={styles.right}>{room.tenantName}</Text>
-                    </Flex>
-
-                    <Flex justify='between' style={styles.single}>
-                        <Text style={styles.left}>租户电话</Text>
-                        <Text style={styles.right}>{room.tenantPhone}</Text>
-                    </Flex>
-
-                    <Flex justify='between' style={styles.single}>
-                        <Text style={styles.left}>状态</Text>
-                        <Text style={styles.right}>{room.state}</Text>
-                    </Flex>
                 </Flex>;
         }
         else if (this.state.index === 1) {
@@ -340,15 +382,22 @@ class SecondDetailBuildingPage extends BasePage {
 
         return (
             <CommonView style={{ flex: 1 }}>
-                <ImageBackground style={{ height: 150 }} source={room.mainPic ? { uri: room.mainPic } : null}>
-                    <Flex justify='between' align='start' direction='column'
-                        style={{ height: 90, paddingLeft: 15, paddingRight: 15, marginTop: 44 }}>
+
+                <TouchableWithoutFeedback onPress={() => {
+                    this.selectImages();
+                }}>
+                    <ImageBackground style={{ height: 150 }} source={image ? { uri: image } : null}>
+                        {/* <Flex justify='between' align='start' direction='column'
+                        style={{ height: 90, paddingLeft: 15, paddingRight: 15, marginTop: 44 }}> 
                         <TouchableWithoutFeedback onPress={() => this.props.navigation.goBack()}>
                             <Icon name='left' style={{ width: 30 }} />
-                        </TouchableWithoutFeedback>
-                        <Text style={{ color: 'white', fontSize: 20 }}>{this.state.item.allName}</Text>
-                    </Flex>
-                </ImageBackground>
+                        </TouchableWithoutFeedback> 
+                        <Text style={{ fontSize: 20 }}>{this.state.item.allName}</Text>
+                    </Flex>*/}
+                    </ImageBackground>
+                </TouchableWithoutFeedback>
+ 
+
                 <Flex direction={'column'} align={'start'}
                     style={{ width: ScreenUtil.deviceWidth(), height: 44, backgroundColor: 'white' }}>
                     <Flex style={{ height: 40 }}>
@@ -376,11 +425,12 @@ class SecondDetailBuildingPage extends BasePage {
                             marginLeft: this.state.fadeAnim
                         }} />
                 </Flex>
+
                 {/* <ScrollView style={{ padding: 10, backgroundColor: '#eee', height: ScreenUtil.deviceHeight() - 140 }}> */}
                 <ScrollView style={{ flex: 1, padding: 10, backgroundColor: '#eee' }}>
                     {content}
                 </ScrollView>
-            </CommonView>
+            </CommonView >
         );
     }
 }

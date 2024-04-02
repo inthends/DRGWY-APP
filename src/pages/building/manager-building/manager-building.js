@@ -275,8 +275,7 @@ class ManagerBuildingPage extends BasePage {
     this.setState({ allData: allData });
   };
 
-  clickSectionThird = (clicka, clickItem, clickIt) => {
-
+  clickSectionThird = (clicka, clickItem, clickIt) => { 
     //if (clickIt.type === 'D') 
     if (clickIt.isLeaf == true) {
       this.clickRow(clickIt);

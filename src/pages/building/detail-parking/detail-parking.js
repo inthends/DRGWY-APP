@@ -18,11 +18,13 @@ import CommonView from '../../../components/CommonView';
 import numeral from 'numeral';
 
 export default class DetailParkingPage extends BasePage {
-  // static navigationOptions = ({ navigation }) => { 
-  //   return {
-  //     header: null,
-  //   };
-  // };
+
+  static navigationOptions = ({ navigation }) => { 
+    return {
+      tabBarVisible: false,
+      header: null
+    };
+  };
   constructor(props) {
     super(props);
     let item = common.getValueFromProps(this.props);

@@ -16,9 +16,9 @@ import common from '../../../utils/common';
 import NavigatorService from '../navigator-service';
 // import LoadImage from '../../../components/load-image';
 import CommonView from '../../../components/CommonView';
-
-
+ 
 export default class LouDong extends BasePage {
+
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
@@ -28,7 +28,7 @@ export default class LouDong extends BasePage {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
-            ),
+            )
         };
     };
 
@@ -46,8 +46,7 @@ export default class LouDong extends BasePage {
             this.setState({ items });
         });
     }
-
-
+ 
     onRefresh = () => {
         this.setState({
             refreshing: true,
@@ -56,15 +55,14 @@ export default class LouDong extends BasePage {
             this.getList();
         });
     };
-
-
+    
     render() {
         const { housing, items } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
                 <ScrollView style={{ flex: 1 }}>
                     <Text style={{ paddingLeft: 15, paddingTop: 15, fontSize: 20, color: '#2c2c2c' }}>{housing.name}</Text>
-                    <Flex wrap='wrap' style={{ paddingLeft: 10, paddingRight: 10, marginTop: 5 }}>
+                    <Flex wrap='wrap' style={{ paddingLeft: 10, paddingRight: 10  }}>
                         {items.map(item => (
                             <TouchableWithoutFeedback key={item.id}
                                 onPress={() => {
@@ -78,12 +76,10 @@ export default class LouDong extends BasePage {
 
                                 {/* <Flex style={[styles.item, item.color === 2 ? '' : styles.orange2]} justify={'center'}>
                                     <Text style={[styles.title, item.color === 2 ? '' : styles.orange2]}>{item.name}</Text>
-                                </Flex> */}
-
+                                </Flex> */} 
                                 <Flex style={[styles.item, item.color == 1 ? styles.gray : (item.color == 2 ? styles.orange : styles.green)]} justify={'center'}>
                                     <Text style={[styles.title, item.color == 1 ? styles.gray : (item.color == 2 ? styles.orange : styles.green)]}>{item.name}</Text>
                                 </Flex>
-
                             </TouchableWithoutFeedback>
                         ))} 
                     </Flex>

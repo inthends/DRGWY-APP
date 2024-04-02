@@ -25,6 +25,7 @@ import { saveXunJianAction } from '../../utils/store/actions/actions';
 import Macro from '../../utils/macro';
 
 class AddWorkPage extends BasePage {
+    
     static navigationOptions = ({ navigation }) => {
         return {
             title: '新增',
@@ -44,7 +45,7 @@ class AddWorkPage extends BasePage {
             index: 0,
             data: ['报修', '报事', '巡场'],
             images: [{ icon: '' }],
-            image: '',
+            //image: '',
             recording: false,
             id: common.getGuid(),
             fileUrl: null,

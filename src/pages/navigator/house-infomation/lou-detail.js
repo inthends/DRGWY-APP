@@ -72,12 +72,10 @@ class LouDetail extends BasePage {
 
     }
 
-    // componentDidMount(): void {
-
+    // componentDidMount(): void { 
     // }
 
-    // componentWillUnmount(): void {
-
+    // componentWillUnmount(): void { 
     // }
 
     handleDate = (string) => {

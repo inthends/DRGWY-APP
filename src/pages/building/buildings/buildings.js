@@ -1,7 +1,7 @@
 import React//, {Fragment} 
     from 'react';
 import {
-    View, StyleSheet, FlatList
+    Text, View, StyleSheet, FlatList, TouchableOpacity
     //Text, SafeAreaView, StatusBar, TextInput
 } from 'react-native';
 import BasePage from '../../base/base';
@@ -10,18 +10,32 @@ import Macro from '../../../utils/macro';
 import BuildingsService from './buildings-service';
 import ScreenUtil from '../../../utils/screen-util';
 import { connect } from 'react-redux';
+import { Icon } from '@ant-design/react-native';
 import common from '../../../utils/common';
-import BackTitleNavigationBar from '../../../components/back-title-navigation-bar';
+// import BackTitleNavigationBar from '../../../components/back-title-navigation-bar';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 import BuildingCell from '../../../components/building/build-cell';
 
 class BuildingsPage extends BasePage {
 
+    // static navigationOptions = ({ navigation }) => {
+    //     return {
+    //         tabBarVisible: false,
+    //         header: null
+    //     };
+    // };
+
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
-            header: null
+            title: '楼栋列表',
+            headerForceInset: this.headerForceInset,
+            headerLeft: (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
+                </TouchableOpacity>
+            ),
         };
     };
 
@@ -58,7 +72,8 @@ class BuildingsPage extends BasePage {
         return (
             <CommonView style={{ flex: 1 }}>
                 <View style={styles.content}>
-                    <BackTitleNavigationBar {...this.props} title={this.state.item.name} />
+                    {/* <BackTitleNavigationBar {...this.props} title={this.state.item.name} /> */}
+                    <Text style={{ paddingLeft: 20, paddingTop: 15, fontSize: 20, color: '#2c2c2c' }}>{this.state.item.name}</Text>
                     <FlatList
                         data={this.state.data}
                         // ListHeaderComponent={}
@@ -66,14 +81,14 @@ class BuildingsPage extends BasePage {
                         style={styles.list}
                         keyExtractor={(item) => item.id}
                         ListEmptyComponent={<NoDataView />}
-                    // refreshing={this.state.refreshing}
-                    // onRefresh={() => this.onRefresh()}
-                    // onEndReached={() => this.loadMore()}
-                    // onEndReachedThreshold={0}
-                    // onScrollBeginDrag={() => this.canAction = true}
-                    // onScrollEndDrag={() => this.canAction = false}
-                    // onMomentumScrollBegin={() => this.canAction = true}
-                    // onMomentumScrollEnd={() => this.canAction = false}
+                        // refreshing={this.state.refreshing}
+                        // onRefresh={() => this.onRefresh()}
+                        // onEndReached={() => this.loadMore()}
+                        // onEndReachedThreshold={0}
+                        // onScrollBeginDrag={() => this.canAction = true}
+                        // onScrollEndDrag={() => this.canAction = false}
+                        // onMomentumScrollBegin={() => this.canAction = true}
+                        // onMomentumScrollEnd={() => this.canAction = false}
                     />
                 </View>
             </CommonView>

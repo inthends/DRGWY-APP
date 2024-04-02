@@ -5,26 +5,42 @@ import {
   Text,
   StyleSheet,
   ScrollView,
+  TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Flex } from '@ant-design/react-native';
+import { Flex,Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import DetailBuildingService from './detail-building-service';
 import ScreenUtil from '../../../utils/screen-util';
 import common from '../../../utils/common';
-import BackTitleNavigationBar from '../../../components/back-title-navigation-bar';
+// import BackTitleNavigationBar from '../../../components/back-title-navigation-bar';
 import CommonView from '../../../components/CommonView';
 import numeral from 'numeral';
 
 export default class DetailBuildingPage extends BasePage {
 
-  static navigationOptions = ({ navigation }) => { 
+  // static navigationOptions = ({ navigation }) => { 
+  //   return {
+  //     tabBarVisible: false,
+  //     header: null
+  //   };
+  // };
+
+  static navigationOptions = ({ navigation }) => {
     return {
-      header: null,
+      tabBarVisible: false,
+      title: '楼栋详情',
+      headerForceInset: this.headerForceInset,
+      headerLeft: (
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
+        </TouchableOpacity>
+      ),
     };
   };
-  
+
+
   constructor(props) {
     super(props);
     let item = common.getValueFromProps(this.props);
@@ -55,7 +71,6 @@ export default class DetailBuildingPage extends BasePage {
             rooms,
           };
         });
-
       });
 
       Promise.all(promises).then((res) => {
@@ -110,16 +125,17 @@ export default class DetailBuildingPage extends BasePage {
     return (
       <CommonView style={{ flex: 1 }}>
         <View>
-          <BackTitleNavigationBar
+          {/* <BackTitleNavigationBar
             {...this.props}
             title={this.state.item ? this.state.item.allName : ''}
-          />
+          /> */}
+
           <ScrollView style={{ height: ScreenUtil.contentHeight() }}>
             <Flex
               direction="row"
               justify="between"
               style={{
-                paddingTop: 10,
+                paddingTop: 15,
                 paddingBottom: 10,
                 paddingLeft: 15,
                 paddingRight: 15,
