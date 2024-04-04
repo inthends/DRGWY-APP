@@ -2,7 +2,7 @@ import { Flex } from '@ant-design/react-native';
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native'; 
 import ShowLine from './show-line';
-import ShowText from './show-text';
+import ShowText from './show-text-small';
 import ShowTextWithRight from './show-text-with-right';
 import ShowTitle from './show-title';
 

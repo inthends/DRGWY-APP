@@ -48,13 +48,11 @@ export default class Macro {
     //单位
     static yuan_meter_day = '元/m²·天';
     static meter_square = 'm²';
-
-    static work_blue = '#4594F0';
+ 
     static work_green = '#00CC66';
     static work_orange = '#F7A51E';
-
-
+ 
+    static work_red = '#ff4d4f';
+    static work_blue = '#1890ff';
     
-
-
 }

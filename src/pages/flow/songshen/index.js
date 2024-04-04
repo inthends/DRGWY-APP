@@ -137,10 +137,11 @@ export default class DetailPage extends BasePage {
             <Text style={[styles.txt, { color: Macro.work_blue }]}>
               {detail.groupTotal}
             </Text>
-            <Text style={[styles.txt, { color:'red' }]}>
+            <Text style={[styles.txt, { color: Macro.work_red }]}>
               {detail.receiveDetail}
             </Text>
           </Flex>
+          
           <ShowMingXiLook
             title="收款明细"
             list={billList}

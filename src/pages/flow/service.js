@@ -64,6 +64,10 @@ export default {
     return api.getData('/api/MobileMethod/MGetCustomerEntity', { keyvalue });
   },
 
+  getVendorEntity(keyvalue) {
+    return api.getData('/api/MobileMethod/MGetVendorEntity', { keyvalue });
+  },
+
   getContractEntity(keyvalue) {
     return api.getData('/api/MobileMethod/MGetContractEntity', { keyvalue });
   },

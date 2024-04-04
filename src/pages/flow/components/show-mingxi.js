@@ -1,7 +1,6 @@
 import { Flex } from '@ant-design/react-native';
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import ScreenUtil from '../../../utils/screen-util';
+import { View, StyleSheet, Text } from 'react-native'; 
 import ShowLine from './show-line';
 import ShowTitle from './show-title';
 

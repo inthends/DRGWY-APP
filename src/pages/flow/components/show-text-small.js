@@ -25,7 +25,7 @@ const ShowText = ({
           <Text
             key={`${item}${index}`}
             onPress={() => {
-              if (wordColor === Macro.work_blue) {
+              if (wordColor === Macro.work_orange) {
                 onClick && onClick();
               }
             }}
@@ -50,7 +50,7 @@ const ShowText = ({
 
 const styles = StyleSheet.create({
   txt: {
-    fontSize: 16,
+    fontSize: 14,//字体小两号
     paddingBottom: 10
   },
 });

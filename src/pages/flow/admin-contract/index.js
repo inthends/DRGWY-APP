@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Flex, Icon, Modal, Button, TextareaItem } from '@ant-design/react-native';
-import { View,Text, StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
 import BasePage from '../../base/base';
 import CommonView from '../../../components/CommonView';
 import ShowTitle from '../components/show-title';
@@ -21,17 +21,18 @@ import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
 
 export default class DetailPage extends BasePage {
+
   static navigationOptions = ({ navigation }) => {
     //是否完成
     var isCompleted = navigation.getParam('isCompleted');
     return {
-      title: isCompleted ? '合同详情' : '新建合同审批',
+      title: isCompleted ? '行政合同详情' : '行政合同审批',
       headerForceInset: this.headerForceInset,
       headerLeft: (
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="left" style={{ width: 30, marginLeft: 15 }} />
         </TouchableOpacity>
-      ),
+      )
     };
   };
 
@@ -54,7 +55,7 @@ export default class DetailPage extends BasePage {
     const { id } = this.state;
     service.getFlowData(id).then((detail) => {
       this.setState({
-        detail,
+        detail
       });
     });
     service.getApproveLog(id).then((records) => {
@@ -62,6 +63,7 @@ export default class DetailPage extends BasePage {
         records,
       });
     });
+
     //评审记录
     service.getReviews(id).then(res => {
       this.setState({
@@ -94,10 +96,8 @@ export default class DetailPage extends BasePage {
   };
 
   render() {
-    const { item = {},//咨询信息
-      detail = {}, records = [], customer = {}, reviews = [] } = this.state;
+    const { item = {}, detail = {}, records = [], customer = {}, reviews = [] } = this.state;
     const { prices = [], fees: list = [] } = detail;
-
     return (
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
         <ScrollView style={{ flex: 1, padding: 10 }}>
@@ -106,14 +106,12 @@ export default class DetailPage extends BasePage {
             <ShowText word="项目" title={detail.organizeName} />
             <ShowText word="合同号" title={detail.no} />
             <ShowText word="租期" title={detail.date} />
-            <ShowText word="付款方式" title={detail.payType} />
             <ShowText word="签约人" title={detail.signer} />
-
             <ShowText
               word="签约对象"
               title={detail.vendorName}
               onClick={() => {
-                gdzcService.getCustomerEntity(detail.vendorId)
+                service.getVendorEntity(detail.vendorId)
                   .then((customer) => {
                     this.setState(
                       {
@@ -127,8 +125,16 @@ export default class DetailPage extends BasePage {
               }}
             />
 
-            <ShowText word="合同金额" title={detail.totalAmount} />  
-            <ShowText word="其他条款" title={(detail.memo || '').trim()} />
+            <ShowText word="合同金额" title={detail.totalAmount} />
+ 
+            {detail.cancelDate!='' ?
+              <>
+                <ShowText word="解约日期" title={detail.cancelDate} />
+                <ShowText word="解约类型" title={detail.cancelType} />
+                <ShowText word="解约说明" title={detail.cancelMemo} />
+              </> : null}
+
+            <ShowText word="备注" title={detail.memo} />
           </Flex>
           <ShowPrices prices={prices} />
           <ShowMingXi list={list} />
@@ -162,7 +168,7 @@ export default class DetailPage extends BasePage {
             }}
           />
         </ScrollView>
-          
+
         <Modal
           //弹出回复页面
           transparent
@@ -217,7 +223,7 @@ export default class DetailPage extends BasePage {
             </View>
           </Flex>
         </Modal>
- 
+
         <Modal
           //弹出沟通页面
           transparent
@@ -241,6 +247,7 @@ export default class DetailPage extends BasePage {
             />
           </Flex>
         </Modal>
+
         <CompanyDetail
           customer={customer}
           ref={(ref) => (this.companyDetailRef = ref)}

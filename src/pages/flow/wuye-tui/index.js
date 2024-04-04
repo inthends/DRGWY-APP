@@ -119,26 +119,26 @@ export default class DetailPage extends BasePage {
             <ShowText
               word="解约日期"
               title={detail.withdrawalDate}
-              wordColor={Macro.work_orange}
-              titleColor={Macro.work_orange}
-              pointColor={Macro.work_orange}
+              wordColor={Macro.work_blue}
+              titleColor={Macro.work_blue}
+              pointColor={Macro.work_blue}
               onClick={() => { }}
             />
             <ShowText
               word="经办人"
               title={detail.createUserName}
-              wordColor={Macro.work_orange}
-              titleColor={Macro.work_orange}
-              pointColor={Macro.work_orange}
+              wordColor={Macro.work_blue}
+              titleColor={Macro.work_blue}
+              pointColor={Macro.work_blue}
               onClick={() => { }}
             />
 
             <ShowText
               word="解约说明"
               title={(detail.withdrawalMemo || '').trim()}
-              wordColor={Macro.work_orange}
-              titleColor={Macro.work_orange}
-              pointColor={Macro.work_orange}
+              wordColor={Macro.work_blue}
+              titleColor={Macro.work_blue}
+              pointColor={Macro.work_blue}
               onClick={() => { }}
             />
           </Flex>

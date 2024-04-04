@@ -2,13 +2,15 @@ import { Flex } from '@ant-design/react-native';
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import ShowLine from './show-line';
-import ShowText from './show-text';
+import ShowText from './show-text-small';
 import ShowTitle from './show-title';
 
 const ShowPrices = ({ prices = [] }) => {
+  
   if (prices.length === 0) {
     return <></>;
   }
+
   return (
     <View>
       <ShowTitle title="单价方案" />

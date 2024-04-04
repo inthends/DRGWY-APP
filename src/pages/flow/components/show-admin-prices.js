@@ -2,7 +2,7 @@ import { Flex } from '@ant-design/react-native';
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native'; 
 import ShowLine from './show-line';
-import ShowText from './show-text';
+// import ShowText from './show-text';
 import ShowTitle from './show-title';
 
 const ShowPrices = ({ prices = [] }) => {
@@ -16,7 +16,8 @@ const ShowPrices = ({ prices = [] }) => {
         {prices.map((item, index) => (
           <View key={index}>
             <Text style={{ paddingBottom: 8 }}>{item.title}</Text>
-            <ShowText word="付款周期" title={item.payCycle} />
+            <Text style={{ paddingBottom: 8 }}>{item.payCycle}</Text>
+            {/* <ShowText word="付款周期" title={item.payCycle} /> */}
             {index < prices.length - 1 && <ShowLine />}
           </View>
         ))}

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import Macro from '../../../utils/macro'; 
 import ShowLine from './show-line';
-import ShowText from './show-text';
+import ShowText from './show-text-small';
 import ShowTitle from './show-title';
 
 const ShowMingXiCaiGou = ({ title = '明细', list = [], open = false }) => {
@@ -30,10 +30,10 @@ const ShowMingXiCaiGou = ({ title = '明细', list = [], open = false }) => {
                 justify="between"
                 style={{ width: '100%', paddingBottom: 8 }}
               >
-                <Text style={[styles.txt, { color: Macro.work_orange }]}>
+                <Text style={[styles.txt, { color: Macro.work_blue }]}>
                   {item.name}
                 </Text>
-                <Text style={[styles.txt, { color: Macro.work_orange }]}>
+                <Text style={[styles.txt, { color: Macro.work_blue }]}>
                   {item.code}
                 </Text>
               </Flex>

@@ -112,8 +112,7 @@ export default class DetailPage extends BasePage {
               word="客户名称"
               title={detail.customer}
               onClick={() => {
-                service
-                  .getCustomerEntity(detail.customerId)
+                service.getCustomerEntity(detail.customerId)
                   .then((customer) => {
                     this.setState(
                       {

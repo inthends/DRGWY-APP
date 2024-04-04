@@ -146,8 +146,7 @@ export default class DetailPage extends BasePage {
                 fixedWidth={80}
                 title={detail.oldCustomer}
                 onClick={() => {
-                  service
-                    .getCustomerEntity(detail.oldCustomerId)
+                  service.getCustomerEntity(detail.oldCustomerId)
                     .then((customer) => {
                       this.setState(
                         {
@@ -198,9 +197,9 @@ export default class DetailPage extends BasePage {
               <ShowText
                 word="新租期"
                 title="2022-04-01至2024-03-31"
-                wordColor={Macro.work_orange}
-                titleColor={Macro.work_orange}
-                rightColor={Macro.work_orange}
+                wordColor={Macro.work_blue}
+                titleColor={Macro.work_blue}
+                rightColor={Macro.work_blue}
                 onClick={() => {
                   service.getContractEntity(detail.oldFormId).then((hetong) => {
                     this.setState(
@@ -290,8 +289,8 @@ export default class DetailPage extends BasePage {
                 fixedWidth={80}
                 word="新租赁面积"
                 title={detail.newTotalArea}
-                wordColor={Macro.work_orange}
-                titleColor={Macro.work_orange}
+                wordColor={Macro.work_blue}
+                titleColor={Macro.work_blue}
                 onClick={() => {
                   service.getContractEntity(detail.oldFormId).then((hetong) => {
                     this.setState(
@@ -314,8 +313,8 @@ export default class DetailPage extends BasePage {
                 fixedWidth={80}
                 word="新租赁房产"
                 title={detail.newHouseName}
-                wordColor={Macro.work_orange}
-                titleColor={Macro.work_orange}
+                wordColor={Macro.work_blue}
+                titleColor={Macro.work_blue}
                 onClick={() => {
                   service.getContractEntity(detail.oldFormId).then((hetong) => {
                     this.setState(
@@ -333,7 +332,7 @@ export default class DetailPage extends BasePage {
                 word="变更说明"
                 title={(detail.memo || '').trim()}
                 fixedWidth={80}
-                wordColor={Macro.work_orange}
+                wordColor={Macro.work_blue}
               />
             </Flex>
           )}
@@ -363,10 +362,12 @@ export default class DetailPage extends BasePage {
             }}
           />
         </ScrollView>
+        
         <CompanyDetail
           customer={customer}
           ref={(ref) => (this.companyDetailRef = ref)}
         />
+
         <HeTongDetail
           hetong={hetong}
           ref={(ref) => (this.hetongDetailRef = ref)}

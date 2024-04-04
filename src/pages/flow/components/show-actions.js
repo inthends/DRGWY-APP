@@ -10,8 +10,7 @@ import ShowTitle from './show-title';
 const ShowActions = ({ state, click, isSpecial = false }) => {
   const [value, setValue] = useState('');
   const { detail = {} } = state;
-  const { executeType, taskType } = detail;
-  //alert('executeType:' + executeType + ',taskType:' + taskType); 
+  const { executeType, taskType } = detail; 
   if (executeType != 0) {
     return <></>;
   }
@@ -19,8 +18,7 @@ const ShowActions = ({ state, click, isSpecial = false }) => {
   const onClick = (type) => {
     const verifyMemo = value;
     const { detail = {} } = state;
-    const { taskId, instanceId, code, organizeId } = detail;
-    //console.log('taskId:' + taskId + ',instanceId:' + instanceId + ',code:' + code + ',organizeId:' + organizeId);  
+    const { taskId, instanceId, code, organizeId } = detail; 
     if (type === '通过') {
       service
         .approveForm({
@@ -105,7 +103,7 @@ const ShowActions = ({ state, click, isSpecial = false }) => {
               <Flex
                 justify={'center'}
                 style={[styles.ii, {
-                  backgroundColor: Macro.work_orange
+                  backgroundColor: Macro.work_red
                 }]}
               >
                 <Text style={styles.word}>退回</Text>
