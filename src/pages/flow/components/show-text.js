@@ -51,6 +51,7 @@ const ShowText = ({
 const styles = StyleSheet.create({
   txt: {
     fontSize: 16,
+    color: '#666',
     paddingBottom: 10
   },
 });

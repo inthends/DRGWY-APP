@@ -1,8 +1,12 @@
 
 import React from 'react';
+import {
+  Text, View, StyleSheet, ScrollView,
+  TouchableWithoutFeedback, TouchableOpacity, Keyboard
+} from 'react-native';
 import { Flex, Icon, Modal, Button, TextareaItem } from '@ant-design/react-native';
-import { Text, View, StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';  
-import BasePage from '../../base/base';  
+
+import BasePage from '../../base/base';
 import CommonView from '../../../components/CommonView';
 import ShowTitle from '../components/show-title';
 import ShowLine from '../components/show-line';
@@ -35,7 +39,7 @@ export default class DetailPage extends BasePage {
 
   constructor(props) {
     super(props);
-    const id = common.getValueFromProps(props );
+    const id = common.getValueFromProps(props);
     this.state = {
       id,
       detail: {},
@@ -70,15 +74,19 @@ export default class DetailPage extends BasePage {
 
   //回复
   reply = () => {
+
     const { id, messageId, memo } = this.state;
+
     if (!memo) {
       UDToast.showError('请输入回复内容');
       return;
     }
+
     let params = {
       messageId: messageId,
       memo: memo,
     };
+
     service.saveReply(params).then(res => {
       UDToast.showInfo('回复成功');
       this.setState({ replyVisible: false, memo: '', messageId: '' });
@@ -92,16 +100,18 @@ export default class DetailPage extends BasePage {
   };
 
   render() {
-    const {
-      item = {},//咨询信息
-      detail = {}, records = [], reviews = [] } = this.state;
+
+    const { item = {}, detail = {}, records = [], reviews = [] } = this.state;
     const { list = [] } = detail;
 
     return (
+
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
         <ScrollView style={{ flex: 1, padding: 10 }}>
           <ShowTitle title="基础信息" />
-          <Flex style={styles.card} direction="column" align="start">
+          <Flex style={styles.card}
+            direction="column"
+            align="start">
             <ShowText word="减免单号" title={detail.billCode} />
             <ShowTextWithRight
               word="经办人"
@@ -109,7 +119,11 @@ export default class DetailPage extends BasePage {
               right={detail.billDate}
             />
             <ShowText word="折扣金额" title={detail.reductionSumAmount} />
-            <ShowText word="折扣说明" title={(detail.memo || '').trim()} />
+            {/* <ShowText word="折扣说明" title={ detail.memo} />  */}
+            <Text>
+              {detail.memo}{"\n"}
+              {/* 重要，追加一个换行，可以防止内容最后一行显示不全 */}
+            </Text>
           </Flex>
 
           <ShowTitle title="明细" />
@@ -117,7 +131,7 @@ export default class DetailPage extends BasePage {
             {list.map((item, index) => (
               <View key={index}>
                 <Flex>
-                  <Text style={[styles.txt, styles.txt2]}>{item.allName}</Text>
+                  <Text style={{ paddingBottom: 10, fontWeight: 'bold' }}>{item.allName}</Text>
                 </Flex>
                 <Flex justify="between" style={{ width: '100%' }}>
                   <Text style={styles.txt}>{item.feeName} </Text>
@@ -129,10 +143,11 @@ export default class DetailPage extends BasePage {
               </View>
             ))}
           </Flex>
+
           <ShowFiles files={detail.files || []} onPress={
             (fileStr) => {
               this.props.navigation.navigate('webPage', {
-                data: fileStr,
+                data: fileStr
               });
             }
           } />
@@ -155,9 +170,9 @@ export default class DetailPage extends BasePage {
               refresh && refresh();
               this.props.navigation.goBack();
             }}
-          /> 
+          />
         </ScrollView>
-       
+
         <Modal
           //弹出回复页面
           transparent
@@ -212,7 +227,7 @@ export default class DetailPage extends BasePage {
             </View>
           </Flex>
         </Modal>
- 
+
         <Modal
           //弹出沟通页面
           transparent
@@ -235,7 +250,7 @@ export default class DetailPage extends BasePage {
               }}
             />
           </Flex>
-        </Modal> 
+        </Modal>
       </CommonView>
     );
   }
@@ -249,18 +264,22 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderColor: '#eee',
     paddingHorizontal: 10,
-    paddingTop: 15,
-    paddingBottom: 5,
-    marginBottom: 15,
+    paddingTop: 10,
+    paddingBottom: 10,
+    marginBottom: 15
+  },
+  desc: {
+    fontSize: 16
   },
   txt: {
     fontSize: 14,
-    paddingBottom: 10,
-  }, 
+    paddingBottom: 10
+  },
   text: {
     fontSize: 14
   },
   txt2: {
-    color: Macro.work_blue,
-  },
+    color: Macro.work_blue
+  }
+
 });

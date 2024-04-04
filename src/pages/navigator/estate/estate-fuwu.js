@@ -158,12 +158,19 @@ class EstateFuwuPage extends BasePage {
                             <Text>{item.address} </Text>
                             <Text>{item.statusName}</Text>
                         </Flex>
-                        <Text style={{
-                            paddingLeft: 20,
-                            paddingRight: 20,
-                            paddingBottom: 20,
-                            color: '#666'
-                        }}>{item.contents}</Text>
+
+                        <Text
+                            numberOfLines={3}
+                            ellipsizeMode='tail'
+                            style={{
+                                height: 60,
+                                paddingLeft: 20,
+                                paddingRight: 20,
+                                paddingBottom: 20,
+                                color: '#666'
+                            }}>
+                            {item.contents}{"\n"}
+                        </Text>
 
                         <Flex justify='between'
                             style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
@@ -356,15 +363,15 @@ const styles = StyleSheet.create({
         shadowColor: '#00000033',
         shadowOffset: { h: 10, w: 10 },
         shadowRadius: 5,
-        shadowOpacity: 0.8,
+        shadowOpacity: 0.8
     },
     blue: {
         borderLeftColor: Macro.work_blue,
-        borderLeftWidth: 5,
+        borderLeftWidth: 5
     },
     orange: {
         borderLeftColor: Macro.work_orange,
-        borderLeftWidth: 5,
+        borderLeftWidth: 5
     },
 
 });

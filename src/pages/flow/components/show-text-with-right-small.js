@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import screenUtil from '../../../utils/screen-util';
-import ShowText from './show-text';
+import ShowText from './show-text-small';
 
 const ShowTextWithRight = ({
   word = '',
@@ -50,8 +50,8 @@ const ShowTextWithRight = ({
 const styles = StyleSheet.create({
  
   txt: {
-    fontSize: 16,
-    paddingBottom: 10
+    fontSize: 14,
+    paddingBottom: 10,
   },
 });
 

@@ -128,7 +128,9 @@ export default class DetailPage extends BasePage {
             <ShowText word="合同金额" title={detail.totalAmount} />
             <ShowText word="租赁面积" title={detail.totalArea} />
             <ShowText word="租赁房产" title={detail.houseName} />
-            <ShowText word="其他条款" title={(detail.memo || '').trim()} />
+            <Text>
+              {detail.memo}{"\n"}
+            </Text>
           </Flex>
           <ShowPrices prices={prices} />
           <ShowMingXi list={list} />

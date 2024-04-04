@@ -112,7 +112,9 @@ export default class DetailPage extends BasePage {
               right={detail.billDate}
             />
             <ShowText word="付款金额" title={detail.payAmount} />
-            <ShowText word="付款说明" title={(detail.memo || '').trim()} />
+            <Text>
+              {detail.memo}{"\n"}
+            </Text>
           </Flex>
           <ShowMingXi list={list} open={true} />
           <ShowReviews reviews={reviews}

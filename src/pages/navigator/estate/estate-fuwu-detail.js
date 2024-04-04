@@ -7,11 +7,10 @@ import {
     TouchableOpacity,
     StyleSheet,
     ScrollView,
-    Modal,
+    Modal
 } from 'react-native';
 import BasePage from '../../base/base';
-import {Button, Icon } from '@ant-design/react-native';
-import { Flex } from '@ant-design/react-native';
+import {Flex, Button, Icon } from '@ant-design/react-native'; 
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';
@@ -119,10 +118,10 @@ export default class EfuwuDetailPage extends BasePage {
 
     render() {
         const { images, detail, communicates } = this.state;
+
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
-                <ScrollView>
-
+                <ScrollView> 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.billType}</Text>
@@ -131,12 +130,9 @@ export default class EfuwuDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.address}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
-                    </Flex>
-
-                    <Text style={[styles.desc ]}>{detail.contents}</Text>
-
+                    </Flex> 
+                    <Text style={[styles.desc ]}>{detail.contents}{"\n"}</Text> 
                     <ListImages images={images} lookImage={this.lookImage} />
-
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>报单人：{detail.contactName} {detail.createDate}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactPhone)}>
@@ -208,6 +204,7 @@ export default class EfuwuDetailPage extends BasePage {
                                 width: 300,
                                 backgroundColor: Macro.work_blue,
                                 marginTop: 20,
+                                marginBottom:10,
                                 height: 40
                             }}>回复</Button>
                     </Flex>
@@ -224,7 +221,7 @@ export default class EfuwuDetailPage extends BasePage {
                             </Flex>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={() => this.click('关闭')}>
-                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.color_4d8fcc }]}>
+                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
                                 <Text style={styles.word}>关闭</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
@@ -232,7 +229,6 @@ export default class EfuwuDetailPage extends BasePage {
 
                     <Communicates communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
-
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                         imageUrls={this.state.images} />
@@ -264,19 +260,19 @@ const styles = StyleSheet.create({
     },
     left: {
         fontSize: 16,
-        color: '#333'
+        //color: '#333'
     },
     right: {
         fontSize: 16,
-        color: '#333'
+        //color: '#333'
     },
     desc: { 
         marginLeft: 15,
         marginRight: 15,
         paddingTop: 15,
         paddingBottom: 15,
-        fontSize: 16,
-        color: '#333'
+        // fontSize: 16,
+        // color: '#333'
         // padding: 15,
         // paddingBottom: 40
     },

@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from 'react';
-import AppContainer from './src/pages/tabbar/tabbar';
+// import AppContainer from './src/pages/tabbar/tabbar';
 import { Provider } from '@ant-design/react-native';
 import { Provider as Pro } from 'react-redux';
 import store from './src/utils/store/store';
@@ -16,8 +16,8 @@ import { PersistGate } from 'redux-persist/lib/integration/react';
 import { persistor } from './src/utils/store/store';
 import JPush from 'jpush-react-native';
 import { Alert, DeviceEventEmitter } from 'react-native';
-import UDAlert from './src/utils/UDAlert';
-import NavigatorService from './src/pages/navigator/navigator-service';
+// import UDAlert from './src/utils/UDAlert';
+// import NavigatorService from './src/pages/navigator/navigator-service';
 
 type Props = {};
 
@@ -31,7 +31,6 @@ class App extends Component<Props> {
 
   componentDidMount() {
     JPush.init();
-
     //连接状态
     this.connectListener = (result) => { 
     };

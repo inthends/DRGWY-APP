@@ -1,8 +1,8 @@
 
 import React from 'react';
 import { Flex, Icon, Modal, Button, TextareaItem } from '@ant-design/react-native';
-import { Text,  View, StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native'; 
-import BasePage from '../../base/base'; 
+import { Text, View, StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
+import BasePage from '../../base/base';
 import CommonView from '../../../components/CommonView';
 import ShowTitle from '../components/show-title';
 import ShowText from '../components/show-text';
@@ -38,7 +38,7 @@ export default class DetailPage extends BasePage {
 
   constructor(props) {
     super(props);
-    const id = common.getValueFromProps(props );
+    const id = common.getValueFromProps(props);
     this.state = {
       id,
       detail: {},
@@ -130,7 +130,9 @@ export default class DetailPage extends BasePage {
               title={detail.createUserName}
               right={detail.billDate}
             />
-            <ShowText word="送审说明" title={(detail.memo || '').trim()} />
+            <Text>
+              {detail.memo}{"\n"}
+            </Text>
           </Flex>
           <ShowTitle title="送审金额" />
           <Flex style={styles.card} direction="column" align="start">
@@ -141,7 +143,7 @@ export default class DetailPage extends BasePage {
               {detail.receiveDetail}
             </Text>
           </Flex>
-          
+
           <ShowMingXiLook
             title="收款明细"
             list={billList}
@@ -194,7 +196,7 @@ export default class DetailPage extends BasePage {
             })} />
 
           <ShowRecord records={records} />
-          
+
           <ShowActions
             state={this.state}
             click={() => {
@@ -212,9 +214,9 @@ export default class DetailPage extends BasePage {
           detail={showItem || {}}
           ref={(ref) => (this.chongDiDetailRef = ref)}
         />
-       
 
-       <Modal
+
+        <Modal
           //弹出回复页面
           transparent
           onClose={() => this.setState({ replyVisible: false })}
@@ -292,7 +294,7 @@ export default class DetailPage extends BasePage {
               }}
             />
           </Flex>
-        </Modal> 
+        </Modal>
       </CommonView>
     );
   }
@@ -311,7 +313,7 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     marginBottom: 15,
   },
- 
+
   txt: {
     fontSize: 14,
     paddingBottom: 10,

@@ -357,8 +357,6 @@ class ApprovePage extends BasePage {
                     url = 'admincontract';
                     break;
                   }
- 
-
                 }
 
                 //传递参数
@@ -373,7 +371,7 @@ class ApprovePage extends BasePage {
               <View
                 style={[
                   ScreenUtil.border(),
-                  { marginHorizontal: 15, marginTop: 15 },
+                  { marginHorizontal: 15, marginTop: 15 }
                 ]}
               >
                 <Flex
@@ -391,7 +389,13 @@ class ApprovePage extends BasePage {
                   style={[styles.every, ScreenUtil.borderBottom()]}
                   justify="between"
                 >
-                  <Text style={styles.txt}>{item.title}</Text>
+                  <Text
+                    style={{
+                      height: 60  
+                    }}
+                    numberOfLines={3}
+                    ellipsizeMode='tail'
+                  >{item.title}</Text>
                 </Flex>
                 <Flex
                   //style={[styles.every, ScreenUtil.borderBottom()]}

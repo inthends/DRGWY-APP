@@ -115,7 +115,9 @@ export default class DetailPage extends BasePage {
             <ShowText word="规划费项" title={detail.feeName} />
             <ShowText word="规划期限" title={detail.billDate} />
             <ShowText word="发起人" title={detail.createUserName} />
-            <ShowText word="规划说明" title={(detail.memo || '').trim()} />
+            <Text>
+              {detail.memo}{"\n"}
+            </Text>
           </Flex>
           <ShowMingXi2 list={list} />
           <ShowFiles files={detail.files || []} onPress={

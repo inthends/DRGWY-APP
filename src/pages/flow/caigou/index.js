@@ -110,8 +110,10 @@ export default class DetailPage extends BasePage {
             <ShowText word="仓库" title={detail.warehouseName} />
             <ShowText word="发起人" title={detail.createUserName} />
             <ShowText word="采购类型" title={detail.purchaseType} />
-            <ShowText word="采购金额" title={detail.totalAmount} />
-            <ShowText word="采购说明" title={detail.memo} />
+            <ShowText word="采购金额" title={detail.totalAmount} /> 
+            <Text>
+              {detail.memo}{"\n"} 
+            </Text>
           </Flex>
           <ShowMingXiCaiGou list={list} />
           <ShowReviews reviews={reviews}

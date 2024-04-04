@@ -2,7 +2,7 @@
 import React from 'react';
 import BasePage from '../../base/base';
 import { Flex, Icon, Modal, Button, TextareaItem } from '@ant-design/react-native';
-import { View,Text, StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
 import CommonView from '../../../components/CommonView';
 import ShowTitle from '../components/show-title';
 import ShowText from '../components/show-text';
@@ -109,6 +109,7 @@ export default class DetailPage extends BasePage {
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
         <ScrollView style={{ flex: 1, padding: 10 }}>
           <ShowTitle title="基础信息" />
+          
           <Flex style={styles.card} direction="column" align="start">
             <ShowText word="单号" title={detail.billCode} />
             <ShowText word="机构" title={detail.organizeName} />
@@ -119,8 +120,12 @@ export default class DetailPage extends BasePage {
               right={detail.date}
             />
             <ShowText word="事项类别" title={detail.matterType} />
-            <ShowText word="事项说明" title={detail.memo} />
+            {/* <ShowText word="事项说明" title={detail.memo} /> */}
+            <Text>
+              {detail.memo}{"\n"}
+            </Text>
           </Flex>
+
           <ShowFiles files={detail.files} onPress={
             (fileStr) => {
               this.props.navigation.navigate('webPage', {
@@ -238,22 +243,11 @@ export default class DetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-  // area: {  
-  //   width: ScreenUtil.deviceWidth() - 150,
-  // borderStyle: 'solid',
-  // borderColor: '#F3F4F2',
-  // borderWidth: 1,
-  // borderRadius: 5
-  //}, 
-
   txt: {
     fontSize: 14,
-    paddingBottom: 10,
+    paddingBottom: 10
   },
 
-  text: {
-    fontSize: 14
-  },
   card: {
     marginTop: 5,
     borderWidth: 1,
@@ -261,8 +255,8 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderColor: '#eee',
     paddingHorizontal: 10,
-    paddingTop: 15,
-    paddingBottom: 5,
+    paddingTop: 10,
+    paddingBottom: 10,
     marginBottom: 15
   }
 });

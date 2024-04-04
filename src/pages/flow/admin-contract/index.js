@@ -132,9 +132,10 @@ export default class DetailPage extends BasePage {
                 <ShowText word="解约日期" title={detail.cancelDate} />
                 <ShowText word="解约类型" title={detail.cancelType} />
                 <ShowText word="解约说明" title={detail.cancelMemo} />
-              </> : null}
-
-            <ShowText word="备注" title={detail.memo} />
+              </> : null} 
+            <Text>
+              {detail.memo}{"\n"} 
+            </Text> 
           </Flex>
           <ShowPrices prices={prices} />
           <ShowMingXi list={list} />

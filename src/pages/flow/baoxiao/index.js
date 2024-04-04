@@ -120,8 +120,10 @@ export default class DetailPage extends BasePage {
               right={detail.date}
             />
             <ShowText word="报销类型" title={detail.billType} />
-            <ShowText word="报销金额" title={detail.totalAmount} />
-            <ShowText word="报销说明" title={(detail.memo || '').trim()} />
+            <ShowText word="报销金额" title={detail.totalAmount} /> 
+            <Text>
+              {detail.memo}{"\n"}
+            </Text>
           </Flex>
           <ShowMingXiBaoXiao list={list} />
           <ShowFiles files={detail.files} onPress={

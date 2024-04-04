@@ -1,7 +1,7 @@
 import { Flex } from '@ant-design/react-native';
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import Macro from '../../../utils/macro'; 
+import Macro from '../../../utils/macro';
 import ShowLine from './show-line';
 import ShowText from './show-text-small';
 import ShowTitle from './show-title';
@@ -30,10 +30,10 @@ const ShowMingXiCaiGou = ({ title = '明细', list = [], open = false }) => {
                 justify="between"
                 style={{ width: '100%', paddingBottom: 8 }}
               >
-                <Text style={[styles.txt, { color: Macro.work_blue }]}>
+                <Text style={{ fontWeight: 'bold' }}>
                   {item.name}
                 </Text>
-                <Text style={[styles.txt, { color: Macro.work_blue }]}>
+                <Text style={{ fontWeight: 'bold' }}>
                   {item.code}
                 </Text>
               </Flex>
@@ -54,7 +54,7 @@ const ShowMingXiCaiGou = ({ title = '明细', list = [], open = false }) => {
 };
 
 const styles = StyleSheet.create({
- 
+
   card: {
     marginTop: 5,
     borderWidth: 1,
@@ -66,10 +66,10 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     marginBottom: 15,
   },
-  txt: {
-    fontSize: 14,
-    // paddingBottom: 10,
-  },
+  // txt: {
+  //   fontSize: 14,
+  //   // paddingBottom: 10,
+  // },
 });
 
 export default ShowMingXiCaiGou;

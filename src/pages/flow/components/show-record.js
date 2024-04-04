@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native'; 
 import ShowLine from './show-line';
 import ShowText from './show-text-small';
-import ShowTextWithRight from './show-text-with-right';
+import ShowTextWithRight from './show-text-with-right-small';
 import ShowTitle from './show-title';
 
 const ShowRecord = ({ records = [], open = false }) => {
