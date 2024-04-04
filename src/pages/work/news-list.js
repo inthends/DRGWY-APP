@@ -134,7 +134,7 @@ class NewsList extends BasePage {
                     //     case 99: //催办消息
                     //         {
                     //             //跳转到待审批
-                    //             this.props.navigation.navigate('shenpi');
+                    //             this.props.navigation.navigate('flow');
                     //             break;
                     //         }
                     // }
@@ -142,6 +142,7 @@ class NewsList extends BasePage {
                     //根据url跳转
                     this.props.navigation.navigate(appUrlName, { data: linkId });
                 }}>
+                    
                 <Flex direction='column' align={'start'}
                     style={[styles.card, styles.blue]}>
                     <Flex justify='between' style={{ width: '100%' }}>

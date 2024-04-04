@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Dimensions, DeviceEventEmitter } from 'react-native';
+import { Dimensions, DeviceEventEmitter } from 'react-native';
 import {
   createBottomTabNavigator,
   createAppContainer,
@@ -107,24 +107,27 @@ import BCMScanScreen from '../navigator/bcmscanner';
 import CIBScanScreen from '../navigator/cibscanner';
 import LKLScanScreen from '../navigator/lklscanner';
 
-//import shenpi from '../shenpi';
-import ApprovePage from '../shenpi';
+//import flow from '../flow';
+import ApprovePage from '../flow';
+import fukuan from '../flow/fukuan';
+import jianmian from '../flow/jianmian';
+import songshen from '../flow/songshen';
+import chuzunew from '../flow/chuzu-new';
+import chuzuchange from '../flow/chuzu-change';
+import chuzutui from '../flow/chuzu-tui';
+import webPage from '../flow/components/web-page';
+import wuyenew from '../flow/wuye-new';
+import wuyexu from '../flow/wuye-xu';
+import wuyetui from '../flow/wuye-tui';
+import zulinplan from '../flow/zulin-plan';
+import caigou from '../flow/caigou';
+import baoxiao from '../flow/baoxiao';
+import matter from '../flow/matter';
+import task from '../flow/task';
 
-import fukuan from '../shenpi/fukuan';
-import jianmian from '../shenpi/jianmian';
-import songshen from '../shenpi/songshen';
-import chuzunew from '../shenpi/chuzu-new';
-import chuzuchange from '../shenpi/chuzu-change';
-import chuzutui from '../shenpi/chuzu-tui';
-import webPage from '../shenpi/components/web-page';
-import wuyenew from '../shenpi/wuye-new';
-import wuyexu from '../shenpi/wuye-xu';
-import wuyetui from '../shenpi/wuye-tui';
-import zulinplan from '../shenpi/zulin-plan';
-import caigou from '../shenpi/caigou';
-import baoxiao from '../shenpi/baoxiao';
-import matter from '../shenpi/matter';
-import task from '../shenpi/task';
+import admincontract from '../flow/admin-contract';
+
+
 
 const BuildingNavigator = createStackNavigator(
   {
@@ -317,6 +320,8 @@ const ShenPiNavigator = createStackNavigator({
   baoxiao,
   matter,
   task,
+
+  admincontract,
   webPage
 });
 
@@ -442,10 +447,7 @@ const tabbar = createBottomTabNavigator(
       //   }
       // };
 
-
-
-
-
+ 
       return {
         tabBarIcon: ({ focused }) => {
           const { routeName } = navigation.state;
@@ -479,12 +481,9 @@ const tabbar = createBottomTabNavigator(
           } 
           return <Icon name={name} size={22} color={color} />
         }
-        
-
       };
- 
-    },
-  },
+    }
+  }
 );
 
 const { width } = Dimensions.get('window');
@@ -508,5 +507,6 @@ const Drawer = createDrawerNavigator(
     }
   }
 );
+
 export default createAppContainer(Drawer);
 

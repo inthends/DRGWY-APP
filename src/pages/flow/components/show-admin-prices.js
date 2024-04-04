@@ -1,7 +1,6 @@
 import { Flex } from '@ant-design/react-native';
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import ScreenUtil from '../../../utils/screen-util';
+import { View, StyleSheet, Text } from 'react-native'; 
 import ShowLine from './show-line';
 import ShowText from './show-text';
 import ShowTitle from './show-title';
@@ -12,14 +11,12 @@ const ShowPrices = ({ prices = [] }) => {
   }
   return (
     <View>
-      <ShowTitle title="单价方案" />
+      <ShowTitle title="费用条款" />
       <Flex style={styles.card} direction="column" align="start">
         {prices.map((item, index) => (
           <View key={index}>
             <Text style={{ paddingBottom: 8 }}>{item.title}</Text>
             <ShowText word="付款周期" title={item.payCycle} />
-            <ShowText word="免租" title={item.rebate} />
-            <ShowText word="递增" title={item.incre} />
             {index < prices.length - 1 && <ShowLine />}
           </View>
         ))}

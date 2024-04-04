@@ -243,7 +243,7 @@ class ApprovePage extends BasePage {
               </Text>
             </Flex>
           </TouchableWithoutFeedback>
- 
+
           <TouchableWithoutFeedback
             onPress={() =>
               this.setState(
@@ -296,13 +296,13 @@ class ApprovePage extends BasePage {
                     url = 'fukuan';//付款单
                     break;
                   }
-                  
+
                   case '1002':
                   case '1005': {
                     url = 'chuzunew';//出租合同
                     break;
                   }
-                  
+
                   case '1004': {
                     url = 'chuzuchange';//合同变更
                     break;
@@ -349,7 +349,15 @@ class ApprovePage extends BasePage {
                     break;
                   }
 
-                  
+
+                  //行政合同
+                  case '1007':
+                  case '1008':
+                  case '1009': {
+                    url = 'admincontract';
+                    break;
+                  }
+ 
 
                 }
 
@@ -359,7 +367,7 @@ class ApprovePage extends BasePage {
                   isCompleted: taskType == 3 ? true : false,
                   refresh: this.onRefresh
                 });
-                
+
               }}
             >
               <View

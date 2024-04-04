@@ -84,7 +84,6 @@ export default class JianYanListDetailPage extends BasePage {
                     communicates: res
                 });
             });
-
         });
  
         WorkService.weixiuExtra(id).then(images => {
