@@ -103,8 +103,11 @@ export default class DetailPage extends BasePage {
         <ScrollView style={{ flex: 1, padding: 10 }}>
           <ShowTitle title="基础信息" />
           <Flex style={styles.card} direction="column" align="start">
-            <ShowText word="项目" title={detail.organizeName} />
-            <ShowText word="合同号" title={detail.no} />
+            <ShowText word="合同名称" title={detail.contractName} />
+            <ShowText word="合同编号" title={detail.no} />
+            <ShowText word="所属项目" title={detail.organizeName} />
+            <ShowText word="合同类别" title={detail.contractType} />
+            <ShowText word="合同金额" title={detail.totalAmount} />
             <ShowText word="租期" title={detail.date} />
             <ShowText word="签约人" title={detail.signer} />
             <ShowText
@@ -123,19 +126,17 @@ export default class DetailPage extends BasePage {
                     );
                   });
               }}
-            />
-
-            <ShowText word="合同金额" title={detail.totalAmount} />
- 
-            {detail.cancelDate!='' ?
+            /> 
+            <ShowText word="第三方" title={detail.thirdName} />
+            {detail.cancelDate != '' ?
               <>
                 <ShowText word="解约日期" title={detail.cancelDate} />
                 <ShowText word="解约类型" title={detail.cancelType} />
                 <ShowText word="解约说明" title={detail.cancelMemo} />
-              </> : null} 
+              </> : null}
             <Text>
-              {detail.memo}{"\n"} 
-            </Text> 
+              {detail.memo}{"\n"}
+            </Text>
           </Flex>
           <ShowPrices prices={prices} />
           <ShowMingXi list={list} />

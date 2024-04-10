@@ -1,22 +1,18 @@
 export const ACTIONS = {
   save_goods_list: 'save_goods_list',
-
   url: 'url',
   token: 'token',
-
   selectDrawerType: 'selectDrawerType',
   selectBuilding: 'selectBuilding',
   selectTask: 'selectTask',
   //selectDepartment: 'selectDepartment',
-
   nameAndPsd: 'nameAndPsd',
   user: 'user',
   xunJianData: 'xunJianData',
   hasNetwork: 'hasNetwork',
   xunJianAction: 'xunJianAction',
   gdzcData: 'gdzcData',
-  gdzcAction: 'gdzcAction',
- 
+  gdzcAction: 'gdzcAction'
 };
 
 export const DrawerType = {

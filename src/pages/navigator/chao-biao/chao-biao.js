@@ -201,7 +201,7 @@ class ChaoBiaoPage extends BasePage {
                 />
                 <Flex style={{ minHeight: 40, marginBottom: 30 }}>
                     <TouchableWithoutFeedback onPress={this.scan}>
-                        <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.color_4d8fcc }]}>
+                        <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
                             <Text style={styles.word}>开始扫码</Text>
                         </Flex>
                     </TouchableWithoutFeedback>

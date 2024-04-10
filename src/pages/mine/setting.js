@@ -75,24 +75,24 @@ class SettingPage extends BasePage {
     }
 
     update() {
+        //数据量大，只能同步自己的巡检任务
         this.loading = UDToast.showLoading('正在同步中...');
         XunJianService.xunjianData(this.props.user.userId, false).then(resp => {
             XunJianService.xunjianIndexList(this.props.user.userId, false).then(res => {
                 const items = res.data;
                 Promise.all(items.map(item => XunJianService.xunjianIndexDetail(item.lineId).then(res => ({
                     ...item,
-                    items: res,
+                    items: res
                 })))).then(rea => {
-
-                    XunJianService.MGetPollingUserPointTasks().then(r => {
+                    XunJianService.xunjianPointTasks().then(r => {
                         UDToast.hiddenLoading(this.loading);
-                        const aaa = {
+                        const tasks = {
                             allData: resp || {},
                             lists: rea || [],
-                            scanLists: r || {},
+                            scanLists: r || {}//巡检任务
                         };
+                        this.props.saveXunjian(tasks);
                         UDToast.showInfo('同步完成');
-                        this.props.saveXunjian(aaa);
                     }).catch(err => {
                         UDToast.hiddenLoading(this.loading);
                     });
@@ -143,14 +143,14 @@ class SettingPage extends BasePage {
         const { xunJianAction } = this.props;
         let xunJians = [];
         let imageObjs = [];
-        let works = [];
+        let works = [];//巡检产生的工单
         for (let taskId in xunJianAction) {
             if (xunJianAction.hasOwnProperty(taskId)) {
                 let xunJian = xunJianAction[taskId];
                 xunJians.push(xunJian.xunjianParams);
                 imageObjs.push({
                     images: xunJian.images,
-                    id: xunJian.idForUploadImage,
+                    id: xunJian.idForUploadImage
                 });
                 if (xunJian.workParams) {
                     works.push(xunJian.workParams);
@@ -161,21 +161,36 @@ class SettingPage extends BasePage {
         if (xunJians.length > 0) {
             this.loading = UDToast.showLoading('正在上传中...');
             Promise.all(xunJians.map(item => {
-                const { keyvalue, pointStatus, userId, userName } = item;
-                return XunJianService.xunjianExecute(keyvalue, pointStatus, userId, userName, false);
+                const { keyvalue, userId, userName, inspectData } = item; 
+                let arrStr = JSON.stringify(inspectData);
+                return XunJianService.xunjianExecute(keyvalue, userId, userName, arrStr, false);
+
             })).then(res => {
-                this.uploadWork(works).then(res => {
-                    this.uploadImages(imageObjs).then(res => {
-                        UDToast.hiddenLoading(this.loading);
-                        UDToast.showSuccess('上传成功');
-                    }).catch(reas => {
-                        UDToast.hiddenLoading(this.loading);
-                        UDToast.showError('上传图片数据失败');
-                    });
-                }).catch(err => {
+
+                //巡检不关联工单
+                // this.uploadWork(works).then(res => { 
+                //     this.uploadImages(imageObjs).then(res => { 
+                //         UDToast.hiddenLoading(this.loading);
+                //         UDToast.showSuccess('上传成功'); 
+                //     }).catch(reas => {
+                //         UDToast.hiddenLoading(this.loading);
+                //         UDToast.showError('上传图片数据失败');
+                //     });
+                // }).catch(err => { 
+                //     UDToast.hiddenLoading(this.loading);
+                //     UDToast.showError('上传工单数据失败'); 
+                // });
+
+                //上传巡检图片
+                this.uploadImages(imageObjs).then(res => {
                     UDToast.hiddenLoading(this.loading);
-                    UDToast.showError('上传工单数据失败');
+                    UDToast.showSuccess('上传成功');
+                }).catch(reas => {
+                    UDToast.hiddenLoading(this.loading);
+                    UDToast.showError('上传图片失败');
                 });
+
+
             }).catch(res => {
                 UDToast.hiddenLoading(this.loading);
                 UDToast.showError('上传巡检数据失败');
@@ -188,7 +203,7 @@ class SettingPage extends BasePage {
     render() {
         //const { data } = this.state;
         return (
-            <View style={{ backgroundColor: '#E8E8E8', flex: 1 }}  >
+            <View style={{ backgroundColor: '#E8E8E8', flex: 1 }}>
                 {/* <List renderHeader={<View style={{ height: 10 }} />}>
                     <List.Item extra={<Switch color='#447FEA' checked={this.state.checked}
                         onChange={checked => this.setState({ checked })} />}>
@@ -197,8 +212,6 @@ class SettingPage extends BasePage {
                         </Flex>
                     </List.Item>
                 </List> */}
-
-
                 <List renderHeader={<View style={{ height: 10 }} />}>
                     <List.Item extra={<Switch
                         color='#447FEA'
@@ -209,7 +222,6 @@ class SettingPage extends BasePage {
                         </Flex>
                     </List.Item>
                 </List>
-
                 {
                     !common.isIOS() && <List renderHeader={<View style={{ height: 10 }} />}>
                         <TouchableWithoutFeedback onPress={() => this.changePrint()}>
@@ -221,7 +233,6 @@ class SettingPage extends BasePage {
                         </TouchableWithoutFeedback>
                     </List>
                 }
-
 
                 <List renderHeader={<View style={{ height: 10 }} />}>
                     <TouchableWithoutFeedback onPress={() => this.update()}>
@@ -262,7 +273,7 @@ const mapStateToProps = ({ memberReducer, xunJianReducer }) => {
         hasNetwork: memberReducer.hasNetwork,
         user: {
             ...user,
-            id: user.userId,
+            id: user.userId
         },
         ...xunJianReducer
     };

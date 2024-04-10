@@ -200,7 +200,7 @@ export default class JianYanListDetailPage extends BasePage {
                             marginLeft: '10%',
                             marginRight: '10%',
                             marginBottom: 20,
-                        }, { backgroundColor: Macro.color_4d8fcc }]}>
+                        }, { backgroundColor: Macro.work_blue }]}>
                             <Text style={styles.word}>完成检验</Text>
                         </Flex>
                     </TouchableWithoutFeedback>

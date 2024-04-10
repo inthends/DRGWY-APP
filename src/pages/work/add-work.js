@@ -212,7 +212,7 @@ class AddWorkPage extends BasePage {
                 this.props.saveXunJianAction({
                     [taskId]: {
                         ...data,
-                        workParams: params,
+                        workParams: params
                     },
                 });
                 UDToast.showSuccess('已保存，稍后可在我的-设置中同步巡检数据');
@@ -369,12 +369,10 @@ const mapDispatchToProps = (dispatch) => {
     return {
         saveXunJianAction(data) {
             dispatch(saveXunJianAction(data));
-        },
-
+        }
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(AddWorkPage);
-
 
 const styles = StyleSheet.create({
     header: {
@@ -382,6 +380,6 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
         paddingLeft: 15,
         paddingRight: 15,
-        backgroundColor: '#F3F4F2',
+        backgroundColor: '#F3F4F2'
     }
 });

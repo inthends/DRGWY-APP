@@ -22,7 +22,7 @@ class StartXunJianPage extends BasePage {
         return {
             tabBarVisible: false,
             title: '开始巡检',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
@@ -37,11 +37,11 @@ class StartXunJianPage extends BasePage {
             images: [{ icon: '' }],
             data: {},
             inspectData: [],
-            ...common.getValueFromProps(this.props), // lineId,pointId,person
-        }; 
+            ...common.getValueFromProps(this.props)//lineId,pointId,person
+        };
     }
 
-    componentDidMount()  {
+    componentDidMount() {
         const { id, pointId, item } = this.state;
         if (this.props.hasNetwork) {
             XunJianService.xunjianAddress(pointId).then(address => {
@@ -51,8 +51,12 @@ class StartXunJianPage extends BasePage {
                 });
             });
         } else {
-            this.setState({ data: item, address: { allName: item.allName, id: item.pointId } });
-        } 
+            //离线巡检
+            this.setState({
+                data: item,
+                address: { allName: item.allName, id: item.pointId }
+            });
+        }
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
@@ -68,12 +72,12 @@ class StartXunJianPage extends BasePage {
     }
 
     selectImages = () => {
-        SelectImage.select(this.state.id,'', '/api/MobileMethod/MUploadPollingTask', this.props.hasNetwork).then(res => { 
+        SelectImage.select(this.state.id, '', '/api/MobileMethod/MUploadPollingTask', this.props.hasNetwork).then(res => {
             let images = [...this.state.images];
             images.splice(images.length - 1, 0, { 'icon': res });
             if (images.length > 4) {
                 images = images.filter((item, index) => index !== images.length - 1);
-            } 
+            }
             if (images.length > 1) {
                 if (!!images[0]) {
                     this.setState({ images });
@@ -82,7 +86,7 @@ class StartXunJianPage extends BasePage {
             else {
                 this.setState({ images });
             }
-        }).catch(error => { 
+        }).catch(error => {
         });
     };
 
@@ -94,41 +98,57 @@ class StartXunJianPage extends BasePage {
         if (inspectData.length === 0) {
             try {
                 data.contents.map((subItem) => {
-                    newInspectData.push({ id: subItem.id, taskId: item.id, contentId: subItem.contentId, result: 1, memo: '' })
+                    newInspectData.push({
+                        id: subItem.id,
+                        taskId: item.id,
+                        contentId: subItem.contentId,
+                        result: 1,
+                        memo: ''
+                    })
                 })
-            } catch (error) { 
-            }
+            } catch (error) { }
         }
         else {
             inspectData.map((subItem) => {
-                newInspectData.push({ id: subItem.id, taskId: item.id, contentId: subItem.contentId, result: subItem.result, memo: subItem.msg })
+                newInspectData.push({
+                    id: subItem.id,
+                    taskId: item.id,
+                    contentId: subItem.contentId,
+                    result: subItem.result,
+                    memo: subItem.msg
+                })
             })
         }
+
         if (this.props.hasNetwork) {
-            if (this.state.images.length > 1) {
-                let arrStr = JSON.stringify(newInspectData)
+            if (this.state.images.length > 1) { 
+                let arrStr = JSON.stringify(newInspectData);
                 XunJianService.xunjianExecute(id, person.id, person.name, arrStr).then(res => {
                     this.props.navigation.goBack();
-                });
+                }); 
             }
             else {
                 UDToast.showSuccess('请上传图片');
             }
+
         } else {
+            //离线缓存
             let images = this.state.images.filter(item => item.icon.fileUri && item.icon.fileUri.length > 0);
             this.props.saveXunJianAction({
                 [item.taskId]: {
                     xunjianParams: {
-                        keyvalue: item.taskId,
+                        keyvalue: item.id,
                         userId: person.id,
                         userName: person.name,
+                        //巡检任务明细
+                        inspectData: newInspectData
                     },
-                    idForUploadImage: item.taskId,
+                    idForUploadImage: item.id,
                     images,
                     address
-                },
+                }
             });
-            UDToast.showSuccess('已保存，稍后可在我的-设置中同步巡检数据');
+            UDToast.showSuccess('已保存，稍后可在我的-设置中上传巡检数据');
             this.props.navigation.goBack();
         }
     }
@@ -140,9 +160,9 @@ class StartXunJianPage extends BasePage {
             }
             return item;
         })
-        this.setState({ inspectData }); 
+        this.setState({ inspectData });
     }
-    
+
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
         const { images, data } = this.state;
         return (
@@ -188,7 +208,7 @@ class StartXunJianPage extends BasePage {
                         flex: 1
                     }}>
                         <TouchableWithoutFeedback onPress={this.submit}>
-                            <Flex flex={1} justify='center' style={[styles.ii, { backgroundColor: Macro.color_4d8fcc }]}>
+                            <Flex flex={1} justify='center' style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
                                 <Text style={styles.word}>完成</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
@@ -222,7 +242,6 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 16
     }
-
 });
 
 const mapStateToProps = ({ memberReducer, xunJianReducer }) => {

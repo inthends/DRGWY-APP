@@ -1,8 +1,8 @@
-import React  from 'react';
+import React from 'react';
 import BasePage from '../../base/base';
-import {Flex,  Icon} from '@ant-design/react-native';
+import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
-import {ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
 //import LoadImage from '../../../components/load-image';
 import CommonView from '../../../components/CommonView';
@@ -11,14 +11,14 @@ import XunJianService from './xunjian-service';
 import common from '../../../utils/common';
 
 export default class TaskPage extends BasePage {
-    static navigationOptions = ({navigation}) => {
+    static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
             title: '今日任务',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
         };
@@ -32,7 +32,7 @@ export default class TaskPage extends BasePage {
                 data: [],
             },
             titles: ['全部', '待完成', '漏检', '已完成'],
-        }; 
+        };
     }
 
     componentDidMount() {
@@ -61,21 +61,21 @@ export default class TaskPage extends BasePage {
             default: {
             }
         }
-        this.setState({status}, () => {
+        this.setState({ status }, () => {
             this.initUI();
         });
     };
 
     initUI() {
-        const {status, userId} = this.state;
-        XunJianService.xunjianTaskList(status, userId).then(res => { 
-            this.setState({res});
+        const { status, userId } = this.state;
+        XunJianService.xunjianTaskList(status, userId).then(res => {
+            this.setState({ res });
         });
     }
 
 
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
-        const {status, res, titles} = this.state;
+        const { status, res, titles } = this.state;
         let index = 0;
         if (status === '') {
             index = 0;
@@ -85,27 +85,27 @@ export default class TaskPage extends BasePage {
             index = 2;
         } else if (status === '1') {
             index = 3;
-        } 
+        }
 
         return (
-            <CommonView style={{flex: 1}}>
-                <ScrollTitle index={index} onChange={this.onChange} titles={titles}/>
-
-                <ScrollView style={{flex: 1}} alwaysBounceVertical={true}>
-                    <Flex direction={'column'} style={{padding: 15, flex: 1}}>
+            <CommonView style={{ flex: 1 }}>
+                <ScrollTitle index={index} onChange={this.onChange} titles={titles} />
+                <ScrollView style={{ flex: 1 }} alwaysBounceVertical={true}>
+                    <Flex direction={'column'} style={{ padding: 15, flex: 1 }}>
                         {res.data.map(item => (
                             <TouchableWithoutFeedback key={item.id}
-                                                      onPress={() => this.props.navigation.push('xunjianDetail', {
-                                                          'data': {
-                                                              'id': item.id,
-                                                          },
-                                                      })}>
+                                onPress={() => this.props.navigation.push('xunjianDetail', {
+                                    'data':
+                                    {
+                                        'id': item.id
+                                    }
+                                })}>
                                 <Flex direction='column' align={'start'}
-                                      style={[styles.card, {borderLeftColor: Macro.work_blue, borderLeftWidth: 5}]}>
+                                    style={[styles.card, { borderLeftColor: Macro.work_blue, borderLeftWidth: 5 }]}>
                                     <Text style={styles.title}>{item.pName}</Text>
-                                    <Flex style={styles.line}/>
+                                    <Flex style={styles.line} />
                                     <Flex>
-                                        <Flex style={{width: '100%'}}>
+                                        <Flex style={{ width: '100%' }}>
                                             <Text style={styles.top}>{item.planTime} {item.tName}</Text>
                                         </Flex>
                                     </Flex>
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         color: '#3E3E3E',
         fontSize: 16,
-        paddingBottom:12,
+        paddingBottom: 12,
         marginLeft: 20,
         marginRight: 20,
 

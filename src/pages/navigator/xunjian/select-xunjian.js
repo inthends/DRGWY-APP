@@ -1,7 +1,6 @@
 import React from 'react';
 import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
-// import Macro from '../../../utils/macro';
 import { StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, ScrollView } from 'react-native';
 // import ScreenUtil from '../../../utils/screen-util';
 // import LoadImage from '../../../components/load-image';
@@ -14,7 +13,6 @@ import XunJianService from './xunjian-service';
 
 class SelectXunJianPerson extends BasePage {
     static navigationOptions = ({ navigation }) => {
-
         return {
             tabBarVisible: false,
             title: '选择人员',
@@ -28,7 +26,7 @@ class SelectXunJianPerson extends BasePage {
                 <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
                     <Icon name='bars' style={{ marginRight: 15 }} color="black" />
                 </TouchableWithoutFeedback>
-            ),
+            )
         };
     };
 
@@ -42,8 +40,6 @@ class SelectXunJianPerson extends BasePage {
         };
         this.initData();
         this.select = this.select.bind(this);
-
-
     }
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {

@@ -74,7 +74,6 @@ export default {
         return api.getData('/api/MobileMethod/MGetCheckFilesData', { keyvalue });
     },
     
-
     //服务单操作
     serviceHandle(handle, keyvalue, content, extra = null) {
         let url = '';
@@ -82,7 +81,7 @@ export default {
         if (extra) {
             params = {
                 ...params,
-                ...extra,
+                ...extra
             };
         }
 
@@ -114,16 +113,13 @@ export default {
         }
         return api.postData(url, params);
     },
-
     serviceCommunicates(keyvalue) {
         return api.getData('/api/MobileMethod/MGetCommunicates', { keyvalue, pageIndex: 1, pageSize: 100 });
     },
-
     //维修单单据动态
     getOperationRecord(keyvalue) {
         return api.getData('/api/MobileMethod/MGetOperationRecordList', { keyvalue, pageIndex: 1, pageSize: 100 });
     },
- 
     weixiuDetail(keyvalue) {
         return api.getData('/api/MobileMethod/MGetRepairEntity', { keyvalue });
     },

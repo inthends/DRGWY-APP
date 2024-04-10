@@ -896,7 +896,7 @@ class FeeDetailPage extends BasePage {
                             <TouchableWithoutFeedback
                                 disabled={price == 0 ? true : false}
                                 onPress={() => this.click('扫码')}>
-                                <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.color_4d8fcc }]}>
+                                <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
                                     <Text style={styles.word}>扫码</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>

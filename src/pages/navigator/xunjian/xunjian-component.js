@@ -41,28 +41,22 @@ export default class XunJianDetailPage extends BasePage {
 
         return (
             <ScrollView>
-
                 <Flex direction={'column'} align={'start'}>
                     <Flex style={{ width: ScreenUtil.deviceWidth() - 30 }} justify={'between'}>
                         <Text style={styles.work}>{data.taskTime} {data.projectName}</Text>
                     </Flex>
-
                     <Text style={styles.title}>计划</Text>
                     <Flex style={{ width: ScreenUtil.deviceWidth() - 30 }} justify={'between'}>
                         <Text style={styles.desc}>{data.planTime}</Text>
                         <Text style={styles.desc}>{data.roleName}</Text>
                     </Flex>
-
                     <Text style={styles.title}>执行</Text>
                     <Flex style={{ width: ScreenUtil.deviceWidth() - 30, marginBottom: 10 }} justify={'between'}>
                         <Text style={styles.desc}>{data.exctuteTime}</Text>
                         <Text style={styles.desc}>{data.excuteUserName}</Text>
                     </Flex>
-
                     <Text style={styles.title}>内容</Text>
-
                     {!!data.contents && data.contents.map((item, index) => {
-
                         let currentItem = { id: item.id, contentId: item.contentId, result: 1, msg: '' };
                         let isContains = false;
                         list.map((subItem) => {
@@ -71,11 +65,9 @@ export default class XunJianDetailPage extends BasePage {
                                 isContains = true;
                             }
                         });
-
                         if (!isContains) {
                             list.push(currentItem);
                         }
-
                         return <Fragment key={item.id}>
                             <Flex direction={'column'}
                                 align={'start'}
@@ -142,17 +134,17 @@ export default class XunJianDetailPage extends BasePage {
 const styles = StyleSheet.create({
     work: {
         color: Macro.work_blue,
-        fontSize: 16,
+        fontSize: 16
     },
     title: {
         color: '#333',
         fontSize: 16,
-        paddingTop: 15,
+        paddingTop: 15
     },
     desc: {
         color: '#333',
         fontSize: 16,
-        paddingTop: 10,
+        paddingTop: 10
     },
 
     contentRect: {
@@ -174,7 +166,6 @@ const styles = StyleSheet.create({
         fontSize: 14,
         marginVertical: 2
     },
-
     textInput: {
         width: ScreenUtil.deviceWidth() - 150,
         borderBottomColor: '#333333',

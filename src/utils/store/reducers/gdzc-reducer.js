@@ -6,8 +6,7 @@ const initialState = {
         lists:[],
         scanLists:[]
     },
-    gdzcAction:{
-
+    gdzcAction:{ 
     }
 };
 

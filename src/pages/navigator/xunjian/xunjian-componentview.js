@@ -19,27 +19,22 @@ export default class XunJianDetailViewPage extends BasePage {
         const noselectImg = require('../../../static/images/no-select.png');
 
         return (
-            <ScrollView>
-
+            <ScrollView> 
                 <Flex direction={'column'} align={'start'}>
                     <Flex style={{ width: ScreenUtil.deviceWidth() - 30 }} justify={'between'}>
                         <Text style={styles.work}>{data.taskTime} {data.projectName}</Text>
-                    </Flex>
-
+                    </Flex> 
                     <Text style={styles.title}>计划</Text>
                     <Flex style={{ width: ScreenUtil.deviceWidth() - 30 }} justify={'between'}>
                         <Text style={styles.desc}>{data.planTime}</Text>
                         <Text style={styles.desc}>{data.roleName}</Text>
-                    </Flex>
-
+                    </Flex> 
                     <Text style={styles.title}>执行</Text>
                     <Flex style={{ width: ScreenUtil.deviceWidth() - 30, marginBottom: 10 }} justify={'between'}>
                         <Text style={styles.desc}>{data.exctuteTime}</Text>
                         <Text style={styles.desc}>{data.excuteUserName}</Text>
-                    </Flex>
-
+                    </Flex> 
                     <Text style={styles.title}>内容</Text>
-
                     {!!data.contents && data.contents.map((item, index) => {
                         return <Fragment key={item.id}>
                             <Flex direction={'column'}

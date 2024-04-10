@@ -233,7 +233,7 @@ export default class OrderDetailPage extends BasePage {
                             />
                             <Flex justify={'center'} style={{ minHeight: 40, marginBottom: 30, width: screen_width - 30, marginVertical: 10 }}>
                                 <TouchableWithoutFeedback onPress={() => this._btnClick(2)}>
-                                    <Flex justify={'center'} style={{ borderRadius: 6, backgroundColor: Macro.color_4d8fcc, width: screen_width - 60, height: 40 }}>
+                                    <Flex justify={'center'} style={{ borderRadius: 6, backgroundColor: Macro.work_blue, width: screen_width - 60, height: 40 }}>
                                         <Text style={styles.word}>闭单</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>

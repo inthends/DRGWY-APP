@@ -44,7 +44,7 @@ export default class MinePage extends BasePage {
                     width: 70,
                     height: 70,
                     borderRadius: 35,
-                    marginTop: 56,
+                    marginTop: 56
                   }}
                   img={user.headImg}
                 />
@@ -70,9 +70,9 @@ export default class MinePage extends BasePage {
                     marginTop: 45,
                     paddingBottom: 20,
                     paddingLeft: 30,
-                    paddingRight: 25,
+                    paddingRight: 25
                   },
-                  ScreenUtil.borderBottom(),
+                  ScreenUtil.borderBottom()
                 ]}
               >
                 <Flex>
@@ -88,7 +88,6 @@ export default class MinePage extends BasePage {
                 />
               </Flex>
             </TouchableWithoutFeedback>
-
             <TouchableWithoutFeedback
               onPress={() => this.props.navigation.push('jixiao')}
             >
@@ -99,7 +98,7 @@ export default class MinePage extends BasePage {
                     marginTop: 30,
                     paddingBottom: 20,
                     paddingLeft: 30,
-                    paddingRight: 25,
+                    paddingRight: 25
                   },
                   ScreenUtil.borderBottom(),
                 ]}
@@ -128,7 +127,7 @@ export default class MinePage extends BasePage {
                     marginTop: 30,
                     paddingBottom: 20,
                     paddingLeft: 30,
-                    paddingRight: 25,
+                    paddingRight: 25
                   },
                   ScreenUtil.borderBottom(),
                 ]}
@@ -157,7 +156,7 @@ export default class MinePage extends BasePage {
                     paddingTop: 30,
                     paddingBottom: 20,
                     paddingLeft: 30,
-                    paddingRight: 25,
+                    paddingRight: 25
                   },
                   ScreenUtil.borderBottom(),
                 ]}
@@ -183,43 +182,41 @@ export default class MinePage extends BasePage {
 }
 const styles = StyleSheet.create({
   all: {
-    flex: 1,
+    flex: 1
   },
   content: {
     flex: 1,
-
-    backgroundColor: Macro.color_white,
-
+    backgroundColor: Macro.color_white
     // height: ScreenUtil.contentHeightWithNoTabbar(),
   },
   headerV: {
     height: 245,
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   header: {
     paddingTop: 30,
-    paddingBottom: 30,
+    paddingBottom: 30
   },
   name: {
     paddingTop: 15,
     fontSize: 20,
-    color: 'white',
+    color: 'white'
   },
   name2: {
     paddingTop: 30,
     color: '#DCDCDC',
     fontSize: 14,
     paddingLeft: 15,
-    paddingBottom: 14,
+    paddingBottom: 14
   },
   name3: {
     fontSize: 14,
-    color: '#DCDCDC',
+    color: '#DCDCDC'
   },
   item: {
     fontSize: 16,
     color: '#3E3E3E',
-    paddingLeft: 15,
+    paddingLeft: 15
   },
 });

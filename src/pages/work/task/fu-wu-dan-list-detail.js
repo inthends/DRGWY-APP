@@ -185,7 +185,7 @@ export default class FuWuDanListDetailPage extends BasePage {
                                     }
                                 }}
 
-                                style={[styles.right,{color:Macro.color_4d8fcc}]}>{detail.businessCode}</Text>
+                                style={[styles.right,{color:Macro.work_blue}]}>{detail.businessCode}</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
                     ):null} */}

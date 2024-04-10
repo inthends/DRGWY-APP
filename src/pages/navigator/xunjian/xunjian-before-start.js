@@ -2,7 +2,7 @@ import React from 'react';
 import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import CommonView from '../../../components/CommonView';
 import XunJianService from './xunjian-service';
@@ -14,12 +14,12 @@ class XunjianBeforeStart extends BasePage {
         return {
             tabBarVisible: false,
             title: '选择任务',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
-            ),
+            )
         };
     };
 
@@ -27,32 +27,31 @@ class XunjianBeforeStart extends BasePage {
         super(props);
         this.state = {
             ...(common.getValueFromProps(this.props)),
-            items: [],
+            items: []
         };
     }
 
-    componentDidMount()  {
+    componentDidMount() {
         const { pointId } = this.state;
         if (this.props.hasNetwork) {
             this.initUI();
-        } else {
-            const items = this.props.xunJianData.scanLists.filter(item => item.pointId === pointId); 
+        }
+        else {
+            const items = this.props.xunJianData.scanLists.filter(item => item.pointId === pointId);
             this.setState({ items });
         }
-
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             () => {
                 if (this.props.hasNetwork) {
                     this.initUI(false);
-                } else { 
                 }
-            },
+            }
         );
     }
 
     initUI(showLoading = true) {
-        const { pointId } = this.state; 
+        const { pointId } = this.state;
         XunJianService.xunjianPointTasks(pointId, showLoading).then(items => {
             this.setState({ items });
         });
@@ -64,12 +63,10 @@ class XunjianBeforeStart extends BasePage {
 
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
         const { items, person, pointId } = this.state;
-
         return (
             <CommonView>
                 <ScrollView>
-                    <Flex direction={'column'} style={{ padding: 15, paddingTop: 30 }}>
-
+                    <Flex direction={'column'} style={{ padding: 15, paddingTop: 30 }}> 
                         {items.map(item => (
                             <TouchableWithoutFeedback key={item.id}
                                 onPress={() => this.props.navigation.push('startxunjian', {
@@ -78,7 +75,7 @@ class XunjianBeforeStart extends BasePage {
                                         person,
                                         pointId,
                                         item
-                                    },
+                                    }
                                 })}>
                                 <Flex direction='column' align={'start'}
                                     style={[styles.card, { borderLeftColor: Macro.work_blue, borderLeftWidth: 5 }]}>
@@ -93,7 +90,6 @@ class XunjianBeforeStart extends BasePage {
                             </TouchableWithoutFeedback>
                         ))}
                     </Flex>
-
                 </ScrollView>
             </CommonView>
         );
@@ -101,11 +97,10 @@ class XunjianBeforeStart extends BasePage {
 }
 
 const mapStateToProps = ({ memberReducer, xunJianReducer }) => {
-
     return {
         hasNetwork: memberReducer.hasNetwork,
         xunJianData: xunJianReducer.xunJianData,
-        xunJianAction: xunJianReducer.xunJianAction,
+        xunJianAction: xunJianReducer.xunJianAction
     };
 };
 

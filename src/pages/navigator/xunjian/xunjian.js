@@ -165,7 +165,7 @@ class XunJianPage extends BasePage {
             items: xunJianData.lists
         }; 
         this.setState({
-            ...params,
+            ...params
         });
     }
 
@@ -232,21 +232,22 @@ class XunJianPage extends BasePage {
                             </Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
-
                 </Flex>
+
                 <Flex style={styles.line} />
                 {/*<Text style={styles.location}>当前位置：xxxx</Text>*/}
                 <TouchableWithoutFeedback onPress={() => this.props.navigation.push('selectXunjian', {
                     'data': {
                         onSelect: this.onSelect,
-                        person,
-                    },
+                        person
+                    }
                 })}>
                     <Flex style={styles.person} align={'center'} justify={'center'}>
                         <Text style={styles.personText}>{name}</Text>
                         <LoadImage style={{ width: 20, height: 20 }} />
                     </Flex>
                 </TouchableWithoutFeedback>
+
                 <ScrollView style={{ height: ScreenUtil.contentHeight() - 220 }}>
                     <Accordion
                         onChange={this.onChange}
@@ -279,7 +280,7 @@ class XunJianPage extends BasePage {
                         marginLeft: '10%',
                         marginRight: '10%',
                         marginBottom: 20,
-                    }, { backgroundColor: Macro.color_4d8fcc }]}>
+                    }, { backgroundColor: Macro.work_blue }]}>
                         <Text style={styles.word}>开始巡检</Text>
                     </Flex>
                 </TouchableWithoutFeedback>

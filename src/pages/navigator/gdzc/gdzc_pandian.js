@@ -194,7 +194,7 @@ class GdzcPandianPage extends BasePage {
 
                     <Flex style={{ minHeight: 40, marginBottom: 30, width: screen_width }}>
                         <TouchableWithoutFeedback onPress={this.success}>
-                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.color_4d8fcc }]}>
+                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
                                 <Text style={styles.word}>正常</Text>
                             </Flex>
                         </TouchableWithoutFeedback>

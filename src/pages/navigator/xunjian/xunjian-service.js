@@ -52,16 +52,15 @@ export default {
     xunjianIndexDetail(lineId) {
         return api.getData('/api/MobileMethod/MGetPollingTaskPoints', {lineId});
     },
-
-
-    //有网络
+ 
+    //获取巡检任务
     xunjianPointTasks(pointId, showLoading = true) {
         return api.getData('/api/MobileMethod/MGetPollingPointTasks', {pointId}, showLoading);
     },
 
-    //无网络
-    MGetPollingUserPointTasks() {
-        return api.getData('/api/MobileMethod/MGetPollingUserPointTasks', {}, false);
-    } 
+    //离线巡检时候缓存数据，废弃，跟上面共用一个方法
+    // MGetPollingUserPointTasks() {
+    //     return api.getData('/api/MobileMethod/MGetPollingUserPointTasks', {}, false);
+    // } 
 
 };
