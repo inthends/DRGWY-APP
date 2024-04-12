@@ -57,7 +57,7 @@ class SheBeiList extends BasePage {
             billStatus: -1,
             //canLoadMore: true,
             time: common.getCurrentYearAndMonth(),
-            selectBuilding: this.props.selectBuilding,
+            selectBuilding: this.props.selectBuilding
         };
 
     }

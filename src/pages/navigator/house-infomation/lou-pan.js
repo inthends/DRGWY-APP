@@ -49,7 +49,7 @@ class LouPan extends BasePage {
                 data: [],
             },
             refreshing: false,
-            selectBuilding: this.props.selectBuilding,
+            selectBuilding: this.props.selectBuilding
         };
     }
 
@@ -58,19 +58,20 @@ class LouPan extends BasePage {
     }
 
     getList = () => {
-        NavigatorService.getFeeStatistics(this.state.pageIndex, this.state.selectBuilding ? this.state.selectBuilding.key : '').then(dataInfo => {
+        NavigatorService.getFeeStatistics(this.state.pageIndex, this.state.selectBuilding ? this.state.selectBuilding.key : '').
+        then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
-                    data: [...this.state.dataInfo.data, ...dataInfo.data],
+                    data: [...this.state.dataInfo.data, ...dataInfo.data]
                 };
             }
             this.setState({
                 dataInfo: dataInfo,
-                refreshing: false,
+                refreshing: false
             }, () => { 
             });
-        });
+        }).catch(err => this.setState({ refreshing: false }));
     };
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {

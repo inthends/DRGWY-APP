@@ -87,8 +87,7 @@ public class LHNToast extends ReactContextBaseJavaModule {
     }
     @ReactMethod
     public void changeprint() {
-        Log.d("TAG", "changeprint: ");
-
+        //Log.d("TAG", "changeprint: "); 
         Activity currentActivity = getCurrentActivity();
         Intent intent = new Intent(currentActivity, SearchBTActivity.class);//非自动
         currentActivity.startActivity(intent);
@@ -101,8 +100,7 @@ public class LHNToast extends ReactContextBaseJavaModule {
             Activity currentActivity = getCurrentActivity();
             if (currentActivity != null) {
                 SharedPreferences saveput =  currentActivity.getSharedPreferences("divice_address", currentActivity.MODE_PRIVATE);
-                String deviceadress = saveput.getString("deviceadress", "");
-
+                String deviceadress = saveput.getString("deviceadress", ""); 
                 Bundle bundle = new Bundle();
                 bundle.putString("allName", res.getString("allName"));
                 bundle.putString("billDate", res.getString("billDate"));
@@ -149,8 +147,7 @@ public class LHNToast extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void startActivityFromJS(String name, ReadableMap order) {
-
+    public void startActivityFromJS(String name, ReadableMap order) { 
         try {
             Activity currentActivity = getCurrentActivity();
             if (null != currentActivity) {

@@ -68,7 +68,7 @@ export default class DetailBuildingPage extends BasePage {
           const rooms = common.convertArrayToSmallArray(allRooms);
           return {
             ...item,
-            rooms,
+            rooms
           };
         });
       });

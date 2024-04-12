@@ -110,7 +110,7 @@ class EstateWeixiuPage extends BasePage {
                 if (dataInfo.pageIndex > 1) {
                     dataInfo = {
                         ...dataInfo,
-                        data: [...this.state.dataInfo.data, ...dataInfo.data],
+                        data: [...this.state.dataInfo.data, ...dataInfo.data]
                     };
                 }
                 this.setState({
@@ -119,7 +119,7 @@ class EstateWeixiuPage extends BasePage {
                     //canLoadMore: true,
                 }, () => {
                 });
-            });
+            }).catch(err => this.setState({ refreshing: false }));
     };
 
     onRefresh = () => {

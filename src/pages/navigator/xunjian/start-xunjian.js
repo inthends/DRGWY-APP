@@ -57,6 +57,7 @@ class StartXunJianPage extends BasePage {
                 address: { allName: item.allName, id: item.pointId }
             });
         }
+
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
@@ -132,6 +133,7 @@ class StartXunJianPage extends BasePage {
             }
 
         } else {
+
             //离线缓存
             let images = this.state.images.filter(item => item.icon.fileUri && item.icon.fileUri.length > 0);
             this.props.saveXunJianAction({
@@ -148,6 +150,8 @@ class StartXunJianPage extends BasePage {
                     address
                 }
             });
+
+            
             UDToast.showSuccess('已保存，稍后可在我的-设置中上传巡检数据');
             this.props.navigation.goBack();
         }

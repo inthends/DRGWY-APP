@@ -7,18 +7,20 @@ import {
     RefreshControl,
 } from 'react-native';
 import BasePage from '../base/base';
-import { Flex  } from '@ant-design/react-native';
+import { Flex } from '@ant-design/react-native';
 import ScreenUtil from '../../utils/screen-util';
 import LoadImage from '../../components/load-image';
 import WorkService from './work-service';
 import Macro from '../../utils/macro';
 import CommonView from '../../components/CommonView';
-import JPush from 'jpush-react-native';
+import JPush from 'jpush-react-native'; 
 
-export default class WorkPage extends BasePage {
+export default class WorkPage extends BasePage { 
+
     static navigationOptions = options => {
         const { navigation } = options;
         const params = navigation.state.params;
+
         return {
             title: '工作台',
             headerTitleStyle: {
@@ -32,14 +34,14 @@ export default class WorkPage extends BasePage {
                         <Flex direction='column' style={{ marginLeft: 20 }}>
                             <LoadImage defaultImg={require('../../static/images/scan2.png')}
                                 style={{ width: 20, height: 19 }} />
-                            
+
                             <Text style={styles.button}>扫一扫</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback onPress={() => navigation.push('AddWork')}>
                         <Flex direction='column' style={{ marginLeft: 20 }}>
                             <LoadImage defaultImg={require('../../static/images/paiyipai.png')}
-                                style={{ width: 20, height: 21 }} /> 
+                                style={{ width: 20, height: 21 }} />
                             <Text style={styles.button}>拍一拍</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
@@ -56,7 +58,7 @@ export default class WorkPage extends BasePage {
                     <TouchableWithoutFeedback>
                         <Flex direction='column' style={{ marginRight: 20 }}>
                             <LoadImage defaultImg={require('../../static/images/qiandao.png')}
-                                style={{ width: 20, height: 19 }} /> 
+                                style={{ width: 20, height: 19 }} />
                             <Text style={styles.button}>签到</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
@@ -76,26 +78,27 @@ export default class WorkPage extends BasePage {
         };
     }
 
-    componentDidMount() {
+    componentDidMount() { 
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
-            (obj) => {
-                WorkService.workData(this.state.showLoading).then(data => {
-                    this.setState({
-                        data,
-                        showLoading: false,
+            (obj) => { 
+                    WorkService.workData(this.state.showLoading).then(data => {
+                        this.setState({
+                            data,
+                            showLoading: false,
+                        });
                     });
-                });
-                WorkService.unreadCount().then(news => {
-                    this.props.navigation.setParams({ news });
-                    JPush.setBadge({
-                        badge: news,
-                        appBadge: news,
-                    });
-                });
-            },
+                    WorkService.unreadCount().then(news => {
+                        this.props.navigation.setParams({ news });
+                        JPush.setBadge({
+                            badge: news,
+                            appBadge: news,
+                        });
+                    });  
+            }
         );
     }
+
 
     componentWillUnmount() {
         this.viewDidAppear.remove();
@@ -336,6 +339,9 @@ export default class WorkPage extends BasePage {
         );
     }
 }
+
+
+
 const styles = StyleSheet.create({
     title: {
         paddingTop: 14.67,
@@ -393,3 +399,5 @@ const styles = StyleSheet.create({
         borderStyle: 'solid'
     }
 });
+
+ 

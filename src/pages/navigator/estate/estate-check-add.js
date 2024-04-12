@@ -142,7 +142,7 @@ class EcheckAddPage extends BasePage {
                 refreshing: false
             }, () => {
             });
-        });
+        }).catch(err => this.setState({ refreshing: false }));
     };
 
     loadMore = () => {

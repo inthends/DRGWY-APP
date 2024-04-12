@@ -60,16 +60,16 @@ class NewsList extends BasePage {
             this.setState({
                 dataInfo: dataInfo,
                 refreshing: false,
-                pageIndex: dataInfo.pageIndex,
+                pageIndex: dataInfo.pageIndex
             }, () => {
             });
-        });
+        }).catch(err => this.setState({ refreshing: false }));
     };
 
     onRefresh = () => {
         this.setState({
             refreshing: false,
-            pageIndex: 1,
+            pageIndex: 1
         }, () => {
             this.getList();
         });

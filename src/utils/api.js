@@ -6,11 +6,15 @@ import ManualAction from './store/actions/manual-action';
 export default {
     network(request) {
         // axios.defaults.withCredentials = true;
+
+        axios.defaults.timeout = 10000;//请求超时时间设置为10秒 
+
         const { url, params, method, showLoading, showError } = request;
         let showLoadingNumber;
         if (showLoading) {
             showLoadingNumber = UDToast.showLoading();
         }
+ 
         return new Promise((resolve, reject) => {
             const headers = {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -22,9 +26,11 @@ export default {
                 axios.defaults.baseURL = 'http://hf.jslesoft.com:8008';
             } else {
                 axios.defaults.baseURL = ManualAction.getUrl();
-            } 
+            }
+
             // if (Object.keys(params).length > 0) { 
-            // } 
+            // }
+
             if (method === 'GET') {
                 axios.get(url, { params, headers }).then(res => {
                     UDToast.hiddenLoading(showLoadingNumber);
@@ -43,7 +49,7 @@ export default {
                     UDToast.hiddenLoading(showLoadingNumber);
                     this.fail(showError, error, reject);
                 });
-            } 
+            }
         });
     },
     success(showError, res, resolve, reject) {
@@ -58,10 +64,21 @@ export default {
     fail(showError, error, reject) {
         if (error) {
             let errorStr = JSON.stringify(error);
+            //alert(errorStr); 
             if (errorStr.includes('401')) {
-                UDToast.showError('用户信息过期');
                 ManualAction.saveTokenByStore(null);
-            } else {
+                UDToast.showError('用户信息过期');
+                reject('用户信息过期');
+            } 
+            else if (errorStr.includes('timeout')) {
+                UDToast.showError('网络超时，请检查');
+                reject('网络超时，请检查');
+            }
+            else if (errorStr.includes('Network Error')) {
+                UDToast.showError('网络异常，请检查');
+                reject('网络异常，请检查');
+            }
+            else {
                 if (showError && errorStr.length > 0) {
                     UDToast.showError(errorStr);
                 }
@@ -69,17 +86,19 @@ export default {
             }
         } else {
             reject(error);
-        } 
-    }, 
+        }
+    },
+
     getData(url, params = {}, showLoading = true, showError = true) {
         return this.network({
             url: url,
             params: params,
             showLoading: showLoading,
             method: 'GET',
-            showError,
+            showError
         });
     },
+
     postData(url, params = {}, showLoading = true, showError = true) {
         return this.network({
             url: url,
@@ -89,6 +108,7 @@ export default {
             showError
         });
     },
+
     uploadFile(uri, id, type,
         uploadUrl, isPicture = true) {
         return new Promise(resolve => {
@@ -117,5 +137,5 @@ export default {
                 UDToast.showError('上传失败，请稍后重试');
             });
         });
-    },
+    }
 };

@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import {
   View,
   StyleSheet,
@@ -32,7 +32,7 @@ class BuildingPage extends BasePage {
   constructor(props) {
     super(props);
     this.selectBuilding = {
-      key: null,
+      key: null
     };
     this.state = {
       count: 0,
@@ -54,76 +54,79 @@ class BuildingPage extends BasePage {
     });
   }
 
-  componentDidMount() {
-    //安卓更新
-    if (!common.isAndroid() === false) {
-      NativeModules.LHNToast.getVersionCode(
-        (version, isYse, isLKL, brandName) => { 
-          api.getData('/api/Mobile/GetVersion',{ isYse, isLKL, brandName },true)
-            .then((res) => {
-              let netVersion = common.handlerVersionString(res.appVersionName);
-              let localVersion = common.handlerVersionString(version);
-              if (netVersion > localVersion) {
-                Alert.alert(
-                  '发现有新版本',
-                  '是否更新？',
-                  [
-                    {
-                      text: '取消',
-                      onPress: () => this.initUI(),
-                      style: 'cancel',
-                    },
-                    {
-                      text: '确定',
-                      onPress: () => {
-                        upgrade(res.versionFile);
+  componentDidMount() { 
+      //安卓更新
+      if (!common.isAndroid() === false) {
+        NativeModules.LHNToast.getVersionCode(
+          (version, isYse, isLKL, brandName) => {
+            api.getData('/api/Mobile/GetVersion', { isYse, isLKL, brandName }, true)
+              .then((res) => {
+                let netVersion = common.handlerVersionString(res.appVersionName);
+                let localVersion = common.handlerVersionString(version);
+                if (netVersion > localVersion) {
+                  Alert.alert(
+                    '发现有新版本',
+                    '是否更新？',
+                    [
+                      {
+                        text: '取消',
+                        onPress: () => this.initUI(),
+                        style: 'cancel',
                       },
-                    },
-                  ],
-                  { cancelable: false },
-                );
-              } else {
+                      {
+                        text: '确定',
+                        onPress: () => {
+                          upgrade(res.versionFile);
+                        },
+                      },
+                    ],
+                    { cancelable: false },
+                  );
+                } else {
+                  this.initUI();
+                }
+              })
+              .catch(() => {
                 this.initUI();
-              }
-            })
-            .catch(() => {
-              this.initUI();
-            });
-        },
-      );
-    } else {
-      this.initUI();
-      // NativeModules.LHNToast.getVersionCode((err, version) => {
-      //     checkUpdate(common.appId(), version).then(IOSUpdateInfo => {
-      //         if (IOSUpdateInfo.code === 1) {
-      //             Alert.alert(
-      //                 '发现有新版本',
-      //                 '是否更新？',
-      //                 [
-      //                     {
-      //                         text: '取消',
-      //                         onPress: () => console.log('Cancel Pressed'),
-      //                         style: 'cancel',
-      //                     },
-      //                     {
-      //                         text: '确定',
-      //                         onPress: () => {
-      //                             if (Linking.canOpenURL('https://itunes.apple.com/app/id' + common.appId())) {
-      //                                 Linking.openURL('https://itunes.apple.com/app/id' + common.appId());
-      //                             }
-      //                         },
-      //                     },
-      //                 ],
-      //                 {cancelable: false},
-      //             );
-      //
-      //         }
-      //     });
-      // });
-    }
+              });
+          },
+        );
+      } else {
+        this.initUI();
+
+        //废弃
+        // NativeModules.LHNToast.getVersionCode((err, version) => {
+        //     checkUpdate(common.appId(), version).then(IOSUpdateInfo => {
+        //         if (IOSUpdateInfo.code === 1) {
+        //             Alert.alert(
+        //                 '发现有新版本',
+        //                 '是否更新？',
+        //                 [
+        //                     {
+        //                         text: '取消',
+        //                         onPress: () => console.log('Cancel Pressed'),
+        //                         style: 'cancel',
+        //                     },
+        //                     {
+        //                         text: '确定',
+        //                         onPress: () => {
+        //                             if (Linking.canOpenURL('https://itunes.apple.com/app/id' + common.appId())) {
+        //                                 Linking.openURL('https://itunes.apple.com/app/id' + common.appId());
+        //                             }
+        //                         },
+        //                     },
+        //                 ],
+        //                 {cancelable: false},
+        //             );
+        //
+        //         }
+        //     });
+        // });
+      } 
   }
 
   initUI() {
+
     BuildingService.getUserInfo().then((res) => {
       this.props.saveUser(res);
     });
@@ -170,10 +173,9 @@ class BuildingPage extends BasePage {
           refreshing: false,
           pageIndex: dataInfo.pageIndex
         },
-        () => { 
-        }
+        () => { }
       );
-    });
+    }).catch(err => this.setState({ refreshing: false }));
   };
 
   //打开机构
@@ -195,7 +197,7 @@ class BuildingPage extends BasePage {
   };
 
   loadMore = () => {
-    const { data, total, pageIndex } = this.state.dataInfo; 
+    const { data, total, pageIndex } = this.state.dataInfo;
     if (!this.canAction && data.length < total) {
       // if (data.length < total) {
       this.canAction = true;
@@ -219,7 +221,7 @@ class BuildingPage extends BasePage {
     // }
   };
 
-  componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void { 
+  componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
     if (
       !(
         this.selectBuilding &&
@@ -287,15 +289,15 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = ({ buildingReducer, memberReducer }) => {
   const user = memberReducer.user || {};
-
   return {
     selectBuilding: buildingReducer.selectBuilding || {},
     user: {
       ...user,
       id: user.userId,
-    },
+    }
   };
 };
+
 const mapDispatchToProps = (dispatch) => {
   return {
     saveUser(user) {
@@ -306,5 +308,11 @@ const mapDispatchToProps = (dispatch) => {
     },
   };
 };
+
+
+
+
+
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(BuildingPage);

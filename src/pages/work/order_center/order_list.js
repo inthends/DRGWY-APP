@@ -38,7 +38,7 @@ export default class OrderlistPage extends BasePage {
     }
 
     componentDidMount() {
-        this.onRefresh()
+        this.onRefresh();
     }
 
     getList = () => {
@@ -47,15 +47,15 @@ export default class OrderlistPage extends BasePage {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
-                    data: [...this.state.dataInfo.data, ...dataInfo.data],
+                    data: [...this.state.dataInfo.data, ...dataInfo.data]
                 };
             }
             this.setState({
                 dataInfo: dataInfo,
-                refreshing: false,
+                refreshing: false
             }, () => {
             });
-        });
+        }).catch(err => this.setState({ refreshing: false }));
     };
 
     onRefresh = () => {

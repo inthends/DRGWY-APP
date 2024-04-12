@@ -100,7 +100,7 @@ export default class GdzcDetailPage extends BasePage {
                     refreshing: false
                 }, () => { 
                 })
-            })
+            }).catch(err => this.setState({ refreshing: false }));
         }
         else if (indexType === 2) {
             GdzcService.gdzcRepairList(pageIndex, id).then(res => {
@@ -110,7 +110,7 @@ export default class GdzcDetailPage extends BasePage {
                     refreshing: false
                 }, () => { 
                 })
-            })
+            }).catch(err => this.setState({ refreshing: false }));
         }
         else if (indexType === 3) {
             GdzcService.gdzcAssetsCheckList(pageIndex, id).then(res => {
@@ -120,7 +120,7 @@ export default class GdzcDetailPage extends BasePage {
                     refreshing: false
                 }, () => { 
                 })
-            })
+            }).catch(err => this.setState({ refreshing: false }));
         }
     }
 

@@ -123,8 +123,7 @@ import zulinplan from '../flow/zulin-plan';
 import caigou from '../flow/caigou';
 import baoxiao from '../flow/baoxiao';
 import matter from '../flow/matter';
-import task from '../flow/task';
-
+import task from '../flow/task'; 
 import admincontract from '../flow/admin-contract';
 
 
@@ -275,7 +274,6 @@ const WorkNavigator = createStackNavigator({
       headerBackTitle: null,
     }),
   },
-
   AddWork: AddWorkPage,
   SelectAddress: SelectAddressPage,
   service: FuWuDanListDetailPage,
@@ -320,7 +318,6 @@ const ShenPiNavigator = createStackNavigator({
   baoxiao,
   matter,
   task,
-
   admincontract,
   webPage
 });
@@ -349,6 +346,8 @@ const MineNavigator = createStackNavigator({
 MineNavigator.navigationOptions = ({ navigation }) => ({
   tabBarVisible: navigation.state.index === 0,
 });
+
+
 
 const tabbar = createBottomTabNavigator(
   {
@@ -393,15 +392,15 @@ const tabbar = createBottomTabNavigator(
       activeTintColor: '#2491C4',
       inactiveTintColor: '#6F757C',
       labelStyle: {
-        fontSize: 14,
+        fontSize: 14
       },
       tabStyle: {}
     },
-    defaultNavigationOptions: ({ navigation }) => {
-      if (navigation.isFocused()) {
-        DeviceEventEmitter.emit('currentNavigation', navigation);
-      }
 
+    defaultNavigationOptions: ({ navigation }) => { 
+      if (navigation.isFocused()) {  
+        DeviceEventEmitter.emit('currentNavigation', navigation);
+      } 
       // return {
       //   tabBarIcon: ({ focused
       //     //, horizontal, tintColor 
@@ -447,7 +446,7 @@ const tabbar = createBottomTabNavigator(
       //   }
       // };
 
- 
+
       return {
         tabBarIcon: ({ focused }) => {
           const { routeName } = navigation.state;
@@ -475,16 +474,17 @@ const tabbar = createBottomTabNavigator(
               break;
           }
 
-          let color='black';
+          let color = 'black';
           if (focused) {
             color = Macro.work_blue;
-          } 
+          }
           return <Icon name={name} size={22} color={color} />
         }
       };
     }
   }
 );
+
 
 const { width } = Dimensions.get('window');
 const Drawer = createDrawerNavigator(

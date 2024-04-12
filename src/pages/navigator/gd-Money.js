@@ -65,7 +65,7 @@ class gdMoneyPage extends BasePage {
         };
     }
 
-    componentDidMount(): void {
+    componentDidMount()  {
         this.onRefresh();
     }
 
@@ -79,15 +79,15 @@ class gdMoneyPage extends BasePage {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
-                    data: [...this.state.dataInfo.data, ...dataInfo.data],
+                    data: [...this.state.dataInfo.data, ...dataInfo.data]
                 };
             }
             this.setState({
                 dataInfo: dataInfo,
-                refreshing: false,
+                refreshing: false
             }, () => { 
             });
-        });
+        }).catch(err => this.setState({ refreshing: false }));
     };
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {

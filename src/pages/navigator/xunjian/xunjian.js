@@ -66,9 +66,7 @@ class XunJianPage extends BasePage {
             });
         });
     };
-
-
-    //开始巡检
+ 
     start = () => {
         // let person = this.state.person || {};
         // this.props.navigation.navigate('xunjianBeforeStart', {
@@ -142,7 +140,7 @@ class XunJianPage extends BasePage {
                 ...res
             });
         });
-
+        
         XunJianService.xunjianIndexList(person.id).then(res => { 
             Promise.all(res.data.map(item => XunJianService.xunjianIndexDetail(item.lineId))).then(all => {
                 let items = res.data.map((item, index) => {
@@ -154,7 +152,6 @@ class XunJianPage extends BasePage {
                 this.setState({ items: [...items] }, () => {  
                 });
             });
-            // Promise.all()
         });
     }
 
@@ -288,21 +285,7 @@ class XunJianPage extends BasePage {
         );
     }
 }
-
-
-const mapStateToProps = ({ memberReducer, xunJianReducer }) => { 
-    return {
-        user: {
-            ...memberReducer.user,
-            id: memberReducer.user.userId
-        },
-        hasNetwork: memberReducer.hasNetwork,
-        xunJianData: xunJianReducer.xunJianData
-    };
-};
-
-export default connect(mapStateToProps)(XunJianPage);
-
+ 
 const styles = StyleSheet.create({
     title: {
         paddingTop: 14,
@@ -388,6 +371,19 @@ const styles = StyleSheet.create({
     word: {
         color: 'white',
         fontSize: 16
-    }
-
+    } 
 });
+
+const mapStateToProps = ({ memberReducer, xunJianReducer }) => { 
+    return {
+        user: {
+            ...memberReducer.user,
+            id: memberReducer.user.userId
+        },
+        hasNetwork: memberReducer.hasNetwork,
+        xunJianData: xunJianReducer.xunJianData
+    };
+};
+
+export default connect(mapStateToProps)(XunJianPage);
+

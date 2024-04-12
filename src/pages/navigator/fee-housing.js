@@ -27,11 +27,11 @@ import CommonView from '../../components/CommonView';
 
 
 class FeeHousePage extends BasePage {
-    static navigationOptions = ({ navigation }) => { 
+    static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
             title: '上门收费',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
@@ -57,36 +57,36 @@ class FeeHousePage extends BasePage {
             },
             refreshing: false,
             selectBuilding: this.props.selectBuilding,
-        };
-
+        }; 
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         this.onRefresh();
     }
 
 
     getList = () => {
-        NavigatorService.getFeeStatistics(this.state.pageIndex, this.state.selectBuilding ? this.state.selectBuilding.key : '').then(dataInfo => {
-            if (dataInfo.pageIndex > 1) {
-                dataInfo = {
-                    ...dataInfo,
-                    data: [...this.state.dataInfo.data, ...dataInfo.data],
-                };
-            }
-            this.setState({
-                dataInfo: dataInfo,
-                refreshing: false,
-            }, () => {
-                //console.log(this.state.dataInfo.data);
-            });
-        });
+        NavigatorService.getFeeStatistics(this.state.pageIndex,
+            this.state.selectBuilding ? this.state.selectBuilding.key : '').then(dataInfo => {
+                if (dataInfo.pageIndex > 1) {
+                    dataInfo = {
+                        ...dataInfo,
+                        data: [...this.state.dataInfo.data, ...dataInfo.data],
+                    };
+                }
+                this.setState({
+                    dataInfo: dataInfo,
+                    refreshing: false
+                }, () => {
+                    //console.log(this.state.dataInfo.data);
+                });
+            }).catch(err => this.setState({ refreshing: false }));
 
     };
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
-        const nextSelectBuilding = nextProps.selectBuilding; 
+        const nextSelectBuilding = nextProps.selectBuilding;
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
             this.setState({ selectBuilding: nextProps.selectBuilding }, () => {
                 this.onRefresh();
@@ -105,7 +105,7 @@ class FeeHousePage extends BasePage {
         });
     };
     loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo; 
+        const { data, total, pageIndex } = this.state.dataInfo;
         if (this.canAction && data.length < total) {
             this.setState({
                 refreshing: true,
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
     item: {
         width: '100%'
     },
-    name: { 
+    name: {
         fontSize: 16,
         color: '#2c2c2c',
         paddingBottom: 15

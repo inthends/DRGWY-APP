@@ -60,7 +60,7 @@ export default class FeeRoomsPage extends BasePage {
                         return NavigatorService.getRooms(item.id).then(rooms => {
                             return {
                                 ...item,
-                                rooms,
+                                rooms
                             };
                         });
                     });

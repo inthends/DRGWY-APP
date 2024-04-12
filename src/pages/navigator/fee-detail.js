@@ -54,7 +54,7 @@ class FeeDetailPage extends BasePage {
                 </TouchableOpacity>
             ),
             type: null,
-            isShow: true,
+            isShow: true
         };
     };
 

@@ -58,7 +58,7 @@ class EstateCheckPage extends BasePage {
             billType: '全部',
             billStatus: -1,
             time: common.getCurrentYearAndMonth(),
-            selectBuilding: this.props.selectBuilding,
+            selectBuilding: this.props.selectBuilding
         };
     }
 
@@ -117,11 +117,11 @@ class EstateCheckPage extends BasePage {
                 }
                 this.setState({
                     dataInfo: dataInfo,
-                    refreshing: false,
+                    refreshing: false
                     //canLoadMore: true,
                 }, () => {
                 });
-            });
+            }).catch(err => this.setState({ refreshing: false }));
     };
 
     onRefresh = () => {

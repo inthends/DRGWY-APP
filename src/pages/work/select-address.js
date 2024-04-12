@@ -57,8 +57,7 @@ export default class SelectAddressPage extends BasePage {
     //         UDToast.showInfo('请先选择');
     //     }
     // };
-
-
+ 
     submit = () => {
         const { selectItem, parentName } = this.state;
         if (selectItem) {
@@ -139,9 +138,10 @@ export default class SelectAddressPage extends BasePage {
             parent,
             refreshing: true,
         });
+
         WorkService.getPStructs(params).then(items => {
             this.setState({ items, refreshing: false });
-        });
+        }).catch(err => this.setState({ refreshing: false }));
     };
 
 

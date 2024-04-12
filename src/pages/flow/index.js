@@ -17,6 +17,7 @@ import { saveSelectDrawerType } from '../../utils/store/actions/actions';
 import { DrawerType } from '../../utils/store/action-types/action-types';
 
 class ApprovePage extends BasePage {
+  
   static navigationOptions = ({ navigation }) => {
     return {
       title: '审批',
@@ -112,8 +113,7 @@ class ApprovePage extends BasePage {
       pageIndex: this.state.pageIndex,
       pageSize: 10,
       code: selectTask.value || ''
-    }).then((dataInfo) => {
-
+    }).then((dataInfo) => { 
       //分页有问题
       // if (dataInfo.pageIndex > 1) {
       //   const { data: oldData = [] } = this.state.dataInfo || {};
@@ -133,15 +133,14 @@ class ApprovePage extends BasePage {
           ...dataInfo,
           data: [...this.state.dataInfo.data, ...dataInfo.data]
         };
-      }
-
+      } 
       this.setState(
         {
           dataInfo: dataInfo,
           refreshing: false,
           pageIndex: dataInfo.pageIndex
         });
-    });
+    }).catch(err => this.setState({ refreshing: false }));
   };
 
   loadMore = () => {

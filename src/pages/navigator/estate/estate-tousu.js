@@ -60,7 +60,7 @@ class EstateTousuPage extends BasePage {
             billStatus: -1,
             //canLoadMore: true,
             time: common.getCurrentYearAndMonth(),
-            selectBuilding: this.props.selectBuilding,
+            selectBuilding: this.props.selectBuilding
         };
 
     }
@@ -106,20 +106,21 @@ class EstateTousuPage extends BasePage {
         let startTime = common.getMonthFirstDay(time);
         let endTime = common.getMonthLastDay(time);
 
-        NavigatorService.tousuList(this.state.pageIndex, billStatus, treeType, organizeId, '', startTime, endTime).then(dataInfo => {
+        NavigatorService.tousuList(this.state.pageIndex, billStatus, treeType, organizeId, '', startTime, endTime).
+        then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
-                    data: [...this.state.dataInfo.data, ...dataInfo.data],
+                    data: [...this.state.dataInfo.data, ...dataInfo.data]
                 };
             }
             this.setState({
                 dataInfo: dataInfo,
-                refreshing: false,
+                refreshing: false
                 //canLoadMore: true,
             }, () => { 
             });
-        });
+        }).catch(err => this.setState({ refreshing: false }));
     };
 
 

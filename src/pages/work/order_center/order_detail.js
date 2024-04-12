@@ -122,39 +122,15 @@ export default class OrderDetailPage extends BasePage {
         this.getOrderDetail()
         this.getOrderCommunicates()
     }
-    /*
-    allName: "测试项目/第01栋/第01层/1-101"
-    billCode: "TESTNo202304090000"
-    billDate: "2023-04-09 16:20:58"
-    createDate: "2023-04-09 16:20:58"
-    createUserId: "732ba1e3-d86a-4b82-8b27-790c1f06c9de"
-    createUserName: "朱信保"
-    customer: "朱信保"
-    dataInfo: {}
-    id: "0afccd37-73ea-42e5-9f69-9a171ad42a6c"
-    linkId: null
-    memo: "2023-04-09 00:00"
-    modifyDate: null
-    modifyUserId: null
-    modifyUserName: null
-    orderStatus: 0
-    otherId: null
-    pageIndex: 1
-    phoneNum: "15295507559"
-    refreshing: false
-    roomId: "f4003cfb-2203-4dd7-ba9a-52fcbf2a3ff3"
-    rowIndex: 1
-    status: 0
-    type: "预约看房"
-    */
+    
     contentView = () => {
-        const { billCode, billDate, createUserName, status, allName, phoneNum } = this.state
-
+        const { billCode, billDate, createUserName, status, allName, phoneNum } = this.state;
         let data1 = [
             { key: '订单编号', value: billCode },
             { key: '订单时间', value: billDate },
             { key: '提 交 人', value: createUserName }
-        ]
+        ];
+        
         return (
             <Flex marginHorizontal={15} width={screen_width - 30}>
                 <Flex direction={'column'} align={'start'} marginTop={10}>

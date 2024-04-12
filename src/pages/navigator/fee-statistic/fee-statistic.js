@@ -24,7 +24,7 @@ export default class FeeStatisticPage extends BasePage {
 
 
     render() {
-        const {statistics, dataInfo} = this.state;
+        //const {statistics, dataInfo} = this.state;
         const option = {
             color: ['#3398DB'],
             tooltip : {

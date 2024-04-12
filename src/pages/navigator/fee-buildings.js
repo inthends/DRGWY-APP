@@ -23,12 +23,12 @@ import NavigatorService from './navigator-service';
 import CommonView from '../../components/CommonView';
 
 export default class FeeBuildingsPage extends BasePage {
-    
+
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
             title: '上门收费',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
@@ -46,20 +46,20 @@ export default class FeeBuildingsPage extends BasePage {
         };
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         NavigatorService.getBuildings(this.state.housing.id).then(items => {
             this.setState({ items });
         });
     }
 
-    onRefresh = () => {
-        this.setState({
-            refreshing: true,
-            pageIndex: 1,
-        }, () => {
-            this.getList();
-        });
-    };
+    // onRefresh = () => {
+    //     this.setState({
+    //         refreshing: true,
+    //         pageIndex: 1,
+    //     }, () => {
+    //         this.getList();
+    //     });
+    // };
 
     render() {
         const { housing, items } = this.state;
@@ -89,7 +89,7 @@ export default class FeeBuildingsPage extends BasePage {
                                 未收款最小账单日大于当前日期的显示绿色3 */}
                                 <Flex style={[styles.item, item.color == 1 ? styles.gray : (item.color == 2 ? styles.orange : styles.green)]} justify={'center'}>
                                     <Text style={[styles.title, item.color == 1 ? styles.gray : (item.color == 2 ? styles.orange : styles.green)]}>{item.name}</Text>
-                                </Flex> 
+                                </Flex>
                             </TouchableWithoutFeedback>
                         ))}
                     </Flex>
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
         color: '#868688',
         fontSize: 16,
         paddingBottom: 20,
-    }, 
+    },
     left: {
         flex: 1
     },

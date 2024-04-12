@@ -59,7 +59,7 @@ class EstateFuwuPage extends BasePage {
             billStatus: -1,
             //canLoadMore: true,
             time: common.getCurrentYearAndMonth(),
-            selectBuilding: this.props.selectBuilding,
+            selectBuilding: this.props.selectBuilding
         };
 
     }
@@ -99,7 +99,8 @@ class EstateFuwuPage extends BasePage {
         }
         let startTime = common.getMonthFirstDay(time);
         let endTime = common.getMonthLastDay(time);
-        NavigatorService.serviceList(this.state.pageIndex, billStatus, organizeId, billType, startTime, endTime).then(dataInfo => {
+        NavigatorService.serviceList(this.state.pageIndex, billStatus, organizeId, billType, startTime, endTime)
+        .then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -108,17 +109,17 @@ class EstateFuwuPage extends BasePage {
             }
             this.setState({
                 dataInfo: dataInfo,
-                refreshing: false,
+                refreshing: false
                 //canLoadMore: true,
             }, () => {
             });
-        });
+        }).catch(err => this.setState({ refreshing: false }));
     };
 
     onRefresh = () => {
         this.setState({
             refreshing: true,
-            pageIndex: 1,
+            pageIndex: 1
         }, () => {
             this.getList();
         });

@@ -37,7 +37,13 @@ class XunjianBeforeStart extends BasePage {
             this.initUI();
         }
         else {
-            const items = this.props.xunJianData.scanLists.filter(item => item.pointId === pointId);
+            // const items = this.props.xunJianData.scanLists.filter(item => item.pointId === pointId); 
+            //过滤已经完成的，任务id存在巡检结果里面的数据属于完成的
+            const items = this.props.xunJianData.scanLists.filter(item =>
+                item.pointId === pointId
+                && this.props.xunJianAction[item.id] == null
+            );
+
             this.setState({ items });
         }
         this.viewDidAppear = this.props.navigation.addListener(
@@ -66,7 +72,7 @@ class XunjianBeforeStart extends BasePage {
         return (
             <CommonView>
                 <ScrollView>
-                    <Flex direction={'column'} style={{ padding: 15, paddingTop: 30 }}> 
+                    <Flex direction={'column'} style={{ padding: 15, paddingTop: 30 }}>
                         {items.map(item => (
                             <TouchableWithoutFeedback key={item.id}
                                 onPress={() => this.props.navigation.push('startxunjian', {

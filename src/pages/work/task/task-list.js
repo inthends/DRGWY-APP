@@ -97,16 +97,16 @@ class TaskListPage extends BasePage {
             }
             this.setState({
                 dataInfo: dataInfo,
-                refreshing: false,
+                refreshing: false
             }, () => {
             });
-        });
+        }).catch(err => this.setState({ refreshing: false }));
     };
 
     onRefresh = () => {
         this.setState({
             refreshing: true,
-            pageIndex: 1,
+            pageIndex: 1
         }, () => {
             this.getList();
         });
@@ -117,7 +117,7 @@ class TaskListPage extends BasePage {
         if (this.canAction && data.length < total) {
             this.setState({
                 refreshing: true,
-                pageIndex: pageIndex + 1,
+                pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
             });
