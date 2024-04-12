@@ -95,7 +95,6 @@ class StartXunJianPage extends BasePage {
         const { id, person, address, item, inspectData } = this.state;
         const { data } = this.state;
         let newInspectData = [];
-        // id,taskId,contentId,result,memo
         if (inspectData.length === 0) {
             try {
                 data.contents.map((subItem) => {
@@ -134,23 +133,21 @@ class StartXunJianPage extends BasePage {
 
         } else {
 
-            //离线缓存
+            //离线缓存巡检结果
             let images = this.state.images.filter(item => item.icon.fileUri && item.icon.fileUri.length > 0);
             this.props.saveXunJianAction({
-                [item.taskId]: {
+                [item.id]: {
                     xunjianParams: {
                         keyvalue: item.id,
                         userId: person.id,
-                        userName: person.name,
-                        //巡检任务明细
-                        inspectData: newInspectData
+                        userName: person.name, 
+                        inspectData: newInspectData//巡检任务明细
                     },
                     idForUploadImage: item.id,
                     images,
                     address
                 }
             });
-
             
             UDToast.showSuccess('已保存，稍后可在我的-设置中上传巡检数据');
             this.props.navigation.goBack();
@@ -258,8 +255,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         saveXunJianAction(data) {
             dispatch(saveXunJianAction(data));
-        },
-
+        }
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(StartXunJianPage);

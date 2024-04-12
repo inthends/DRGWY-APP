@@ -31,36 +31,45 @@ class XunjianBeforeStart extends BasePage {
         };
     }
 
-    componentDidMount() {
-        const { pointId } = this.state;
+    // initUI(showLoading = true) {
+    //     const { pointId } = this.state;
+    //     XunJianService.xunjianPointTasks(pointId, showLoading).then(items => {
+    //         this.setState({ items });
+    //     });
+    // }
+
+    onRefresh = () => {
+        const { pointId } = this.state;//点位
         if (this.props.hasNetwork) {
-            this.initUI();
+            //this.initUI();
+            XunJianService.xunjianPointTasks(pointId).then(items => {
+                this.setState({ items });
+            });
         }
         else {
-            // const items = this.props.xunJianData.scanLists.filter(item => item.pointId === pointId); 
-            //过滤已经完成的，任务id存在巡检结果里面的数据属于完成的
-            const items = this.props.xunJianData.scanLists.filter(item =>
-                item.pointId === pointId
-                && this.props.xunJianAction[item.id] == null
-            );
 
-            this.setState({ items });
+            //const items = this.props.xunJianData.scanLists.filter(item => item.pointId === pointId);
+            const { xunJianData, xunJianAction } = this.props;
+            //过滤已经完成的，任务id存在巡检结果里面的数据属于完成的
+            const items = xunJianData.scanLists.filter(item =>
+                item.pointId === pointId && !xunJianAction.hasOwnProperty(item.id)
+            );
+            this.setState({ items }); 
+            //alert('离线巡检数据'+ items.length);
         }
+    };
+
+    componentDidMount() { 
+        //this.onRefresh(); 
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             () => {
-                if (this.props.hasNetwork) {
-                    this.initUI(false);
-                }
+                // if (this.props.hasNetwork) {
+                //     this.initUI(false);
+                // }
+                this.onRefresh();
             }
         );
-    }
-
-    initUI(showLoading = true) {
-        const { pointId } = this.state;
-        XunJianService.xunjianPointTasks(pointId, showLoading).then(items => {
-            this.setState({ items });
-        });
     }
 
     componentWillUnmount() {

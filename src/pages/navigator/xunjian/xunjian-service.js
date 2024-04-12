@@ -34,7 +34,7 @@ export default {
     xunjianPointDetail(lineId, pointId) {
         return api.getData('/api/MobileMethod/MGetPollingPointEntity', {lineId, pointId});
     },
-
+ 
     xunjianExecute(keyvalue, userId, userName,inspectData, showLoading = true) {
         return api.postData('/api/MobileMethod/MExcutePollingTasck', {
             keyvalue,
@@ -43,6 +43,10 @@ export default {
             inspectData
         }, showLoading);
     },
+
+
+   
+
     xunjianAddress(pointId) {
         return api.getData('/api/MobileMethod/MGetPollingPointDetail', {pointId});
     },

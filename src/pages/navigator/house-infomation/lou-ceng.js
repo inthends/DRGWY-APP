@@ -54,7 +54,7 @@ export default class LouCeng extends BasePage {
                         return NavigatorService.getRooms(item.id).then(rooms => {
                             return {
                                 ...item,
-                                rooms,
+                                rooms
                             };
                         });
                     });

@@ -112,9 +112,9 @@ export default {
     uploadFile(uri, id, type,
         uploadUrl, isPicture = true) {
         return new Promise(resolve => {
-            const formData = new FormData();//如果需要上传多张图片,需要遍历数组,把图片的路径数组放入formData中
+            const formData = new FormData();//如果需要上传多张图片，需要遍历数组,把图片的路径数组放入formData中
             const name = isPicture ? 'picture.png' : 'file.aac';
-            let file = { uri: uri, type: 'multipart/form-data', name: name };   //这里的key(uri和type和name)不能改变, 
+            let file = { uri: uri, type: 'multipart/form-data', name: name };//这里的key(uri和type和name)不能改变
             formData.append('Files', file);   //这里的files就是后台需要的key
             formData.append('keyvalue', id);
             formData.append('type', type);

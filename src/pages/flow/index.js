@@ -46,6 +46,7 @@ class ApprovePage extends BasePage {
       read: 0,
       done: 0
     };
+
     this.onChange = (activeSections) => {
       this.setState({ activeSections });
     };
@@ -347,8 +348,7 @@ class ApprovePage extends BasePage {
                     url = 'task';//任务单
                     break;
                   }
-
-
+                  
                   //行政合同
                   case '1007':
                   case '1008':
@@ -470,7 +470,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     saveSelectDrawerType: (item) => {
       dispatch(saveSelectDrawerType(item));
-    },
+    }
   };
 };
 

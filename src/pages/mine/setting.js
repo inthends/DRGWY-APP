@@ -75,13 +75,11 @@ class SettingPage extends BasePage {
     }
 
     update() {
-
         //数据量大，只能同步自己的巡检任务
         this.loading = UDToast.showLoading('正在同步中...');
         XunJianService.xunjianData(this.props.user.userId, false).then(resp => {
             XunJianService.xunjianIndexList(this.props.user.userId, false).then(res => {
                 const items = res.data;
-
                 Promise.all(items.map(item => XunJianService.xunjianIndexDetail(item.lineId).then(res => ({
                     ...item,
                     items: res
@@ -95,6 +93,7 @@ class SettingPage extends BasePage {
                             scanLists: r || {}//巡检任务和内容明细
                         };
                         this.props.saveXunjian(tasks);//存放离线巡检数据
+                        //alert('同步巡检数据'+ tasks.length);
                         UDToast.showInfo('同步完成');
 
                     }).catch(err => {
@@ -127,24 +126,23 @@ class SettingPage extends BasePage {
         return new Promise((resolve, reject) => {
             if (imageObjs.length === 0) {
                 return resolve();
-            } else { 
-                return Promise.all(imageObjs.map(i => {
+            } else {
+                return Promise.all(imageObjs.map(item => {
                     //等数据中的所有接口都执行resolve()成功状态后，执行then()方法。
-                    const { id, images } = i;
-                    const formData = new FormData();//如果需要上传多张图片,需要遍历数组,把图片的路径数组放入formData中
+                    const { id, images } = item;
+                    const formData = new FormData();//如果需要上传多张图片，需要遍历数组，把图片的路径数组放入formData中
                     for (let index = 0; index < images.length; index++) {
                         let img = images[index];
-                        let file = { uri: img.icon.fileUri, type: 'multipart/form-data', name: 'picture.png' };   //这里的key(uri和type和name)不能改变,
-                        formData.append('Files', file);   //这里的files就是后台需要的key
+                        let file = { uri: img.icon.fileUri, type: 'multipart/form-data', name: 'picture' + index + '.png' };//这里的key(uri和type和name)不能改变
+                        formData.append('Files', file);//这里的files就是后台需要的key
                     }
                     formData.append('keyvalue', id);
                     axios.defaults.headers['Content-Type'] = 'multipart/form-data';
                     axios.defaults.headers['Authorization'] = 'Bearer ' + ManualAction.getTokenBYStore();
                     //return axios.post('/api/MobileMethod/MUploadPollingTask', formData);
-                    //必须返回resolve()
-                    axios.post('/api/MobileMethod/MUploadPollingTask', formData).then(res => {
+                    axios.post('/api/MobileMethod/MUploadMultiPollingTask', formData).then(res => {
                         if (!!res) {
-                            resolve(res);
+                            resolve(res);//必须返回resolve()
                         }
                     });
                 }));
@@ -165,6 +163,7 @@ class SettingPage extends BasePage {
                     images: xunJian.images,
                     id: xunJian.idForUploadImage
                 });
+
                 // if (xunJian.workParams) {
                 //     works.push(xunJian.workParams);
                 // }
@@ -173,15 +172,13 @@ class SettingPage extends BasePage {
 
         if (xunJians.length > 0) {
 
+            //alert('上传巡检数据'+ xunJians.length);
             this.loading = UDToast.showLoading('正在上传中...');
-
             Promise.all(xunJians.map(item => {
-                // 等数据中的所有接口都执行resolve()成功状态后，执行then()方法。
+                //等数据中的所有接口都执行resolve()成功状态后，执行then()方法。
                 const { keyvalue, userId, userName, inspectData } = item;
                 let arrStr = JSON.stringify(inspectData);
-
-                XunJianService.xunjianExecute(keyvalue, userId, userName, arrStr, false);
-
+                XunJianService.xunjianExecute(keyvalue, userId, userName, arrStr, false); 
             })).then(res => {
 
                 //巡检不关联工单
@@ -197,7 +194,7 @@ class SettingPage extends BasePage {
                 //     UDToast.hiddenLoading(this.loading);
                 //     UDToast.showError('上传工单数据失败'); 
                 // });
- 
+
                 //上传巡检图片
                 this.uploadImages(imageObjs).then(res => {
                     UDToast.hiddenLoading(this.loading);
@@ -208,11 +205,12 @@ class SettingPage extends BasePage {
                     UDToast.showError('上传图片失败');
                 });
 
-
             }).catch(res => {
                 UDToast.hiddenLoading(this.loading);
                 UDToast.showError('上传巡检数据失败');
             });
+
+            
         } else {
             UDToast.showError('没有数据需要上传');
         }
