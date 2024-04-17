@@ -229,6 +229,8 @@ const navigatorNavigator = createStackNavigator({
   bcmscan: BCMScanScreen, //交通银行扫码
   cibscan: CIBScanScreen, //兴业银行扫码 
   lklscan: LKLScanScreen, //拉卡拉聚合扫码
+  njscan: NJScanScreen, //南京银行扫码
+
 
   service: FuWuDanListDetailPage,
   wancheng: WanChengListDetailPage,

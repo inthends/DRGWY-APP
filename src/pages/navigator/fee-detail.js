@@ -8,7 +8,7 @@ import {
     ScrollView,
     Alert,
     DeviceEventEmitter,
-    View,
+    View
 } from 'react-native';
 import BasePage from '../base/base';
 import { Flex, Icon, Checkbox, Modal, DatePickerView } from '@ant-design/react-native';
@@ -273,30 +273,38 @@ class FeeDetailPage extends BasePage {
                             });
                         }
                         else if (posType === '南京银行') {
-                            this.setState({
-                                nanjingRes: res,
+
+                            // this.setState({
+                            //     nanjingRes: res
+                            // });
+                            // this.props.navigation.push('scanForHome', {
+                            //     data: {
+                            //         callBack: (scanCodeData) => {
+                            //             setTimeout(() => {
+                            //                 NativeModules.LHNToast.startActivityFromJS(
+                            //                     'com.statistics.LKLPayActivity',
+                            //                     {
+                            //                         ...res,
+                            //                         transName: '二维码被扫',
+                            //                         scanCodeData
+                            //                     }
+                            //                 );
+                            //             }, 2000);
+                            //         },
+                            //         needBack: '1'
+                            //     }
+                            // });
+
+                            //扫码接口
+                            this.props.navigation.push('njscan', { 
+                                out_trade_no: res.out_trade_no
                             });
-                            this.props.navigation.push('scanForHome', {
-                                data: {
-                                    callBack: (scanCodeData) => {
-                                        setTimeout(() => {
-                                            NativeModules.LHNToast.startActivityFromJS(
-                                                'com.statistics.LKLPayActivity',
-                                                {
-                                                    ...res,
-                                                    transName: '二维码被扫',
-                                                    scanCodeData,
-                                                }
-                                            );
-                                        }, 2000);
-                                    },
-                                    needBack: '1'
-                                }
-                            });
+
                         }
                     }).catch(err => { UDToast.showError(err); });
                     break;
                 }
+
                 case '收款码': {
                     NavigatorService.createOrder(ids, isML, mlType, mlScale, 2).then(res => {
                         let posType = res.posType;
@@ -405,17 +413,31 @@ class FeeDetailPage extends BasePage {
                             });
                         }
                         else if (posType === '南京银行') {
-                            this.setState({
-                                nanjingRes: res,
+
+                            // this.setState({
+                            //     nanjingRes: res,
+                            // });
+                            // NativeModules.LHNToast.startActivityFromJS(
+                            //     'com.statistics.LKLPayActivity',
+                            //     {
+                            //         ...res,
+                            //         transName: '二维码主扫',
+                            //         scanCodeData: ''
+                            //     },
+                            // );
+
+                            //生成收款码接口 2024年4月17日
+                            NavigatorService.njCodePay(res.out_trade_no).then(code => {
+                                this.setState({
+                                    visible: true,
+                                    cancel: false,
+                                    code,
+                                    needPrint: true,
+                                    printAgain: false
+                                }, () => {
+                                    this.getOrderStatus(res.out_trade_no);
+                                });
                             });
-                            NativeModules.LHNToast.startActivityFromJS(
-                                'com.statistics.LKLPayActivity',
-                                {
-                                    ...res,
-                                    transName: '二维码主扫',
-                                    scanCodeData: ''
-                                },
-                            );
                         }
                     }).catch(err => { UDToast.showError(err); });
                     break;
@@ -734,7 +756,7 @@ class FeeDetailPage extends BasePage {
                                                             chaifeiAlert: true,
                                                             chaifeiDate: new Date(item.beginDate)
                                                         });
-                                                    } else { 
+                                                    } else {
                                                         if (res == 1) {
                                                             UDToast.showError('该费用已经生成了通知单，不允许拆费');
                                                         } else if (res == 2) {
@@ -744,10 +766,10 @@ class FeeDetailPage extends BasePage {
                                                         }
                                                         else {
                                                             UDToast.showError('该费用已经生成了优惠单，不允许拆费');
-                                                        } 
+                                                        }
                                                     }
 
-                                                });  
+                                                });
                                             }
                                         }}
                                         titles={titles}

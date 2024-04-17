@@ -39,7 +39,7 @@ public class LKLPayActivity extends Activity {
         setContentView(R.layout.activity_splash);
         initView();
         initData(); 
-        mShow.setText("等待支付请稍后！"); 
+        mShow.setText("等待支付请稍后"); 
         Bundle bu = getIntent().getExtras();
         String posType = bu.getString("posType"); 
         switch (posType) {

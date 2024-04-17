@@ -68,7 +68,7 @@ export default {
     organizeId,
     startTime,
     endTime
-  ) { 
+  ) {
     return api.postData('/api/MobileMethod/MGetCheckPageList', {
       pageIndex,
       pageSize: 10,
@@ -83,7 +83,7 @@ export default {
   //服务单
   serviceList(
     pageIndex,
-    billStatus, 
+    billStatus,
     organizeId,
     billType,
     startTime,
@@ -94,7 +94,7 @@ export default {
       pageIndex,
       pageSize: 10,
       billStatus,
-      status: billStatus, 
+      status: billStatus,
       organizeId,
       billType,
       startTime,
@@ -104,17 +104,17 @@ export default {
 
   weixiuList(
     pageIndex,
-    billStatus, 
+    billStatus,
     organizeId,
     startTime,
     endTime,
     repairArea,
-  ) { 
+  ) {
 
     return api.postData('/api/MobileMethod/MGetRepairPageListForNavigator', {
       pageIndex,
-      pageSize: 10, 
-      status: billStatus, 
+      pageSize: 10,
+      status: billStatus,
       organizeId,
       startTime,
       endTime,
@@ -124,7 +124,7 @@ export default {
 
   tousuList(
     pageIndex,
-    billStatus, 
+    billStatus,
     organizeId,
     billType,
     startTime,
@@ -132,14 +132,14 @@ export default {
   ) {
     return api.postData('/api/MobileMethod/MGetComplaintPageList', {
       pageIndex,
-      pageSize: 10, 
-      status: billStatus, 
+      pageSize: 10,
+      status: billStatus,
       organizeId,
       billType,
       startTime,
       endTime,
     });
-  }, 
+  },
   // serviceDetail(type,keyvalue) {
   //     let url = '/api/MobileMethod/MGetServicedeskEntity';
   //     if (billType === '报修') {
@@ -241,6 +241,23 @@ export default {
       false
     );
   },
+
+ 
+  //南京银行生成收款码
+  njCodePay(tbout_trade_no) {
+    return api.postData('/api/MobileMethod/NJPay', { tbout_trade_no });
+  },
+
+  //南京银行人民币扫码
+  njScanPay(auth_code, tbout_trade_no) {
+    return api.postData('/api/MobileMethod/NJScanPay', {
+      auth_code,
+      tbout_trade_no
+    });
+  },
+
+
+
 
   //兴业银行生成收款码
   cibCodePay(tbout_trade_no, isDigital) {
@@ -410,7 +427,7 @@ export default {
   invalidBillForm(keyvalue) {
     return api.postData('/api/MobileMethod/InvalidBillForm', { keyvalue });
   },
- 
+
   //验证费用
   checkBillFee(keyvalue) {
     return api.getData('/api/MobileMethod/CheckBillFee', { keyvalue });
