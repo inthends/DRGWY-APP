@@ -91,9 +91,7 @@ export default class ScrollTitleChange extends Component {
 }
 
 const styles = StyleSheet.create({
-    content: {
-        width: ScreenUtil.deviceWidth(),
-    },
+   
     title: {
         fontSize: 16,
         color: '#999',
@@ -101,21 +99,20 @@ const styles = StyleSheet.create({
         paddingRight: 5,
         paddingTop: 15,
         paddingBottom: 10,
-        textAlign: 'center',
+        textAlign: 'center'
     },
     title_select: {
         fontSize: 16,
-        color: '#333',
+        color: '#404145',
         paddingLeft: 15,
         paddingRight: 5,
         paddingTop: 15,
         paddingBottom: 10,
-        textAlign: 'center',
-
+        textAlign: 'center'
     },
     line: {
         height: 2,
         backgroundColor: '#5f96eb',
-        width: single_width,
+        width: single_width
     },
 });

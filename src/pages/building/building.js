@@ -275,16 +275,16 @@ class BuildingPage extends BasePage {
 const styles = StyleSheet.create({
   all: {
     backgroundColor: Macro.color_sky_dark,
-    flex: 1,
+    flex: 1
   },
   content: {
     backgroundColor: Macro.color_white,
-    flex: 1,
+    flex: 1
   },
   list: {
     backgroundColor: Macro.color_white,
-    flex: 1,
-  },
+    flex: 1
+  }
 });
 
 const mapStateToProps = ({ buildingReducer, memberReducer }) => {

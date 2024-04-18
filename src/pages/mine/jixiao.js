@@ -175,31 +175,17 @@ const styles = StyleSheet.create({
         backgroundColor: Macro.color_white,
         flex: 1,
     },
-    content: {
-        backgroundColor: Macro.color_white,
-        paddingLeft: 20,
-        paddingRight: 20,
-        height: ScreenUtil.contentHeight(),
-    },
-    header: {
-        paddingTop: 30,
-        paddingBottom: 30,
-    },
+    
     name: {
         fontSize: 20,
-        color: '#333',
+        color: '#404145',
         paddingTop: 15,
-        paddingLeft: 15,
+        paddingLeft: 15
     },
-    desc: {
-        fontSize: 16,
-        color: '#999',
-        paddingTop: 5,
-    },
+    
     item: {
         fontSize: 16,
-        color: '#333',
-
+        color: '#404145' 
     },
     date: {
         marginTop: 20,
@@ -210,7 +196,7 @@ const styles = StyleSheet.create({
         paddingBottom: 30
     },
     select: {
-        color: '#333',
+        color: '#404145',
         fontSize: 16,
         paddingLeft: 20,
         paddingRight: 20,
@@ -219,16 +205,16 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderWidth: 1,
         borderColor: '#EEE',
-        borderRadius: 6,
+        borderRadius: 6
     },
     zhi: {
         fontSize: 16,
-        color: '#666',
+        color: '#666'
     },
     jiedan: {
         fontSize: 16,
         color: 'green',
-        paddingLeft: 15,
+        paddingLeft: 15
     }
 });
 

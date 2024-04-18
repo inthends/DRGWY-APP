@@ -13,9 +13,9 @@ import LoadImage from '../../components/load-image';
 import WorkService from './work-service';
 import Macro from '../../utils/macro';
 import CommonView from '../../components/CommonView';
-import JPush from 'jpush-react-native'; 
+import JPush from 'jpush-react-native';
 
-export default class WorkPage extends BasePage { 
+export default class WorkPage extends BasePage {
 
     static navigationOptions = options => {
         const { navigation } = options;
@@ -78,23 +78,23 @@ export default class WorkPage extends BasePage {
         };
     }
 
-    componentDidMount() { 
+    componentDidMount() {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
-            (obj) => { 
-                    WorkService.workData(this.state.showLoading).then(data => {
-                        this.setState({
-                            data,
-                            showLoading: false,
-                        });
+            (obj) => {
+                WorkService.workData(this.state.showLoading).then(data => {
+                    this.setState({
+                        data,
+                        showLoading: false,
                     });
-                    WorkService.unreadCount().then(news => {
-                        this.props.navigation.setParams({ news });
-                        JPush.setBadge({
-                            badge: news,
-                            appBadge: news,
-                        });
-                    });  
+                });
+                WorkService.unreadCount().then(news => {
+                    this.props.navigation.setParams({ news });
+                    JPush.setBadge({
+                        badge: news,
+                        appBadge: news,
+                    });
+                });
             }
         );
     }
@@ -145,7 +145,7 @@ export default class WorkPage extends BasePage {
                                         'type': 'fuwu',
                                         overdue: -1,//已经回复不判断是否逾期
                                         hiddenHeader: true,
-                                        title: '已回复列表',
+                                        title: '已回复列表'
                                     },
                                 })}>
                                     <Flex direction='column' style={{ width: '25%' }}>
@@ -158,7 +158,7 @@ export default class WorkPage extends BasePage {
                                     'data': {
                                         'type': 'visit',
                                         hiddenHeader: true,
-                                        title: '待回访列表',
+                                        title: '待回访列表'
                                     },
                                 })}>
                                     <Flex direction='column' style={{ width: '25%' }}>
@@ -364,7 +364,7 @@ const styles = StyleSheet.create({
         paddingBottom: 3
     },
     bottom: {
-        color: '#333', //'#999999',
+        color: '#404145',//'#333'
         fontSize: 16,
         paddingBottom: 20
     },
@@ -376,8 +376,7 @@ const styles = StyleSheet.create({
     buttonInfo: {
         color: Macro.color_FA3951,
         fontSize: 16,
-        // paddingTop: 4,
-
+        // paddingTop: 4, 
     },
     card: {
         borderRadius: 5,
@@ -400,4 +399,3 @@ const styles = StyleSheet.create({
     }
 });
 
- 

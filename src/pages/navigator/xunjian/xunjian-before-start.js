@@ -144,16 +144,8 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20
     },
-    bottom: {
-        color: '#999999',
-        fontSize: 16,
-        paddingBottom: 20
-    },
-    button: {
-        color: '#2C2C2C',
-        fontSize: 8,
-        paddingTop: 4
-    },
+ 
+  
     card: {
         borderRadius: 5,
         marginBottom: 15,

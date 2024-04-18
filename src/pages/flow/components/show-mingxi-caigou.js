@@ -64,12 +64,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingTop: 15,
     paddingBottom: 5,
-    marginBottom: 15,
-  },
-  // txt: {
-  //   fontSize: 14,
-  //   // paddingBottom: 10,
-  // },
+    marginBottom: 15
+  }
 });
 
 export default ShowMingXiCaiGou;

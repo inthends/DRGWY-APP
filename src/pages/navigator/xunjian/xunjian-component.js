@@ -137,16 +137,15 @@ const styles = StyleSheet.create({
         fontSize: 16
     },
     title: {
-        color: '#333',
+        color: '#404145',
         fontSize: 16,
         paddingTop: 15
     },
     desc: {
-        color: '#333',
+        color: '#404145',
         fontSize: 16,
         paddingTop: 10
-    },
-
+    }, 
     contentRect: {
         width: '100%',
         marginTop: 5,
@@ -154,8 +153,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5,
         padding: 5
-    },
-
+    }, 
     blueText: {
         color: '#5f96eb',
         fontSize: 14,

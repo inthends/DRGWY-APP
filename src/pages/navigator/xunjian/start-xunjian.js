@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
         paddingRight: 15
     },
     title: {
-        color: '#333',
+        color: '#404145',
         fontSize: 16,
         textAlign: 'left',
         paddingTop: 10,

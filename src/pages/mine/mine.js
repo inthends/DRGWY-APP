@@ -181,9 +181,7 @@ export default class MinePage extends BasePage {
   }
 }
 const styles = StyleSheet.create({
-  all: {
-    flex: 1
-  },
+ 
   content: {
     flex: 1,
     backgroundColor: Macro.color_white
@@ -194,10 +192,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center'
   },
-  header: {
-    paddingTop: 30,
-    paddingBottom: 30
-  },
+ 
   name: {
     paddingTop: 15,
     fontSize: 20,

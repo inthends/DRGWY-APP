@@ -11,9 +11,7 @@ import BasePage from '../../base/base';
 import { Icon, Flex } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
-import common from '../../../utils/common';
-import UDToast from '../../../utils/UDToast';
-import DashLine from '../../../components/dash-line';
+import common from '../../../utils/common'; 
 import WorkService from '../../work/work-service';
 import ListImages from '../../../components/list-images';
 import Communicates from '../../../components/communicates';
@@ -153,11 +151,11 @@ const styles = StyleSheet.create({
     },
     left: {
         fontSize: 16,
-        color: '#333'
+        color: '#404145'
     },
     right: {
         fontSize: 16,
-        color: '#333'
+        color: '#404145'
     },
     desc: {
         padding: 15,

@@ -57,7 +57,6 @@ const ShowMingXi2 = ({ title = '明细', list = [], open = false }) => {
 };
 
 const styles = StyleSheet.create({
-   
   card: {
     marginTop: 5,
     borderWidth: 1,
@@ -67,10 +66,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingTop: 15,
     paddingBottom: 5,
-    marginBottom: 15,
+    marginBottom: 15
   },
   txt: {
-    fontSize: 14,
+    fontSize: 14
     // paddingBottom: 10,
   },
 });

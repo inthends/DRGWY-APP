@@ -55,22 +55,21 @@ export default class HousingHeader extends Component {
 
 const styles = StyleSheet.create({
     content: {
-        width: ScreenUtil.deviceWidth(),
+        width: ScreenUtil.deviceWidth()
     },
     title: {
         fontSize: 16,
         color: '#999',
         paddingLeft: 15,
         paddingRight: 15,
-        paddingTop: 15,
+        paddingTop: 15
     },
     title_select: {
         fontSize: 16,
-        color: '#333',
+        color: '#404145',
         paddingLeft: 15,
         paddingRight: 15,
-        paddingTop: 15,
-
+        paddingTop: 15
     },
     line: {
         height: 2,

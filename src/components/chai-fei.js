@@ -227,16 +227,10 @@ const styles = StyleSheet.create({
         fontSize: 16,
         paddingLeft: 10,
     },
-    //area: {
-    // borderWidth: 1,
-    // borderColor: '#eeeeee',
-    // borderRadius: 10,
-    // width: ScreenUtil.deviceWidth() - 90
-    //},
 
     unenable: {
         fontSize: 16,
-        color: '#333',
+        color: '#404145',
         backgroundColor: '#eeeeee',
         paddingLeft: 10,
         paddingRight: 10,
@@ -247,7 +241,7 @@ const styles = StyleSheet.create({
     },
     enable: {
         fontSize: 16,
-        color: '#333',
+        color: '#404145',//'#333'
         backgroundColor: '#fff',
         paddingTop: 6,
         paddingBottom: 6,
@@ -260,7 +254,7 @@ const styles = StyleSheet.create({
     secondDate: {
         width: 108, 
         fontSize: 16,
-        color: '#333',
+        color: '#404145',
         backgroundColor: '#eeeeee',
         paddingLeft: 10,
         paddingRight: 10,

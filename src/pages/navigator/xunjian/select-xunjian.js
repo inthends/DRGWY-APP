@@ -90,8 +90,7 @@ class SelectXunJianPerson extends BasePage {
         );
     }
 }
-
-
+ 
 const mapStateToProps = ({ buildingReducer }) => {
     return {
         selectBuilding: buildingReducer.selectBuilding,
@@ -107,7 +106,7 @@ const styles = StyleSheet.create({
         paddingRight: 15
     },
     word: {
-        color: '#333',
+        color: '#404145',
         fontSize: 16
     }
 });

@@ -98,7 +98,7 @@ export default class NJScanScreen extends BasePage {
             count: count - 1
         }, () => {
             if (count > 0) {
-                NavigatorService.bcmScanPayQuery(out_trade_no).then(query => {
+                NavigatorService.njScanPayQuery(out_trade_no).then(query => {
                     if (query === 'SUCCESS') {
                         UDToast.hiddenLoading(this.showLoadingNumber);
                         //callBack(res.out_trade_no);
@@ -116,13 +116,14 @@ export default class NJScanScreen extends BasePage {
                     });
                 });
             }
-            // else {
-            //     NavigatorService.wftScanPayReserve(res.out_trade_no);
-            //     setTimeout(() => {
-            //         UDToast.hiddenLoading(this.showLoadingNumber);
-            //         this.props.navigation.goBack();
-            //     }, 1000);
-            // }
+            else {
+                //9次查询完成，接口仍未返回成功标识（既查询接口返回的trade_state不是SUCCESS，则调用撤销接口
+                NavigatorService.njScanPayReserve(res.out_trade_no);
+                setTimeout(() => {
+                    UDToast.hiddenLoading(this.showLoadingNumber);
+                    this.props.navigation.goBack();
+                }, 1000);
+            }
         });
     }
 
@@ -149,7 +150,6 @@ export default class NJScanScreen extends BasePage {
                     </View>
                 </RNCamera>
             </View>
-
         );
     }
 }

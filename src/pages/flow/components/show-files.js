@@ -41,7 +41,7 @@ const ShowFiles = (props) => {
 const styles = StyleSheet.create({
   file: {
     paddingBottom: 15
-  },
+  }
 });
 
 export default ShowFiles;

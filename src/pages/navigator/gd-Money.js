@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
     },
     desc: {
         marginBottom: 10,
-        color: '#333',
+        color: '#404145',
         fontSize: 14
     },
     ii: {

@@ -62,14 +62,14 @@ const styles = StyleSheet.create({
         color: '#999',
         paddingLeft: 15,
         paddingRight: 15,
-        paddingTop: 15,
+        paddingTop: 15
     },
     title_select: {
         fontSize: 16,
-        color: '#333',
+        color: '#404145',
         paddingLeft: 15,
         paddingRight: 15,
-        paddingTop: 15,
+        paddingTop: 15
 
     },
     line: {

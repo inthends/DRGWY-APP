@@ -190,34 +190,12 @@ export default class DetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-  header: {
-    paddingTop: 15,
-    paddingBottom: 15,
-    paddingLeft: 15,
-    paddingRight: 15,
-    backgroundColor: '#F3F4F2',
-  },
-  every: {
-    marginLeft: 15,
-    marginRight: 15,
-    paddingTop: 15,
-    paddingBottom: 15,
-  },
-  every2: {
-    marginLeft: 15,
-    marginRight: 15,
-
-    paddingBottom: 10,
-  },
+  
   left: {
     fontSize: 14,
     color: '#666',
-  },
-  right: {},
-  desc: {
-    padding: 15,
-    paddingBottom: 40,
-  },
+  }, 
+ 
   ii: {
     paddingTop: 10,
     paddingBottom: 10,
@@ -256,10 +234,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
 
-  fixedWidth: {
-    width: 60,
-  },
-  txt2: {
-    color: Macro.work_blue,
-  },
+  
+   
 });

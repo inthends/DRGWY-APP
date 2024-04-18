@@ -116,25 +116,16 @@ class YiQingInfoPage extends BasePage {
 
 const styles = StyleSheet.create({
     left: {
-        fontSize: 16,
+        fontSize: 16
     },
     input: {
         fontSize: 16,
-        marginLeft: 68,
+        marginLeft: 68
     },
     state: {
         fontSize: 16,
-        paddingLeft: 10,
-    },
-    // area: {
-
-    //     borderWidth: 1,
-    //     borderColor: '#eeeeee',
-    //     width: ScreenUtil.deviceWidth() - 30,
-
-    //     borderRadius: 10,
-
-    // },
+        paddingLeft: 10
+    }, 
 });
 
 

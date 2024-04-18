@@ -349,7 +349,7 @@ const styles = StyleSheet.create({
     },
     desc: {
         marginVertical: 5,
-        color: '#333',
+        color: '#404145',
         fontSize: 14
     },
 

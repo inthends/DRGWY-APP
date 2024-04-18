@@ -117,9 +117,6 @@ export default class ModifyPsdPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-    all: {
-        backgroundColor: Macro.color_white,
-    },
     
     content: {
         backgroundColor: Macro.color_white,
@@ -134,19 +131,14 @@ const styles = StyleSheet.create({
     },
     name: {
         fontSize: 20,
-        color: '#333',
+        color: '#404145',
 
     },
     desc: {
         fontSize: 14,
         color: '#999',
         paddingTop: 5,
-    },
-    item: {
-        fontSize: 14,
-        color: '#333',
-        paddingLeft: 20,
-    },
+    }, 
     button: {
         backgroundColor: Macro.work_blue
     },

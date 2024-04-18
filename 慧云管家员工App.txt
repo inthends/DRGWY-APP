@@ -64,6 +64,6 @@ https://cloud.tencent.com/developer/article/1486429?areaSource=102001.11&traceId
 
 
 ios
-1、VS Code build ios
-2、xcode run
+1、VS Code build ios：命令 build-ios
+2、xcode run：连接手机，测试APP是否正常
 3、xcode archive 上架

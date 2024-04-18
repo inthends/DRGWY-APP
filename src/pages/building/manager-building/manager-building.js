@@ -422,21 +422,14 @@ const styles = StyleSheet.create({
   content: {
     backgroundColor: Macro.color_white
   },
-  // list: {
-  //   // flex: 5,
-  // },
+   
   title: {
     color: 'white',
     fontSize: 20,
     textAlign: 'center',
     paddingTop: 5,
     paddingBottom: 10
-  },
-  container: {
-    flex: 1,
-    paddingTop: 22
-  },
-
+  }, 
   sectionHeader: {
     paddingTop: 10,
     paddingLeft: 10,
@@ -445,9 +438,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: Macro.color_white
-  },
-
-
+  }, 
   item: {
     fontSize: 16,
     paddingTop: 10,

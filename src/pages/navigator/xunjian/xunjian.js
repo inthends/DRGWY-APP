@@ -314,12 +314,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         paddingBottom: 20
     },
-    button: {
-        color: '#2C2C2C',
-        fontSize: 8,
-        paddingTop: 4
-
-    },
+  
     card: {
         borderRadius: 5,
         // marginBottom: 15,
@@ -329,17 +324,8 @@ const styles = StyleSheet.create({
         // shadowRadius: 5,
         // shadowOpacity: 0.8,
     },
-    blue: {
-        borderLeftColor: Macro.color_4d8fcc,
-        borderLeftWidth: 8,
-        borderStyle: 'solid'
-    },
-    orange: {
-        borderLeftColor: Macro.color_f39d39,
-        borderLeftWidth: 8,
-        borderStyle: 'solid'
-
-    },
+   
+    
     location: {
         paddingTop: 15,
         paddingBottom: 10,

@@ -83,20 +83,19 @@ const styles = StyleSheet.create({
         width: item_width,
         paddingTop: 15,
         paddingBottom: 10,
-        textAlign: 'center',
+        textAlign: 'center'
     },
     title_select: {
         fontSize: 16,
-        color: '#333',
+        color: '#404145',
         width: item_width,
         paddingTop: 15,
         paddingBottom: 10,
-        textAlign: 'center',
-
+        textAlign: 'center'
     },
     line: {
         height: 2,
         backgroundColor: '#5f96eb',
-        width: single_width,
+        width: single_width
     },
 });

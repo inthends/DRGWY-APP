@@ -268,9 +268,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     marginBottom: 15
   },
-  desc: {
-    fontSize: 16
-  },
+ 
   txt: {
     fontSize: 14,
     paddingBottom: 10

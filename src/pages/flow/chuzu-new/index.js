@@ -254,8 +254,7 @@ const styles = StyleSheet.create({
   txt: {
     fontSize: 14,
     paddingBottom: 10,
-  },
-
+  }, 
   text: {
     fontSize: 14
   },

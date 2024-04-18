@@ -73,44 +73,29 @@ export default class Contact extends BasePage {
                         </TouchableWithoutFeedback>
                     </View>
                 </ScrollView>
-            </View>
-
-
+            </View> 
         );
     }
 }
 
 const styles = StyleSheet.create({
-    all: {
-        backgroundColor: Macro.color_white,
-    },
+   
     content: {
         backgroundColor: Macro.color_white,
         paddingLeft: 15,
         paddingRight: 20,
-        height: ScreenUtil.contentHeight(),
-
+        height: ScreenUtil.contentHeight(), 
         // height: ScreenUtil.contentHeightWithNoTabbar(),
     },
-    header: {
-        paddingTop: 30,
-        paddingBottom: 30,
-    },
+    
     name: {
         fontSize: 20,
-        color: '#333',
+        color: '#404145',
 
     },
-    desc: {
-        fontSize: 14,
-        color: '#999',
-        paddingTop: 5,
-    },
+   
     item: {
         fontSize: 16,
-        color: '#333',
-    },
-    button: {
-        backgroundColor: Macro.work_blue,
-    },
+        color: '#404145'
+    }, 
 });

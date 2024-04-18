@@ -249,15 +249,15 @@ const styles = StyleSheet.create({
     },
     left: {
         fontSize: 16,
-        color: '#333'
+        color: '#404145'
     },
     right: {
         fontSize: 16,
-        color: '#333'
+        color: '#404145'
     },
     desc: {
         fontSize: 16,
-        color: '#333',
+        color: '#404145',
         padding: 15,
         paddingBottom: 40
     },

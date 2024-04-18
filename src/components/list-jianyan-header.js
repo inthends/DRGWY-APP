@@ -75,21 +75,19 @@ const styles = StyleSheet.create({
         color: '#999',
         width: item_width,
         paddingTop: 15,
-        textAlign: 'center',
+        textAlign: 'center'
     },
     title_select: {
         fontSize: 16,
-        color: '#333',
+        color: '#404145',
         width: item_width,
         paddingTop: 15,
-        textAlign: 'center',
-
-
+        textAlign: 'center'
     },
     line: {
         height: 2,
         backgroundColor: '#5f96eb',
         width: single_width,
-        marginTop: 10,
+        marginTop: 10
     },
 });

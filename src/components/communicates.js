@@ -72,48 +72,17 @@ export default class Communicates extends Component {
     }
 }
 
-const styles = StyleSheet.create({
-    header: {
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 15,
-        paddingRight: 15,
-        backgroundColor: '#F3F4F2'
-    },
+const styles = StyleSheet.create({ 
     every: {
         marginLeft: 15,
         marginRight: 15,
         paddingTop: 5,
         paddingBottom: 5
-    },
-    every2: {
-        marginLeft: 15,
-        marginRight: 15,
-        paddingBottom: 5
-    },
+    }, 
     left: {
         fontSize: 15,
         color: '#666'
-    },
-    right: {},
-    desc: {
-        padding: 15,
-        paddingBottom: 40
-    },
-    ii: {
-        paddingTop: 10,
-        paddingBottom: 10,
-        marginLeft: 10,
-        marginRight: 10,
-        width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
-        backgroundColor: '#333',
-        borderRadius: 6,
-        marginBottom: 20
-    },
-    word: {
-        color: 'white',
-        fontSize: 16
-    },
+    },   
     content: {
         color:'#999'
     }

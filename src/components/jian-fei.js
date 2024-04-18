@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     text: {
-        fontSize: 16,
+        fontSize: 16
     },
     input: {
         fontSize: 16,
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     },
     state: {
         fontSize: 16,
-        paddingLeft: 10,
+        paddingLeft: 10
     },
     //area: {
     // borderWidth: 1,

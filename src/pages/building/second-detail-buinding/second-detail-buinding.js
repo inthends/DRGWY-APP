@@ -237,12 +237,12 @@ class SecondDetailBuildingPage extends BasePage {
                             <Flex style={{ paddingBottom: 10 }}>
                                 <Text style={{
                                     fontSize: 16,
-                                    color: '#333',
+                                    color: '#404145',
                                     fontWeight: '600',
                                 }}>{item.no}</Text>
                                 <Text style={{
                                     fontSize: 16,
-                                    color: '#333',
+                                    color: '#404145',
                                     fontWeight: '600',
                                     paddingLeft: 5,
                                     fontSize: 14
@@ -438,7 +438,7 @@ class SecondDetailBuildingPage extends BasePage {
 const styles = StyleSheet.create({
     name: {
         fontSize: 16,
-        color: '#333',
+        color: '#404145',
         fontWeight: '600',
         paddingBottom: 6
     },

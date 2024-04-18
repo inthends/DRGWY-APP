@@ -184,7 +184,7 @@ export default class DetailParkingPage extends BasePage {
                   <Text
                     style={{
                       paddingLeft: 10,
-                      color: '#333'
+                      color: '#404145'
                     }}>{numeral(item.area).format('0,0.00')}{Macro.meter_square}
                   </Text>
                 </Flex>
@@ -347,26 +347,13 @@ const styles = StyleSheet.create({
     color: '#565759',
     fontSize: 12
   },
-  bottom: {
-    color: '#565759',
-    fontSize: 12
-  },
+ 
   color_top: {
     //color: 'white',
     fontSize: 12,
     paddingTop: 5
   },
-  color_bottom: {
-    color: '#333',
-    fontSize: 12,
-    textAlign: 'left',
-    backgroundColor: 'white',
-    paddingLeft: 3,
-    paddingRight: 3,
-    paddingTop: 2,
-    paddingBottom: 5,
-    marginBottom: 4
-  },
+ 
   dash: {
     borderColor: '#5c665b',
     borderWidth: 1,

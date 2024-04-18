@@ -259,25 +259,25 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         marginRight: 15,
         paddingTop: 15,
-        paddingBottom: 15,
+        paddingBottom: 15
     },
     every2: {
         marginLeft: 15,
         marginRight: 15,
         paddingBottom: 10,
-        paddingTop: 10,
+        paddingTop: 10
     },
     left: {
         fontSize: 16,
-        color: '#333',
+        color: '#404145'
     },
     right: {
         fontSize: 16,
-        color: '#333',
+        color: '#404145'
     },
     desc: {
         padding: 15,
-        paddingBottom: 40,
+        paddingBottom: 40
     },
     ii: {
         paddingTop: 10,

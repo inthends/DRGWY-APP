@@ -242,7 +242,7 @@ export default {
     );
   },
 
- 
+
   //南京银行生成收款码
   njCodePay(tbout_trade_no) {
     return api.postData('/api/MobileMethod/NJPay', { tbout_trade_no });
@@ -256,9 +256,24 @@ export default {
     });
   },
 
+  //南京银行人民币扫码，查询支付结果
+  njScanPayQuery(tbout_trade_no) {
+    return api.postData(
+      '/api/MobileMethod/NJScanPayQuery',
+      { tbout_trade_no },
+      false
+    );
+  },
 
-
-
+  //南京银行扫码，接口支付失败，则调用撤销接口
+  njScanPayReserve(tbout_trade_no) {
+    return api.postData(
+      '/api/MobileMethod/NJScanPayReserve',
+      { tbout_trade_no },
+      false
+    );
+  },
+ 
   //兴业银行生成收款码
   cibCodePay(tbout_trade_no, isDigital) {
     return api.postData('/api/MobileMethod/CIBPay', { tbout_trade_no, isDigital });

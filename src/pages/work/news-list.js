@@ -192,10 +192,7 @@ class NewsList extends BasePage {
 }
 
 const styles = StyleSheet.create({
-    all: {
-        backgroundColor: Macro.color_sky_dark,
-        flex: 1
-    },
+   
     content: {
         backgroundColor: Macro.color_white,
         flex: 1
@@ -209,7 +206,7 @@ const styles = StyleSheet.create({
         borderLeftWidth: 5
     },
     title: {
-        color: '#333',
+        color: '#404145',
         fontSize: 16
     },
     unread: {

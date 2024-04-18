@@ -80,7 +80,4 @@ export default class FeeStatisticPage extends BasePage {
         );
     }
 }
-
-const styles = StyleSheet.create({
-    header: {},
-});
+ 

@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     },
     title_select: {
         fontSize: 16,
-        color: '#333',
+        color: '#404145',
         width: item_width,
         paddingTop: 15,
         textAlign: 'center',

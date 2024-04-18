@@ -90,17 +90,17 @@ export default class XunJianDetailViewPage extends BasePage {
 const styles = StyleSheet.create({
     work: {
         color: Macro.work_blue,
-        fontSize: 16,
+        fontSize: 16
     },
     title: {
-        color: '#333',
+        color: '#404145',
         fontSize: 16,
-        paddingTop: 15,
+        paddingTop: 15
     },
     desc: {
-        color: '#333',
+        color: '#404145',
         fontSize: 16,
-        paddingTop: 10,
+        paddingTop: 10
     },
 
     contentRect: {

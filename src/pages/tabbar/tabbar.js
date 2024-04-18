@@ -106,6 +106,7 @@ import JLScanScreen from '../navigator/jlscanner';
 import BCMScanScreen from '../navigator/bcmscanner';
 import CIBScanScreen from '../navigator/cibscanner';
 import LKLScanScreen from '../navigator/lklscanner';
+import NJScanScreen from '../navigator/njscanner';
 
 //import flow from '../flow';
 import ApprovePage from '../flow';
@@ -124,9 +125,14 @@ import caigou from '../flow/caigou';
 import baoxiao from '../flow/baoxiao';
 import matter from '../flow/matter';
 import task from '../flow/task'; 
-import admincontract from '../flow/admin-contract';
-
-
+import admincontract from '../flow/admin-contract'; 
+import budgetchange from '../flow/budget-change'; 
+import settlement from '../flow/settlement';
+import inquiry from '../flow/inquiry';
+import budget from '../flow/budget';
+import question from '../flow/question';
+import goodsout from '../flow/goodsout';
+import merchants from '../flow/merchants';
 
 const BuildingNavigator = createStackNavigator(
   {
@@ -204,8 +210,7 @@ const navigatorNavigator = createStackNavigator({
   check: EstateCheckPage,
   checkDetail: EcheckDetailPage,
   checkAdd: EcheckAddPage,
-
-
+ 
   //固定资产
   gdzcPandian: GdzcPandianPage,
   gdzcDetail: GdzcDetailPage,
@@ -321,6 +326,13 @@ const ShenPiNavigator = createStackNavigator({
   matter,
   task,
   admincontract,
+  budgetchange,
+  settlement,
+  inquiry,
+  budget,
+  question,
+  goodsout,
+  merchants,
   webPage
 });
 
@@ -348,9 +360,7 @@ const MineNavigator = createStackNavigator({
 MineNavigator.navigationOptions = ({ navigation }) => ({
   tabBarVisible: navigation.state.index === 0,
 });
-
-
-
+ 
 const tabbar = createBottomTabNavigator(
   {
     Building: {

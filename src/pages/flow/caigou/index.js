@@ -222,17 +222,14 @@ export default class DetailPage extends BasePage {
   }
 }
 
-const styles = StyleSheet.create({
-
+const styles = StyleSheet.create({ 
   txt: {
     fontSize: 14,
     paddingBottom: 10,
-  },
-
+  }, 
   text: {
     fontSize: 14
-  },
-
+  }, 
   card: {
     marginTop: 5,
     borderWidth: 1,

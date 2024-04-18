@@ -3,20 +3,20 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
-    TouchableWithoutFeedback, 
-    ScrollView, 
+    TouchableWithoutFeedback,
+    ScrollView,
     View,
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Flex, Icon} from '@ant-design/react-native';
+import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
-import { connect } from 'react-redux'; 
+import { connect } from 'react-redux';
 import common from '../../../utils/common';
-import LoadImage from '../../../components/load-image'; 
-import CommonView from '../../../components/CommonView'; 
+import LoadImage from '../../../components/load-image';
+import CommonView from '../../../components/CommonView';
 import api from '../../../utils/api';
- 
+
 
 
 class LouDetail extends BasePage {
@@ -98,12 +98,12 @@ class LouDetail extends BasePage {
         return (
             <CommonView style={{ flex: 1 }}>
                 <ScrollView>
-                    <Text style={{ paddingLeft: 15, paddingTop: 15, fontSize: 20, color: '#333' }}>{detail.allName}</Text>
+                    <Text style={{ paddingLeft: 15, paddingTop: 15, fontSize: 20, color: '#404145' }}>{detail.allName}</Text>
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>{detail.tenantName}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.tenantPhone)}>
                             <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
-                             style={{ width: 16, height: 16 }} /></Flex>
+                                style={{ width: 16, height: 16 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
                     <View style={styles.line} />
@@ -151,8 +151,8 @@ class LouDetail extends BasePage {
                                 style={{ marginLeft: 20, marginTop: 5, marginRight: 20 }}>
                                 <Text style={styles.text2}>{item.name}</Text>
                                 <TouchableWithoutFeedback onPress={() => common.call(item.phoneNum)}>
-                                    <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} 
-                                    style={{ width: 16, height: 16 }} /></Flex>
+                                    <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
+                                        style={{ width: 16, height: 16 }} /></Flex>
                                 </TouchableWithoutFeedback>
                             </Flex>
                         ))
@@ -171,7 +171,7 @@ class LouDetail extends BasePage {
                                 <Text style={styles.text2}>{item.name}</Text>
                                 <TouchableWithoutFeedback onPress={() => common.call(item.phoneNum)}>
                                     <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
-                                     style={{ width: 16, height: 16 }} /></Flex>
+                                        style={{ width: 16, height: 16 }} /></Flex>
                                 </TouchableWithoutFeedback>
                             </Flex>
                         ))
@@ -227,7 +227,7 @@ class LouDetail extends BasePage {
                     {
                         servers.map(item => (
                             <Flex key={item.id} direction='column' align={'start'}
-                                style={[styles.card, styles.blue, { marginBottom: 20 }]}>
+                                style={[styles.card, { marginBottom: 20 }]}>
                                 <Flex justify='between' style={{ width: '100%' }}>
                                     <Text style={styles.title}>{item.billCode}</Text>
                                     <Text style={styles.aaa}>{item.billType}</Text>
@@ -250,8 +250,8 @@ class LouDetail extends BasePage {
                                 </Flex>
                             </Flex>
                         ))
-                    } 
-                </ScrollView> 
+                    }
+                </ScrollView>
             </CommonView>
         );
     }
@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
     },
     name: {
         fontSize: 16,
-        color: '#333',
+        color: '#404145',
         paddingBottom: 5
     },
     text: {
@@ -304,17 +304,17 @@ const styles = StyleSheet.create({
     },
     text3: {
         fontSize: 16,
-        color: '#333'
+        color: '#404145'
     },
     a: {
         fontSize: 16,
-        color: '#333',
+        color: '#404145',
         paddingBottom: 10,
         paddingTop: 10
     },
     b: {
         fontSize: 16,
-        color: '#333',
+        color: '#404145',
         paddingBottom: 10
     },
     c: {
@@ -335,8 +335,7 @@ const styles = StyleSheet.create({
         marginRight: 20,
         marginTop: 10,
         padding: 10
-    },
-    blue: {}
+    }
 });
 
 const mapStateToProps = ({ memberReducer }) => {

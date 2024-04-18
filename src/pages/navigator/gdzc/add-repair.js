@@ -278,7 +278,7 @@ class AddRepairPage extends BasePage {
                                         marginRight: 15,
                                         width: ScreenUtil.deviceWidth() - 30,
                                     }, ScreenUtil.borderBottom()]}>
-                                        <Text style={[address ? { color: '#333', fontSize: 16 } : {
+                                        <Text style={[address ? { color: '#404145', fontSize: 16 } : {
                                             color: '#999',
                                             fontSize: 16,
                                         }]}>{address ? address.allName : `请选择${title}地址`}</Text>

@@ -17,7 +17,7 @@ import { saveSelectDrawerType } from '../../utils/store/actions/actions';
 import { DrawerType } from '../../utils/store/action-types/action-types';
 
 class ApprovePage extends BasePage {
-  
+
   static navigationOptions = ({ navigation }) => {
     return {
       title: '审批',
@@ -114,7 +114,7 @@ class ApprovePage extends BasePage {
       pageIndex: this.state.pageIndex,
       pageSize: 10,
       code: selectTask.value || ''
-    }).then((dataInfo) => { 
+    }).then((dataInfo) => {
       //分页有问题
       // if (dataInfo.pageIndex > 1) {
       //   const { data: oldData = [] } = this.state.dataInfo || {};
@@ -134,7 +134,7 @@ class ApprovePage extends BasePage {
           ...dataInfo,
           data: [...this.state.dataInfo.data, ...dataInfo.data]
         };
-      } 
+      }
       this.setState(
         {
           dataInfo: dataInfo,
@@ -313,6 +313,14 @@ class ApprovePage extends BasePage {
                     break;
                   }
 
+                  //行政合同
+                  case '1007':
+                  case '1008':
+                  case '1009': {
+                    url = 'admincontract';
+                    break;
+                  }
+
                   case '1013':
                   case '1016': {
                     url = 'wuyenew';
@@ -348,14 +356,42 @@ class ApprovePage extends BasePage {
                     url = 'task';//任务单
                     break;
                   }
-                  
-                  //行政合同
-                  case '1007':
-                  case '1008':
-                  case '1009': {
-                    url = 'admincontract';
+
+                  case '1039': {
+                    url = 'budgetchange';
                     break;
                   }
+
+                  case '1038': {
+                    url = 'settlement';
+                    break;
+                  }
+
+                  case '1036': {
+                    url = 'inquiry';
+                    break;
+                  }
+
+                  case '1033': {
+                    url = 'budget';
+                    break;
+                  }
+
+                  case '1032': {
+                    url = 'question';
+                    break;
+                  }
+
+                  case '1031': {
+                    url = 'goodsout';
+                    break;
+                  }
+
+                  case '1012': {
+                    url = 'merchants';
+                    break;
+                  }
+
                 }
 
                 //传递参数
@@ -377,11 +413,11 @@ class ApprovePage extends BasePage {
                   justify="between"
                 >
                   <Text style={styles.title}>{item.flowName}</Text>
-                  {item.note && (
-                    <Text style={[styles.right, styles.special]}>
-                      {item.note}
-                    </Text>
-                  )}
+                  {/* {item.note && ( */}
+                  <Text style={styles.note}>
+                    {item.note}
+                  </Text>
+                  {/* )} */}
                 </Flex>
                 <Flex
                   style={[styles.every, ScreenUtil.borderBottom()]}
@@ -389,7 +425,7 @@ class ApprovePage extends BasePage {
                 >
                   <Text
                     style={{
-                      height: 60  
+                      height: 60
                     }}
                     numberOfLines={3}
                     ellipsizeMode='tail'
@@ -425,37 +461,38 @@ const styles = StyleSheet.create({
     //height: ScreenUtil.contentHeightWithNoTabbar()
     marginBottom: 15
   },
+
   every: {
     marginLeft: 15,
     marginRight: 15,
     paddingTop: 15,
     paddingBottom: 15
   },
+
   title: {
     color: Macro.work_blue,
     fontSize: 16
   },
+
   txt: {
+    color: '#404145',
     fontSize: 14
   },
-  right: {
-    color: '#666'
-  },
-  bottom: {
-    color: '#333',
-    fontSize: 16,
-    paddingTop: 10,
-    paddingBottom: 20
-  },
-  special: {
+
+ 
+  note: {
     borderRadius: 4,
-    backgroundColor: 'yellow',
+    // backgroundColor:'yellow',
     paddingVertical: 4,
     paddingHorizontal: 8,
     borderColor: 'white',
     borderWidth: 1,
     borderStyle: 'solid',
-    overflow: 'hidden'
+    overflow: 'hidden',
+
+    //add new
+    color: '#404145',
+    fontSize: 16
   }
 });
 

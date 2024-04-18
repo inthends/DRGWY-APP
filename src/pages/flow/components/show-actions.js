@@ -128,13 +128,7 @@ const ShowActions = ({ state, click, isSpecial = false }) => {
 };
 
 const styles = StyleSheet.create({
-  // textarea: {
-  //   marginTop: 5,
-  //   borderStyle: 'solid',
-  //   borderColor: '#F3F4F2',
-  //   borderWidth: 1,
-  //   borderRadius: 5
-  // },
+ 
   ii: {
     paddingTop: 10,
     paddingBottom: 10,

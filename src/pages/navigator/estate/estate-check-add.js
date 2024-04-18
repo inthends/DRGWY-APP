@@ -365,7 +365,7 @@ class EcheckAddPage extends BasePage {
                                             marginLeft: 10,
                                             marginRight: 10,
                                         }, ScreenUtil.borderBottom()]}>
-                                            <Text style={[address ? { color: '#333' } :
+                                            <Text style={[address ? { color: '#404145' } :
                                                 { color: '#999' }]}>{address ? address.allName : `请选择位置`}</Text>
                                             <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
                                         </Flex>
@@ -378,7 +378,7 @@ class EcheckAddPage extends BasePage {
                                             marginLeft: 10,
                                             marginRight: 10,
                                         }, ScreenUtil.borderBottom()]}>
-                                            <Text style={[selectPerson ? { fontSize: 16, color: '#333' } :
+                                            <Text style={[selectPerson ? { fontSize: 16, color: '#404145' } :
                                                 { color: '#999' }]}>{selectPerson ? selectPerson.name : "请选择责任人"}</Text>
                                             <LoadImage style={{ width: 6, height: 11 }}  defaultImg={require('../../../static/images/address/right.png')} />
                                         </Flex>
@@ -465,13 +465,7 @@ class EcheckAddPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-    header: {
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 15,
-        paddingRight: 15,
-        backgroundColor: '#F3F4F2'
-    },
+   
     every: {
         fontSize: 16,
         color: '#666',
@@ -480,15 +474,7 @@ const styles = StyleSheet.create({
         paddingTop: 15,
         paddingBottom: 15
     },
-
-    // textarea: {
-    //     marginLeft: 8,
-    //     fontSize: 16,
-    //     color: '#666',
-    //     paddingTop: 15,
-    //     width: ScreenUtil.deviceWidth() - 32
-    // },
-
+ 
     left: {
         fontSize: 16,
         color: '#666'
@@ -497,25 +483,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#666'
     },
-    desc: {
-        padding: 15,
-        paddingBottom: 40
-    },
-    // ii: {
-    //     paddingTop: 10,
-    //     paddingBottom: 10,
-    //     marginLeft: 10,
-    //     marginRight: 10,
-    //     width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
-    //     backgroundColor: '#999',
-    //     borderRadius: 6,
-    //     marginBottom: 20
-    // },
-    word: {
-        color: 'white',
-        fontSize: 16
-    },
-
+    
     list: {
         backgroundColor: Macro.color_white,
         margin: 15
@@ -553,7 +521,7 @@ const styles = StyleSheet.create({
     },
     title: {
         paddingTop: 15,
-        color: '#333',
+        color: '#404145',
         fontSize: 16,
         paddingBottom: 10,
         marginLeft: 20,

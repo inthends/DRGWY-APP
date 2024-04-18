@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     
     every: {
         fontSize: 16,
-        color: '#333',
+        color: '#404145',
         marginLeft: 15,
         marginRight: 15,
         paddingTop: 15,
@@ -209,11 +209,11 @@ const styles = StyleSheet.create({
     },
     left: {
         fontSize: 16,
-        color: '#333'
+        color: '#404145'
     },
     right: {
         fontSize: 16,
-        color: '#333'
+        color: '#404145'
     }, 
      
     list: {
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
     title: {
         paddingTop: 15,
         // textAlign: 'left',
-        color: '#333',
+        color: '#404145',
         fontSize: 16,
         paddingBottom: 10,
         marginLeft: 20,

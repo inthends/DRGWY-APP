@@ -151,13 +151,7 @@ export default class TousuDetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-    header: {
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 15,
-        paddingRight: 15,
-        backgroundColor: '#F3F4F2'
-    },
+    
     every: {
         marginLeft: 15,
         marginRight: 15,
@@ -181,19 +175,5 @@ const styles = StyleSheet.create({
     desc: {
         padding: 15,
         paddingBottom: 40,
-    },
-    ii: {
-        paddingTop: 10,
-        paddingBottom: 10,
-        marginLeft: 10,
-        marginRight: 10,
-        width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
-        backgroundColor: '#999',
-        borderRadius: 6,
-        marginBottom: 20
-    },
-    word: {
-        color: 'white',
-        fontSize: 16
-    }
+    }, 
 });

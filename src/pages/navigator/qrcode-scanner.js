@@ -147,7 +147,8 @@ export default class ScanScreen extends BasePage {
                         count: null,
                     });
                 });
-            } else {
+            }
+             else {
                 //支付不成功，冲正
                 NavigatorService.wftScanPayReserve(out_trade_no);
                 setTimeout(() => {

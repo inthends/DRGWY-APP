@@ -3,23 +3,15 @@ import {
     View,
     Text,
     StyleSheet, 
-    TouchableOpacity,
-    // StatusBar,
-    // FlatList,
-    // TouchableWithoutFeedback,
-    // Linking, Alert,
+    TouchableOpacity, 
     ScrollView, NativeModules,
 } from 'react-native';
 import BasePage from '../base/base';
 import {  Flex, Icon, WhiteSpace } from '@ant-design/react-native';
-import Macro from '../../utils/macro';
-import ScreenUtil from '../../utils/screen-util';
-import { connect } from 'react-redux';
-//import ListHeader from '../../components/list-header';
-import common from '../../utils/common';
-//import LoadImage from '../../components/load-image';
-import NavigatorService from './navigator-service';
-//import NoDataView from '../../components/no-data-view';
+import Macro from '../../utils/macro'; 
+import { connect } from 'react-redux'; 
+import common from '../../utils/common'; 
+import NavigatorService from './navigator-service'; 
 import CommonView from '../../components/CommonView';
 
 class FeeChargeDetail extends BasePage {
@@ -70,7 +62,7 @@ class FeeChargeDetail extends BasePage {
         });
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         const { data } = this.state;
         NavigatorService.billDetailList(data.billId).then(res => {
             this.setState({
@@ -135,55 +127,14 @@ class FeeChargeDetail extends BasePage {
 }
 
 const styles = StyleSheet.create({
-    all: {
-        backgroundColor: Macro.color_sky,
-        flex: 1,
-    },
-    content: {
-        backgroundColor: Macro.color_white,
-        flex: 1,
-    },
     title: {
-        color: '#333',
+        color: '#404145',
         fontSize: 16,
     },
-
-    top: { 
-        fontSize: 16,
-        paddingBottom: 10,
-    },
-    bottom: {
-        color: '#868688',
-        fontSize: 16,
-        paddingBottom: 10,
-    },
-    button: {
-        color: '#868688',
-        fontSize: 16,
-        paddingTop: 10,
-    },
-    blue: {
-        borderLeftColor: Macro.color_4d8fcc,
-        borderLeftWidth: 8,
-    },
-    orange: {
-        borderLeftColor: Macro.color_f39d39,
-        borderLeftWidth: 8,
-    },
-
     left: {
-        flex: 1,
+        flex: 1
     },
-    right: {
-        flex: 3,
-        paddingTop: 10,
-        paddingBottom: 10,
-        marginLeft: 10,
-    },
-    image: {
-        height: 90,
-        width: 90,
-    },
+  
     item: {
         borderRadius: 6,
         borderWidth: 1,
@@ -202,48 +153,7 @@ const styles = StyleSheet.create({
         fontSize: Macro.font_16,
         fontWeight: '600',
         paddingBottom: 10,
-    },
-    area: {
-        color: Macro.color_636470,
-        fontSize: Macro.font_14,
-    },
-    complete: {
-        color: Macro.color_80aae2,
-        fontSize: Macro.font_14,
-        backgroundColor: Macro.color_dae9ff,
-        padding: 3,
-        paddingLeft: 5,
-        borderRadius: 1,
-    },
-    number: {
-        color: Macro.color_9c9ca5,
-        fontSize: Macro.font_14,
-    },
-    desc: {
-        color: Macro.color_c2c1c5,
-        fontSize: Macro.font_14,
-    },
-    line: {
-        width: 1,
-        height: 15,
-        backgroundColor: Macro.color_c2c1c5,
-        marginLeft: 5,
-        marginRight: 5,
-    },
-    ii: {
-        paddingTop: 10,
-        paddingBottom: 10,
-        marginLeft: 10,
-        marginRight: 10,
-        width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 3) / 4.0,
-        backgroundColor: '#999',
-        borderRadius: 6,
-        marginTop: 10,
-    },
-    word: {
-        color: 'white',
-        fontSize: 16
-    },
+    }
 });
 
 const mapStateToProps = ({ memberReducer,buildingReducer }) => {

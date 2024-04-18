@@ -198,11 +198,9 @@ class ZiJinLiuPage extends BasePage {
   }
 }
 
-const styles = StyleSheet.create({
-  header: {},
+const styles = StyleSheet.create({ 
   left: {
-    width: ScreenUtil.deviceWidth() / 3.0 - 15,
-
+    width: ScreenUtil.deviceWidth() / 3.0 - 15, 
     borderStyle: 'solid',
     borderWidth: 1,
     borderColor: '#ccc',
@@ -216,14 +214,8 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     height: 30,
   },
-  leftText: {
-    fontSize: 14,
-    color: '#666',
-  },
-  rightText: {
-    fontSize: 14,
-    color: '#666',
-  },
+ 
+  
   name: {
     color: '#666',
     fontSize: 14,

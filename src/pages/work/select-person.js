@@ -183,33 +183,13 @@ const styles = StyleSheet.create({
         paddingRight: 15
         // height: ScreenUtil.contentHeight(),
         // height: ScreenUtil.contentHeightWithNoTabbar(),
-    },
-    // header: {
-    //     paddingTop: 30,
-    //     paddingBottom: 30
-    // },
-    // name: {
-    //     fontSize: 20,
-    //     color: '#333'
-    // },
+    }, 
     desc: {
         fontSize: 16,
         color: '#666',//color: '#999',
         //paddingTop: 5,
         width: 100
-    },
-    // desc2: {
-    //     fontSize: 16,
-    //     color: '#999',
-    //     paddingTop: 5
-    // },
-    // item: {
-    //     fontSize: 16,
-    //     color: '#333'
-    // },
-    // button: {
-    //     backgroundColor: Macro.work_blue
-    // },
+    }, 
     aa: {
         width: '100%',
         paddingTop: 15,
@@ -221,45 +201,7 @@ const styles = StyleSheet.create({
         borderBottomColor: ' rgb(244,244,244)'
     }
 });
-
-// const styles = StyleSheet.create({
-//     content: {
-//         paddingLeft: 20,
-//         paddingBottom: 15,
-//         paddingTop: 15,
-//         paddingRight: 20
-//     },
-//     square: {
-//         height: 30,
-//         width: 30,
-//         borderRadius: 15,
-//         backgroundColor: Macro.work_blue
-//     },
-//     number: {
-//         fontSize: 16,
-//         color: '#333'
-//     },
-//     name: {
-//         fontSize: 16,
-//         color: '#333',
-//         paddingBottom: 5
-
-//     },
-//     company: {
-//         fontSize: 16,
-//         color: '#999'
-//     },
-//     identifier: {
-//         fontSize: 16,
-//         color: '#333',
-//         paddingLeft: 30
-//     },
-//     state: {
-//         fontSize: 16,
-//         color: Macro.work_blue,
-//         paddingLeft: 15
-//     }
-// });
+ 
 
 const mapStateToProps = ({ buildingReducer }) => {
     return {

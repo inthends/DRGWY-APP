@@ -233,19 +233,11 @@ export default class DetailPage extends BasePage {
   }
 }
 
-const styles = StyleSheet.create({
-  // header: {
-  //   paddingTop: 15,
-  //   paddingBottom: 15,
-  //   paddingLeft: 15,
-  //   paddingRight: 15,
-  //   backgroundColor: '#F3F4F2',
-  // }, 
+const styles = StyleSheet.create({ 
   txt: {
     fontSize: 14,
     paddingBottom: 10,
-  },
-
+  }, 
   text: {
     fontSize: 14
   },

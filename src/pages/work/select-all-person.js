@@ -138,32 +138,12 @@ const styles = StyleSheet.create({
         // height: ScreenUtil.contentHeight(),
         // height: ScreenUtil.contentHeightWithNoTabbar(),
     },
-    // header: {
-    //     paddingTop: 30,
-    //     paddingBottom: 30
-    // },
-    // name: {
-    //     fontSize: 20,
-    //     color: '#333'
-    // },
+ 
     desc: {
         fontSize: 16,
-        color: '#666',//color: '#999',
-        //paddingTop: 5,
+        color: '#666',//color: '#999', 
         width: 100
-    },
-    // desc2: {
-    //     fontSize: 16,
-    //     color: '#999',
-    //     paddingTop: 5
-    // },
-    // item: {
-    //     fontSize: 16,
-    //     color: '#333'
-    // },
-    // button: {
-    //     backgroundColor: Macro.work_blue
-    // },
+    }, 
     aa: {
         width: '100%',
         paddingTop: 15,

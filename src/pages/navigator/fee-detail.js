@@ -1034,26 +1034,15 @@ class FeeDetailPage extends BasePage {
                         </View>
                     </TouchableWithoutFeedback>
                 }
-            </CommonView>
-
+            </CommonView> 
         );
     }
 }
 
-const styles = StyleSheet.create({
-    mask: {
-        backgroundColor: Macro.color_sky
-    },
-    all: {
-        backgroundColor: Macro.color_sky,
-        flex: 1
-    },
-    content: {
-        backgroundColor: Macro.color_white,
-        flex: 1
-    },
+const styles = StyleSheet.create({ 
+   
     title: {
-        color: '#333',
+        color: '#404145',
         fontSize: 16
     },
 
@@ -1065,20 +1054,7 @@ const styles = StyleSheet.create({
         color: '#868688',
         fontSize: 16,
         paddingBottom: 10
-    },
-    button: {
-        color: '#868688',
-        fontSize: 16,
-        paddingTop: 10
-    },
-    blue: {
-        borderLeftColor: Macro.color_4d8fcc,
-        borderLeftWidth: 8
-    },
-    orange: {
-        borderLeftColor: Macro.color_f39d39,
-        borderLeftWidth: 8
-    },
+    }, 
 
     left: {
         flex: 1
@@ -1112,33 +1088,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         paddingBottom: 10
     },
-    area: {
-        color: Macro.color_636470,
-        fontSize: Macro.font_14,
-    },
-    complete: {
-        color: Macro.color_80aae2,
-        fontSize: Macro.font_14,
-        backgroundColor: Macro.color_dae9ff,
-        padding: 3,
-        paddingLeft: 5,
-        borderRadius: 1
-    },
-    number: {
-        color: Macro.color_9c9ca5,
-        fontSize: Macro.font_14,
-    },
-    desc: {
-        color: Macro.color_c2c1c5,
-        fontSize: Macro.font_14
-    },
-    line: {
-        width: 1,
-        height: 15,
-        backgroundColor: Macro.color_c2c1c5,
-        marginLeft: 5,
-        marginRight: 5
-    },
+  
     ii: {
         paddingTop: 10,
         paddingBottom: 10,

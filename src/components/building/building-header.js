@@ -106,15 +106,7 @@ const styles = StyleSheet.create({
         paddingRight: Macro.marginRight_15,
         fontSize: 14
     },
-    // title: {
-    //     color: Macro.color_white,
-    //     fontSize: Macro.font_20,
-    //     paddingRight: 5
-    // },
-    // middle: {
-    //     flex: 4,
-    //     backgroundColor: Macro.color_sky_dark
-    // },
+ 
     bottom: {
         flex: 2,
         backgroundColor: Macro.color_sky_dark,

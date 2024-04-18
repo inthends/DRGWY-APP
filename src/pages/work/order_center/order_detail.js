@@ -266,79 +266,30 @@ export default class OrderDetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-    all: {
-        backgroundColor: Macro.color_sky,
-        flex: 1,
-    },
+   
     content: {
         backgroundColor: Macro.color_white,
-        flex: 1,
+        flex: 1
     },
     list: {
         backgroundColor: Macro.color_white,
-        margin: 15,
+        margin: 15
     },
     title: {
         paddingTop: 15,
         // textAlign: 'left',
-        color: '#333',
+        color: '#404145',
         fontSize: 16,
-        paddingBottom: 10,
-        //
+        paddingBottom: 10, 
         marginLeft: 20,
-        marginRight: 20,
-
-        // width: ,
+        marginRight: 20
     },
     line: {
         width: ScreenUtil.deviceWidth() - 30 - 15 * 2,
         marginLeft: 15,
         backgroundColor: '#eee',
-        height: 1,
-    },
-    top: {
-        paddingTop: 20,
-        color: '#000',
-        fontSize: 16,
-        paddingBottom: 15,
-    },
-    bottom: {
-        color: '#868688',
-        fontSize: 16,
-        paddingBottom: 20,
-    },
-    button: {
-        color: '#868688',
-        fontSize: 16,
-        paddingTop: 10,
-    },
-    card: {
-        borderTopWidth: 1,
-        borderRightWidth: 1,
-        borderBottomWidth: 1,
-        borderTopColor: '#c8c8c8',
-        borderBottomColor: '#c8c8c8',
-        borderRightColor: '#c8c8c8',
-        borderRadius: 5,
-        marginBottom: 15,
-        backgroundColor: 'white',
-        shadowColor: '#00000033',
-        shadowOffset: { h: 10, w: 10 },
-        shadowRadius: 5,
-        shadowOpacity: 0.8,
-    },
-    blue: {
-        borderLeftColor: Macro.work_blue,
-        borderLeftWidth: 5,
-    },
-    orange: {
-        borderLeftColor: '#F7A51E',
-        borderLeftWidth: 5,
-    },
-    desc: {
-        padding: 15,
-        paddingBottom: 40,
-    },
+        height: 1
+    },  
     ii: {
         paddingTop: 10,
         paddingBottom: 10,
@@ -347,10 +298,10 @@ const styles = StyleSheet.create({
         width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
         backgroundColor: '#999',
         borderRadius: 6,
-        marginBottom: 20,
+        marginBottom: 20
     },
     word: {
         color: 'white',
-        fontSize: 16,
+        fontSize: 16
     }
 });

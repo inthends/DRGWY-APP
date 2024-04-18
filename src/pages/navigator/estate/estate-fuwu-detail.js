@@ -239,13 +239,7 @@ export default class EfuwuDetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-    header: {
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 15,
-        paddingRight: 15,
-        backgroundColor: '#F3F4F2'
-    },
+  
     every: {
         fontSize: 16,
         marginLeft: 15,
@@ -259,22 +253,16 @@ const styles = StyleSheet.create({
         paddingBottom: 10
     },
     left: {
-        fontSize: 16,
-        //color: '#333'
+        fontSize: 16
     },
     right: {
-        fontSize: 16,
-        //color: '#333'
+        fontSize: 16
     },
     desc: { 
         marginLeft: 15,
         marginRight: 15,
         paddingTop: 15,
-        paddingBottom: 15,
-        // fontSize: 16,
-        // color: '#333'
-        // padding: 15,
-        // paddingBottom: 40
+        paddingBottom: 15
     },
     ii: {
         paddingTop: 10,

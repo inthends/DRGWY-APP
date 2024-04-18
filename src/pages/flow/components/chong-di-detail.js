@@ -65,16 +65,14 @@ const ChongDiDetail = forwardRef(({ detail }, ref) => {
   );
 });
 
-const styles = StyleSheet.create({ 
-   
+const styles = StyleSheet.create({  
   txt: {
     fontSize: 14,
-    paddingBottom: 10,
+    paddingBottom: 10
   },
   txt2: {
-    color: Macro.work_blue,
-  }, 
- 
+    color: Macro.work_blue
+  }
 });
 
 export default ChongDiDetail;

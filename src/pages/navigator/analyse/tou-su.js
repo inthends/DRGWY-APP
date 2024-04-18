@@ -178,8 +178,7 @@ class TouSuPage extends BasePage {
   }
 }
 
-const styles = StyleSheet.create({
-  header: {},
+const styles = StyleSheet.create({ 
   left: {
     width: ScreenUtil.deviceWidth() / 3.0 - 15,
 
@@ -189,21 +188,8 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     height: 30,
   },
-  right: {
-    width: (ScreenUtil.deviceWidth() / 3.0) * 2 - 15,
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    height: 30,
-  },
-  leftText: {
-    fontSize: 14,
-    color: '#666',
-  },
-  rightText: {
-    fontSize: 14,
-    color: '#666',
-  },
+ 
+ 
   text: {
     textAlign: 'center',
     paddingTop: 5,

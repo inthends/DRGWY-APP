@@ -94,8 +94,8 @@ class ShebeiDetail extends BasePage {
             <CommonView style={{ flex: 1 }}>
                 <ScrollView>
                     <Flex justify={'between'} style={{ paddingLeft: 15, paddingTop: 15, paddingRight: 15 }}>
-                        <Text style={{ fontSize: 16, color: '#333' }}>视频分配器</Text>
-                        <Text style={{ fontSize: 16, color: '#333' }}>{detail.code}</Text>
+                        <Text style={{ fontSize: 16, color: '#404145' }}>{detail.name}</Text>
+                        <Text style={{ fontSize: 16, color: '#404145' }}>{detail.code}</Text>
                     </Flex>
 
                     <Flex direction={'column'} justify={'between'} align={'start'}
@@ -531,16 +531,10 @@ class ShebeiDetail extends BasePage {
 }
 
 const styles = StyleSheet.create({
-    every2: {
-        marginLeft: 15,
-        marginRight: 15,
-        width: ScreenUtil.deviceWidth() - 30,
-        // paddingBottom: 10,
-    },
+   
     left: {
         fontSize: 16,
-        color: '#666',
-
+        color: '#666'
     },
     line: {
         backgroundColor: '#EEE',
@@ -548,12 +542,12 @@ const styles = StyleSheet.create({
         marginRight: 15,
         height: 1,
         width: ScreenUtil.deviceWidth() - 30,
-        marginTop: 10,
+        marginTop: 10
     },
     name: {
         fontSize: 16,
-        color: '#333',
-        paddingBottom: 5,
+        color: '#404145',
+        paddingBottom: 5
     },
     item: {
         width: (ScreenUtil.deviceWidth() - 100) / 2,
@@ -562,7 +556,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#999',
         marginTop: 6,
-        marginBottom: 6,
+        marginBottom: 6
     },
     item2: {
         width: (ScreenUtil.deviceWidth() - 160) / 2,
@@ -571,7 +565,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#999',
         marginTop: 6,
-        marginBottom: 6,
+        marginBottom: 6
     },
     item3: {
         width: ScreenUtil.deviceWidth() - 130,
@@ -580,62 +574,26 @@ const styles = StyleSheet.create({
         borderColor: '#999',
         marginTop: 6,
         marginBottom: 6,
-        padding: 8,
-
+        padding: 8
     },
     text: {
         fontSize: 15,
-        color: '#666',
+        color: '#666'
     },
     bb: {
         marginLeft: 15,
-        marginTop: 15,
+        marginTop: 15
     },
     se: {
         paddingLeft: 10,
         fontSize: 16,
-        color: '#666',
+        color: '#666'
     },
     text2: {
         paddingLeft: 10,
         fontSize: 16,
-        color: '#999',
-    },
-    text3: {
-        fontSize: 16,
-        color: '#333',
-    },
-    a: {
-        fontSize: 16,
-        color: '#333',
-        paddingBottom: 10,
-    },
-    b: {
-        fontSize: 16,
-        color: '#333',
-        paddingBottom: 10,
-    },
-    c: {
-        fontSize: 16,
-        color: '#666',
-        paddingBottom: 10,
-    },
-    card: {
-        borderWidth: 1,
-        borderColor: '#c8c8c8',
-        borderRadius: 5,
-        marginBottom: 15,
-        backgroundColor: 'white',
-        shadowColor: '#00000033',
-        shadowOffset: { h: 10, w: 10 },
-        shadowRadius: 5,
-        shadowOpacity: 0.8,
-        marginLeft: 20,
-        marginRight: 20,
-        marginTop: 10,
-        padding: 10,
-    },
-    blue: {},
+        color: '#999'
+    }
 });
 
 const mapStateToProps = ({ memberReducer }) => {

@@ -271,13 +271,7 @@ export default class FuWuDanListDetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-    header: {
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 15,
-        paddingRight: 15,
-        backgroundColor: '#F3F4F2'
-    },
+ 
     every: {
         marginLeft: 15,
         marginRight: 15,
@@ -291,17 +285,17 @@ const styles = StyleSheet.create({
     },
     left: {
         fontSize: 16,
-        color: '#333'
+        color: '#404145'
     },
 
     right: {
         fontSize: 16,
-        color: '#333'
+        color: '#404145'
     },
 
     desc: {
         fontSize: 16,
-        color: '#333',
+        color: '#404145',
         padding: 15,
         paddingBottom: 40
     },

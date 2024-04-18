@@ -168,10 +168,7 @@ class LouPan extends BasePage {
 }
 
 const styles = StyleSheet.create({
-    // all: {
-    //     backgroundColor: Macro.color_sky,
-    //     flex: 1
-    // },
+   
     content: {
         backgroundColor: Macro.color_white,
         flex: 1
@@ -179,7 +176,7 @@ const styles = StyleSheet.create({
     title: {
         paddingTop: 15,
         // textAlign: 'left',
-        color: '#333',
+        color: '#404145',
         fontSize: 16,
         paddingBottom: 10,
         marginLeft: 20,
@@ -219,8 +216,7 @@ const styles = StyleSheet.create({
         paddingTop: 12,
         color: '#999999',
         fontSize: Macro.font_14
-    },
-   
+    }
 });
 
 const mapStateToProps = ({ buildingReducer }) => {

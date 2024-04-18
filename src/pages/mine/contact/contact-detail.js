@@ -146,8 +146,7 @@ const styles = StyleSheet.create({
         backgroundColor: Macro.color_white,
         paddingLeft: 15,
         paddingRight: 20,
-        // height: ScreenUtil.contentHeight(),
-
+        // height: ScreenUtil.contentHeight(), 
         // height: ScreenUtil.contentHeightWithNoTabbar(),
     },
     header: {
@@ -156,8 +155,7 @@ const styles = StyleSheet.create({
     },
     name: {
         fontSize: 20,
-        color: '#333',
-
+        color: '#404145'
     },
     desc: {
         fontSize: 16,
@@ -172,12 +170,8 @@ const styles = StyleSheet.create({
     },
     item: {
         fontSize: 16,
-        color: '#333',
-    },
-    button: {
-        backgroundColor: Macro.work_blue,
-    },
-
+        color: '#404145'
+    }, 
     aa: {
         width: '100%',
         paddingTop: 15,
@@ -186,7 +180,7 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         borderStyle: 'solid',
         borderBottomWidth: 1,
-        borderBottomColor: ' rgb(244,244,244)',
+        borderBottomColor: ' rgb(244,244,244)'
     },
 });
 

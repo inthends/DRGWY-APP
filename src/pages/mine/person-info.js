@@ -111,38 +111,20 @@ export default class PersonInfoPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-    all: {
-        backgroundColor: Macro.color_white,
-    },
-    content: {
-        backgroundColor: Macro.color_white,
-        paddingLeft: 20,
-        paddingRight: 20,
-        height: ScreenUtil.contentHeight(),
-
-        // height: ScreenUtil.contentHeightWithNoTabbar(),
-    },
-    header: {
-        paddingTop: 30,
-        paddingBottom: 30,
-    },
+   
     name: {
         fontSize: 20,
-        color: '#333',
+        color: '#404145',
 
     },
-    desc: {
-        fontSize: 16,
-        color: '#999',
-        paddingTop: 5,
-    },
+   
     item: {
         fontSize: 16,
         color: '#666',
     },
     right: {
         fontSize: 16,
-        color: '#333',
+        color: '#404145',
         paddingRight: 15
     }
 

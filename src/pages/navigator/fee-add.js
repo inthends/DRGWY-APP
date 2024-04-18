@@ -310,14 +310,7 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderColor: '#74BAF1'
     },
-    line: {
-        marginTop: 20,
-        marginBottom: 10,
-        marginRight: 15,
-        width: ScreenUtil.deviceWidth() - 30,
-        backgroundColor: '#E0E0E0',
-        height: 0.5
-    },
+  
     titleWord: {
         color: '#404145',
         fontSize:16

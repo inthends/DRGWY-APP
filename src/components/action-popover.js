@@ -69,15 +69,6 @@ export default class ActionPopover extends Component {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
-        justifyContent: 'center',
-    },
-    button: {
-        borderRadius: 4,
-        padding: 10,
-        marginLeft: 10,
-        marginRight: 10,
-        backgroundColor: '#ccc',
-        borderColor: '#333',
-        borderWidth: 1,
-    },
+        justifyContent: 'center'
+    }
 });

@@ -86,24 +86,19 @@ const styles = StyleSheet.create({
     content: {
         width: ScreenUtil.deviceWidth(),
         paddingLeft: 10,
-        paddingRight: 10,
+        paddingRight: 10
     },
     title: {
         fontSize: 16,
         color: '#999',
         // width: item_width,
-        textAlign: 'center',
+        textAlign: 'center'
     },
     title_select: {
         fontSize: 16,
-        color: '#333',
+        color: '#404145',
         // width: item_width,
-        textAlign: 'center',
-
+        textAlign: 'center'
     },
-    line: {
-        height: 2,
-        backgroundColor: '#5f96eb',
-        width: single_width,
-    },
+   
 });

@@ -100,73 +100,24 @@ export default class LouPark extends BasePage {
                     </Flex>  
                 </ScrollView>
             </CommonView>
-
         );
     }
 }
 
 const styles = StyleSheet.create({
+
     all: {
         backgroundColor: Macro.color_sky,
-        flex: 1,
-    },
-    content: {
-        backgroundColor: Macro.color_white,
-        flex: 1,
-
-
-    },
+        flex: 1
+    }, 
     title: {
-        color: '#333',
-        fontSize: 16,
-    },
-
-
-    top: {
-
-        fontSize: 16,
-        paddingBottom: 15,
-    },
-    bottom: {
-        color: '#868688',
-        fontSize: 16,
-        paddingBottom: 20,
-    },
-    button: {
-        color: '#868688',
-        fontSize: 16,
-        paddingTop: 10,
-    },
-    blue: {
-        borderLeftColor: Macro.color_4d8fcc,
-        borderLeftWidth: 8,
-    },
-
+        color: '#404145',
+        fontSize: 16
+    }, 
     left: {
-        flex: 1, 
+        flex: 1
     },
-    right: {
-        flex: 3, 
-        paddingTop: 20,
-        paddingBottom: 20,
-        marginLeft: 20,
-    },
-    bb: {
-        borderStyle: 'solid',
-        borderLeftWidth: 4,
-        borderLeftColor: Macro.color_f39d39,
-        marginLeft: 15,
-        marginTop: 15,
-    },
-    se: {
-        paddingLeft: 10,
-        fontSize: 16,
-        color: '#666',
-    },
-    image: {
-        height: 90,
-        width: 90,
-    },
+
     item: {
         borderRadius: 6,
         borderWidth: 1,
@@ -181,46 +132,19 @@ const styles = StyleSheet.create({
         marginRight: 5,
         marginLeft: 5,
         backgroundColor: '#eee',
-        color: '#666',
+        color: '#666'
     },
     name: {
         fontSize: Macro.font_16,
         fontWeight: '600',
-        paddingBottom: 15,
-    },
-    area: {
-        color: Macro.color_636470,
-        fontSize: Macro.font_14,
-    },
-    complete: {
-        color: Macro.color_80aae2,
-        fontSize: Macro.font_14,
-        backgroundColor: Macro.color_dae9ff,
-        padding: 3,
-        paddingLeft: 5,
-        borderRadius: 1,
-    },
-    number: {
-        color: Macro.color_9c9ca5,
-        fontSize: Macro.font_14,
-    },
-    desc: {
-        color: Macro.color_c2c1c5,
-        fontSize: Macro.font_14,
-    },
-    line: {
-        width: 1,
-        height: 15,
-        backgroundColor: Macro.color_c2c1c5,
-        marginLeft: 5,
-        marginRight: 5,
-    },
+        paddingBottom: 15
+    }, 
     orange: {
         backgroundColor: Macro.color_f39d39,
-        color: '#fff',
+        color: '#fff'
     },
     blue74BAF1: {
         backgroundColor: '#74BAF1',
-        color: '#fff',
+        color: '#fff'
     },
 });
