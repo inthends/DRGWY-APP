@@ -364,7 +364,6 @@ class ApprovePage extends BasePage {
                   isCompleted: taskType == 3 ? true : false,
                   refresh: this.onRefresh
                 });
-
               }}
             >
               <View
