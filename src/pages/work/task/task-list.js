@@ -46,8 +46,7 @@ class TaskListPage extends BasePage {
         // let pageParames = common.getValueFromProps(this.props); 
         const type = common.getValueFromProps(this.props).type;
         const overdue = common.getValueFromProps(this.props).overdue;
-        const hiddenHeader = common.getValueFromProps(this.props).hiddenHeader;
-
+        const hiddenHeader = common.getValueFromProps(this.props).hiddenHeader; 
         this.state = {
             count: 0,
             showTabbar: true,
@@ -156,6 +155,12 @@ class TaskListPage extends BasePage {
                             this.props.navigation.navigate('huifang', { data: item.id });
                             break;
                         }
+
+                        case '待协助': {
+                            this.props.navigation.navigate('assist', { data: item.id });
+                            break;
+                        }
+
                         default:
                             break;
                     }
@@ -250,14 +255,7 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginRight: 20
     },
-    title2: {
-        paddingTop: 15,
-        // textAlign: 'left',
-        color: '#404145',
-        fontSize: 16,
-        paddingBottom: 10,
-        marginRight: 20
-    },
+   
     line: {
         width: ScreenUtil.deviceWidth() - 30 - 15 * 2,
         marginLeft: 15,

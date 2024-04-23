@@ -17,10 +17,8 @@ import { connect } from 'react-redux';
 // import common from '../../utils/common';
 import api from '../../utils/api';
 
-class SelectPerson extends BasePage {
-
-    //选择接单人员
-
+class SelectPerson extends BasePage { 
+    //选择接单人员 
     static navigationOptions = ({ navigation }) => {
         return {
             title: '选择人员',
@@ -57,11 +55,10 @@ class SelectPerson extends BasePage {
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
 
-
         const selectBuilding = this.state.selectBuilding;
         const nextSelectBuilding = nextProps.selectBuilding;
 
-        console.log('nextSelectBuilding:' + nextSelectBuilding);
+        //console.log('nextSelectBuilding:' + nextSelectBuilding);
 
         if (!(selectBuilding
             && nextSelectBuilding

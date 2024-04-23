@@ -11,7 +11,7 @@ import BasePage from '../../base/base';
 import { Icon, Flex } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
-import common from '../../../utils/common'; 
+import common from '../../../utils/common';
 import WorkService from '../../work/work-service';
 import ListImages from '../../../components/list-images';
 import Communicates from '../../../components/communicates';
@@ -27,8 +27,7 @@ export default class WeixiuDetailPage extends BasePage {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
-            ),
-
+            )
         };
     };
 
@@ -60,7 +59,9 @@ export default class WeixiuDetailPage extends BasePage {
                     serviceDeskCode: detail.serviceDeskCode,
                     relationId: detail.relationId,
                     statusName: detail.statusName,
-                },
+                    assistName: detail.assistName,//协助人 
+                    reinforceName: detail.reinforceName//增援人 
+                }
             });
             WorkService.serviceCommunicates(detail.relationId).then(res => {
                 this.setState({
@@ -112,7 +113,7 @@ export default class WeixiuDetailPage extends BasePage {
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>{detail.address}   {detail.contactName}</Text>
+                        <Text style={styles.left}>{detail.address} {detail.contactName}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
                             <Flex><LoadImage
                                 defaultImg={require('../../../static/images/phone.png')}
@@ -124,6 +125,15 @@ export default class WeixiuDetailPage extends BasePage {
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
                     </Flex>
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>协助人：{detail.assistName}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>增援人：{detail.reinforceName}</Text>
+                    </Flex>
+
                     <Communicates communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
@@ -136,7 +146,7 @@ export default class WeixiuDetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-   
+
     every: {
         marginLeft: 15,
         marginRight: 15,

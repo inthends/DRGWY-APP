@@ -25,6 +25,7 @@ import AddWorkPage from '../work/add-work';
 import PersonInfoPage from '../mine/person-info';
 import SettingPage from '../mine/setting';
 import ModifyPsdPage from '../mine/modify-psd';
+
 //导航
 import FeeHousePage from '../navigator/fee-housing';
 import gdMoneyPage from '../navigator/gd-Money';
@@ -79,13 +80,15 @@ import FeeChargeDetail from '../navigator/fee-charge-detail';
 import SelectAddressPage from '../work/select-address';
 import SelectPerson from '../work/select-person';
 import TaskListPage from '../work/task/task-list';
-import FuWuDanListDetailPage from '../work/task/fu-wu-dan-list-detail';
-import PaiDanListDetailPage from '../work/task/pai-dan-list-detail';
-import JieDanListDetailPage from '../work/task/jie-dan-list-detail';
-import KaiGongListDetailPage from '../work/task/kai-gong-list-detail';
-import WanChengListDetailPage from '../work/task/wan-cheng-list-detail';
-import JianYanListDetailPage from '../work/task/jian-yan-list-detail';
-import HuiFangDetailPage from '../work/task/hui-fang-detail';
+import ServiceDeskDetailPage from '../work/task/servicedesk-detail';
+import DispatchDetailPage from '../work/task/dispatch-detail';
+import ReceiveDetailPage from '../work/task/receive-detail';
+import StartDetailPage from '../work/task/start-detail';
+import CompleteDetailPage from '../work/task/complete-detail';
+import CheckDetailPage from '../work/task/check-detail';
+import VisitDetailPage from '../work/task/visit-detail';
+
+import AssistDetailPage from '../work/task/assist-detail';
 
 //工作台回访查看单据
 import WeixiuDetailPage from '../work/task/weixiu-detail';
@@ -237,13 +240,15 @@ const navigatorNavigator = createStackNavigator({
   njscan: NJScanScreen, //南京银行扫码
 
 
-  service: FuWuDanListDetailPage,
-  wancheng: WanChengListDetailPage,
-  jianyan: JianYanListDetailPage,
-  kaigong: KaiGongListDetailPage,
-  jiedan: JieDanListDetailPage,
-  paidan: PaiDanListDetailPage,
-  huifang: HuiFangDetailPage,
+  service: ServiceDeskDetailPage,
+  wancheng: CompleteDetailPage,
+  jianyan: CheckDetailPage,
+  kaigong: StartDetailPage,
+  jiedan: ReceiveDetailPage,
+  paidan: DispatchDetailPage,
+  huifang: VisitDetailPage, 
+  assist:AssistDetailPage,
+
 
   xunjian: XunJianPage,
   xunjiantask: TaskPage,
@@ -283,15 +288,16 @@ const WorkNavigator = createStackNavigator({
   },
   AddWork: AddWorkPage,
   SelectAddress: SelectAddressPage,
-  service: FuWuDanListDetailPage,
+  service: ServiceDeskDetailPage,
   weixiuView: WeixiuDetailPage, //工作台里面，待回访点击跳转的维修单，只能查看
   tousuView: TousuDetailPage, //工作台里面，待回访点击跳转的投诉单，只能查看 
-  wancheng: WanChengListDetailPage,
-  jianyan: JianYanListDetailPage,
-  kaigong: KaiGongListDetailPage,
-  jiedan: JieDanListDetailPage,
-  paidan: PaiDanListDetailPage,
-  huifang: HuiFangDetailPage,
+  wancheng: CompleteDetailPage,
+  assist:AssistDetailPage,
+  jianyan: CheckDetailPage,
+  kaigong: StartDetailPage,
+  jiedan: ReceiveDetailPage,
+  paidan: DispatchDetailPage,
+  huifang: VisitDetailPage,
   SelectPerson: SelectPerson,
   scanonly: ScanOnly,
   scandemo: ScanSS,

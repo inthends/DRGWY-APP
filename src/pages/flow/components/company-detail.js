@@ -12,6 +12,7 @@ const CompanyDetail = forwardRef(({ customer = {} }, ref) => {
   const showModal = () => {
     setVisible(true);
   };
+  
   const closeModal = () => {
     setVisible(false);
   };

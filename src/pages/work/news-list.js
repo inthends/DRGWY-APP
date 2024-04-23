@@ -138,9 +138,8 @@ class NewsList extends BasePage {
                     //             break;
                     //         }
                     // }
-
                     //根据url跳转
-                    this.props.navigation.navigate(appUrlName, { data: linkId });
+                    this.props.navigation.navigate(appUrlName, { data: linkId }); 
                 }}>
                     
                 <Flex direction='column' align={'start'}

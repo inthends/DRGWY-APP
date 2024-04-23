@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { Flex } from '@ant-design/react-native';
-import ScreenUtil from '../utils/screen-util';
+// import ScreenUtil from '../utils/screen-util';
 import LoadImage from './load-image';
 import UpImage from '../static/images/address/up.png';
 import DownImage from '../static/images/address/down.png';
@@ -26,7 +26,9 @@ export default class OperationRecords extends Component {
                                 this.props.communicateClick(i);
                             }
                         }}>
-                            <Flex style={[styles.every]} justify='between'>
+                            <Flex style={[styles.every]}
+                                justify='between'
+                            >
                                 <LoadImage img={i.avatar} style={{ width: 30, height: 30 }} />
                                 <Text style={styles.left}>{i.author} {i.datetime} {i.operationType}</Text>
                                 <LoadImage style={{ width: 15, height: 8 }}
@@ -37,16 +39,21 @@ export default class OperationRecords extends Component {
 
                         {i.show === true ?
                             <View style={{
-                                margin: 10,
-                                marginTop: 0,
+                                //margin: 10,
+                                //marginTop: 0,
                                 borderStyle: 'solid',
                                 borderColor: '#F3F4F2',
                                 borderWidth: 1,
-                                borderRadius: 5,
-                                paddingTop: 10,
+                                borderRadius: 4,
+                                paddingTop: 5,
                                 paddingBottom: 10,
                                 paddingRight: 10,
                                 paddingLeft: 10,
+
+                                marginBottom: 15,
+                                marginRight: 5,
+                                marginLeft: 5
+
                             }}>
                                 <Text style={styles.content}>{i.content}</Text>
                             </View> : null}
@@ -77,20 +84,18 @@ export default class OperationRecords extends Component {
 }
 
 const styles = StyleSheet.create({
-  
     every: {
         marginLeft: 15,
         marginRight: 15,
         paddingTop: 5,
         paddingBottom: 5
     },
-  
     left: {
         fontSize: 14,
         color: '#666'
-    }, 
-     
+    },
     content: {
+        fontSize: 13,
         color: '#999'
     }
 });

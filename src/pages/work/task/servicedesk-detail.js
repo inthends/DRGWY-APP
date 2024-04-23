@@ -25,7 +25,7 @@ import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
-export default class FuWuDanListDetailPage extends BasePage {
+export default class ServiceDeskDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
             title: '服务单详情',

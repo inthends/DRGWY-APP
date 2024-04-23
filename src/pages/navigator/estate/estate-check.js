@@ -285,9 +285,7 @@ class EstateCheckPage extends BasePage {
     }
 }
 
-const styles = StyleSheet.create({
-   
-   
+const styles = StyleSheet.create({  
     list: {
         backgroundColor: Macro.color_white,
         margin: 15
@@ -318,8 +316,7 @@ const styles = StyleSheet.create({
         color: '#000',
         fontSize: 16,
         paddingBottom: 15
-    },
- 
+    }, 
     card: {
         borderTopWidth: 1,
         borderRightWidth: 1,

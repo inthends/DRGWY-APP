@@ -177,7 +177,8 @@ class ApprovePage extends BasePage {
         <Flex
           style={[
             {
-              paddingTop: 30,
+              paddingTop: 20,
+              paddingBottom: 20,
               width: ScreenUtil.deviceWidth() - 30,
               marginLeft: 15
             },
@@ -213,7 +214,6 @@ class ApprovePage extends BasePage {
               </Text>
             </Flex>
           </TouchableWithoutFeedback>
-
 
           <TouchableWithoutFeedback
             onPress={() =>
@@ -479,7 +479,7 @@ const styles = StyleSheet.create({
     fontSize: 14
   },
 
- 
+
   note: {
     borderRadius: 4,
     // backgroundColor:'yellow',

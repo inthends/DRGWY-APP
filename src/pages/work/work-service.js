@@ -27,7 +27,7 @@ export default {
             mainMemo
         });
     },
- 
+
     addCheckDetail(
         billId,
         mainMemo,
@@ -48,11 +48,9 @@ export default {
             checkMemo
         });
     },
-
-
-
+ 
     workData(showLoading) {
-        return api.postData('/api/MobileMethod/MGetDeskStatistics', {}, showLoading);
+        return api.postData('/api/MobileMethod/MGetDeskStatistics', showLoading);
     },
     //房产类别，1获取小区，获取小区时候keyvalue=0，2获取楼栋，4获取楼层，5获取房间
     getPStructs(params) {
@@ -73,7 +71,7 @@ export default {
     checkFiles(keyvalue) {
         return api.getData('/api/MobileMethod/MGetCheckFilesData', { keyvalue });
     },
-    
+
     //服务单操作
     serviceHandle(handle, keyvalue, content, extra = null) {
         let url = '';
@@ -84,7 +82,6 @@ export default {
                 ...extra
             };
         }
-
         if (handle === '回复') {
             url = '/api/MobileMethod/MSendCommunicate';
         } else if (handle === '转投诉') {
@@ -113,6 +110,13 @@ export default {
         }
         return api.postData(url, params);
     },
+
+    //协助维修
+    assistRepair(keyvalue, type) {
+        let params = { keyvalue, type };
+        return api.postData('/api/MobileMethod/MRepairHandleAssist', params);
+    },
+
     serviceCommunicates(keyvalue) {
         return api.getData('/api/MobileMethod/MGetCommunicates', { keyvalue, pageIndex: 1, pageSize: 100 });
     },
@@ -165,9 +169,15 @@ export default {
             url = '/api/MobileMethod/MGetUnVisitServiceDeskPageList';
             type = null;
         }
+
+        else if (type === 'assist') {
+            //待协助列表
+            url = '/api/MobileMethod/MGetAssistRepairPageList';
+        }
+
         return api.postData(url, { status: type, isOverdue: overdue, pageIndex, pageSize: 100 });
     },
- 
+
 
     //获取人员
     // getWorkers(organizeId, keyword = null, type = '员工') {

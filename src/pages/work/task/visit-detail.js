@@ -1,3 +1,4 @@
+//服务单回访
 import React from 'react';
 import {
     TextInput,
@@ -8,23 +9,23 @@ import {
     ScrollView, Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Icon, Flex,Button } from '@ant-design/react-native';
+import { Icon, Flex, Button } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
-import common from '../../../utils/common';
-import UDToast from '../../../utils/UDToast';
-import WorkService from '../work-service';
+import common from '../../../utils/common';  
+import UDToast from '../../../utils/UDToast'; 
+import WorkService from '../work-service'; 
+import Star from '../../../components/star'; 
 import OperationRecords from '../../../components/operationrecords';
 import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
-import ImageViewer from 'react-native-image-zoom-viewer';
-import UploadImageView from '../../../components/upload-image-view';
+import ImageViewer from 'react-native-image-zoom-viewer'; 
 
-export default class WanChengListDetailPage extends BasePage {
+export default class VisitDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
-            title: '完成维修',
+            title: '服务单回访',
             headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -41,10 +42,11 @@ export default class WanChengListDetailPage extends BasePage {
         this.state = {
             id,
             value: '',
+            // type,
             images: [],
-            isUpload: false,//是否上传了图片
             detail: {},
             communicates: [],
+            star: 3,
             lookImageIndex: 0,
             visible: false
         };
@@ -52,58 +54,72 @@ export default class WanChengListDetailPage extends BasePage {
 
     componentDidMount() {
         this.getData();
-    }
+    } 
 
+    // getData = () => {
+    //     const { fuwu, type } = this.state; 
+    //     WorkService.weixiuDetail(fuwu.id).then(detail => { 
+    //         this.setState({
+    //             detail: {
+    //                 ...detail.entity,
+    //                 serviceDeskCode: detail.serviceDeskCode,
+    //                 relationId: detail.relationId,
+    //                 statusName: detail.statusName,
+    //             },
+    //         });
+    //         //获取维修单的单据动态
+    //         WorkService.getOperationRecord(fuwu.id).then(res => {
+    //             this.setState({
+    //                 communicates: res,
+    //             });
+    //         });
+    //     });
+    //     //获取维修单附件
+    //     WorkService.weixiuExtra(fuwu.id).then(images => {
+    //         this.setState({
+    //             images,
+    //         });
+    //     });
+    // };
+
+    //获取服务单信息
     getData = () => {
         const { id } = this.state;
-        WorkService.weixiuDetail(id).then(detail => {
+        WorkService.serviceDetail(id).then(item => {
             this.setState({
                 detail: {
-                    ...detail.entity,
-                    serviceDeskCode: detail.serviceDeskCode,
-                    relationId: detail.relationId,
-                    statusName: detail.statusName
+                    ...item.data,
+                    //businessId: item.businessId,
+                    statusName: item.statusName
                 },
             });
-
-            //获取维修单的单据动态
-            WorkService.getOperationRecord(id).then(res => {
-                this.setState({
-                    communicates: res
-                });
-            });
-
         });
-
-        WorkService.weixiuExtra(id).then(images => {
+        WorkService.serviceCommunicates(id).then(res => {
             this.setState({
-                images
+                communicates: res,
+            });
+        });
+        WorkService.serviceExtra(id).then(images => {
+            this.setState({
+                images,
             });
         });
     };
 
     click = (handle) => {
-        const { id, isUpload, images, value } = this.state;
+        const { id, value, star } = this.state;
         if (handle === '回复' && !(value && value.length > 0)) {
             UDToast.showInfo('请输入文字');
             return;
         }
-        const wcimages = images.filter(t => t.type === '完成');
-
-        // console.log('wcimages:' + wcimages.length);
-        // console.log('isUpload:' + isUpload); 
-        // return;
-
-        if (wcimages.length == 0 && !isUpload) {
-            UDToast.showInfo('请上传完成图片');
-            return;
-        }
-        WorkService.serviceHandle(handle, id, value).then(res => {
+        WorkService.serviceHandle(handle, id, value, { grade: star }).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
         });
     };
-
+    changeStar = (star) => {
+        this.setState({ star });
+    };
     communicateClick = (i) => {
         let c = this.state.communicates;
         let d = c.map(it => {
@@ -125,16 +141,10 @@ export default class WanChengListDetailPage extends BasePage {
     lookImage = (lookImageIndex) => {
         this.setState({
             lookImageIndex,
-            visible: true,
+            visible: true
         });
     };
 
-    //刷新图片上传状态
-    reload = () => {
-        this.setState({
-            isUpload: true
-        });
-    }
 
     render() {
         const { images, detail, communicates } = this.state;
@@ -148,8 +158,7 @@ export default class WanChengListDetailPage extends BasePage {
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.address} {detail.contactName}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
-                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
-                                style={{ width: 16, height: 16 }} /></Flex>
+                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 16, height: 16 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
                     <Text style={styles.desc}>{detail.repairContent}</Text>
@@ -157,21 +166,23 @@ export default class WanChengListDetailPage extends BasePage {
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
                     </Flex>
+
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                             <Text style={styles.left}>关联单：</Text>
-                            <Text
-                                // onPress={() => this.props.navigation.navigate('service', { data: { id: detail.relationId } })}
-                                onPress={() => this.props.navigation.navigate('service', { data: detail.relationId })}
-                                style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
+                            <Text onPress={() => {
+                                if (detail.businessType === 'Repair') {
+                                    this.props.navigation.navigate('weixiuView', { data: detail.businessId });
+                                }
+                                else {
+                                    this.props.navigation.navigate('tousuView', { data: detail.businessId });
+                                }
+                            }} style={[styles.right, { color: Macro.work_blue }]}>{detail.businessCode}</Text>
+
                         </Flex>
                     </TouchableWithoutFeedback>
 
-                    <UploadImageView style={{ marginTop: 10 }}
-                        linkId={this.state.id}
-                        reload={this.reload}
-                        type='完成'
-                    />
+                    <Star star={this.state.star} onChange={this.changeStar} />
 
                     {/* <View style={{
                         margin: 15,
@@ -181,9 +192,9 @@ export default class WanChengListDetailPage extends BasePage {
                         borderRadius: 5,
                     }}>
                         <TextareaItem
-                            rows={3}
-                            placeholder='请输入'
-                            style={{ paddingTop: 10, width: ScreenUtil.deviceWidth() - 32 }}
+                            rows={4}
+                            placeholder='输入业主建议'
+                            style={{   paddingTop: 10, width: ScreenUtil.deviceWidth() - 32 }}
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
@@ -200,26 +211,20 @@ export default class WanChengListDetailPage extends BasePage {
                             numberOfLines={4}>
                         </TextInput>
                     </Flex>
-
-                    {/* <TouchableWithoutFeedback onPress={() => this.click('完成维修')}>
-                        <Flex justify={'center'} style={[styles.ii, {
-                            width: '80%',
-                            marginLeft: '10%',
-                            marginRight: '10%',
-                            marginBottom: 20,
-                        }, { backgroundColor: Macro.work_blue }]}>
-                            <Text style={styles.word}>完成维修</Text>
+                    {/* <TouchableWithoutFeedback onPress={() => this.click('完成回访')}>
+                        <Flex justify={'center'} style={[styles.ii, { width: '80%', marginLeft: '10%', marginRight: '10%', marginBottom: 20 }, { backgroundColor: Macro.work_blue }]}>
+                            <Text style={styles.word}>完成回访</Text>
                         </Flex>
                     </TouchableWithoutFeedback> */}
 
                     <Flex justify={'center'}>
-                        <Button onPress={() => this.click('完成维修')} type={'primary'}
+                        <Button onPress={() => this.click('完成回访')} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
                                 width: 300,
                                 backgroundColor: Macro.work_blue,
                                 marginTop: 20,
                                 height: 40
-                            }}>完成维修</Button>
+                            }}>完成回访</Button>
                     </Flex>
 
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
@@ -234,7 +239,7 @@ export default class WanChengListDetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-  
+
     every: {
         marginLeft: 15,
         marginRight: 15,
@@ -256,8 +261,6 @@ const styles = StyleSheet.create({
         color: '#404145'
     },
     desc: {
-        fontSize: 16,
-        color: '#404145',
         padding: 15,
         paddingBottom: 40
     },

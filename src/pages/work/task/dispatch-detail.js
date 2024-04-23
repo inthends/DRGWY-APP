@@ -1,36 +1,31 @@
 import React from 'react';
 import {
-    View,
+    //View,
     Text,
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
+    TextInput,
     ScrollView, Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Icon, Flex, TextareaItem } from '@ant-design/react-native';
+import { Button, Icon, Flex } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
-// import SelectImage from '../../../utils/select-image';
 import common from '../../../utils/common';
-// import UDRecord from '../../../utils/UDRecord';
-// import api from '../../../utils/api';
-// import UDPlayer from '../../../utils/UDPlayer';
 import UDToast from '../../../utils/UDToast';
-import DashLine from '../../../components/dash-line';
 import WorkService from '../work-service';
-//import UploadImageView from '../../../components/upload-image-view';
 // import Communicates from '../../../components/communicates';
 import OperationRecords from '../../../components/operationrecords';
 import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
-
-export default class JianYanListDetailPage extends BasePage {
+ 
+export default class DispatchDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
-            title: '维修检验',
+            title: '派单',
             headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -47,15 +42,21 @@ export default class JianYanListDetailPage extends BasePage {
         this.state = {
             id,
             value: '',
-            result: 1,
             images: [],
             detail: {},
             communicates: [],
             lookImageIndex: 0,
-            visible: false
+            visible: false,
+            selectPerson: null
         };
     }
 
+    onSelect = ({ selectItem }) => {
+        this.setState({
+            selectPerson: selectItem
+        })
+    }
+ 
     componentDidMount() {
         this.getData();
     }
@@ -72,37 +73,31 @@ export default class JianYanListDetailPage extends BasePage {
                 }
             });
 
-            // WorkService.serviceCommunicates(detail.relationId).then(res => {
-            //     this.setState({
-            //         communicates: res,
-            //     });
-            // });
-
             //获取维修单的单据动态
             WorkService.getOperationRecord(id).then(res => {
                 this.setState({
-                    communicates: res
+                    communicates: res,
                 });
             });
         });
- 
+
         WorkService.weixiuExtra(id).then(images => {
             this.setState({
-                images
+                images,
             });
         });
     };
 
-    click = (handle) => {
-        const { id, value, result } = this.state;
-        if (handle === '完成检验' && !(value && value.length > 0)) {
-            UDToast.showInfo('请输入文字');
-            return;
+    click = () => {
+        const { id, selectPerson } = this.state;
+        if (selectPerson) {
+            WorkService.paidan(id, selectPerson.name, selectPerson.id).then(res => {
+                UDToast.showInfo('操作成功');
+                this.props.navigation.goBack();
+            })
+        } else {
+            UDToast.showInfo('请选择接单人');
         }
-        WorkService.serviceHandle(handle,  id, value, { result }).then(res => {
-            UDToast.showInfo('操作成功');
-            this.props.navigation.goBack();
-        });
     };
 
     communicateClick = (i) => {
@@ -114,12 +109,12 @@ export default class JianYanListDetailPage extends BasePage {
             return it;
         });
         this.setState({
-            communicates: d,
+            communicates: d
         });
     };
     cancel = () => {
         this.setState({
-            visible: false,
+            visible: false
         });
     };
 
@@ -131,9 +126,7 @@ export default class JianYanListDetailPage extends BasePage {
     };
 
     render() {
-        const { images, detail, communicates, result } = this.state; 
-        const selectImg = require('../../../static/images/select.png');
-        const noselectImg = require('../../../static/images/no-select.png');
+        const { images, detail, communicates, selectPerson } = this.state;
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
@@ -141,19 +134,22 @@ export default class JianYanListDetailPage extends BasePage {
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
-                    <Flex style={[styles.every2]} justify='between'>
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.address} {detail.contactName}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
-                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 16, height: 16 }} /></Flex>
+                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
+                                style={{ width: 16, height: 16 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
-                    <DashLine />
-                    <Text style={styles.desc}>{detail.repairContent}</Text>
-                    <DashLine />
+
+                    <Text style={[styles.desc]}>{detail.repairContent}</Text>
+
                     <ListImages images={images} lookImage={this.lookImage} />
+
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
                     </Flex>
+
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every]}>
                             <Text style={styles.left}>关联单：</Text>
@@ -162,23 +158,20 @@ export default class JianYanListDetailPage extends BasePage {
                                 style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-                    <DashLine />
-                    <Flex justify={'between'} style={{ margin: 15 }}>
-                        <TouchableWithoutFeedback onPress={() => this.setState({ result: 1 })}>
+                    <TouchableWithoutFeedback
+                        onPress={() => this.props.navigation.navigate('SelectPerson', { onSelect: this.onSelect })}>
+                        <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                             <Flex>
-                                <LoadImage img={result === 1 ? selectImg : noselectImg}
-                                    style={{ width: 15, height: 15 }} />
-                                <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>合格</Text>
+                                <Text style={styles.left}>接单人：</Text>
+                                <Text
+                                    style={[styles.right, selectPerson ? { color: Macro.work_blue } :
+                                        { color: '#666' }]}>{selectPerson ? selectPerson.name : "请选择接单人"}</Text>
                             </Flex>
-                        </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => this.setState({ result: 0 })}>
-                            <Flex>
-                                <LoadImage img={result === 0 ? selectImg : noselectImg}
-                                    style={{ width: 15, height: 15 }} />
-                                <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>不合格</Text>
-                            </Flex>
-                        </TouchableWithoutFeedback>  
-                    </Flex>
+                            <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
+                        </Flex>
+                    </TouchableWithoutFeedback>
+
+                    {/* <DashLine />
                     <View style={{
                         margin: 15,
                         borderStyle: 'solid',
@@ -188,25 +181,50 @@ export default class JianYanListDetailPage extends BasePage {
                     }}>
                         <TextareaItem
                             rows={4}
-                            placeholder='检验建议'
-                            style={{  paddingTop: 10,   width: ScreenUtil.deviceWidth() - 32 }}
+                            placeholder='请输入'
+                            style={{ paddingTop: 10, width: ScreenUtil.deviceWidth() - 32 }}
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
-                    </View>
-                    <TouchableWithoutFeedback onPress={() => this.click('完成检验')}>
+                    </View> */}
+
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <TextInput
+                            maxLength={500}
+                            placeholder='请输入'
+                            multiline
+                            onChangeText={value => this.setState({ value })}
+                            value={this.state.value}
+                            style={{ fontSize: 16, textAlignVertical: 'top' }}
+                            numberOfLines={4}>
+                        </TextInput>
+                    </Flex>
+
+                    {/* <TouchableWithoutFeedback onPress={() => this.click('派单')}>
                         <Flex justify={'center'} style={[styles.ii, {
-                            width: '80%',
+                            width: '60%',
                             marginLeft: '10%',
                             marginRight: '10%',
-                            marginBottom: 20,
-                        }, { backgroundColor: Macro.work_blue }]}>
-                            <Text style={styles.word}>完成检验</Text>
-                        </Flex>
-                    </TouchableWithoutFeedback>
-                    {/* <Communicates communicateClick={this.communicateClick} communicates={communicates} /> */}
-                    <OperationRecords communicateClick={this.communicateClick} communicates={communicates} /> 
+                            marginTop: 10,
+                            marginBottom: 5
 
+                        }, { backgroundColor: Macro.work_blue }]}>
+                            <Text style={styles.word}>派单</Text>
+                        </Flex>
+                    </TouchableWithoutFeedback> */}
+
+                    <Flex justify={'center'}>
+                        <Button onPress={() => this.click()} type={'primary'}
+                            activeStyle={{ backgroundColor: Macro.work_blue }} style={{
+                                width: 300,
+                                backgroundColor: Macro.work_blue,
+                                marginTop: 20,
+                                height: 40
+                            }}>派单</Button>
+                    </Flex>
+
+                    <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
@@ -218,7 +236,7 @@ export default class JianYanListDetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-    
+
     every: {
         marginLeft: 15,
         marginRight: 15,
@@ -232,15 +250,17 @@ const styles = StyleSheet.create({
         paddingTop: 10
     },
     left: {
-        fontSize: 14,
+        fontSize: 16,
         color: '#404145'
     },
     right: {
-        fontSize: 14,
+        fontSize: 16,
         color: '#404145'
     },
     desc: {
+        fontSize: 16,
         padding: 15,
+        color: '#404145',
         paddingBottom: 40
     },
     ii: {
