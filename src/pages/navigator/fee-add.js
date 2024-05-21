@@ -25,8 +25,7 @@ import UDToast from '../../utils/UDToast';
 // import QRCode from 'react-native-qrcode-svg';
 import CommonView from '../../components/CommonView';
 import MyPopover from '../../components/my-popover';
-import Macro from '../../utils/macro';
-
+import Macro from '../../utils/macro'; 
 const Item = List.Item;
 
 class FeeAddPage extends BasePage {
@@ -99,6 +98,7 @@ class FeeAddPage extends BasePage {
             fee: null
         });
     };
+
     save = () => {
         let { fee } = this.state;
         fee = {
@@ -240,7 +240,7 @@ class FeeAddPage extends BasePage {
                                 })}
                                 // format={date}
                                 style={{ backgroundColor: 'white', width: 200, borderWidth: 0 }}  >
-                                <List.Item arrow={'empty'} style={{ borderWidth: 0 }}><Text style={styles.word}>开始时间：</Text></List.Item>
+                                <Item arrow={'empty'} style={{ borderWidth: 0 }}><Text style={styles.word}>开始时间：</Text></Item>
                             </DatePicker>
                             <DatePicker
                                 extra={<Text style={styles.aa}>请选择结束时间</Text>}
@@ -254,7 +254,7 @@ class FeeAddPage extends BasePage {
                                     },
                                 })}
                             >
-                                <List.Item arrow={'empty'} style={{ borderWidth: 0 }}><Text style={styles.word}>结束时间：</Text></List.Item>
+                                <Item arrow={'empty'} style={{ borderWidth: 0 }}><Text style={styles.word}>结束时间：</Text></Item>
                             </DatePicker>
                             <Item extra={<TextInput placeholder={'请输入备注'} onChangeText={memo => this.setState({
                                 fee: {

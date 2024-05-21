@@ -63,7 +63,7 @@ export default class ReceiveDetailPage extends BasePage {
                     relationId: detail.relationId,
                     statusName: detail.statusName,
                     assistName: detail.assistName//协助人 
-                },
+                }
             });
 
             //获取维修单的单据动态
@@ -133,26 +133,24 @@ export default class ReceiveDetailPage extends BasePage {
                                 style={{ width: 16, height: 16 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
-                    <Text style={styles.desc}>{detail.repairContent}</Text>
-
-                    <ListImages images={images} lookImage={this.lookImage} />
-
+                    <Text style={styles.desc}>{detail.repairContent}</Text> 
+                    <ListImages images={images} lookImage={this.lookImage} /> 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
-                    </Flex>
-
+                        <Text style={styles.left}>派单人：{detail.senderName}，派单时间：{detail.sendDate}</Text>
+                    </Flex> 
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>
+                    </Flex> 
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                             <Text style={styles.left}>关联单：</Text>
                             <Text onPress={() => this.props.navigation.navigate('service', { data: detail.relationId })}
                                 style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
-                    </TouchableWithoutFeedback>
-
+                    </TouchableWithoutFeedback> 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>协助人：{detail.assistName}</Text>
-                    </Flex>
-
+                    </Flex> 
                     {/* <View style={{
                         margin: 15,
                         borderStyle: 'solid',
@@ -167,8 +165,7 @@ export default class ReceiveDetailPage extends BasePage {
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
-                    </View> */}
-
+                    </View> */} 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <TextInput
                             maxLength={500}
@@ -179,8 +176,7 @@ export default class ReceiveDetailPage extends BasePage {
                             style={{ fontSize: 16, textAlignVertical: 'top' }}
                             numberOfLines={4}>
                         </TextInput>
-                    </Flex>
-
+                    </Flex> 
                     {/* <TouchableWithoutFeedback onPress={() => this.click('接单')}>
                         <Flex justify={'center'} 
                         style={[styles.ii, {

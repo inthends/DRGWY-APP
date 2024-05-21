@@ -54,10 +54,11 @@ class EstateCheckPage extends BasePage {
                 data: [],
             },
             refreshing: false,
-            ym: common.getYM('2020-01'),
+            //ym: common.getYM('2020-01'),
             billType: '全部',
             billStatus: -1,
-            time: common.getCurrentYearAndMonth(),
+            //time: common.getCurrentYearAndMonth(),
+            time: '全部',
             selectBuilding: this.props.selectBuilding
         };
     }
@@ -100,15 +101,14 @@ class EstateCheckPage extends BasePage {
             //treeType = selectBuilding.type;
             organizeId = selectBuilding.key;
         }
-        let startTime = common.getMonthFirstDay(time);
-        let endTime = common.getMonthLastDay(time);
+        // let startTime = common.getMonthFirstDay(time);
+        // let endTime = common.getMonthLastDay(time);
         NavigatorService.checkList(
             this.state.pageIndex,
             billStatus,
             billType,
             organizeId,
-            startTime,
-            endTime).then(dataInfo => {
+            time).then(dataInfo => {
                 if (dataInfo.pageIndex > 1) {
                     dataInfo = {
                         ...dataInfo,
@@ -242,7 +242,10 @@ class EstateCheckPage extends BasePage {
                         <MyPopover onChange={this.statusChange}
                             titles={['全部', '待评审', '待闭单', '已闭单']}
                             visible={true} />
-                        <MyPopover onChange={this.timeChange} titles={ym} visible={true} />
+                        <MyPopover onChange={this.timeChange} 
+                        //titles={ym} 
+                        titles={['全部', '今日', '本周', '本月', '上月', '本年']}
+                        visible={true} />
                     </Flex>
 
                     <FlatList

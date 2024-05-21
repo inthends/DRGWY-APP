@@ -60,7 +60,7 @@ export default class NJScanScreen extends BasePage {
             result
         }, () => {
             let out_trade_no = common.getValueFromProps(this.props, 'out_trade_no');
-            //扫人民币付款码
+            //扫付款码
             NavigatorService.njScanPay(result.data, out_trade_no).then(resp => {
                 if (resp === 'need_query') {
                     this.needQuery(out_trade_no);

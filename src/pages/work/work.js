@@ -4,10 +4,10 @@ import {
     TouchableWithoutFeedback,
     StyleSheet,
     ScrollView,
-    RefreshControl,
+    RefreshControl
 } from 'react-native';
 import BasePage from '../base/base';
-import { Flex } from '@ant-design/react-native';
+import { Flex, Icon } from '@ant-design/react-native';
 import ScreenUtil from '../../utils/screen-util';
 import LoadImage from '../../components/load-image';
 import WorkService from './work-service';
@@ -25,7 +25,7 @@ export default class WorkPage extends BasePage {
             title: '工作台',
             headerTitleStyle: {
                 flex: 1,
-                textAlign: 'center',
+                textAlign: 'center'
             },
             headerForceInset: this.headerForceInset,
             headerLeft: (
@@ -123,7 +123,7 @@ export default class WorkPage extends BasePage {
                     />
                 }>
                     <Flex direction={'column'} style={{ padding: 15, paddingTop: 30 }}>
-                        <Flex direction='column' align={'start'}
+                        {/* <Flex direction='column' align={'start'}
                             style={[styles.card, { borderLeftColor: Macro.work_blue, borderLeftWidth: 5 }]}>
                             <Text style={styles.title}>服务单</Text>
                             <Flex style={styles.line} />
@@ -153,6 +153,7 @@ export default class WorkPage extends BasePage {
                                         <Text style={styles.bottom}>已回复</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
+
                                 <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task', {
                                     'data': {
                                         'type': 'visit',
@@ -170,10 +171,76 @@ export default class WorkPage extends BasePage {
                                     <Text style={styles.bottom} />
                                 </Flex>
                             </Flex>
+                        </Flex> */}
+
+                        <Flex direction='column' align={'start'}
+                            style={[styles.card, { borderLeftColor: Macro.work_red, borderLeftWidth: 5 }]}>
+                            <Text style={styles.title}>常用功能</Text>
+                            <Flex style={styles.line} />
+                            <Flex>
+                                <TouchableWithoutFeedback
+                                    onPress={() => this.props.navigation.navigate('feeHouse')}
+                                >
+                                    <Flex direction='column' style={{ width: '25%' }}>
+                                        <Flex style={{ paddingTop: 20, paddingBottom: 5 }}>
+                                            <LoadImage
+                                                style={{ width: 19, height: 22 }}
+                                                defaultImg={require('../../static/images/navigator/shangmen.png')}
+                                            />
+                                        </Flex>
+                                        <Text style={styles.bottom}>上门收费</Text>
+                                    </Flex>
+
+                                </TouchableWithoutFeedback>
+
+                                <TouchableWithoutFeedback
+                                    onPress={() => this.props.navigation.push('xunjian')}
+                                >
+                                    <Flex direction='column' style={{ width: '25%' }}>
+                                        <Flex style={{ paddingTop: 20, paddingBottom: 5 }}>
+                                            <LoadImage
+                                                style={{ width: 22, height: 22 }}
+                                                defaultImg={require('../../static/images/navigator/zonghexunjian.png')}
+                                            />
+                                        </Flex>
+                                        <Text style={styles.bottom}>综合巡检</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+
+                                <TouchableWithoutFeedback
+                                    onPress={() => this.props.navigation.push('check')}
+                                >
+                                    <Flex direction='column' style={{ width: '25%' }}>
+                                        <Flex style={{ paddingTop: 20, paddingBottom: 5 }}>
+                                            <Icon
+                                                name="flag"
+                                                size={22}
+                                                color={Macro.work_blue}
+                                            />
+                                        </Flex>
+                                        <Text style={styles.bottom}>现场检查</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+
+                                <TouchableWithoutFeedback
+                                    onPress={() => this.props.navigation.push('chaobiao')}>
+                                    <Flex direction='column' style={{ width: '25%' }}>
+                                        <Flex style={{ paddingTop: 20, paddingBottom: 5 }}>
+                                            <Icon
+                                                name="form"
+                                                size={22}
+                                                color={Macro.work_blue}
+                                            />
+                                        </Flex>
+                                        <Text style={styles.bottom}>移动抄表</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+                            </Flex>
                         </Flex>
+
                         <Flex direction='column' align={'start'}
                             style={[styles.card, {
-                                borderLeftColor: Macro.work_green,
+                                borderLeftColor: Macro.work_blue,
                                 borderLeftWidth: 5,
                                 borderStyle: 'solid'
                             }]}>
@@ -182,8 +249,34 @@ export default class WorkPage extends BasePage {
                             <Flex>
                                 <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task', {
                                     'data': {
+                                        'type': 'fuwu',
+                                        title: '待回复列表'
+                                    }
+                                })}>
+                                    <Flex direction='column' style={{ width: '25%' }}>
+                                        <Text style={styles.top}>{data.pendingreply}</Text>
+                                        <Text style={styles.bottom}>待回复</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+
+                                <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task', {
+                                    'data': {
+                                        'type': 'fuwu',
+                                        overdue: -1,//已经回复不判断是否逾期
+                                        hiddenHeader: true,
+                                        title: '已回复列表'
+                                    }
+                                })}>
+                                    <Flex direction='column' style={{ width: '25%' }}>
+                                        <Text style={styles.top}>{data.reply}</Text>
+                                        <Text style={styles.bottom}>已回复</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+
+                                <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task', {
+                                    'data': {
                                         'type': '1',
-                                        title: '待派单列表'
+                                        title: '派单列表',
                                     }
                                 })}>
                                     <Flex direction='column' style={{ width: '25%' }}>
@@ -191,6 +284,21 @@ export default class WorkPage extends BasePage {
                                         <Text style={styles.bottom}>待派单</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
+
+
+                                <TouchableWithoutFeedback onPress={() => this.props.navigation.push('TaskDispatch', {
+                                    'data': {
+                                        title: '已派单列表'
+                                    }
+                                })}>
+                                    <Flex direction='column' style={{ width: '25%' }}>
+                                        <Text style={styles.top}>{data.mydo}</Text>
+                                        <Text style={styles.bottom}>已派单</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+                            </Flex>
+
+                            <Flex>
                                 <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task', {
                                     'data': {
                                         'type': '2',
@@ -226,10 +334,8 @@ export default class WorkPage extends BasePage {
                                         <Text style={styles.top}>{data.unfinish}</Text>
                                         <Text style={styles.bottom}>待完成</Text>
                                     </Flex>
-                                </TouchableWithoutFeedback>  
-                            </Flex>
+                                </TouchableWithoutFeedback>
 
-                            <Flex>
                                 <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task', {
                                     'data': {
                                         'type': '6',
@@ -241,11 +347,68 @@ export default class WorkPage extends BasePage {
                                         <Text style={styles.top}>{data.nottest}</Text>
                                         <Text style={styles.bottom}>待检验</Text>
                                     </Flex>
-                                </TouchableWithoutFeedback>
+                                </TouchableWithoutFeedback> 
                             </Flex>
 
+                            <Flex>
+
+                                <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task', {
+                                    'data': {
+                                        'type': 'visit',
+                                        hiddenHeader: true,
+                                        title: '待回访列表'
+                                    }
+                                })}>
+                                    <Flex direction='column' style={{ width: '25%' }}>
+                                        <Text style={styles.top}>{data.tobevisit}</Text>
+                                        <Text style={styles.bottom}>待回访</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+
+                                <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task', {
+                                    'data': {
+                                        'type': '1',
+                                        overdue: 1,
+                                        hiddenHeader: true,
+                                        title: '派单逾期列表'
+                                    }
+                                })}>
+                                    <Flex direction='column' style={{ width: '25%' }}>
+                                        <Text style={styles.top}>{data.overduedispatch}</Text>
+                                        <Text style={styles.bottom}>派单逾期</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+                                <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task', {
+                                    'data': {
+                                        'type': '2',
+                                        overdue: 1,
+                                        hiddenHeader: true,
+                                        title: '接单逾期列表'
+                                    }
+                                })}>
+                                    <Flex direction='column' style={{ width: '25%' }}>
+                                        <Text style={styles.top}>{data.overdueorder}</Text>
+                                        <Text style={styles.bottom}>接单逾期</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+                                <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task', {
+                                    'data': {
+                                        'type': '3',
+                                        overdue: 1,
+                                        hiddenHeader: true,
+                                        title: '接单列表'
+                                    }
+                                })}>
+                                    <Flex direction='column' style={{ width: '25%' }}>
+                                        <Text style={styles.top}>{data.overduefinish}</Text>
+                                        <Text style={styles.bottom}>完成逾期</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+                            </Flex>
                         </Flex>
-                        <Flex direction='column' align={'start'}
+
+
+                        {/* <Flex direction='column' align={'start'}
                             style={[styles.card, { borderLeftColor: Macro.work_orange, borderLeftWidth: 5 }]}>
                             <Text style={styles.title}>工单逾期</Text>
                             <Flex style={styles.line} />
@@ -290,7 +453,7 @@ export default class WorkPage extends BasePage {
                                     </Flex>
                                 </TouchableWithoutFeedback>
                             </Flex>
-                        </Flex>
+                        </Flex> */}
 
                         <Flex direction='column' align={'start'}
                             style={[styles.card, {
@@ -358,6 +521,12 @@ export default class WorkPage extends BasePage {
 
 
 const styles = StyleSheet.create({
+
+    left: {
+        flex: 1,
+        paddingTop: 30
+    },
+
     title: {
         paddingTop: 14.67,
         textAlign: 'left',

@@ -88,7 +88,7 @@ export default class MinePage extends BasePage {
                 />
               </Flex>
             </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback
+            {/* <TouchableWithoutFeedback
               onPress={() => this.props.navigation.push('jixiao')}
             >
               <Flex
@@ -115,7 +115,7 @@ export default class MinePage extends BasePage {
                   defaultImg={require('../../static/images/address/right.png')}
                 />
               </Flex>
-            </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback> */}
 
             <TouchableWithoutFeedback
               onPress={() => this.props.navigation.push('contact')}

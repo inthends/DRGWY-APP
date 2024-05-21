@@ -1,4 +1,4 @@
-//工作台导航
+//统计
 import React from 'react';
 import {
   Text,
@@ -19,12 +19,12 @@ export default class NavigatorPage extends BasePage {
 
   static navigationOptions = ({ navigation }) => {
     return {
-      title: '导航',
+      title: '统计',
       headerForceInset: this.headerForceInset,
       headerTitleStyle: {
         flex: 1,
         textAlign: 'center'
-      },
+      }
     };
   };
 
@@ -35,7 +35,7 @@ export default class NavigatorPage extends BasePage {
     };
   }
 
-  componentDidMount(): void { }
+  // componentDidMount() { }
 
   render() {
     //const { statistics, dataInfo } = this.state;
@@ -49,7 +49,7 @@ export default class NavigatorPage extends BasePage {
                 paddingBottom: 3,
               }}
             >
-              <Text style={styles.title}>资源管理</Text>
+              <Text style={styles.title}>房产查询</Text>
             </Flex>
 
             <Flex justify={'between'} style={styles.cellContnent}>
@@ -65,16 +65,10 @@ export default class NavigatorPage extends BasePage {
                   <Text style={styles.content}>房产资料</Text>
                 </Flex>
               </TouchableWithoutFeedback>
-              {/*<TouchableWithoutFeedback onPress={() => alert(1)}>*/}
-              {/*    <Flex style={styles.right}>*/}
-              {/*        <LoadImage style={{width: 22, height: 22}}*/}
-              {/*                   defaultImg={require('../../static/images/home/search.png')}/>*/}
-              {/*        <Text style={styles.content}>统计分析</Text>*/}
-              {/*    </Flex>*/}
-              {/*</TouchableWithoutFeedback>*/}
             </Flex>
             <Flex style={styles.line} />
           </Flex>
+       
           <Flex direction={'column'} align={'start'} style={styles.cell}>
             <Flex
               style={{
@@ -82,52 +76,7 @@ export default class NavigatorPage extends BasePage {
                 paddingBottom: 3,
               }}
             >
-              <Text style={styles.title}>财务管理</Text>
-            </Flex>
-
-            <Flex justify={'between'} style={styles.cellContnent}>
-              <TouchableWithoutFeedback
-                onPress={() => this.props.navigation.navigate('feeHouse')}
-              >
-                <Flex style={styles.left}>
-                  <LoadImage
-                    style={{ width: 19, height: 25 }}
-                    defaultImg={require('../../static/images/navigator/shangmen.png')}
-                  />
-                  <Text style={styles.content}>上门收费</Text>
-                </Flex>
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback
-                onPress={() => this.props.navigation.navigate('gdMoney')}
-              >
-                <Flex style={styles.left}>
-                <Icon
-                    name="laptop"
-                    size={22}
-                    color={Macro.work_blue}
-                  />
-                  <Text style={styles.content}>固定资产</Text>
-                </Flex>
-              </TouchableWithoutFeedback>
-
-              {/*<TouchableWithoutFeedback onPress={() => alert(1)}>*/}
-              {/*    <Flex style={styles.right}>*/}
-              {/*        <LoadImage style={{width: 22, height: 22}}*/}
-              {/*                   defaultImg={require('../../static/images/home/search.png')}/>*/}
-              {/*        <Text style={styles.content}>统计分析</Text>*/}
-              {/*    </Flex>*/}
-              {/*</TouchableWithoutFeedback>*/}
-            </Flex>
-            <Flex style={styles.line} />
-          </Flex>
-          <Flex direction={'column'} align={'start'} style={styles.cell}>
-            <Flex
-              style={{
-                paddingTop: 3,
-                paddingBottom: 3,
-              }}
-            >
-              <Text style={styles.title}>物业管理</Text>
+              <Text style={styles.title}>物业查询</Text>
             </Flex>
             <Flex justify={'between'} style={styles.cellContnent}>
               <TouchableWithoutFeedback
@@ -165,47 +114,11 @@ export default class NavigatorPage extends BasePage {
                   <Text style={styles.content}>投诉单</Text>
                 </Flex>
               </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback
-                onPress={() => this.props.navigation.push('xunjian')}
-              >
-                <Flex style={styles.right}>
-                  <LoadImage
-                    style={{ width: 22, height: 22 }}
-                    defaultImg={require('../../static/images/navigator/zonghexunjian.png')}
-                  />
-                  <Text style={styles.content}>综合巡检</Text>
-                </Flex>
-              </TouchableWithoutFeedback>
-            </Flex>
-
-            <Flex justify={'between'} style={styles.cellContnent}>
-              <TouchableWithoutFeedback
-                onPress={() => this.props.navigation.push('check')}
-              >
-                <Flex style={styles.left}>
-                  {/* <LoadImage
-                    style={{ width: 22, height: 22 }}
-                    defaultImg={require('../../static/images/navigator/zonghexunjian.png')}
-                  /> */}
-
-                  <Icon
-                    name="flag"
-                    size={22}
-                    color={Macro.work_blue}
-                  />
-
-                  <Text style={styles.content}>现场检查</Text>
-                </Flex>
-              </TouchableWithoutFeedback>
-
+             
               <TouchableWithoutFeedback
                 onPress={() => this.props.navigation.push('shebeiList')}
               >
                 <Flex style={styles.right}>
-                  {/* <LoadImage
-                    style={{ width: 22, height: 22 }}
-                    defaultImg={require('../../static/images/navigator/zonghexunjian.png')}
-                  /> */}
                    <Icon
                     name="desktop"
                     size={20}
@@ -213,25 +126,20 @@ export default class NavigatorPage extends BasePage {
                   />
                   <Text style={styles.content}>设备资料</Text>
                 </Flex>
-              </TouchableWithoutFeedback> 
+              </TouchableWithoutFeedback>  
             </Flex>
- 
-            <Flex justify={'between'} style={styles.cellContnent}>
+
+            <Flex justify={'between'} style={styles.cellContnent}>  
               <TouchableWithoutFeedback
-                onPress={() => this.props.navigation.push('chaobiao')}
+                onPress={() => this.props.navigation.navigate('gdMoney')}
               >
                 <Flex style={styles.left}>
-                  {/* <LoadImage
-                    style={{ width: 22, height: 22 }}
-                    defaultImg={require('../../static/images/navigator/zonghexunjian.png')}
-                  /> */} 
-                  <Icon
-                    name="form"
+                <Icon
+                    name="laptop"
                     size={22}
                     color={Macro.work_blue}
                   />
-
-                  <Text style={styles.content}>移动抄表</Text>
+                  <Text style={styles.content}>固定资产</Text>
                 </Flex>
               </TouchableWithoutFeedback> 
             </Flex> 
@@ -244,7 +152,7 @@ export default class NavigatorPage extends BasePage {
                 paddingTop: 3,
                 paddingBottom: 3,
               }}>
-              <Text style={styles.title}>查询分析</Text>
+              <Text style={styles.title}>分析报表</Text>
             </Flex>
             <Flex justify={'between'} style={styles.cellContnent}>
               <TouchableWithoutFeedback

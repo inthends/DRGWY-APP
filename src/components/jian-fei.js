@@ -55,8 +55,7 @@ export default class JianFei extends BasePage {
             this.props.onClose();
         });
     };
-
-
+ 
     render() {
         const { types } = this.state;
         return (

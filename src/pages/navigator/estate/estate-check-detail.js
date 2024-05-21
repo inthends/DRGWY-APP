@@ -1,4 +1,4 @@
-//导航里面点击的检查单详情
+//统计里面点击的检查单详情
 import React from 'react';
 import {
     Text,

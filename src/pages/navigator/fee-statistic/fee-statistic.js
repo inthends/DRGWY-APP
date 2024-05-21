@@ -1,7 +1,7 @@
 import React  from 'react';
 import {
     View,
-    StyleSheet,
+    //StyleSheet,
     StatusBar,
 } from 'react-native';
 

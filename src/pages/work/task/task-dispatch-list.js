@@ -11,15 +11,15 @@ import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
 import { connect } from 'react-redux';
-import ListHeader from '../../../components/list-header';
+// import ListDispatchHeader from '../../../components/list-dispatch-header';
 import common from '../../../utils/common';
 import LoadImage from '../../../components/load-image';
 import WorkService from '../work-service';
-import ListJianYanHeader from '../../../components/list-jianyan-header';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
+import MyPopover from '../../../components/my-popover';
 
-class TaskListPage extends BasePage {
+class TaskDispatchListPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
@@ -44,25 +44,40 @@ class TaskListPage extends BasePage {
             key: null
         };
         // let pageParames = common.getValueFromProps(this.props); 
-        const type = common.getValueFromProps(this.props).type;
-        const overdue = common.getValueFromProps(this.props).overdue;
-        const hiddenHeader = common.getValueFromProps(this.props).hiddenHeader;
+        // const type = common.getValueFromProps(this.props).type;
+        // const overdue = common.getValueFromProps(this.props).overdue;
+        //const hiddenHeader = common.getValueFromProps(this.props).hiddenHeader; 
         this.state = {
-            count: 0,
-            showTabbar: true,
             pageIndex: 1,
-            statistics: {},
-            type,
             dataInfo: {
-                data: [],
+                data: []
             },
-            overdue,
-            hiddenHeader,
-            refreshing: false
+            //todo: 0,
+            //hiddenHeader,
+            refreshing: false,
+            visible: false,
+            repairMajor: '全部',
+            time: '全部',
+            repairMajors: []//维修专业
         };
     }
 
     componentDidMount() {
+        //获取维修专业
+        WorkService.getCommonItems('RepairMajor').then(res => {
+            if (res.length > 0) {
+                this.setState({
+                    repairMajors: ['全部', ...res.map(item => item.title)]
+                });
+            }
+        });
+
+        //获取已经派单数量
+        // const { repairMajor, time } = this.state;
+        // WorkService.workDispatchCount(repairMajor, time).then(count => {
+        //     this.setState({ count });
+        // });
+
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
@@ -86,8 +101,8 @@ class TaskListPage extends BasePage {
     }
 
     getList = () => {
-        const { type, overdue, pageIndex } = this.state;
-        WorkService.workList(type, overdue, pageIndex).then(dataInfo => {
+        const { repairMajor, time, pageIndex } = this.state;
+        WorkService.workDispatchList(1, repairMajor, time, pageIndex).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -131,10 +146,10 @@ class TaskListPage extends BasePage {
                     this.props.navigation.navigate('service', { data: item.id });
                 } else {
                     switch (item.statusName) {
-                        case '待派单': {
-                            this.props.navigation.navigate('paidan', { data: item.id });
-                            break;
-                        }
+                        // case '待派单': {
+                        //     this.props.navigation.navigate('paidan', { data: item.id });
+                        //     break;
+                        // }
                         case '待接单': {
                             this.props.navigation.navigate('jiedan', { data: item.id });
                             break;
@@ -180,12 +195,10 @@ class TaskListPage extends BasePage {
                                 <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 15, height: 15 }} /></Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
-
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
-                            <Text>紧急程度：{item.emergencyLevel}，重要程度：{item.importance}</Text>
+                            <Text>紧急：{item.emergencyLevel}，重要：{item.importance}，专业：{item.repairMajor}</Text>
                         </Flex>
-
                         <Text style={{
                             paddingLeft: 20,
                             paddingRight: 20,
@@ -203,24 +216,39 @@ class TaskListPage extends BasePage {
         );
     };
 
+    typeChange = (repairMajor) => {
+        this.setState({
+            repairMajor,
+            pageIndex: 1
+        }, () => {
+            this.onRefresh();
+        });
+    }
+
+    timeChange = (time) => {
+        this.setState({
+            time,
+            pageIndex: 1
+        }, () => {
+            this.onRefresh();
+        });
+    };
 
     render() {
-        const { dataInfo, overdue, hiddenHeader, type } = this.state;
+        const { dataInfo, repairMajors } = this.state;
+
         return (
             <CommonView style={{ flex: 1 }}>
-                {
-                    hiddenHeader ? null :
-                        (
-                            type === '6' ?
-                                <ListJianYanHeader overdue={overdue}
-                                    onChange={(overdue) => this.setState({ overdue }, () => {
-                                        this.onRefresh();
-                                    })} /> :
-                                <ListHeader overdue={overdue} onChange={(overdue) => this.setState({ overdue }, () => {
-                                    this.onRefresh();
-                                })} />
-                        )
-                }
+
+                <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
+                    <MyPopover onChange={this.typeChange}
+                        titles={repairMajors}
+                        visible={true} />
+                    <MyPopover onChange={this.timeChange}
+                        titles={['全部', '今日', '本周', '本月', '上月', '本年']}
+                        visible={true} />
+                </Flex>
+
                 <FlatList
                     data={dataInfo.data}
                     // ListHeaderComponent={}
@@ -299,4 +327,4 @@ const mapStateToProps = ({ buildingReducer }) => {
         selectBuilding: buildingReducer.selectBuilding,
     };
 };
-export default connect(mapStateToProps)(TaskListPage);
+export default connect(mapStateToProps)(TaskDispatchListPage);

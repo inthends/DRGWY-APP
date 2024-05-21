@@ -45,20 +45,18 @@ class EstateFuwuPage extends BasePage {
             key: null,
         };
 
-        this.state = {
-            count: 0,
-            showTabbar: true,
-            pageIndex: 1,
-            statistics: {},
+        this.state = { 
+            pageIndex: 1, 
             dataInfo: {
                 data: [],
             },
             refreshing: false,
-            ym: common.getYM('2020-01'),
+            //ym: common.getYM('2020-01'),
             billType: '全部',
             billStatus: -1,
             //canLoadMore: true,
-            time: common.getCurrentYearAndMonth(),
+            //time: common.getCurrentYearAndMonth(),
+            time: '全部',
             selectBuilding: this.props.selectBuilding
         };
 
@@ -97,23 +95,23 @@ class EstateFuwuPage extends BasePage {
             treeType = selectBuilding.type;
             organizeId = selectBuilding.key;
         }
-        let startTime = common.getMonthFirstDay(time);
-        let endTime = common.getMonthLastDay(time);
-        NavigatorService.serviceList(this.state.pageIndex, billStatus, organizeId, billType, startTime, endTime)
-        .then(dataInfo => {
-            if (dataInfo.pageIndex > 1) {
-                dataInfo = {
-                    ...dataInfo,
-                    data: [...this.state.dataInfo.data, ...dataInfo.data],
-                };
-            }
-            this.setState({
-                dataInfo: dataInfo,
-                refreshing: false
-                //canLoadMore: true,
-            }, () => {
-            });
-        }).catch(err => this.setState({ refreshing: false }));
+        // let startTime = common.getMonthFirstDay(time);
+        // let endTime = common.getMonthLastDay(time);
+        NavigatorService.serviceList(this.state.pageIndex, billStatus, organizeId, billType, time)
+            .then(dataInfo => {
+                if (dataInfo.pageIndex > 1) {
+                    dataInfo = {
+                        ...dataInfo,
+                        data: [...this.state.dataInfo.data, ...dataInfo.data],
+                    };
+                }
+                this.setState({
+                    dataInfo: dataInfo,
+                    refreshing: false
+                    //canLoadMore: true,
+                }, () => {
+                });
+            }).catch(err => this.setState({ refreshing: false }));
     };
 
     onRefresh = () => {
@@ -133,7 +131,7 @@ class EstateFuwuPage extends BasePage {
         if (this.canAction && data.length < total) {
             this.setState({
                 refreshing: true,
-                pageIndex: pageIndex + 1,
+                pageIndex: pageIndex + 1
                 // canLoadMore: false,
             }, () => {
                 this.getList();
@@ -159,7 +157,6 @@ class EstateFuwuPage extends BasePage {
                             <Text>{item.address} </Text>
                             <Text>{item.statusName}</Text>
                         </Flex>
-
                         <Text
                             numberOfLines={3}
                             ellipsizeMode='tail'
@@ -172,7 +169,6 @@ class EstateFuwuPage extends BasePage {
                             }}>
                             {item.contents}{"\n"}
                         </Text>
-
                         <Flex justify='between'
                             style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>{item.contactName} {item.billDate}</Text>
@@ -225,7 +221,7 @@ class EstateFuwuPage extends BasePage {
         }
         this.setState({
             billStatus,
-            pageIndex: 1,
+            pageIndex: 1
         }, () => {
             this.onRefresh();
         });
@@ -234,7 +230,7 @@ class EstateFuwuPage extends BasePage {
     timeChange = (time) => {
         this.setState({
             time,
-            pageIndex: 1,
+            pageIndex: 1
         }, () => {
             this.onRefresh();
         });
@@ -242,18 +238,15 @@ class EstateFuwuPage extends BasePage {
     billType = (billType) => {
         this.setState({
             billType,
-            pageIndex: 1,
+            pageIndex: 1
         }, () => {
             this.onRefresh();
         });
     };
-
-
+ 
     render() {
         const { dataInfo, ym } = this.state;
         return (
-
-
             <View style={{ flex: 1 }}>
                 <CommonView style={{ flex: 1 }}>
                     <ScrollTitle onChange={this.billType} titles={['全部', '报修', '投诉', '建议', '咨询']} />
@@ -264,9 +257,11 @@ class EstateFuwuPage extends BasePage {
                         <MyPopover onChange={this.statusChange}
                             titles={['全部', '待处理', '待完成', '待回访', '待检验', '已回访', '已检验', '已归档']}
                             visible={true} />
-                        <MyPopover onChange={this.timeChange} titles={ym} visible={true} />
+                        <MyPopover onChange={this.timeChange}
+                            //titles={ym} 
+                            titles={['全部', '今日', '本周', '本月', '上月', '本年']}
+                            visible={true} />
                     </Flex>
-
                     <FlatList
                         data={dataInfo.data}
                         // ListHeaderComponent={}
@@ -291,7 +286,7 @@ class EstateFuwuPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-    
+
     list: {
         backgroundColor: Macro.color_white,
         margin: 15,
@@ -313,8 +308,8 @@ const styles = StyleSheet.create({
         // textAlign: 'left',
         color: '#404145',
         fontSize: 16,
-        paddingBottom: 10, 
-        marginRight: 20, 
+        paddingBottom: 10,
+        marginRight: 20,
     },
     line: {
         width: ScreenUtil.deviceWidth() - 30 - 15 * 2,
@@ -328,8 +323,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
         paddingBottom: 15,
     },
-   
-    
+
+
     card: {
         borderTopWidth: 1,
         borderRightWidth: 1,

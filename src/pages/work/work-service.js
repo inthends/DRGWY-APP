@@ -48,7 +48,7 @@ export default {
             checkMemo
         });
     },
- 
+
     workData(showLoading) {
         return api.postData('/api/MobileMethod/MGetDeskStatistics', showLoading);
     },
@@ -169,15 +169,30 @@ export default {
             url = '/api/MobileMethod/MGetUnVisitServiceDeskPageList';
             type = null;
         }
-
         else if (type === 'assist') {
             //待协助列表
             url = '/api/MobileMethod/MGetAssistRepairPageList';
         }
-
         return api.postData(url, { status: type, isOverdue: overdue, pageIndex, pageSize: 100 });
     },
 
+
+    //工作台派单列表
+    workDispatchList(todo, repairMajor, time, pageIndex) {
+        let url = '/api/MobileMethod/MGetDispatchPageList';
+        return api.postData(url, { todo, repairMajor, time, pageIndex, pageSize: 100 });
+    },
+
+    // //数量
+    // workDispatchCount(repairMajor, time) {
+    //     let url = '/api/MobileMethod/MGetDispatchCount';
+    //     return api.postData(url, { repairMajor, time });
+    // },
+
+    getCommonItems(code) {
+        let url = '/api/MobileMethod/GetDataItemTreeJson';
+        return api.getData(url, { code });
+    },
 
     //获取人员
     // getWorkers(organizeId, keyword = null, type = '员工') {

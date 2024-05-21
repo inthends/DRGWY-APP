@@ -43,8 +43,7 @@ class HuiFangRatePage extends BasePage {
 
   constructor(props) {
     super(props);
-    this.state = {
-      count: 0,
+    this.state = { 
       //selectBuilding: this.props.selectBuilding || {},
       selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
       //statistics: [],
@@ -211,32 +210,29 @@ class HuiFangRatePage extends BasePage {
 const styles = StyleSheet.create({ 
   left: {
     width: ScreenUtil.deviceWidth() / 3.0 - 15,
-
     borderStyle: 'solid',
     borderWidth: 1,
     borderColor: '#ccc',
     marginLeft: 15,
-    height: 30,
+    height: 30
   },
   right: {
     width: (ScreenUtil.deviceWidth() / 3.0) * 2 - 15,
     borderStyle: 'solid',
     borderWidth: 1,
     borderColor: '#ccc',
-    height: 30,
+    height: 30
   },
-  
- 
   text: {
     textAlign: 'center',
     paddingTop: 5,
     paddingBottom: 5,
-    color: '#666',
+    color: '#666'
   },
   name: {
     color: '#666',
     fontSize: 14,
-    paddingLeft: 10,
+    paddingLeft: 10
   },
 });
 

@@ -26,7 +26,7 @@ import PersonInfoPage from '../mine/person-info';
 import SettingPage from '../mine/setting';
 import ModifyPsdPage from '../mine/modify-psd';
 
-//导航
+//统计
 import FeeHousePage from '../navigator/fee-housing';
 import gdMoneyPage from '../navigator/gd-Money';
 import FeeBuildingsPage from '../navigator/fee-buildings';
@@ -87,8 +87,10 @@ import StartDetailPage from '../work/task/start-detail';
 import CompleteDetailPage from '../work/task/complete-detail';
 import CheckDetailPage from '../work/task/check-detail';
 import VisitDetailPage from '../work/task/visit-detail';
-
 import AssistDetailPage from '../work/task/assist-detail';
+import TaskDispatchListPage from '../work/task/task-dispatch-list';
+
+
 
 //工作台回访查看单据
 import WeixiuDetailPage from '../work/task/weixiu-detail';
@@ -127,9 +129,9 @@ import zulinplan from '../flow/zulin-plan';
 import caigou from '../flow/caigou';
 import baoxiao from '../flow/baoxiao';
 import matter from '../flow/matter';
-import task from '../flow/task'; 
-import admincontract from '../flow/admin-contract'; 
-import budgetchange from '../flow/budget-change'; 
+import task from '../flow/task';
+import admincontract from '../flow/admin-contract';
+import budgetchange from '../flow/budget-change';
 import settlement from '../flow/settlement';
 import inquiry from '../flow/inquiry';
 import budget from '../flow/budget';
@@ -148,7 +150,6 @@ const BuildingNavigator = createStackNavigator(
       }),
     },
     SecondDetail: SecondDetailBuildingPage,
-
     DetailBuilding: DetailBuildingPage,
     DetailParking: DetailParkingPage,
     Buildings: BuildingsPage,
@@ -168,61 +169,34 @@ const BuildingNavigator = createStackNavigator(
       return {
         options,
       };
-    },
-  },
+    }
+  }
 );
 BuildingNavigator.navigationOptions = ({ navigation }) => ({
-  tabBarVisible: navigation.state.index === 0,
+  tabBarVisible: navigation.state.index === 0
 });
 
 const navigatorNavigator = createStackNavigator({
-
   Navigator: {
     screen: NavigatorPage,
   },
-
   FeeStatistic: {
     screen: FeeStatisticPage,
     navigationOptions: () => ({
-      title: '统计分析'
-    }),
+      title: '统计'
+    })
   },
-  addTaskWork: AddWorkPage,
-  feeRooms: FeeRoomsPage, //房间
-  feeParkings: FeeParkingsPage, //车位
-  feeBuildings: FeeBuildingsPage,
-  feeHouse: FeeHousePage,
+
   gdMoney: gdMoneyPage,
   e_fuwu: EstateFuwuPage,
-  feeDetail: FeeDetailPage,
-  feeAdd: FeeAddPage,
   fuwuD: EfuwuDetailPage,
   weixiuD: EweixiuDetailPage, //服务单页面点击关联单据，跳转到维修单，只能查看
-  tousuD: EtousuDetailPage, //投诉单详情，只能查看
-
+  tousuD: EtousuDetailPage, //投诉单详情，只能查看 
   e_weixiu: EstateWeixiuPage,
   e_tousu: EstateTousuPage,
-
-  SelectAddress: SelectAddressPage,
-  SelectPerson: SelectPerson,
-
-  charge: FeeChargeDetail,
-
-  //现场检查
-  SelectAllPerson: SelectAllPerson,
-  check: EstateCheckPage,
-  checkDetail: EcheckDetailPage,
-  checkAdd: EcheckAddPage,
- 
   //固定资产
   gdzcPandian: GdzcPandianPage,
   gdzcDetail: GdzcDetailPage,
-  AddRepair: AddRepairPage,
-
-  //订单中心
-  orderlist: OrderlistPage,
-  orderDetail: OrderDetailPage,
-
   //报表
   collection: CollectionRatePage,
   zijinliu: ZiJinLiuPage,
@@ -231,43 +205,20 @@ const navigatorNavigator = createStackNavigator({
   tousu_s: TouSuPage,
   huifang_s: HuiFangRatePage,
 
-  //扫码支付
-  scan: ScanScreen, //威富通扫码
-  jlscan: JLScanScreen, //嘉联扫码
-  bcmscan: BCMScanScreen, //交通银行扫码
-  cibscan: CIBScanScreen, //兴业银行扫码 
-  lklscan: LKLScanScreen, //拉卡拉聚合扫码
-  njscan: NJScanScreen, //南京银行扫码
+  // service: ServiceDeskDetailPage,
+  // wancheng: CompleteDetailPage,
+  // jianyan: CheckDetailPage,
+  // kaigong: StartDetailPage,
+  // jiedan: ReceiveDetailPage,
+  // paidan: DispatchDetailPage,
+  // huifang: VisitDetailPage,
+  // assist: AssistDetailPage, 
 
-
-  service: ServiceDeskDetailPage,
-  wancheng: CompleteDetailPage,
-  jianyan: CheckDetailPage,
-  kaigong: StartDetailPage,
-  jiedan: ReceiveDetailPage,
-  paidan: DispatchDetailPage,
-  huifang: VisitDetailPage, 
-  assist:AssistDetailPage,
-
-
-  xunjian: XunJianPage,
-  xunjiantask: TaskPage,
-  xunjianDetail: XunJianDetailPage,
-  xunjianPointDetail: XunJianPointDetailPage,
-  xunjianBeforeStart: XunjianBeforeStart,
-
-  selectXunjian: SelectXunJianPerson,
-  startxunjian: StartXunJianPage,
-
-  scanForWork: ScanOnly,
-  chaobiao: ChaoBiaoPage,
   newsList: NewsList,
-
   louPan: LouPan,
   louDong: LouDong,
   louCeng: LouCeng,
   louPark: LouPark,
-
   louDetail: LouDetail,
   shebeiList: SheBeiList,
   shebeiDetail: ShebeiDetail,
@@ -283,8 +234,8 @@ const WorkNavigator = createStackNavigator({
     screen: WorkPage,
     navigationOptions: () => ({
       title: '工作台',
-      headerBackTitle: null,
-    }),
+      headerBackTitle: null
+    })
   },
   AddWork: AddWorkPage,
   SelectAddress: SelectAddressPage,
@@ -292,17 +243,55 @@ const WorkNavigator = createStackNavigator({
   weixiuView: WeixiuDetailPage, //工作台里面，待回访点击跳转的维修单，只能查看
   tousuView: TousuDetailPage, //工作台里面，待回访点击跳转的投诉单，只能查看 
   wancheng: CompleteDetailPage,
-  assist:AssistDetailPage,
+  assist: AssistDetailPage,
   jianyan: CheckDetailPage,
   kaigong: StartDetailPage,
   jiedan: ReceiveDetailPage,
   paidan: DispatchDetailPage,
   huifang: VisitDetailPage,
-  SelectPerson: SelectPerson,
   scanonly: ScanOnly,
   scandemo: ScanSS,
   Task: TaskListPage,
-  newsList: NewsList
+  TaskDispatch: TaskDispatchListPage,
+  newsList: NewsList,
+
+  //add new
+  chaobiao: ChaoBiaoPage,
+  xunjian: XunJianPage,
+  xunjiantask: TaskPage,
+  xunjianDetail: XunJianDetailPage,
+  xunjianPointDetail: XunJianPointDetailPage,
+  xunjianBeforeStart: XunjianBeforeStart,
+  selectXunjian: SelectXunJianPerson,
+  startxunjian: StartXunJianPage,
+  scanForWork: ScanOnly,
+  //扫码支付
+  scan: ScanScreen, //威富通扫码
+  jlscan: JLScanScreen, //嘉联扫码
+  bcmscan: BCMScanScreen, //交通银行扫码
+  cibscan: CIBScanScreen, //兴业银行扫码 
+  lklscan: LKLScanScreen, //拉卡拉聚合扫码
+  njscan: NJScanScreen, //南京银行扫码 
+  //现场检查
+  SelectAllPerson: SelectAllPerson,
+  check: EstateCheckPage,
+  checkDetail: EcheckDetailPage,
+  checkAdd: EcheckAddPage,
+  addTaskWork: AddWorkPage,
+  AddRepair: AddRepairPage,
+  //订单中心
+  orderlist: OrderlistPage,
+  orderDetail: OrderDetailPage,
+  SelectAddress: SelectAddressPage,
+  SelectPerson: SelectPerson,
+
+  feeRooms: FeeRoomsPage, //房间
+  feeParkings: FeeParkingsPage, //车位
+  feeBuildings: FeeBuildingsPage,
+  feeHouse: FeeHousePage,
+  charge: FeeChargeDetail,
+  feeDetail: FeeDetailPage,
+  feeAdd: FeeAddPage
 });
 
 WorkNavigator.navigationOptions = ({ navigation }) => ({
@@ -366,20 +355,13 @@ const MineNavigator = createStackNavigator({
 MineNavigator.navigationOptions = ({ navigation }) => ({
   tabBarVisible: navigation.state.index === 0,
 });
- 
+
 const tabbar = createBottomTabNavigator(
   {
     Building: {
       screen: BuildingNavigator,
       navigationOptions: () => ({
         title: '项目',
-        headerBackTitle: null,
-      }),
-    },
-    Navigator: {
-      screen: navigatorNavigator,
-      navigationOptions: () => ({
-        title: '导航',
         headerBackTitle: null,
       }),
     },
@@ -394,6 +376,13 @@ const tabbar = createBottomTabNavigator(
       screen: ShenPiNavigator,
       navigationOptions: () => ({
         title: '审批',
+        headerBackTitle: null,
+      }),
+    },
+    Navigator: {
+      screen: navigatorNavigator,
+      navigationOptions: () => ({
+        title: '统计',
         headerBackTitle: null,
       }),
     },
@@ -415,10 +404,10 @@ const tabbar = createBottomTabNavigator(
       tabStyle: {}
     },
 
-    defaultNavigationOptions: ({ navigation }) => { 
-      if (navigation.isFocused()) {  
+    defaultNavigationOptions: ({ navigation }) => {
+      if (navigation.isFocused()) {
         DeviceEventEmitter.emit('currentNavigation', navigation);
-      } 
+      }
       // return {
       //   tabBarIcon: ({ focused
       //     //, horizontal, tintColor 
@@ -463,8 +452,7 @@ const tabbar = createBottomTabNavigator(
       //     return <Image style={{ width: 15, height: 18 }} source={imageUrl} />;
       //   }
       // };
-
-
+ 
       return {
         tabBarIcon: ({ focused }) => {
           const { routeName } = navigation.state;
@@ -475,16 +463,16 @@ const tabbar = createBottomTabNavigator(
               name = 'bank';
               break;
 
-            case 'Navigator':
-              name = 'star';
-              break;
-
             case 'Work':
               name = 'desktop';
               break;
 
             case 'Shenpi':
               name = 'form';
+              break;
+
+            case 'Navigator':
+              name = 'bar-chart';//统计
               break;
 
             case 'Mine':
@@ -496,7 +484,10 @@ const tabbar = createBottomTabNavigator(
           if (focused) {
             color = Macro.work_blue;
           }
-          return <Icon name={name} size={22} color={color} />
+          return <Icon
+            name={name}
+            size={22}
+            color={color} />
         }
       };
     }

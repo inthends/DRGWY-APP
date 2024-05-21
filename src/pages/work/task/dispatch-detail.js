@@ -76,14 +76,14 @@ export default class DispatchDetailPage extends BasePage {
             //获取维修单的单据动态
             WorkService.getOperationRecord(id).then(res => {
                 this.setState({
-                    communicates: res,
+                    communicates: res
                 });
             });
         });
 
         WorkService.weixiuExtra(id).then(images => {
             this.setState({
-                images,
+                images
             });
         });
     };
@@ -108,10 +108,12 @@ export default class DispatchDetailPage extends BasePage {
             }
             return it;
         });
+        
         this.setState({
             communicates: d
         });
     };
+
     cancel = () => {
         this.setState({
             visible: false
@@ -140,16 +142,12 @@ export default class DispatchDetailPage extends BasePage {
                             <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
                                 style={{ width: 16, height: 16 }} /></Flex>
                         </TouchableWithoutFeedback>
-                    </Flex>
-
-                    <Text style={[styles.desc]}>{detail.repairContent}</Text>
-
-                    <ListImages images={images} lookImage={this.lookImage} />
-
+                    </Flex> 
+                    <Text style={[styles.desc]}>{detail.repairContent}</Text> 
+                    <ListImages images={images} lookImage={this.lookImage} /> 
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
                     </Flex>
-
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every]}>
                             <Text style={styles.left}>关联单：</Text>
@@ -170,7 +168,6 @@ export default class DispatchDetailPage extends BasePage {
                             <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
                         </Flex>
                     </TouchableWithoutFeedback>
-
                     {/* <DashLine />
                     <View style={{
                         margin: 15,
@@ -187,8 +184,6 @@ export default class DispatchDetailPage extends BasePage {
                             value={this.state.value}
                         />
                     </View> */}
-
-
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <TextInput
                             maxLength={500}
@@ -199,8 +194,7 @@ export default class DispatchDetailPage extends BasePage {
                             style={{ fontSize: 16, textAlignVertical: 'top' }}
                             numberOfLines={4}>
                         </TextInput>
-                    </Flex>
-
+                    </Flex> 
                     {/* <TouchableWithoutFeedback onPress={() => this.click('派单')}>
                         <Flex justify={'center'} style={[styles.ii, {
                             width: '60%',
@@ -213,7 +207,6 @@ export default class DispatchDetailPage extends BasePage {
                             <Text style={styles.word}>派单</Text>
                         </Flex>
                     </TouchableWithoutFeedback> */}
-
                     <Flex justify={'center'}>
                         <Button onPress={() => this.click()} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
@@ -222,8 +215,7 @@ export default class DispatchDetailPage extends BasePage {
                                 marginTop: 20,
                                 height: 40
                             }}>派单</Button>
-                    </Flex>
-
+                    </Flex> 
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>

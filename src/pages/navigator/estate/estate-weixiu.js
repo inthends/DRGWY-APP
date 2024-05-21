@@ -49,19 +49,17 @@ class EstateWeixiuPage extends BasePage {
             key: null
         };
 
-        this.state = {
-            count: 0,
-            showTabbar: true,
-            pageIndex: 1,
-            statistics: {},
+        this.state = { 
+            pageIndex: 1, 
             dataInfo: {
                 data: []
             },
             refreshing: false,
-            ym: common.getYM('2020-01'),
+            //ym: common.getYM('2020-01'),
             billStatus: -1,
             //canLoadMore: true,
-            time: common.getCurrentYearAndMonth(),
+            //time: common.getCurrentYearAndMonth(),
+            time: '全部',
             selectBuilding: this.props.selectBuilding,
             repairArea: ''
         };
@@ -98,14 +96,13 @@ class EstateWeixiuPage extends BasePage {
             treeType = selectBuilding.type;
             organizeId = selectBuilding.key;
         }
-        let startTime = common.getMonthFirstDay(time);
-        let endTime = common.getMonthLastDay(time);
+        // let startTime = common.getMonthFirstDay(time);
+        // let endTime = common.getMonthLastDay(time);
         NavigatorService.weixiuList(this.state.pageIndex,
             billStatus,
             //treeType,
             organizeId,
-            startTime,
-            endTime,
+            time,
             repairArea).then(dataInfo => {
                 if (dataInfo.pageIndex > 1) {
                     dataInfo = {
@@ -139,7 +136,7 @@ class EstateWeixiuPage extends BasePage {
         if (this.canAction && data.length < total) {
             this.setState({
                 refreshing: true,
-                pageIndex: pageIndex + 1,
+                pageIndex: pageIndex + 1
                 //canLoadMore: false,
             }, () => {
                 this.getList();
@@ -208,7 +205,7 @@ class EstateWeixiuPage extends BasePage {
         }
         this.setState({
             billStatus,
-            pageIndex: 1,
+            pageIndex: 1
         }, () => {
             this.onRefresh();
         });
@@ -217,7 +214,7 @@ class EstateWeixiuPage extends BasePage {
     timeChange = (time) => {
         this.setState({
             time,
-            pageIndex: 1,
+            pageIndex: 1
         }, () => {
             this.onRefresh();
         });
@@ -231,7 +228,7 @@ class EstateWeixiuPage extends BasePage {
         }
         this.setState({
             repairArea,
-            pageIndex: 1,
+            pageIndex: 1
         }, () => {
             this.onRefresh();
         });
@@ -250,7 +247,10 @@ class EstateWeixiuPage extends BasePage {
                     <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
                         <MyPopover onChange={this.areaChange} titles={['全部', '客户区域', '公共区域']}
                             visible={true} />
-                        <MyPopover onChange={this.timeChange} titles={ym} visible={true} />
+                        <MyPopover onChange={this.timeChange} 
+                        //titles={ym}
+                        titles={['全部', '今日', '本周', '本月', '上月', '本年']}
+                         visible={true} />
                     </Flex>
                     <FlatList
                         data={dataInfo.data}

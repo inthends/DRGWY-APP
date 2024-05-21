@@ -43,8 +43,7 @@ class QianFeiZhangLingPage extends BasePage {
 
   constructor(props) {
     super(props);
-    this.state = {
-      count: 0,
+    this.state = { 
       ym: common.getYM('2020-01'),
       time: common.getCurrentYearAndMonth(),
       //selectBuilding: this.props.selectBuilding || {}//选择的机构
@@ -307,7 +306,7 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     paddingBottom: 5,
     color: '#666'
-  },
+  }
 });
 
 const mapStateToProps = ({ buildingReducer }) => {

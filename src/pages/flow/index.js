@@ -21,12 +21,16 @@ class ApprovePage extends BasePage {
   static navigationOptions = ({ navigation }) => {
     return {
       title: '审批',
+      headerTitleStyle: {
+        flex: 1,
+        textAlign: 'center'
+      },
       headerForceInset: this.headerForceInset,
       headerRight: (
         <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
           <Icon name="bars" style={{ marginRight: 15 }} color="black" />
         </TouchableWithoutFeedback>
-      ),
+      )
     };
   };
 

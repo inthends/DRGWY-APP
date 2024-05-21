@@ -193,26 +193,14 @@ class FeeDetailPage extends BasePage {
             const { isML, mlType, mlScale, isDigital } = this.state;
             switch (title) {
                 //app 不支持刷卡
-                // case '刷卡': {
-                //     if (common.isIOS()) {
-                //         UDToast.showInfo('功能暂未开放，敬请期待！');
-                //     } else {
-                //         //刷卡目前只支持拉卡拉
-                //         NavigatorService.createOrder(ids, isML, mlType, mlScale,3).then(res => {
-                //             this.setState({
-                //                 out_trade_no: res.out_trade_no,
-                //             });
-                //             NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
-                //                 ...res,
-                //                 "proc_cd": "000000", //拉卡拉消费
-                //                 "pay_tp": "0",
-                //             });
-                //         });
-                //     }
-                //     break;
-                // }
                 case '扫码': {
                     NavigatorService.createOrder(ids, isML, mlType, mlScale, 1).then(res => {
+ 
+                        if (!res.posType) {
+                            UDToast.showError(res);
+                            return;
+                        }
+ 
                         let posType = res.posType;
                         // if (posType === '银盛') {
                         //     if (!this.state.isYse) {
@@ -273,7 +261,6 @@ class FeeDetailPage extends BasePage {
                             });
                         }
                         else if (posType === '南京银行') {
-
                             // this.setState({
                             //     nanjingRes: res
                             // });
@@ -293,13 +280,11 @@ class FeeDetailPage extends BasePage {
                             //         },
                             //         needBack: '1'
                             //     }
-                            // });
-
+                            // }); 
                             //扫码接口
-                            this.props.navigation.push('njscan', { 
+                            this.props.navigation.push('njscan', {
                                 out_trade_no: res.out_trade_no
                             });
-
                         }
                     }).catch(err => { UDToast.showError(err); });
                     break;
@@ -307,6 +292,11 @@ class FeeDetailPage extends BasePage {
 
                 case '收款码': {
                     NavigatorService.createOrder(ids, isML, mlType, mlScale, 2).then(res => {
+                        if (!res.posType) {
+                            UDToast.showError(res);
+                            return;
+                        }
+ 
                         let posType = res.posType;
                         // if (posType === '银盛') {
                         //     if (!this.state.isYse) {
@@ -1034,13 +1024,13 @@ class FeeDetailPage extends BasePage {
                         </View>
                     </TouchableWithoutFeedback>
                 }
-            </CommonView> 
+            </CommonView>
         );
     }
 }
 
-const styles = StyleSheet.create({ 
-   
+const styles = StyleSheet.create({
+
     title: {
         color: '#404145',
         fontSize: 16
@@ -1054,7 +1044,7 @@ const styles = StyleSheet.create({
         color: '#868688',
         fontSize: 16,
         paddingBottom: 10
-    }, 
+    },
 
     left: {
         flex: 1
@@ -1088,7 +1078,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         paddingBottom: 10
     },
-  
+
     ii: {
         paddingTop: 10,
         paddingBottom: 10,

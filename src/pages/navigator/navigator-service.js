@@ -66,8 +66,7 @@ export default {
     billStatus,
     billType,
     organizeId,
-    startTime,
-    endTime
+    time
   ) {
     return api.postData('/api/MobileMethod/MGetCheckPageList', {
       pageIndex,
@@ -75,8 +74,7 @@ export default {
       billStatus,
       billType,
       organizeId,
-      startTime,
-      endTime
+      time
     });
   },
 
@@ -86,8 +84,7 @@ export default {
     billStatus,
     organizeId,
     billType,
-    startTime,
-    endTime
+    time
   ) {
 
     return api.postData('/api/MobileMethod/MGetServiceDeskPageList', {
@@ -97,8 +94,7 @@ export default {
       status: billStatus,
       organizeId,
       billType,
-      startTime,
-      endTime,
+      time
     });
   },
 
@@ -106,8 +102,7 @@ export default {
     pageIndex,
     billStatus,
     organizeId,
-    startTime,
-    endTime,
+    time,
     repairArea,
   ) {
 
@@ -116,8 +111,7 @@ export default {
       pageSize: 10,
       status: billStatus,
       organizeId,
-      startTime,
-      endTime,
+      time,
       repairArea
     });
   },
@@ -127,8 +121,7 @@ export default {
     billStatus,
     organizeId,
     billType,
-    startTime,
-    endTime,
+    time
   ) {
     return api.postData('/api/MobileMethod/MGetComplaintPageList', {
       pageIndex,
@@ -136,8 +129,7 @@ export default {
       status: billStatus,
       organizeId,
       billType,
-      startTime,
-      endTime,
+      time
     });
   },
   // serviceDetail(type,keyvalue) {

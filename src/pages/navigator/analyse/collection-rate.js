@@ -37,8 +37,7 @@ class CollectionRatePage extends BasePage {
 
   constructor(props) {
     super(props);
-    this.state = {
-      count: 0,
+    this.state = { 
       selectBuilding: this.props.selectBuilding || {},
       //statistics: [],
       estateId: null,
@@ -76,7 +75,7 @@ class CollectionRatePage extends BasePage {
         {
           selectBuilding: nextProps.selectBuilding,
           estateId: nextProps.selectBuilding.key,
-          index: 0,
+          index: 0
         },
         () => {
           this.getStatustics();
@@ -127,11 +126,11 @@ class CollectionRatePage extends BasePage {
     // const titles = this.state.titles || [];
     this.setState(
       {
-        type: index == 0 ? '' : title,
+        type: index == 0 ? '' : title
       },
       () => {
         this.getStatustics();
-      },
+      }
     );
   };
 
@@ -265,28 +264,26 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     marginLeft: 15,
-    height: 30,
+    height: 30
   },
   right: {
     width: (ScreenUtil.deviceWidth() / 3.0) * 2 - 15,
     borderStyle: 'solid',
     borderWidth: 1,
     borderColor: '#ccc',
-    height: 30,
+    height: 30
   },
-  
-  
   text: {
     textAlign: 'center',
     paddingTop: 5,
     paddingBottom: 5,
-    color: '#666',
+    color: '#666'
   },
   name: {
     color: '#666',
     fontSize: 14,
-    paddingLeft: 10,
-  },
+    paddingLeft: 10
+  }
 });
 
 const mapStateToProps = ({ buildingReducer }) => {

@@ -41,13 +41,12 @@ class WeiXiuRatePage extends BasePage {
 
   constructor(props) {
     super(props);
-    this.state = {
-      count: 0,
+    this.state = { 
       //selectBuilding: this.props.selectBuilding || {},
       selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
       //statistics: [],
       res: {
-        tableData: [],
+        tableData: []
       },
     };
   }
@@ -56,7 +55,7 @@ class WeiXiuRatePage extends BasePage {
     NavigatorService.GetDataItemTreeJsonRepairMajor().then((res) => {
       const titles = (res || []).map((item) => item.title);
       this.setState({
-        titles: ['全部', ...titles],
+        titles: ['全部', ...titles]
       });
     });
     this.getStatustics();
@@ -76,7 +75,7 @@ class WeiXiuRatePage extends BasePage {
         {
           selectBuilding: nextProps.selectBuilding,
           estateId: nextProps.selectBuilding.key,
-          index: 0,
+          index: 0
         },
         () => {
           this.getStatustics();
@@ -127,11 +126,11 @@ class WeiXiuRatePage extends BasePage {
     // const titles = this.state.titles || [];
     this.setState(
       {
-        type: index == 0 ? '' : title,
+        type: index == 0 ? '' : title
       },
       () => {
         this.getStatustics();
-      },
+      }
     );
   };
 
@@ -185,20 +184,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     marginLeft: 15,
-    height: 30,
+    height: 30
   },
- 
   text: {
     textAlign: 'center',
     paddingTop: 5,
     paddingBottom: 5,
-    color: '#666',
+    color: '#666'
   },
   name: {
     color: '#666',
     fontSize: 14,
-    paddingLeft: 10,
-  },
+    paddingLeft: 10
+  }
 });
 
 const mapStateToProps = ({ buildingReducer }) => {

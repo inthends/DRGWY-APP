@@ -44,25 +44,22 @@ class EstateTousuPage extends BasePage {
     constructor(props) {
         super(props);
         this.selectBuilding = {
-            key: null,
+            key: null
         };
 
-        this.state = {
-            count: 0,
-            showTabbar: true,
-            pageIndex: 1,
-            statistics: {},
+        this.state = { 
+            pageIndex: 1, 
             dataInfo: {
                 data: [],
             },
             refreshing: false,
-            ym: common.getYM('2020-01'),
+            //ym: common.getYM('2020-01'),
             billStatus: -1,
             //canLoadMore: true,
-            time: common.getCurrentYearAndMonth(),
+            //time: common.getCurrentYearAndMonth(),
+            time: '全部',
             selectBuilding: this.props.selectBuilding
         };
-
     }
 
     componentDidMount() {
@@ -70,9 +67,8 @@ class EstateTousuPage extends BasePage {
             'didFocus',
             (obj) => {
                 this.onRefresh();
-            },
+            }
         );
-
     }
 
     componentWillUnmount() {
@@ -88,9 +84,7 @@ class EstateTousuPage extends BasePage {
                 this.onRefresh();
             });
         }
-
     }
-
 
     getList = () => {
         /*
@@ -103,10 +97,10 @@ class EstateTousuPage extends BasePage {
             treeType = selectBuilding.type;
             organizeId = selectBuilding.key;
         }
-        let startTime = common.getMonthFirstDay(time);
-        let endTime = common.getMonthLastDay(time);
+        // let startTime = common.getMonthFirstDay(time);
+        // let endTime = common.getMonthLastDay(time);
 
-        NavigatorService.tousuList(this.state.pageIndex, billStatus, treeType, organizeId, '', startTime, endTime).
+        NavigatorService.tousuList(this.state.pageIndex, billStatus, treeType, organizeId, '', time).
         then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
@@ -212,7 +206,7 @@ class EstateTousuPage extends BasePage {
         }
         this.setState({
             billStatus,
-            pageIndex: 1,
+            pageIndex: 1
         }, () => {
             this.onRefresh();
         });
@@ -221,7 +215,7 @@ class EstateTousuPage extends BasePage {
     timeChange = (time) => {
         this.setState({
             time,
-            pageIndex: 1,
+            pageIndex: 1
         }, () => {
             this.onRefresh();
         });
@@ -230,7 +224,7 @@ class EstateTousuPage extends BasePage {
     billType = (billType) => {
         this.setState({
             billType,
-            pageIndex: 1,
+            pageIndex: 1
         }, () => {
             this.onRefresh();
         });
@@ -248,7 +242,10 @@ class EstateTousuPage extends BasePage {
                     {/*</Tabs>*/}
                     <Flex justify={'between'} style={{marginTop: 15, paddingRight: 15, height: 30}}>
                         <Flex/>
-                        <MyPopover onChange={this.timeChange} titles={ym} visible={true}/>
+                        <MyPopover onChange={this.timeChange} 
+                        //titles={ym} 
+                        titles={['全部', '今日', '本周', '本月', '上月', '本年']}
+                        visible={true}/>
                     </Flex>
 
                     <FlatList

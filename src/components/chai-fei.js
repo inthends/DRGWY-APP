@@ -10,7 +10,7 @@ import {
 import ScreenUtil from '../utils/screen-util';
 import UDToast from '../utils/UDToast';
 import api from '../utils/api';
-import DatePicker from 'react-native-datepicker'
+import DatePicker from 'react-native-datepicker';
 import Macro from '../utils/macro';
 import moment from 'moment';
 
@@ -106,8 +106,7 @@ export default class ChaiFei extends BasePage {
                                             let b = moment(item.endDate);
                                             let iDays = b.diff(a, 'days') + 1;
                                             let firstEndDate = moment(value);
-                                            this.setState({ firstEndDate: firstEndDate });
-
+                                            this.setState({ firstEndDate: firstEndDate }); 
                                             let firstDays = firstEndDate.diff(a, 'days') + 1;
                                             let firstamount = (item.amount / iDays * firstDays).toFixed(2);
                                             this.setState({ firstAmount: firstamount, secondAmount: (item.amount - Number(firstamount)).toFixed(2) });
@@ -249,8 +248,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#eeeeee',
         borderStyle: 'solid'
-    },
-
+    }, 
     secondDate: {
         width: 108, 
         fontSize: 16,
