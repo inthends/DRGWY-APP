@@ -67,6 +67,8 @@ export default class CheckDetailPage extends BasePage {
                 detail: {
                     ...detail.entity,
                     serviceDeskCode: detail.serviceDeskCode,
+                    emergencyLevel: detail.emergencyLevel,
+                    importance: detail.importance,
                     relationId: detail.relationId,
                     statusName: detail.statusName
                 }
@@ -85,7 +87,7 @@ export default class CheckDetailPage extends BasePage {
                 });
             });
         });
- 
+
         WorkService.weixiuExtra(id).then(images => {
             this.setState({
                 images
@@ -99,7 +101,7 @@ export default class CheckDetailPage extends BasePage {
             UDToast.showInfo('请输入文字');
             return;
         }
-        WorkService.serviceHandle(handle,  id, value, { result }).then(res => {
+        WorkService.serviceHandle(handle, id, value, { result }).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
         });
@@ -131,7 +133,7 @@ export default class CheckDetailPage extends BasePage {
     };
 
     render() {
-        const { images, detail, communicates, result } = this.state; 
+        const { images, detail, communicates, result } = this.state;
         const selectImg = require('../../../static/images/select.png');
         const noselectImg = require('../../../static/images/no-select.png');
         return (
@@ -141,19 +143,25 @@ export default class CheckDetailPage extends BasePage {
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
-                    <Flex style={[styles.every2]} justify='between'>
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.address} {detail.contactName}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
                             <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 16, height: 16 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
-                    <DashLine />
+                    {/* <DashLine /> */}
                     <Text style={styles.desc}>{detail.repairContent}</Text>
-                    <DashLine />
+                    {/* <DashLine /> */}
                     <ListImages images={images} lookImage={this.lookImage} />
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
+                    </Flex>
+
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
                     </Flex>
+
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every]}>
                             <Text style={styles.left}>关联单：</Text>
@@ -162,7 +170,21 @@ export default class CheckDetailPage extends BasePage {
                                 style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-                    <DashLine />
+  
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>协助人：{detail.assistName}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>增援人：{detail.reinforceName}</Text>
+                    </Flex>
+ 
+                    {/* <DashLine /> */}
+
                     <Flex justify={'between'} style={{ margin: 15 }}>
                         <TouchableWithoutFeedback onPress={() => this.setState({ result: 1 })}>
                             <Flex>
@@ -177,7 +199,7 @@ export default class CheckDetailPage extends BasePage {
                                     style={{ width: 15, height: 15 }} />
                                 <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>不合格</Text>
                             </Flex>
-                        </TouchableWithoutFeedback>  
+                        </TouchableWithoutFeedback>
                     </Flex>
                     <View style={{
                         margin: 15,
@@ -189,7 +211,7 @@ export default class CheckDetailPage extends BasePage {
                         <TextareaItem
                             rows={4}
                             placeholder='检验建议'
-                            style={{  paddingTop: 10,   width: ScreenUtil.deviceWidth() - 32 }}
+                            style={{ paddingTop: 10, width: ScreenUtil.deviceWidth() - 32 }}
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
@@ -205,7 +227,7 @@ export default class CheckDetailPage extends BasePage {
                         </Flex>
                     </TouchableWithoutFeedback>
                     {/* <Communicates communicateClick={this.communicateClick} communicates={communicates} /> */}
-                    <OperationRecords communicateClick={this.communicateClick} communicates={communicates} /> 
+                    <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
 
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
@@ -218,7 +240,7 @@ export default class CheckDetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-    
+
     every: {
         marginLeft: 15,
         marginRight: 15,

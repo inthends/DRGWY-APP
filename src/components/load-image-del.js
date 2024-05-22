@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Image } from 'react-native';
+import { Icon } from '@ant-design/react-native';
+import Macro from '../utils/macro';
 
-export default class LoadImage extends Component {
+//可删除图片
+export default class LoadImageDelete extends Component {
     constructor(props) {
         super(props);
         this.state = this._handleImg(this.props);
@@ -47,13 +50,27 @@ export default class LoadImage extends Component {
     };
 
     render() {
-        const { img, style } = this.state;
+        const { img, defaultImg, style } = this.state;
         return (
-            <Image
-                style={style}
-                source={img}
-                onError={this._loadError} />
+            <>
+                {img == defaultImg ?
+                    <Image
+                        style={style}
+                        source={img}
+                        onError={this._loadError} />
+                    :
+                    <>
+                        <Image
+                            style={{ height: style.height, width: style.width }}
+                            source={img}
+                            onError={this._loadError} />
+                        <Icon name='delete'
+                            color={Macro.work_blue}
+                            onPress={this.props.delete}
+                            style={{ width: 20, height: 20, marginLeft: style.width / 2 - 10, marginTop: 20 - style.height / 2 }} />
+                    </>
+                }
+            </>
         );
     }
-
 }

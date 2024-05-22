@@ -1,6 +1,6 @@
 import React from 'react';
-import {
-    TextInput,
+import { 
+    View,
     Text,
     TouchableWithoutFeedback,
     TouchableOpacity,
@@ -8,7 +8,7 @@ import {
     ScrollView, Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Icon, Flex } from '@ant-design/react-native';
+import { Icon, Flex,TextareaItem } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';
@@ -67,6 +67,8 @@ export default class StartDetailPage extends BasePage {
                 detail: {
                     ...detail.entity,
                     serviceDeskCode: detail.serviceDeskCode,
+                    emergencyLevel: detail.emergencyLevel,
+                    importance: detail.importance,
                     relationId: detail.relationId,
                     statusName: detail.statusName,
                     assistName: detail.assistName//协助人 
@@ -172,6 +174,11 @@ export default class StartDetailPage extends BasePage {
                     </Flex>
                     <Text style={styles.desc}>{detail.repairContent}</Text>
                     <ListImages images={images} lookImage={this.lookImage} />
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
+                    </Flex>
+
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
                     </Flex>
@@ -185,16 +192,20 @@ export default class StartDetailPage extends BasePage {
                     </TouchableWithoutFeedback>
 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>协助人：{detail.assistName}</Text>
                     </Flex>
- 
+
                     <UploadImageView style={{ marginTop: 10 }}
                         linkId={this.state.id}
                         reload={this.reload}
                         type='开工'
                     />
 
-                    {/* <View style={{
+                    <View style={{
                         margin: 15,
                         borderStyle: 'solid',
                         borderColor: '#F3F4F2',
@@ -208,9 +219,9 @@ export default class StartDetailPage extends BasePage {
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
-                    </View> */}
+                    </View>
 
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                    {/* <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <TextInput
                             maxLength={500}
                             placeholder='请输入故障判断'
@@ -220,9 +231,9 @@ export default class StartDetailPage extends BasePage {
                             style={{ fontSize: 16, textAlignVertical: 'top' }}
                             numberOfLines={4}>
                         </TextInput>
-                    </Flex>
+                    </Flex> */}
 
-                    {/* <View style={{
+                    <View style={{
                         margin: 15,
                         borderStyle: 'solid',
                         borderColor: '#F3F4F2',
@@ -236,8 +247,10 @@ export default class StartDetailPage extends BasePage {
                             onChange={value => this.setState({ backMemo: value })}
                             value={this.state.backMemo}
                         />
-                    </View> */}
+                    </View>
 
+                    {/*
+                      苹果系统输入框有问题
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <TextInput
                             maxLength={500}
@@ -248,7 +261,7 @@ export default class StartDetailPage extends BasePage {
                             style={{ fontSize: 16, textAlignVertical: 'top' }}
                             numberOfLines={4}>
                         </TextInput>
-                    </Flex>
+                    </Flex> */}
 
                     <Flex justify={'center'} style={{ marginTop: 20 }} >
                         <TouchableWithoutFeedback onPress={() => this.click('开始维修')}>
@@ -257,7 +270,7 @@ export default class StartDetailPage extends BasePage {
                             </Flex>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={() => this.back('退单')}>
-                            <Flex justify={'center'} style={[styles.ii, { backgroundColor:  Macro.work_red }]}>
+                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_red }]}>
                                 <Text style={styles.word}>退单</Text>
                             </Flex>
                         </TouchableWithoutFeedback>

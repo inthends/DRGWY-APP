@@ -1,7 +1,7 @@
 //服务单回访
 import React from 'react';
 import {
-    TextInput,
+    View,
     Text,
     TouchableWithoutFeedback,
     TouchableOpacity,
@@ -9,18 +9,18 @@ import {
     ScrollView, Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Icon, Flex, Button } from '@ant-design/react-native';
+import { Icon, Flex, TextareaItem, Button } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
-import common from '../../../utils/common';  
-import UDToast from '../../../utils/UDToast'; 
-import WorkService from '../work-service'; 
-import Star from '../../../components/star'; 
+import common from '../../../utils/common';
+import UDToast from '../../../utils/UDToast';
+import WorkService from '../work-service';
+import Star from '../../../components/star';
 import OperationRecords from '../../../components/operationrecords';
 import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
-import ImageViewer from 'react-native-image-zoom-viewer'; 
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 export default class VisitDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -54,7 +54,7 @@ export default class VisitDetailPage extends BasePage {
 
     componentDidMount() {
         this.getData();
-    } 
+    }
 
     // getData = () => {
     //     const { fuwu, type } = this.state; 
@@ -184,7 +184,7 @@ export default class VisitDetailPage extends BasePage {
 
                     <Star star={this.state.star} onChange={this.changeStar} />
 
-                    {/* <View style={{
+                    <View style={{
                         margin: 15,
                         borderStyle: 'solid',
                         borderColor: '#F3F4F2',
@@ -194,13 +194,13 @@ export default class VisitDetailPage extends BasePage {
                         <TextareaItem
                             rows={4}
                             placeholder='输入业主建议'
-                            style={{   paddingTop: 10, width: ScreenUtil.deviceWidth() - 32 }}
+                            style={{ paddingTop: 10, width: ScreenUtil.deviceWidth() - 32 }}
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
-                    </View> */}
+                    </View>
 
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                    {/* <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <TextInput
                             maxLength={500}
                             placeholder='请输入'
@@ -210,7 +210,8 @@ export default class VisitDetailPage extends BasePage {
                             style={{ fontSize: 16, textAlignVertical: 'top' }}
                             numberOfLines={4}>
                         </TextInput>
-                    </Flex>
+                    </Flex> */}
+
                     {/* <TouchableWithoutFeedback onPress={() => this.click('完成回访')}>
                         <Flex justify={'center'} style={[styles.ii, { width: '80%', marginLeft: '10%', marginRight: '10%', marginBottom: 20 }, { backgroundColor: Macro.work_blue }]}>
                             <Text style={styles.word}>完成回访</Text>
@@ -220,7 +221,7 @@ export default class VisitDetailPage extends BasePage {
                     <Flex justify={'center'}>
                         <Button onPress={() => this.click('完成回访')} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                width: 300,
+                                width: 200,
                                 backgroundColor: Macro.work_blue,
                                 marginTop: 20,
                                 height: 40

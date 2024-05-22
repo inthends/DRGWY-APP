@@ -1,7 +1,7 @@
-//未读消息列表点击
+//未读消息列表点击打开服务单详情
 import React from 'react';
-import {
-    TextInput,
+import { 
+    View,
     Text,
     TouchableWithoutFeedback,
     TouchableOpacity,
@@ -9,7 +9,7 @@ import {
     ScrollView, Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Icon, Flex,Button } from '@ant-design/react-native';
+import { Icon, Flex,TextareaItem, Button } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 // import SelectImage from '../../../utils/select-image';
@@ -126,17 +126,17 @@ export default class ServiceDeskDetailPage extends BasePage {
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.billType}</Text>
                     </Flex>
-
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.address}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
-
                     <Text style={[styles.desc]}>{detail.contents}</Text>
-
                     <ListImages images={images} lookImage={this.lookImage} />
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
+                    </Flex>
 
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>报单人：{detail.contactName} {detail.createDate}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactPhone)}>
                             <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
@@ -190,7 +190,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                         </TouchableWithoutFeedback>
                     ):null} */}
 
-                    {/* <View style={{
+                    <View style={{
                         margin: 15,
                         borderStyle: 'solid',
                         borderColor: '#F3F4F2',
@@ -204,9 +204,9 @@ export default class ServiceDeskDetailPage extends BasePage {
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
-                    </View> */}
+                    </View>
 
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                    {/* <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <TextInput
                             maxLength={500}
                             placeholder='请输入'
@@ -216,7 +216,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                             style={{ fontSize: 16, textAlignVertical: 'top' }}
                             numberOfLines={4}>
                         </TextInput>
-                    </Flex>
+                    </Flex> */}
 
                     {/* <TouchableWithoutFeedback onPress={() => this.click('回复')}>
                         <Flex justify={'center'} style={[styles.ii, {
@@ -231,14 +231,13 @@ export default class ServiceDeskDetailPage extends BasePage {
                     <Flex justify={'center'}>
                         <Button onPress={() => this.click('回复')} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                width: 300,
+                                width: 200,
                                 backgroundColor: Macro.work_blue,
                                 marginTop: 10,
-                                marginBottom:10,
+                                marginBottom: 10,
                                 height: 40
                             }}>回复</Button>
                     </Flex>
-
 
                     {detail.status === 1 && <Flex>
                         <TouchableWithoutFeedback onPress={() => this.click('转维修')}>
@@ -271,7 +270,7 @@ export default class ServiceDeskDetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
- 
+
     every: {
         marginLeft: 15,
         marginRight: 15,

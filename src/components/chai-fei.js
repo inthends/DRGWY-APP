@@ -5,7 +5,7 @@ import {
     Flex,
     Button,
     WhiteSpace,
-    TextareaItem,
+    TextareaItem
 } from '@ant-design/react-native';
 import ScreenUtil from '../utils/screen-util';
 import UDToast from '../utils/UDToast';

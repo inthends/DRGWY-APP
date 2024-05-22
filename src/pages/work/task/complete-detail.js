@@ -1,14 +1,15 @@
 import React from 'react';
 import {
-    TextInput,
+    View,
     Text,
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    ScrollView, Modal,
+    ScrollView,
+    Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Icon, Flex,Button } from '@ant-design/react-native';
+import { Icon, Flex, Button, TextareaItem } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';
@@ -61,6 +62,8 @@ export default class CompleteDetailPage extends BasePage {
                 detail: {
                     ...detail.entity,
                     serviceDeskCode: detail.serviceDeskCode,
+                    emergencyLevel: detail.emergencyLevel,
+                    importance: detail.importance,
                     relationId: detail.relationId,
                     statusName: detail.statusName,
                     assistName: detail.assistName,//协助人 
@@ -90,7 +93,7 @@ export default class CompleteDetailPage extends BasePage {
             UDToast.showInfo('请输入文字');
             return;
         }
-        const wcimages = images.filter(t => t.type === '完成'); 
+        const wcimages = images.filter(t => t.type === '完成');
         if (wcimages.length == 0 && !isUpload) {
             UDToast.showInfo('请上传完成图片');
             return;
@@ -151,6 +154,11 @@ export default class CompleteDetailPage extends BasePage {
                     </Flex>
                     <Text style={styles.desc}>{detail.repairContent}</Text>
                     <ListImages images={images} lookImage={this.lookImage} />
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
+                    </Flex>
+
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
                     </Flex>
@@ -165,9 +173,13 @@ export default class CompleteDetailPage extends BasePage {
                     </TouchableWithoutFeedback>
 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>协助人：{detail.assistName}</Text>
                     </Flex>
-                    
+
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>增援人：{detail.reinforceName}</Text>
                     </Flex>
@@ -178,12 +190,12 @@ export default class CompleteDetailPage extends BasePage {
                         type='完成'
                     />
 
-                    {/* <View style={{
+                    <View style={{
                         margin: 15,
                         borderStyle: 'solid',
                         borderColor: '#F3F4F2',
                         borderWidth: 1,
-                        borderRadius: 5,
+                        borderRadius: 5
                     }}>
                         <TextareaItem
                             rows={3}
@@ -192,9 +204,9 @@ export default class CompleteDetailPage extends BasePage {
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
-                    </View> */}
+                    </View>
 
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                    {/* <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <TextInput
                             maxLength={500}
                             placeholder='请输入'
@@ -204,7 +216,7 @@ export default class CompleteDetailPage extends BasePage {
                             style={{ fontSize: 16, textAlignVertical: 'top' }}
                             numberOfLines={4}>
                         </TextInput>
-                    </Flex>
+                    </Flex> */}
 
                     {/* <TouchableWithoutFeedback onPress={() => this.click('完成维修')}>
                         <Flex justify={'center'} style={[styles.ii, {
@@ -220,7 +232,7 @@ export default class CompleteDetailPage extends BasePage {
                     <Flex justify={'center'}>
                         <Button onPress={() => this.click('完成维修')} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                width: 300,
+                                width: 200,
                                 backgroundColor: Macro.work_blue,
                                 marginTop: 20,
                                 height: 40
@@ -239,7 +251,7 @@ export default class CompleteDetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-  
+
     every: {
         marginLeft: 15,
         marginRight: 15,

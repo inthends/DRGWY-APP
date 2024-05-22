@@ -1,17 +1,20 @@
- 
+
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { View, TouchableWithoutFeedback, Alert } from 'react-native';
 import { Flex } from '@ant-design/react-native';
 import ScreenUtil from '../utils/screen-util';
 import SelectImage from '../utils/select-image';
-import LoadImage from './load-image';
+// import LoadImage from './load-image';
+import LoadImageDelete from './load-image-del';
+import WorkService from '../pages/work/work-service';
 //const single_width = 60;
 
 export default class UploadImageView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            images: [{ icon: '' }],
+            // images: [{ icon: '' }],
+            images: []
         };
     }
 
@@ -20,17 +23,42 @@ export default class UploadImageView extends Component {
         SelectImage.select(
             this.props.linkId,
             this.props.type,
-            this.props.uploadUrl || '/api/MobileMethod/MUploadRepairFile').then(res => {
+            this.props.uploadUrl || '/api/MobileMethod/MUploadRepairFile').then(url => {
                 let images = [...this.state.images];
-                images.splice(images.length - 1, 0, { 'icon': res });
+                images.splice(images.length - 1, 0, url);
                 if (images.length > 4) {
                     images = images.filter((item, index) => index !== images.length - 1);
                 }
                 this.setState({ images });
                 this.props.reload();//设置上传标识
-            }).catch(error => {
-            });
+            }).catch(error => { });
     };
+
+    //删除附件
+    delete = (url) => {
+        Alert.alert(
+            '是否删除？',
+            '',
+            [
+                {
+                    text: '取消',
+                    style: 'cancel'
+                },
+                {
+                    text: '确定',
+                    onPress: () => {
+                        WorkService.deleteWorkFile(url).then(res => {
+                            let index = this.state.images.indexOf(url);
+                            let myimages = [...this.state.images];
+                            myimages.splice(index, 1);
+                            this.setState({ images: myimages });
+                        });
+                    }
+                }
+            ],
+            { cancelable: false }
+        );
+    }
 
     render() {
         const { images } = this.state;
@@ -39,10 +67,10 @@ export default class UploadImageView extends Component {
         return (
             <Flex justify={'start'} align={'start'} style={[{ width: ScreenUtil.deviceWidth() }, this.props.style]}>
                 <Flex wrap={'wrap'}>
-                    {images.map((item, index) => {
+                    {images.map((url, index) => {
                         return (
                             <TouchableWithoutFeedback key={index} onPress={() => {
-                                if (index === images.length - 1 && item.icon.length === 0) {
+                                if (index === images.length - 1 && url.length === 0) {
                                     this.selectImages();
                                 }
                             }}>
@@ -50,11 +78,12 @@ export default class UploadImageView extends Component {
                                     paddingLeft: 15,
                                     paddingRight: 5,
                                     paddingBottom: 10,
-                                    paddingTop: 10,
+                                    paddingTop: 10
                                 }}>
-                                    <LoadImage style={{ width: width, height: height }}
+                                    <LoadImageDelete style={{ width: width, height: height }}
                                         defaultImg={require('../static/images/add_pic.png')}
-                                        img={item.icon} />
+                                        img={url}
+                                        delete={() => this.delete(url)} />
 
                                 </View>
                             </TouchableWithoutFeedback>

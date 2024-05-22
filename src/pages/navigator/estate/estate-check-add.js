@@ -9,7 +9,8 @@ import {
     ScrollView,
     FlatList,
     TextInput,
-    Modal
+    Modal,
+    Alert
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Button, Flex, Icon } from '@ant-design/react-native';
@@ -20,6 +21,7 @@ import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import { connect } from 'react-redux';
 import LoadImage from '../../../components/load-image';
+import LoadImageDelete from '../../../components/load-image-del';
 import SelectImage from '../../../utils/select-image';
 import UDToast from '../../../utils/UDToast';
 import ListImages from '../../../components/list-images';
@@ -52,7 +54,8 @@ class EcheckAddPage extends BasePage {
             selectPerson: null,
             checkMemo: '',
             visible: false,
-            images: [{ icon: '' }],
+            // images: [{ icon: '' }],
+            images: [''],
             lookImageIndex: 0,
             dataInfo: {
                 data: []
@@ -68,7 +71,7 @@ class EcheckAddPage extends BasePage {
         });
     };
 
-    componentDidMount() { 
+    componentDidMount() {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
@@ -78,7 +81,7 @@ class EcheckAddPage extends BasePage {
                 }
             }
         );
- 
+
         const { id } = this.state;
         if (id) {
             this.getData();
@@ -187,9 +190,9 @@ class EcheckAddPage extends BasePage {
                         paddingLeft: 20,
                         paddingRight: 20,
                         paddingBottom: 20,
-                        color: '#666',
+                        color: '#666'
                     }}>{item.memo}</Text>
-                </Flex> 
+                </Flex>
                 <ListImages images={item.images} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, item.images)} />
             </Flex>
         );
@@ -240,7 +243,7 @@ class EcheckAddPage extends BasePage {
             UDToast.showError('请输入内容');
             return;
         }
- 
+
         //保存数据
         WorkService.addCheckDetail(
             id,
@@ -261,18 +264,43 @@ class EcheckAddPage extends BasePage {
 
     //上传图片
     selectImages = () => {
-        SelectImage.select(this.state.detailId, '', '/api/MobileMethod/MUploadCheckDesk').then(res => {
+        SelectImage.select(this.state.detailId, '', '/api/MobileMethod/MUploadCheckDesk').then(url => {
             let images = [...this.state.images];
-            images.splice(images.length - 1, 0, { 'icon': res });
+            images.splice(images.length - 1, 0, url);
             if (images.length > 4) {
                 //最多五张
                 images = images.filter((item, index) => index !== images.length - 1);
             }
             this.setState({ images });
             this.onRefresh();
-        }).catch(error => {
-        });
+        }).catch(error => { });
     };
+
+    //删除附件
+    delete = (url) => {
+        Alert.alert(
+            '是否删除？',
+            '',
+            [
+                {
+                    text: '取消',
+                    style: 'cancel'
+                },
+                {
+                    text: '确定',
+                    onPress: () => {
+                        WorkService.deleteWorkFile(url).then(res => {
+                            let index = this.state.images.indexOf(url);
+                            let myimages = [...this.state.images];
+                            myimages.splice(index, 1);
+                            this.setState({ images: myimages });
+                        });
+                    }
+                }
+            ],
+            { cancelable: false }
+        );
+    }
 
     cancel = () => {
         this.setState({
@@ -380,7 +408,7 @@ class EcheckAddPage extends BasePage {
                                         }, ScreenUtil.borderBottom()]}>
                                             <Text style={[selectPerson ? { fontSize: 16, color: '#404145' } :
                                                 { color: '#999' }]}>{selectPerson ? selectPerson.name : "请选择责任人"}</Text>
-                                            <LoadImage style={{ width: 6, height: 11 }}  defaultImg={require('../../../static/images/address/right.png')} />
+                                            <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
                                         </Flex>
                                     </TouchableWithoutFeedback>
 
@@ -395,13 +423,13 @@ class EcheckAddPage extends BasePage {
                                             numberOfLines={4}>
                                         </TextInput>
                                     </Flex>
- 
+
                                     <Flex justify={'start'} align={'start'} style={{ width: ScreenUtil.deviceWidth() }}>
                                         <Flex wrap={'wrap'}>
-                                            {images.map((item, index) => {
+                                            {images.map((url, index) => {
                                                 return (
                                                     <TouchableWithoutFeedback key={index} onPress={() => {
-                                                        if (index === images.length - 1 && item.icon.length === 0) {
+                                                        if (index === images.length - 1 && url.length === 0) {
                                                             this.selectImages();
                                                         }
                                                     }}>
@@ -411,14 +439,16 @@ class EcheckAddPage extends BasePage {
                                                             paddingBottom: 10,
                                                             paddingTop: 10
                                                         }}>
-                                                            <LoadImage
+                                                            <LoadImageDelete
                                                                 style={{
                                                                     width: (ScreenUtil.deviceWidth() - 15) / 5.0 - 20,
                                                                     height: (ScreenUtil.deviceWidth() - 15) / 5.0 - 20,
                                                                     borderRadius: 5
                                                                 }}
                                                                 defaultImg={require('../../../static/images/add_pic.png')}
-                                                                img={item.icon} />
+                                                                img={url}
+                                                                delete={() => this.delete(url)}
+                                                            />
                                                         </View>
                                                     </TouchableWithoutFeedback>
                                                 );
@@ -465,7 +495,7 @@ class EcheckAddPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-   
+
     every: {
         fontSize: 16,
         color: '#666',
@@ -474,7 +504,7 @@ const styles = StyleSheet.create({
         paddingTop: 15,
         paddingBottom: 15
     },
- 
+
     left: {
         fontSize: 16,
         color: '#666'
@@ -483,7 +513,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#666'
     },
-    
+
     list: {
         backgroundColor: Macro.color_white,
         margin: 15

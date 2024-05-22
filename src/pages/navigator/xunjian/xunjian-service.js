@@ -6,7 +6,7 @@ export default {
     },
 
     xunjianData(userId, showLoading = true) {
-        return api.postData('/api/MobileMethod/MGetPollingStatistics', {userId}, showLoading);
+        return api.postData('/api/MobileMethod/MGetPollingStatistics', { userId }, showLoading);
     },
 
 
@@ -19,23 +19,23 @@ export default {
         });
     },
     xunjianDetail(taskId) {
-        return api.getData('/api/MobileMethod/MGetPollingTaskEntity', {taskId});
+        return api.getData('/api/MobileMethod/MGetPollingTaskEntity', { taskId });
     },
     xunjianDetailExtraData(taskId) {
-        return api.getData('/api/MobileMethod/MGetPollingTaskFilesData', {taskId});
+        return api.getData('/api/MobileMethod/MGetPollingTaskFilesData', { taskId });
     },
     xunjianTaskDeletePhoto(taskId) {
         if (taskId && taskId.length > 0) {
-            return api.postData('/api/MobileMethod/MDeleteTaskFiles', {taskId});
+            return api.postData('/api/MobileMethod/MDeleteTaskFiles', { taskId });
         } else {
             Promise.resolve();
         }
     },
     xunjianPointDetail(lineId, pointId) {
-        return api.getData('/api/MobileMethod/MGetPollingPointEntity', {lineId, pointId});
+        return api.getData('/api/MobileMethod/MGetPollingPointEntity', { lineId, pointId });
     },
- 
-    xunjianExecute(keyvalue, userId, userName,inspectData, showLoading = true) {
+
+    xunjianExecute(keyvalue, userId, userName, inspectData, showLoading = true) {
         return api.postData('/api/MobileMethod/MExcutePollingTasck', {
             keyvalue,
             userId,
@@ -44,27 +44,29 @@ export default {
         }, showLoading);
     },
 
-
-   
-
     xunjianAddress(pointId) {
-        return api.getData('/api/MobileMethod/MGetPollingPointDetail', {pointId});
+        return api.getData('/api/MobileMethod/MGetPollingPointDetail', { pointId });
     },
     xunjianIndexList(userId) {
-        return api.postData('/api/MobileMethod/MGetPollingLinePageList', {pageIndex: 1, pageSize: 100, userId});
+        return api.postData('/api/MobileMethod/MGetPollingLinePageList', { pageIndex: 1, pageSize: 100, userId });
     },
     xunjianIndexDetail(lineId) {
-        return api.getData('/api/MobileMethod/MGetPollingTaskPoints', {lineId});
+        return api.getData('/api/MobileMethod/MGetPollingTaskPoints', { lineId });
     },
- 
+
     //获取巡检任务
     xunjianPointTasks(pointId, showLoading = true) {
-        return api.getData('/api/MobileMethod/MGetPollingPointTasks', {pointId}, showLoading);
+        return api.getData('/api/MobileMethod/MGetPollingPointTasks', { pointId }, showLoading);
     },
 
     //离线巡检时候缓存数据，废弃，跟上面共用一个方法
     // MGetPollingUserPointTasks() {
     //     return api.getData('/api/MobileMethod/MGetPollingUserPointTasks', {}, false);
     // } 
+
+    //附件
+    deletePollingFile(url) {
+        return api.getData('/api/MobileMethod/MDeletePollingFile', { url });
+    },
 
 };

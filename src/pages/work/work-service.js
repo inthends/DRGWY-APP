@@ -72,6 +72,11 @@ export default {
         return api.getData('/api/MobileMethod/MGetCheckFilesData', { keyvalue });
     },
 
+    //附件
+    deleteWorkFile(url) {
+        return api.getData('/api/MobileMethod/MDeleteWorkFile', { url });
+    },
+
     //服务单操作
     serviceHandle(handle, keyvalue, content, extra = null) {
         let url = '';
@@ -117,6 +122,12 @@ export default {
         return api.postData('/api/MobileMethod/MRepairHandleAssist', params);
     },
 
+    //抢单
+    qdRepair(keyvalue) {
+        let params = { keyvalue };
+        return api.postData('/api/MobileMethod/MRepairQD', params);
+    },
+ 
     serviceCommunicates(keyvalue) {
         return api.getData('/api/MobileMethod/MGetCommunicates', { keyvalue, pageIndex: 1, pageSize: 100 });
     },
@@ -176,11 +187,16 @@ export default {
         return api.postData(url, { status: type, isOverdue: overdue, pageIndex, pageSize: 100 });
     },
 
-
     //工作台派单列表
     workDispatchList(todo, repairMajor, time, pageIndex) {
         let url = '/api/MobileMethod/MGetDispatchPageList';
         return api.postData(url, { todo, repairMajor, time, pageIndex, pageSize: 100 });
+    },
+
+    //抢单列表
+    workQDList(todo, emergencyLevel, time, pageIndex) {
+        let url = '/api/MobileMethod/MGetQDPageList';
+        return api.postData(url, { todo, emergencyLevel, time, pageIndex, pageSize: 100 });
     },
 
     // //数量

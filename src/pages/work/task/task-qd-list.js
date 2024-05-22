@@ -4,22 +4,23 @@ import {
     StyleSheet,
     FlatList,
     TouchableOpacity,
-    TouchableWithoutFeedback,
+    TouchableWithoutFeedback
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Flex, Icon } from '@ant-design/react-native';
+import { Button, Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
 import { connect } from 'react-redux';
-// import ListDispatchHeader from '../../../components/list-dispatch-header';
+import ListQDHeader from '../../../components/list-qd-header';
 import common from '../../../utils/common';
 import LoadImage from '../../../components/load-image';
 import WorkService from '../work-service';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 import MyPopover from '../../../components/my-popover';
+import UDToast from '../../../utils/UDToast';
 
-class TaskDispatchListPage extends BasePage {
+class TaskQDListPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
@@ -52,25 +53,26 @@ class TaskDispatchListPage extends BasePage {
             dataInfo: {
                 data: []
             },
-            //todo: 0,
+            todo: 0,
             //hiddenHeader,
             refreshing: false,
             visible: false,
-            repairMajor: '全部',
-            time: '全部',
-            repairMajors: []//维修专业
+            emergencyLevel: '全部',
+            time: '全部'
+            //repairMajors: []//维修专业
         };
     }
 
     componentDidMount() {
+
         //获取维修专业
-        WorkService.getCommonItems('RepairMajor').then(res => {
-            if (res.length > 0) {
-                this.setState({
-                    repairMajors: ['全部', ...res.map(item => item.title)]
-                });
-            }
-        });
+        // WorkService.getCommonItems('RepairMajor').then(res => {
+        //     if (res.length > 0) {
+        //         this.setState({
+        //             repairMajors: ['全部', ...res.map(item => item.title)]
+        //         });
+        //     }
+        // });
 
         //获取已经派单数量
         // const { repairMajor, time } = this.state;
@@ -101,8 +103,8 @@ class TaskDispatchListPage extends BasePage {
     }
 
     getList = () => {
-        const { repairMajor, time, pageIndex } = this.state;
-        WorkService.workDispatchList(1, repairMajor, time, pageIndex).then(dataInfo => {
+        const { emergencyLevel, todo, time, pageIndex } = this.state;
+        WorkService.workQDList(todo, emergencyLevel, time, pageIndex).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -138,45 +140,53 @@ class TaskDispatchListPage extends BasePage {
         }
     };
 
+    //抢单
+    qd = (id) => {
+        WorkService.qdRepair(id).then(res => {
+            if (res.flag == true) {
+                UDToast.showInfo('抢单成功');
+            } else {
+                UDToast.showInfo('抢单失败，' + res.msg);
+            }
+
+            this.onRefresh();
+        });
+    };
+
     _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-                const { type } = this.state;
-                if (type === 'fuwu') {
-                    this.props.navigation.navigate('service', { data: item.id });
-                } else {
-                    switch (item.statusName) {
-                        // case '待派单': {
-                        //     this.props.navigation.navigate('paidan', { data: item.id });
-                        //     break;
-                        // }
-                        case '待接单': {
-                            this.props.navigation.navigate('jiedan', { data: item.id });
-                            break;
-                        }
-                        case '待开工': {
-                            this.props.navigation.navigate('kaigong', { data: item.id });
-                            break;
-                        }
-                        case '待完成': {
-                            this.props.navigation.navigate('wancheng', { data: item.id });
-                            break;
-                        }
-                        case '待检验': {
-                            this.props.navigation.navigate('jianyan', { data: item.id });
-                            break;
-                        }
-                        case '待回访': {
-                            this.props.navigation.navigate('huifang', { data: item.id });
-                            break;
-                        }
-                        case '待协助': {
-                            this.props.navigation.navigate('assist', { data: item.id });
-                            break;
-                        }
-                        default:
-                            break;
+                switch (item.statusName) {
+                    case '待派单': {
+                        this.props.navigation.navigate('weixiuView', { data: item.id });
+                        break;
                     }
+                    case '待接单': {
+                        this.props.navigation.navigate('jiedan', { data: item.id });
+                        break;
+                    }
+                    case '待开工': {
+                        this.props.navigation.navigate('kaigong', { data: item.id });
+                        break;
+                    }
+                    case '待完成': {
+                        this.props.navigation.navigate('wancheng', { data: item.id });
+                        break;
+                    }
+                    case '待检验': {
+                        this.props.navigation.navigate('jianyan', { data: item.id });
+                        break;
+                    }
+                    case '待回访': {
+                        this.props.navigation.navigate('huifang', { data: item.id });
+                        break;
+                    }
+                    case '待协助': {
+                        this.props.navigation.navigate('assist', { data: item.id });
+                        break;
+                    }
+                    default:
+                        break;
                 }
             }}>
                 <Flex direction='column' align={'start'}
@@ -208,6 +218,15 @@ class TaskDispatchListPage extends BasePage {
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>{item.billDate}</Text>
+                            {item.statusName == '待派单' ?
+                                <Button type='primary'
+                                    onPress={() => this.qd(item.id)}
+                                    activeStyle={{ backgroundColor: Macro.work_blue }}
+                                    style={{
+                                        width: 70,
+                                        backgroundColor: Macro.work_blue,
+                                        height: 30
+                                    }}>抢单</Button> : null}
                         </Flex>
 
                     </Flex>
@@ -235,18 +254,22 @@ class TaskDispatchListPage extends BasePage {
     };
 
     render() {
-        const { dataInfo, repairMajors } = this.state;
-
+        const { dataInfo, todo } = this.state;
         return (
-            <CommonView style={{ flex: 1 }}> 
+            <CommonView style={{ flex: 1 }}>
+                <ListQDHeader todo={todo}
+                    onChange={(todo) => this.setState({ todo }, () => {
+                        this.onRefresh();
+                    })} />
+
                 <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
                     <MyPopover onChange={this.typeChange}
-                        titles={repairMajors}
+                        titles={['全部', '非常紧急', '紧急', '一般']}
                         visible={true} />
                     <MyPopover onChange={this.timeChange}
                         titles={['全部', '今日', '本周', '本月', '上月', '本年']}
                         visible={true} />
-                </Flex> 
+                </Flex>
                 <FlatList
                     data={dataInfo.data}
                     // ListHeaderComponent={}
@@ -325,4 +348,4 @@ const mapStateToProps = ({ buildingReducer }) => {
         selectBuilding: buildingReducer.selectBuilding,
     };
 };
-export default connect(mapStateToProps)(TaskDispatchListPage);
+export default connect(mapStateToProps)(TaskQDListPage);

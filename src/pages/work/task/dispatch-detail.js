@@ -1,15 +1,14 @@
 import React from 'react';
 import {
-    //View,
+    View,
     Text,
     TouchableWithoutFeedback,
     TouchableOpacity,
-    StyleSheet,
-    TextInput,
+    StyleSheet, 
     ScrollView, Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Button, Icon, Flex } from '@ant-design/react-native';
+import { Button, Icon,TextareaItem, Flex } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';
@@ -68,6 +67,8 @@ export default class DispatchDetailPage extends BasePage {
                 detail: {
                     ...detail.entity,
                     serviceDeskCode: detail.serviceDeskCode,
+                    emergencyLevel: detail.emergencyLevel,
+                    importance: detail.importance,
                     relationId: detail.relationId,
                     statusName: detail.statusName
                 }
@@ -145,11 +146,16 @@ export default class DispatchDetailPage extends BasePage {
                     </Flex> 
                     <Text style={[styles.desc]}>{detail.repairContent}</Text> 
                     <ListImages images={images} lookImage={this.lookImage} /> 
-                    <Flex style={[styles.every2]} justify='between'>
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
                     </Flex>
                     <TouchableWithoutFeedback>
-                        <Flex style={[styles.every]}>
+                        <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                             <Text style={styles.left}>关联单：</Text>
                             <Text
                                 onPress={() => this.props.navigation.navigate('service', { data: { id: detail.relationId } })}
@@ -167,14 +173,14 @@ export default class DispatchDetailPage extends BasePage {
                             </Flex>
                             <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
                         </Flex>
-                    </TouchableWithoutFeedback>
-                    {/* <DashLine />
+                    </TouchableWithoutFeedback> 
+
                     <View style={{
                         margin: 15,
                         borderStyle: 'solid',
                         borderColor: '#F3F4F2',
                         borderWidth: 1,
-                        borderRadius: 5,
+                        borderRadius: 5
                     }}>
                         <TextareaItem
                             rows={4}
@@ -183,8 +189,9 @@ export default class DispatchDetailPage extends BasePage {
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
-                    </View> */}
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                    </View>
+
+                    {/* <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <TextInput
                             maxLength={500}
                             placeholder='请输入'
@@ -194,7 +201,8 @@ export default class DispatchDetailPage extends BasePage {
                             style={{ fontSize: 16, textAlignVertical: 'top' }}
                             numberOfLines={4}>
                         </TextInput>
-                    </Flex> 
+                    </Flex>  */}
+
                     {/* <TouchableWithoutFeedback onPress={() => this.click('派单')}>
                         <Flex justify={'center'} style={[styles.ii, {
                             width: '60%',
@@ -210,7 +218,7 @@ export default class DispatchDetailPage extends BasePage {
                     <Flex justify={'center'}>
                         <Button onPress={() => this.click()} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                width: 300,
+                                width: 200,
                                 backgroundColor: Macro.work_blue,
                                 marginTop: 20,
                                 height: 40

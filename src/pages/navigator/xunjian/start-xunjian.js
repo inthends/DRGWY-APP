@@ -1,10 +1,13 @@
 import React from 'react';
+import {
+    ScrollView, StyleSheet, Text, TouchableOpacity,
+    TouchableWithoutFeedback, View, Alert
+} from 'react-native';
 import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
-import LoadImage from '../../../components/load-image';
+import LoadImageDelete from '../../../components/load-image-del';
 import CommonView from '../../../components/CommonView';
 //import ScrollTitle from '../../../components/scroll-title';
 import XunJianComponent from './xunjian-component';
@@ -34,7 +37,8 @@ class StartXunJianPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            images: [{ icon: '' }],
+            //images: [{ icon: '' }],
+            images: [''],
             data: {},
             inspectData: [],
             ...common.getValueFromProps(this.props)//lineId,pointId,person
@@ -75,7 +79,7 @@ class StartXunJianPage extends BasePage {
     selectImages = () => {
         SelectImage.select(this.state.id, '', '/api/MobileMethod/MUploadPollingTask', this.props.hasNetwork).then(res => {
             let images = [...this.state.images];
-            images.splice(images.length - 1, 0, { 'icon': res });
+            images.splice(images.length - 1, 0, res);
             if (images.length > 4) {
                 images = images.filter((item, index) => index !== images.length - 1);
             }
@@ -87,9 +91,34 @@ class StartXunJianPage extends BasePage {
             else {
                 this.setState({ images });
             }
-        }).catch(error => {
-        });
+        });//.catch(error => { });
     };
+
+    //删除附件
+    delete = (url) => {
+        Alert.alert(
+            '是否删除？',
+            '',
+            [
+                {
+                    text: '取消',
+                    style: 'cancel'
+                },
+                {
+                    text: '确定',
+                    onPress: () => {
+                        WorkService.deletePollingFile(url).then(res => {
+                            let index = this.state.images.indexOf(url);
+                            let myimages = [...this.state.images];
+                            myimages.splice(index, 1);
+                            this.setState({ images: myimages });
+                        });
+                    }
+                }
+            ],
+            { cancelable: false }
+        );
+    }
 
     submit = () => {
         const { id, person, address, item, inspectData } = this.state;
@@ -121,18 +150,17 @@ class StartXunJianPage extends BasePage {
         }
 
         if (this.props.hasNetwork) {
-            if (this.state.images.length > 1) { 
+            if (this.state.images.length > 1) {
                 let arrStr = JSON.stringify(newInspectData);
                 XunJianService.xunjianExecute(id, person.id, person.name, arrStr).then(res => {
                     this.props.navigation.goBack();
-                }); 
+                });
             }
             else {
                 UDToast.showSuccess('请上传图片');
             }
 
         } else {
-
             //离线缓存巡检结果
             let images = this.state.images.filter(item => item.icon.fileUri && item.icon.fileUri.length > 0);
             this.props.saveXunJianAction({
@@ -140,7 +168,7 @@ class StartXunJianPage extends BasePage {
                     xunjianParams: {
                         keyvalue: item.id,
                         userId: person.id,
-                        userName: person.name, 
+                        userName: person.name,
                         inspectData: newInspectData//巡检任务明细
                     },
                     idForUploadImage: item.id,
@@ -148,7 +176,6 @@ class StartXunJianPage extends BasePage {
                     address
                 }
             });
-            
             UDToast.showSuccess('已保存，稍后可在我的-设置中上传巡检数据');
             this.props.navigation.goBack();
         }
@@ -175,10 +202,10 @@ class StartXunJianPage extends BasePage {
                     </Flex>
                     <Flex justify={'start'} align={'start'} style={{ width: ScreenUtil.deviceWidth() }}>
                         <Flex wrap={'wrap'}>
-                            {images.map((item, index) => {
+                            {images.map((url, index) => {
                                 return (
                                     <TouchableWithoutFeedback key={index} onPress={() => {
-                                        if (index === images.length - 1 && item.icon.length === 0) {
+                                        if (index === images.length - 1 && url.length === 0) {
                                             this.selectImages();
                                         }
                                     }}>
@@ -188,13 +215,14 @@ class StartXunJianPage extends BasePage {
                                             paddingBottom: 10,
                                             paddingTop: 10
                                         }}>
-                                            <LoadImage style={{
+                                            <LoadImageDelete style={{
                                                 width: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
                                                 height: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
-                                                borderRadius: 5,
+                                                borderRadius: 5
                                             }}
                                                 defaultImg={require('../../../static/images/add_pic.png')}
-                                                img={item.icon} />
+                                                img={url}
+                                                delete={() => this.delete(url)} />
                                         </View>
                                     </TouchableWithoutFeedback>
                                 );

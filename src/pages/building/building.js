@@ -125,8 +125,7 @@ class BuildingPage extends BasePage {
       } 
   }
 
-  initUI() {
-
+  initUI() { 
     BuildingService.getUserInfo().then((res) => {
       this.props.saveUser(res);
     });

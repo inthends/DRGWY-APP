@@ -5,7 +5,8 @@ import {
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    Keyboard
+    Keyboard,
+    Alert
 } from 'react-native';
 import { Icon } from '@ant-design/react-native';
 import { connect } from 'react-redux';
@@ -13,13 +14,13 @@ import BasePage from '../../base/base';
 import { Flex, TextareaItem, Button } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
+import LoadImageDelete from '../../../components/load-image-del';
 import SelectImage from '../../../utils/select-image';
 import common from '../../../utils/common';
 import UDRecord from '../../../utils/UDRecord';
 import api from '../../../utils/api';
 import UDPlayer from '../../../utils/UDPlayer';
 import UDToast from '../../../utils/UDToast';
-// import WorkService from './work-service';
 import GdzcService from './gdzc-service';
 import { AudioRecorder, AudioUtils } from 'react-native-audio';
 import CommonView from '../../../components/CommonView';
@@ -27,7 +28,7 @@ import { saveXunJianAction } from '../../../utils/store/actions/actions';
 import Macro from '../../../utils/macro';
 
 //固定资产盘点，异常的时候弹出报修单页面
-class AddRepairPage extends BasePage { 
+class AddRepairPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
             title: '新增',
@@ -46,7 +47,7 @@ class AddRepairPage extends BasePage {
         this.state = {
             index: 0,
             data: ['报修', '报事', '巡场'],
-            images: [{ icon: '' }],
+            images: [''],
             image: '',
             recording: false,
             id: common.getGuid(),
@@ -131,9 +132,9 @@ class AddRepairPage extends BasePage {
                         api.uploadFile(data.audioFileURL,
                             this.state.id,
                             '',
-                            '/api/MobileMethod/MUploadServiceDesk', false).then(res => {
-                                this.setState({ fileUrl: res });
-                            }).catch(error => { 
+                            '/api/MobileMethod/MUploadServiceDesk', false).then(url => {
+                                this.setState({ fileUrl: url });
+                            }).catch(error => {
                             });
                     };
                     this.recordId = UDToast.showLoading('正在录音中...');
@@ -154,7 +155,6 @@ class AddRepairPage extends BasePage {
                 });
             }, 1000);
         }
-
     };
 
     play = () => {
@@ -162,17 +162,42 @@ class AddRepairPage extends BasePage {
     };
 
     selectImages = () => {
-        SelectImage.select(this.state.id,'', '/api/MobileMethod/MUploadServiceDesk').then(res => {
+        SelectImage.select(this.state.id, '', '/api/MobileMethod/MUploadServiceDesk').then(url => {
             let images = [...this.state.images];
-            images.splice(images.length - 1, 0, { 'icon': res });
+            images.splice(images.length - 1, 0, url);
             if (images.length > 4) {
                 //最多五张
                 images = images.filter((item, index) => index !== images.length - 1);
             }
             this.setState({ images });
-        }).catch(error => {
-        });
+        }).catch(error => {});
     };
+
+    //删除附件
+    delete = (url) => {
+        Alert.alert(
+            '是否删除？',
+            '',
+            [
+                {
+                    text: '取消',
+                    style: 'cancel'
+                },
+                {
+                    text: '确定',
+                    onPress: () => {
+                        GdzcService.deleteWorkFile(url).then(res => {
+                            let index = this.state.images.indexOf(url);
+                            let myimages = [...this.state.images];
+                            myimages.splice(index, 1);
+                            this.setState({ images: myimages });
+                        });
+                    }
+                }
+            ],
+            { cancelable: false }
+        );
+    }
 
     submit = () => {
         if (this.canSubmit === false) {
@@ -227,13 +252,13 @@ class AddRepairPage extends BasePage {
             }
         }
     };
-     
+
     onSelectAddress = ({ selectItem }) => {
         this.setState({
             address: selectItem
         })
     }
-    
+
     render() {
         const { data, index, images, fileUrl, address, canSelectAddress } = this.state;
         const title = data[index];
@@ -285,7 +310,7 @@ class AddRepairPage extends BasePage {
                                         {/* <LoadImage style={{ width: 6, height: 11 }}
                                             defaultImg={require('../../../static/images/address/right.png')} /> */}
                                     </Flex>
-                                </TouchableWithoutFeedback> 
+                                </TouchableWithoutFeedback>
                             </Flex>
 
                             <View style={{ marginLeft: -15 }}>
@@ -293,7 +318,7 @@ class AddRepairPage extends BasePage {
                                     rows={9}
                                     placeholder={title2}
                                     autoHeight
-                                    style={{ paddingTop: 15,   width: ScreenUtil.deviceWidth() - 30 }}
+                                    style={{ paddingTop: 15, width: ScreenUtil.deviceWidth() - 30 }}
                                     onChange={value => this.setState({ value })}
                                     value={this.state.value}
                                 />
@@ -317,10 +342,10 @@ class AddRepairPage extends BasePage {
 
                             <Flex justify={'start'} align={'start'} style={{ width: ScreenUtil.deviceWidth() }}>
                                 <Flex wrap={'wrap'}>
-                                    {images.map((item, index) => {
+                                    {images.map((url, index) => {
                                         return (
                                             <TouchableWithoutFeedback key={index} onPress={() => {
-                                                if (index === images.length - 1 && item.icon.length === 0) {
+                                                if (index === images.length - 1 && url.length === 0) {
                                                     this.selectImages();
                                                 }
                                             }}>
@@ -328,11 +353,13 @@ class AddRepairPage extends BasePage {
                                                     paddingLeft: 15,
                                                     paddingRight: 5,
                                                     paddingBottom: 10,
-                                                    paddingTop: 10,
+                                                    paddingTop: 10
                                                 }}>
-                                                    <LoadImage style={{ width: width, height: height }}
+                                                    <LoadImageDelete style={{ width: width, height: height }}
                                                         defaultImg={require('../../../static/images/add_pic.png')}
-                                                        img={item.icon} />
+                                                        img={url}
+                                                        delete={() => this.delete(url)}
+                                                    />
                                                 </View>
                                             </TouchableWithoutFeedback>
                                         );
@@ -348,7 +375,7 @@ class AddRepairPage extends BasePage {
                             flex: 1,
                             paddingTop: 40,
                         }}>
-                            <Button style={{ width: '90%',backgroundColor: Macro.work_blue  }} type="primary" onPress={() => this.submit()}>确定</Button>
+                            <Button style={{ width: '90%', backgroundColor: Macro.work_blue }} type="primary" onPress={() => this.submit()}>确定</Button>
                         </Flex>
                     </View>
                 </TouchableWithoutFeedback>

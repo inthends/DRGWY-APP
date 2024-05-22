@@ -120,11 +120,9 @@ class SecondDetailBuildingPage extends BasePage {
     };
 
     selectImages = () => {
-        SelectImage.select(this.state.item.id, '', '/api/MobileMethod/MUploadPStructs').then(res => {
-            console.log('MUploadPStructs:', ...res);
+        SelectImage.select(this.state.item.id, '', '/api/MobileMethod/MUploadPStructs').then(res => { 
             this.setState({ image: res });
-        }).catch(error => {
-        });
+        }).catch(error => { });
     };
 
 

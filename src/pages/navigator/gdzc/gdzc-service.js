@@ -37,4 +37,9 @@ export default {
     saveRepariForm(params,showLoading=true) {
         return api.postData('/api/MobileMethod/MSaveServiceDeskForm', params,showLoading);
     },
+
+     //附件
+     deleteWorkFile(url) {
+        return api.getData('/api/MobileMethod/MDeleteWorkFile', { url });
+    },
 };

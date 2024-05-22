@@ -100,30 +100,30 @@ export default class ScanOnly extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'row',
+        flexDirection: 'row'
     },
     preview: {
         flex: 1,
         justifyContent: 'flex-end',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     rectangleContainer: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'transparent',
+        backgroundColor: 'transparent'
     },
     rectangle: {
         height: 200,
         width: 200,
         borderWidth: 1,
         borderColor: Macro.work_blue,
-        backgroundColor: 'transparent',
+        backgroundColor: 'transparent'
     },
     rectangleText: {
         flex: 0,
         color: '#fff',
-        marginTop: 10,
+        marginTop: 10
     },
     border: {
         flex: 0,

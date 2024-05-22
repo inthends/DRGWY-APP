@@ -17,6 +17,7 @@ import ListImages from '../../../components/list-images';
 import Communicates from '../../../components/communicates';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import Macro from '../../../utils/macro';
 
 export default class WeixiuDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -57,6 +58,8 @@ export default class WeixiuDetailPage extends BasePage {
                 detail: {
                     ...detail.entity,
                     serviceDeskCode: detail.serviceDeskCode,
+                    emergencyLevel: detail.emergencyLevel,
+                    importance: detail.importance,
                     relationId: detail.relationId,
                     statusName: detail.statusName,
                     assistName: detail.assistName,//协助人 
@@ -122,9 +125,23 @@ export default class WeixiuDetailPage extends BasePage {
                     </Flex>
                     <Text style={styles.desc}>{detail.repairContent}</Text>
                     <ListImages images={images} lookImage={this.lookImage} />
+
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
+                        <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
                     </Flex>
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>转单人：{detail.createUserName}，{detail.createDate}</Text>
+                    </Flex>
+
+                    <TouchableWithoutFeedback>
+                        <Flex style={[styles.every]}>
+                            <Text style={styles.left}>关联单：</Text>
+                            <Text
+                                onPress={() => this.props.navigation.navigate('service', { data: { id: detail.relationId } })}
+                                style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
+                        </Flex>
+                    </TouchableWithoutFeedback>
 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>协助人：{detail.assistName}</Text>

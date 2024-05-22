@@ -7,7 +7,7 @@ import {
     ScrollView, Modal,
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Icon, Flex, Button } from '@ant-design/react-native';
+import { Icon, Flex } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';
@@ -58,6 +58,8 @@ export default class AssistDetailPage extends BasePage {
                 detail: {
                     ...detail.entity,
                     serviceDeskCode: detail.serviceDeskCode,
+                    emergencyLevel: detail.emergencyLevel,
+                    importance: detail.importance,
                     relationId: detail.relationId,
                     statusName: detail.statusName,
                     assistName: detail.assistName,//协助人 
@@ -143,6 +145,11 @@ export default class AssistDetailPage extends BasePage {
                     </Flex>
                     <Text style={styles.desc}>{detail.repairContent}</Text>
                     <ListImages images={images} lookImage={this.lookImage} />
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
+                    </Flex>
+ 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
                     </Flex>
@@ -156,6 +163,10 @@ export default class AssistDetailPage extends BasePage {
                         </Flex>
                     </TouchableWithoutFeedback>
 
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>
+                    </Flex>
+                    
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>协助人：{detail.assistName}</Text>
                     </Flex>
@@ -181,9 +192,7 @@ export default class AssistDetailPage extends BasePage {
                             numberOfLines={4}>
                         </TextInput>
                     </Flex> */}
-
-
-
+ 
                     <Flex justify={'center'} style={{ marginTop: 20 }}  >
                         <TouchableWithoutFeedback onPress={() => this.click('加入')}>
                             <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>

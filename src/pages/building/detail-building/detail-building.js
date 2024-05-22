@@ -9,7 +9,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Flex,Icon } from '@ant-design/react-native';
+import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import DetailBuildingService from './detail-building-service';
 import ScreenUtil from '../../../utils/screen-util';
@@ -36,10 +36,9 @@ export default class DetailBuildingPage extends BasePage {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
         </TouchableOpacity>
-      ),
+      )
     };
   };
-
 
   constructor(props) {
     super(props);
@@ -57,11 +56,8 @@ export default class DetailBuildingPage extends BasePage {
     //获取楼层
     DetailBuildingService.getPStructs(id, 4).then((res) => {
       const floors = res || [];
-
       //循环楼层
-
       const promises = floors.map((item) => {
-
         //获取房产
         return DetailBuildingService.getPStructs(item.id, 5).then((res) => {
           const allRooms = res || [];
@@ -91,34 +87,26 @@ export default class DetailBuildingPage extends BasePage {
 
   //点击
   open = (sectionIndex, roomIndex, index, isOpen) => {
-
     let data = [...this.state.data];//获取data
-
     let sections = data[sectionIndex].rooms;
     let rooms = sections[roomIndex];
-
     rooms = rooms.map((item, i) => {
       return {
         ...item,
         open: isOpen ? (i === index ? isOpen : !isOpen) : false,
       };
     });
-
     sections = sections.map((item, i) => {
       return i === roomIndex ? rooms : item;
     });
-
     data = data.map((item, i) => {
       return {
         ...item,
         rooms: i === sectionIndex ? sections : item.rooms,
       };
     });
-
     this.setState({ data: data });
-
   };
-
 
   render() {
     const { status, data, detail } = this.state;
@@ -129,7 +117,6 @@ export default class DetailBuildingPage extends BasePage {
             {...this.props}
             title={this.state.item ? this.state.item.allName : ''}
           /> */}
-
           <ScrollView style={{ height: ScreenUtil.contentHeight() }}>
             <Flex
               direction="row"
@@ -138,7 +125,7 @@ export default class DetailBuildingPage extends BasePage {
                 paddingTop: 15,
                 paddingBottom: 10,
                 paddingLeft: 15,
-                paddingRight: 15,
+                paddingRight: 15
               }}
             >
               <Text style={styles.name}>{detail.name}</Text>
@@ -200,7 +187,6 @@ export default class DetailBuildingPage extends BasePage {
                 <Text style={styles.leftText}>入住率：</Text>
                 <Text style={styles.rightText}>{detail.completionRate}%</Text>
               </Flex>
-
               {/* <Flex direction="row" style={{ paddingTop: 30 }}>
                 <Flex direction="column" style={styles.div}>
                   <View
@@ -236,7 +222,7 @@ export default class DetailBuildingPage extends BasePage {
                   <View
                     style={[
                       styles.square,
-                      { backgroundColor: Macro.color_2021 },
+                      { backgroundColor: Macro.color_2021 }
                     ]}
                   />
                   <Text style={styles.top}>2021</Text>
@@ -256,7 +242,7 @@ export default class DetailBuildingPage extends BasePage {
                   <View
                     style={[
                       styles.square,
-                      { backgroundColor: Macro.color_free },
+                      { backgroundColor: Macro.color_free }
                     ]}
                   />
                   <Text style={styles.top}>空置中</Text>
@@ -267,7 +253,7 @@ export default class DetailBuildingPage extends BasePage {
                     style={[
                       styles.square,
                       {
-                        //backgroundColor: Macro.color_business,
+                        //backgroundColor: Macro.color_business
                         borderWidth: 1,
                         borderColor: '#999',
                         borderStyle: 'dotted'
@@ -302,7 +288,6 @@ export default class DetailBuildingPage extends BasePage {
                 ))}
               </Flex>
             </ScrollView>
-
             <ScrollView
               style={{
                 paddingBottom: 20
@@ -547,7 +532,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     paddingTop: 5
   },
- 
+
   dash: {
     borderColor: '#5c665b',
     borderWidth: 1,

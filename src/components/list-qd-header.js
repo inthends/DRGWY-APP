@@ -6,11 +6,10 @@ import ScreenUtil from '../utils/screen-util';
 const item_width = ScreenUtil.deviceWidth() / 2.0;
 const single_width = 50;
 
-export default class ListDispatchHeader extends Component {
+export default class ListQDHeader extends Component {
     constructor(props) {
         super(props);
         let index = 0;
-
         if (this.props.todo) {
             index = parseInt(this.props.todo) + 1;
         }
@@ -37,7 +36,7 @@ export default class ListDispatchHeader extends Component {
                 duration: 200              // 让动画持续一段时间
             }
         ).start();
-        const datas = [{ 'title': '待派单', value: '0' }, { 'title': '已派单', value: 1 }];
+        const datas = [{ 'title': '待抢单', value: '0' }, { 'title': '已抢单', value: 1 }];
         this.setState({ index: index }, () => {
             if (this.props.onChange) {
                 this.props.onChange(datas[index].value);
@@ -45,9 +44,8 @@ export default class ListDispatchHeader extends Component {
         });
     };
 
-    render() {
-        const { count } = this.state;
-        const datas = [{ 'title': '待派单', select: true }, { 'title': '已派单 (' + count + ')' }];
+    render() { 
+        const datas = [{ 'title': '待抢单', select: true }, { 'title': '已抢单' }];
         return (
             <Fragment>
                 <Flex direction={'column'} align={'start'}>

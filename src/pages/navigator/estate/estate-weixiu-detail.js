@@ -62,6 +62,8 @@ export default class EweixiuDetailPage extends BasePage {
                 detail: {
                     ...detail.entity,
                     serviceDeskCode: detail.serviceDeskCode,
+                    emergencyLevel: detail.emergencyLevel,
+                    importance: detail.importance,
                     relationId: detail.relationId,
                     statusName: detail.statusName,
                 },
@@ -133,9 +135,13 @@ export default class EweixiuDetailPage extends BasePage {
                         </TouchableWithoutFeedback>
                     </Flex>
 
-                    <Text style={[styles.desc, ScreenUtil.borderBottom()]}>{detail.repairContent}</Text>
-
+                    <Text style={[styles.desc, ScreenUtil.borderBottom()]}>{detail.repairContent}</Text> 
                     <ListImages images={images} lookImage={this.lookImage} />
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
+                    </Flex> 
+                    
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
                     </Flex>

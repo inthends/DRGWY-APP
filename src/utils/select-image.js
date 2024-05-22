@@ -53,7 +53,7 @@ export default class SelectImage {
                         //没有网络，暂存
                         resolve({
                             uri: 'data:image/jpeg;base64,' + response.data,
-                            fileUri: response.uri,
+                            fileUri: response.uri
                         });
                     }
                 }

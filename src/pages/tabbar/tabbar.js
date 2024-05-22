@@ -89,7 +89,7 @@ import CheckDetailPage from '../work/task/check-detail';
 import VisitDetailPage from '../work/task/visit-detail';
 import AssistDetailPage from '../work/task/assist-detail';
 import TaskDispatchListPage from '../work/task/task-dispatch-list';
-
+import TaskQDListPage from '../work/task/task-qd-list';
 
 
 //工作台回访查看单据
@@ -253,6 +253,7 @@ const WorkNavigator = createStackNavigator({
   scandemo: ScanSS,
   Task: TaskListPage,
   TaskDispatch: TaskDispatchListPage,
+  Taskqd: TaskQDListPage,
   newsList: NewsList,
 
   //add new

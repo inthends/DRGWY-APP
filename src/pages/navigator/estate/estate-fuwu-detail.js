@@ -1,7 +1,7 @@
 //统计里面点击的服务单详情
 import React from 'react';
 import {
-    TextInput,
+    View, 
     Text,
     TouchableWithoutFeedback,
     TouchableOpacity,
@@ -158,7 +158,7 @@ export default class EfuwuDetailPage extends BasePage {
                         </TouchableWithoutFeedback>
                     ) : null}
 
-                    {/* <View style={{
+                    <View style={{
                         margin: 15,
                         borderStyle: 'solid',
                         borderColor: '#F3F4F2',
@@ -172,9 +172,9 @@ export default class EfuwuDetailPage extends BasePage {
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
-                    </View> */}
+                    </View>
  
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                    {/* <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <TextInput
                             maxLength={500}
                             placeholder='请输入'
@@ -184,7 +184,7 @@ export default class EfuwuDetailPage extends BasePage {
                             style={{ fontSize: 16, textAlignVertical: 'top' }}
                             numberOfLines={4}>
                         </TextInput>
-                    </Flex>
+                    </Flex> */}
 
                     {/* <TouchableWithoutFeedback onPress={() => this.click('回复')}>
                         <Flex justify={'center'} style={[styles.ii, {
@@ -201,7 +201,7 @@ export default class EfuwuDetailPage extends BasePage {
                     <Flex justify={'center'}>
                         <Button onPress={() => this.click('回复')} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                width: 300,
+                                width: 200,
                                 backgroundColor: Macro.work_blue,
                                 marginTop: 20,
                                 marginBottom:10,

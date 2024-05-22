@@ -48,6 +48,7 @@ export default class Communicates extends Component {
                         }}>
                             <Text style={styles.content}>{i.content}</Text>
                         </View> : null}
+                        
                         {/*<Flex wrap={'wrap'}>*/}
                         {/*    {images.map((item, index) => {*/}
                         {/*        return (*/}
