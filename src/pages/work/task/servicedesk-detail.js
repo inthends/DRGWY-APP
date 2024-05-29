@@ -1,15 +1,16 @@
 //未读消息列表点击打开服务单详情
 import React from 'react';
-import { 
+import {
     View,
     Text,
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
     ScrollView, Modal,
+    Keyboard
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Icon, Flex,TextareaItem, Button } from '@ant-design/react-native';
+import { Icon, Flex, TextareaItem, Button } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 // import SelectImage from '../../../utils/select-image';
@@ -49,12 +50,43 @@ export default class ServiceDeskDetailPage extends BasePage {
             },
             communicates: [],
             lookImageIndex: 0,
-            visible: false
+            visible: false,
+            KeyboardShown: false
         };
+
+        this.keyboardDidShowListener = null;
+        this.keyboardDidHideListener = null;
     }
 
     componentDidMount() {
         this.getData();
+    }
+
+    //add new
+    componentWillMount() {
+        //注册鼠标事件，用于文本框输入的时候往上移动 2024年5月23日
+        this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+            this.setState({
+                KeyboardShown: true,
+            });
+        });
+        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+            this.setState({
+                KeyboardShown: false,
+            });
+        });
+    }
+
+    //add new
+    componentWillUnmount() {
+        //卸载键盘弹出事件监听
+        if (this.keyboardDidShowListener != null) {
+            this.keyboardDidShowListener.remove();
+        }
+        //卸载键盘隐藏事件监听
+        if (this.keyboardDidHideListener != null) {
+            this.keyboardDidHideListener.remove();
+        }
     }
 
     getData = () => {
@@ -120,32 +152,34 @@ export default class ServiceDeskDetailPage extends BasePage {
         const { images, detail, communicates } = this.state;
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
+                <TouchableWithoutFeedback onPress={() => {
+                    Keyboard.dismiss();
+                }}>
+                    <ScrollView style={{ marginTop: this.state.KeyboardShown ? - 200 : 0, height: '100%' }}>
+                        <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                            <Text style={styles.left}>{detail.billCode}</Text>
+                            <Text style={styles.right}>{detail.billType}</Text>
+                        </Flex>
+                        <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                            <Text style={styles.left}>{detail.address}</Text>
+                            <Text style={styles.right}>{detail.statusName}</Text>
+                        </Flex>
+                        <Text style={[styles.desc]}>{detail.contents}</Text>
+                        <ListImages images={images} lookImage={this.lookImage} />
+                        <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                            <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
+                        </Flex>
 
-                <ScrollView>
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>{detail.billCode}</Text>
-                        <Text style={styles.right}>{detail.billType}</Text>
-                    </Flex>
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>{detail.address}</Text>
-                        <Text style={styles.right}>{detail.statusName}</Text>
-                    </Flex>
-                    <Text style={[styles.desc]}>{detail.contents}</Text>
-                    <ListImages images={images} lookImage={this.lookImage} />
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
-                    </Flex>
+                        <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                            <Text style={styles.left}>报单人：{detail.contactName} {detail.createDate}</Text>
+                            <TouchableWithoutFeedback onPress={() => common.call(detail.contactPhone)}>
+                                <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
+                                    style={{ width: 16, height: 16 }} /></Flex>
+                            </TouchableWithoutFeedback>
+                        </Flex>
 
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>报单人：{detail.contactName} {detail.createDate}</Text>
-                        <TouchableWithoutFeedback onPress={() => common.call(detail.contactPhone)}>
-                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
-                                style={{ width: 16, height: 16 }} /></Flex>
-                        </TouchableWithoutFeedback>
-                    </Flex>
-
-                    {/* 服务单关联单据，不允许操作 neo 2020年6月26日10:24:45 */}
-                    {/* {detail.businessCode ? (
+                        {/* 服务单关联单据，不允许操作 neo 2020年6月26日10:24:45 */}
+                        {/* {detail.businessCode ? (
                         <TouchableWithoutFeedback>
                             <Flex style={[styles.every]}>
                                 <Text style={styles.left}>关联单：</Text>
@@ -190,7 +224,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                         </TouchableWithoutFeedback>
                     ):null} */}
 
-                    <View style={{
+                        {/* <View style={{
                         margin: 15,
                         borderStyle: 'solid',
                         borderColor: '#F3F4F2',
@@ -204,9 +238,20 @@ export default class ServiceDeskDetailPage extends BasePage {
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
-                    </View>
+                    </View> */}
 
-                    {/* <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <View style={{ margin: 15 }}>
+                            <TextareaItem
+                                rows={4}
+                                autoHeight
+                                placeholder='请输入'
+                                style={{ width: ScreenUtil.deviceWidth() - 32 }}
+                                onChange={value => this.setState({ value })}
+                                value={this.state.value}
+                            />
+                        </View>
+
+                        {/* <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <TextInput
                             maxLength={500}
                             placeholder='请输入'
@@ -218,7 +263,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                         </TextInput>
                     </Flex> */}
 
-                    {/* <TouchableWithoutFeedback onPress={() => this.click('回复')}>
+                        {/* <TouchableWithoutFeedback onPress={() => this.click('回复')}>
                         <Flex justify={'center'} style={[styles.ii, {
                             width: '60%',
                             marginLeft: '10%', marginRight: '10%', marginBottom: 20
@@ -228,36 +273,38 @@ export default class ServiceDeskDetailPage extends BasePage {
                         </Flex>
                     </TouchableWithoutFeedback> */}
 
-                    <Flex justify={'center'}>
-                        <Button onPress={() => this.click('回复')} type={'primary'}
-                            activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                width: 200,
-                                backgroundColor: Macro.work_blue,
-                                marginTop: 10,
-                                marginBottom: 10,
-                                height: 40
-                            }}>回复</Button>
-                    </Flex>
+                        <Flex justify={'center'}>
+                            <Button onPress={() => this.click('回复')} type={'primary'}
+                                activeStyle={{ backgroundColor: Macro.work_blue }} style={{
+                                    width: 200,
+                                    backgroundColor: Macro.work_blue,
+                                    marginTop: 10,
+                                    marginBottom: 10,
+                                    height: 40
+                                }}>回复</Button>
+                        </Flex>
 
-                    {detail.status === 1 && <Flex>
-                        <TouchableWithoutFeedback onPress={() => this.click('转维修')}>
-                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
-                                <Text style={styles.word}>转维修</Text>
-                            </Flex>
-                        </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => this.click('转投诉')}>
-                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
-                                <Text style={styles.word}>转投诉</Text>
-                            </Flex>
-                        </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => this.click('关闭')}>
-                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
-                                <Text style={styles.word}>关闭</Text>
-                            </Flex>
-                        </TouchableWithoutFeedback>
-                    </Flex>}
-                    <Communicates communicateClick={this.communicateClick} communicates={communicates} />
-                </ScrollView>
+                        {detail.status === 1 && <Flex>
+                            <TouchableWithoutFeedback onPress={() => this.click('转维修')}>
+                                <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
+                                    <Text style={styles.word}>转维修</Text>
+                                </Flex>
+                            </TouchableWithoutFeedback>
+                            <TouchableWithoutFeedback onPress={() => this.click('转投诉')}>
+                                <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
+                                    <Text style={styles.word}>转投诉</Text>
+                                </Flex>
+                            </TouchableWithoutFeedback>
+                            <TouchableWithoutFeedback onPress={() => this.click('关闭')}>
+                                <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
+                                    <Text style={styles.word}>关闭</Text>
+                                </Flex>
+                            </TouchableWithoutFeedback>
+                        </Flex>}
+                        <Communicates communicateClick={this.communicateClick} communicates={communicates} />
+                    </ScrollView>
+                </TouchableWithoutFeedback>
+
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex}
                         onCancel={this.cancel}

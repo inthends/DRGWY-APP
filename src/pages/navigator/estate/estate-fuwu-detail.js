@@ -1,16 +1,17 @@
 //统计里面点击的服务单详情
 import React from 'react';
 import {
-    View, 
+    View,
     Text,
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
     ScrollView,
-    Modal
+    Modal,
+    Alert
 } from 'react-native';
 import BasePage from '../../base/base';
-import {Flex, Button, Icon } from '@ant-design/react-native'; 
+import { Flex, Button, Icon, TextareaItem } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';
@@ -47,13 +48,19 @@ export default class EfuwuDetailPage extends BasePage {
             detail: {},
             communicates: [],
             lookImageIndex: 0,
-            visible: false
+            visible: false,
+            btnList: []//按钮权限
         };
     }
 
     componentDidMount() {
+        //获取按钮权限
+        WorkService.getButtonListthen(btnList => {
+            this.setState({ btnList });
+        });
         this.getData();
     }
+
 
     getData = () => {
         const { id } = this.state;
@@ -77,17 +84,38 @@ export default class EfuwuDetailPage extends BasePage {
             });
         });
     };
-    click = (handle) => {
+
+
+    reply = () => {
         const { id, value } = this.state;
-        if (handle === '回复' && !(value && value.length > 0)) {
+        if (!(value && value.length > 0)) {
             UDToast.showInfo('请输入文字');
             return;
         }
-        WorkService.serviceHandle(handle, id, value).then(res => {
+        WorkService.serviceHandle('回复', id, value).then(res => {
             this.props.navigation.goBack();
         }).catch(err => {
             UDToast.showError(err);
         });
+    };
+
+    doWork = (handle) => {
+        Alert.alert(
+            '是否' + handle + '？',
+            '',
+            [{ text: '取消', tyle: 'cancel' },
+            {
+                text: '确定',
+                onPress: () => {
+                    const { id, value } = this.state;
+                    WorkService.serviceHandle(handle, id, value).then(res => {
+                        this.props.navigation.goBack();
+                    }).catch(err => {
+                        UDToast.showError(err);
+                    });
+                }
+            }
+            ], { cancelable: false });
     };
 
     communicateClick = (i) => {
@@ -118,10 +146,9 @@ export default class EfuwuDetailPage extends BasePage {
 
     render() {
         const { images, detail, communicates } = this.state;
-
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
-                <ScrollView> 
+                <ScrollView>
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.billType}</Text>
@@ -130,8 +157,8 @@ export default class EfuwuDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.address}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
-                    </Flex> 
-                    <Text style={[styles.desc ]}>{detail.contents}{"\n"}</Text> 
+                    </Flex>
+                    <Text style={[styles.desc]}>{detail.contents}{"\n"}</Text>
                     <ListImages images={images} lookImage={this.lookImage} />
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>报单人：{detail.contactName} {detail.createDate}</Text>
@@ -173,7 +200,7 @@ export default class EfuwuDetailPage extends BasePage {
                             value={this.state.value}
                         />
                     </View>
- 
+
                     {/* <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <TextInput
                             maxLength={500}
@@ -199,33 +226,46 @@ export default class EfuwuDetailPage extends BasePage {
                     </TouchableWithoutFeedback> */}
 
                     <Flex justify={'center'}>
-                        <Button onPress={() => this.click('回复')} type={'primary'}
+                        <Button onPress={() => this.reply()} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
                                 width: 200,
                                 backgroundColor: Macro.work_blue,
                                 marginTop: 20,
-                                marginBottom:10,
+                                marginBottom: 10,
                                 height: 40
                             }}>回复</Button>
                     </Flex>
- 
-                    {detail.status === 1 && <Flex>
-                        <TouchableWithoutFeedback onPress={() => this.click('转维修')}>
-                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
-                                <Text style={styles.word}>转维修</Text>
-                            </Flex>
-                        </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => this.click('转投诉')}>
-                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
-                                <Text style={styles.word}>转投诉</Text>
-                            </Flex>
-                        </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => this.click('关闭')}>
-                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
-                                <Text style={styles.word}>关闭</Text>
-                            </Flex>
-                        </TouchableWithoutFeedback>
-                    </Flex>}
+
+                    {detail.status === 1 &&
+                        //需要控制权限
+                        <Flex>
+
+                            {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'torepair')) ?
+                                <TouchableWithoutFeedback
+                                    onPress={() => this.doWork('转维修')}>
+                                    <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
+                                        <Text style={styles.word}>转维修</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback> :
+                                null}
+
+                            {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'tocomplaint')) ?
+                                <TouchableWithoutFeedback onPress={() => this.doWork('转投诉')}>
+                                    <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
+                                        <Text style={styles.word}>转投诉</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback> :
+                                null}
+
+                            {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'close')) ?
+                                <TouchableWithoutFeedback onPress={() => this.doWork('关闭')}>
+                                    <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
+                                        <Text style={styles.word}>关闭</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+                                :
+                                null}
+                        </Flex>}
 
                     <Communicates communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
@@ -239,7 +279,7 @@ export default class EfuwuDetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-  
+
     every: {
         fontSize: 16,
         marginLeft: 15,
@@ -258,7 +298,7 @@ const styles = StyleSheet.create({
     right: {
         fontSize: 16
     },
-    desc: { 
+    desc: {
         marginLeft: 15,
         marginRight: 15,
         paddingTop: 15,

@@ -165,12 +165,12 @@ class AddRepairPage extends BasePage {
         SelectImage.select(this.state.id, '', '/api/MobileMethod/MUploadServiceDesk').then(url => {
             let images = [...this.state.images];
             images.splice(images.length - 1, 0, url);
-            if (images.length > 4) {
+            if (images.length > 10) {
                 //最多五张
                 images = images.filter((item, index) => index !== images.length - 1);
             }
             this.setState({ images });
-        }).catch(error => {});
+        }).catch(error => { });
     };
 
     //删除附件
@@ -178,25 +178,19 @@ class AddRepairPage extends BasePage {
         Alert.alert(
             '是否删除？',
             '',
-            [
-                {
-                    text: '取消',
-                    style: 'cancel'
-                },
-                {
-                    text: '确定',
-                    onPress: () => {
-                        GdzcService.deleteWorkFile(url).then(res => {
-                            let index = this.state.images.indexOf(url);
-                            let myimages = [...this.state.images];
-                            myimages.splice(index, 1);
-                            this.setState({ images: myimages });
-                        });
-                    }
+            [{ text: '取消', tyle: 'cancel' },
+            {
+                text: '确定',
+                onPress: () => {
+                    GdzcService.deleteWorkFile(url).then(res => {
+                        let index = this.state.images.indexOf(url);
+                        let myimages = [...this.state.images];
+                        myimages.splice(index, 1);
+                        this.setState({ images: myimages });
+                    });
                 }
-            ],
-            { cancelable: false }
-        );
+            }
+            ], { cancelable: false });
     }
 
     submit = () => {

@@ -214,8 +214,7 @@ export default {
     // getWorkers(organizeId, keyword = null, type = '员工') {
     //     return api.getData('/api/MobileMethod/MGetUserList', { organizeId, keyword, type });
     // },
-
-
+ 
     paidan(keyvalue, receiverName, receiverId) {
         return api.postData('/api/MobileMethod/MRepairDispatch', { keyvalue, receiverName, receiverId });
     },
@@ -227,5 +226,10 @@ export default {
     },
     readNews(newsId) {
         return api.postData('/api/MobileMethod/MReadNews', { newsId });
+    },
+
+    //获取按钮权限
+    getButtonList() {
+        return api.getData('/api/MobileMethod/GetButtonList');
     },
 };

@@ -30,17 +30,17 @@ export default class WorkPage extends BasePage {
             headerForceInset: this.headerForceInset,
             headerLeft: (
                 <Fragment>
-                    <TouchableWithoutFeedback onPress={() => navigation.push('scanonly')}>
+                    {/* <TouchableWithoutFeedback onPress={() => navigation.push('scanonly')}>
                         <Flex direction='column' style={{ marginLeft: 20 }}>
                             <LoadImage defaultImg={require('../../static/images/scan2.png')}
                                 style={{ width: 20, height: 19 }} />
                             <Text style={styles.button}>扫一扫</Text>
                         </Flex>
-                    </TouchableWithoutFeedback>
+                    </TouchableWithoutFeedback> */}
                     <TouchableWithoutFeedback onPress={() => navigation.push('AddWork')}>
                         <Flex direction='column' style={{ marginLeft: 20 }}>
                             <LoadImage defaultImg={require('../../static/images/paiyipai.png')}
-                                style={{ width: 20, height: 21 }} />
+                                style={{ width: 22, height: 17 }} />
                             <Text style={styles.button}>拍一拍</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
@@ -54,13 +54,13 @@ export default class WorkPage extends BasePage {
                             <Text style={styles.button}>消息</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback>
+                    {/* <TouchableWithoutFeedback>
                         <Flex direction='column' style={{ marginRight: 20 }}>
                             <LoadImage defaultImg={require('../../static/images/qiandao.png')}
                                 style={{ width: 20, height: 19 }} />
                             <Text style={styles.button}>签到</Text>
                         </Flex>
-                    </TouchableWithoutFeedback>
+                    </TouchableWithoutFeedback> */}
                 </Fragment>
             )
         };
@@ -576,8 +576,7 @@ const styles = StyleSheet.create({
     },
     buttonInfo: {
         color: Macro.color_FA3951,
-        fontSize: 16,
-        // paddingTop: 4, 
+        fontSize: 16
     },
     card: {
         borderRadius: 5,

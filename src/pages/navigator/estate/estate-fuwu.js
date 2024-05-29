@@ -59,7 +59,6 @@ class EstateFuwuPage extends BasePage {
             time: '全部',
             selectBuilding: this.props.selectBuilding
         };
-
     }
 
 
@@ -68,7 +67,7 @@ class EstateFuwuPage extends BasePage {
             'didFocus',
             (obj) => {
                 this.onRefresh();
-            },
+            }
         );
     }
 
@@ -173,7 +172,7 @@ class EstateFuwuPage extends BasePage {
                             style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>{item.contactName} {item.billDate}</Text>
                             <TouchableWithoutFeedback onPress={() => common.call(item.contactPhone)}>
-                                <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 15, height: 15 }} /></Flex>
+                                <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 20, height: 20 }} /></Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
                     </Flex>

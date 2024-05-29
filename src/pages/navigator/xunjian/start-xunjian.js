@@ -80,7 +80,7 @@ class StartXunJianPage extends BasePage {
         SelectImage.select(this.state.id, '', '/api/MobileMethod/MUploadPollingTask', this.props.hasNetwork).then(res => {
             let images = [...this.state.images];
             images.splice(images.length - 1, 0, res);
-            if (images.length > 4) {
+            if (images.length > 10) {
                 images = images.filter((item, index) => index !== images.length - 1);
             }
             if (images.length > 1) {

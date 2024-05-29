@@ -56,7 +56,7 @@ class GdzcPandianPage extends BasePage {
         SelectImage.select(this.state.assetsId,'', '/api/MobileMethod/MUploadAssetsCheck', this.props.hasNetwork).then(res => {
             let images = [...this.state.images];
             images.splice(images.length - 1, 0, { 'icon': res });
-            if (images.length > 4) {
+            if (images.length > 10) {
                 images = images.filter((item, index) => index !== images.length - 1);
             }
             this.setState({ images });

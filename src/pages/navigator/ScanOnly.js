@@ -16,6 +16,7 @@ import { RNCamera } from 'react-native-camera';
 import Macro from '../../utils/macro';
 import BasePage from '../base/base';
 
+//废弃
 export default class ScanOnly extends BasePage {
 
     static navigationOptions = ({ navigation }) => {
@@ -26,8 +27,7 @@ export default class ScanOnly extends BasePage {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
-            ),
-
+            )
         };
     };
 

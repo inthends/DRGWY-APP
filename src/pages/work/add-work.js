@@ -77,12 +77,12 @@ class AddWorkPage extends BasePage {
     componentWillMount() {
         this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
             this.setState({
-                KeyboardShown: true,
+                KeyboardShown: true
             });
         });
         this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
             this.setState({
-                KeyboardShown: false,
+                KeyboardShown: false
             });
         });
     }
@@ -163,7 +163,7 @@ class AddWorkPage extends BasePage {
             let images = [...this.state.images];
             // images.splice(images.length - 1, 0, { icon: res });
             images.splice(images.length - 1, 0, url);
-            if (images.length > 4) {
+            if (images.length > 10) {
                 images = images.filter((item, index) => index !== images.length - 1);
             }
             this.setState({ images });
@@ -292,8 +292,8 @@ class AddWorkPage extends BasePage {
                                             //this.props.navigation.push('SelectAddress', { onSelect: this.onSelectAddress });
                                             this.props.navigation.push('SelectAddress', { parentName: 'AddWork' });
                                         }
-                                    }
-                                    }>
+                                    }}>
+
                                     <Flex justify="between" style={[{
                                         paddingTop: 15,
                                         paddingBottom: 15,
@@ -309,8 +309,7 @@ class AddWorkPage extends BasePage {
                                             defaultImg={require('../../static/images/address/right.png')} />
                                     </Flex>
                                 </TouchableWithoutFeedback>
-                            </Flex>
-
+                            </Flex> 
                             <View>
                                 <TextareaItem
                                     rows={12}
@@ -323,7 +322,7 @@ class AddWorkPage extends BasePage {
                                     onChange={value => this.setState({ value })}
                                     value={this.state.value}
                                 />
-                            </View>
+                            </View> 
                             <Flex align={'start'} justify={'start'} style={{
                                 paddingTop: 15,
                                 paddingBottom: 15,
@@ -367,8 +366,8 @@ class AddWorkPage extends BasePage {
                                     })}
                                 </Flex>
                             </Flex>
-
                         </Flex>
+
                         <Flex justify={'center'} align={'start'} style={{
                             height: 80,
                             backgroundColor: '#eee',

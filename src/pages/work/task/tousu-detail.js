@@ -121,24 +121,20 @@ export default class TousuDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
-                    </Flex>
-
-                    <Flex style={[styles.every2]} justify='between'>
+                    </Flex> 
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.complaintAddress} {detail.complaintUser}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.complaintLink)}>
                             <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 16, height: 16 }} /></Flex>
                         </TouchableWithoutFeedback>
-                    </Flex>
-
-                    <DashLine />
+                    </Flex> 
+                    {/* <DashLine /> */}
                     <Text style={styles.desc}>{detail.contents}</Text>
-                    <DashLine />
+                    {/* <DashLine /> */}
                     <ListImages images={images} lookImage={this.lookImage} />
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
-                    </Flex>
-                  
-                    <DashLine />
+                    </Flex>  
                     <Communicates communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>

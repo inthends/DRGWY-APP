@@ -267,7 +267,7 @@ class EcheckAddPage extends BasePage {
         SelectImage.select(this.state.detailId, '', '/api/MobileMethod/MUploadCheckDesk').then(url => {
             let images = [...this.state.images];
             images.splice(images.length - 1, 0, url);
-            if (images.length > 4) {
+            if (images.length > 10) {
                 //最多五张
                 images = images.filter((item, index) => index !== images.length - 1);
             }

@@ -1,7 +1,7 @@
 import React from 'react';
 import BasePage from '../../base/base';
 import { Flex, Icon, TextareaItem } from '@ant-design/react-native';
-import { StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View, FlatList, Alert } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View, FlatList  } from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import CommonView from '../../../components/CommonView';
 import common from '../../../utils/common';
