@@ -245,7 +245,7 @@ export default class StartDetailPage extends BasePage {
                             <TextareaItem
                                 rows={4}
                                 autoHeight
-                                placeholder='请输入'
+                                placeholder='请输入故障判断'
                                 style={{ width: ScreenUtil.deviceWidth() - 32 }}
                                 onChange={value => this.setState({ value })}
                                 value={this.state.value}

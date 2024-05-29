@@ -75,8 +75,7 @@ export default class CompleteDetailPage extends BasePage {
     }
 
     //add new
-    componentWillUnmount() {
-
+    componentWillUnmount() { 
         //卸载键盘弹出事件监听
         if (this.keyboardDidShowListener != null) {
             this.keyboardDidShowListener.remove();
@@ -101,15 +100,13 @@ export default class CompleteDetailPage extends BasePage {
                     assistName: detail.assistName,//协助人 
                     reinforceName: detail.reinforceName//增援人 
                 }
-            });
-
+            }); 
             //获取维修单的单据动态
             WorkService.getOperationRecord(id).then(res => {
                 this.setState({
                     communicates: res
                 });
-            });
-
+            }); 
         });
 
         WorkService.weixiuExtra(id).then(images => {
@@ -121,10 +118,10 @@ export default class CompleteDetailPage extends BasePage {
 
     click = (handle) => {
         const { id, isUpload, images, value } = this.state;
-        if (!(value && value.length > 0)) {
-            UDToast.showInfo('请输入文字');
-            return;
-        }
+        // if (!(value && value.length > 0)) {
+        //     UDToast.showInfo('请输入文字');
+        //     return;
+        // }
         const wcimages = images.filter(t => t.type === '完成');
         if (wcimages.length == 0 && !isUpload) {
             UDToast.showInfo('请上传完成图片');
@@ -228,7 +225,7 @@ export default class CompleteDetailPage extends BasePage {
                             <TextareaItem
                                 rows={4}
                                 autoHeight
-                                placeholder='请输入'
+                                placeholder='请输入完成情况'
                                 style={{ width: ScreenUtil.deviceWidth() - 32 }}
                                 onChange={value => this.setState({ value })}
                                 value={this.state.value}
