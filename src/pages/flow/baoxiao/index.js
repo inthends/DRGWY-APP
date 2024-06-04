@@ -118,9 +118,14 @@ export default class DetailPage extends BasePage {
               word="发起人"
               title={detail.createUserName}
               right={detail.date}
+              rightColor={'#404145'}
             />
             <ShowText word="报销类型" title={detail.billType} />
-            <ShowText word="报销金额" title={detail.totalAmount} /> 
+            <ShowText word="报销金额" title={detail.totalAmount} />
+            <ShowText word="收款人" title={detail.accountName} /> 
+            <ShowText word="收款人开户行" title={detail.bank} /> 
+            <ShowText word="收款人账号" title={detail.accountNo} />
+            <ShowText word="申请付款说明" title={detail.appPayMemo} /> 
             <Text>
               {detail.memo}{"\n"}
             </Text>
@@ -129,7 +134,7 @@ export default class DetailPage extends BasePage {
           <ShowFiles files={detail.files} onPress={
             (fileStr) => {
               this.props.navigation.navigate('webPage', {
-                data: fileStr,
+                data: fileStr
               });
             }
           } />

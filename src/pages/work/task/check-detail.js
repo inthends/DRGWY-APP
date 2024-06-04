@@ -220,10 +220,8 @@ export default class CheckDetailPage extends BasePage {
 
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                             <Text style={styles.left}>增援人：{detail.reinforceName}</Text>
-                        </Flex>
-
-                        {/* <DashLine /> */}
-
+                        </Flex> 
+                        {/* <DashLine /> */} 
                         <Flex justify={'between'} style={{ margin: 15 }}>
                             <TouchableWithoutFeedback onPress={() => this.setState({ result: 1 })}>
                                 <Flex>

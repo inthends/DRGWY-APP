@@ -16,7 +16,7 @@ class SelectXunJianPerson extends BasePage {
         return {
             tabBarVisible: false,
             title: '选择人员',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
@@ -42,7 +42,8 @@ class SelectXunJianPerson extends BasePage {
         this.select = this.select.bind(this);
     }
 
-    componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
+    componentWillReceiveProps(nextProps) {
+        //(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
         const nextSelectBuilding = nextProps.selectBuilding;
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
@@ -90,7 +91,7 @@ class SelectXunJianPerson extends BasePage {
         );
     }
 }
- 
+
 const mapStateToProps = ({ buildingReducer }) => {
     return {
         selectBuilding: buildingReducer.selectBuilding,

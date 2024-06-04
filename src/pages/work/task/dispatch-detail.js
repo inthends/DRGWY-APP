@@ -204,7 +204,7 @@ export default class DispatchDetailPage extends BasePage {
                         </TouchableWithoutFeedback>
 
                         <TouchableWithoutFeedback
-                            onPress={() => this.props.navigation.navigate('SelectPerson', { onSelect: this.onSelect })}>
+                            onPress={() => this.props.navigation.navigate('selectPerson', { onSelect: this.onSelect })}>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                                 <Flex>
                                     <Text style={styles.left}>接单人：</Text>

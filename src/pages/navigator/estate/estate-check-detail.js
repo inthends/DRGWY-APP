@@ -1,4 +1,4 @@
-//统计里面点击的检查单详情
+
 import React from 'react';
 import { 
     Text,
@@ -164,6 +164,7 @@ export default class EcheckDetailPage extends BasePage {
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
+
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
@@ -172,6 +173,11 @@ export default class EcheckDetailPage extends BasePage {
                         <Text>检查人：{detail.checkUserName} {detail.postName}</Text>
                         <Text>{detail.billDate}</Text>
                     </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text>检查角色：{detail.checkRole}</Text> 
+                    </Flex>
+
                     <Text style={[styles.every, ScreenUtil.borderBottom()]}>{detail.memo}</Text>
                     <FlatList
                         data={dataInfo.data}
@@ -182,16 +188,13 @@ export default class EcheckDetailPage extends BasePage {
                         onEndReachedThreshold={0.1}
                         onMomentumScrollBegin={() => this.canAction = true}
                         onMomentumScrollEnd={() => this.canAction = false}
-                    // ListEmptyComponent={<NoDataView />}
-                    />
-
-                </ScrollView>
-
+                        // ListEmptyComponent={<NoDataView />}
+                    /> 
+                </ScrollView> 
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                         imageUrls={this.state.images} />
-                </Modal>
-
+                </Modal> 
             </CommonView>
         );
     }

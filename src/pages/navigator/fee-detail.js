@@ -48,7 +48,7 @@ class FeeDetailPage extends BasePage {
                         paddingRight: 15,
                         paddingTop: 10,
                         color: '#2c2c2c',
-                        paddingBottom: 10,
+                        paddingBottom: 10
                     }}>加费</Text>
                     {/*<Icon name='add' style={{ width: 30, marginLeft: 15 }} />*/}
                 </TouchableOpacity>
@@ -195,12 +195,12 @@ class FeeDetailPage extends BasePage {
                 //app 不支持刷卡
                 case '扫码': {
                     NavigatorService.createOrder(ids, isML, mlType, mlScale, 1).then(res => {
- 
+
                         if (!res.posType) {
                             UDToast.showError(res);
                             return;
                         }
- 
+
                         let posType = res.posType;
                         // if (posType === '银盛') {
                         //     if (!this.state.isYse) {
@@ -296,7 +296,7 @@ class FeeDetailPage extends BasePage {
                             UDToast.showError(res);
                             return;
                         }
- 
+
                         let posType = res.posType;
                         // if (posType === '银盛') {
                         //     if (!this.state.isYse) {
@@ -736,7 +736,6 @@ class FeeDetailPage extends BasePage {
                                                     jianfeiAlert: true,
                                                 });
                                             } else {
-
                                                 //需要验证权限
                                                 NavigatorService.checkBillFee(item.id).then(res => {
                                                     if (res == 0) {
@@ -851,7 +850,6 @@ class FeeDetailPage extends BasePage {
                                     this.checkAll();
                                 }}
                             ><Text style={{ paddingTop: 3, paddingLeft: 3, color: '#666' }}>全选</Text></Checkbox>
-
                             <Checkbox
                                 defaultChecked={false}
                                 checked={isDigital}
@@ -859,7 +857,6 @@ class FeeDetailPage extends BasePage {
                                     this.setState({ isDigital: e.target.checked });
                                 }}
                             ><Text style={{ paddingTop: 3, paddingLeft: 3, color: '#666' }}>数字货币</Text></Checkbox>
-
                             <Checkbox
                                 defaultChecked={false}
                                 checked={isML}
@@ -867,8 +864,7 @@ class FeeDetailPage extends BasePage {
                                     this.setState({ isML: e.target.checked });
                                     //算抹零金额
                                     this.mlCal(e.target.checked, this.state.mlType, this.state.mlScale);
-                                }}><Text style={{ paddingTop: 3, paddingLeft: 3, color: '#666' }}>抹零</Text></Checkbox>
-
+                                }}><Text style={{ paddingTop: 3, paddingLeft: 3, paddingRight: 3, color: '#666' }}>抹零</Text></Checkbox>
                             <MyPopover
                                 textStyle={{ fontSize: 14 }}
                                 onChange={(title) => {
@@ -877,9 +873,8 @@ class FeeDetailPage extends BasePage {
                                 }}
                                 titles={['抹去角', '抹去分']}
                                 visible={true} />
-
                             <MyPopover
-                                textStyle={{ fontSize: 14 }}
+                                textStyle={{ paddingLeft: 3, fontSize: 14 }}
                                 onChange={(title) => {
                                     this.setState({ mlScale: title });
                                     this.mlCal(this.state.isML, this.state.mlType, title, title);
@@ -982,6 +977,7 @@ class FeeDetailPage extends BasePage {
                         }} item={this.state.selectItem} />
                     </Flex>
                 </Modal>
+
                 {
                     this.state.chaifeiAlert && (
                         <TouchableWithoutFeedback onPress={() => this.setState({ chaifeiAlert: false })}>
@@ -1004,6 +1000,7 @@ class FeeDetailPage extends BasePage {
                         </TouchableWithoutFeedback>
                     )
                 }
+
                 {
                     this.state.showPicker &&
                     <TouchableWithoutFeedback onPress={() => {
@@ -1011,7 +1008,6 @@ class FeeDetailPage extends BasePage {
                         //     showPicker: false,
                         // })
                     }}>
-
                         <View style={styles.pp} >
                             <DatePickerView
                                 mode={'date'}

@@ -17,11 +17,10 @@ import CommonView from '../../components/CommonView';
 import Macro from '../../utils/macro';
 const Item = List.Item;
 
-export default class SelectAddressPage extends BasePage {
+export default class SelectRepairMajor extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
-            //title: navigation.getParam('title'),
-            title: '选择位置',
+            title: '选择维修专业',
             headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -49,26 +48,11 @@ export default class SelectAddressPage extends BasePage {
         this.getData();
     }
 
-    // submit = () => {
-    //     const { selectItem } = this.state;
-    //     if (selectItem && selectItem.id) {
-    //         this.props.navigation.navigate('addWork', { data: { address: selectItem } });
-    //     } else {
-    //         UDToast.showInfo('请先选择');
-    //     }
-    // };
-
     submit = () => {
         const { selectItem, parentName } = this.state;
         if (selectItem) {
-            // const { navigation } = this.props;
-            // navigation.state.params.onSelect({ selectItem });
-            // navigation.goBack();
-            //第一层可以调用，到楼栋，楼层就无法调用事件
-            //this.props.navigation.navigate('addWork', { data: { address: selectItem } });
-
             if (parentName) {
-                this.props.navigation.navigate(parentName, { data: { address: selectItem } });
+                this.props.navigation.navigate(parentName, { data: { repairmajor: selectItem } });
             }
 
         } else {
@@ -77,69 +61,53 @@ export default class SelectAddressPage extends BasePage {
     };
 
     next = (item) => {
-        if (item.type !== 5) {
+        if (item.type !== 2) {
             const { parentName } = this.state;
-            this.props.navigation.push('selectAddress', {
+            this.props.navigation.push('selectRepairMajor', {
                 'data': {
-                    ...item,
+                    ...item
                 },
-                parentName//传递主页面到楼栋、楼层
+                parentName//传递主页面到维修专业
             });
         }
     };
 
     getData = () => {
         const parent = common.getValueFromProps(this.props, 'data');
+        console.log('parent',parent);
         let params;
         if (parent) {
-            params = { keyvalue: parent.id };
             let type = -1;
             switch (parent.type) {
                 case 1: {
                     type = 2;
                     this.props.navigation.setParams({
                         data: parent,
-                        title: '选择楼栋',
-                    });
-                    break;
-                }
-                case 2: {
-                    type = 4;
-                    this.props.navigation.setParams({
-                        data: parent,
-                        title: '选择楼层',
-                    });
-                    break;
-                }
-                case 4: {
-                    type = 5;
-                    this.props.navigation.setParams({
-                        data: parent,
-                        title: '选择房屋',
+                        title: '选择专业',
                     });
                     break;
                 }
             }
+
             if (type === -1) {
                 UDToast.showInfo('类型错误');
                 return;
             }
-            params = {
-                ...params,
-                type,
-            };
+            
+            params = { keyvalue: parent.id, type };
+
         } else {
             this.props.navigation.setParams({
-                title: '选择楼盘',
+                title: '选择分类',
             });
             params = { keyvalue: 0, type: 1 };
         }
         this.setState({
             parent,
-            refreshing: true,
+            refreshing: true
         });
 
-        WorkService.getPStructs(params).then(items => {
+        WorkService.getRepairMajors(params).then(items => {
             this.setState({ items, refreshing: false });
         }).catch(err => this.setState({ refreshing: false }));
     };
@@ -151,9 +119,8 @@ export default class SelectAddressPage extends BasePage {
                 <View style={{ flex: 1 }}>
                     {parent ?
                         <Item arrow="empty">
-                            {parent.allName}
-                            {/* {parent ? parent.allName : '/'} */}
-                        </Item> : null}
+                            {parent.name}
+                        </Item> : null} 
                     <ScrollView style={{ flex: 1 }} refreshControl={
                         <RefreshControl
                             refreshing={this.state.refreshing}
@@ -162,13 +129,14 @@ export default class SelectAddressPage extends BasePage {
                     }>
                         <List>
                             {items.map((item, index) => (
-                                <Item key={index} arrow={item.type !== 5 ? 'horizontal' : 'empty'}
+                                <Item key={index} arrow={item.type !== 2 ? 'horizontal' : 'empty'}
                                     onPress={() => this.next(item)}>
                                     <Flex>
-                                        <TouchableWithoutFeedback onPress={() => this.setState({ selectItem: item })}>
-                                            <Image alt='' style={{ width: 24, height: 24 }}
-                                                source={selectItem.id === item.id ? require('../../static/images/select.png') : require('../../static/images/no-select.png')} />
-                                        </TouchableWithoutFeedback>
+                                        {item.type == 2 ?
+                                            <TouchableWithoutFeedback onPress={() => this.setState({ selectItem: item })}>
+                                                <Image alt='' style={{ width: 24, height: 24 }}
+                                                    source={selectItem.id === item.id ? require('../../static/images/select.png') : require('../../static/images/no-select.png')} />
+                                            </TouchableWithoutFeedback> : null}
                                         <Text style={{
                                             paddingLeft: 15,
                                             paddingTop: 5,
@@ -186,7 +154,6 @@ export default class SelectAddressPage extends BasePage {
                         }} type="primary"
                             onPress={() => this.submit()}>确定</Button>
                     </Flex>
-
                 </View>
             </CommonView>
         );

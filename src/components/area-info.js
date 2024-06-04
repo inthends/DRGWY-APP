@@ -5,9 +5,7 @@ import Macro from '../utils/macro';
 import ScreenUtil from '../utils/screen-util';
 import LoadImage from './load-image'; 
 
-export default class AreaInfo extends Component {
-
-
+export default class AreaInfo extends Component { 
     render() {
         return (
             <Flex direction={'column'} style={[{width: ScreenUtil.deviceWidth()},this.props.style]}>
@@ -24,8 +22,7 @@ export default class AreaInfo extends Component {
                 </Flex>
             </Flex>
         );
-    }
-
+    } 
 }
 
 const styles = StyleSheet.create({

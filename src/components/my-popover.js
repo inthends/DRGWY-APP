@@ -12,7 +12,7 @@ export default class MyPopover extends Component {
         this.state = {
             isVisible: false,
             index: 0,
-            titles: this.props.titles,
+            titles: this.props.titles
         };
     }
 
@@ -20,7 +20,7 @@ export default class MyPopover extends Component {
         if (this.props.titles.length !== prevProps.titles.length) {
             this.setState({
                 titles: this.props.titles,
-                index: 0,
+                index: 0
             });
         }
     }

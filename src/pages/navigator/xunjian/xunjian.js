@@ -14,7 +14,6 @@ import XunJianService from './xunjian-service';
 
 
 class XunJianPage extends BasePage {
-
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
@@ -28,7 +27,7 @@ class XunJianPage extends BasePage {
         };
     };
 
-    onSelect = (person) => { 
+    onSelect = (person) => {
         this.setState({
             person
         }, () => {
@@ -66,7 +65,7 @@ class XunJianPage extends BasePage {
             });
         });
     };
- 
+
     start = () => {
         // let person = this.state.person || {};
         // this.props.navigation.navigate('xunjianBeforeStart', {
@@ -121,11 +120,11 @@ class XunJianPage extends BasePage {
         );
     }
 
-    componentWillUnmount()  {
+    componentWillUnmount() {
         this.viewDidAppear.remove();
     }
 
-    initUI() { 
+    initUI() {
         if (this.props.hasNetwork) {
             this.hasNetwork();
         } else {
@@ -140,8 +139,8 @@ class XunJianPage extends BasePage {
                 ...res
             });
         });
-        
-        XunJianService.xunjianIndexList(person.id).then(res => { 
+
+        XunJianService.xunjianIndexList(person.id).then(res => {
             Promise.all(res.data.map(item => XunJianService.xunjianIndexDetail(item.lineId))).then(all => {
                 let items = res.data.map((item, index) => {
                     return {
@@ -149,18 +148,18 @@ class XunJianPage extends BasePage {
                         items: all[index]
                     };
                 });
-                this.setState({ items: [...items] }, () => {  
+                this.setState({ items: [...items] }, () => {
                 });
             });
         });
     }
 
     noNetwork() {
-        const xunJianData = this.props.xunJianData; 
+        const xunJianData = this.props.xunJianData;
         const params = {
             ...xunJianData.allData,
             items: xunJianData.lists
-        }; 
+        };
         this.setState({
             ...params
         });
@@ -241,7 +240,7 @@ class XunJianPage extends BasePage {
                 })}>
                     <Flex style={styles.person} align={'center'} justify={'center'}>
                         <Text style={styles.personText}>{name}</Text>
-                        <LoadImage style={{ width: 20, height: 20 }} />
+                        <LoadImage style={{ width: 6, height: 12 }} defaultImg={require('../../../static/images/address/right.png')} />
                     </Flex>
                 </TouchableWithoutFeedback>
 
@@ -276,7 +275,7 @@ class XunJianPage extends BasePage {
                         width: '80%',
                         marginLeft: '10%',
                         marginRight: '10%',
-                        marginBottom: 20,
+                        marginBottom: 40
                     }, { backgroundColor: Macro.work_blue }]}>
                         <Text style={styles.word}>开始巡检</Text>
                     </Flex>
@@ -285,7 +284,7 @@ class XunJianPage extends BasePage {
         );
     }
 }
- 
+
 const styles = StyleSheet.create({
     title: {
         paddingTop: 14,
@@ -314,7 +313,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         paddingBottom: 20
     },
-  
+
     card: {
         borderRadius: 5,
         // marginBottom: 15,
@@ -324,8 +323,8 @@ const styles = StyleSheet.create({
         // shadowRadius: 5,
         // shadowOpacity: 0.8,
     },
-   
-    
+
+
     location: {
         paddingTop: 15,
         paddingBottom: 10,
@@ -357,10 +356,10 @@ const styles = StyleSheet.create({
     word: {
         color: 'white',
         fontSize: 16
-    } 
+    }
 });
 
-const mapStateToProps = ({ memberReducer, xunJianReducer }) => { 
+const mapStateToProps = ({ memberReducer, xunJianReducer }) => {
     return {
         user: {
             ...memberReducer.user,

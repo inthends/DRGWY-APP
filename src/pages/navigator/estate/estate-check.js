@@ -45,8 +45,7 @@ class EstateCheckPage extends BasePage {
         super(props);
         this.selectBuilding = {
             key: null
-        };
-
+        }; 
         this.state = {
             selectBuilding: {},//默认为空，防止别地方选择了机构
             pageIndex: 1,
@@ -76,7 +75,7 @@ class EstateCheckPage extends BasePage {
             'didBlur',
             (obj) => {
                 this.props.saveSelectDrawerType(DrawerType.building);
-            },
+            }
         );
     }
 
@@ -162,11 +161,6 @@ class EstateCheckPage extends BasePage {
                     </Flex>
                     <Flex style={styles.line} />
                     <Flex align={'start'} direction={'column'}>
-                        {/* <Flex justify='between'
-                            style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
-                            <Text>{item.address} </Text>
-                            <Text>{item.statusName}</Text>
-                        </Flex> */}
                         <Text style={{
                             paddingLeft: 20,
                             paddingTop: 10,
@@ -178,9 +172,6 @@ class EstateCheckPage extends BasePage {
                             style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>检查人：{item.organizeName} {item.departmentName} {item.checkUserName} {item.postName}</Text>
                             <Text>{item.billDate}</Text>
-                            {/*<TouchableWithoutFeedback onPress={() => common.call(item.contactPhone)}>
-                                <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 15, height: 15 }} /></Flex>
-                            </TouchableWithoutFeedback> */}
                         </Flex>
                     </Flex>
                 </Flex>
@@ -230,7 +221,7 @@ class EstateCheckPage extends BasePage {
     };
 
     render() {
-        const { dataInfo, ym } = this.state;
+        const { dataInfo } = this.state;
         return (
             <View style={{ flex: 1 }}>
                 <CommonView style={{ flex: 1 }}>

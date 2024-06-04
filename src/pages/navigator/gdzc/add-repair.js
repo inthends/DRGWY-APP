@@ -286,7 +286,7 @@ class AddRepairPage extends BasePage {
                                 <TouchableWithoutFeedback
                                     onPress={() => {
                                         if (canSelectAddress) {
-                                            this.props.navigation.push('SelectAddress', { onSelect: this.onSelectAddress });
+                                            this.props.navigation.push('selectAddress', { onSelect: this.onSelectAddress });
                                         }
                                     }
                                     }>

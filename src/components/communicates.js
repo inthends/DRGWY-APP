@@ -44,7 +44,7 @@ export default class Communicates extends Component {
                             paddingTop: 15,
                             paddingBottom: 15,
                             paddingRight: 10,
-                            paddingLeft: 10,
+                            paddingLeft: 10
                         }}>
                             <Text style={styles.content}>{i.content}</Text>
                         </View> : null}

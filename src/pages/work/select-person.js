@@ -114,7 +114,6 @@ class SelectPerson extends BasePage {
 
                 });
         });
-
     }
 
     click = (selectItem) => {

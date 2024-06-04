@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
         borderStyle: 'solid'
     }, 
     secondDate: {
-        width: 108, 
+        width: 110, 
         fontSize: 16,
         color: '#404145',
         backgroundColor: '#eeeeee',
@@ -260,6 +260,6 @@ const styles = StyleSheet.create({
         paddingBottom: 6,
         borderRadius: 10,
         overflow: 'hidden'
-    },
+    }
 });
 

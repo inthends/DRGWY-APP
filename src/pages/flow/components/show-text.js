@@ -50,10 +50,10 @@ const ShowText = ({
 
 const styles = StyleSheet.create({
   txt: {
-    fontSize: 16,
-    color: '#666',
+    fontSize: 15,
+    color:'#404145', //'#666',
     paddingBottom: 10
-  },
+  }
 });
 
 export default ShowText;

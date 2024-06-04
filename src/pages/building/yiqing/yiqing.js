@@ -51,7 +51,7 @@ class YiQingPage extends BasePage {
   componentDidMount(): void {
     YiQingService.records(this.state.keyvalue).then((res) => {
       this.setState({
-        records: res.data,
+        records: res.data
       });
     });
   }

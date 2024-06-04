@@ -289,8 +289,8 @@ class AddWorkPage extends BasePage {
                                 <TouchableWithoutFeedback
                                     onPress={() => {
                                         if (canSelectAddress) {
-                                            //this.props.navigation.push('SelectAddress', { onSelect: this.onSelectAddress });
-                                            this.props.navigation.push('SelectAddress', { parentName: 'AddWork' });
+                                            //this.props.navigation.push('selectAddress', { onSelect: this.onSelectAddress });
+                                            this.props.navigation.push('selectAddress', { parentName: 'addWork' });
                                         }
                                     }}>
 

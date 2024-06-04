@@ -50,7 +50,7 @@ const ShowTextWithRight = ({
 const styles = StyleSheet.create({
  
   txt: {
-    fontSize: 16,
+    fontSize: 15, 
     paddingBottom: 10
   },
 });

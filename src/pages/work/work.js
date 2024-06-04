@@ -37,10 +37,10 @@ export default class WorkPage extends BasePage {
                             <Text style={styles.button}>扫一扫</Text>
                         </Flex>
                     </TouchableWithoutFeedback> */}
-                    <TouchableWithoutFeedback onPress={() => navigation.push('AddWork')}>
+                    <TouchableWithoutFeedback onPress={() => navigation.push('addWork')}>
                         <Flex direction='column' style={{ marginLeft: 20 }}>
                             <LoadImage defaultImg={require('../../static/images/paiyipai.png')}
-                                style={{ width: 22, height: 17 }} />
+                                style={{ width: 22, height: 18 }} />
                             <Text style={styles.button}>拍一拍</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
@@ -196,7 +196,7 @@ export default class WorkPage extends BasePage {
                             <Flex>
                                 <Text style={styles.title}>工单任务</Text>
                                 <TouchableWithoutFeedback onPress={() =>
-                                    this.props.navigation.push('Taskqd', {
+                                    this.props.navigation.push('taskqd', {
                                         'data': {
                                             title: '工单列表'
                                         }
@@ -211,7 +211,7 @@ export default class WorkPage extends BasePage {
                                     if (data.pendingreply == 0) {
                                         return;
                                     }
-                                    this.props.navigation.push('Task', {
+                                    this.props.navigation.push('task', {
                                         'data': {
                                             'type': 'fuwu',
                                             title: '待回复列表'
@@ -228,7 +228,7 @@ export default class WorkPage extends BasePage {
                                     if (data.reply == 0) {
                                         return;
                                     }
-                                    this.props.navigation.push('Task', {
+                                    this.props.navigation.push('task', {
                                         'data': {
                                             'type': 'fuwu',
                                             overdue: -1,//已经回复不判断是否逾期
@@ -247,7 +247,7 @@ export default class WorkPage extends BasePage {
                                     if (data.todo == 0) {
                                         return;
                                     }
-                                    this.props.navigation.push('Task', {
+                                    this.props.navigation.push('task', {
                                         'data': {
                                             'type': '1',
                                             title: '派单列表'
@@ -264,7 +264,7 @@ export default class WorkPage extends BasePage {
                                     if (data.mydo == 0) {
                                         return;
                                     }
-                                    this.props.navigation.push('TaskDispatch', {
+                                    this.props.navigation.push('taskDispatch', {
                                         'data': {
                                             title: '已派单列表'
                                         }
@@ -281,7 +281,7 @@ export default class WorkPage extends BasePage {
                                     if (data.going == 0) {
                                         return;
                                     }
-                                    this.props.navigation.push('Task', {
+                                    this.props.navigation.push('task', {
                                         'data': {
                                             'type': '2',
                                             title: '待接单列表'
@@ -297,7 +297,7 @@ export default class WorkPage extends BasePage {
                                     if (data.assist == 0) {
                                         return;
                                     }
-                                    this.props.navigation.push('Task', {
+                                    this.props.navigation.push('task', {
                                         'data': {
                                             'type': 'assist',
                                             hiddenHeader: true,
@@ -314,7 +314,7 @@ export default class WorkPage extends BasePage {
                                     if (data.unfinish == 0) {
                                         return;
                                     }
-                                    this.props.navigation.push('Task', {
+                                    this.props.navigation.push('task', {
                                         'data': {
                                             'type': '3',
                                             title: '待完成列表'
@@ -330,7 +330,7 @@ export default class WorkPage extends BasePage {
                                     if (data.nottest == 0) {
                                         return;
                                     }
-                                    this.props.navigation.push('Task', {
+                                    this.props.navigation.push('task', {
                                         'data': {
                                             'type': '6',
                                             hiddenHeader: true,
@@ -349,7 +349,7 @@ export default class WorkPage extends BasePage {
                                     if (data.tobevisit == 0) {
                                         return;
                                     }
-                                    this.props.navigation.push('Task', {
+                                    this.props.navigation.push('task', {
                                         'data': {
                                             'type': 'visit',
                                             hiddenHeader: true,
@@ -367,7 +367,7 @@ export default class WorkPage extends BasePage {
                                     if (data.overduedispatch == 0) {
                                         return;
                                     }
-                                    this.props.navigation.push('Task', {
+                                    this.props.navigation.push('task', {
                                         'data': {
                                             'type': '1',
                                             overdue: 1,
@@ -385,7 +385,7 @@ export default class WorkPage extends BasePage {
                                     if (data.overdueorder == 0) {
                                         return;
                                     }
-                                    this.props.navigation.push('Task', {
+                                    this.props.navigation.push('task', {
                                         'data': {
                                             'type': '2',
                                             overdue: 1,
@@ -403,7 +403,7 @@ export default class WorkPage extends BasePage {
                                     if (data.overduefinish == 0) {
                                         return;
                                     }
-                                    this.props.navigation.push('Task', {
+                                    this.props.navigation.push('task', {
                                         'data': {
                                             'type': '3',
                                             overdue: 1,
@@ -425,7 +425,7 @@ export default class WorkPage extends BasePage {
                             <Text style={styles.title}>工单逾期</Text>
                             <Flex style={styles.line} />
                             <Flex>
-                                <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task', {
+                                <TouchableWithoutFeedback onPress={() => this.props.navigation.push('task', {
                                     'data': {
                                         'type': '1',
                                         overdue: 1,
@@ -438,7 +438,7 @@ export default class WorkPage extends BasePage {
                                         <Text style={styles.bottom}>派单逾期</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
-                                <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task', {
+                                <TouchableWithoutFeedback onPress={() => this.props.navigation.push('task', {
                                     'data': {
                                         'type': '2',
                                         overdue: 1,
@@ -451,7 +451,7 @@ export default class WorkPage extends BasePage {
                                         <Text style={styles.bottom}>接单逾期</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
-                                <TouchableWithoutFeedback onPress={() => this.props.navigation.push('Task', {
+                                <TouchableWithoutFeedback onPress={() => this.props.navigation.push('task', {
                                     'data': {
                                         'type': '3',
                                         overdue: 1,

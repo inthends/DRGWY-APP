@@ -228,8 +228,6 @@ const mapStateToProps = ({ buildingReducer, memberReducer }) => {
         },
     };
 };
-
-
 export default connect(mapStateToProps)(Jixiao);
 
 

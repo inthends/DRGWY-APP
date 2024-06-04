@@ -1,4 +1,4 @@
-//统计里面点击的服务单详情
+
 import React from 'react';
 import {
     View,
@@ -6,12 +6,11 @@ import {
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    ScrollView,
-    Modal,
+    ScrollView, 
     Alert
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Flex, Button, Icon, TextareaItem } from '@ant-design/react-native';
+import { Flex, Button, Icon, Modal, TextareaItem } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';
@@ -23,8 +22,7 @@ import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
-export default class EfuwuDetailPage extends BasePage {
-
+export default class EfuwuDetailPage extends BasePage { 
     static navigationOptions = ({ navigation }) => {
         return {
             title: '服务单详情',
@@ -49,6 +47,7 @@ export default class EfuwuDetailPage extends BasePage {
             communicates: [],
             lookImageIndex: 0,
             visible: false,
+            showRepair: false,
             btnList: []//按钮权限
         };
     }
@@ -117,6 +116,28 @@ export default class EfuwuDetailPage extends BasePage {
             }
             ], { cancelable: false });
     };
+
+
+    //转维修
+    toRepair = (handle) => {
+        Alert.alert(
+            '是否' + handle + '？',
+            '',
+            [{ text: '取消', tyle: 'cancel' },
+            {
+                text: '确定',
+                onPress: () => {
+                    const { id, value } = this.state;
+                    WorkService.serviceHandle(handle, id, value).then(res => {
+                        this.props.navigation.goBack();
+                    }).catch(err => {
+                        UDToast.showError(err);
+                    });
+                }
+            }
+            ], { cancelable: false });
+    };
+
 
     communicateClick = (i) => {
         let c = this.state.communicates;
@@ -228,7 +249,7 @@ export default class EfuwuDetailPage extends BasePage {
                     <Flex justify={'center'}>
                         <Button onPress={() => this.reply()} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                width: 200,
+                                width: 150,
                                 backgroundColor: Macro.work_blue,
                                 marginTop: 20,
                                 marginBottom: 10,
@@ -242,7 +263,13 @@ export default class EfuwuDetailPage extends BasePage {
 
                             {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'torepair')) ?
                                 <TouchableWithoutFeedback
-                                    onPress={() => this.doWork('转维修')}>
+                                    onPress={() =>
+                                        //this.toRepair('转维修')
+                                        this.setState({
+                                            serviceDeskId: id,
+                                            showRepair: true
+                                        })
+                                    }>
                                     <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
                                         <Text style={styles.word}>转维修</Text>
                                     </Flex>
@@ -259,7 +286,7 @@ export default class EfuwuDetailPage extends BasePage {
 
                             {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'close')) ?
                                 <TouchableWithoutFeedback onPress={() => this.doWork('关闭')}>
-                                    <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
+                                    <Flex justify={'center'} style={[styles.ii, { backgroundColor: '#666' }]}>
                                         <Text style={styles.word}>关闭</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
@@ -269,10 +296,26 @@ export default class EfuwuDetailPage extends BasePage {
 
                     <Communicates communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
+
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                         imageUrls={this.state.images} />
                 </Modal>
+
+                <Modal
+                    transparent
+                    onClose={() => this.setState({ showRepair: false })}
+                    onRequestClose={() => this.setState({ showRepair: false })}
+                    maskClosable
+                    visible={this.state.showRepair}>
+                    <Flex justify={'center'} align={'center'}>
+                        {/* <ToRepair onClose={() => {
+                            this.setState({ showRepair: false });
+                            this.props.navigation.goBack();
+                        }} item={this.state.selectItem} /> */}
+                    </Flex>
+                </Modal>
+
             </CommonView>
         );
     }

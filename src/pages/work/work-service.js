@@ -7,6 +7,11 @@ export default {
         return api.getData('/api/MobileMethod/MGetCheckEntity', { keyvalue });
     },
 
+    //加载有现场检查权限的角色
+    getCheckRoles() {
+        return api.getData('/api/MobileMethod/MGetCheckRoles');
+    },
+
     //检查单明细
     checkDetailList(
         pageIndex,
@@ -30,6 +35,7 @@ export default {
 
     addCheckDetail(
         billId,
+        checkRole,
         mainMemo,
         detailId,
         unitId,
@@ -39,6 +45,7 @@ export default {
         checkMemo) {
         return api.postData('/api/MobileMethod/MAddCheckDetail', {
             billId,
+            checkRole,
             mainMemo,
             detailId,
             unitId,
@@ -52,6 +59,12 @@ export default {
     workData(showLoading) {
         return api.postData('/api/MobileMethod/MGetDeskStatistics', showLoading);
     },
+
+    //维修专业，1获取分类，获取分类时候keyvalue=0，2获取专业
+    getRepairMajors(params) {
+        return api.getData('/api/MobileMethod/MGetRepairMajors', params);
+    },
+
     //房产类别，1获取小区，获取小区时候keyvalue=0，2获取楼栋，4获取楼层，5获取房间
     getPStructs(params) {
         return api.getData('/api/MobileMethod/MGetPStructs', params);
@@ -76,7 +89,27 @@ export default {
     deleteWorkFile(url) {
         return api.getData('/api/MobileMethod/MDeleteWorkFile', { url });
     },
+ 
+    changeToRepair( 
+        keyvalue,
+        isQD, 
+        senderId,
+        senderName,
+        repairMajorId,
+        repairMajor
 
+    ) { 
+        let params = { 
+            keyvalue,
+            isQD, 
+            senderId,
+            senderName,
+            repairMajorId,
+            repairMajor }; 
+        let url = '/api/MobileMethod/MChangeToRepair';
+        return api.postData(url, params);
+    },
+ 
     //服务单操作
     serviceHandle(handle, keyvalue, content, extra = null) {
         let url = '';
@@ -91,9 +124,11 @@ export default {
             url = '/api/MobileMethod/MSendCommunicate';
         } else if (handle === '转投诉') {
             url = '/api/MobileMethod/MChangeToComplaint';
-        } else if (handle === '转维修') {
-            url = '/api/MobileMethod/MChangeToRepair';
-        } else if (handle === '关闭') {
+        } 
+        // else if (handle === '转维修') {
+        //     url = '/api/MobileMethod/MChangeToRepair';
+        // } 
+        else if (handle === '关闭') {
             url = '/api/MobileMethod/MFinish';
         } else if (handle === '派单') {
             url = '/api/MobileMethod/MRepairDispatch';
@@ -127,7 +162,7 @@ export default {
         let params = { keyvalue };
         return api.postData('/api/MobileMethod/MRepairQD', params);
     },
- 
+
     serviceCommunicates(keyvalue) {
         return api.getData('/api/MobileMethod/MGetCommunicates', { keyvalue, pageIndex: 1, pageSize: 100 });
     },
@@ -214,7 +249,7 @@ export default {
     // getWorkers(organizeId, keyword = null, type = '员工') {
     //     return api.getData('/api/MobileMethod/MGetUserList', { organizeId, keyword, type });
     // },
- 
+
     paidan(keyvalue, receiverName, receiverId) {
         return api.postData('/api/MobileMethod/MRepairDispatch', { keyvalue, receiverName, receiverId });
     },

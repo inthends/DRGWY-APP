@@ -26,6 +26,7 @@ import SelectImage from '../../../utils/select-image';
 import UDToast from '../../../utils/UDToast';
 import ListImages from '../../../components/list-images';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import MyPopover from '../../../components/my-popover';
 
 class EcheckAddPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -59,7 +60,9 @@ class EcheckAddPage extends BasePage {
             lookImageIndex: 0,
             dataInfo: {
                 data: []
-            }
+            },
+            roles: [],
+            checkRole: ''//检查的角色
         };
     }
 
@@ -71,7 +74,19 @@ class EcheckAddPage extends BasePage {
         });
     };
 
-    componentDidMount() {
+    componentDidMount() { 
+        //加载有现场检查权限的角色
+        WorkService.getCheckRoles().then(res => {
+            this.setState({
+                roles: [...res.map(item => item.title)]
+            });
+
+            if (res.length > 0) {
+                this.setState({ checkRole: res[0].title });
+            }
+        });
+        
+
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
@@ -117,8 +132,7 @@ class EcheckAddPage extends BasePage {
                 // },
             });
         });
-    };
-
+    }; 
 
     onRefresh = () => {
         this.setState({
@@ -128,8 +142,7 @@ class EcheckAddPage extends BasePage {
             this.getList();
         });
     };
-
-
+ 
     //检查明细
     getList = () => {
         const { id } = this.state;
@@ -228,7 +241,13 @@ class EcheckAddPage extends BasePage {
 
 
     addDetail = () => {
-        const { id, detailId, memo, address, selectPerson, checkMemo } = this.state;
+        const { id, detailId, checkRole, memo, address, selectPerson, checkMemo } = this.state;
+
+        if (!checkRole) {
+            UDToast.showError('请选择检查角色');
+            return;
+        }
+
         if (!address) {
             UDToast.showError('请选择位置');
             return;
@@ -247,6 +266,7 @@ class EcheckAddPage extends BasePage {
         //保存数据
         WorkService.addCheckDetail(
             id,
+            checkRole,
             memo,
             detailId,
             address.id,
@@ -254,7 +274,7 @@ class EcheckAddPage extends BasePage {
             selectPerson.id,
             selectPerson.name,
             checkMemo
-        ).then(res => {
+        ).then(() => {
             UDToast.showError('添加成功');
             this.setState({ showAdd: false });
             this.getData();
@@ -309,7 +329,7 @@ class EcheckAddPage extends BasePage {
     };
 
     render() {
-        const { detail, dataInfo, address, selectPerson, images } = this.state;
+        const { detail, dataInfo, address, selectPerson, roles, images } = this.state;
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
@@ -317,9 +337,37 @@ class EcheckAddPage extends BasePage {
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
+
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>检查人：{detail.checkUserName} {detail.postName}</Text>
                         <Text>{detail.billDate}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>检查组：</Text>
+                        <MyPopover
+                            onChange={(title) => {
+                                this.setState({ checkRole: title });
+                            }}
+                            titles={roles}
+                            visible={true} />
+                    </Flex>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>检查区域：</Text>
+                        <TouchableWithoutFeedback
+                            onPress={() => this.props.navigation.navigate('selectAddress', { parentName: 'checkAdd' })}>
+                            <Flex
+                                //justify="between"
+                                style={{
+                                    paddingTop: 10,
+                                    paddingBottom: 10
+                                }}
+                            >
+                                <Text style={[address ? { fontSize: 16, paddingRight: 10 } :
+                                    { fontSize: 16, color: '#999', paddingRight: 10 }]}>{address ? address.allName : `请选择检查项目`}</Text>
+                                <LoadImage style={{ width: 6, height: 12 }} defaultImg={require('../../../static/images/address/right.png')} />
+                            </Flex>
+                        </TouchableWithoutFeedback>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
@@ -362,8 +410,8 @@ class EcheckAddPage extends BasePage {
                             this.setState({
                                 showAdd: true,
                                 detailId: mydetailId,
-                                images: [{ icon: '' }],
-                                address: null,
+                                images: [''],
+                                address: address,//设置默认值
                                 selectPerson: null,
                                 checkMemo: ''
                             });
@@ -379,27 +427,29 @@ class EcheckAddPage extends BasePage {
                     </Flex>
                 </Flex>
 
-                {this.state.showAdd && (
+                {
+                this.state.showAdd && (
                     <View style={styles.mengceng}>
                         <Flex direction={'column'} justify={'center'} align={'center'}
                             style={{ flex: 1, padding: 25, backgroundColor: 'rgba(178,178,178,0.5)' }}>
                             <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
-                                <CommonView style={{ height: 300, width: 300 }}>
+                                <CommonView style={{ height: 305, width: 300 }}>
                                     <TouchableWithoutFeedback
-                                        onPress={() => this.props.navigation.navigate('SelectAddress', { parentName: 'checkAdd' })}>
+                                        onPress={() => this.props.navigation.navigate('selectAddress', { parentName: 'checkAdd' })}>
                                         <Flex justify="between" style={[{
                                             paddingTop: 15,
                                             paddingBottom: 15,
                                             marginLeft: 10,
-                                            marginRight: 10,
+                                            marginRight: 10
                                         }, ScreenUtil.borderBottom()]}>
                                             <Text style={[address ? { color: '#404145' } :
                                                 { color: '#999' }]}>{address ? address.allName : `请选择位置`}</Text>
                                             <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
                                         </Flex>
                                     </TouchableWithoutFeedback>
+                                    
                                     <TouchableWithoutFeedback
-                                        onPress={() => this.props.navigation.navigate('SelectAllPerson', { onSelect: this.onSelectPerson })}>
+                                        onPress={() => this.props.navigation.navigate('selectAllPerson', { onSelect: this.onSelectPerson })}>
                                         <Flex justify='between' style={[{
                                             paddingTop: 15,
                                             paddingBottom: 15,
@@ -437,7 +487,7 @@ class EcheckAddPage extends BasePage {
                                                             paddingLeft: 15,
                                                             paddingRight: 5,
                                                             paddingBottom: 10,
-                                                            paddingTop: 10
+                                                            paddingTop: 15
                                                         }}>
                                                             <LoadImageDelete
                                                                 style={{
@@ -456,7 +506,6 @@ class EcheckAddPage extends BasePage {
                                         </Flex>
                                     </Flex>
                                 </CommonView>
-
                                 <Flex style={{ marginTop: 15 }}>
                                     <Button onPress={this.addDetail} type={'primary'}
                                         activeStyle={{ backgroundColor: Macro.work_blue }}
@@ -563,7 +612,7 @@ const styles = StyleSheet.create({
         top: 0,
         width: '100%',
         height: '100%'
-    },
+    }
 });
 
 

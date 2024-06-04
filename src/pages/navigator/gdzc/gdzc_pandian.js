@@ -11,13 +11,11 @@ import SelectImage from '../../../utils/select-image'
 import common from '../../../utils/common';
 //import gdzcReducer from '../../../utils/store/reducers/gdzc-reducer';
 import gdzcAction from '../../../utils/store/actions/actions'
-import { connect } from 'react-redux';
-
+import { connect } from 'react-redux'; 
 let screen_width = ScreenUtil.deviceWidth()
 
 class GdzcPandianPage extends BasePage {
-    static navigationOptions = ({ navigation }) => {
-
+    static navigationOptions = ({ navigation }) => { 
         return {
             tabBarVisible: false,
             title: '固定资产盘点',
@@ -75,7 +73,7 @@ class GdzcPandianPage extends BasePage {
         const { data } = this.state;
         var value = data.name + '，' + data.code + '，' + data.brand + '，' + data.modelNo;
         var selectItem = { id: data.pStructId, allName: data.address };
-        this.props.navigation.navigate('AddRepair', { data: { address: selectItem, value: value } });//传参到维修单页面
+        this.props.navigation.navigate('addRepair', { data: { address: selectItem, value: value } });//传参到维修单页面
     };
 
     submit(status) {

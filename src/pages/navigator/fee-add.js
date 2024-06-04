@@ -40,7 +40,7 @@ class FeeAddPage extends BasePage {
                 </TouchableOpacity>
             ),
             type: null,
-            isShow: true,
+            isShow: true
         };
     };
 
@@ -133,9 +133,7 @@ class FeeAddPage extends BasePage {
                 items: res[0].children,
                 big,
                 show: true
-            }, () => { 
-            });
-
+            }, () => {  }); 
         });
     }
 

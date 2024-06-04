@@ -6,10 +6,8 @@ import {
   createStackNavigator,
   createDrawerNavigator,
 } from 'react-navigation';
-
 import { Icon } from '@ant-design/react-native';
 import Macro from '../../utils/macro';
-
 import BuildingPage from '../building/building';
 import WorkPage from '../work/work';
 import MinePage from '../mine/mine';
@@ -47,6 +45,8 @@ import EweixiuDetailPage from '../navigator/estate/estate-weixiu-detail';
 import EstateWeixiuPage from '../navigator/estate/estate-weixiu';
 import EstateTousuPage from '../navigator/estate/estate-tousu';
 
+//工作台
+ 
 //现场检查
 import SelectAllPerson from '../work/select-all-person';
 import EstateCheckPage from '../navigator/estate/estate-check';
@@ -76,7 +76,6 @@ import ChaoBiaoPage from '../navigator/chao-biao/chao-biao';
 import NewsList from '../work/news-list';
 import FeeChargeDetail from '../navigator/fee-charge-detail';
 
-//工作台
 import SelectAddressPage from '../work/select-address';
 import SelectPerson from '../work/select-person';
 import TaskListPage from '../work/task/task-list';
@@ -90,14 +89,14 @@ import VisitDetailPage from '../work/task/visit-detail';
 import AssistDetailPage from '../work/task/assist-detail';
 import TaskDispatchListPage from '../work/task/task-dispatch-list';
 import TaskQDListPage from '../work/task/task-qd-list';
-
+import SelectRepairMajor from '../work/select-repairmajor';
 
 //工作台回访查看单据
 import WeixiuDetailPage from '../work/task/weixiu-detail';
 import TousuDetailPage from '../work/task/tousu-detail';
 import Contact from '../mine/contact/contact';
 import ContactDetail from '../mine/contact/contact-detail';
-import Jixiao from '../mine/jixiao';
+//import Jixiao from '../mine/jixiao';
 import LouPan from '../navigator/house-infomation/lou-pan';
 import LouDong from '../navigator/house-infomation/lou-dong';
 import LouCeng from '../navigator/house-infomation/lou-ceng';
@@ -113,7 +112,7 @@ import CIBScanScreen from '../navigator/cibscanner';
 import LKLScanScreen from '../navigator/lklscanner';
 import NJScanScreen from '../navigator/njscanner';
 
-//import flow from '../flow';
+//流程审批
 import ApprovePage from '../flow';
 import fukuan from '../flow/fukuan';
 import jianmian from '../flow/jianmian';
@@ -146,7 +145,7 @@ const BuildingNavigator = createStackNavigator(
       navigationOptions: (navigation) => ({
         title: '项目',
         headerBackTitle: null,
-        header: null,
+        header: null
       }),
     },
     SecondDetail: SecondDetailBuildingPage,
@@ -154,10 +153,10 @@ const BuildingNavigator = createStackNavigator(
     DetailParking: DetailParkingPage,
     Buildings: BuildingsPage,
     Home: HomePage,
-    // yiqing: YiQingPage,
-    // yiqinginfo: YiQingInfoPage,
-    scanForHome: ScanOnly,
-    newsList: NewsList,
+    //yiqing: YiQingPage,
+    //yiqinginfo: YiQingInfoPage,
+    //scanForHome: ScanOnly,
+    //newsList: NewsList,
     feeAdd: FeeAddPage,
     feeDetail: FeeDetailPage,
     louDetail: LouDetail,
@@ -172,6 +171,7 @@ const BuildingNavigator = createStackNavigator(
     }
   }
 );
+
 BuildingNavigator.navigationOptions = ({ navigation }) => ({
   tabBarVisible: navigation.state.index === 0
 });
@@ -212,9 +212,9 @@ const navigatorNavigator = createStackNavigator({
   // jiedan: ReceiveDetailPage,
   // paidan: DispatchDetailPage,
   // huifang: VisitDetailPage,
-  // assist: AssistDetailPage, 
+  // assist: AssistDetailPage,
+  // newsList: NewsList,
 
-  newsList: NewsList,
   louPan: LouPan,
   louDong: LouDong,
   louCeng: LouCeng,
@@ -223,7 +223,6 @@ const navigatorNavigator = createStackNavigator({
   shebeiList: SheBeiList,
   shebeiDetail: ShebeiDetail,
 });
-
 
 navigatorNavigator.navigationOptions = ({ navigation }) => ({
   tabBarVisible: navigation.state.index === 0,
@@ -237,8 +236,8 @@ const WorkNavigator = createStackNavigator({
       headerBackTitle: null
     })
   },
-  AddWork: AddWorkPage,
-  SelectAddress: SelectAddressPage,
+  addWork: AddWorkPage,
+  selectAddress: SelectAddressPage,
   service: ServiceDeskDetailPage,
   weixiuView: WeixiuDetailPage, //工作台里面，待回访点击跳转的维修单，只能查看
   tousuView: TousuDetailPage, //工作台里面，待回访点击跳转的投诉单，只能查看 
@@ -251,12 +250,11 @@ const WorkNavigator = createStackNavigator({
   huifang: VisitDetailPage,
   scanonly: ScanOnly,
   scandemo: ScanSS,
-  Task: TaskListPage,
-  TaskDispatch: TaskDispatchListPage,
-  Taskqd: TaskQDListPage,
+  task: TaskListPage,
+  taskDispatch: TaskDispatchListPage,
+  taskqd: TaskQDListPage,
   newsList: NewsList,
-
-  //add new
+  selectRepairMajor: SelectRepairMajor,
   chaobiao: ChaoBiaoPage,
   xunjian: XunJianPage,
   xunjiantask: TaskPage,
@@ -265,8 +263,7 @@ const WorkNavigator = createStackNavigator({
   xunjianBeforeStart: XunjianBeforeStart,
   selectXunjian: SelectXunJianPerson,
   startxunjian: StartXunJianPage,
-  scanForWork: ScanOnly,
-  //扫码支付
+  scanForWork: ScanOnly, //扫码支付 
   scan: ScanScreen, //威富通扫码
   jlscan: JLScanScreen, //嘉联扫码
   bcmscan: BCMScanScreen, //交通银行扫码
@@ -274,18 +271,16 @@ const WorkNavigator = createStackNavigator({
   lklscan: LKLScanScreen, //拉卡拉聚合扫码
   njscan: NJScanScreen, //南京银行扫码 
   //现场检查
-  SelectAllPerson: SelectAllPerson,
+  selectAllPerson: SelectAllPerson,
   check: EstateCheckPage,
   checkDetail: EcheckDetailPage,
   checkAdd: EcheckAddPage,
   addTaskWork: AddWorkPage,
-  AddRepair: AddRepairPage,
+  addRepair: AddRepairPage,
   //订单中心
   orderlist: OrderlistPage,
   orderDetail: OrderDetailPage,
-  SelectAddress: SelectAddressPage,
-  SelectPerson: SelectPerson,
-
+  selectPerson: SelectPerson,
   feeRooms: FeeRoomsPage, //房间
   feeParkings: FeeParkingsPage, //车位
   feeBuildings: FeeBuildingsPage,
@@ -347,10 +342,10 @@ const MineNavigator = createStackNavigator({
   Person: PersonInfoPage,
   Setting: SettingPage,
   ModifyPsd: ModifyPsdPage,
-  newsList: NewsList,
+  //newsList: NewsList,
   contact: Contact,
   contactDetail: ContactDetail,
-  jixiao: Jixiao,
+  //jixiao: Jixiao
 });
 
 MineNavigator.navigationOptions = ({ navigation }) => ({
@@ -363,35 +358,35 @@ const tabbar = createBottomTabNavigator(
       screen: BuildingNavigator,
       navigationOptions: () => ({
         title: '项目',
-        headerBackTitle: null,
-      }),
+        headerBackTitle: null
+      })
     },
     Work: {
       screen: WorkNavigator,
       navigationOptions: () => ({
         title: '工作台',
-        headerBackTitle: null,
-      }),
+        headerBackTitle: null
+      })
     },
     Shenpi: {
       screen: ShenPiNavigator,
       navigationOptions: () => ({
         title: '审批',
-        headerBackTitle: null,
-      }),
+        headerBackTitle: null
+      })
     },
     Navigator: {
       screen: navigatorNavigator,
       navigationOptions: () => ({
         title: '统计',
-        headerBackTitle: null,
-      }),
+        headerBackTitle: null
+      })
     },
     Mine: {
       screen: MineNavigator,
       navigationOptions: () => ({
         title: '我',
-        headerBackTitle: null,
+        headerBackTitle: null
       })
     }
   },
@@ -404,7 +399,6 @@ const tabbar = createBottomTabNavigator(
       },
       tabStyle: {}
     },
-
     defaultNavigationOptions: ({ navigation }) => {
       if (navigation.isFocused()) {
         DeviceEventEmitter.emit('currentNavigation', navigation);
@@ -453,7 +447,7 @@ const tabbar = createBottomTabNavigator(
       //     return <Image style={{ width: 15, height: 18 }} source={imageUrl} />;
       //   }
       // };
- 
+
       return {
         tabBarIcon: ({ focused }) => {
           const { routeName } = navigation.state;
@@ -494,7 +488,6 @@ const tabbar = createBottomTabNavigator(
     }
   }
 );
-
 
 const { width } = Dimensions.get('window');
 const Drawer = createDrawerNavigator(

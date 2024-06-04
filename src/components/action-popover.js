@@ -10,14 +10,14 @@ export default class ActionPopover extends Component {
         this.state = {
             isVisible: false,
             index: 0,
-            titles: this.props.titles,
+            titles: this.props.titles
         };
     }
 
 
     showPopover = () => {
         this.setState({
-            isVisible: true,
+            isVisible: true
         });
     };
     closePopover = () => {
