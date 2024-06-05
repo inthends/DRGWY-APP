@@ -14,13 +14,9 @@ import { Icon, Flex, TextareaItem } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';
-// import UDRecord from '../../../utils/UDRecord';
-// import api from '../../../utils/api';
-// import UDPlayer from '../../../utils/UDPlayer';
 import UDToast from '../../../utils/UDToast';
 import WorkService from '../work-service';
 import UploadImageView from '../../../components/upload-image-view';
-// import Communicates from '../../../components/communicates';
 import OperationRecords from '../../../components/operationrecords';
 import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
@@ -54,7 +50,8 @@ export default class StartDetailPage extends BasePage {
             lookImageIndex: 0,
             visible: false,
             backMemo: '',
-            KeyboardShown: false
+            KeyboardShown: false,
+            selectPersons: []
         };
 
         this.keyboardDidShowListener = null;
@@ -122,22 +119,22 @@ export default class StartDetailPage extends BasePage {
         });
     };
 
-    click = (handle) => {
-        const { id, isUpload, images, value } = this.state;
+    click = () => {
+        const { id, isUpload, images, value, selectPersons } = this.state;
         // if (handle === '回复' && !(value&&value.length > 0)) {
         if (!(value && value.length > 0)) {
             UDToast.showInfo('请输入故障判断');
             return;
         }
-
         const kgimages = images.filter(t => t.type === '开工');
-
         if (kgimages.length == 0 && !isUpload) {
             UDToast.showInfo('请上传开工图片');
             return;
         }
 
-        WorkService.serviceHandle(handle, id, value).then(res => {
+        let personIds = selectPersons.map(item => item.id);
+        let reinforceId = personIds && personIds.length > 0 ? JSON.stringify(personIds) : ''; 
+        WorkService.startRepair(id, value, reinforceId).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
         });
@@ -189,8 +186,23 @@ export default class StartDetailPage extends BasePage {
         });
     }
 
+    onSelectPerson = ({ selectItems }) => {
+        this.setState({
+            selectPersons: selectItems
+        })
+    }
+
     render() {
-        const { images, detail, communicates } = this.state;
+        const { images, detail, communicates, selectPersons } = this.state;
+        // let personNames = selectPersons.map(item => {
+        //     return item.name;
+        // });
+        // let mystrNames =  personNames
+
+        //转换name
+        let personNames = selectPersons.map(item => item.name);
+        let mystrNames = personNames.join('，');
+
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <TouchableWithoutFeedback onPress={() => {
@@ -216,7 +228,10 @@ export default class StartDetailPage extends BasePage {
                         </Flex>
 
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
+                            <Text style={styles.left}>转单人：{detail.createUserName}</Text>
+                        </Flex>
+                        <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                            <Text style={styles.left}>转单时间：{detail.createDate}</Text>
                         </Flex>
 
                         <TouchableWithoutFeedback>
@@ -245,6 +260,19 @@ export default class StartDetailPage extends BasePage {
                             <Text style={styles.left}>协助人：{detail.assistName}</Text>
                         </Flex>
 
+
+                        <TouchableWithoutFeedback
+                            onPress={() => this.props.navigation.navigate('selectAllPersonMulti', { onSelect: this.onSelectPerson })}>
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                                <Flex>
+                                    <Text style={styles.left}>增援人：</Text>
+                                    <Text
+                                        style={[styles.right, mystrNames ? { color: Macro.work_blue } : { color: '#666' }]}>{mystrNames ? mystrNames : "请选择增援人"}</Text>
+                                </Flex>
+                                <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
+                            </Flex>
+                        </TouchableWithoutFeedback>
+
                         <UploadImageView style={{ marginTop: 10 }}
                             linkId={this.state.id}
                             reload={this.reload}
@@ -261,7 +289,7 @@ export default class StartDetailPage extends BasePage {
                                 value={this.state.value}
                             />
                         </View>
- 
+
                         <View style={{ margin: 15 }}>
                             <TextareaItem
                                 rows={4}
@@ -288,7 +316,7 @@ export default class StartDetailPage extends BasePage {
                     </Flex> */}
 
                         <Flex justify={'center'} style={{ marginTop: 20 }} >
-                            <TouchableWithoutFeedback onPress={() => this.click('开始维修')}>
+                            <TouchableWithoutFeedback onPress={() => this.click()}>
                                 <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
                                     <Text style={styles.word}>开始维修</Text>
                                 </Flex>

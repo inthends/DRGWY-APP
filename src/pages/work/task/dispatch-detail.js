@@ -24,7 +24,7 @@ import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
 export default class DispatchDetailPage extends BasePage {
-    
+
     static navigationOptions = ({ navigation }) => {
         return {
             title: '派单',
@@ -83,7 +83,7 @@ export default class DispatchDetailPage extends BasePage {
     }
 
     //add new
-    componentWillUnmount() {  
+    componentWillUnmount() {
         //卸载键盘弹出事件监听
         if (this.keyboardDidShowListener != null) {
             this.keyboardDidShowListener.remove();
@@ -165,7 +165,7 @@ export default class DispatchDetailPage extends BasePage {
     render() {
         const { images, detail, communicates, selectPerson } = this.state;
         return (
-            <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}> 
+            <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <TouchableWithoutFeedback onPress={() => {
                     Keyboard.dismiss();
                 }}>
@@ -192,7 +192,10 @@ export default class DispatchDetailPage extends BasePage {
                         </Flex>
 
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
+                            <Text style={styles.left}>转单人：{detail.createUserName}</Text>
+                        </Flex>
+                        <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                            <Text style={styles.left}>转单时间：{detail.createDate}</Text>
                         </Flex>
 
                         <TouchableWithoutFeedback>
@@ -213,7 +216,7 @@ export default class DispatchDetailPage extends BasePage {
                         </TouchableWithoutFeedback>
 
                         <TouchableWithoutFeedback
-                            onPress={() => this.props.navigation.navigate('selectPerson', { onSelect: this.onSelect })}>
+                            onPress={() => this.props.navigation.navigate('selectReceivePerson', { onSelect: this.onSelect })}>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                                 <Flex>
                                     <Text style={styles.left}>接单人：</Text>
@@ -240,7 +243,7 @@ export default class DispatchDetailPage extends BasePage {
                                 value={this.state.value}
                             />
                         </View>
-  
+
                         <Flex justify={'center'}>
                             <Button onPress={() => this.click()} type={'primary'}
                                 activeStyle={{ backgroundColor: Macro.work_blue }} style={{

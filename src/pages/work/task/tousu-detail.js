@@ -132,8 +132,11 @@ export default class TousuDetailPage extends BasePage {
                     {/* <DashLine /> */}
                     <ListImages images={images} lookImage={this.lookImage} />
                     <Flex style={[styles.every2]} justify='between'>
-                        <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
-                    </Flex>  
+                        <Text style={styles.left}>转单人：{detail.createUserName}</Text>
+                    </Flex> 
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>转单时间：{detail.createDate}</Text>
+                    </Flex>
                     <Communicates communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>

@@ -177,7 +177,10 @@ export default class ReceiveDetailPage extends BasePage {
                             <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
                         </Flex>
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>派单人：{detail.senderName}，派单时间：{detail.sendDate}</Text>
+                            <Text style={styles.left}>派单人：{detail.senderName}</Text>
+                        </Flex>
+                        <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                            <Text style={styles.left}>派单时间：{detail.sendDate}</Text>
                         </Flex>
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                             <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>

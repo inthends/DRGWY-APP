@@ -132,8 +132,13 @@ export default class WeixiuDetailPage extends BasePage {
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
                     </Flex>
+
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>转单人：{detail.createUserName}，{detail.createDate}</Text>
+                        <Text style={styles.left}>转单人：{detail.createUserName}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>转单时间：{detail.createDate}</Text>
                     </Flex>
 
                     <TouchableWithoutFeedback>
@@ -157,6 +162,7 @@ export default class WeixiuDetailPage extends BasePage {
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>
                     </Flex>
+                    
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>协助人：{detail.assistName}</Text>
                     </Flex>

@@ -218,7 +218,7 @@ export default class NavigatorPage extends BasePage {
                 </Flex>
               </TouchableWithoutFeedback>
             </Flex>
-            <Flex style={styles.line} />
+            {/* <Flex style={styles.line} /> */}
           </Flex>
         </ScrollView>
       </CommonView>

@@ -25,7 +25,7 @@ import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
 export default class VisitDetailPage extends BasePage {
-    
+
     static navigationOptions = ({ navigation }) => {
         return {
             title: '服务单回访',
@@ -204,7 +204,11 @@ export default class VisitDetailPage extends BasePage {
                         <Text style={styles.desc}>{detail.repairContent}</Text>
                         <ListImages images={images} lookImage={this.lookImage} />
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
+                            <Text style={styles.left}>转单人：{detail.createUserName}</Text>
+                        </Flex>
+
+                        <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                            <Text style={styles.left}>转单时间：{detail.createDate}</Text>
                         </Flex>
 
                         <TouchableWithoutFeedback>

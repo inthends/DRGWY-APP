@@ -75,7 +75,7 @@ export default class CompleteDetailPage extends BasePage {
     }
 
     //add new
-    componentWillUnmount() { 
+    componentWillUnmount() {
         //卸载键盘弹出事件监听
         if (this.keyboardDidShowListener != null) {
             this.keyboardDidShowListener.remove();
@@ -100,13 +100,13 @@ export default class CompleteDetailPage extends BasePage {
                     assistName: detail.assistName,//协助人 
                     reinforceName: detail.reinforceName//增援人 
                 }
-            }); 
+            });
             //获取维修单的单据动态
             WorkService.getOperationRecord(id).then(res => {
                 this.setState({
                     communicates: res
                 });
-            }); 
+            });
         });
 
         WorkService.weixiuExtra(id).then(images => {
@@ -191,12 +191,15 @@ export default class CompleteDetailPage extends BasePage {
                         </Flex>
 
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
+                            <Text style={styles.left}>转单人：{detail.createUserName}</Text>
+                        </Flex>
+                        <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                            <Text style={styles.left}>转单时间：{detail.createDate}</Text>
                         </Flex>
                         <TouchableWithoutFeedback>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                                 <Text style={styles.left}>关联单：</Text>
-                                <Text 
+                                <Text
                                     //onPress={() => this.props.navigation.navigate('service', { data: detail.relationId })} 
                                     onPress={() => {
                                         if (detail.sourceType === '服务总台') {
@@ -222,7 +225,7 @@ export default class CompleteDetailPage extends BasePage {
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                             <Text style={styles.left}>增援人：{detail.reinforceName}</Text>
                         </Flex>
-                        
+
                         <UploadImageView
                             style={{ marginTop: 10 }}
                             linkId={this.state.id}
@@ -240,7 +243,7 @@ export default class CompleteDetailPage extends BasePage {
                                 value={this.state.value}
                             />
                         </View>
- 
+
                         <Flex justify={'center'}>
                             <Button onPress={() => this.click('完成维修')} type={'primary'}
                                 activeStyle={{ backgroundColor: Macro.work_blue }} style={{

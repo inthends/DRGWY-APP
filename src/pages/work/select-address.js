@@ -6,7 +6,7 @@ import {
     TouchableOpacity,
     Image,
     ScrollView,
-    RefreshControl,
+    RefreshControl
 } from 'react-native';
 import BasePage from '../base/base';
 import { List, Icon, Flex, Button } from '@ant-design/react-native';
@@ -130,7 +130,7 @@ export default class SelectAddressPage extends BasePage {
             };
         } else {
             this.props.navigation.setParams({
-                title: '选择楼盘',
+                title: '选择项目',
             });
             params = { keyvalue: 0, type: 1 };
         }
@@ -146,6 +146,7 @@ export default class SelectAddressPage extends BasePage {
 
     render() {
         const { items, parent, selectItem } = this.state;
+        
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#eee' }}>
                 <View style={{ flex: 1 }}>
@@ -154,6 +155,7 @@ export default class SelectAddressPage extends BasePage {
                             {parent.allName}
                             {/* {parent ? parent.allName : '/'} */}
                         </Item> : null}
+
                     <ScrollView style={{ flex: 1 }} refreshControl={
                         <RefreshControl
                             refreshing={this.state.refreshing}
@@ -168,7 +170,7 @@ export default class SelectAddressPage extends BasePage {
                                         <TouchableWithoutFeedback onPress={() => this.setState({ selectItem: item })}>
                                             <Image alt='' style={{ width: 24, height: 24 }}
                                                 source={selectItem.id === item.id ? require('../../static/images/select.png') : require('../../static/images/no-select.png')} />
-                                        </TouchableWithoutFeedback>
+                                        </TouchableWithoutFeedback> 
                                         <Text style={{
                                             paddingLeft: 15,
                                             paddingTop: 5,
@@ -177,8 +179,9 @@ export default class SelectAddressPage extends BasePage {
                                     </Flex>
                                 </Item>
                             ))}
-                        </List>
+                        </List> 
                     </ScrollView>
+
                     <Flex justify={'center'} style={{ height: 80, backgroundColor: '#eee' }}>
                         <Button style={{
                             width: '90%',

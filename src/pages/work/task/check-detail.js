@@ -10,12 +10,12 @@ import {
     Keyboard
 } from 'react-native';
 import BasePage from '../../base/base';
-import {Button, Icon, Flex, TextareaItem } from '@ant-design/react-native';
+import { Button, Icon, Flex, TextareaItem } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
-import LoadImage from '../../../components/load-image'; 
-import common from '../../../utils/common'; 
-import UDToast from '../../../utils/UDToast'; 
-import WorkService from '../work-service'; 
+import LoadImage from '../../../components/load-image';
+import common from '../../../utils/common';
+import UDToast from '../../../utils/UDToast';
+import WorkService from '../work-service';
 import OperationRecords from '../../../components/operationrecords';
 import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
@@ -189,8 +189,12 @@ export default class CheckDetailPage extends BasePage {
                             <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
                         </Flex>
 
-                        <Flex style={[styles.every2]} justify='between'>
-                            <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
+                        <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                            <Text style={styles.left}>转单人：{detail.createUserName}</Text>
+                        </Flex>
+
+                        <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                            <Text style={styles.left}>转单时间：{detail.createDate}</Text>
                         </Flex>
 
                         <TouchableWithoutFeedback>
@@ -255,7 +259,7 @@ export default class CheckDetailPage extends BasePage {
                                 value={this.state.value}
                             />
                         </View>
- 
+
                         <Flex justify={'center'}>
                             <Button onPress={() => this.click('完成检验')} type={'primary'}
                                 activeStyle={{ backgroundColor: Macro.work_blue }} style={{

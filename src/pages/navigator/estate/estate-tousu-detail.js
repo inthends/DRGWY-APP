@@ -118,7 +118,7 @@ export default class EtousuDetailPage extends BasePage {
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
-                    <Flex style={[styles.every2]} justify='between'>
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.complaintAddress} {detail.complaintUser}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.complaintLink)}>
                             <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
@@ -129,8 +129,11 @@ export default class EtousuDetailPage extends BasePage {
                     <Text style={styles.desc}>{detail.contents}</Text>
                     <DashLine />
                     <ListImages images={images} lookImage={this.lookImage} />
-                    <Flex style={[styles.every2]} justify='between'>
-                        <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>转单人：{detail.createUserName}</Text>
+                    </Flex>
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>转单时间：{detail.createDate}</Text>
                     </Flex>
                     {detail.relationId && <TouchableWithoutFeedback>
                         <Flex style={[styles.every]}>

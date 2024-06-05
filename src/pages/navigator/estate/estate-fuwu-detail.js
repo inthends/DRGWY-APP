@@ -179,14 +179,20 @@ export default class EfuwuDetailPage extends BasePage {
                         <Text style={styles.left}>{detail.address}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
+                    
                     <Text style={[styles.desc]}>{detail.contents}{"\n"}</Text>
                     <ListImages images={images} lookImage={this.lookImage} />
+
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>报单人：{detail.contactName} {detail.createDate}</Text>
+                        <Text style={styles.left}>报单人：{detail.contactName}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactPhone)}>
                             <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
                                 style={{ width: 16, height: 16 }} /></Flex>
                         </TouchableWithoutFeedback>
+                    </Flex>
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>报单时间：{detail.createDate}</Text> 
                     </Flex>
 
                     {detail.businessCode ? (

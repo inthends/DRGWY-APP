@@ -9,19 +9,15 @@ import {
     StyleSheet,
     ScrollView
 } from 'react-native';
-// import CommonView from '../../components/CommonView';
 import Macro from '../../utils/macro';
-// import WorkService from './work-service';
 import { connect } from 'react-redux';
-// import LoadImage from '../../components/load-image';
-// import common from '../../utils/common';
 import api from '../../utils/api';
 
-class SelectPerson extends BasePage {
+class SelectReceivePerson extends BasePage {
     //选择接单人员 
     static navigationOptions = ({ navigation }) => {
         return {
-            title: '选择人员',
+            title: '选择接单人员',
             headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -78,11 +74,9 @@ class SelectPerson extends BasePage {
         //     this.setState({
         //         items: res
         //     });
-        // });
-
+        // }); 
         // let url = '/api/MobileMethod/MGetDepartmentList';
-        // let url2 = '/api/MobileMethod/MGetReceiveUserList';
-
+        // let url2 = '/api/MobileMethod/MGetReceiveUserList'; 
         // api.getData(url, this.state.selectBuilding ? { organizeId: this.state.selectBuilding.key } : {}).then(res => {
         //     Promise.all(
         //         res.map(item => api.getData(url2, { departmentId: item.departmentId }))).
@@ -94,12 +88,10 @@ class SelectPerson extends BasePage {
         //             }));
         //             this.setState({ data });
         //         });
-        // });
+        // }); 
 
-
-        //改为获取角色
-        let url = '/api/MobileMethod/MGetReceiveRoleList';
-        let url2 = '/api/MobileMethod/MGetReceiveByRoleUserList';
+        let url = '/api/MobileMethod/MGetReceiveRoleList'; //获取角色
+        let url2 = '/api/MobileMethod/MGetReceiveByRoleUserList';//获取角色人员
 
         api.getData(url, this.state.selectBuilding ? { organizeId: this.state.selectBuilding.key } : {}).then(res => {
             Promise.all(
@@ -122,38 +114,6 @@ class SelectPerson extends BasePage {
         navigation.goBack();
     };
 
-    // render() {
-    //     const { items } = this.state;
-    //     return (
-    //         <CommonView>
-    //             <ScrollView>
-    //                 <View >
-    //                     {items.map(item => (
-    //                         <TouchableWithoutFeedback key={item.id} onPress={() => this.click(item)}>
-    //                             <Flex style={styles.content} justify={'between'} align={'center'}>
-    //                                 <Flex>
-    //                                     <Flex style={styles.square} justify={'center'} align={'center'}>
-    //                                         <Text style={styles.number}>{item.count}</Text>
-    //                                     </Flex>
-    //                                     <Flex direction={'column'} style={{marginLeft: 15}}>
-    //                                         <Text style={styles.name}>{item.name}</Text>
-    //                                         <Text style={styles.company}>{item.orgName}</Text>
-    //                                     </Flex>
-    //                                 </Flex>
-    //                                 <Flex direction={'column'}>
-    //                                     <Text style={styles.identifier}>{item.dutyName}</Text>
-    //                                     <Text style={styles.state}>{item.state === 1 ? '在线' : '离线'}</Text>
-    //                                 </Flex>
-    //                             </Flex>
-    //                         </TouchableWithoutFeedback>
-    //                     ))}
-    //                 </View>
-    //             </ScrollView>
-    //         </CommonView>
-    //     );
-    // }
-
-    //2024-03-21 改为通讯录样式
     render() {
         const { data } = this.state;
         return (
@@ -167,7 +127,7 @@ class SelectPerson extends BasePage {
                             {data.map(item => (
                                 <Accordion.Panel
                                     key={item.roleId}
-                                    header={item.fullName}
+                                    header={item.fullName}  
                                 >
                                     <List>
                                         {item.children.map(i => (
@@ -185,7 +145,6 @@ class SelectPerson extends BasePage {
                                     </List>
                                 </Accordion.Panel>
                             ))}
-
                         </Accordion>
                     </View>
                 </ScrollView>
@@ -201,7 +160,7 @@ const styles = StyleSheet.create({
     },
     content: {
         backgroundColor: Macro.color_white,
-        paddingLeft: 15,
+        // paddingLeft: 15,
         paddingRight: 15
         // height: ScreenUtil.contentHeight(),
         // height: ScreenUtil.contentHeightWithNoTabbar(),
@@ -210,7 +169,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#666',//color: '#999',
         //paddingTop: 5,
-        width: 100
+        //width: 100
     },
     aa: {
         width: '100%',
@@ -224,10 +183,9 @@ const styles = StyleSheet.create({
     }
 });
 
-
 const mapStateToProps = ({ buildingReducer }) => {
     return {
         selectBuilding: buildingReducer.selectBuilding,
     };
 };
-export default connect(mapStateToProps)(SelectPerson);
+export default connect(mapStateToProps)(SelectReceivePerson);

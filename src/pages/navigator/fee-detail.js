@@ -179,7 +179,7 @@ class FeeDetailPage extends BasePage {
         NavigatorService.printInfo(out_trade_no).then(res => {
             NativeModules.LHNToast.printTicket({
                 ...res,
-                username: res.userName,
+                username: res.userName
             });
         });
     };
@@ -194,8 +194,7 @@ class FeeDetailPage extends BasePage {
             switch (title) {
                 //app 不支持刷卡
                 case '扫码': {
-                    NavigatorService.createOrder(ids, isML, mlType, mlScale, 1).then(res => {
-
+                    NavigatorService.createOrder(ids, isML, mlType, mlScale, 1).then(res => { 
                         if (!res.posType) {
                             UDToast.showError(res);
                             return;
@@ -536,13 +535,12 @@ class FeeDetailPage extends BasePage {
                 }
                 return it;
             });
-
             // price = price.toFixed(2);
             this.setState({
                 dataInfo: {
                     ...this.state.dataInfo,
-                    data,
-                },
+                    data
+                }
                 //price,
             });
 
@@ -712,8 +710,7 @@ class FeeDetailPage extends BasePage {
                 onPress={() => this.changeItem(item)}>
                 <Flex style={styles.check}>
                     {type !== '已收' && <Checkbox
-                        checked={item.select === true}
-                        style={{ color: Macro.color_f39d39 }}
+                        checked={item.select === true} 
                         onChange={event => {
                             this.changeItem(item);
                         }}
@@ -844,8 +841,7 @@ class FeeDetailPage extends BasePage {
                 {type === '已收' || dataInfo.data.length === 0 ? null : (
                     <Flex style={{ marginBottom: 30 }} direction={'column'}>
                         <Flex justify={'between'}>
-                            <Checkbox
-                                style={{ color: Macro.color_f39d39 }}
+                            <Checkbox 
                                 onChange={event => {
                                     this.checkAll();
                                 }}
@@ -930,8 +926,7 @@ class FeeDetailPage extends BasePage {
                                     >
                                         <Text style={styles.word}>兴生活</Text>
                                     </Flex>
-                                </TouchableWithoutFeedback> : null}
-
+                                </TouchableWithoutFeedback> : null} 
                             {/* 
                                  //手机都不能刷卡
                                 <TouchableWithoutFeedback

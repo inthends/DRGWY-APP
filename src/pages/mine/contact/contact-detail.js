@@ -120,9 +120,10 @@ class ContactDetail extends BasePage {
                                                         <Text style={styles.desc}>{i.name || i.linkMan}</Text>
                                                         <Text style={styles.desc2}>{i.dutyName}</Text>
                                                     </Flex>
-                                                    <TouchableWithoutFeedback onPress={() => common.call(i.phoneNum || i.linkPhone)}>
-                                                        <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 18, height: 18 }} /></Flex>
-                                                    </TouchableWithoutFeedback>
+                                                    {i.phoneNum || i.linkPhone ?
+                                                        <TouchableWithoutFeedback onPress={() => common.call(i.phoneNum || i.linkPhone)}>
+                                                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 18, height: 18 }} /></Flex>
+                                                        </TouchableWithoutFeedback> : null}
                                                 </Flex>
                                             </Flex>
                                         ))}
@@ -133,7 +134,7 @@ class ContactDetail extends BasePage {
                         </Accordion>
                     </View>
                 </ScrollView>
-            </View> 
+            </View>
         );
     }
 }
@@ -171,7 +172,7 @@ const styles = StyleSheet.create({
     item: {
         fontSize: 16,
         color: '#404145'
-    }, 
+    },
     aa: {
         width: '100%',
         paddingTop: 15,

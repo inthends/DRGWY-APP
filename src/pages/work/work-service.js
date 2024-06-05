@@ -135,9 +135,10 @@ export default {
             url = '/api/MobileMethod/MRepairDispatch';
         } else if (handle === '接单') {
             url = '/api/MobileMethod/MRepairAccept';
-        } else if (handle === '开始维修') {
-            url = '/api/MobileMethod/MRepairStart';
         }
+        // else if (handle === '开始维修') {
+        //     url = '/api/MobileMethod/MRepairStart';
+        // }
         else if (handle === '退单') {
             url = '/api/MobileMethod/MRepairBack';
         }
@@ -152,6 +153,12 @@ export default {
         return api.postData(url, params);
     },
 
+    //开始维修
+    startRepair(keyvalue, content, reinforceId) {
+        let params = { keyvalue, content, reinforceId };
+        return api.postData('/api/MobileMethod/MRepairStart', params);
+    },
+ 
     //协助维修
     assistRepair(keyvalue, type) {
         let params = { keyvalue, type };
@@ -174,7 +181,7 @@ export default {
     serviceCommunicates(keyvalue) {
         return api.getData('/api/MobileMethod/MGetCommunicates', { keyvalue, pageIndex: 1, pageSize: 100 });
     },
-    
+
     //维修单单据动态
     getOperationRecord(keyvalue) {
         return api.getData('/api/MobileMethod/MGetOperationRecordList', { keyvalue, pageIndex: 1, pageSize: 100 });
