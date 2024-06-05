@@ -139,6 +139,24 @@ class TaskListDonePage extends BasePage {
         }
     };
 
+    typeChange = (repairMajor) => {
+        this.setState({
+            repairMajor,
+            pageIndex: 1
+        }, () => {
+            this.onRefresh();
+        });
+    }
+
+    timeChange = (time) => {
+        this.setState({
+            time,
+            pageIndex: 1
+        }, () => {
+            this.onRefresh();
+        });
+    };
+
     _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
@@ -171,7 +189,7 @@ class TaskListDonePage extends BasePage {
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>紧急：{item.emergencyLevel}，重要：{item.importance}，专业：{item.repairMajor}</Text>
                         </Flex>
- 
+
                         <Text style={{
                             paddingLeft: 20,
                             paddingRight: 20,
@@ -182,40 +200,24 @@ class TaskListDonePage extends BasePage {
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>{item.billDate}</Text>
                         </Flex>
-
                     </Flex>
                 </Flex>
             </TouchableWithoutFeedback>
         );
     };
 
-    typeChange = (repairMajor) => {
-        this.setState({
-            repairMajor,
-            pageIndex: 1
-        }, () => {
-            this.onRefresh();
-        });
-    }
-
-    timeChange = (time) => {
-        this.setState({
-            time,
-            pageIndex: 1
-        }, () => {
-            this.onRefresh();
-        });
-    };
 
     render() {
-        const { dataInfo, repairMajors } = this.state;
-
+        const { dataInfo, repairMajors, } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
                 <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
                     <MyPopover onChange={this.typeChange}
                         titles={repairMajors}
                         visible={true} />
+                    {/* <Flex>
+                        <Text>数量 ( {dataInfo.length} )</Text>
+                    </Flex>  */}
                     <MyPopover onChange={this.timeChange}
                         titles={['全部', '今日', '本周', '本月', '上月', '本年']}
                         visible={true} />
@@ -235,7 +237,9 @@ class TaskListDonePage extends BasePage {
                     onMomentumScrollBegin={() => this.canAction = true}
                     onMomentumScrollEnd={() => this.canAction = false}
                     ListEmptyComponent={<NoDataView />}
+                //ListHeaderComponent={() => this._footer(dataInfo.data.length)}
                 />
+                <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
             </CommonView>
         );
     }
@@ -245,7 +249,10 @@ const styles = StyleSheet.create({
 
     list: {
         backgroundColor: Macro.color_white,
-        margin: 15
+        //margin: 15
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 10
     },
     title: {
         paddingTop: 15,

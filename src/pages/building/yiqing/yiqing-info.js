@@ -10,12 +10,12 @@ import LoadImage from '../../../components/load-image';
 import YiQingService from './yiqing-service';
 import common from '../../../utils/common';
 import UDToast from '../../../utils/UDToast';
-
 import selectImage from '../../../static/images/select.png';
 import unselectImage from '../../../static/images/no-select.png';
 
 
 class YiQingInfoPage extends BasePage {
+
     static navigationOptions = ({ navigation }) => {
         return {
             title: '健康状况',

@@ -197,7 +197,7 @@ class TaskListPage extends BasePage {
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>紧急：{item.emergencyLevel}，重要：{item.importance}，专业：{item.repairMajor}</Text>
                         </Flex>
- 
+
 
                         <Text style={{
                             paddingLeft: 20,
@@ -250,6 +250,7 @@ class TaskListPage extends BasePage {
                     onMomentumScrollEnd={() => this.canAction = false}
                     ListEmptyComponent={<NoDataView />}
                 />
+                  <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
             </CommonView>
 
         );
@@ -260,7 +261,10 @@ const styles = StyleSheet.create({
 
     list: {
         backgroundColor: Macro.color_white,
-        margin: 15
+        //margin: 15
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 10
     },
     title: {
         paddingTop: 15,

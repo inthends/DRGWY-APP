@@ -24,6 +24,7 @@ import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
 export default class DispatchDetailPage extends BasePage {
+    
     static navigationOptions = ({ navigation }) => {
         return {
             title: '派单',

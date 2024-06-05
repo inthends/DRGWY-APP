@@ -17,8 +17,7 @@ import LoadImage from '../../../components/load-image';
 import CommonView from '../../../components/CommonView';
 import api from '../../../utils/api';
 
-
-
+//废弃
 class LouDetail extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
@@ -29,10 +28,9 @@ class LouDetail extends BasePage {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
-            ),
+            )
         };
     };
-
 
     constructor(props) {
         super(props);
@@ -40,7 +38,7 @@ class LouDetail extends BasePage {
         // let room = common.getValueFromProps(this.props); 
         this.state = {
             room,
-            jiao: false,
+            jiao: false
         };
         api.getData('/api/MobileMethod/MGetRoomEntity', { keyvalue: room.id }).then(res => {
             this.setState({
@@ -68,8 +66,6 @@ class LouDetail extends BasePage {
         api.getData('/api/MobileMethod/MGetRoomServerDeskList', { unitId: room.id }).then(res => {
             this.setState({ servers: res });
         });
-
-
     }
 
     // componentDidMount(): void { 

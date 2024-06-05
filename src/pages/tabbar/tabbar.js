@@ -98,14 +98,13 @@ import TousuDetailPage from '../work/task/tousu-detail';
 import Contact from '../mine/contact/contact';
 import ContactDetail from '../mine/contact/contact-detail';
 //import Jixiao from '../mine/jixiao';
-import LouPan from '../navigator/house-infomation/lou-pan';
-import LouDong from '../navigator/house-infomation/lou-dong';
-import LouCeng from '../navigator/house-infomation/lou-ceng';
-import LouDetail from '../navigator/house-infomation/lou-detail';
+// import LouPan from '../navigator/house-infomation/lou-pan';
+// import LouDong from '../navigator/house-infomation/lou-dong';
+// import LouCeng from '../navigator/house-infomation/lou-ceng';
+// import LouPark from '../navigator/house-infomation/lou-park';
+// import LouDetail from '../navigator/house-infomation/lou-detail';
 import SheBeiList from '../navigator/she-bei/list';
 import ShebeiDetail from '../navigator/she-bei/detail';
-import LouPark from '../navigator/house-infomation/lou-park';
-
 import ScanScreen from '../navigator/qrcode-scanner';
 import JLScanScreen from '../navigator/jlscanner';
 import BCMScanScreen from '../navigator/bcmscanner';
@@ -160,7 +159,7 @@ const BuildingNavigator = createStackNavigator(
     //newsList: NewsList,
     feeAdd: FeeAddPage,
     feeDetail: FeeDetailPage,
-    louDetail: LouDetail,
+    //louDetail: LouDetail
   },
   {
     containerOptions: (options) => {
@@ -205,11 +204,11 @@ const navigatorNavigator = createStackNavigator({
   weixiu_s: WeiXiuRatePage,
   tousu_s: TouSuPage,
   huifang_s: HuiFangRatePage, 
-  louPan: LouPan,
-  louDong: LouDong,
-  louCeng: LouCeng,
-  louPark: LouPark,
-  louDetail: LouDetail,
+  // louPan: LouPan,
+  // louDong: LouDong,
+  // louCeng: LouCeng,
+  // louPark: LouPark,
+  //louDetail: LouDetail,
   shebeiList: SheBeiList,
   shebeiDetail: ShebeiDetail,
 });

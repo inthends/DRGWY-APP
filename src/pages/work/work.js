@@ -20,7 +20,6 @@ export default class WorkPage extends BasePage {
     static navigationOptions = options => {
         const { navigation } = options;
         const params = navigation.state.params;
-
         return {
             title: '工作台',
             headerTitleStyle: {
@@ -98,8 +97,7 @@ export default class WorkPage extends BasePage {
             }
         );
     }
-
-
+ 
     componentWillUnmount() {
         this.viewDidAppear.remove();
     }

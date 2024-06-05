@@ -21,6 +21,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import Macro from '../../../utils/macro';
 
 export default class WeixiuDetailPage extends BasePage {
+    
     static navigationOptions = ({ navigation }) => {
         return {
             title: '维修单详情',

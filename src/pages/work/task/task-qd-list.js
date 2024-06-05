@@ -21,6 +21,7 @@ import MyPopover from '../../../components/my-popover';
 import UDToast from '../../../utils/UDToast';
 
 class TaskQDListPage extends BasePage {
+
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
@@ -205,7 +206,7 @@ class TaskQDListPage extends BasePage {
                                 <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 15, height: 15 }} /></Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
-                        
+
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>所属区域：{item.repairArea}，是否有偿：{item.isPaid}</Text>
@@ -215,7 +216,7 @@ class TaskQDListPage extends BasePage {
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>紧急：{item.emergencyLevel}，重要：{item.importance}，专业：{item.repairMajor}</Text>
                         </Flex>
-                       
+
                         <Text style={{
                             paddingLeft: 20,
                             paddingRight: 20,
@@ -293,6 +294,7 @@ class TaskQDListPage extends BasePage {
                     onMomentumScrollEnd={() => this.canAction = false}
                     ListEmptyComponent={<NoDataView />}
                 />
+                <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
             </CommonView>
 
         );
@@ -303,7 +305,10 @@ const styles = StyleSheet.create({
 
     list: {
         backgroundColor: Macro.color_white,
-        margin: 15
+        //margin: 15
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 10
     },
     title: {
         paddingTop: 15,

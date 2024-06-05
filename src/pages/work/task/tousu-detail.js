@@ -21,6 +21,7 @@ import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
 export default class TousuDetailPage extends BasePage {
+    
     static navigationOptions = ({ navigation }) => {
         return {
             title: '投诉单详情',

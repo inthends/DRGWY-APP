@@ -228,19 +228,19 @@ export default {
             //待协助列表
             url = '/api/MobileMethod/MGetAssistRepairPageList';
         }
-        return api.postData(url, { status: type, isOverdue: overdue, pageIndex, pageSize: 100 });
+        return api.postData(url, { status: type, isOverdue: overdue, pageIndex, pageSize: 10 });
     },
 
     //工作台已完成事项列表
     workDoneList(type, repairMajor, time, pageIndex) {
         let url = '/api/MobileMethod/MGetRepairDonePageList';
-        return api.postData(url, { type, repairMajor, time, pageIndex, pageSize: 100 });
+        return api.postData(url, { type, repairMajor, time, pageIndex, pageSize: 10 });
     },
 
     //抢单列表
     workQDList(todo, emergencyLevel, time, pageIndex) {
         let url = '/api/MobileMethod/MGetQDPageList';
-        return api.postData(url, { todo, emergencyLevel, time, pageIndex, pageSize: 100 });
+        return api.postData(url, { todo, emergencyLevel, time, pageIndex, pageSize: 10 });
     },
 
     // //数量

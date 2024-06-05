@@ -42,6 +42,8 @@ export default class NavigatorPage extends BasePage {
     return (
       <CommonView style={{ flex: 1 }}>
         <ScrollView style={{ flex: 1 }}>
+          {/*
+          取消，合并到项目里
           <Flex direction={'column'} align={'start'} style={styles.cell}>
             <Flex
               style={{
@@ -66,7 +68,8 @@ export default class NavigatorPage extends BasePage {
               </TouchableWithoutFeedback>
             </Flex>
             <Flex style={styles.line} />
-          </Flex> 
+          </Flex>  */}
+
           <Flex direction={'column'} align={'start'} style={styles.cell}>
             <Flex
               style={{
@@ -113,28 +116,28 @@ export default class NavigatorPage extends BasePage {
               <TouchableWithoutFeedback
                 onPress={() => this.props.navigation.push('shebeiList')}>
                 <Flex style={styles.right}>
-                   <Icon
+                  <Icon
                     name="desktop"
                     size={20}
                     color={Macro.work_blue}
                   />
                   <Text style={styles.content}>设备资料</Text>
                 </Flex>
-              </TouchableWithoutFeedback>  
+              </TouchableWithoutFeedback>
             </Flex>
             <Flex justify={'between'} style={styles.cellContnent}>
               <TouchableWithoutFeedback
                 onPress={() => this.props.navigation.navigate('gdMoney')}>
                 <Flex style={styles.left}>
-                <Icon
+                  <Icon
                     name="laptop"
                     size={22}
-                    color={Macro.work_blue}/>
+                    color={Macro.work_blue} />
                   <Text style={styles.content}>固定资产</Text>
                 </Flex>
-              </TouchableWithoutFeedback> 
-            </Flex> 
-            <Flex style={styles.line} /> 
+              </TouchableWithoutFeedback>
+            </Flex>
+            <Flex style={styles.line} />
           </Flex>
           <Flex direction={'column'} align={'start'} style={styles.cell}>
             <Flex

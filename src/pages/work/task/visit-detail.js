@@ -25,6 +25,7 @@ import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
 export default class VisitDetailPage extends BasePage {
+    
     static navigationOptions = ({ navigation }) => {
         return {
             title: '服务单回访',
