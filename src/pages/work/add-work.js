@@ -174,8 +174,8 @@ class AddWorkPage extends BasePage {
     //删除附件
     delete = (url) => {
         Alert.alert(
-            '是否删除？',
-            '',
+            '请确认',
+            '是否删除？', 
             [
                 {
                     text: '取消',

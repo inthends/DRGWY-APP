@@ -67,8 +67,7 @@ class YiQingPage extends BasePage {
     return (
       <CommonView style={{ flex: 1 }}>
         <ScrollView>
-          <Text style={styles.title}>{allName}</Text>
-
+          <Text style={styles.title}>{allName}</Text> 
           <Flex justify={'around'} style={styles.buttons}>
             <Button type={'primary'} style={styles.button1} onPress={this.out}>
               出小区

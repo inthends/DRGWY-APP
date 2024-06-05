@@ -12,7 +12,7 @@ import BasePage from '../../base/base';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
 import { connect } from 'react-redux';
-import common from '../../../utils/common';
+//import common from '../../../utils/common';
 import ScrollTitle from '../../../components/scroll-title';
 import MyPopover from '../../../components/my-popover';
 import NavigatorService from '../navigator-service';

@@ -261,69 +261,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                                     style={{ width: 18, height: 18 }} /></Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
-
-                        {/* 服务单关联单据，不允许操作 neo 2020年6月26日10:24:45 */}
-                        {/* {detail.businessCode ? (
-                        <TouchableWithoutFeedback>
-                            <Flex style={[styles.every]}>
-                                <Text style={styles.left}>关联单：</Text>
-                                <Text
-                                onPress={()=>{
-                                    let item = {
-                                        ...detail,
-                                        id: detail.businessId
-                                    };
-                                    switch (detail.statusName) {
-                                        case '待派单': {
-                                            this.props.navigation.navigate('paidan', {data: item});
-                                            break;
-                                        }
-                                        case '待接单': {
-                                            this.props.navigation.navigate('jiedan', {data: item});
-                                            break;
-                                        }
-                                        case '待开工': {
-                                            this.props.navigation.navigate('kaigong', {data: item});
-                                            break;
-                                        }
-                                        case '待完成': {
-                                            this.props.navigation.navigate('wancheng', {data: item});
-                                            break;
-                                        }
-                                        case '待检验': {
-                                            this.props.navigation.navigate('jianyan', {data: item});
-                                            break;
-                                        }
-                                        case '待回访': {
-                                            this.props.navigation.navigate('huifang', {data: item});
-                                            break;
-                                        }
-                                        default:
-                                            break;
-                                    }
-                                }}
-
-                                style={[styles.right,{color:Macro.work_blue}]}>{detail.businessCode}</Text>
-                            </Flex>
-                        </TouchableWithoutFeedback>
-                    ):null} */}
-
-                        {/* <View style={{
-                        margin: 15,
-                        borderStyle: 'solid',
-                        borderColor: '#F3F4F2',
-                        borderWidth: 1,
-                        borderRadius: 5,
-                    }}>
-                        <TextareaItem
-                            rows={4}
-                            placeholder='请输入'
-                            style={{ paddingTop: 10, width: ScreenUtil.deviceWidth() - 32 }}
-                            onChange={value => this.setState({ value })}
-                            value={this.state.value}
-                        />
-                    </View> */}
-
+ 
                         <View style={{ margin: 15 }}>
                             <TextareaItem
                                 rows={4}
@@ -334,29 +272,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                                 value={this.state.value}
                             />
                         </View>
-
-                        {/* <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <TextInput
-                            maxLength={500}
-                            placeholder='请输入'
-                            multiline
-                            onChangeText={value => this.setState({ value })}
-                            value={this.state.value}
-                            style={{ fontSize: 16, textAlignVertical: 'top' }}
-                            numberOfLines={4}>
-                        </TextInput>
-                    </Flex> */}
-
-                        {/* <TouchableWithoutFeedback onPress={() => this.click('回复')}>
-                        <Flex justify={'center'} style={[styles.ii, {
-                            width: '60%',
-                            marginLeft: '10%', marginRight: '10%', marginBottom: 20
-                        },
-                        { backgroundColor: Macro.work_blue }]}>
-                            <Text style={styles.word}>回复</Text>
-                        </Flex>
-                    </TouchableWithoutFeedback> */}
-
+ 
                         <Flex justify={'center'}>
                             <Button onPress={() => this.reply()} type={'primary'}
                                 activeStyle={{ backgroundColor: Macro.work_blue }} style={{
@@ -401,8 +317,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                         onClick={this.cancel}
                         imageUrls={this.state.images} />
                 </Modal>
-
-
+ 
                 {this.state.showRepair && (
                     // 转报修
                     <View style={styles.mengceng}>

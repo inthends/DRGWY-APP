@@ -10,19 +10,12 @@ import {
     Keyboard
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Icon, Flex, TextareaItem } from '@ant-design/react-native';
+import {Button, Icon, Flex, TextareaItem } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
-import LoadImage from '../../../components/load-image';
-// import SelectImage from '../../../utils/select-image';
-import common from '../../../utils/common';
-// import UDRecord from '../../../utils/UDRecord';
-// import api from '../../../utils/api';
-// import UDPlayer from '../../../utils/UDPlayer';
-import UDToast from '../../../utils/UDToast';
-// import DashLine from '../../../components/dash-line';
-import WorkService from '../work-service';
-//import UploadImageView from '../../../components/upload-image-view';
-// import Communicates from '../../../components/communicates';
+import LoadImage from '../../../components/load-image'; 
+import common from '../../../utils/common'; 
+import UDToast from '../../../utils/UDToast'; 
+import WorkService from '../work-service'; 
 import OperationRecords from '../../../components/operationrecords';
 import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
@@ -57,7 +50,6 @@ export default class CheckDetailPage extends BasePage {
             visible: false,
             KeyboardShown: false
         };
-
         this.keyboardDidShowListener = null;
         this.keyboardDidHideListener = null;
     }
@@ -82,7 +74,7 @@ export default class CheckDetailPage extends BasePage {
     }
 
     //add new
-    componentWillUnmount() { 
+    componentWillUnmount() {
         //卸载键盘弹出事件监听
         if (this.keyboardDidShowListener != null) {
             this.keyboardDidShowListener.remove();
@@ -205,7 +197,15 @@ export default class CheckDetailPage extends BasePage {
                             <Flex style={[styles.every]}>
                                 <Text style={styles.left}>关联单：</Text>
                                 <Text
-                                    onPress={() => this.props.navigation.navigate('service', { data: { id: detail.relationId } })}
+                                    onPress={() => {
+                                        if (detail.sourceType === '服务总台') {
+                                            this.props.navigation.navigate('service', { data: { id: detail.relationId } });
+                                        }
+                                        else {
+                                            //检查单
+                                            this.props.navigation.navigate('checkDetail', { data: { id: detail.relationId } });
+                                        }
+                                    }}
                                     style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
@@ -220,8 +220,8 @@ export default class CheckDetailPage extends BasePage {
 
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                             <Text style={styles.left}>增援人：{detail.reinforceName}</Text>
-                        </Flex> 
-                        {/* <DashLine /> */} 
+                        </Flex>
+                        {/* <DashLine /> */}
                         <Flex justify={'between'} style={{ margin: 15 }}>
                             <TouchableWithoutFeedback onPress={() => this.setState({ result: 1 })}>
                                 <Flex>
@@ -255,18 +255,17 @@ export default class CheckDetailPage extends BasePage {
                                 value={this.state.value}
                             />
                         </View>
+ 
+                        <Flex justify={'center'}>
+                            <Button onPress={() => this.click('完成检验')} type={'primary'}
+                                activeStyle={{ backgroundColor: Macro.work_blue }} style={{
+                                    width: 200,
+                                    backgroundColor: Macro.work_blue,
+                                    marginTop: 20,
+                                    height: 40
+                                }}>完成检验</Button>
+                        </Flex>
 
-                        <TouchableWithoutFeedback onPress={() => this.click('完成检验')}>
-                            <Flex justify={'center'} style={[styles.ii, {
-                                width: '80%',
-                                marginLeft: '10%',
-                                marginRight: '10%',
-                                marginBottom: 20,
-                            }, { backgroundColor: Macro.work_blue }]}>
-                                <Text style={styles.word}>完成检验</Text>
-                            </Flex>
-                        </TouchableWithoutFeedback>
-                        {/* <Communicates communicateClick={this.communicateClick} communicates={communicates} /> */}
                         <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
 
                     </ScrollView>

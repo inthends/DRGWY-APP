@@ -87,8 +87,9 @@ import CompleteDetailPage from '../work/task/complete-detail';
 import CheckDetailPage from '../work/task/check-detail';
 import VisitDetailPage from '../work/task/visit-detail';
 import AssistDetailPage from '../work/task/assist-detail';
-import TaskDispatchListPage from '../work/task/task-dispatch-list';
-import TaskQDListPage from '../work/task/task-qd-list';
+import ApproveDetailPage from '../work/task/approve-detail'; 
+import TaskDoneListPage from '../work/task/task-done-list';
+import TaskQDListPage from '../work/task/task-qd-list'; 
 import SelectRepairMajor from '../work/select-repairmajor';
 
 //工作台回访查看单据
@@ -203,18 +204,7 @@ const navigatorNavigator = createStackNavigator({
   qianfei: QianFeiZhangLingPage,
   weixiu_s: WeiXiuRatePage,
   tousu_s: TouSuPage,
-  huifang_s: HuiFangRatePage,
-
-  // service: ServiceDeskDetailPage,
-  // wancheng: CompleteDetailPage,
-  // jianyan: CheckDetailPage,
-  // kaigong: StartDetailPage,
-  // jiedan: ReceiveDetailPage,
-  // paidan: DispatchDetailPage,
-  // huifang: VisitDetailPage,
-  // assist: AssistDetailPage,
-  // newsList: NewsList,
-
+  huifang_s: HuiFangRatePage, 
   louPan: LouPan,
   louDong: LouDong,
   louCeng: LouCeng,
@@ -248,10 +238,12 @@ const WorkNavigator = createStackNavigator({
   jiedan: ReceiveDetailPage,
   paidan: DispatchDetailPage,
   huifang: VisitDetailPage,
+  approve: ApproveDetailPage,
+
   scanonly: ScanOnly,
   scandemo: ScanSS,
   task: TaskListPage,
-  taskDispatch: TaskDispatchListPage,
+  taskDone: TaskDoneListPage,
   taskqd: TaskQDListPage,
   newsList: NewsList,
   selectRepairMajor: SelectRepairMajor,

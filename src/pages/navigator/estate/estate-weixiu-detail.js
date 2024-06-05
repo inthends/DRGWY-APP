@@ -19,7 +19,8 @@ import UDToast from '../../../utils/UDToast';
 // import DashLine from '../../../components/dash-line';
 import WorkService from '../../work/work-service';
 import ListImages from '../../../components/list-images';
-import Communicates from '../../../components/communicates';
+// import Communicates from '../../../components/communicates';
+import OperationRecords from '../../../components/operationrecords';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
@@ -120,6 +121,10 @@ export default class EweixiuDetailPage extends BasePage {
 
     render() {
         const { images, detail, communicates } = this.state;
+
+        const selectImg = require('../../../static/images/select.png');
+        const noselectImg = require('../../../static/images/no-select.png');
+
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
@@ -135,13 +140,13 @@ export default class EweixiuDetailPage extends BasePage {
                         </TouchableWithoutFeedback>
                     </Flex>
 
-                    <Text style={[styles.desc, ScreenUtil.borderBottom()]}>{detail.repairContent}</Text> 
+                    <Text style={[styles.desc, ScreenUtil.borderBottom()]}>{detail.repairContent}</Text>
                     <ListImages images={images} lookImage={this.lookImage} />
 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
-                    </Flex> 
-                    
+                    </Flex>
+
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
                     </Flex>
@@ -158,12 +163,40 @@ export default class EweixiuDetailPage extends BasePage {
                                     this.props.navigation.navigate('checkDetail', { data: detail.relationId });
                                 }
                             }}
-                                style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text> 
+                           style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>}
 
-                    {/* <DashLine /> */}
-                    <Communicates communicateClick={this.communicateClick} communicates={communicates} />
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>
+                    </Flex>
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>协助人：{detail.assistName}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>增援人：{detail.reinforceName}</Text>
+                    </Flex>
+
+                    {detail.testDate ?//进行了检验
+                        <Flex justify={'between'} style={{ margin: 15 }}>
+                            <Flex>
+                                <LoadImage img={detail.testResult === 1 ? selectImg : noselectImg}
+                                    style={{ width: 15, height: 15 }} />
+                                <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>合格</Text>
+                            </Flex>
+                            <Flex>
+                                <LoadImage img={detail.testResult === 0 ? selectImg : noselectImg}
+                                    style={{ width: 15, height: 15 }} />
+                                <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>不合格</Text>
+                            </Flex>
+                        </Flex> : null}
+
+                    {/* <Communicates communicateClick={this.communicateClick} communicates={communicates} /> */}
+
+                    {/* 维修单显示操作记录，没有沟通记录 */}
+                    <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
+
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
@@ -175,7 +208,7 @@ export default class EweixiuDetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-  
+
     every: {
         marginLeft: 15,
         marginRight: 15,

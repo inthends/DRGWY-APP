@@ -205,10 +205,17 @@ class TaskQDListPage extends BasePage {
                                 <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 15, height: 15 }} /></Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
+                        
+                        <Flex justify='between'
+                            style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
+                            <Text>所属区域：{item.repairArea}，是否有偿：{item.isPaid}</Text>
+                        </Flex>
+
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>紧急：{item.emergencyLevel}，重要：{item.importance}，专业：{item.repairMajor}</Text>
                         </Flex>
+                       
                         <Text style={{
                             paddingLeft: 20,
                             paddingRight: 20,

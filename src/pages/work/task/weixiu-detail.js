@@ -14,7 +14,8 @@ import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';
 import WorkService from '../../work/work-service';
 import ListImages from '../../../components/list-images';
-import Communicates from '../../../components/communicates';
+// import Communicates from '../../../components/communicates';
+import OperationRecords from '../../../components/operationrecords';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import Macro from '../../../utils/macro';
@@ -66,7 +67,8 @@ export default class WeixiuDetailPage extends BasePage {
                     reinforceName: detail.reinforceName//增援人 
                 }
             });
-            WorkService.serviceCommunicates(detail.relationId).then(res => {
+
+            WorkService.getOperationRecord(id).then(res => {
                 this.setState({
                     communicates: res,
                 });
@@ -107,7 +109,8 @@ export default class WeixiuDetailPage extends BasePage {
 
     render() {
         const { images, detail, communicates } = this.state;
-
+        const selectImg = require('../../../static/images/select.png');
+        const noselectImg = require('../../../static/images/no-select.png');
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
@@ -125,11 +128,9 @@ export default class WeixiuDetailPage extends BasePage {
                     </Flex>
                     <Text style={styles.desc}>{detail.repairContent}</Text>
                     <ListImages images={images} lookImage={this.lookImage} />
-
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
                     </Flex>
-
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName}，{detail.createDate}</Text>
                     </Flex>
@@ -138,11 +139,23 @@ export default class WeixiuDetailPage extends BasePage {
                         <Flex style={[styles.every]}>
                             <Text style={styles.left}>关联单：</Text>
                             <Text
-                                onPress={() => this.props.navigation.navigate('service', { data: { id: detail.relationId } })}
+                                //onPress={() => this.props.navigation.navigate('service', { data: { id: detail.relationId } })}
+                                onPress={() => {
+                                    if (detail.sourceType === '服务总台') {
+                                        this.props.navigation.navigate('service', { data: { id: detail.relationId } });
+                                    }
+                                    else {
+                                        //检查单
+                                        this.props.navigation.navigate('checkDetail', { data: { id: detail.relationId } });
+                                    }
+                                }}
                                 style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
 
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>
+                    </Flex>
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>协助人：{detail.assistName}</Text>
                     </Flex>
@@ -151,9 +164,26 @@ export default class WeixiuDetailPage extends BasePage {
                         <Text style={styles.left}>增援人：{detail.reinforceName}</Text>
                     </Flex>
 
-                    <Communicates communicateClick={this.communicateClick} communicates={communicates} />
+                    {detail.testDate ?//进行了检验
+                        <Flex justify={'between'} style={{ margin: 15 }}>
+                            <Flex>
+                                <LoadImage img={detail.testResult === 1 ? selectImg : noselectImg}
+                                    style={{ width: 15, height: 15 }} />
+                                <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>合格</Text>
+                            </Flex>
+                            <Flex>
+                                <LoadImage img={detail.testResult === 0 ? selectImg : noselectImg}
+                                    style={{ width: 15, height: 15 }} />
+                                <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>不合格</Text>
+                            </Flex>
+                        </Flex> : null}
+
+                    {/* <Communicates communicateClick={this.communicateClick} communicates={communicates} /> */}
+                    {/* 维修单显示操作记录，没有沟通记录 */}
+                    <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
+
                 </ScrollView>
-                
+
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                         imageUrls={this.state.images} />

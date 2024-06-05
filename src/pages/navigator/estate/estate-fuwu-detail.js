@@ -6,7 +6,7 @@ import {
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    ScrollView, 
+    ScrollView,
     Alert
 } from 'react-native';
 import BasePage from '../../base/base';
@@ -22,7 +22,7 @@ import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
-export default class EfuwuDetailPage extends BasePage { 
+export default class EfuwuDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
             title: '服务单详情',
@@ -100,8 +100,8 @@ export default class EfuwuDetailPage extends BasePage {
 
     doWork = (handle) => {
         Alert.alert(
+            '请确认',
             '是否' + handle + '？',
-            '',
             [{ text: '取消', tyle: 'cancel' },
             {
                 text: '确定',
@@ -121,8 +121,8 @@ export default class EfuwuDetailPage extends BasePage {
     //转维修
     toRepair = (handle) => {
         Alert.alert(
+            '请确认',
             '是否' + handle + '？',
-            '',
             [{ text: '取消', tyle: 'cancel' },
             {
                 text: '确定',
@@ -197,7 +197,7 @@ export default class EfuwuDetailPage extends BasePage {
                                     if (detail.businessType === 'Repair') {
                                         this.props.navigation.navigate('weixiuD', { data: detail.businessId });
                                     }
-                                    else //if (detail.businessType === 'Complaint')
+                                    else//if (detail.businessType === 'Complaint')
                                     {
                                         this.props.navigation.navigate('tousuD', { data: detail.businessId });
                                     }

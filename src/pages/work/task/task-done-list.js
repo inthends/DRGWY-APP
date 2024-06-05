@@ -11,7 +11,6 @@ import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
 import { connect } from 'react-redux';
-// import ListDispatchHeader from '../../../components/list-dispatch-header';
 import common from '../../../utils/common';
 import LoadImage from '../../../components/load-image';
 import WorkService from '../work-service';
@@ -19,7 +18,9 @@ import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 import MyPopover from '../../../components/my-popover';
 
-class TaskDispatchListPage extends BasePage {
+//已经处理的单子，只能查看
+class TaskListDonePage extends BasePage {
+
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
@@ -44,15 +45,15 @@ class TaskDispatchListPage extends BasePage {
             key: null
         };
         // let pageParames = common.getValueFromProps(this.props); 
-        // const type = common.getValueFromProps(this.props).type;
+        const type = common.getValueFromProps(this.props).type;
         // const overdue = common.getValueFromProps(this.props).overdue;
         //const hiddenHeader = common.getValueFromProps(this.props).hiddenHeader; 
         this.state = {
+            type: type,
             pageIndex: 1,
             dataInfo: {
                 data: []
             },
-            //todo: 0,
             //hiddenHeader,
             refreshing: false,
             visible: false,
@@ -101,8 +102,8 @@ class TaskDispatchListPage extends BasePage {
     }
 
     getList = () => {
-        const { repairMajor, time, pageIndex } = this.state;
-        WorkService.workDispatchList(1, repairMajor, time, pageIndex).then(dataInfo => {
+        const { type, repairMajor, time, pageIndex } = this.state;
+        WorkService.workDoneList(type, repairMajor, time, pageIndex).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -141,43 +142,8 @@ class TaskDispatchListPage extends BasePage {
     _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-                const { type } = this.state;
-                if (type === 'fuwu') {
-                    this.props.navigation.navigate('service', { data: item.id });
-                } else {
-                    switch (item.statusName) {
-                        // case '待派单': {
-                        //     this.props.navigation.navigate('paidan', { data: item.id });
-                        //     break;
-                        // }
-                        case '待接单': {
-                            this.props.navigation.navigate('jiedan', { data: item.id });
-                            break;
-                        }
-                        case '待开工': {
-                            this.props.navigation.navigate('kaigong', { data: item.id });
-                            break;
-                        }
-                        case '待完成': {
-                            this.props.navigation.navigate('wancheng', { data: item.id });
-                            break;
-                        }
-                        case '待检验': {
-                            this.props.navigation.navigate('jianyan', { data: item.id });
-                            break;
-                        }
-                        case '待回访': {
-                            this.props.navigation.navigate('huifang', { data: item.id });
-                            break;
-                        }
-                        case '待协助': {
-                            this.props.navigation.navigate('assist', { data: item.id });
-                            break;
-                        }
-                        default:
-                            break;
-                    }
-                }
+                //查看报修单
+                this.props.navigation.navigate('weixiuView', { data: item.id });
             }}>
                 <Flex direction='column' align={'start'}
                     style={[styles.card, index === 0 ? styles.blue : styles.orange]}>
@@ -195,10 +161,17 @@ class TaskDispatchListPage extends BasePage {
                                 <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 15, height: 15 }} /></Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
+
+                        <Flex justify='between'
+                            style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
+                            <Text>所属区域：{item.repairArea}，是否有偿：{item.isPaid}</Text>
+                        </Flex>
+
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>紧急：{item.emergencyLevel}，重要：{item.importance}，专业：{item.repairMajor}</Text>
                         </Flex>
+ 
                         <Text style={{
                             paddingLeft: 20,
                             paddingRight: 20,
@@ -238,7 +211,7 @@ class TaskDispatchListPage extends BasePage {
         const { dataInfo, repairMajors } = this.state;
 
         return (
-            <CommonView style={{ flex: 1 }}> 
+            <CommonView style={{ flex: 1 }}>
                 <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
                     <MyPopover onChange={this.typeChange}
                         titles={repairMajors}
@@ -246,7 +219,7 @@ class TaskDispatchListPage extends BasePage {
                     <MyPopover onChange={this.timeChange}
                         titles={['全部', '今日', '本周', '本月', '上月', '本年']}
                         visible={true} />
-                </Flex> 
+                </Flex>
                 <FlatList
                     data={dataInfo.data}
                     // ListHeaderComponent={}
@@ -264,7 +237,6 @@ class TaskDispatchListPage extends BasePage {
                     ListEmptyComponent={<NoDataView />}
                 />
             </CommonView>
-
         );
     }
 }
@@ -322,7 +294,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = ({ buildingReducer }) => {
     return {
-        selectBuilding: buildingReducer.selectBuilding,
+        selectBuilding: buildingReducer.selectBuilding
     };
 };
-export default connect(mapStateToProps)(TaskDispatchListPage);
+export default connect(mapStateToProps)(TaskListDonePage);

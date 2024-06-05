@@ -196,9 +196,18 @@ export default class CompleteDetailPage extends BasePage {
                         <TouchableWithoutFeedback>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                                 <Text style={styles.left}>关联单：</Text>
-                                <Text
-                                    // onPress={() => this.props.navigation.navigate('service', { data: { id: detail.relationId } })}
-                                    onPress={() => this.props.navigation.navigate('service', { data: detail.relationId })}
+                                <Text 
+                                    //onPress={() => this.props.navigation.navigate('service', { data: detail.relationId })} 
+                                    onPress={() => {
+                                        if (detail.sourceType === '服务总台') {
+                                            this.props.navigation.navigate('service', { data: { id: detail.relationId } });
+                                        }
+                                        else {
+                                            //检查单
+                                            this.props.navigation.navigate('checkDetail', { data: { id: detail.relationId } });
+                                        }
+                                    }}
+
                                     style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
@@ -231,29 +240,7 @@ export default class CompleteDetailPage extends BasePage {
                                 value={this.state.value}
                             />
                         </View>
-
-                        {/* <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <TextInput
-                            maxLength={500}
-                            placeholder='请输入'
-                            multiline
-                            onChangeText={value => this.setState({ value })}
-                            value={this.state.value}
-                            style={{ fontSize: 16, textAlignVertical: 'top' }}
-                            numberOfLines={4}>
-                        </TextInput>
-                    </Flex> */}
-
-                        {/* <TouchableWithoutFeedback onPress={() => this.click('完成维修')}>
-                        <Flex justify={'center'} style={[styles.ii, {
-                            width: '80%',
-                            marginLeft: '10%',
-                            marginRight: '10%',
-                            marginBottom: 20,
-                        }, { backgroundColor: Macro.work_blue }]}>
-                            <Text style={styles.word}>完成维修</Text>
-                        </Flex>
-                    </TouchableWithoutFeedback> */}
+ 
                         <Flex justify={'center'}>
                             <Button onPress={() => this.click('完成维修')} type={'primary'}
                                 activeStyle={{ backgroundColor: Macro.work_blue }} style={{

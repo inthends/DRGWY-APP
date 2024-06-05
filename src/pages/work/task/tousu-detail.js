@@ -13,14 +13,12 @@ import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';
 import UDToast from '../../../utils/UDToast';
-import DashLine from '../../../components/dash-line';
+//import DashLine from '../../../components/dash-line';
 import WorkService from '../../work/work-service';
 import ListImages from '../../../components/list-images';
 import Communicates from '../../../components/communicates';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
-
-
 
 export default class TousuDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {

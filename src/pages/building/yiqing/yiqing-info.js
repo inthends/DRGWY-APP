@@ -61,8 +61,7 @@ class YiQingInfoPage extends BasePage {
         const { status } = this.state;
         return (
 
-            <CommonView style={{ flex: 1 }}>
-
+            <CommonView style={{ flex: 1 }}> 
                 <WhiteSpace size={'xl'} />
                 <WingBlank>
                     <Flex>

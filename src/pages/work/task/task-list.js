@@ -19,7 +19,9 @@ import ListJianYanHeader from '../../../components/list-jianyan-header';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 
+//待完成列表
 class TaskListPage extends BasePage {
+
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
@@ -131,6 +133,7 @@ class TaskListPage extends BasePage {
                     this.props.navigation.navigate('service', { data: item.id });
                 } else {
                     switch (item.statusName) {
+
                         case '待派单': {
                             this.props.navigation.navigate('paidan', { data: item.id });
                             break;
@@ -159,6 +162,10 @@ class TaskListPage extends BasePage {
                             this.props.navigation.navigate('assist', { data: item.id });
                             break;
                         }
+                        case '待审核': {
+                            this.props.navigation.navigate('approve', { data: item.id });
+                            break;
+                        }
                         default:
                             break;
                     }
@@ -183,8 +190,14 @@ class TaskListPage extends BasePage {
 
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
-                            <Text>紧急程度：{item.emergencyLevel}，重要程度：{item.importance}</Text>
+                            <Text>所属区域：{item.repairArea}，是否有偿：{item.isPaid}</Text>
                         </Flex>
+
+                        <Flex justify='between'
+                            style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
+                            <Text>紧急：{item.emergencyLevel}，重要：{item.importance}，专业：{item.repairMajor}</Text>
+                        </Flex>
+ 
 
                         <Text style={{
                             paddingLeft: 20,

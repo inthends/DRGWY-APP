@@ -172,43 +172,36 @@ export default class ReceiveDetailPage extends BasePage {
                             </TouchableWithoutFeedback>
                         </Flex>
                         <Text style={styles.desc}>{detail.repairContent}</Text>
-                        <ListImages images={images} lookImage={this.lookImage} /> 
+                        <ListImages images={images} lookImage={this.lookImage} />
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                             <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
-                        </Flex> 
+                        </Flex>
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                             <Text style={styles.left}>派单人：{detail.senderName}，派单时间：{detail.sendDate}</Text>
-                        </Flex> 
+                        </Flex>
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                             <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>
-                        </Flex> 
+                        </Flex>
                         <TouchableWithoutFeedback>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                                 <Text style={styles.left}>关联单：</Text>
-                                <Text onPress={() => this.props.navigation.navigate('service', { data: detail.relationId })}
+                                <Text 
+                                    onPress={() => {
+                                        if (detail.sourceType === '服务总台') {
+                                            this.props.navigation.navigate('service', { data: { id: detail.relationId } });
+                                        }
+                                        else {
+                                            //检查单
+                                            this.props.navigation.navigate('checkDetail', { data: { id: detail.relationId } });
+                                        }
+                                    }}
                                     style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                             <Text style={styles.left}>协助人：{detail.assistName}</Text>
                         </Flex>
-
-                        {/* <View style={{
-                        margin: 15,
-                        borderStyle: 'solid',
-                        borderColor: '#F3F4F2',
-                        borderWidth: 1,
-                        borderRadius: 5,
-                    }}>
-                        <TextareaItem
-                            rows={4}
-                            placeholder='请输入'
-                            style={{ paddingTop: 10, width: ScreenUtil.deviceWidth() - 32 }}
-                            onChange={value => this.setState({ value })}
-                            value={this.state.value}
-                        />
-                    </View> */}
-
+ 
                         <View style={{ margin: 15 }}>
                             <TextareaItem
                                 rows={4}
@@ -219,30 +212,7 @@ export default class ReceiveDetailPage extends BasePage {
                                 value={this.state.value}
                             />
                         </View>
-
-                        {/* <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <TextInput
-                            maxLength={500}
-                            placeholder='请输入'
-                            multiline
-                            onChangeText={value => this.setState({ value })}
-                            value={this.state.value}
-                            style={{ fontSize: 16, textAlignVertical: 'top' }}
-                            numberOfLines={4}>
-                        </TextInput>
-                    </Flex> */}
-
-                        {/* <TouchableWithoutFeedback onPress={() => this.click('接单')}>
-                        <Flex justify={'center'} 
-                        style={[styles.ii, {
-                            width: '80%',
-                            marginLeft: '10%',
-                            marginRight: '10%',
-                            marginTop: 10
-                        }, { backgroundColor: Macro.work_blue }]}>
-                            <Text style={styles.word}>接单</Text>
-                        </Flex>
-                    </TouchableWithoutFeedback> */} 
+ 
                         <Flex justify={'center'}>
                             <Button onPress={() => this.click('接单')} type={'primary'}
                                 activeStyle={{ backgroundColor: Macro.work_blue }} style={{
@@ -252,8 +222,8 @@ export default class ReceiveDetailPage extends BasePage {
                                     marginBottom: 10,
                                     height: 40
                                 }}>接单</Button>
-                        </Flex> 
-                        <OperationRecords communicateClick={this.communicateClick} communicates={communicates} /> 
+                        </Flex>
+                        <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
                     </ScrollView>
                 </TouchableWithoutFeedback>
 
@@ -266,7 +236,7 @@ export default class ReceiveDetailPage extends BasePage {
     }
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
     every: {
         marginLeft: 15,
         marginRight: 15,

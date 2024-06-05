@@ -46,12 +46,11 @@ export default class NavigatorPage extends BasePage {
             <Flex
               style={{
                 paddingTop: 3,
-                paddingBottom: 3,
+                paddingBottom: 3
               }}
             >
               <Text style={styles.title}>房产查询</Text>
-            </Flex>
-
+            </Flex> 
             <Flex justify={'between'} style={styles.cellContnent}>
               <TouchableWithoutFeedback
                 onPress={() => this.props.navigation.navigate('louPan')}
@@ -67,21 +66,18 @@ export default class NavigatorPage extends BasePage {
               </TouchableWithoutFeedback>
             </Flex>
             <Flex style={styles.line} />
-          </Flex>
-       
+          </Flex> 
           <Flex direction={'column'} align={'start'} style={styles.cell}>
             <Flex
               style={{
                 paddingTop: 3,
-                paddingBottom: 3,
-              }}
-            >
+                paddingBottom: 3
+              }}>
               <Text style={styles.title}>物业查询</Text>
             </Flex>
             <Flex justify={'between'} style={styles.cellContnent}>
               <TouchableWithoutFeedback
-                onPress={() => this.props.navigation.push('e_fuwu')}
-              >
+                onPress={() => this.props.navigation.push('e_fuwu')}>
                 <Flex style={styles.left}>
                   <LoadImage
                     style={{ width: 22, height: 22 }}
@@ -114,10 +110,8 @@ export default class NavigatorPage extends BasePage {
                   <Text style={styles.content}>投诉单</Text>
                 </Flex>
               </TouchableWithoutFeedback>
-             
               <TouchableWithoutFeedback
-                onPress={() => this.props.navigation.push('shebeiList')}
-              >
+                onPress={() => this.props.navigation.push('shebeiList')}>
                 <Flex style={styles.right}>
                    <Icon
                     name="desktop"
@@ -128,29 +122,25 @@ export default class NavigatorPage extends BasePage {
                 </Flex>
               </TouchableWithoutFeedback>  
             </Flex>
-
-            <Flex justify={'between'} style={styles.cellContnent}>  
+            <Flex justify={'between'} style={styles.cellContnent}>
               <TouchableWithoutFeedback
-                onPress={() => this.props.navigation.navigate('gdMoney')}
-              >
+                onPress={() => this.props.navigation.navigate('gdMoney')}>
                 <Flex style={styles.left}>
                 <Icon
                     name="laptop"
                     size={22}
-                    color={Macro.work_blue}
-                  />
+                    color={Macro.work_blue}/>
                   <Text style={styles.content}>固定资产</Text>
                 </Flex>
               </TouchableWithoutFeedback> 
             </Flex> 
             <Flex style={styles.line} /> 
           </Flex>
-
           <Flex direction={'column'} align={'start'} style={styles.cell}>
             <Flex
               style={{
                 paddingTop: 3,
-                paddingBottom: 3,
+                paddingBottom: 3
               }}>
               <Text style={styles.title}>分析报表</Text>
             </Flex>
@@ -215,8 +205,7 @@ export default class NavigatorPage extends BasePage {
                 </Flex>
               </TouchableWithoutFeedback>
               <TouchableWithoutFeedback
-                onPress={() => this.props.navigation.push('huifang_s')}
-              >
+                onPress={() => this.props.navigation.push('huifang_s')}>
                 <Flex style={styles.right}>
                   <LoadImage
                     style={{ width: 20, height: 22 }}

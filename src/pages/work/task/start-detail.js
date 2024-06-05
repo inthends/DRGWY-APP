@@ -222,7 +222,17 @@ export default class StartDetailPage extends BasePage {
                         <TouchableWithoutFeedback>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                                 <Text style={styles.left}>关联单：</Text>
-                                <Text onPress={() => this.props.navigation.navigate('service', { data: { id: detail.relationId } })}
+                                <Text
+                                    //onPress={() => this.props.navigation.navigate('service', { data: { id: detail.relationId } })}
+                                    onPress={() => {
+                                        if (detail.sourceType === '服务总台') {
+                                            this.props.navigation.navigate('service', { data: { id: detail.relationId } });
+                                        }
+                                        else {
+                                            //检查单
+                                            this.props.navigation.navigate('checkDetail', { data: { id: detail.relationId } });
+                                        }
+                                    }}
                                     style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
@@ -240,7 +250,7 @@ export default class StartDetailPage extends BasePage {
                             reload={this.reload}
                             type='开工'
                         />
- 
+
                         <View style={{ margin: 15 }}>
                             <TextareaItem
                                 rows={4}
@@ -251,35 +261,7 @@ export default class StartDetailPage extends BasePage {
                                 value={this.state.value}
                             />
                         </View>
-
-                        {/* <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <TextInput
-                            maxLength={500}
-                            placeholder='请输入故障判断'
-                            multiline
-                            onChangeText={value => this.setState({ value })}
-                            value={this.state.value}
-                            style={{ fontSize: 16, textAlignVertical: 'top' }}
-                            numberOfLines={4}>
-                        </TextInput>
-                    </Flex> */}
-
-                        {/* <View style={{
-                        margin: 15,
-                        borderStyle: 'solid',
-                        borderColor: '#F3F4F2',
-                        borderWidth: 1,
-                        borderRadius: 5,
-                    }}>
-                        <TextareaItem
-                            rows={3}
-                            placeholder='请输入退单原因'
-                            style={{ paddingTop: 10, width: ScreenUtil.deviceWidth() - 32 }}
-                            onChange={value => this.setState({ backMemo: value })}
-                            value={this.state.backMemo}
-                        />
-                    </View> */}
-
+ 
                         <View style={{ margin: 15 }}>
                             <TextareaItem
                                 rows={4}

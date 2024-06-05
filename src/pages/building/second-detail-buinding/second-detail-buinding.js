@@ -379,8 +379,7 @@ class SecondDetailBuildingPage extends BasePage {
         }
 
         return (
-            <CommonView style={{ flex: 1 }}>
-
+            <CommonView style={{ flex: 1 }}> 
                 <TouchableWithoutFeedback onPress={() => {
                     this.selectImages();
                 }}>
@@ -393,9 +392,7 @@ class SecondDetailBuildingPage extends BasePage {
                         <Text style={{ fontSize: 20 }}>{this.state.item.allName}</Text>
                     </Flex>*/}
                     </ImageBackground>
-                </TouchableWithoutFeedback>
- 
-
+                </TouchableWithoutFeedback> 
                 <Flex direction={'column'} align={'start'}
                     style={{ width: ScreenUtil.deviceWidth(), height: 44, backgroundColor: 'white' }}>
                     <Flex style={{ height: 40 }}>

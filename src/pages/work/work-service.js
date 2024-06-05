@@ -89,27 +89,28 @@ export default {
     deleteWorkFile(url) {
         return api.getData('/api/MobileMethod/MDeleteWorkFile', { url });
     },
- 
-    changeToRepair( 
+
+    changeToRepair(
         keyvalue,
-        isQD, 
+        isQD,
         senderId,
         senderName,
         repairMajorId,
         repairMajor
 
-    ) { 
-        let params = { 
+    ) {
+        let params = {
             keyvalue,
-            isQD, 
+            isQD,
             senderId,
             senderName,
             repairMajorId,
-            repairMajor }; 
+            repairMajor
+        };
         let url = '/api/MobileMethod/MChangeToRepair';
         return api.postData(url, params);
     },
- 
+
     //服务单操作
     serviceHandle(handle, keyvalue, content, extra = null) {
         let url = '';
@@ -124,7 +125,7 @@ export default {
             url = '/api/MobileMethod/MSendCommunicate';
         } else if (handle === '转投诉') {
             url = '/api/MobileMethod/MChangeToComplaint';
-        } 
+        }
         // else if (handle === '转维修') {
         //     url = '/api/MobileMethod/MChangeToRepair';
         // } 
@@ -157,15 +158,23 @@ export default {
         return api.postData('/api/MobileMethod/MRepairHandleAssist', params);
     },
 
+    //审核
+    approve(keyvalue) {
+        let params = { keyvalue };
+        return api.postData('/api/MobileMethod/MRepairApprove', params);
+    },
+
     //抢单
     qdRepair(keyvalue) {
         let params = { keyvalue };
         return api.postData('/api/MobileMethod/MRepairQD', params);
     },
 
+    //沟通记录
     serviceCommunicates(keyvalue) {
         return api.getData('/api/MobileMethod/MGetCommunicates', { keyvalue, pageIndex: 1, pageSize: 100 });
     },
+    
     //维修单单据动态
     getOperationRecord(keyvalue) {
         return api.getData('/api/MobileMethod/MGetOperationRecordList', { keyvalue, pageIndex: 1, pageSize: 100 });
@@ -186,7 +195,7 @@ export default {
         return api.getData('/api/MobileMethod/MGetComplaintFilesData', { keyvalue });
     },
 
-    //工作台列表
+    //待办工作台列表
     workList(type, overdue, pageIndex) {
         let url = '/api/MobileMethod/MGetRepairPageList';
         if (type === '3') {
@@ -222,10 +231,10 @@ export default {
         return api.postData(url, { status: type, isOverdue: overdue, pageIndex, pageSize: 100 });
     },
 
-    //工作台派单列表
-    workDispatchList(todo, repairMajor, time, pageIndex) {
-        let url = '/api/MobileMethod/MGetDispatchPageList';
-        return api.postData(url, { todo, repairMajor, time, pageIndex, pageSize: 100 });
+    //工作台已完成事项列表
+    workDoneList(type, repairMajor, time, pageIndex) {
+        let url = '/api/MobileMethod/MGetRepairDonePageList';
+        return api.postData(url, { type, repairMajor, time, pageIndex, pageSize: 100 });
     },
 
     //抢单列表

@@ -4,11 +4,12 @@ import {
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    ScrollView, 
-    Modal
+    ScrollView,
+    Modal,
+    Alert
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Icon, Flex } from '@ant-design/react-native';
+import { Button, Icon, Flex } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';
@@ -20,10 +21,10 @@ import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
-export default class AssistDetailPage extends BasePage {
+export default class ApproveDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
-            title: '协助维修',
+            title: '维修单审核',
             headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -39,8 +40,8 @@ export default class AssistDetailPage extends BasePage {
         this.state = {
             id,
             value: '',
+            result: 1,
             images: [],
-            //isUpload: false,//是否上传了图片
             detail: {},
             communicates: [],
             lookImageIndex: 0,
@@ -62,12 +63,9 @@ export default class AssistDetailPage extends BasePage {
                     emergencyLevel: detail.emergencyLevel,
                     importance: detail.importance,
                     relationId: detail.relationId,
-                    statusName: detail.statusName,
-                    assistName: detail.assistName,//协助人 
-                    reinforceName: detail.reinforceName//增援人 
+                    statusName: detail.statusName
                 }
             });
-
             //获取维修单的单据动态
             WorkService.getOperationRecord(id).then(res => {
                 this.setState({
@@ -75,7 +73,6 @@ export default class AssistDetailPage extends BasePage {
                 });
             });
         });
-
         WorkService.weixiuExtra(id).then(images => {
             this.setState({
                 images
@@ -83,23 +80,22 @@ export default class AssistDetailPage extends BasePage {
         });
     };
 
-    click = (handle) => {
-        const { id } = this.state;
-        // if ( !(value && value.length > 0)) {
-        //     UDToast.showInfo('请输入文字');
-        //     return;
-        // }
-
-        // const wcimages = images.filter(t => t.type === '完成');
-        // if (wcimages.length == 0 && !isUpload) {
-        //     UDToast.showInfo('请上传完成图片');
-        //     return;
-        // }
-
-        WorkService.assistRepair(id, handle).then(res => {
-            UDToast.showInfo('操作成功');
-            this.props.navigation.goBack();
-        });
+    click = () => {
+        Alert.alert(
+            '请确认',
+            '是否审核？',
+            [{ text: '取消', tyle: 'cancel' },
+            {
+                text: '确定',
+                onPress: () => {
+                    const { id } = this.state;
+                    WorkService.approve(id).then(res => {
+                        UDToast.showInfo('审核完成');
+                        this.props.navigation.goBack();
+                    });
+                }
+            }
+            ], { cancelable: false });
     };
 
     communicateClick = (i) => {
@@ -111,28 +107,30 @@ export default class AssistDetailPage extends BasePage {
             return it;
         });
         this.setState({
-            communicates: d,
+            communicates: d
         });
     };
+
     cancel = () => {
         this.setState({
-            visible: false,
+            visible: false
         });
     };
 
     lookImage = (lookImageIndex) => {
         this.setState({
             lookImageIndex,
-            visible: true,
+            visible: true
         });
     };
 
-
     render() {
         const { images, detail, communicates } = this.state;
+        const selectImg = require('../../../static/images/select.png');
+        const noselectImg = require('../../../static/images/no-select.png');
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
-                <ScrollView>
+                <ScrollView style={{ height: '100%' }}>
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
@@ -146,20 +144,16 @@ export default class AssistDetailPage extends BasePage {
                     </Flex>
                     <Text style={styles.desc}>{detail.repairContent}</Text>
                     <ListImages images={images} lookImage={this.lookImage} />
-
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
                     </Flex>
- 
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                    <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName} {detail.createDate}</Text>
                     </Flex>
-                    
                     <TouchableWithoutFeedback>
-                        <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
+                        <Flex style={[styles.every]}>
                             <Text style={styles.left}>关联单：</Text>
                             <Text
-                                //onPress={() => this.props.navigation.navigate('service', { data: detail.relationId })} 
                                 onPress={() => {
                                     if (detail.sourceType === '服务总台') {
                                         this.props.navigation.navigate('service', { data: { id: detail.relationId } });
@@ -172,53 +166,42 @@ export default class AssistDetailPage extends BasePage {
                                 style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>
                     </Flex>
-                    
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>协助人：{detail.assistName}</Text>
                     </Flex>
-
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>增援人：{detail.reinforceName}</Text>
                     </Flex>
 
+                    {detail.testDate ?//进行了检验
+                        <Flex justify={'between'} style={{ margin: 15 }}>
+                            <Flex>
+                                <LoadImage img={detail.testResult === 1 ? selectImg : noselectImg}
+                                    style={{ width: 15, height: 15 }} />
+                                <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>合格</Text>
+                            </Flex>
+                            <Flex>
+                                <LoadImage img={detail.testResult === 0 ? selectImg : noselectImg}
+                                    style={{ width: 15, height: 15 }} />
+                                <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>不合格</Text>
+                            </Flex>
+                        </Flex> : null}
 
-                    {/* <UploadImageView style={{ marginTop: 10 }}
-                        linkId={this.state.id}
-                        reload={this.reload}
-                        type='完成'
-                    /> 
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <TextInput
-                            maxLength={500}
-                            placeholder='请输入'
-                            multiline
-                            onChangeText={value => this.setState({ value })}
-                            value={this.state.value}
-                            style={{ fontSize: 16, textAlignVertical: 'top' }}
-                            numberOfLines={4}>
-                        </TextInput>
-                    </Flex> */}
- 
-                    <Flex justify={'center'} style={{ marginTop: 20 }}  >
-                        <TouchableWithoutFeedback onPress={() => this.click('加入')}>
-                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
-                                <Text style={styles.word}>加入</Text>
-                            </Flex>
-                        </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => this.back('不加入')}>
-                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_red }]}>
-                                <Text style={styles.word}>不加入</Text>
-                            </Flex>
-                        </TouchableWithoutFeedback>
+                    <Flex justify={'center'}>
+                        <Button onPress={() => this.click()} type={'primary'}
+                            activeStyle={{ backgroundColor: Macro.work_blue }} style={{
+                                width: 200,
+                                backgroundColor: Macro.work_blue,
+                                marginTop: 20,
+                                height: 40
+                            }}>审核</Button>
                     </Flex>
 
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
-
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                         imageUrls={this.state.images} />
@@ -229,7 +212,6 @@ export default class AssistDetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-
     every: {
         marginLeft: 15,
         marginRight: 15,
@@ -243,16 +225,14 @@ const styles = StyleSheet.create({
         paddingTop: 10
     },
     left: {
-        fontSize: 16,
+        fontSize: 14,
         color: '#404145'
     },
     right: {
-        fontSize: 16,
+        fontSize: 14,
         color: '#404145'
     },
     desc: {
-        fontSize: 16,
-        color: '#404145',
         padding: 15,
         paddingBottom: 40
     },

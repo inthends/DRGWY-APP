@@ -52,7 +52,7 @@ export default class XunJianDetailViewPage extends BasePage {
                                 <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
                                     <Text style={styles.blueText}>结果：</Text>
                                     <View style={{ flexDirection: 'column', paddingTop: 2 }}>
-                                        <TouchableWithoutFeedback >
+                                        <TouchableWithoutFeedback>
                                             <Flex>
                                                 <LoadImage img={item.result === 1 ? selectImg : noselectImg}
                                                     style={{ width: 15, height: 15 }} />

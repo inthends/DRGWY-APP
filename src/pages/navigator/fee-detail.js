@@ -434,8 +434,8 @@ class FeeDetailPage extends BasePage {
                 }
                 case '现金': {
                     Alert.alert(
-                        '确定现金支付？',
-                        '',
+                        '请确认',
+                        '是否现金支付？', 
                         [
                             {
                                 text: '取消',
@@ -668,8 +668,8 @@ class FeeDetailPage extends BasePage {
 
     delete = (item) => {
         Alert.alert(
-            '确认作废',
-            '',
+            '请确认',
+            '是否作废？', 
             [
                 {
                     text: '取消',
