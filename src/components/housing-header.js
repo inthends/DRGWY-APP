@@ -2,7 +2,6 @@ import React, {Component, Fragment} from 'react';
 import {View, Text,  StyleSheet, Animated,TouchableWithoutFeedback} from 'react-native';
 import {Flex} from '@ant-design/react-native';
 import ScreenUtil from '../utils/screen-util';
-
 const single_width = 60;
 
 export default class HousingHeader extends Component {
@@ -10,7 +9,7 @@ export default class HousingHeader extends Component {
         super(props);
         this.state = {
             fadeAnim: new Animated.Value((ScreenUtil.deviceWidth()-(28*2+single_width*3))/2.0),
-            index: 0,
+            index: 0
         };
     }
 
@@ -21,7 +20,7 @@ export default class HousingHeader extends Component {
             this.state.fadeAnim,            // 动画中的变量值
             {
                 toValue: value,                   // 透明度最终变为1，即完全不透明
-                duration: 200,              // 让动画持续一段时间
+                duration: 200              // 让动画持续一段时间
             },
         ).start();
         this.setState({index: index});

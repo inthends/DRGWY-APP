@@ -177,7 +177,7 @@ export default class DetailBuildingPage extends BasePage {
               >
                 <Text style={styles.leftText}>在租均价：</Text>
                 <Text style={styles.rightText}>
-                  {detail.rentingaverprice} {Macro.yuan_meter_day}
+                  {detail.rentingaverprice}
                 </Text>
               </Flex> */}
               <Flex
@@ -192,7 +192,7 @@ export default class DetailBuildingPage extends BasePage {
                   <View
                     style={[
                       styles.square,
-                      { backgroundColor: Macro.color_small_2019 },
+                      {   },
                     ]}
                   />
                   <Text style={[styles.top, { paddingLeft: 5 }]}>~2019</Text>
@@ -202,7 +202,7 @@ export default class DetailBuildingPage extends BasePage {
                   <View
                     style={[
                       styles.square,
-                      { backgroundColor: Macro.color_2019 },
+                      {},
                     ]}
                   />
                   <Text style={styles.top}>2019</Text>
@@ -212,7 +212,7 @@ export default class DetailBuildingPage extends BasePage {
                   <View
                     style={[
                       styles.square,
-                      { backgroundColor: Macro.color_2020 },
+                      {   },
                     ]}
                   />
                   <Text style={styles.top}>2020</Text>
@@ -222,7 +222,7 @@ export default class DetailBuildingPage extends BasePage {
                   <View
                     style={[
                       styles.square,
-                      { backgroundColor: Macro.color_2021 }
+                      {   }
                     ]}
                   />
                   <Text style={styles.top}>2021</Text>
@@ -232,7 +232,7 @@ export default class DetailBuildingPage extends BasePage {
                   <View
                     style={[
                       styles.square,
-                      { backgroundColor: Macro.color_2022 }
+                      {   }
                     ]}
                   />
                   <Text style={styles.top}>2022+</Text>
@@ -242,7 +242,7 @@ export default class DetailBuildingPage extends BasePage {
                   <View
                     style={[
                       styles.square,
-                      { backgroundColor: Macro.color_free }
+                      {   }
                     ]}
                   />
                   <Text style={styles.top}>空置中</Text>
@@ -531,8 +531,7 @@ const styles = StyleSheet.create({
     //color: 'white',
     fontSize: 12,
     paddingTop: 5
-  },
-
+  }, 
   dash: {
     borderColor: '#5c665b',
     borderWidth: 1,

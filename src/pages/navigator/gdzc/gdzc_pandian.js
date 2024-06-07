@@ -243,48 +243,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#E0E0E0',
         height: 1,
         marginVertical: 15
-    },
-   
- 
-    card: {
-        borderRadius: 5,
-        marginBottom: 15,
-        backgroundColor: 'white',
-        borderColor: '#E0E0E0',
-        borderWidth: 1,
-        // shadowColor: '#00000033',
-        // shadowOffset: {h: 10, w: 10},
-        // shadowRadius: 5,
-        // shadowOpacity: 0.8,
-    },
-    blue: {
-        borderLeftColor: Macro.color_4d8fcc,
-        borderLeftWidth: 8,
-        borderStyle: 'solid',
-    },
-    orange: {
-        borderLeftColor: Macro.color_f39d39,
-        borderLeftWidth: 8,
-        borderStyle: 'solid',
-
-    },
-    location: {
-        paddingTop: 15,
-        paddingBottom: 10,
-        textAlign: 'center',
-        width: '100%',
-    },
-    person: {
-        marginTop: 10,
-        marginRight: 15,
-    },
-    personText: {
-        color: '#666',
-        fontSize: 16,
-        width: ScreenUtil.deviceWidth() - 40,
-        textAlign: 'center',
-        paddingBottom: 15,
-    },
+    }, 
     word: {
         color: 'white',
         fontSize: 16,

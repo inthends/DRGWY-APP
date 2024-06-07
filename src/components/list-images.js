@@ -1,23 +1,23 @@
-import React, {Component} from 'react';
-import {View,StyleSheet, TouchableWithoutFeedback} from 'react-native';
-import { Flex} from '@ant-design/react-native';
+import React, { Component } from 'react';
+import { View, TouchableWithoutFeedback } from 'react-native';
+import { Flex } from '@ant-design/react-native';
 import ScreenUtil from '../utils/screen-util';
 import LoadImage from './load-image';
 
 export default class ListImages extends Component {
 
     constructor(props) {
-        super(props); 
+        super(props);
     }
 
-    render() { 
+    render() {
         return (
             <Flex justify={'start'} align={'start'}
-                  style={{width: ScreenUtil.deviceWidth() - 15, marginTop: 10}}>
+                style={{ width: ScreenUtil.deviceWidth() - 15, marginTop: 10 }}>
                 <Flex wrap={'wrap'}>
                     {this.props.images && this.props.images.map((item, index) => {
                         return (
-                            <TouchableWithoutFeedback key={item.uid} onPress={() => this.props.lookImage && this.props.lookImage(index,item.uid)}>
+                            <TouchableWithoutFeedback key={item.uid} onPress={() => this.props.lookImage && this.props.lookImage(index, item.uid)}>
                                 <View style={{
                                     paddingLeft: 15,
                                     paddingRight: 5,
@@ -28,7 +28,7 @@ export default class ListImages extends Component {
                                         width: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
                                         height: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
                                         borderRadius: 5,
-                                    }} img={item.thumbUrl}/>
+                                    }} img={item.thumbUrl} />
 
                                 </View>
                             </TouchableWithoutFeedback>

@@ -8,8 +8,7 @@ import {
     findNodeHandle,
 } from 'react-native';
 import { Flex } from '@ant-design/react-native';
-import ScreenUtil from '../utils/screen-util';
-
+//import ScreenUtil from '../utils/screen-util'; 
 //const item_width = ScreenUtil.deviceWidth() / 5.0;
 const single_width = 50;
 
@@ -76,9 +75,7 @@ export default class ScrollTitleChange extends Component {
                                     }} ref={item + index}
                                           style={[index === this.state.index ? styles.title_select : styles.title]}>
                                         {item}
-                                    </Text>
-
-
+                                    </Text> 
                                 );
                             })}
                         </Flex>

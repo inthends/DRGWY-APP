@@ -13,7 +13,7 @@ export default class MyPopoverNew extends Component {
         this.state = {
             isVisible: false,
             index: 0,
-            data: this.props.data,
+            data: this.props.data
         };
     }
 
@@ -23,14 +23,14 @@ export default class MyPopoverNew extends Component {
         if (this.props.data.length !== prevProps.data.length) {
             this.setState({
                 data: this.props.data,
-                index: 0,
+                index: 0
             });
         }
     }
 
     showPopover = () => {
         this.setState({
-            isVisible: true,
+            isVisible: true
         });
     };
     
@@ -62,7 +62,7 @@ export default class MyPopoverNew extends Component {
                         <Text style={[{
                             paddingLeft: 10,
                             color: '#666',
-                            fontSize: 16,
+                            fontSize: 16
                         }, this.props.textStyle]}>{data[index].name}</Text>
                     </Flex>
                 </TouchableWithoutFeedback>
@@ -79,7 +79,7 @@ export default class MyPopoverNew extends Component {
                                 <Text style={[{
                                     padding: 15,
                                     color: '#666',
-                                    fontSize: 16,
+                                    fontSize: 16
                                 }, this.props.textStyle]}>{item.name}</Text>
                             </TouchableWithoutFeedback>
                         ))}

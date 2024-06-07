@@ -523,16 +523,13 @@ export default class WorkPage extends BasePage {
         );
     }
 }
+ 
 
-
-
-const styles = StyleSheet.create({
-
+const styles = StyleSheet.create({ 
     left: {
         flex: 1,
         paddingTop: 30
-    },
-
+    }, 
     title: {
         paddingTop: 14.67,
         textAlign: 'left',
@@ -575,16 +572,6 @@ const styles = StyleSheet.create({
         shadowOffset: { h: 10, w: 10 },
         shadowRadius: 5,
         shadowOpacity: 0.8
-    },
-    blue: {
-        borderLeftColor: Macro.color_4d8fcc,
-        borderLeftWidth: 8,
-        borderStyle: 'solid'
-    },
-    orange: {
-        borderLeftColor: Macro.color_f39d39,
-        borderLeftWidth: 8,
-        borderStyle: 'solid'
     }
 });
 

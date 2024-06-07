@@ -162,8 +162,7 @@ const styles = StyleSheet.create({
         fontSize: Macro.font_16,
         fontWeight: '600',
         paddingBottom: 15,
-    },
-       
+    }, 
     orange: {
         backgroundColor: Macro.color_f39d39,
         color: '#fff',

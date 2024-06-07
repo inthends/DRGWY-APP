@@ -14,9 +14,6 @@ import numeral from 'numeral';
 export default class BuildingCell extends BasePage {
     constructor(props) {
         super(props);
-        this.state = {
-            count: 0
-        };
     }
 
     //componentDidMount() {}
@@ -26,8 +23,7 @@ export default class BuildingCell extends BasePage {
 
     render() {
         const { item } = this.props;
-        return (
-
+        return ( 
             //<TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('feeDetail',{})}>
             //<TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('louDetail',{})}> 
             <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate(this.props.nextRouteName, { data: item })}>
@@ -38,8 +34,7 @@ export default class BuildingCell extends BasePage {
                         </Flex> 
                         <Flex direction="column" justify="between" style={styles.right}>
                             <Flex justify="between" style={styles.item}>
-                                <Text style={styles.name}>{item.name}</Text>
-                                 {/* <Text style={styles.area}>{item.averagerentprice}{Macro.yuan_meter_day}</Text> */}
+                                <Text style={styles.name}>{item.name}</Text> 
                                 <Text style={styles.area}>{item.code}</Text>
                             </Flex>
                             <Flex justify="between" style={[styles.item, { marginTop: 10 }]}>
@@ -64,7 +59,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         marginLeft: 20,
         marginRight: 20,
-        borderBottomColor: Macro.color_f6f5f7,
+        borderBottomColor: '#f6f5f7',
         borderBottomWidth: 1,
     },
     left: {
@@ -117,7 +112,7 @@ const styles = StyleSheet.create({
     line: {
         width: 1,
         height: 15,
-        backgroundColor: Macro.color_c2c1c5, 
+        backgroundColor: '#bcbcbe', 
         marginLeft: 20,
         marginRight: 20
     }

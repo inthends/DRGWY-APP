@@ -286,18 +286,5 @@ const styles = StyleSheet.create({
         padding: 15,
         paddingBottom: 40
     },
-    ii: {
-        paddingTop: 10,
-        paddingBottom: 10,
-        marginLeft: 10,
-        marginRight: 10,
-        width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
-        backgroundColor: '#999',
-        borderRadius: 6,
-        marginBottom: 20
-    },
-    word: {
-        color: 'white',
-        fontSize: 16
-    }
+   
 });

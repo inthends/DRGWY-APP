@@ -13,7 +13,7 @@ import UDToast from '../../../utils/UDToast';
 import selectImage from '../../../static/images/select.png';
 import unselectImage from '../../../static/images/no-select.png';
 
-
+//废弃
 class YiQingInfoPage extends BasePage {
 
     static navigationOptions = ({ navigation }) => {
@@ -61,7 +61,7 @@ class YiQingInfoPage extends BasePage {
         const { status } = this.state;
         return (
 
-            <CommonView style={{ flex: 1 }}> 
+            <CommonView style={{ flex: 1 }}>
                 <WhiteSpace size={'xl'} />
                 <WingBlank>
                     <Flex>
@@ -97,15 +97,11 @@ class YiQingInfoPage extends BasePage {
                             rows={5}
                             onChange={memo => this.setState({ memo })}
                             value={this.state.memo}
-
                         />
-
                     </Flex>
                 </WingBlank>
                 <Button style={{ width: '90%', marginLeft: '5%', marginTop: 60 }} type="primary"
                     onPress={this.in}>确定</Button>
-
-
             </CommonView>
 
         );

@@ -399,10 +399,9 @@ class EcheckAddPage extends BasePage {
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
                                 width: 130,
                                 backgroundColor: Macro.work_blue,
-                                height: 35
+                                height: 40
                             }}>保存</Button>
-                    </Flex>
-
+                    </Flex> 
                     <Flex justify={'center'}>
                         <Button onPress={() => {
                             let mydetailId = this.guid();
@@ -421,7 +420,7 @@ class EcheckAddPage extends BasePage {
                                 width: 130,
                                 marginLeft: 60,
                                 backgroundColor: Macro.work_blue,
-                                height: 35
+                                height: 40
                             }}>添加明细</Button>
                     </Flex>
                 </Flex>

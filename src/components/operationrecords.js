@@ -48,8 +48,7 @@ export default class OperationRecords extends Component {
                                 paddingTop: 5,
                                 paddingBottom: 10,
                                 paddingRight: 10,
-                                paddingLeft: 10,
-
+                                paddingLeft: 10, 
                                 marginBottom: 15,
                                 marginRight: 5,
                                 marginLeft: 5

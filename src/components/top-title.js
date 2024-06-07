@@ -1,8 +1,7 @@
 import React, { Component, Fragment } from 'react';
-import { Text, StyleSheet, Animated, TouchableWithoutFeedback, ScrollView, View } from 'react-native';
+import { Text, StyleSheet, Animated, TouchableWithoutFeedback, View } from 'react-native';
 import { Flex } from '@ant-design/react-native';
 import ScreenUtil from '../utils/screen-util';
-
 const item_width = ScreenUtil.deviceWidth() / 4.0;
 const single_width = 50;
 
@@ -99,6 +98,5 @@ const styles = StyleSheet.create({
         color: '#404145',
         // width: item_width,
         textAlign: 'center'
-    },
-   
+    }
 });

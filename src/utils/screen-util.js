@@ -84,7 +84,7 @@ export default {
     return {
       borderBottomWidth: 1,
       borderStyle: 'solid',
-      borderBottomColor: '#eee',
+      borderBottomColor: '#eee'
     };
   },
   border() {
@@ -92,7 +92,7 @@ export default {
       borderWidth: 1,
       borderStyle: 'solid',
       borderColor: '#eee',
-      borderRadius: 4,
+      borderRadius: 4
     };
   },
 };

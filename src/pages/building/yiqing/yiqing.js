@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
-import {
-  View,
+import { 
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -18,7 +17,7 @@ import {
 } from '@ant-design/react-native';
 import YiQingService from './yiqing-service';
 import common from '../../../utils/common';
-
+//废弃
 class YiQingPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
     return {

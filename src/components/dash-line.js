@@ -11,7 +11,9 @@ import SrceenUtil from '../utils/screen-util';
  * @param {Object} style 组件样式
  * @returns {Component}
  */
-export default ({color = '#F3F4F2', backgroundColor = 'white', lineWidth = 1, style = {marginLeft: 15, marginRight:15}}) => {
+export default ({color = '#F3F4F2', 
+    //backgroundColor = 'white', lineWidth = 1, 
+    style = {marginLeft: 15, marginRight:15}}) => {
     // let wrapperStyle = {
     //     height: lineWidth,
     //     overflow: 'hidden'
@@ -48,5 +50,4 @@ export default ({color = '#F3F4F2', backgroundColor = 'white', lineWidth = 1, st
             }
         </View>
     );
-
 };

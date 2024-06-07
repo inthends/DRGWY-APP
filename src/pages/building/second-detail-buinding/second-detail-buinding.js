@@ -565,42 +565,19 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#b1b1b1'
     },
-
-
+ 
     //add new
     text3: {
         fontSize: 16,
         color: '#404145'
     },
-    line: {
-        backgroundColor: '#EEE',
-        marginLeft: 15,
-        marginRight: 15,
-        height: 1,
-        width: ScreenUtil.deviceWidth() - 30,
-        marginTop: 10
-    },
-    a: {
-        fontSize: 16,
-        color: '#404145',
-        paddingBottom: 10,
-        paddingTop: 10
-    },
-    b: {
-        fontSize: 16,
-        color: '#404145',
-        paddingBottom: 10
-    },
-    c: {
-        fontSize: 16,
-        color: '#666'
-    },
+   
 });
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         saveBuilding: (item) => {
             dispatch(saveSelectBuilding(item));
-        },
+        }
     };
 };
 export default connect(null, mapDispatchToProps)(SecondDetailBuildingPage);

@@ -1068,8 +1068,7 @@ const styles = StyleSheet.create({
         fontSize: Macro.font_16,
         fontWeight: '600',
         paddingBottom: 10
-    },
-
+    }, 
     ii: {
         paddingTop: 10,
         paddingBottom: 10,
@@ -1084,8 +1083,7 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 16
     },
-    pp: {
-
+    pp: { 
         backgroundColor: 'rgba(0,0,0,0.6)',
         position: 'absolute',
         left: 0,

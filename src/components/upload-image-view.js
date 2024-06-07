@@ -94,7 +94,3 @@ export default class UploadImageView extends Component {
         );
     }
 }
-
-// const styles = StyleSheet.create({
-
-// });

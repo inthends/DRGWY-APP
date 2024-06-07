@@ -267,12 +267,15 @@ export default class ServiceDeskDetailPage extends BasePage {
                             <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
                         </Flex>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>报单人：{detail.contactName} {detail.createDate}</Text>
+                            <Text style={styles.left}>报单人：{detail.contactName} </Text>
                             <TouchableWithoutFeedback onPress={() => common.call(detail.contactPhone)}>
                                 <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
                                     style={{ width: 18, height: 18 }} /></Flex>
                             </TouchableWithoutFeedback>
-                        </Flex>
+                        </Flex> 
+                        <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                            <Text style={styles.left}>报单时间：{detail.createDate}</Text>
+                        </Flex> 
                         <View style={{ margin: 15 }}>
                             <TextareaItem
                                 rows={4}
@@ -285,8 +288,9 @@ export default class ServiceDeskDetailPage extends BasePage {
                         </View>
                         <Flex justify={'center'}>
                             <Button onPress={() => this.reply()} type={'primary'}
-                                activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                    width: 180,
+                                activeStyle={{ backgroundColor: Macro.work_blue }}
+                                style={{
+                                    width: 110,
                                     backgroundColor: Macro.work_blue,
                                     marginTop: 10,
                                     marginBottom: 10,
@@ -294,29 +298,72 @@ export default class ServiceDeskDetailPage extends BasePage {
                                 }}>回复</Button>
                         </Flex>
 
-                        {detail.status === 1 && <Flex>
-                            <TouchableWithoutFeedback onPress={() =>
-                                //this.click('转维修')
-                                this.setState({
-                                    serviceDeskId: id,
-                                    showRepair: true
-                                })
-                            }>
-                                <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
-                                    <Text style={styles.word}>转维修</Text>
+                        {detail.status === 1 &&
+
+                            // <Flex>
+                            //     <TouchableWithoutFeedback onPress={() =>
+                            //         //this.click('转维修')
+                            //         this.setState({
+                            //             serviceDeskId: id,
+                            //             showRepair: true
+                            //         })
+                            //     }>
+                            //         <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
+                            //             <Text style={styles.word}>转维修</Text>
+                            //         </Flex>
+                            //     </TouchableWithoutFeedback>
+                            //     <TouchableWithoutFeedback onPress={() => this.doWork('转投诉')}>
+                            //         <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
+                            //             <Text style={styles.word}>转投诉</Text>
+                            //         </Flex>
+                            //     </TouchableWithoutFeedback>
+                            //     <TouchableWithoutFeedback onPress={() => this.doWork('闭单')}>
+                            //         <Flex justify={'center'} style={[styles.ii, { backgroundColor: '#666' }]}>
+                            //             <Text style={styles.word}>闭单</Text>
+                            //         </Flex>
+                            //     </TouchableWithoutFeedback>
+                            // </Flex>
+
+                            <Flex justify={'center'}>
+                                <Flex justify={'center'}>
+                                    <Button onPress={() => {
+                                        this.setState({
+                                            serviceDeskId: id,
+                                            showRepair: true
+                                        })
+                                    }
+                                    } type={'primary'}
+                                        activeStyle={{ backgroundColor: Macro.work_blue }} style={{
+                                            width: 110,
+                                            backgroundColor: Macro.work_blue,
+                                            height: 40,
+                                            marginLeft: 20
+                                        }}>转维修</Button>
                                 </Flex>
-                            </TouchableWithoutFeedback>
-                            <TouchableWithoutFeedback onPress={() => this.doWork('转投诉')}>
-                                <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
-                                    <Text style={styles.word}>转投诉</Text>
+
+                                <Flex justify={'center'}>
+                                    <Button onPress={() => this.doWork('转投诉')} type={'primary'}
+                                        activeStyle={{ backgroundColor: Macro.work_blue }} style={{
+                                            width: 110,
+                                            backgroundColor: Macro.work_blue,
+                                            height: 40,
+                                            marginLeft: 20
+                                        }}>转投诉</Button>
                                 </Flex>
-                            </TouchableWithoutFeedback>
-                            <TouchableWithoutFeedback onPress={() => this.doWork('闭单')}>
-                                <Flex justify={'center'} style={[styles.ii, { backgroundColor: '#666' }]}>
-                                    <Text style={styles.word}>闭单</Text>
+
+                                <Flex justify={'center'}>
+                                    <Button onPress={() => this.doWork('闭单')} type={'primary'}
+                                        activeStyle={{ backgroundColor: Macro.work_blue }} style={{
+                                            width: 110,
+                                            backgroundColor: Macro.work_blue,
+                                            height: 40,
+                                            marginLeft: 20,
+                                            marginRight: 20
+                                        }}>闭单</Button>
                                 </Flex>
-                            </TouchableWithoutFeedback>
-                        </Flex>}
+                            </Flex>
+
+                        }
                         <Communicates communicateClick={this.communicateClick} communicates={communicates} />
                     </ScrollView>
                 </TouchableWithoutFeedback>

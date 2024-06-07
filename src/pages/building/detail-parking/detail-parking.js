@@ -96,7 +96,7 @@ export default class DetailParkingPage extends BasePage {
                 paddingTop: 10,
                 paddingBottom: 10,
                 paddingLeft: 15,
-                paddingRight: 15,
+                paddingRight: 15
               }}
             >
               <Text style={styles.name}>{detail.name}</Text>
@@ -346,8 +346,7 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     color: '#565759',
     fontSize: 12
-  },
- 
+  }, 
   color_top: {
     //color: 'white',
     fontSize: 12,

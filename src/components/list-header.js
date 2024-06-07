@@ -1,9 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import {View, Text, StyleSheet, Animated, TouchableWithoutFeedback} from 'react-native';
 import {Flex} from '@ant-design/react-native';
-import ScreenUtil from '../utils/screen-util';
-
-
+import ScreenUtil from '../utils/screen-util'; 
 const item_width = ScreenUtil.deviceWidth() / 3.0;
 const single_width = 50;
 
@@ -29,7 +27,7 @@ export default class ListHeader extends Component {
             this.state.fadeAnim,            // 动画中的变量值
             {
                 toValue: value,                   // 透明度最终变为1，即完全不透明
-                duration: 200,              // 让动画持续一段时间
+                duration: 200              // 让动画持续一段时间
             },
         ).start();
         const datas = [{'title': '全部', value: ''}, {'title': '未逾期', value: 0}, {'title': '已逾期', value: 1}];
@@ -68,7 +66,7 @@ export default class ListHeader extends Component {
 
 const styles = StyleSheet.create({
     content: {
-        width: ScreenUtil.deviceWidth(),
+        width: ScreenUtil.deviceWidth()
     },
     title: {
         fontSize: 16,
@@ -82,14 +80,12 @@ const styles = StyleSheet.create({
         color: '#404145',
         width: item_width,
         paddingTop: 15,
-        textAlign: 'center',
-
-
+        textAlign: 'center'
     },
     line: {
         height: 2,
         backgroundColor: '#5f96eb',
         width: single_width,
-        marginTop: 10,
-    },
+        marginTop: 10
+    }
 });

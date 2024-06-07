@@ -34,8 +34,7 @@ class BuildingPage extends BasePage {
     this.selectBuilding = {
       key: null
     };
-    this.state = {
-      count: 0,
+    this.state = { 
       showTabbar: true,
       pageIndex: 1,
       statistics: {},
@@ -307,11 +306,5 @@ const mapDispatchToProps = (dispatch) => {
     },
   };
 };
-
-
-
-
-
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(BuildingPage);

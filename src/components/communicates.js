@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import {View, Text,StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import { Flex} from '@ant-design/react-native';
-import ScreenUtil from '../utils/screen-util';
+// import ScreenUtil from '../utils/screen-util';
 import LoadImage from './load-image';
 import UpImage from '../static/images/address/up.png';
 import DownImage from '../static/images/address/down.png';

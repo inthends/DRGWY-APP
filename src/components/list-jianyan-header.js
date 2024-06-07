@@ -1,9 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import {View, Text, StyleSheet, Animated, TouchableWithoutFeedback} from 'react-native';
 import {Flex} from '@ant-design/react-native';
-import ScreenUtil from '../utils/screen-util';
-
-
+import ScreenUtil from '../utils/screen-util'; 
 const item_width = ScreenUtil.deviceWidth() / 3.0;
 const single_width = 50;
 
@@ -14,11 +12,10 @@ export default class ListJianYanHeader extends Component {
         if (this.props.overdue) {
             index = parseInt(this.props.overdue) + 1;
         }
-
         let value = (item_width) * index + (item_width - single_width) / 2.0;
         this.state = {
             fadeAnim: new Animated.Value(value),
-            index: index,
+            index: index
         };
     }
 
@@ -29,7 +26,7 @@ export default class ListJianYanHeader extends Component {
             this.state.fadeAnim,            // 动画中的变量值
             {
                 toValue: value,                   // 透明度最终变为1，即完全不透明
-                duration: 200,              // 让动画持续一段时间
+                duration: 200              // 让动画持续一段时间
             },
         ).start();
         const datas = [{'title': '全部', value: null}, {'title': '回访', value: 5}, {'title': '检验', value: 6}];

@@ -416,13 +416,12 @@ class ManagerBuildingPage extends BasePage {
 
 const styles = StyleSheet.create({
   all: {
-    backgroundColor: Macro.color_black_trunslent,
+    backgroundColor:  '#000000cc',
     flex: 1
   },
   content: {
     backgroundColor: Macro.color_white
   },
-   
   title: {
     color: 'white',
     fontSize: 20,

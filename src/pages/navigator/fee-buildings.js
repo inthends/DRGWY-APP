@@ -77,8 +77,7 @@ export default class FeeBuildingsPage extends BasePage {
                                     else
                                         //车位
                                         this.props.navigation.push('feeParkings', { data: item });
-                                }}>
-
+                                }}> 
                                 {/* <Flex style={[styles.item, item.color === 2 ? '' : styles.orange]} justify={'center'}>
                                     <Text style={[styles.title, item.color === 2 ? '' : styles.orange]}>{item.name}</Text>
                                 </Flex> */}
@@ -101,10 +100,10 @@ export default class FeeBuildingsPage extends BasePage {
 
 const styles = StyleSheet.create({
    
-    content: {
-        backgroundColor: Macro.color_white,
-        flex: 1
-    },
+    // content: {
+    //     backgroundColor: Macro.color_white,
+    //     flex: 1
+    // },
     title: {
         color: '#404145',
         fontSize: 16,
@@ -137,24 +136,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         paddingBottom: 15,
     },
-    area: {
-        color: Macro.color_636470,
-        fontSize: Macro.font_14,
-    },
-    complete: {
-        color: Macro.color_80aae2,
-        fontSize: Macro.font_14,
-        backgroundColor: Macro.color_dae9ff,
-        padding: 3,
-        paddingLeft: 5,
-        borderRadius: 1,
-    },
-    number: {
-        color: Macro.color_9c9ca5,
-        fontSize: Macro.font_14,
-    },
    
-    
     orange: {
         backgroundColor: Macro.color_f39d39,
         color: '#fff'

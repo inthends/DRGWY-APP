@@ -1,5 +1,5 @@
 import api from '../../../utils/api';
-
+//废弃
 export default {
     records(unitId, pagination = 1) {
         return api.postData('/api/MobileMethod/MGetInOutPageList', {unitId, pagination, pageSize: 100});

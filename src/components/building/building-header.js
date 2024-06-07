@@ -10,9 +10,6 @@ import numeral from 'numeral';
 export default class BuildingHeader extends BasePage {
     constructor(props) {
         super(props);
-        this.state = {
-            count: 0
-        };
     }
 
     // componentDidMount()  { 
@@ -98,12 +95,11 @@ const styles = StyleSheet.create({
         height: 150,
         backgroundColor: Macro.color_sky_dark
     },
-    top: {
-
+    top: { 
         flex: 2,
         backgroundColor: Macro.color_sky_dark,
-        paddingLeft: Macro.marginLeft_15,
-        paddingRight: Macro.marginRight_15,
+        paddingLeft: 15,
+        paddingRight: 15,
         fontSize: 14
     },
  
@@ -113,12 +109,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         marginBottom: 8
     },
-    // area: {
-    //     flex: 1,
-    //     width: '100%',
-    //     paddingLeft: Macro.marginLeft_15,
-    //     paddingRight: Macro.marginRight_15
-    // },
+    
     text: {
         color: Macro.color_white,
         fontSize: 16
@@ -129,13 +120,13 @@ const styles = StyleSheet.create({
     // },
     big: {
         fontSize: 25,  
-        paddingLeft: 10//Macro.marginLeft_15
+        paddingLeft: 10 
     },
     item: {
         alignItems: 'center'
     },
     topText: {
-        color: Macro.color_a0b0f3,
+        color:  '#74BAF1',
         fontSize: 16
     },
     bottomText: {
