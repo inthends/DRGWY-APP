@@ -21,6 +21,7 @@ import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import UploadImageView from '../../../components/upload-image-view';
 
 export default class CheckDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -157,19 +158,23 @@ export default class CheckDetailPage extends BasePage {
         });
     };
 
+    //刷新图片上传状态
+    reload = () => {
+        this.setState({
+            isUpload: true
+        });
+    }
+
     render() {
         const { images, detail, communicates, result } = this.state;
         const selectImg = require('../../../static/images/select.png');
         const noselectImg = require('../../../static/images/no-select.png');
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
-
                 <TouchableWithoutFeedback onPress={() => {
                     Keyboard.dismiss();
                 }}>
-
                     <ScrollView style={{ marginTop: this.state.KeyboardShown ? -200 : 0, height: '100%' }}>
-
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                             <Text style={styles.left}>{detail.billCode}</Text>
                             <Text style={styles.right}>{detail.statusName}</Text>
@@ -184,19 +189,15 @@ export default class CheckDetailPage extends BasePage {
                         <Text style={styles.desc}>{detail.repairContent}</Text>
                         {/* <DashLine /> */}
                         <ListImages images={images} lookImage={this.lookImage} />
-
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                             <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
                         </Flex>
-
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                             <Text style={styles.left}>转单人：{detail.createUserName}</Text>
                         </Flex>
-
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                             <Text style={styles.left}>转单时间：{detail.createDate}</Text>
                         </Flex>
-
                         <TouchableWithoutFeedback>
                             <Flex style={[styles.every]}>
                                 <Text style={styles.left}>关联单：</Text>
@@ -213,7 +214,6 @@ export default class CheckDetailPage extends BasePage {
                                     style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
-
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                             <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>
                         </Flex>
@@ -241,10 +241,15 @@ export default class CheckDetailPage extends BasePage {
                                     <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>不合格</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
-                        </Flex>
-
+                        </Flex> 
+                        <UploadImageView
+                            style={{ marginTop: 10 }}
+                            linkId={this.state.id}
+                            reload={this.reload}
+                            type='检验'
+                        /> 
                         <View style={{
-                            margin: 15,
+                            margin: 15
                             // borderStyle: 'solid',
                             // borderColor: '#F3F4F2',
                             // borderWidth: 1,
@@ -253,7 +258,7 @@ export default class CheckDetailPage extends BasePage {
                             <TextareaItem
                                 rows={4}
                                 autoHeight
-                                placeholder='请输入'
+                                placeholder='请输入检验情况'
                                 style={{ width: ScreenUtil.deviceWidth() - 32 }}
                                 onChange={value => this.setState({ value })}
                                 value={this.state.value}
@@ -269,9 +274,7 @@ export default class CheckDetailPage extends BasePage {
                                     height: 40
                                 }}>完成检验</Button>
                         </Flex>
-
                         <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
-
                     </ScrollView>
 
                 </TouchableWithoutFeedback>

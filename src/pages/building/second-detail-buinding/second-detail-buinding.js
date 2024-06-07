@@ -155,6 +155,8 @@ class SecondDetailBuildingPage extends BasePage {
             fees = noCharges;
         }
 
+
+
         if (index === 0) {
             content =
                 <Flex direction='column' align='start'
@@ -388,7 +390,8 @@ class SecondDetailBuildingPage extends BasePage {
             //费用
             content =
                 <Flex direction={'column'} align={'start'} style={{ marginBottom: 15 }}>
-                    <Flex direction='column' align='start' style={{ marginBottom: 5, backgroundColor: 'white', borderRadius: 4, padding: 10 }}>
+                    <Flex direction='column' align='start'
+                        style={{ marginBottom: 5, backgroundColor: 'white', borderRadius: 4, paddingRight: 15, paddingBottom: 5, paddingTop: 5, paddingLeft: 15 }}>
                         <Flex justify='start' style={{ width: ScreenUtil.deviceWidth() - 50 }} >
                             <TouchableWithoutFeedback onPress={() => this.setState({ jiao: false })}>
                                 <Text style={[styles.text3, jiao ? {} : { color: '#74BAF1' }]}>未缴</Text>
@@ -472,7 +475,7 @@ class SecondDetailBuildingPage extends BasePage {
                 <TouchableWithoutFeedback onPress={() => {
                     this.selectImages();
                 }}>
-                    <ImageBackground style={{ height: 150 }} source={image ? { uri: image } : null}>
+                    <ImageBackground style={{ height: 150 }} source={image ? { uri: image } : require('../../../static/images/home/default.png')}>
                         {/* <Flex justify='between' align='start' direction='column'
                         style={{ height: 90, paddingLeft: 15, paddingRight: 15, marginTop: 44 }}> 
                         <TouchableWithoutFeedback onPress={() => this.props.navigation.goBack()}>

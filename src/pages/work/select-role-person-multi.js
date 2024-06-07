@@ -13,7 +13,7 @@ import Macro from '../../utils/macro';
 import { connect } from 'react-redux';
 import api from '../../utils/api';
 
-class SelectAllPersonMulti extends BasePage {
+class SelectRolePersonMulti extends BasePage {
 
     //选择所有人员，多选
     static navigationOptions = ({ navigation }) => {
@@ -67,21 +67,24 @@ class SelectAllPersonMulti extends BasePage {
         }
     }
 
-
     initData() {
-        let url = '/api/MobileMethod/MGetDepartmentList';
-        let url2 = '/api/MobileMethod/MGetAllUserList';
-        api.getData(url, this.state.selectBuilding ? { organizeId: this.state.selectBuilding.key } : {}).then(res => {
-            Promise.all(res.map(item => api.getData(url2, { departmentId: item.departmentId }))).then(ress => {
-                let data = res.map((item, index) => ({
-                    ...item,
-                    children: ress[index]
-                }));
-                this.setState({ data });
-            });
+        const { navigation } = this.props;
+        const type = navigation.state.params.type;
+        let url = '/api/MobileMethod/MGetRoleList'; //获取角色
+        let url2 = '/api/MobileMethod/MGetReceiveByRoleUserList';//获取角色人员 
+        api.getData(url, this.state.selectBuilding ? { type: type, organizeId: this.state.selectBuilding.key } : {}).then(res => {
+            Promise.all(
+                res.map(item => api.getData(url2, { roleId: item.roleId }))).
+                then(ress => {
+
+                    let data = res.map((item, index) => ({
+                        ...item,
+                        children: ress[index]
+                    }));
+                    this.setState({ data });
+                });
         });
     }
-
     // click = (selectItem) => {
     //     const { navigation } = this.props;
     //     navigation.state.params.onSelect({ selectItem });
@@ -100,7 +103,7 @@ class SelectAllPersonMulti extends BasePage {
                     //缓存选中的值
                     if (it.select) {
                         selectItems.push({ id: it.id, name: it.name });
-                    } 
+                    }
                 }
                 return it;
             });
@@ -141,7 +144,7 @@ class SelectAllPersonMulti extends BasePage {
                                                         <Text style={styles.desc}>{i.name}</Text>
                                                         {i.postName ? <Text>（{i.postName}）</Text> : null}
                                                     </Flex>
-                                                    <Flex style={{ paddingRight: 18 }}>
+                                                    <Flex style={{ paddingRight: 21 }}>
                                                         <Checkbox
                                                             checked={i.select === true}
                                                             onChange={event => {
@@ -207,4 +210,4 @@ const mapStateToProps = ({ buildingReducer }) => {
         selectBuilding: buildingReducer.selectBuilding
     };
 };
-export default connect(mapStateToProps)(SelectAllPersonMulti);
+export default connect(mapStateToProps)(SelectRolePersonMulti);

@@ -116,13 +116,11 @@ class AddWorkPage extends BasePage {
                         SampleRate: 22050,
                         Channels: 1,
                         AudioQuality: 'Low',
-                        AudioEncoding: 'aac',
-                    });
-
+                        AudioEncoding: 'aac'
+                    }); 
                     AudioRecorder.onProgress = (data) => {
                         // this.setState({currentTime: Math.floor(data.currentTime)});
-                    };
-
+                    }; 
                     AudioRecorder.onFinished = (data) => {
                         // Android callback comes in the form of a promise instead. 
                         // if (common.isIOS()) {
@@ -217,7 +215,7 @@ class AddWorkPage extends BasePage {
             address: address.allName,
             contents: value,
             isAdd: true,
-            taskId: this.state.taskId,
+            taskId: this.state.taskId
         };
 
         if (this.props.hasNetwork || !taskId) {
@@ -247,8 +245,7 @@ class AddWorkPage extends BasePage {
             }
         }
     };
-
-
+ 
     // onSelectAddress = ({ selectItem }) => {
     //     this.setState({
     //         address: selectItem

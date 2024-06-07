@@ -13,11 +13,12 @@ import Macro from '../../utils/macro';
 import { connect } from 'react-redux';
 import api from '../../utils/api';
 
-class SelectReceivePerson extends BasePage {
-    //选择接单人员 
+class SelectRolePerson extends BasePage {
+
+    //根据角色分组来选择人员
     static navigationOptions = ({ navigation }) => {
         return {
-            title: '选择接单人员',
+            title: '选择人员',
             headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -69,31 +70,11 @@ class SelectReceivePerson extends BasePage {
     }
 
     initData() {
-
-        // WorkService.paidanPersons(this.state.selectBuilding.key).then(res => {
-        //     this.setState({
-        //         items: res
-        //     });
-        // }); 
-        // let url = '/api/MobileMethod/MGetDepartmentList';
-        // let url2 = '/api/MobileMethod/MGetReceiveUserList'; 
-        // api.getData(url, this.state.selectBuilding ? { organizeId: this.state.selectBuilding.key } : {}).then(res => {
-        //     Promise.all(
-        //         res.map(item => api.getData(url2, { departmentId: item.departmentId }))).
-        //         then(ress => {
-
-        //             let data = res.map((item, index) => ({
-        //                 ...item,
-        //                 children: ress[index]
-        //             }));
-        //             this.setState({ data });
-        //         });
-        // }); 
-
-        let url = '/api/MobileMethod/MGetReceiveRoleList'; //获取角色
-        let url2 = '/api/MobileMethod/MGetReceiveByRoleUserList';//获取角色人员
-
-        api.getData(url, this.state.selectBuilding ? { organizeId: this.state.selectBuilding.key } : {}).then(res => {
+        const { navigation } = this.props;
+        const type = navigation.state.params.type;
+        let url = '/api/MobileMethod/MGetRoleList'; //获取角色
+        let url2 = '/api/MobileMethod/MGetReceiveByRoleUserList';//获取角色人员 
+        api.getData(url, this.state.selectBuilding ? { type: type, organizeId: this.state.selectBuilding.key } : {}).then(res => {
             Promise.all(
                 res.map(item => api.getData(url2, { roleId: item.roleId }))).
                 then(ress => {
@@ -103,7 +84,6 @@ class SelectReceivePerson extends BasePage {
                         children: ress[index]
                     }));
                     this.setState({ data });
-
                 });
         });
     }
@@ -127,7 +107,7 @@ class SelectReceivePerson extends BasePage {
                             {data.map(item => (
                                 <Accordion.Panel
                                     key={item.roleId}
-                                    header={item.fullName}  
+                                    header={item.fullName}
                                 >
                                     <List>
                                         {item.children.map(i => (
@@ -136,8 +116,9 @@ class SelectReceivePerson extends BasePage {
                                                     <Flex style={{ width: '100%' }} justify={'between'}>
                                                         <Flex>
                                                             <Text style={styles.desc}>{i.name}</Text>
+                                                            {i.postName ? <Text>（{i.postName}）</Text> : null}
                                                         </Flex>
-                                                        <Flex><Text>{i.postName}</Text></Flex>
+                                                        {/* <Flex><Text>{i.postName}</Text></Flex> */}
                                                     </Flex>
                                                 </Flex>
                                             </TouchableWithoutFeedback>
@@ -152,7 +133,6 @@ class SelectReceivePerson extends BasePage {
         );
     }
 }
-
 
 const styles = StyleSheet.create({
     all: {
@@ -188,4 +168,4 @@ const mapStateToProps = ({ buildingReducer }) => {
         selectBuilding: buildingReducer.selectBuilding,
     };
 };
-export default connect(mapStateToProps)(SelectReceivePerson);
+export default connect(mapStateToProps)(SelectRolePerson);

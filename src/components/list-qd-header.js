@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Animated, TouchableWithoutFeedback } from 'reac
 import { Flex } from '@ant-design/react-native';
 import ScreenUtil from '../utils/screen-util';
 
-const item_width = ScreenUtil.deviceWidth() / 2.0;
+const item_width = ScreenUtil.deviceWidth() / 5.0;
 const single_width = 50;
 
 export default class ListQDHeader extends Component {
@@ -14,21 +14,20 @@ export default class ListQDHeader extends Component {
             index = parseInt(this.props.todo) + 1;
         }
 
-        let count = 0;
-        if (this.props.count) {
-            count = this.props.count;
-        }
+        // let count = 0;
+        // if (this.props.count) {
+        //     count = this.props.count;
+        // }
 
-        let value = (item_width) * index + (item_width - single_width) / 2.0;
         this.state = {
-            count,
-            fadeAnim: new Animated.Value(value),
+            //count, 
+            fadeAnim: new Animated.Value((item_width - single_width) / 2.0 + item_width * index),
             index: index
         };
     }
 
     tap = (index) => {
-        let value = (item_width) * index + (item_width - single_width) / 2.0;
+        let value = (item_width - single_width) / 2.0 + item_width * index;
         Animated.timing(                  // 随时间变化而执行动画
             this.state.fadeAnim,            // 动画中的变量值
             {
@@ -44,12 +43,13 @@ export default class ListQDHeader extends Component {
         });
     };
 
-    render() { 
+    render() {
         const datas = [{ 'title': '待抢单', select: true }, { 'title': '已抢单' }];
         return (
             <Fragment>
                 <Flex direction={'column'} align={'start'}>
-                    <Flex justify={'center'} style={[styles.content, this.props.style]}>
+                    {/* <Flex justify={'center'} style={[styles.content, this.props.style]}> */}
+                    <Flex>
                         {datas.map((item, index) => {
                             return (
                                 <TouchableWithoutFeedback key={item.title} onPress={() => this.tap(index)}>
@@ -70,9 +70,9 @@ export default class ListQDHeader extends Component {
 }
 
 const styles = StyleSheet.create({
-    content: {
-        width: ScreenUtil.deviceWidth()
-    },
+    // content: {
+    //     width: ScreenUtil.deviceWidth()
+    // },
     title: {
         fontSize: 16,
         color: '#999',
@@ -91,6 +91,6 @@ const styles = StyleSheet.create({
         height: 2,
         backgroundColor: '#5f96eb',
         width: single_width,
-        marginTop: 10
+        // marginTop: 10
     }
 });

@@ -50,20 +50,38 @@ export default class DispatchDetailPage extends BasePage {
             lookImageIndex: 0,
             visible: false,
             selectPerson: null,
+            assisPersons: [],
+            repairmajor: null,
             KeyboardShown: false
         };
-
         this.keyboardDidShowListener = null;
         this.keyboardDidHideListener = null;
     }
 
-    onSelect = ({ selectItem }) => {
+    onMySelect = ({ selectItem }) => {
         this.setState({
             selectPerson: selectItem
         })
     }
 
+    //协助人
+    onSelectAssisPerson = ({ selectItems }) => {
+        this.setState({
+            assisPersons: selectItems
+        })
+    }
+ 
     componentDidMount() {
+        this.viewDidAppear = this.props.navigation.addListener(
+            'didFocus',
+            (obj) => {
+                if (obj.state.params.repairmajor) { 
+                    const { repairmajor } = obj.state.params.repairmajor || {};
+                    console.log('repairmajor', repairmajor);
+                    this.setState({ repairmajor });
+                }
+            }
+        );
         this.getData();
     }
 
@@ -105,9 +123,12 @@ export default class DispatchDetailPage extends BasePage {
                     importance: detail.importance,
                     relationId: detail.relationId,
                     statusName: detail.statusName
+                },
+                repairmajor: {
+                    id: detail.entity.repairMajorId,
+                    name: detail.entity.repairMajor
                 }
             });
-
             //获取维修单的单据动态
             WorkService.getOperationRecord(id).then(res => {
                 this.setState({
@@ -124,15 +145,33 @@ export default class DispatchDetailPage extends BasePage {
     };
 
     click = () => {
-        const { id, selectPerson } = this.state;
-        if (selectPerson) {
-            WorkService.paidan(id, selectPerson.name, selectPerson.id).then(res => {
-                UDToast.showInfo('操作成功');
-                this.props.navigation.goBack();
-            })
-        } else {
+        const { id, selectPerson, repairmajor, assisPersons } = this.state;
+        if (selectPerson == null) {
             UDToast.showInfo('请选择接单人');
+            return;
         }
+
+        if (repairmajor == null) {
+            UDToast.showInfo('请选择维修专业');
+            return;
+        }
+
+        //协助人
+        let personIds = assisPersons.map(item => item.id);
+        let assistId = personIds && personIds.length > 0 ? JSON.stringify(personIds) : ''; 
+        //console.log('repairmajor',repairmajor); 
+        WorkService.paidan(
+            id,
+            selectPerson.id,
+            selectPerson.name,
+            repairmajor.id,
+            repairmajor.name,
+            assistId
+        ).then(res => {
+            UDToast.showInfo('操作成功');
+            this.props.navigation.goBack();
+        })
+
     };
 
     communicateClick = (i) => {
@@ -163,7 +202,11 @@ export default class DispatchDetailPage extends BasePage {
     };
 
     render() {
-        const { images, detail, communicates, selectPerson } = this.state;
+        const { images, detail, communicates, repairmajor, selectPerson, assisPersons } = this.state;
+        //console.log('repairmajor2', repairmajor);
+        //转换name
+        let personNames = assisPersons.map(item => item.name);
+        let mystrNames = personNames.join('，');
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <TouchableWithoutFeedback onPress={() => {
@@ -174,7 +217,6 @@ export default class DispatchDetailPage extends BasePage {
                             <Text style={styles.left}>{detail.billCode}</Text>
                             <Text style={styles.right}>{detail.statusName}</Text>
                         </Flex>
-
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                             <Text style={styles.left}>{detail.address} {detail.contactName}</Text>
                             <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
@@ -182,22 +224,17 @@ export default class DispatchDetailPage extends BasePage {
                                     style={{ width: 16, height: 16 }} /></Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
-
                         <Text style={[styles.desc]}>{detail.repairContent}</Text>
-
                         <ListImages images={images} lookImage={this.lookImage} />
-
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                             <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
                         </Flex>
-
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                             <Text style={styles.left}>转单人：{detail.createUserName}</Text>
                         </Flex>
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                             <Text style={styles.left}>转单时间：{detail.createDate}</Text>
                         </Flex>
-
                         <TouchableWithoutFeedback>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                                 <Text style={styles.left}>关联单：</Text>
@@ -216,12 +253,35 @@ export default class DispatchDetailPage extends BasePage {
                         </TouchableWithoutFeedback>
 
                         <TouchableWithoutFeedback
-                            onPress={() => this.props.navigation.navigate('selectReceivePerson', { onSelect: this.onSelect })}>
+                            onPress={() => this.props.navigation.navigate('selectRepairMajor', {
+                                parentName: 'paidan'
+                            })}>
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                                <Flex>
+                                    <Text style={styles.left}>维修专业：</Text>
+                                    <Text style={[styles.right, repairmajor ? { color: Macro.work_blue } : { color: '#666' }]}>{repairmajor ? repairmajor.name : "请选择维修专业"}</Text>
+                                </Flex>
+                                <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
+                            </Flex>
+                        </TouchableWithoutFeedback>
+
+                        <TouchableWithoutFeedback
+                            onPress={() => this.props.navigation.navigate('selectRolePerson', { type: 'receive', onSelect: this.onMySelect })}>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                                 <Flex>
                                     <Text style={styles.left}>接单人：</Text>
-                                    <Text
-                                        style={[styles.right, selectPerson ? { color: Macro.work_blue } : { color: '#666' }]}>{selectPerson ? selectPerson.name : "请选择接单人"}</Text>
+                                    <Text style={[styles.right, selectPerson ? { color: Macro.work_blue } : { color: '#666' }]}>{selectPerson ? selectPerson.name : "请选择接单人"}</Text>
+                                </Flex>
+                                <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
+                            </Flex>
+                        </TouchableWithoutFeedback>
+
+                        <TouchableWithoutFeedback
+                            onPress={() => this.props.navigation.navigate('selectRolePersonMulti', { type: 'receive', onSelect: this.onSelectAssisPerson })}>
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                                <Flex>
+                                    <Text style={styles.left}>协助人：</Text>
+                                    <Text style={[styles.right, mystrNames ? { color: Macro.work_blue } : { color: '#666' }]}>{mystrNames ? mystrNames : "请选择协助人"}</Text>
                                 </Flex>
                                 <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
                             </Flex>

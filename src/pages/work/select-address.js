@@ -65,8 +65,7 @@ export default class SelectAddressPage extends BasePage {
             // navigation.state.params.onSelect({ selectItem });
             // navigation.goBack();
             //第一层可以调用，到楼栋，楼层就无法调用事件
-            //this.props.navigation.navigate('addWork', { data: { address: selectItem } });
-
+            //this.props.navigation.navigate('addWork', { data: { address: selectItem } }); 
             if (parentName) {
                 this.props.navigation.navigate(parentName, { data: { address: selectItem } });
             }
@@ -146,7 +145,7 @@ export default class SelectAddressPage extends BasePage {
 
     render() {
         const { items, parent, selectItem } = this.state;
-        
+
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#eee' }}>
                 <View style={{ flex: 1 }}>
@@ -167,10 +166,10 @@ export default class SelectAddressPage extends BasePage {
                                 <Item key={index} arrow={item.type !== 5 ? 'horizontal' : 'empty'}
                                     onPress={() => this.next(item)}>
                                     <Flex>
-                                        <TouchableWithoutFeedback onPress={() => this.setState({ selectItem: item })}>
+                                        <TouchableWithoutFeedback onPress={() => this.setState({ selectItem: { id: item.id, allName: item.allName } })}>
                                             <Image alt='' style={{ width: 24, height: 24 }}
                                                 source={selectItem.id === item.id ? require('../../static/images/select.png') : require('../../static/images/no-select.png')} />
-                                        </TouchableWithoutFeedback> 
+                                        </TouchableWithoutFeedback>
                                         <Text style={{
                                             paddingLeft: 15,
                                             paddingTop: 5,
@@ -179,7 +178,7 @@ export default class SelectAddressPage extends BasePage {
                                     </Flex>
                                 </Item>
                             ))}
-                        </List> 
+                        </List>
                     </ScrollView>
 
                     <Flex justify={'center'} style={{ height: 80, backgroundColor: '#eee' }}>

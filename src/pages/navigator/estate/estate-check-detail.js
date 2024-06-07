@@ -175,7 +175,7 @@ export default class EcheckDetailPage extends BasePage {
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text>检查角色：{detail.checkRole}</Text> 
+                        <Text>检查组：{detail.checkRole}</Text> 
                     </Flex>
 
                     <Text style={[styles.every, ScreenUtil.borderBottom()]}>{detail.memo}</Text>

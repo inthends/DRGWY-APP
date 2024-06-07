@@ -108,8 +108,9 @@ class SelectAllPerson extends BasePage {
                                                     <Flex style={{ width: '100%' }} justify={'between'}>
                                                         <Flex>
                                                             <Text style={styles.desc}>{i.name}</Text>
+                                                            {i.postName ? <Text>（{i.postName}）</Text> : null}
                                                         </Flex>
-                                                        <Flex><Text>{i.postName}</Text></Flex>
+                                                        {/* <Flex><Text>{i.postName}</Text></Flex> */}
                                                     </Flex>
                                                 </Flex>
                                             </TouchableWithoutFeedback>

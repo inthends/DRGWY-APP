@@ -2,7 +2,6 @@ import React, {Component, Fragment} from 'react';
 import { Text,  StyleSheet, Animated, TouchableWithoutFeedback, ScrollView} from 'react-native';
 import { Flex } from '@ant-design/react-native';
 import ScreenUtil from '../utils/screen-util';
-
 const item_width = ScreenUtil.deviceWidth() / 5.0;
 const single_width = 50;
 
@@ -24,13 +23,12 @@ export default class ScrollTitle extends Component {
     }
 
     tap = (index) => {
-        let value = (item_width - single_width) / 2.0 + item_width * index;
-
+        let value = (item_width - single_width) / 2.0 + item_width * index; 
         Animated.timing(                  // 随时间变化而执行动画
             this.state.fadeAnim,            // 动画中的变量值
             {
                 toValue: value,                   // 透明度最终变为1，即完全不透明
-                duration: 200,              // 让动画持续一段时间
+                duration: 200              // 让动画持续一段时间
             },
         ).start();
         if (this.state.index !== index) {
@@ -40,8 +38,7 @@ export default class ScrollTitle extends Component {
                     this.props.onChange(titles[index]);
                 }
             });
-        }
-
+        } 
     };
 
     render() {
@@ -74,9 +71,9 @@ export default class ScrollTitle extends Component {
 }
 
 const styles = StyleSheet.create({
-    content: {
-        width: ScreenUtil.deviceWidth(),
-    },
+    // content: {
+    //     width: ScreenUtil.deviceWidth(),
+    // },
     title: {
         fontSize: 16,
         color: '#999',

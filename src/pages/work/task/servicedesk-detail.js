@@ -65,12 +65,11 @@ export default class ServiceDeskDetailPage extends BasePage {
     }
 
     componentDidMount() {
-
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
-                if (obj.state.params) {
-                    const { repairmajor } = obj.state.params.data || {};
+                if (obj.state.params.repairmajor) {
+                    const { repairmajor } = obj.state.params.repairmajor || {};
                     this.setState({ repairmajor });
                 }
             }
@@ -84,12 +83,12 @@ export default class ServiceDeskDetailPage extends BasePage {
         //注册鼠标事件，用于文本框输入的时候往上移动 2024年5月23日
         this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
             this.setState({
-                KeyboardShown: true,
+                KeyboardShown: true
             });
         });
         this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
             this.setState({
-                KeyboardShown: false,
+                KeyboardShown: false
             });
         });
     }
@@ -174,6 +173,19 @@ export default class ServiceDeskDetailPage extends BasePage {
     };
 
     roRepair = () => {
+        const { id, isQD, selectPerson, repairmajor } = this.state;
+
+        if (isQD == 1 && selectPerson == null) {
+
+            UDToast.showInfo('请选择派单人');
+            return;
+        }
+
+        if (repairmajor == null) {
+            UDToast.showInfo('请选择维修专业');
+            return;
+        }
+
         Alert.alert(
             '请确认',
             '是否转维修？',
@@ -181,11 +193,11 @@ export default class ServiceDeskDetailPage extends BasePage {
             {
                 text: '确定',
                 onPress: () => {
-                    const { id, isQD, selectPerson, repairmajor } = this.state;
-                    WorkService.changeToRepair(id,
-                        isQD, 
-                        selectPerson.id,
-                        selectPerson.name,
+                    WorkService.changeToRepair(
+                        id,
+                        isQD,
+                        senderId = selectPerson ? selectPerson.id : null,
+                        senderName = selectPerson ? selectPerson.name : null,
                         repairmajor.id,
                         repairmajor.name
                     ).then(res => {
@@ -261,7 +273,6 @@ export default class ServiceDeskDetailPage extends BasePage {
                                     style={{ width: 18, height: 18 }} /></Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
- 
                         <View style={{ margin: 15 }}>
                             <TextareaItem
                                 rows={4}
@@ -272,11 +283,10 @@ export default class ServiceDeskDetailPage extends BasePage {
                                 value={this.state.value}
                             />
                         </View>
- 
                         <Flex justify={'center'}>
                             <Button onPress={() => this.reply()} type={'primary'}
                                 activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                    width: 150,
+                                    width: 180,
                                     backgroundColor: Macro.work_blue,
                                     marginTop: 10,
                                     marginBottom: 10,
@@ -301,9 +311,9 @@ export default class ServiceDeskDetailPage extends BasePage {
                                     <Text style={styles.word}>转投诉</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
-                            <TouchableWithoutFeedback onPress={() => this.doWork('关闭')}>
+                            <TouchableWithoutFeedback onPress={() => this.doWork('闭单')}>
                                 <Flex justify={'center'} style={[styles.ii, { backgroundColor: '#666' }]}>
-                                    <Text style={styles.word}>关闭</Text>
+                                    <Text style={styles.word}>闭单</Text>
                                 </Flex>
                             </TouchableWithoutFeedback>
                         </Flex>}
@@ -317,7 +327,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                         onClick={this.cancel}
                         imageUrls={this.state.images} />
                 </Modal>
- 
+
                 {this.state.showRepair && (
                     // 转报修
                     <View style={styles.mengceng}>
@@ -325,21 +335,19 @@ export default class ServiceDeskDetailPage extends BasePage {
                             style={{ flex: 1, padding: 25, backgroundColor: 'rgba(178,178,178,0.5)' }}>
                             <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
                                 <CommonView style={{ height: 190, width: 300 }}>
-
                                     <Flex justify='between' style={[styles.every, ScreenUtil.borderBottom()]}>
                                         <Text style={styles.text}>是否抢单</Text>
                                         <Flex onPress={() => this.setState({ isQD: 1 })}>
-                                            <LoadImage style={{ width: 20, height: 20 }}
+                                            <LoadImage style={{ width: 18, height: 18 }}
                                                 defaultImg={isQD === 1 ? selectImg : noselectImg} />
-                                            <Text style={styles.state}>是</Text>
+                                            <Text style={styles.state}> 是</Text>
                                         </Flex>
                                         <Flex style={{ paddingLeft: 10 }} onPress={() => this.setState({ isQD: 0 })}>
-                                            <LoadImage style={{ width: 20, height: 20 }}
+                                            <LoadImage style={{ width: 18, height: 18 }}
                                                 defaultImg={isQD === 0 ? selectImg : noselectImg} />
-                                            <Text style={styles.state}>否</Text>
+                                            <Text style={styles.state}> 否</Text>
                                         </Flex>
                                     </Flex>
-
                                     <TouchableWithoutFeedback
                                         onPress={() => this.props.navigation.navigate('selectRepairMajor', { parentName: 'service' })}>
                                         <Flex justify="between" style={[{
@@ -354,7 +362,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                                         </Flex>
                                     </TouchableWithoutFeedback>
                                     <TouchableWithoutFeedback
-                                        onPress={() => this.props.navigation.navigate('selectAllPerson', { onSelect: this.onSelectPerson })}>
+                                        onPress={() => this.props.navigation.navigate('selectRolePerson', { type: 'receive', onSelect: this.onSelectPerson })}>
                                         <Flex justify='between' style={[{
                                             paddingTop: 15,
                                             paddingBottom: 15,

@@ -195,7 +195,7 @@ class TaskListPage extends BasePage {
 
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
-                            <Text>紧急：{item.emergencyLevel}，重要：{item.importance}，专业：{item.repairMajor}</Text>
+                            <Text>紧急：{item.emergencyLevel}，重要：{item.importance}，维修专业：{item.repairMajor}</Text>
                         </Flex>
 
 

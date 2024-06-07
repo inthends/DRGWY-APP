@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    View,
+    //View,
     Text,
     StyleSheet,
     TouchableOpacity,
@@ -45,7 +45,7 @@ class EstateCheckPage extends BasePage {
         super(props);
         this.selectBuilding = {
             key: null
-        }; 
+        };
         this.state = {
             selectBuilding: {},//默认为空，防止别地方选择了机构
             pageIndex: 1,
@@ -159,6 +159,8 @@ class EstateCheckPage extends BasePage {
                         <Text style={styles.title}>{item.billCode}</Text>
                         <Text style={styles.title2}>{item.statusName}</Text>
                     </Flex>
+
+                    
                     <Flex style={styles.line} />
                     <Flex align={'start'} direction={'column'}>
                         <Text style={{
@@ -223,35 +225,35 @@ class EstateCheckPage extends BasePage {
     render() {
         const { dataInfo } = this.state;
         return (
-            <View style={{ flex: 1 }}>
-                <CommonView style={{ flex: 1 }}>
-                    <ScrollTitle onChange={this.billType} titles={['我的', '全部']} />
-                    {/*<Tabs tabs={tabs2} initialPage={1} tabBarPosition="top">*/}
-                    {/*    {renderContent}*/}
-                    {/*</Tabs>*/}
-                    <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
-                        <MyPopover onChange={this.statusChange}
-                            titles={['全部', '待评审', '待闭单', '已闭单']}
-                            visible={true} />
-                        <MyPopover onChange={this.timeChange} 
+            // <View style={{ flex: 1 }}>
+            <CommonView style={{ flex: 1 }}>
+                <ScrollTitle onChange={this.billType} titles={['我的', '全部']} />
+                {/*<Tabs tabs={tabs2} initialPage={1} tabBarPosition="top">*/}
+                {/*    {renderContent}*/}
+                {/*</Tabs>*/}
+                <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
+                    <MyPopover onChange={this.statusChange}
+                        titles={['全部', '待评审', '待闭单', '已闭单']}
+                        visible={true} />
+                    <MyPopover onChange={this.timeChange}
                         //titles={ym} 
                         titles={['全部', '今日', '本周', '本月', '上月', '本年']}
                         visible={true} />
-                    </Flex>
+                </Flex>
 
-                    <FlatList
-                        data={dataInfo.data}
-                        renderItem={this._renderItem}
-                        style={styles.list}
-                        keyExtractor={(item) => item.billId}
-                        onEndReached={() => this.loadMore()}
-                        onEndReachedThreshold={0.1}
-                        onMomentumScrollBegin={() => this.canAction = true}
-                        onMomentumScrollEnd={() => this.canAction = false}
-                        ListEmptyComponent={<NoDataView />}
-                    />
+                <FlatList
+                    data={dataInfo.data}
+                    renderItem={this._renderItem}
+                    style={styles.list}
+                    keyExtractor={(item) => item.billId}
+                    onEndReached={() => this.loadMore()}
+                    onEndReachedThreshold={0.1}
+                    onMomentumScrollBegin={() => this.canAction = true}
+                    onMomentumScrollEnd={() => this.canAction = false}
+                    ListEmptyComponent={<NoDataView />}
+                />
 
-                    {/* <TouchableWithoutFeedback onPress={() => this.props.navigation.push('checkAdd')}>
+                {/* <TouchableWithoutFeedback onPress={() => this.props.navigation.push('checkAdd')}>
                         <Flex justify={'center'} style={[styles.ii, {
                             width: '80%',
                             marginLeft: '10%',
@@ -262,24 +264,25 @@ class EstateCheckPage extends BasePage {
                         </Flex>
                     </TouchableWithoutFeedback> */}
 
-                    <Flex justify={'center'}>
-                        <Button
-                            onPress={() => this.props.navigation.push('checkAdd')}
-                            type={'primary'}
-                            activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                width: 350,
-                                marginBottom: 20,
-                                backgroundColor: Macro.work_blue,
-                                height: 40
-                            }}>开始检查</Button>
-                    </Flex>
-                </CommonView>
-            </View>
+                <Flex justify={'center'}>
+                    <Button
+                        onPress={() => this.props.navigation.push('checkAdd')}
+                        type={'primary'}
+                        activeStyle={{ backgroundColor: Macro.work_blue }} style={{
+                            width: 350,
+                            marginBottom: 20,
+                            backgroundColor: Macro.work_blue,
+                            height: 40
+                        }}>开始检查</Button>
+                </Flex>
+            </CommonView>
+
+            // </View>
         );
     }
 }
 
-const styles = StyleSheet.create({  
+const styles = StyleSheet.create({
     list: {
         backgroundColor: Macro.color_white,
         margin: 15
@@ -310,7 +313,7 @@ const styles = StyleSheet.create({
         color: '#000',
         fontSize: 16,
         paddingBottom: 15
-    }, 
+    },
     card: {
         borderTopWidth: 1,
         borderRightWidth: 1,

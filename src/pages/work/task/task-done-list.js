@@ -212,12 +212,9 @@ class TaskListDonePage extends BasePage {
         return (
             <CommonView style={{ flex: 1 }}>
                 <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
-                    <MyPopover onChange={this.typeChange}
+                    {/* <MyPopover onChange={this.typeChange}
                         titles={repairMajors}
-                        visible={true} />
-                    {/* <Flex>
-                        <Text>数量 ( {dataInfo.length} )</Text>
-                    </Flex>  */}
+                        visible={true} /> */}
                     <MyPopover onChange={this.timeChange}
                         titles={['全部', '今日', '本周', '本月', '上月', '本年']}
                         visible={true} />

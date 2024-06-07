@@ -18,6 +18,7 @@ import Macro from '../../utils/macro';
 const Item = List.Item;
 
 export default class SelectRepairMajor extends BasePage {
+
     static navigationOptions = ({ navigation }) => {
         return {
             title: '选择维修专业',
@@ -50,10 +51,15 @@ export default class SelectRepairMajor extends BasePage {
 
     submit = () => {
         const { selectItem, parentName } = this.state;
-        if (selectItem) {
+        //console.log('selectItem',selectItem);
+        if (selectItem) { 
             if (parentName) {
-                this.props.navigation.navigate(parentName, { data: { repairmajor: selectItem } });
-            }
+                this.props.navigation.navigate(parentName, { repairmajor: { repairmajor: selectItem } });
+            } 
+            //点击第二层的时候，navigation变化了，此方法不能用
+            // const { navigation } = this.props;
+            // navigation.state.params.onSelect({ selectItem });
+            // navigation.goBack();
 
         } else {
             UDToast.showInfo('请先选择');
@@ -74,7 +80,7 @@ export default class SelectRepairMajor extends BasePage {
 
     getData = () => {
         const parent = common.getValueFromProps(this.props, 'data');
-        console.log('parent',parent);
+        //console.log('parent',parent);
         let params;
         if (parent) {
             let type = -1;
@@ -88,14 +94,11 @@ export default class SelectRepairMajor extends BasePage {
                     break;
                 }
             }
-
             if (type === -1) {
                 UDToast.showInfo('类型错误');
                 return;
             }
-            
             params = { keyvalue: parent.id, type };
-
         } else {
             this.props.navigation.setParams({
                 title: '选择分类',
@@ -120,7 +123,7 @@ export default class SelectRepairMajor extends BasePage {
                     {parent ?
                         <Item arrow="empty">
                             {parent.name}
-                        </Item> : null} 
+                        </Item> : null}
                     <ScrollView style={{ flex: 1 }} refreshControl={
                         <RefreshControl
                             refreshing={this.state.refreshing}
@@ -133,7 +136,7 @@ export default class SelectRepairMajor extends BasePage {
                                     onPress={() => this.next(item)}>
                                     <Flex>
                                         {item.type == 2 ?
-                                            <TouchableWithoutFeedback onPress={() => this.setState({ selectItem: item })}>
+                                            <TouchableWithoutFeedback onPress={() => this.setState({ selectItem: { id: item.id, name: item.name } })}>
                                                 <Image alt='' style={{ width: 24, height: 24 }}
                                                     source={selectItem.id === item.id ? require('../../static/images/select.png') : require('../../static/images/no-select.png')} />
                                             </TouchableWithoutFeedback> : null}
@@ -141,7 +144,7 @@ export default class SelectRepairMajor extends BasePage {
                                             paddingLeft: 15,
                                             paddingTop: 5,
                                             paddingBottom: 5
-                                        }}>{item.name}</Text>
+                                        }}>{item.allName}</Text>
                                     </Flex>
                                 </Item>
                             ))}

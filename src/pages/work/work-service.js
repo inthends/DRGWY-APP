@@ -42,7 +42,8 @@ export default {
         allName,
         dutyUserId,
         dutyUserName,
-        checkMemo) {
+        checkMemo,
+        rectification) {
         return api.postData('/api/MobileMethod/MAddCheckDetail', {
             billId,
             checkRole,
@@ -52,7 +53,8 @@ export default {
             allName,
             dutyUserId,
             dutyUserName,
-            checkMemo
+            checkMemo,
+            rectification
         });
     },
 
@@ -96,8 +98,7 @@ export default {
         senderId,
         senderName,
         repairMajorId,
-        repairMajor
-
+        repairMajorName
     ) {
         let params = {
             keyvalue,
@@ -105,7 +106,7 @@ export default {
             senderId,
             senderName,
             repairMajorId,
-            repairMajor
+            repairMajorName
         };
         let url = '/api/MobileMethod/MChangeToRepair';
         return api.postData(url, params);
@@ -129,7 +130,7 @@ export default {
         // else if (handle === '转维修') {
         //     url = '/api/MobileMethod/MChangeToRepair';
         // } 
-        else if (handle === '关闭') {
+        else if (handle === '闭单') {
             url = '/api/MobileMethod/MFinish';
         } else if (handle === '派单') {
             url = '/api/MobileMethod/MRepairDispatch';
@@ -158,7 +159,7 @@ export default {
         let params = { keyvalue, content, reinforceId };
         return api.postData('/api/MobileMethod/MRepairStart', params);
     },
- 
+
     //协助维修
     assistRepair(keyvalue, type) {
         let params = { keyvalue, type };
@@ -266,8 +267,21 @@ export default {
     //     return api.getData('/api/MobileMethod/MGetUserList', { organizeId, keyword, type });
     // },
 
-    paidan(keyvalue, receiverName, receiverId) {
-        return api.postData('/api/MobileMethod/MRepairDispatch', { keyvalue, receiverName, receiverId });
+    paidan(keyvalue,
+        receiverId,
+        receiverName,
+        repairMajorId,
+        repairMajorName,
+        assistId
+    ) {
+        return api.postData('/api/MobileMethod/MRepairDispatch', {
+            keyvalue,
+            receiverId,
+            receiverName,
+            repairMajorId,
+            repairMajorName,
+            assistId
+        });
     },
     unreadCount() {
         return api.getData('/api/MobileMethod/MGetUnReadNewsCount', {}, false);

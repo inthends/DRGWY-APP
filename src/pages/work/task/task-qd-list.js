@@ -296,7 +296,6 @@ class TaskQDListPage extends BasePage {
                 />
                 <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
             </CommonView>
-
         );
     }
 }

@@ -49,7 +49,8 @@ export default class CompleteDetailPage extends BasePage {
             communicates: [],
             lookImageIndex: 0,
             visible: false,
-            KeyboardShown: false
+            KeyboardShown: false,
+            isUpload: false
         };
         this.keyboardDidShowListener = null;
         this.keyboardDidHideListener = null;
@@ -189,7 +190,6 @@ export default class CompleteDetailPage extends BasePage {
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                             <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
                         </Flex>
-
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                             <Text style={styles.left}>转单人：{detail.createUserName}</Text>
                         </Flex>
@@ -210,29 +210,24 @@ export default class CompleteDetailPage extends BasePage {
                                             this.props.navigation.navigate('checkDetail', { data: { id: detail.relationId } });
                                         }
                                     }}
-
                                     style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                             <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>
                         </Flex>
-
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                             <Text style={styles.left}>协助人：{detail.assistName}</Text>
                         </Flex>
-
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                             <Text style={styles.left}>增援人：{detail.reinforceName}</Text>
                         </Flex>
-
                         <UploadImageView
                             style={{ marginTop: 10 }}
                             linkId={this.state.id}
                             reload={this.reload}
                             type='完成'
                         />
-
                         <View style={{ margin: 15 }}>
                             <TextareaItem
                                 rows={4}
@@ -243,7 +238,6 @@ export default class CompleteDetailPage extends BasePage {
                                 value={this.state.value}
                             />
                         </View>
-
                         <Flex justify={'center'}>
                             <Button onPress={() => this.click('完成维修')} type={'primary'}
                                 activeStyle={{ backgroundColor: Macro.work_blue }} style={{

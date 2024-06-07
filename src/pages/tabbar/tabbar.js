@@ -49,7 +49,7 @@ import EstateTousuPage from '../navigator/estate/estate-tousu';
  
 //现场检查
 import SelectAllPerson from '../work/select-all-person';
-import SelectAllPersonMulti from '../work/select-all-person-multi';
+import SelectRolePersonMulti from '../work/select-role-person-multi';
 
 import EstateCheckPage from '../navigator/estate/estate-check';
 import EcheckDetailPage from '../navigator/estate/estate-check-detail';
@@ -79,7 +79,7 @@ import NewsList from '../work/news-list';
 import FeeChargeDetail from '../navigator/fee-charge-detail';
 
 import SelectAddressPage from '../work/select-address';
-import SelectReceivePerson from '../work/select-receive-person';
+import SelectRolePerson from '../work/select-role-person';
 import TaskListPage from '../work/task/task-list';
 import ServiceDeskDetailPage from '../work/task/servicedesk-detail';
 import DispatchDetailPage from '../work/task/dispatch-detail';
@@ -265,7 +265,7 @@ const WorkNavigator = createStackNavigator({
   njscan: NJScanScreen, //南京银行扫码 
   //现场检查
   selectAllPerson: SelectAllPerson,
-  selectAllPersonMulti: SelectAllPersonMulti,
+  selectRolePersonMulti: SelectRolePersonMulti,
   check: EstateCheckPage,
   checkDetail: EcheckDetailPage,
   checkAdd: EcheckAddPage,
@@ -274,7 +274,7 @@ const WorkNavigator = createStackNavigator({
   //订单中心
   orderlist: OrderlistPage,
   orderDetail: OrderDetailPage,
-  selectReceivePerson: SelectReceivePerson,
+  selectRolePerson: SelectRolePerson,
   feeRooms: FeeRoomsPage, //房间
   feeParkings: FeeParkingsPage, //车位
   feeBuildings: FeeBuildingsPage,

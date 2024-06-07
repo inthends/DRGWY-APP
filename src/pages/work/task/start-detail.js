@@ -133,7 +133,7 @@ export default class StartDetailPage extends BasePage {
         }
 
         let personIds = selectPersons.map(item => item.id);
-        let reinforceId = personIds && personIds.length > 0 ? JSON.stringify(personIds) : ''; 
+        let reinforceId = personIds && personIds.length > 0 ? JSON.stringify(personIds) : '';
         WorkService.startRepair(id, value, reinforceId).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
@@ -250,19 +250,15 @@ export default class StartDetailPage extends BasePage {
                                     }}
                                     style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                             </Flex>
-                        </TouchableWithoutFeedback>
-
+                        </TouchableWithoutFeedback> 
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                             <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>
-                        </Flex>
-
+                        </Flex> 
                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                             <Text style={styles.left}>协助人：{detail.assistName}</Text>
-                        </Flex>
-
-
+                        </Flex> 
                         <TouchableWithoutFeedback
-                            onPress={() => this.props.navigation.navigate('selectAllPersonMulti', { onSelect: this.onSelectPerson })}>
+                            onPress={() => this.props.navigation.navigate('selectRolePersonMulti', { type: 'receive', onSelect: this.onSelectPerson })}>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                                 <Flex>
                                     <Text style={styles.left}>增援人：</Text>
@@ -271,8 +267,7 @@ export default class StartDetailPage extends BasePage {
                                 </Flex>
                                 <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
                             </Flex>
-                        </TouchableWithoutFeedback>
-
+                        </TouchableWithoutFeedback> 
                         <UploadImageView style={{ marginTop: 10 }}
                             linkId={this.state.id}
                             reload={this.reload}
