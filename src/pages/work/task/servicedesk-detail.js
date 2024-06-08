@@ -8,16 +8,13 @@ import {
     StyleSheet,
     ScrollView,
     Keyboard,
+    Modal,
     Alert
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Icon, Flex, Modal, TextareaItem, Button } from '@ant-design/react-native';
+import { Icon, Flex, TextareaItem, Button } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
-// import SelectImage from '../../../utils/select-image';
-// import UDRecord from '../../../utils/UDRecord';
-// import api from '../../../utils/api';
-// import UDPlayer from '../../../utils/UDPlayer';
 import common from '../../../utils/common';
 import UDToast from '../../../utils/UDToast';
 import WorkService from '../work-service';
@@ -26,7 +23,6 @@ import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
-// import ToRepair from '../../../components/to-repair';
 
 export default class ServiceDeskDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -57,7 +53,8 @@ export default class ServiceDeskDetailPage extends BasePage {
             lookImageIndex: 0,
             visible: false,
             showRepair: false,
-            KeyboardShown: false
+            KeyboardShown: false,
+            btnList: []//按钮权限
         };
 
         this.keyboardDidShowListener = null;
@@ -65,6 +62,7 @@ export default class ServiceDeskDetailPage extends BasePage {
     }
 
     componentDidMount() {
+
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
@@ -74,6 +72,11 @@ export default class ServiceDeskDetailPage extends BasePage {
                 }
             }
         );
+
+        //获取按钮权限 
+        WorkService.getButtonList().then(btnList => {
+            this.setState({ btnList });
+        });
 
         this.getData();
     }
@@ -108,37 +111,28 @@ export default class ServiceDeskDetailPage extends BasePage {
     getData = () => {
         const { id } = this.state;
         WorkService.serviceDetail(id).then(item => {
+            //console.log('item.data',item.data);
             this.setState({
                 detail: {
                     ...item.data,
                     businessId: item.businessId,
                     statusName: item.statusName
-                },
+                }
             });
         });
+
         WorkService.serviceCommunicates(id).then(res => {
             this.setState({
-                communicates: res,
+                communicates: res
             });
         });
+
         WorkService.serviceExtra(id).then(images => {
             this.setState({
                 images
             });
         });
     };
-
-    // click = (handle) => {
-    //     const { id, value } = this.state;
-    //     if (handle === '回复' && !(value && value.length > 0)) {
-    //         UDToast.showInfo('请输入文字');
-    //         return;
-    //     }
-    //     WorkService.serviceHandle(handle, id, value).then(res => {
-    //         UDToast.showInfo('操作成功');
-    //         this.props.navigation.goBack();
-    //     });
-    // };
 
     reply = () => {
         const { id, value } = this.state;
@@ -173,16 +167,15 @@ export default class ServiceDeskDetailPage extends BasePage {
     };
 
     roRepair = () => {
+
         const { id, isQD, selectPerson, repairmajor } = this.state;
-
-        if (isQD == 1 && selectPerson == null) {
-
-            UDToast.showInfo('请选择派单人');
+        if (repairmajor == null || repairmajor.id == null) {
+            UDToast.showInfo('请选择维修专业');
             return;
         }
 
-        if (repairmajor == null) {
-            UDToast.showInfo('请选择维修专业');
+        if (isQD == 1 && selectPerson == null) {
+            UDToast.showInfo('请选择派单人');
             return;
         }
 
@@ -223,6 +216,7 @@ export default class ServiceDeskDetailPage extends BasePage {
             communicates: d
         });
     }
+
     cancel = () => {
         this.setState({
             visible: false
@@ -243,88 +237,68 @@ export default class ServiceDeskDetailPage extends BasePage {
     }
 
     render() {
-        const { images, detail, id, communicates, isQD, repairmajor, selectPerson } = this.state;
+        const { images, detail, id, communicates, isQD, repairmajor, selectPerson, btnList } = this.state;
         const selectImg = require('../../../static/images/select.png');
         const noselectImg = require('../../../static/images/no-select.png');
-
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
-                <TouchableWithoutFeedback onPress={() => {
-                    Keyboard.dismiss();
-                }}>
-                    <ScrollView style={{ marginTop: this.state.KeyboardShown ? - 200 : 0, height: '100%' }}>
-                        <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>{detail.billCode}</Text>
-                            <Text style={styles.right}>{detail.billType}</Text>
-                        </Flex>
-                        <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>{detail.address}</Text>
-                            <Text style={styles.right}>{detail.statusName}</Text>
-                        </Flex>
-                        <Text style={[styles.desc]}>{detail.contents}</Text>
-                        <ListImages images={images} lookImage={this.lookImage} />
-                        <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
-                        </Flex>
-                        <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>报单人：{detail.contactName} </Text>
-                            <TouchableWithoutFeedback onPress={() => common.call(detail.contactPhone)}>
-                                <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
-                                    style={{ width: 18, height: 18 }} /></Flex>
-                            </TouchableWithoutFeedback>
-                        </Flex> 
-                        <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>报单时间：{detail.createDate}</Text>
-                        </Flex> 
-                        <View style={{ margin: 15 }}>
-                            <TextareaItem
-                                rows={4}
-                                autoHeight
-                                placeholder='请输入'
-                                style={{ width: ScreenUtil.deviceWidth() - 32 }}
-                                onChange={value => this.setState({ value })}
-                                value={this.state.value}
-                            />
-                        </View>
+                <ScrollView style={{ marginTop: this.state.KeyboardShown ? - 200 : 0, height: '100%' }}>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>{detail.billCode}</Text>
+                        <Text style={styles.right}>{detail.billType}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>{detail.address}</Text>
+                        <Text style={styles.right}>{detail.statusName}</Text>
+                    </Flex>
+
+                    <Text style={[styles.desc]}>{detail.contents}</Text>
+
+                    <ListImages images={images} lookImage={this.lookImage} />
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>报单人：{detail.contactName} </Text>
+                        <TouchableWithoutFeedback onPress={() => common.call(detail.contactPhone)}>
+                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
+                                style={{ width: 18, height: 18 }} /></Flex>
+                        </TouchableWithoutFeedback>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>报单时间：{detail.createDate}</Text>
+                    </Flex>
+
+                    <View style={{ margin: 15 }}>
+                        <TextareaItem
+                            rows={4}
+                            autoHeight
+                            placeholder='请输入'
+                            style={{ width: ScreenUtil.deviceWidth() - 32 }}
+                            onChange={value => this.setState({ value })}
+                            value={this.state.value}
+                        />
+                    </View>
+
+                    <Flex justify={'center'}>
+                        <Button onPress={() => this.reply()} type={'primary'}
+                            activeStyle={{ backgroundColor: Macro.work_blue }}
+                            style={{
+                                width: 110,
+                                backgroundColor: Macro.work_blue,
+                                marginTop: 10,
+                                marginBottom: 10,
+                                height: 40
+                            }}>回复</Button>
+                    </Flex>
+
+                    {detail.status === 1 &&
                         <Flex justify={'center'}>
-                            <Button onPress={() => this.reply()} type={'primary'}
-                                activeStyle={{ backgroundColor: Macro.work_blue }}
-                                style={{
-                                    width: 110,
-                                    backgroundColor: Macro.work_blue,
-                                    marginTop: 10,
-                                    marginBottom: 10,
-                                    height: 40
-                                }}>回复</Button>
-                        </Flex>
-
-                        {detail.status === 1 &&
-
-                            // <Flex>
-                            //     <TouchableWithoutFeedback onPress={() =>
-                            //         //this.click('转维修')
-                            //         this.setState({
-                            //             serviceDeskId: id,
-                            //             showRepair: true
-                            //         })
-                            //     }>
-                            //         <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
-                            //             <Text style={styles.word}>转维修</Text>
-                            //         </Flex>
-                            //     </TouchableWithoutFeedback>
-                            //     <TouchableWithoutFeedback onPress={() => this.doWork('转投诉')}>
-                            //         <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
-                            //             <Text style={styles.word}>转投诉</Text>
-                            //         </Flex>
-                            //     </TouchableWithoutFeedback>
-                            //     <TouchableWithoutFeedback onPress={() => this.doWork('闭单')}>
-                            //         <Flex justify={'center'} style={[styles.ii, { backgroundColor: '#666' }]}>
-                            //             <Text style={styles.word}>闭单</Text>
-                            //         </Flex>
-                            //     </TouchableWithoutFeedback>
-                            // </Flex>
-
-                            <Flex justify={'center'}>
+                            {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'torepair')) ?
                                 <Flex justify={'center'}>
                                     <Button onPress={() => {
                                         this.setState({
@@ -339,8 +313,9 @@ export default class ServiceDeskDetailPage extends BasePage {
                                             height: 40,
                                             marginLeft: 20
                                         }}>转维修</Button>
-                                </Flex>
+                                </Flex> : null}
 
+                            {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'tocomplaint')) ?
                                 <Flex justify={'center'}>
                                     <Button onPress={() => this.doWork('转投诉')} type={'primary'}
                                         activeStyle={{ backgroundColor: Macro.work_blue }} style={{
@@ -349,8 +324,9 @@ export default class ServiceDeskDetailPage extends BasePage {
                                             height: 40,
                                             marginLeft: 20
                                         }}>转投诉</Button>
-                                </Flex>
+                                </Flex> : null}
 
+                            {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'close')) ?
                                 <Flex justify={'center'}>
                                     <Button onPress={() => this.doWork('闭单')} type={'primary'}
                                         activeStyle={{ backgroundColor: Macro.work_blue }} style={{
@@ -360,20 +336,14 @@ export default class ServiceDeskDetailPage extends BasePage {
                                             marginLeft: 20,
                                             marginRight: 20
                                         }}>闭单</Button>
-                                </Flex>
-                            </Flex>
+                                </Flex> : null}
+                        </Flex>
+                    }
 
-                        }
-                        <Communicates communicateClick={this.communicateClick} communicates={communicates} />
-                    </ScrollView>
-                </TouchableWithoutFeedback>
+                    <Communicates communicateClick={this.communicateClick} communicates={communicates} />
 
-                <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
-                    <ImageViewer index={this.state.lookImageIndex}
-                        onCancel={this.cancel}
-                        onClick={this.cancel}
-                        imageUrls={this.state.images} />
-                </Modal>
+                </ScrollView>
+
 
                 {this.state.showRepair && (
                     // 转报修
@@ -403,8 +373,8 @@ export default class ServiceDeskDetailPage extends BasePage {
                                             marginLeft: 10,
                                             marginRight: 10
                                         }, ScreenUtil.borderBottom()]}>
-                                            <Text style={[repairmajor ? { color: '#404145' } :
-                                                { color: '#999' }]}>{repairmajor ? repairmajor.name : `请选择维修专业`}</Text>
+                                            <Text style={[repairmajor && repairmajor.name ? { color: '#404145' } :
+                                                { color: '#999' }]}>{repairmajor && repairmajor.name ? repairmajor.name : `请选择维修专业`}</Text>
                                             <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
                                         </Flex>
                                     </TouchableWithoutFeedback>
@@ -448,6 +418,12 @@ export default class ServiceDeskDetailPage extends BasePage {
                     </View>
                 )}
 
+                <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
+                    <ImageViewer index={this.state.lookImageIndex}
+                        onCancel={this.cancel}
+                        onClick={this.cancel}
+                        imageUrls={this.state.images} />
+                </Modal>
 
             </CommonView>
         );

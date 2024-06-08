@@ -64,7 +64,9 @@ export default class XunJianDetailPage extends BasePage {
                         <Text style={styles.title}>{data.pointName}</Text>
                         <XunJianViewComponent data={data} />
                     </Flex>
+                    
                     <ListImages images={images} lookImage={this.lookImage} />
+
                     <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                         <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                             imageUrls={this.state.images} />

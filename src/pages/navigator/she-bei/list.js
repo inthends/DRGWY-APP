@@ -138,8 +138,7 @@ class SheBeiList extends BasePage {
         Keyboard.dismiss();
         this.onRefresh();
     };
-
-
+ 
     render() {
         const { data = [] } = this.state;
         return ( 

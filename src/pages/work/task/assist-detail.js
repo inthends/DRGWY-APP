@@ -145,7 +145,9 @@ export default class AssistDetailPage extends BasePage {
                         </TouchableWithoutFeedback>
                     </Flex>
                     <Text style={styles.desc}>{detail.repairContent}</Text>
-                    <ListImages images={images} lookImage={this.lookImage} /> 
+
+                    <ListImages images={images} lookImage={this.lookImage} />
+                    
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
                     </Flex>
@@ -161,8 +163,7 @@ export default class AssistDetailPage extends BasePage {
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                             <Text style={styles.left}>关联单：</Text>
-                            <Text
-                                //onPress={() => this.props.navigation.navigate('service', { data: detail.relationId })} 
+                            <Text 
                                 onPress={() => {
                                     if (detail.sourceType === '服务总台') {
                                         this.props.navigation.navigate('service', { data: { id: detail.relationId } });
@@ -178,6 +179,10 @@ export default class AssistDetailPage extends BasePage {
 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>积分：{detail.score}</Text>
                     </Flex>
 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>

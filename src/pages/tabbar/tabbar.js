@@ -191,11 +191,18 @@ const navigatorNavigator = createStackNavigator({
 
   gdMoney: gdMoneyPage,
   e_fuwu: EstateFuwuPage,
-  fuwuD: EfuwuDetailPage,
+
+  fuwuD: EfuwuDetailPage,//服务单页面点击关联单据，只能查看
   weixiuD: EweixiuDetailPage, //服务单页面点击关联单据，跳转到维修单，只能查看
-  tousuD: EtousuDetailPage, //投诉单详情，只能查看 
+  tousuD: EtousuDetailPage, //投诉单详情，只能查看
+
+
+
   e_weixiu: EstateWeixiuPage,
   e_tousu: EstateTousuPage,
+
+
+  
   //固定资产
   gdzcPandian: GdzcPandianPage,
   gdzcDetail: GdzcDetailPage,

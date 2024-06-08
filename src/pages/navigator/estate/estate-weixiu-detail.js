@@ -4,27 +4,22 @@ import {
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    ScrollView, Modal,
+    ScrollView, 
+    Modal
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Icon, Flex } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
-import LoadImage from '../../../components/load-image';
-// import SelectImage from '../../../utils/select-image';
-import common from '../../../utils/common';
-// import UDRecord from '../../../utils/UDRecord';
-// import api from '../../../utils/api';
-// import UDPlayer from '../../../utils/UDPlayer';
-import UDToast from '../../../utils/UDToast';
-// import DashLine from '../../../components/dash-line';
+import LoadImage from '../../../components/load-image'; 
+import common from '../../../utils/common';  
 import WorkService from '../../work/work-service';
 import ListImages from '../../../components/list-images';
-// import Communicates from '../../../components/communicates';
 import OperationRecords from '../../../components/operationrecords';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
+//统计页面，仅查看
 export default class EweixiuDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
@@ -83,17 +78,7 @@ export default class EweixiuDetailPage extends BasePage {
             });
         });
     };
-
-    click = (handle) => {
-        const { id, value } = this.state;
-        if (handle === '回复' && !(value && value.length > 0)) {
-            UDToast.showInfo('请输入文字');
-            return;
-        }
-        WorkService.serviceHandle(handle, id, value).then(res => {
-        });
-    };
-
+ 
     communicateClick = (i) => {
         let c = this.state.communicates;
         let d = c.map(it => {
@@ -106,6 +91,7 @@ export default class EweixiuDetailPage extends BasePage {
             communicates: d
         });
     };
+
     cancel = () => {
         this.setState({
             visible: false
@@ -120,8 +106,7 @@ export default class EweixiuDetailPage extends BasePage {
     };
 
     render() {
-        const { images, detail, communicates } = this.state;
-
+        const { images, detail, communicates } = this.state; 
         const selectImg = require('../../../static/images/select.png');
         const noselectImg = require('../../../static/images/no-select.png');
 
@@ -141,6 +126,7 @@ export default class EweixiuDetailPage extends BasePage {
                     </Flex>
 
                     <Text style={[styles.desc, ScreenUtil.borderBottom()]}>{detail.repairContent}</Text>
+                    
                     <ListImages images={images} lookImage={this.lookImage} />
 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
@@ -167,13 +153,18 @@ export default class EweixiuDetailPage extends BasePage {
                                     this.props.navigation.navigate('checkDetail', { data: detail.relationId });
                                 }
                             }}
-                           style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
+                                style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>}
 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>
                     </Flex>
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>积分：{detail.score}</Text>
+                    </Flex>
+
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>协助人：{detail.assistName}</Text>
                     </Flex>
@@ -202,6 +193,7 @@ export default class EweixiuDetailPage extends BasePage {
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
 
                 </ScrollView>
+                
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                         imageUrls={this.state.images} />

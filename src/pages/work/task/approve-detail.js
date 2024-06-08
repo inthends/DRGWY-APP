@@ -73,6 +73,7 @@ export default class ApproveDetailPage extends BasePage {
                 });
             });
         });
+        
         WorkService.weixiuExtra(id).then(images => {
             this.setState({
                 images
@@ -143,7 +144,9 @@ export default class ApproveDetailPage extends BasePage {
                         </TouchableWithoutFeedback>
                     </Flex>
                     <Text style={styles.desc}>{detail.repairContent}</Text>
+
                     <ListImages images={images} lookImage={this.lookImage} />
+
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
                     </Flex>
@@ -172,6 +175,11 @@ export default class ApproveDetailPage extends BasePage {
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>
                     </Flex>
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>积分：{detail.score}</Text>
+                    </Flex>
+
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>协助人：{detail.assistName}</Text>
                     </Flex>

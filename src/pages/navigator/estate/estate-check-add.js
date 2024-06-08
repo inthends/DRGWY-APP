@@ -10,6 +10,7 @@ import {
     FlatList,
     TextInput,
     Modal,
+    Keyboard,
     Alert
 } from 'react-native';
 import BasePage from '../../base/base';
@@ -176,11 +177,11 @@ class EcheckAddPage extends BasePage {
             });
         }
     };
- 
+
     lookImage = (lookImageIndex, files) => {
         this.setState({
             lookImageIndex,
-            images: files,
+            images: files,//需要缓存是哪个明细的图片
             visible: true
         });
     };
@@ -210,12 +211,6 @@ class EcheckAddPage extends BasePage {
         );
     };
 
-    // onSelectAddress = ({ selectItem }) => {
-    //     this.setState({
-    //         address: selectItem
-    //     })
-    // }
-
     onSelectPerson = ({ selectItem }) => {
         this.setState({
             selectPerson: selectItem
@@ -240,7 +235,7 @@ class EcheckAddPage extends BasePage {
 
 
     addDetail = () => {
-        const { id, detailId, checkRole, memo, address, selectPerson, checkMemo, rectification } = this.state; 
+        const { id, detailId, checkRole, memo, address, selectPerson, checkMemo, rectification } = this.state;
         if (!checkRole) {
             UDToast.showError('请选择检查角色');
             return;
@@ -336,7 +331,6 @@ class EcheckAddPage extends BasePage {
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
-
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>检查人：{detail.checkUserName} {detail.postName}</Text>
                         <Text>{detail.billDate}</Text>
@@ -380,7 +374,6 @@ class EcheckAddPage extends BasePage {
                             numberOfLines={4}>
                         </TextInput>
                     </Flex>
-
                     <FlatList
                         data={dataInfo.data}
                         renderItem={this._renderItem}
@@ -401,7 +394,7 @@ class EcheckAddPage extends BasePage {
                                 backgroundColor: Macro.work_blue,
                                 height: 40
                             }}>保存</Button>
-                    </Flex> 
+                    </Flex>
                     <Flex justify={'center'}>
                         <Button onPress={() => {
                             let mydetailId = this.guid();
@@ -411,7 +404,8 @@ class EcheckAddPage extends BasePage {
                                 images: [''],
                                 address: address,//设置默认值
                                 selectPerson: null,
-                                checkMemo: ''
+                                checkMemo: '',
+                                rectification: ''
                             });
                         }}
                             type={'primary'}
@@ -423,125 +417,129 @@ class EcheckAddPage extends BasePage {
                                 height: 40
                             }}>添加明细</Button>
                     </Flex>
-                </Flex>
-
+                </Flex> 
                 {
                     this.state.showAdd && (
                         <View style={styles.mengceng}>
-                            <Flex direction={'column'} justify={'center'} align={'center'}
-                                style={{ flex: 1, padding: 25, backgroundColor: 'rgba(178,178,178,0.5)' }}>
-                                <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
-                                    <CommonView style={{ height: 305, width: 300 }}>
-                                        <TouchableWithoutFeedback
-                                            onPress={() => this.props.navigation.navigate('selectAddress', { parentName: 'checkAdd' })}>
-                                            <Flex justify="between" style={[{
-                                                paddingTop: 15,
-                                                paddingBottom: 15,
-                                                marginLeft: 10,
-                                                marginRight: 10
-                                            }, ScreenUtil.borderBottom()]}>
-                                                <Text style={[address ? { color: '#404145' } :
-                                                    { color: '#999' }]}>{address ? address.allName : `请选择位置`}</Text>
-                                                <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
+                            <TouchableWithoutFeedback onPress={() => {
+                                Keyboard.dismiss();//隐藏键盘
+                            }}>
+                                <Flex direction={'column'} justify={'center'} align={'center'}
+                                    style={{ flex: 1, padding: 25, backgroundColor: 'rgba(178,178,178,0.5)' }}>
+                                    <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
+                                        <CommonView style={{ height: 350, width: 320 }}>
+                                            <TouchableWithoutFeedback
+                                                onPress={() => this.props.navigation.navigate('selectAddress', { parentName: 'checkAdd' })}>
+                                                <Flex justify="between" style={[{
+                                                    paddingTop: 15,
+                                                    paddingBottom: 15,
+                                                    marginLeft: 10,
+                                                    marginRight: 10
+                                                }, ScreenUtil.borderBottom()]}>
+                                                    <Text style={[address ? { color: '#404145' } :
+                                                        { color: '#999' }]}>{address ? address.allName : `请选择位置`}</Text>
+                                                    <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
+                                                </Flex>
+                                            </TouchableWithoutFeedback>
+
+                                            <TouchableWithoutFeedback
+                                                onPress={() => this.props.navigation.navigate('selectRolePerson', { type: 'dispatch', onSelect: this.onSelectPerson })}>
+                                                <Flex justify='between' style={[{
+                                                    paddingTop: 15,
+                                                    paddingBottom: 15,
+                                                    marginLeft: 10,
+                                                    marginRight: 10,
+                                                }, ScreenUtil.borderBottom()]}>
+                                                    <Text style={[selectPerson ? { fontSize: 16, color: '#404145' } :
+                                                        { color: '#999' }]}>{selectPerson ? selectPerson.name : "请选择责任人"}</Text>
+                                                    <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
+                                                </Flex>
+                                            </TouchableWithoutFeedback>
+
+                                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                                                <TextInput
+                                                    maxLength={500}
+                                                    placeholder='请输入检查情况'
+                                                    multiline
+                                                    onChangeText={checkMemo => this.setState({ checkMemo })}
+                                                    value={this.state.checkMemo}
+                                                    style={{ fontSize: 16, textAlignVertical: 'top', height: 50 }}
+                                                    numberOfLines={4}>
+                                                </TextInput>
                                             </Flex>
-                                        </TouchableWithoutFeedback>
 
-                                        <TouchableWithoutFeedback
-                                            onPress={() => this.props.navigation.navigate('selectRolePerson', { type: 'dispatch', onSelect: this.onSelectPerson })}>
-                                            <Flex justify='between' style={[{
-                                                paddingTop: 15,
-                                                paddingBottom: 15,
-                                                marginLeft: 10,
-                                                marginRight: 10,
-                                            }, ScreenUtil.borderBottom()]}>
-                                                <Text style={[selectPerson ? { fontSize: 16, color: '#404145' } :
-                                                    { color: '#999' }]}>{selectPerson ? selectPerson.name : "请选择责任人"}</Text>
-                                                <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
+                                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                                                <TextInput
+                                                    maxLength={500}
+                                                    placeholder='请输入整改要求'
+                                                    multiline
+                                                    onChangeText={rectification => this.setState({ rectification })}
+                                                    value={this.state.rectification}
+                                                    style={{ fontSize: 16, textAlignVertical: 'top', height: 50 }}
+                                                    numberOfLines={4}>
+                                                </TextInput>
                                             </Flex>
-                                        </TouchableWithoutFeedback>
 
-                                        <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                                            <TextInput
-                                                maxLength={500}
-                                                placeholder='请输入检查情况'
-                                                multiline
-                                                onChangeText={checkMemo => this.setState({ checkMemo })}
-                                                value={this.state.checkMemo}
-                                                style={{ fontSize: 16, textAlignVertical: 'top' }}
-                                                numberOfLines={4}>
-                                            </TextInput>
-                                        </Flex>
-
-                                        <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                                            <TextInput
-                                                maxLength={500}
-                                                placeholder='请输入整改要求'
-                                                multiline
-                                                onChangeText={rectification => this.setState({ rectification })}
-                                                value={this.state.rectification}
-                                                style={{ fontSize: 16, textAlignVertical: 'top' }}
-                                                numberOfLines={4}>
-                                            </TextInput>
-                                        </Flex>
-
-                                        <Flex justify={'start'} align={'start'} style={{ width: ScreenUtil.deviceWidth() }}>
-                                            <Flex wrap={'wrap'}>
-                                                {images.map((url, index) => {
-                                                    return (
-                                                        <TouchableWithoutFeedback key={index} onPress={() => {
-                                                            if (index === images.length - 1 && url.length === 0) {
-                                                                this.selectImages();
-                                                            }
-                                                        }}>
-                                                            <View style={{
-                                                                paddingLeft: 15,
-                                                                paddingRight: 5,
-                                                                paddingBottom: 10,
-                                                                paddingTop: 15
+                                            <Flex justify={'start'} align={'start'} style={{ width: ScreenUtil.deviceWidth() }}>
+                                                <Flex wrap={'wrap'}>
+                                                    {images.map((url, index) => {
+                                                        return (
+                                                            <TouchableWithoutFeedback key={index} onPress={() => {
+                                                                if (index === images.length - 1 && url.length === 0) {
+                                                                    this.selectImages();
+                                                                }
                                                             }}>
-                                                                <LoadImageDelete
-                                                                    style={{
-                                                                        width: (ScreenUtil.deviceWidth() - 15) / 5.0 - 20,
-                                                                        height: (ScreenUtil.deviceWidth() - 15) / 5.0 - 20,
-                                                                        borderRadius: 5
-                                                                    }}
-                                                                    defaultImg={require('../../../static/images/add_pic.png')}
-                                                                    img={url}
-                                                                    delete={() => this.delete(url)}
-                                                                />
-                                                            </View>
-                                                        </TouchableWithoutFeedback>
-                                                    );
-                                                })}
+                                                                <View style={{
+                                                                    paddingLeft: 15,
+                                                                    paddingRight: 5,
+                                                                    paddingBottom: 10,
+                                                                    paddingTop: 15
+                                                                }}>
+                                                                    <LoadImageDelete
+                                                                        style={{
+                                                                            width: (ScreenUtil.deviceWidth() - 15) / 5.0 - 20,
+                                                                            height: (ScreenUtil.deviceWidth() - 15) / 5.0 - 20,
+                                                                            borderRadius: 5
+                                                                        }}
+                                                                        defaultImg={require('../../../static/images/add_pic.png')}
+                                                                        img={url}
+                                                                        delete={() => this.delete(url)}
+                                                                    />
+                                                                </View>
+                                                            </TouchableWithoutFeedback>
+                                                        );
+                                                    })}
+                                                </Flex>
                                             </Flex>
+                                        </CommonView>
+                                        <Flex style={{ marginTop: 15 }}>
+                                            <Button onPress={this.addDetail} type={'primary'}
+                                                activeStyle={{ backgroundColor: Macro.work_blue }}
+                                                style={{
+                                                    width: 110,
+                                                    backgroundColor: Macro.work_blue,
+                                                    height: 35
+                                                }}>确认</Button>
+                                            <Button onPress={() => {
+                                                this.setState({ showAdd: false });
+                                                this.onRefresh();
+                                            }}
+                                                type={'primary'}
+                                                activeStyle={{ backgroundColor: Macro.work_blue }}
+                                                style={{
+                                                    marginLeft: 30,
+                                                    width: 110,
+                                                    backgroundColor: '#666',
+                                                    borderWidth: 0,
+                                                    height: 35
+                                                }}>取消</Button>
                                         </Flex>
-                                    </CommonView>
-                                    <Flex style={{ marginTop: 15 }}>
-                                        <Button onPress={this.addDetail} type={'primary'}
-                                            activeStyle={{ backgroundColor: Macro.work_blue }}
-                                            style={{
-                                                width: 110,
-                                                backgroundColor: Macro.work_blue,
-                                                height: 35
-                                            }}>确认</Button>
-                                        <Button onPress={() => {
-                                            this.setState({ showAdd: false });
-                                            this.onRefresh();
-                                        }}
-                                            type={'primary'}
-                                            activeStyle={{ backgroundColor: Macro.work_blue }}
-                                            style={{
-                                                marginLeft: 30,
-                                                width: 110,
-                                                backgroundColor: '#666',
-                                                borderWidth: 0,
-                                                height: 35
-                                            }}>取消</Button>
                                     </Flex>
                                 </Flex>
-                            </Flex>
+                            </TouchableWithoutFeedback>
                         </View>
                     )}
+
 
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}

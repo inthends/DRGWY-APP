@@ -116,12 +116,11 @@ export default class EcheckDetailPage extends BasePage {
     lookImage = (lookImageIndex, files) => {
         this.setState({
             lookImageIndex,
-            images: files,
+            images: files,//需要缓存是哪个明细的图片
             visible: true
         });
     };
-
-
+ 
     cancel = () => {
         this.setState({
             visible: false

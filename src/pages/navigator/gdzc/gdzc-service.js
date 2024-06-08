@@ -34,12 +34,17 @@ export default {
     },
 
     //保存报修信息
-    saveRepariForm(params,showLoading=true) {
-        return api.postData('/api/MobileMethod/MSaveServiceDeskForm', params,showLoading);
+    saveRepariForm(params, showLoading = true) {
+        return api.postData('/api/MobileMethod/MSaveServiceDeskForm', params, showLoading);
     },
 
-     //附件
-     deleteWorkFile(url) {
+    //附件
+    deleteWorkFile(url) {
         return api.getData('/api/MobileMethod/MDeleteWorkFile', { url });
     },
+    
+    //获取必填项
+    getSetting(type) {
+        return api.getData('/api/MobileMethod/GetSetting', { type });
+    }
 };

@@ -51,11 +51,10 @@ export default class SelectRepairMajor extends BasePage {
 
     submit = () => {
         const { selectItem, parentName } = this.state;
-        //console.log('selectItem',selectItem);
-        if (selectItem) { 
+        if (selectItem) {
             if (parentName) {
                 this.props.navigation.navigate(parentName, { repairmajor: { repairmajor: selectItem } });
-            } 
+            }
             //点击第二层的时候，navigation变化了，此方法不能用
             // const { navigation } = this.props;
             // navigation.state.params.onSelect({ selectItem });
@@ -79,8 +78,7 @@ export default class SelectRepairMajor extends BasePage {
     };
 
     getData = () => {
-        const parent = common.getValueFromProps(this.props, 'data');
-        //console.log('parent',parent);
+        const parent = common.getValueFromProps(this.props, 'data'); 
         let params;
         if (parent) {
             let type = -1;
@@ -89,7 +87,7 @@ export default class SelectRepairMajor extends BasePage {
                     type = 2;
                     this.props.navigation.setParams({
                         data: parent,
-                        title: '选择专业',
+                        title: '选择专业'
                     });
                     break;
                 }
@@ -136,8 +134,15 @@ export default class SelectRepairMajor extends BasePage {
                                     onPress={() => this.next(item)}>
                                     <Flex>
                                         {item.type == 2 ?
-                                            <TouchableWithoutFeedback onPress={() => this.setState({ selectItem: { id: item.id, name: item.name } })}>
-                                                <Image alt='' style={{ width: 24, height: 24 }}
+                                            <TouchableWithoutFeedback onPress={() => this.setState({
+                                                selectItem:
+                                                {
+                                                    id: item.id,
+                                                    name: item.name,
+                                                    score: item.score
+                                                }
+                                            })}>
+                                                <Image style={{ width: 24, height: 24 }}
                                                     source={selectItem.id === item.id ? require('../../static/images/select.png') : require('../../static/images/no-select.png')} />
                                             </TouchableWithoutFeedback> : null}
                                         <Text style={{

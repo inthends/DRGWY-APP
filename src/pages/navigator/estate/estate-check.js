@@ -158,9 +158,7 @@ class EstateCheckPage extends BasePage {
                     <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.billCode}</Text>
                         <Text style={styles.title2}>{item.statusName}</Text>
-                    </Flex>
-
-                    
+                    </Flex> 
                     <Flex style={styles.line} />
                     <Flex align={'start'} direction={'column'}>
                         <Text style={{

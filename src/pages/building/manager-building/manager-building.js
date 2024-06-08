@@ -213,7 +213,6 @@ class ManagerBuildingPage extends BasePage {
     }
  
     this.clearData();//清除之前的选中值
-
     let allData = [...this.state.allData];
     allData = allData.map((item) => {
       if (item.key === data.key) {

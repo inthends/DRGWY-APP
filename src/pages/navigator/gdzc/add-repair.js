@@ -8,10 +8,8 @@ import {
     Keyboard,
     Alert
 } from 'react-native';
-import { Icon } from '@ant-design/react-native';
-import { connect } from 'react-redux';
 import BasePage from '../../base/base';
-import { Flex, TextareaItem, Button } from '@ant-design/react-native';
+import { Icon, Flex, TextareaItem, Button } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import LoadImageDelete from '../../../components/load-image-del';
@@ -24,6 +22,7 @@ import UDToast from '../../../utils/UDToast';
 import GdzcService from './gdzc-service';
 import { AudioRecorder, AudioUtils } from 'react-native-audio';
 import CommonView from '../../../components/CommonView';
+import { connect } from 'react-redux';
 import { saveXunJianAction } from '../../../utils/store/actions/actions';
 import Macro from '../../../utils/macro';
 
@@ -48,7 +47,7 @@ class AddRepairPage extends BasePage {
             index: 0,
             data: ['报修', '报事', '巡场'],
             images: [''],
-            image: '',
+            //image: '',
             recording: false,
             id: common.getGuid(),
             fileUrl: null,
@@ -57,7 +56,8 @@ class AddRepairPage extends BasePage {
             KeyboardShown: false,
             canSelectAddress: false, //!address,
             address,
-            value
+            value,
+            isMustServicedeskFile: false
         };
         this.keyboardDidShowListener = null;
         this.keyboardDidHideListener = null;
@@ -73,6 +73,11 @@ class AddRepairPage extends BasePage {
                 }
             }
         );
+
+        //获取附件是否必填验证 
+        GdzcService.getSetting('isMustServicedeskFile').then(res => { 
+            this.setState({ isMustServicedeskFile: res });
+        });
     }
 
     componentWillMount() {
@@ -177,7 +182,7 @@ class AddRepairPage extends BasePage {
     delete = (url) => {
         Alert.alert(
             '请确认',
-            '是否删除？', 
+            '是否删除？',
             [{ text: '取消', tyle: 'cancel' },
             {
                 text: '确定',
@@ -194,16 +199,25 @@ class AddRepairPage extends BasePage {
     }
 
     submit = () => {
-        if (this.canSubmit === false) {
-            return;
-        }
-        this.canSubmit = false;
-        const { id, data, index, address, value, taskId } = this.state;
-        if (!address) {
+
+        const { id, data, index, address, value, taskId, isMustServicedeskFile, images } = this.state;
+
+        if (address == null || address.allName == null) {
             const title = '请选择' + data[index] + '地址';
             UDToast.showInfo(title);
             return;
         }
+
+        if (isMustServicedeskFile == true && images.length == 1) {
+            UDToast.showInfo('请上传附件');
+            return;
+        }
+
+        if (this.canSubmit === false) {
+            return;
+        }
+        this.canSubmit = false;//防止重复提交
+
         const params = {
             id,
             keyvalue: id,
@@ -297,10 +311,10 @@ class AddRepairPage extends BasePage {
                                         marginRight: 15,
                                         width: ScreenUtil.deviceWidth() - 30,
                                     }, ScreenUtil.borderBottom()]}>
-                                        <Text style={[address ? { color: '#404145', fontSize: 16 } : {
+                                        <Text style={[address && address.allName ? { color: '#404145', fontSize: 16 } : {
                                             color: '#999',
                                             fontSize: 16,
-                                        }]}>{address ? address.allName : `请选择${title}地址`}</Text>
+                                        }]}>{address && address.allName ? address.allName : `请选择${title}地址`}</Text>
                                         {/* <LoadImage style={{ width: 6, height: 11 }}
                                             defaultImg={require('../../../static/images/address/right.png')} /> */}
                                     </Flex>

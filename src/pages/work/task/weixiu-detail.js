@@ -5,7 +5,8 @@ import {
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    ScrollView, Modal,
+    ScrollView, 
+    Modal
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Icon, Flex } from '@ant-design/react-native';
@@ -14,14 +15,13 @@ import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';
 import WorkService from '../../work/work-service';
 import ListImages from '../../../components/list-images';
-// import Communicates from '../../../components/communicates';
 import OperationRecords from '../../../components/operationrecords';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import Macro from '../../../utils/macro';
 
 export default class WeixiuDetailPage extends BasePage {
-    
+
     static navigationOptions = ({ navigation }) => {
         return {
             title: '维修单详情',
@@ -71,14 +71,14 @@ export default class WeixiuDetailPage extends BasePage {
 
             WorkService.getOperationRecord(id).then(res => {
                 this.setState({
-                    communicates: res,
+                    communicates: res
                 });
             });
         });
 
         WorkService.weixiuExtra(id).then(images => {
             this.setState({
-                images,
+                images
             });
         });
     };
@@ -95,6 +95,7 @@ export default class WeixiuDetailPage extends BasePage {
             communicates: d
         });
     };
+
     cancel = () => {
         this.setState({
             visible: false
@@ -128,7 +129,9 @@ export default class WeixiuDetailPage extends BasePage {
                         </TouchableWithoutFeedback>
                     </Flex>
                     <Text style={styles.desc}>{detail.repairContent}</Text>
+
                     <ListImages images={images} lookImage={this.lookImage} />
+
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
                     </Flex>
@@ -144,8 +147,7 @@ export default class WeixiuDetailPage extends BasePage {
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every]}>
                             <Text style={styles.left}>关联单：</Text>
-                            <Text
-                                //onPress={() => this.props.navigation.navigate('service', { data: { id: detail.relationId } })}
+                            <Text 
                                 onPress={() => {
                                     if (detail.sourceType === '服务总台') {
                                         this.props.navigation.navigate('service', { data: { id: detail.relationId } });
@@ -162,7 +164,11 @@ export default class WeixiuDetailPage extends BasePage {
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>
                     </Flex>
-                    
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>积分：{detail.score}</Text>
+                    </Flex>
+
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>协助人：{detail.assistName}</Text>
                     </Flex>
@@ -195,6 +201,7 @@ export default class WeixiuDetailPage extends BasePage {
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                         imageUrls={this.state.images} />
                 </Modal>
+                
             </CommonView>
         );
     }

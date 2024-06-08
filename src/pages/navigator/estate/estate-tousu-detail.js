@@ -4,14 +4,14 @@ import {
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    ScrollView, Modal,
+    ScrollView,
+     Modal
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Icon, Flex } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
-import common from '../../../utils/common';
-import UDToast from '../../../utils/UDToast';
+import common from '../../../utils/common'; 
 import DashLine from '../../../components/dash-line';
 import WorkService from '../../work/work-service';
 import ListImages from '../../../components/list-images';
@@ -20,6 +20,7 @@ import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
+//统计页面，仅查看
 export default class EtousuDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
@@ -75,15 +76,7 @@ export default class EtousuDetailPage extends BasePage {
             });
         });
     };
-    click = (handle) => {
-        const { id, value } = this.state;
-        if (handle === '回复' && !(value && value.length > 0)) {
-            UDToast.showInfo('请输入文字');
-            return;
-        }
-        WorkService.serviceHandle(handle, id, value).then(res => {
-        });
-    };
+     
     communicateClick = (i) => {
         let c = this.state.communicates;
         let d = c.map(it => {
@@ -128,23 +121,28 @@ export default class EtousuDetailPage extends BasePage {
                     <DashLine />
                     <Text style={styles.desc}>{detail.contents}</Text>
                     <DashLine />
+                    
                     <ListImages images={images} lookImage={this.lookImage} />
+
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName}</Text>
                     </Flex>
+
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单时间：{detail.createDate}</Text>
                     </Flex>
+
                     {detail.relationId && <TouchableWithoutFeedback>
-                        <Flex style={[styles.every]}>
+                        <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                             <Text style={styles.left}>关联单：</Text>
                             <Text onPress={() => this.props.navigation.navigate('fuwuD', { data: { id: detail.relationId } })}
                                 style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
-                    </TouchableWithoutFeedback>}
-                    <DashLine />
+                    </TouchableWithoutFeedback>} 
+
                     <Communicates communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
+                
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                         imageUrls={this.state.images} />

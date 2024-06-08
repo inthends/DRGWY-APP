@@ -80,7 +80,7 @@ export default class SelectAddressPage extends BasePage {
             const { parentName } = this.state;
             this.props.navigation.push('selectAddress', {
                 'data': {
-                    ...item,
+                    ...item
                 },
                 parentName//传递主页面到楼栋、楼层
             });
@@ -135,7 +135,7 @@ export default class SelectAddressPage extends BasePage {
         }
         this.setState({
             parent,
-            refreshing: true,
+            refreshing: true
         });
 
         WorkService.getPStructs(params).then(items => {

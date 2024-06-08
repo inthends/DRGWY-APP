@@ -53,7 +53,6 @@ export default class StartDetailPage extends BasePage {
             KeyboardShown: false,
             selectPersons: []
         };
-
         this.keyboardDidShowListener = null;
         this.keyboardDidHideListener = null;
     }
@@ -205,98 +204,102 @@ export default class StartDetailPage extends BasePage {
 
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
-                <TouchableWithoutFeedback onPress={() => {
-                    Keyboard.dismiss();
-                }}>
-                    <ScrollView style={{ marginTop: this.state.KeyboardShown ? - 200 : 0, height: '100%' }}>
+
+                <ScrollView style={{ marginTop: this.state.KeyboardShown ? - 200 : 0, height: '100%' }}>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>{detail.billCode}</Text>
+                        <Text style={styles.right}>{detail.statusName}</Text>
+                    </Flex>
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>{detail.address} {detail.contactName}</Text>
+                        <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
+                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
+                                style={{ width: 16, height: 16 }} /></Flex>
+                        </TouchableWithoutFeedback>
+                    </Flex>
+                    <Text style={styles.desc}>{detail.repairContent}</Text>
+
+                    <ListImages images={images} lookImage={this.lookImage} />
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>转单人：{detail.createUserName}</Text>
+                    </Flex>
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>转单时间：{detail.createDate}</Text>
+                    </Flex>
+
+                    <TouchableWithoutFeedback>
+                        <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
+                            <Text style={styles.left}>关联单：</Text>
+                            <Text 
+                                onPress={() => {
+                                    if (detail.sourceType === '服务总台') {
+                                        this.props.navigation.navigate('service', { data: { id: detail.relationId } });
+                                    }
+                                    else {
+                                        //检查单
+                                        this.props.navigation.navigate('checkDetail', { data: { id: detail.relationId } });
+                                    }
+                                }}
+                                style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
+                        </Flex>
+                    </TouchableWithoutFeedback>
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>积分：{detail.score}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>协助人：{detail.assistName}</Text>
+                    </Flex>
+                    <TouchableWithoutFeedback
+                        onPress={() => this.props.navigation.navigate('selectRolePersonMulti', { type: 'receive', onSelect: this.onSelectPerson })}>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>{detail.billCode}</Text>
-                            <Text style={styles.right}>{detail.statusName}</Text>
-                        </Flex>
-                        <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>{detail.address} {detail.contactName}</Text>
-                            <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
-                                <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
-                                    style={{ width: 16, height: 16 }} /></Flex>
-                            </TouchableWithoutFeedback>
-                        </Flex>
-                        <Text style={styles.desc}>{detail.repairContent}</Text>
-                        <ListImages images={images} lookImage={this.lookImage} />
-
-                        <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
-                        </Flex>
-
-                        <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>转单人：{detail.createUserName}</Text>
-                        </Flex>
-                        <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>转单时间：{detail.createDate}</Text>
-                        </Flex>
-
-                        <TouchableWithoutFeedback>
-                            <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
-                                <Text style={styles.left}>关联单：</Text>
+                            <Flex>
+                                <Text style={styles.left}>增援人：</Text>
                                 <Text
-                                    //onPress={() => this.props.navigation.navigate('service', { data: { id: detail.relationId } })}
-                                    onPress={() => {
-                                        if (detail.sourceType === '服务总台') {
-                                            this.props.navigation.navigate('service', { data: { id: detail.relationId } });
-                                        }
-                                        else {
-                                            //检查单
-                                            this.props.navigation.navigate('checkDetail', { data: { id: detail.relationId } });
-                                        }
-                                    }}
-                                    style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
+                                    style={[styles.right, mystrNames ? { color: Macro.work_blue } : { color: '#666' }]}>{mystrNames ? mystrNames : "请选择增援人"}</Text>
                             </Flex>
-                        </TouchableWithoutFeedback> 
-                        <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>
-                        </Flex> 
-                        <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>协助人：{detail.assistName}</Text>
-                        </Flex> 
-                        <TouchableWithoutFeedback
-                            onPress={() => this.props.navigation.navigate('selectRolePersonMulti', { type: 'receive', onSelect: this.onSelectPerson })}>
-                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                                <Flex>
-                                    <Text style={styles.left}>增援人：</Text>
-                                    <Text
-                                        style={[styles.right, mystrNames ? { color: Macro.work_blue } : { color: '#666' }]}>{mystrNames ? mystrNames : "请选择增援人"}</Text>
-                                </Flex>
-                                <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
-                            </Flex>
-                        </TouchableWithoutFeedback> 
-                        <UploadImageView style={{ marginTop: 10 }}
-                            linkId={this.state.id}
-                            reload={this.reload}
-                            type='开工'
+                            <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
+                        </Flex>
+                    </TouchableWithoutFeedback>
+                    <UploadImageView style={{ marginTop: 10 }}
+                        linkId={this.state.id}
+                        reload={this.reload}
+                        type='开工'
+                    />
+
+                    <View style={{ margin: 15 }}>
+                        <TextareaItem
+                            rows={4}
+                            autoHeight
+                            placeholder='请输入故障判断'
+                            style={{ width: ScreenUtil.deviceWidth() - 32 }}
+                            onChange={value => this.setState({ value })}
+                            value={this.state.value}
                         />
+                    </View>
 
-                        <View style={{ margin: 15 }}>
-                            <TextareaItem
-                                rows={4}
-                                autoHeight
-                                placeholder='请输入故障判断'
-                                style={{ width: ScreenUtil.deviceWidth() - 32 }}
-                                onChange={value => this.setState({ value })}
-                                value={this.state.value}
-                            />
-                        </View>
+                    <View style={{ margin: 15 }}>
+                        <TextareaItem
+                            rows={4}
+                            autoHeight
+                            placeholder='请输入退单原因'
+                            style={{ width: ScreenUtil.deviceWidth() - 32 }}
+                            onChange={value => this.setState({ backMemo: value })}
+                            value={this.state.backMemo}
+                        />
+                    </View>
 
-                        <View style={{ margin: 15 }}>
-                            <TextareaItem
-                                rows={4}
-                                autoHeight
-                                placeholder='请输入退单原因'
-                                style={{ width: ScreenUtil.deviceWidth() - 32 }}
-                                onChange={value => this.setState({ backMemo: value })}
-                                value={this.state.backMemo}
-                            />
-                        </View>
 
-                        {/*
+                    {/*
                       苹果系统输入框有问题
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <TextInput
@@ -310,22 +313,20 @@ export default class StartDetailPage extends BasePage {
                         </TextInput>
                     </Flex> */}
 
-                        <Flex justify={'center'} style={{ marginTop: 20 }} >
-                            <TouchableWithoutFeedback onPress={() => this.click()}>
-                                <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
-                                    <Text style={styles.word}>开始维修</Text>
-                                </Flex>
-                            </TouchableWithoutFeedback>
-                            <TouchableWithoutFeedback onPress={() => this.back('退单')}>
-                                <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_red }]}>
-                                    <Text style={styles.word}>退单</Text>
-                                </Flex>
-                            </TouchableWithoutFeedback>
-                        </Flex>
-                        <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
-                    </ScrollView>
-
-                </TouchableWithoutFeedback>
+                    <Flex justify={'center'} style={{ marginTop: 20 }} >
+                        <TouchableWithoutFeedback onPress={() => this.click()}>
+                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
+                                <Text style={styles.word}>开始维修</Text>
+                            </Flex>
+                        </TouchableWithoutFeedback>
+                        <TouchableWithoutFeedback onPress={() => this.back('退单')}>
+                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_red }]}>
+                                <Text style={styles.word}>退单</Text>
+                            </Flex>
+                        </TouchableWithoutFeedback>
+                    </Flex>
+                    <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
+                </ScrollView>
 
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer

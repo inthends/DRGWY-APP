@@ -171,113 +171,114 @@ export default class CheckDetailPage extends BasePage {
         const noselectImg = require('../../../static/images/no-select.png');
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
-                <TouchableWithoutFeedback onPress={() => {
-                    Keyboard.dismiss();
-                }}>
-                    <ScrollView style={{ marginTop: this.state.KeyboardShown ? -200 : 0, height: '100%' }}>
-                        <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>{detail.billCode}</Text>
-                            <Text style={styles.right}>{detail.statusName}</Text>
+
+                <ScrollView style={{ marginTop: this.state.KeyboardShown ? -200 : 0, height: '100%' }}>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>{detail.billCode}</Text>
+                        <Text style={styles.right}>{detail.statusName}</Text>
+                    </Flex>
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>{detail.address} {detail.contactName}</Text>
+                        <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
+                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 16, height: 16 }} /></Flex>
+                        </TouchableWithoutFeedback>
+                    </Flex>
+                    {/* <DashLine /> */}
+                    <Text style={styles.desc}>{detail.repairContent}</Text>
+                    {/* <DashLine /> */}
+                    <ListImages images={images} lookImage={this.lookImage} />
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
+                    </Flex>
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>转单人：{detail.createUserName}</Text>
+                    </Flex>
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>转单时间：{detail.createDate}</Text>
+                    </Flex>
+                    <TouchableWithoutFeedback>
+                        <Flex style={[styles.every]}>
+                            <Text style={styles.left}>关联单：</Text>
+                            <Text
+                                onPress={() => {
+                                    if (detail.sourceType === '服务总台') {
+                                        this.props.navigation.navigate('service', { data: { id: detail.relationId } });
+                                    }
+                                    else {
+                                        //检查单
+                                        this.props.navigation.navigate('checkDetail', { data: { id: detail.relationId } });
+                                    }
+                                }}
+                                style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
-                        <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>{detail.address} {detail.contactName}</Text>
-                            <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
-                                <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 16, height: 16 }} /></Flex>
-                            </TouchableWithoutFeedback>
-                        </Flex>
-                        {/* <DashLine /> */}
-                        <Text style={styles.desc}>{detail.repairContent}</Text>
-                        {/* <DashLine /> */}
-                        <ListImages images={images} lookImage={this.lookImage} />
-                        <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
-                        </Flex>
-                        <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>转单人：{detail.createUserName}</Text>
-                        </Flex>
-                        <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>转单时间：{detail.createDate}</Text>
-                        </Flex>
-                        <TouchableWithoutFeedback>
-                            <Flex style={[styles.every]}>
-                                <Text style={styles.left}>关联单：</Text>
-                                <Text
-                                    onPress={() => {
-                                        if (detail.sourceType === '服务总台') {
-                                            this.props.navigation.navigate('service', { data: { id: detail.relationId } });
-                                        }
-                                        else {
-                                            //检查单
-                                            this.props.navigation.navigate('checkDetail', { data: { id: detail.relationId } });
-                                        }
-                                    }}
-                                    style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
+                    </TouchableWithoutFeedback>
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>积分：{detail.score}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>协助人：{detail.assistName}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>增援人：{detail.reinforceName}</Text>
+                    </Flex>
+                    {/* <DashLine /> */}
+                    <Flex justify={'between'} style={{ margin: 15 }}>
+                        <TouchableWithoutFeedback onPress={() => this.setState({ result: 1 })}>
+                            <Flex>
+                                <LoadImage img={result === 1 ? selectImg : noselectImg}
+                                    style={{ width: 15, height: 15 }} />
+                                <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>合格</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
-                        <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>
-                        </Flex>
+                        <TouchableWithoutFeedback onPress={() => this.setState({ result: 0 })}>
+                            <Flex>
+                                <LoadImage img={result === 0 ? selectImg : noselectImg}
+                                    style={{ width: 15, height: 15 }} />
+                                <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>不合格</Text>
+                            </Flex>
+                        </TouchableWithoutFeedback>
+                    </Flex>
+                    <UploadImageView
+                        style={{ marginTop: 10 }}
+                        linkId={this.state.id}
+                        reload={this.reload}
+                        type='检验'
+                    />
+                    <View style={{
+                        margin: 15
+                        // borderStyle: 'solid',
+                        // borderColor: '#F3F4F2',
+                        // borderWidth: 1,
+                        // borderRadius: 5
+                    }}>
+                        <TextareaItem
+                            rows={4}
+                            autoHeight
+                            placeholder='请输入检验情况'
+                            style={{ width: ScreenUtil.deviceWidth() - 32 }}
+                            onChange={value => this.setState({ value })}
+                            value={this.state.value}
+                        />
+                    </View>
 
-                        <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>协助人：{detail.assistName}</Text>
-                        </Flex>
-
-                        <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>增援人：{detail.reinforceName}</Text>
-                        </Flex>
-                        {/* <DashLine /> */}
-                        <Flex justify={'between'} style={{ margin: 15 }}>
-                            <TouchableWithoutFeedback onPress={() => this.setState({ result: 1 })}>
-                                <Flex>
-                                    <LoadImage img={result === 1 ? selectImg : noselectImg}
-                                        style={{ width: 15, height: 15 }} />
-                                    <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>合格</Text>
-                                </Flex>
-                            </TouchableWithoutFeedback>
-                            <TouchableWithoutFeedback onPress={() => this.setState({ result: 0 })}>
-                                <Flex>
-                                    <LoadImage img={result === 0 ? selectImg : noselectImg}
-                                        style={{ width: 15, height: 15 }} />
-                                    <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>不合格</Text>
-                                </Flex>
-                            </TouchableWithoutFeedback>
-                        </Flex> 
-                        <UploadImageView
-                            style={{ marginTop: 10 }}
-                            linkId={this.state.id}
-                            reload={this.reload}
-                            type='检验'
-                        /> 
-                        <View style={{
-                            margin: 15
-                            // borderStyle: 'solid',
-                            // borderColor: '#F3F4F2',
-                            // borderWidth: 1,
-                            // borderRadius: 5
-                        }}>
-                            <TextareaItem
-                                rows={4}
-                                autoHeight
-                                placeholder='请输入检验情况'
-                                style={{ width: ScreenUtil.deviceWidth() - 32 }}
-                                onChange={value => this.setState({ value })}
-                                value={this.state.value}
-                            />
-                        </View>
-
-                        <Flex justify={'center'}>
-                            <Button onPress={() => this.click('完成检验')} type={'primary'}
-                                activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                    width: 200,
-                                    backgroundColor: Macro.work_blue,
-                                    marginTop: 20,
-                                    height: 40
-                                }}>完成检验</Button>
-                        </Flex>
-                        <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
-                    </ScrollView>
-
-                </TouchableWithoutFeedback>
+                    <Flex justify={'center'}>
+                        <Button onPress={() => this.click('完成检验')} type={'primary'}
+                            activeStyle={{ backgroundColor: Macro.work_blue }} style={{
+                                width: 200,
+                                backgroundColor: Macro.work_blue,
+                                marginTop: 20,
+                                height: 40
+                            }}>完成检验</Button>
+                    </Flex>
+                    <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
+                </ScrollView>
 
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}

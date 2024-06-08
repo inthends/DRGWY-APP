@@ -46,8 +46,7 @@ class AddWorkPage extends BasePage {
             index: 0,
             data: ['报修', '报事', '巡场'],
             // images: [{ icon: '' }],
-            images: [''],
-            //image: '',
+            images: [''], 
             recording: false,
             id: common.getGuid(),
             fileUrl: null,
@@ -56,8 +55,10 @@ class AddWorkPage extends BasePage {
             KeyboardShown: false,
             canSelectAddress: !address,
             address,
-            value
+            value,
+            isMustServicedeskFile: false
         };
+
         this.keyboardDidShowListener = null;
         this.keyboardDidHideListener = null;
     }
@@ -72,6 +73,12 @@ class AddWorkPage extends BasePage {
                 }
             }
         );
+
+        //获取附件是否必填验证 
+        WorkService.getSetting('isMustServicedeskFile').then(res => {
+            //console.log('isMustServicedeskFile',res);
+            this.setState({ isMustServicedeskFile: res });
+        });
     }
 
     componentWillMount() {
@@ -117,10 +124,10 @@ class AddWorkPage extends BasePage {
                         Channels: 1,
                         AudioQuality: 'Low',
                         AudioEncoding: 'aac'
-                    }); 
+                    });
                     AudioRecorder.onProgress = (data) => {
                         // this.setState({currentTime: Math.floor(data.currentTime)});
-                    }; 
+                    };
                     AudioRecorder.onFinished = (data) => {
                         // Android callback comes in the form of a promise instead. 
                         // if (common.isIOS()) {
@@ -173,7 +180,7 @@ class AddWorkPage extends BasePage {
     delete = (url) => {
         Alert.alert(
             '请确认',
-            '是否删除？', 
+            '是否删除？',
             [
                 {
                     text: '取消',
@@ -192,20 +199,28 @@ class AddWorkPage extends BasePage {
                 }
             ],
             { cancelable: false }
-        ); 
+        );
     }
 
-    submit = () => {
-        if (this.canSubmit === false) {
-            return;
-        }
-        this.canSubmit = false;
-        const { id, data, index, address, value, taskId } = this.state;
-        if (!address) {
+    submit = () => { 
+        const { id, data, index, address, value, taskId, isMustServicedeskFile, images } = this.state;
+
+        if (address == null || address.allName == null) {
             const title = '请选择' + data[index] + '地址';
             UDToast.showInfo(title);
             return;
         }
+
+        if (isMustServicedeskFile == true && images.length == 1) {
+            UDToast.showInfo('请上传附件');
+            return;
+        }
+
+        if (this.canSubmit === false) {
+            return;
+        } 
+        this.canSubmit = false;//防止重复提交
+         
         const params = {
             id,
             keyvalue: id,
@@ -245,7 +260,7 @@ class AddWorkPage extends BasePage {
             }
         }
     };
- 
+
     // onSelectAddress = ({ selectItem }) => {
     //     this.setState({
     //         address: selectItem
@@ -258,11 +273,11 @@ class AddWorkPage extends BasePage {
         const title2 = '请输入' + title + '内容';
         const width = (ScreenUtil.deviceWidth() - 5 * 20) / 4.0;
         const height = (ScreenUtil.deviceWidth() - 5 * 20) / 4.0;
+
         return (
             <CommonView style={{ flex: 1, backgroundColor: 'F3F4F2' }}>
-                {/*<ScrollView>*/}
                 <TouchableWithoutFeedback onPress={() => {
-                    Keyboard.dismiss();
+                    Keyboard.dismiss();//ScrollView等同此功能，如果有滚动，则不需要
                 }}>
                     <View style={{ marginTop: this.state.KeyboardShown ? -100 : 0, height: '100%' }}>
                         <Flex direction='column'>
@@ -298,15 +313,15 @@ class AddWorkPage extends BasePage {
                                         marginRight: 15,
                                         width: ScreenUtil.deviceWidth() - 30
                                     }, ScreenUtil.borderBottom()]}>
-                                        <Text style={[address ? { color: '#404145', fontSize: 16 } : {
+                                        <Text style={[address && address.allName ? { color: '#404145', fontSize: 16 } : {
                                             color: '#999',
                                             fontSize: 16,
-                                        }]}>{address ? address.allName : `请选择${title}地址`}</Text>
+                                        }]}>{address && address.allName ? address.allName : `请选择${title}地址`}</Text>
                                         <LoadImage style={{ width: 6, height: 11 }}
                                             defaultImg={require('../../static/images/address/right.png')} />
                                     </Flex>
                                 </TouchableWithoutFeedback>
-                            </Flex> 
+                            </Flex>
                             <View>
                                 <TextareaItem
                                     rows={12}
@@ -319,7 +334,7 @@ class AddWorkPage extends BasePage {
                                     onChange={value => this.setState({ value })}
                                     value={this.state.value}
                                 />
-                            </View> 
+                            </View>
                             <Flex align={'start'} justify={'start'} style={{
                                 paddingTop: 15,
                                 paddingBottom: 15,
@@ -364,7 +379,6 @@ class AddWorkPage extends BasePage {
                                 </Flex>
                             </Flex>
                         </Flex>
-
                         <Flex justify={'center'} align={'start'} style={{
                             height: 80,
                             backgroundColor: '#eee',
@@ -378,7 +392,6 @@ class AddWorkPage extends BasePage {
                         </Flex>
                     </View>
                 </TouchableWithoutFeedback>
-                {/*</ScrollView>*/}
             </CommonView>
         );
     }

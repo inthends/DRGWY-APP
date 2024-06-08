@@ -5,7 +5,8 @@ import {
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    ScrollView, Modal,
+    ScrollView, 
+    Modal
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Icon, Flex } from '@ant-design/react-native';
@@ -78,6 +79,7 @@ export default class TousuDetailPage extends BasePage {
             });
         });
     };
+    
     click = (handle) => {
         const { id, value } = this.state;
         if (handle === '回复' && !(value && value.length > 0)) {
@@ -126,19 +128,21 @@ export default class TousuDetailPage extends BasePage {
                         <TouchableWithoutFeedback onPress={() => common.call(detail.complaintLink)}>
                             <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 16, height: 16 }} /></Flex>
                         </TouchableWithoutFeedback>
-                    </Flex> 
-                    {/* <DashLine /> */}
-                    <Text style={styles.desc}>{detail.contents}</Text>
-                    {/* <DashLine /> */}
+                    </Flex>  
+                    <Text style={styles.desc}>{detail.contents}</Text> 
+
                     <ListImages images={images} lookImage={this.lookImage} />
+
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName}</Text>
                     </Flex> 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单时间：{detail.createDate}</Text>
                     </Flex>
+
                     <Communicates communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
+
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                         imageUrls={this.state.images} />

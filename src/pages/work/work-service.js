@@ -297,4 +297,9 @@ export default {
     getButtonList() {
         return api.getData('/api/MobileMethod/GetButtonList');
     },
+
+    //获取必填项
+    getSetting(type) {
+        return api.getData('/api/MobileMethod/GetSetting', { type });
+    }
 };
