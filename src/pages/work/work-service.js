@@ -147,8 +147,7 @@ export default {
         else if (handle === '完成维修') {
             url = '/api/MobileMethod/MRepairHandleFinish';
 
-        } else if (handle === '完成回访') {
-            // url = '/api/MobileMethod/MRepairVisitFinish';
+        } else if (handle === '完成回访') { 
             url = '/api/MobileMethod/MVisitFinish';//服务单完成回访
 
         } else if (handle === '完成检验') {
@@ -248,10 +247,10 @@ export default {
         return api.postData(url, { status: type, isOverdue: overdue, pageIndex, pageSize: 10 });
     },
 
-    //工作台已完成服务单列表
-    servicedeskList(type, overdue, pageIndex) {
+    //服务单列表
+    servicedeskList(type, overdue, pageIndex) { 
         let url = '/api/MobileMethod/MGetServicedeskPageList';
-        return api.postData(url, { type, overdue, pageIndex, pageSize: 10 });
+        return api.postData(url, { type, overdue , pageIndex, pageSize: 10 });
     },
 
     //工作台已完成服务单列表

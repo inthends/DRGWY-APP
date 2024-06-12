@@ -240,7 +240,7 @@ export default class CompleteDetailPage extends BasePage {
                     <Flex justify={'center'}>
                         <Button onPress={() => this.click('完成维修')} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                width: 200,
+                                width: 130,
                                 backgroundColor: Macro.work_blue,
                                 marginTop: 20,
                                 height: 40

@@ -211,7 +211,8 @@ export default class WorkPage extends BasePage {
                                     }
                                     this.props.navigation.push('servicedesk', {
                                         'data': {
-                                            type: '0',
+                                            type: 0,
+                                            hiddenHeader: false,
                                             title: '待回复列表'
                                         }
                                     })
@@ -228,7 +229,7 @@ export default class WorkPage extends BasePage {
                                     }
                                     this.props.navigation.push('servicedeskDone', {
                                         'data': {
-                                            type: '0',
+                                            type: 0,
                                             hiddenHeader: true,
                                             title: '已回复列表'
                                         }
@@ -239,55 +240,51 @@ export default class WorkPage extends BasePage {
                                         <Text style={styles.bottom}>已回复</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
-
-
+ 
                                 <TouchableWithoutFeedback onPress={() => {
-                                    if (data.pendingreply == 0) {
+                                    if (data.servicetodo == 0) {
                                         return;
                                     }
                                     this.props.navigation.push('servicedesk', {
                                         'data': {
-                                            type: 'fuwu',
+                                            type: 1,
                                             title: '待处理列表'
                                         }
                                     })
                                 }}>
                                     <Flex direction='column' style={{ width: '25%' }}>
-                                        <Text style={styles.top}>{data.pendingreply}</Text>
+                                        <Text style={styles.top}>{data.servicetodo}</Text>
                                         <Text style={styles.bottom}>待处理</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
 
                                 <TouchableWithoutFeedback onPress={() => {
-                                    if (data.reply == 0) {
+                                    if (data.servicedo == 0) {
                                         return;
                                     }
                                     this.props.navigation.push('servicedeskDone', {
                                         'data': {
-                                            type: 'fuwu',
-                                            overdue: -1,//已经回复不判断是否逾期
+                                            type: 1, 
                                             hiddenHeader: true,
                                             title: '已处理列表'
                                         }
                                     })
                                 }}>
                                     <Flex direction='column' style={{ width: '25%' }}>
-                                        <Text style={styles.top}>{data.reply}</Text>
+                                        <Text style={styles.top}>{data.servicedo}</Text>
                                         <Text style={styles.bottom}>已处理</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
                             </Flex>
-
-
-                            <Flex>
-
+  
+                            <Flex> 
                                 <TouchableWithoutFeedback onPress={() => {
                                     if (data.tobevisit == 0) {
                                         return;
                                     }
                                     this.props.navigation.push('servicedesk', {
                                         'data': {
-                                            type: 'visit',
+                                            type: 3, 
                                             hiddenHeader: true,
                                             title: '待回访列表'
                                         }
@@ -300,58 +297,55 @@ export default class WorkPage extends BasePage {
                                 </TouchableWithoutFeedback>
 
                                 <TouchableWithoutFeedback onPress={() => {
-                                    if (data.tobevisit == 0) {
+                                    if (data.tobevisitdo == 0) {
                                         return;
                                     }
                                     this.props.navigation.push('servicedeskDone', {
                                         'data': {
-                                            type: 'visit',
-                                            hiddenHeader: true,
+                                            type: 5, 
                                             title: '已回访列表'
                                         }
                                     })
                                 }}>
                                     <Flex direction='column' style={{ width: '25%' }}>
-                                        <Text style={styles.top}>{data.tobevisit}</Text>
+                                        <Text style={styles.top}>{data.tobevisitdo}</Text>
                                         <Text style={styles.bottom}>已回访</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
+
                                 <TouchableWithoutFeedback onPress={() => {
-                                    if (data.tobevisit == 0) {
+                                    if (data.testdo == 0) {
                                         return;
                                     }
                                     this.props.navigation.push('servicedeskDone', {
                                         'data': {
-                                            type: 'visit',
-                                            hiddenHeader: true,
+                                            type: 6, 
                                             title: '已检验列表'
                                         }
                                     })
                                 }}>
                                     <Flex direction='column' style={{ width: '25%' }}>
-                                        <Text style={styles.top}>{data.tobevisit}</Text>
+                                        <Text style={styles.top}>{data.testdo}</Text>
                                         <Text style={styles.bottom}>已检验</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
 
                                 <TouchableWithoutFeedback onPress={() => {
-                                    if (data.tobevisit == 0) {
+                                    if (data.servicefile == 0) {
                                         return;
                                     }
                                     this.props.navigation.push('servicedeskDone', {
                                         'data': {
-                                            type: 'visit',
-                                            hiddenHeader: true,
+                                            type: 7, 
                                             title: '已归档列表'
                                         }
                                     })
                                 }}>
                                     <Flex direction='column' style={{ width: '25%' }}>
-                                        <Text style={styles.top}>{data.tobevisit}</Text>
+                                        <Text style={styles.top}>{data.servicefile}</Text>
                                         <Text style={styles.bottom}>已归档</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
-
                             </Flex>
 
                         </Flex>
@@ -444,8 +438,6 @@ export default class WorkPage extends BasePage {
                                         <Text style={styles.bottom}>已接单</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
-
-
                             </Flex>
 
                             <Flex>
@@ -523,7 +515,7 @@ export default class WorkPage extends BasePage {
                             </Flex>
 
                             <Flex>
-   
+
                                 <TouchableWithoutFeedback onPress={() => {
                                     if (data.unapprove == 0) {
                                         return;
@@ -558,7 +550,7 @@ export default class WorkPage extends BasePage {
                                         <Text style={styles.top}>{data.unapprove}</Text>
                                         <Text style={styles.bottom}>已审核</Text>
                                     </Flex>
-                                </TouchableWithoutFeedback> 
+                                </TouchableWithoutFeedback>
                             </Flex>
                         </Flex>
 

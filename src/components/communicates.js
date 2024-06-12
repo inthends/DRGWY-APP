@@ -1,14 +1,14 @@
-import React, {Component, Fragment} from 'react';
-import {View, Text,StyleSheet, TouchableWithoutFeedback} from 'react-native';
-import { Flex} from '@ant-design/react-native';
+import React, { Component, Fragment } from 'react';
+import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { Flex } from '@ant-design/react-native';
 // import ScreenUtil from '../utils/screen-util';
 import LoadImage from './load-image';
 import UpImage from '../static/images/address/up.png';
 import DownImage from '../static/images/address/down.png';
- 
+
 export default class Communicates extends Component {
- 
-    render() { 
+
+    render() {
         return (
             <Fragment>
                 <Flex style={{
@@ -27,11 +27,13 @@ export default class Communicates extends Component {
                             }
                         }}>
                             <Flex style={[styles.every]} justify='between'>
-                                <LoadImage img={i.avatar} style={{width: 30, height: 30}}/>
-                                <Text style={styles.left}>{i.author} {i.datetime}</Text>
+                                <Flex>
+                                    <LoadImage img={i.avatar} style={{ width: 30, height: 30  }} />
+                                    <Text style={styles.left}>{i.author} {i.datetime}</Text>
+                                </Flex>
                                 {/* <LoadImage style={{width: 30, height: 30}}/> */}
                                 <LoadImage style={{ width: 15, height: 8 }}
-                                    img={i.show ? UpImage : DownImage}  />
+                                    img={i.show ? UpImage : DownImage} />
                             </Flex>
                         </TouchableWithoutFeedback>
                         {i.show === true ? <View style={{
@@ -48,7 +50,7 @@ export default class Communicates extends Component {
                         }}>
                             <Text style={styles.content}>{i.content}</Text>
                         </View> : null}
-                        
+
                         {/*<Flex wrap={'wrap'}>*/}
                         {/*    {images.map((item, index) => {*/}
                         {/*        return (*/}
@@ -73,18 +75,19 @@ export default class Communicates extends Component {
     }
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
     every: {
         marginLeft: 15,
         marginRight: 15,
         paddingTop: 5,
         paddingBottom: 5
-    }, 
+    },
     left: {
-        fontSize: 15,
+        paddingLeft: 10,
+        fontSize: 14,
         color: '#666'
-    },   
+    },
     content: {
-        color:'#999'
+        color: '#999'
     }
 });

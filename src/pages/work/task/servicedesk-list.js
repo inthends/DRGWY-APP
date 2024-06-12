@@ -45,12 +45,10 @@ class ServicedeskListPage extends BasePage {
         this.selectBuilding = {
             key: null
         };
-
         const type = common.getValueFromProps(this.props).type;
-        const overdue = common.getValueFromProps(this.props).overdue;
+        //const overdue = common.getValueFromProps(this.props).overdue;
         const hiddenHeader = common.getValueFromProps(this.props).hiddenHeader;
-        
-        this.state = { 
+        this.state = {
             showTabbar: true,
             pageIndex: 1,
             statistics: {},
@@ -58,7 +56,7 @@ class ServicedeskListPage extends BasePage {
             dataInfo: {
                 data: [],
             },
-            overdue,
+            overdue: -1,
             hiddenHeader,
             refreshing: false
         };
@@ -127,49 +125,18 @@ class ServicedeskListPage extends BasePage {
 
     _renderItem = ({ item, index }) => {
         return (
-            <TouchableWithoutFeedback onPress={() => {
-                const { type } = this.state;
-                if (type === 'fuwu') {
-                    this.props.navigation.navigate('service', { id: item.id });
-                } else {
-                    switch (item.statusName) {
-
-                        case '待派单': {
-                            this.props.navigation.navigate('paidan', { id: item.id });
-                            break;
-                        }
-                        case '待接单': {
-                            this.props.navigation.navigate('jiedan', { id: item.id });
-                            break;
-                        }
-                        case '待开工': {
-                            this.props.navigation.navigate('kaigong', { id: item.id });
-                            break;
-                        }
-                        case '待完成': {
-                            this.props.navigation.navigate('wancheng', { id: item.id });
-                            break;
-                        }
-                        case '待检验': {
-                            this.props.navigation.navigate('jianyan', { id: item.id });
-                            break;
-                        }
-                        case '待回访': {
-                            this.props.navigation.navigate('huifang', { id: item.id });
-                            break;
-                        }
-                        case '待协助': 
-                        {
-                            this.props.navigation.navigate('assist', { id: item.id });
-                            break;
-                        }
-                        case '待审核': {
-                            this.props.navigation.navigate('approve', { id: item.id });
-                            break;
-                        }
-                        default:
-                            break;
+            <TouchableWithoutFeedback onPress={() => {  
+                switch (item.statusName) { 
+                    case '待处理': {
+                        this.props.navigation.navigate('service', { id: item.id });
+                        break;
                     }
+                    case '待回访': {
+                        this.props.navigation.navigate('huifang', { id: item.id });
+                        break;
+                    } 
+                    default:
+                        break;
                 }
             }}>
                 <Flex direction='column' align={'start'}
@@ -197,7 +164,8 @@ class ServicedeskListPage extends BasePage {
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>紧急：{item.emergencyLevel}，重要：{item.importance}</Text>
-                        </Flex> 
+                        </Flex>
+                        
                         <Text style={{
                             paddingLeft: 20,
                             paddingRight: 20,
@@ -218,8 +186,10 @@ class ServicedeskListPage extends BasePage {
 
     render() {
         const { dataInfo, overdue, hiddenHeader, type } = this.state;
+
         return (
             <CommonView style={{ flex: 1 }}>
+
                 {
                     hiddenHeader ? null :
                         (
@@ -233,14 +203,12 @@ class ServicedeskListPage extends BasePage {
                                 })} />
                         )
                 }
+
                 <FlatList
                     data={dataInfo.data}
-                    // ListHeaderComponent={}
                     renderItem={this._renderItem}
                     style={styles.list}
                     keyExtractor={(item) => item.id}
-                    // refreshing={this.state.refreshing}
-                    // onRefresh={() => this.onRefresh()}
                     onEndReached={() => this.loadMore()}
                     onEndReachedThreshold={0}
                     onScrollBeginDrag={() => this.canAction = true}

@@ -22,6 +22,7 @@ import Communicates from '../../../components/communicates';
 import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
+import OperationRecords from '../../../components/operationrecords';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
 export default class ServiceDeskDetailPage extends BasePage {
@@ -40,7 +41,7 @@ export default class ServiceDeskDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let id = common.getValueFromProps(this.props,'id');
+        let id = common.getValueFromProps(this.props, 'id');
         this.state = {
             isQD: 0,
             repairmajor: null,
@@ -52,6 +53,7 @@ export default class ServiceDeskDetailPage extends BasePage {
             detail: {
             },
             communicates: [],
+            operations: [],
             lookImageIndex: 0,
             visible: false,
             showRepair: false,//转单
@@ -64,7 +66,7 @@ export default class ServiceDeskDetailPage extends BasePage {
         this.keyboardDidHideListener = null;
     }
 
-    componentDidMount() { 
+    componentDidMount() {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
@@ -128,6 +130,13 @@ export default class ServiceDeskDetailPage extends BasePage {
                 communicates: res
             });
         });
+
+        WorkService.serviceOperations(id).then(res => {
+            this.setState({
+                operations: res
+            });
+        });
+
 
         WorkService.serviceExtra(id).then(images => {
             this.setState({
@@ -229,6 +238,19 @@ export default class ServiceDeskDetailPage extends BasePage {
         });
     }
 
+    operationClick = (i) => {
+        let c = this.state.operations;
+        let d = c.map(it => {
+            if (it.id === i.id) {
+                it.show = i.show !== true;
+            }
+            return it;
+        });
+        this.setState({
+            operations: d
+        });
+    };
+
     cancel = () => {
         this.setState({
             visible: false
@@ -249,7 +271,7 @@ export default class ServiceDeskDetailPage extends BasePage {
     }
 
     render() {
-        const { images, detail, id, communicates, isQD, repairmajor, selectPerson, btnList } = this.state;
+        const { images, detail, id, communicates, operations, isQD, repairmajor, selectPerson, btnList } = this.state;
         const selectImg = require('../../../static/images/select.png');
         const noselectImg = require('../../../static/images/no-select.png');
         return (
@@ -285,7 +307,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>报单时间：{detail.createDate}</Text>
                     </Flex>
-  
+
                     {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'reply')) ?
                         <>
                             <View style={{ margin: 15 }}>
@@ -316,7 +338,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                             {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'torepair')) ?
                                 <Flex justify={'center'}>
                                     <Button onPress={() => {
-                                        this.setState({ 
+                                        this.setState({
                                             showRepair: true
                                         })
                                     }
@@ -345,7 +367,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                                     <Button onPress={() =>
                                     //this.doWork('闭单')
                                     {
-                                        this.setState({ 
+                                        this.setState({
                                             memo: '',
                                             showClose: true
                                         })
@@ -363,7 +385,10 @@ export default class ServiceDeskDetailPage extends BasePage {
                                 </Flex> : null}
                         </Flex>
                     }
-                    <Communicates communicateClick={this.communicateClick} communicates={communicates} />
+
+                    <Communicates communicateClick={this.communicateClick} communicates={communicates} /> 
+                    <OperationRecords communicateClick={this.operationClick} communicates={operations} />
+
                 </ScrollView>
 
                 {this.state.showClose && (
@@ -390,7 +415,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                                     <Button onPress={() => this.doWork('闭单')} type={'primary'}
                                         activeStyle={{ backgroundColor: Macro.work_blue }}
                                         style={{
-                                            width: 110,
+                                            width: 130,
                                             backgroundColor: Macro.work_blue,
                                             height: 35
                                         }}>确认</Button>
@@ -401,7 +426,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                                         activeStyle={{ backgroundColor: Macro.work_blue }}
                                         style={{
                                             marginLeft: 30,
-                                            width: 110,
+                                            width: 130,
                                             backgroundColor: '#666',
                                             borderWidth: 0,
                                             height: 35
@@ -463,7 +488,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                                     <Button onPress={this.roRepair} type={'primary'}
                                         activeStyle={{ backgroundColor: Macro.work_blue }}
                                         style={{
-                                            width: 110,
+                                            width: 130,
                                             backgroundColor: Macro.work_blue,
                                             height: 35
                                         }}>确认</Button>
@@ -474,7 +499,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                                         activeStyle={{ backgroundColor: Macro.work_blue }}
                                         style={{
                                             marginLeft: 30,
-                                            width: 110,
+                                            width: 130,
                                             backgroundColor: '#666',
                                             borderWidth: 0,
                                             height: 35

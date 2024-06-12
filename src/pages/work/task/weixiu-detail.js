@@ -142,7 +142,7 @@ export default class WeixiuDetailPage extends BasePage {
                     </Flex>
 
                     <TouchableWithoutFeedback>
-                        <Flex style={[styles.every]}>
+                        <Flex style={[styles.every2, ScreenUtil.borderBottom()]}>
                             <Text style={styles.left}>关联单：</Text>
                             <Text
                                 onPress={() => {

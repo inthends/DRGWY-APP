@@ -29,8 +29,10 @@ export default class OperationRecords extends Component {
                             <Flex style={[styles.every]}
                                 justify='between'
                             >
-                                <LoadImage img={i.avatar} style={{ width: 30, height: 30 }} />
-                                <Text style={styles.left}>{i.author} {i.datetime} {i.operationType}</Text>
+                                <Flex>
+                                    <LoadImage img={i.avatar} style={{ width: 30, height: 30 }} />
+                                    <Text style={styles.left}>{i.author} {i.datetime} {i.operationType}</Text>
+                                </Flex>
                                 <LoadImage style={{ width: 15, height: 8 }}
                                     img={i.show ? UpImage : DownImage}
                                 />
@@ -48,7 +50,7 @@ export default class OperationRecords extends Component {
                                 paddingTop: 5,
                                 paddingBottom: 10,
                                 paddingRight: 10,
-                                paddingLeft: 10, 
+                                paddingLeft: 10,
                                 marginBottom: 15,
                                 marginRight: 5,
                                 marginLeft: 5
@@ -90,6 +92,7 @@ const styles = StyleSheet.create({
         paddingBottom: 5
     },
     left: {
+        paddingLeft: 10,
         fontSize: 14,
         color: '#666'
     },

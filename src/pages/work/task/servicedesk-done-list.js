@@ -19,7 +19,7 @@ import CommonView from '../../../components/CommonView';
 import MyPopover from '../../../components/my-popover';
 
 //已经处理的单子，只能查看
-class ServicedeskDoneListPage extends BasePage { 
+class ServicedeskDoneListPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
@@ -100,8 +100,8 @@ class ServicedeskDoneListPage extends BasePage {
     }
 
     getList = () => {
-        const { type,   time, pageIndex } = this.state;
-        WorkService.servicedeskDoneList(type,  time, pageIndex).then(dataInfo => {
+        const { type, time, pageIndex } = this.state;
+        WorkService.servicedeskDoneList(type, time, pageIndex).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -159,7 +159,7 @@ class ServicedeskDoneListPage extends BasePage {
         return (
             <TouchableWithoutFeedback onPress={() => {
                 //查看服务单
-                this.props.navigation.navigate('service', { id: item.id });
+                this.props.navigation.navigate('fuwuD', { id: item.id });
             }}>
                 <Flex direction='column' align={'start'}
                     style={[styles.card, index === 0 ? styles.blue : styles.orange]}>
@@ -180,14 +180,14 @@ class ServicedeskDoneListPage extends BasePage {
 
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
-                            <Text>所属区域：{item.repairArea}，是否有偿：{item.isPaid}，是否允许抢单：{item.isQD == 1 ? '是' : '否'}</Text>
+                            <Text>所属区域：{item.repairArea}，是否有偿：{item.isPaid}</Text>
                         </Flex>
 
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>紧急：{item.emergencyLevel}，重要：{item.importance}</Text>
-                        </Flex>
-
+                        </Flex>  
+ 
                         <Text style={{
                             paddingLeft: 20,
                             paddingRight: 20,
@@ -209,7 +209,7 @@ class ServicedeskDoneListPage extends BasePage {
         const { dataInfo } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
-                <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}> 
+                <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
                     <MyPopover onChange={this.timeChange}
                         titles={['全部', '今日', '本周', '本月', '上月', '本年']}
                         visible={true} />

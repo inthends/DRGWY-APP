@@ -184,7 +184,7 @@ export default class ReceiveDetailPage extends BasePage {
                     <Flex justify={'center'}>
                         <Button onPress={() => this.click('接单')} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                width: 110,
+                                width: 130,
                                 backgroundColor: Macro.work_blue,
                                 marginTop: 20,
                                 marginBottom: 10,

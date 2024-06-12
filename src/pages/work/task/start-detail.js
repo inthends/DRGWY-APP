@@ -338,7 +338,7 @@ export default class StartDetailPage extends BasePage {
                                     <Button onPress={() => this.back('退单')} type={'primary'}
                                         activeStyle={{ backgroundColor: Macro.work_blue }}
                                         style={{
-                                            width: 110,
+                                            width: 130,
                                             backgroundColor: Macro.work_blue,
                                             height: 35
                                         }}>确认</Button>
@@ -349,7 +349,7 @@ export default class StartDetailPage extends BasePage {
                                         activeStyle={{ backgroundColor: Macro.work_blue }}
                                         style={{
                                             marginLeft: 30,
-                                            width: 110,
+                                            width: 130,
                                             backgroundColor: '#666',
                                             borderWidth: 0,
                                             height: 35

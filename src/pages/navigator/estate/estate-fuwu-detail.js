@@ -76,8 +76,7 @@ export default class EfuwuDetailPage extends BasePage {
                 operations: res
             });
         });
-
-
+        
         WorkService.serviceExtra(id).then(images => {
             this.setState({
                 images

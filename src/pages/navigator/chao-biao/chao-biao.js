@@ -308,14 +308,14 @@ class ChaoBiaoPage extends BasePage {
                                 <Flex style={{ marginTop: 15, marginBottom: 0 }}>
                                     <Button onPress={this.submit} type={'primary'}
                                         activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                            width: 110,
+                                            width: 130,
                                             backgroundColor: Macro.work_blue,
                                             height: 44,
                                         }}>确认提交</Button>
                                     <Button onPress={() => this.setState({ showSubmit: false })} type={'primary'}
                                         activeStyle={{ backgroundColor: Macro.work_blue  }} style={{
                                             marginLeft: 30,
-                                            width: 110,
+                                            width: 130,
                                             backgroundColor: '#ccc',
                                             borderWidth: 0,
                                             height: 44,

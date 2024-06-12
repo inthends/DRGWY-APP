@@ -267,7 +267,7 @@ class EstateCheckPage extends BasePage {
                         onPress={() => this.props.navigation.push('checkAdd')}
                         type={'primary'}
                         activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                            width: 200,
+                            width: 130,
                             marginBottom: 20,
                             backgroundColor: Macro.work_blue,
                             height: 40

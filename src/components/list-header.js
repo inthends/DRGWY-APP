@@ -1,7 +1,7 @@
-import React, {Component, Fragment} from 'react';
-import {View, Text, StyleSheet, Animated, TouchableWithoutFeedback} from 'react-native';
-import {Flex} from '@ant-design/react-native';
-import ScreenUtil from '../utils/screen-util'; 
+import React, { Component, Fragment } from 'react';
+import { View, Text, StyleSheet, Animated, TouchableWithoutFeedback } from 'react-native';
+import { Flex } from '@ant-design/react-native';
+import ScreenUtil from '../utils/screen-util';
 const item_width = ScreenUtil.deviceWidth() / 3.0;
 const single_width = 50;
 
@@ -30,8 +30,8 @@ export default class ListHeader extends Component {
                 duration: 200              // 让动画持续一段时间
             },
         ).start();
-        const datas = [{'title': '全部', value: ''}, {'title': '未逾期', value: 0}, {'title': '已逾期', value: 1}];
-        this.setState({index: index}, () => {
+        const datas = [{ 'title': '全部', value: -1 }, { 'title': '未逾期', value: 0 }, { 'title': '已逾期', value: 1 }];
+        this.setState({ index: index }, () => {
             if (this.props.onChange) {
                 this.props.onChange(datas[index].value);
             }
@@ -39,7 +39,7 @@ export default class ListHeader extends Component {
     };
 
     render() {
-        const datas = [{'title': '全部', select: true}, {'title': '未逾期'}, {'title': '已逾期'}];
+        const datas = [{ 'title': '全部', select: true }, { 'title': '未逾期' }, { 'title': '已逾期' }];
         return (
             <Fragment>
                 <Flex direction={'column'} align={'start'}>
@@ -57,7 +57,7 @@ export default class ListHeader extends Component {
                             );
                         })}
                     </Flex>
-                    <Animated.View style={[styles.line, {marginLeft: this.state.fadeAnim}]}/>
+                    <Animated.View style={[styles.line, { marginLeft: this.state.fadeAnim }]} />
                 </Flex>
             </Fragment>
         );

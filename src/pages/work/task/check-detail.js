@@ -265,7 +265,7 @@ export default class CheckDetailPage extends BasePage {
                     <Flex justify={'center'}>
                         <Button onPress={() => this.click('完成检验')} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                width: 200,
+                                width: 130,
                                 backgroundColor: Macro.work_blue,
                                 marginTop: 20,
                                 height: 40

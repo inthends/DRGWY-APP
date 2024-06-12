@@ -49,7 +49,7 @@ class TaskListPage extends BasePage {
         const type = common.getValueFromProps(this.props).type;
         const overdue = common.getValueFromProps(this.props).overdue;
         const hiddenHeader = common.getValueFromProps(this.props).hiddenHeader;
-        
+
         this.state = {
             count: 0,
             showTabbar: true,
@@ -155,15 +155,15 @@ class TaskListPage extends BasePage {
                             this.props.navigation.navigate('jianyan', { id: item.id });
                             break;
                         }
-                        case '待回访': {
-                            this.props.navigation.navigate('huifang', { id: item.id });
-                            break;
-                        }
-                        case '待协助': 
-                        {
-                            this.props.navigation.navigate('assist', { id: item.id });
-                            break;
-                        }
+                        // case '待回访': {//回访在服务单里面操作
+                        //     this.props.navigation.navigate('huifang', { id: item.id });
+                        //     break;
+                        // }
+                        case '待协助':
+                            {
+                                this.props.navigation.navigate('assist', { id: item.id });
+                                break;
+                            }
                         case '待审核': {
                             this.props.navigation.navigate('approve', { id: item.id });
                             break;
@@ -198,7 +198,7 @@ class TaskListPage extends BasePage {
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>紧急：{item.emergencyLevel}，重要：{item.importance}，维修专业：{item.repairMajor}</Text>
-                        </Flex> 
+                        </Flex>
                         <Text style={{
                             paddingLeft: 20,
                             paddingRight: 20,

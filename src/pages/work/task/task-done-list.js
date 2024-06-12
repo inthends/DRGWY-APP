@@ -182,14 +182,19 @@ class TaskDoneListPage extends BasePage {
 
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
-                            <Text>所属区域：{item.repairArea}，是否有偿：{item.isPaid}，是否允许抢单：{item.isQD == 1 ? '是' : '否'}</Text>
+                            <Text>所属区域：{item.repairArea}，是否有偿：{item.isPaid}</Text>
                         </Flex>
-
+ 
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>紧急：{item.emergencyLevel}，重要：{item.importance}，专业：{item.repairMajor}</Text>
                         </Flex>
 
+                        <Flex justify='between'
+                            style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
+                            <Text>是否允许抢单：{item.isQD == 1 ? '是' : '否'}</Text>
+                        </Flex>
+ 
                         <Text style={{
                             paddingLeft: 20,
                             paddingRight: 20,

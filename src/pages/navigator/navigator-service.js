@@ -78,25 +78,25 @@ export default {
     });
   },
 
-  //服务单
-  serviceList(
-    pageIndex,
-    billStatus,
-    organizeId,
-    billType,
-    time
-  ) {
+  // //服务单
+  // serviceList(
+  //   pageIndex,
+  //   billStatus,
+  //   organizeId,
+  //   billType,
+  //   time
+  // ) {
 
-    return api.postData('/api/MobileMethod/MGetServiceDeskPageList', {
-      pageIndex,
-      pageSize: 10,
-      billStatus,
-      status: billStatus,
-      organizeId,
-      billType,
-      time
-    });
-  },
+  //   return api.postData('/api/MobileMethod/MGetServiceDeskPageList', {
+  //     pageIndex,
+  //     pageSize: 10,
+  //     billStatus,
+  //     status: billStatus,
+  //     organizeId,
+  //     billType,
+  //     time
+  //   });
+  // },
 
   weixiuList(
     pageIndex,

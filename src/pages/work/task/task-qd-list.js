@@ -49,7 +49,7 @@ class TaskQDListPage extends BasePage {
         // const type = common.getValueFromProps(this.props).type;
         // const overdue = common.getValueFromProps(this.props).overdue;
         // const hiddenHeader = common.getValueFromProps(this.props).hiddenHeader;
-        
+
         this.state = {
             pageIndex: 1,
             dataInfo: {
@@ -233,6 +233,7 @@ class TaskQDListPage extends BasePage {
                                     onPress={() => this.qd(item.id)}
                                     activeStyle={{ backgroundColor: Macro.work_blue }}
                                     style={{
+                                        width: 130,
                                         width: 70,
                                         backgroundColor: Macro.work_blue,
                                         height: 30

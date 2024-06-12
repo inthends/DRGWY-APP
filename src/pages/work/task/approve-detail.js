@@ -36,14 +36,16 @@ export default class ApproveDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let id = common.getValueFromProps(this.props,'id');
+        let id = common.getValueFromProps(this.props, 'id');
         this.state = {
             id,
             value: '',
             result: 1,
             images: [],
+            wcimages: [],
             detail: {},
             communicates: [],
+            selectimages: [],//选中的图片集合，用于弹出展示
             lookImageIndex: 0,
             visible: false
         };
@@ -75,8 +77,12 @@ export default class ApproveDetailPage extends BasePage {
         });
 
         WorkService.weixiuExtra(id).then(images => {
+            //之前照片
+            const myimages = images.filter(t => t.type !== '完成');
+            const wcimages = images.filter(t => t.type === '完成');
             this.setState({
-                images
+                images: myimages,
+                wcimages
             });
         });
     };
@@ -118,15 +124,16 @@ export default class ApproveDetailPage extends BasePage {
         });
     };
 
-    lookImage = (lookImageIndex) => {
+    lookImage = (lookImageIndex, files) => {
         this.setState({
             lookImageIndex,
+            selectimages: files,//需要缓存是哪个明细的图片
             visible: true
         });
     };
 
     render() {
-        const { images, detail, communicates } = this.state;
+        const { images, wcimages, detail, communicates } = this.state;
         // const selectImg = require('../../../static/images/select.png');
         // const noselectImg = require('../../../static/images/no-select.png');
         return (
@@ -144,7 +151,9 @@ export default class ApproveDetailPage extends BasePage {
                         </TouchableWithoutFeedback>
                     </Flex>
                     <Text style={styles.desc}>{detail.repairContent}</Text>
-                    <ListImages images={images} lookImage={this.lookImage} />
+
+                    <ListImages images={images}
+                        lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, images)} />
 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
@@ -173,12 +182,26 @@ export default class ApproveDetailPage extends BasePage {
                     </Flex>
 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>接单人：{detail.receiverName}，接单时间：{detail.receiverDate}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>协助人：{detail.assistName}</Text>
                     </Flex>
 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>增援人：{detail.reinforceName}</Text>
                     </Flex>
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>完成时间：{detail.endDate}，用时：{detail.useTime}分</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>完成情况：{detail.achieved}</Text>
+                    </Flex>
+
+                    <ListImages images={wcimages}  lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, wcimages)} /> 
 
                     {detail.testDate ?//进行了检验
                         <>
@@ -200,7 +223,7 @@ export default class ApproveDetailPage extends BasePage {
                             </Flex> */}
 
                             <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                                <Text style={styles.left}>检验结果：{detail.testResult === 1?'合格':'不合格'}</Text> 
+                                <Text style={styles.left}>检验结果：{detail.testResult === 1 ? '合格' : '不合格'}</Text>
                             </Flex>
 
                             <Text style={styles.desc}>{detail.testRemark}</Text>
@@ -214,13 +237,13 @@ export default class ApproveDetailPage extends BasePage {
                                 marginTop: 20,
                                 height: 40
                             }}>审核</Button>
-                    </Flex> 
+                    </Flex>
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
-                    
+
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
-                        imageUrls={this.state.images} />
+                        imageUrls={this.state.selectimages} />
                 </Modal>
             </CommonView>
         );
