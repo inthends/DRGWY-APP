@@ -133,7 +133,7 @@ class SelectRolePersonMulti extends BasePage {
                         >
                             {data.map(item => (
                                 <Accordion.Panel
-                                    key={item.departmentId}
+                                    key={item.roleId}
                                     header={item.fullName}
                                 >
                                     <List>

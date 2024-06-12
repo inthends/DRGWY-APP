@@ -38,7 +38,7 @@ export default class CheckDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let id = common.getValueFromProps(this.props);
+        let id = common.getValueFromProps(this.props,'id');
         //let type = common.getValueFromProps(this.props, 'type');
         this.state = {
             id,
@@ -123,8 +123,8 @@ export default class CheckDetailPage extends BasePage {
 
     click = (handle) => {
         const { id, value, result } = this.state;
-        if (handle === '完成检验' && !(value && value.length > 0)) {
-            UDToast.showInfo('请输入文字');
+        if (!(value && value.length > 0)) {
+            UDToast.showInfo('请输入检验情况');
             return;
         }
         WorkService.serviceHandle(handle, id, value, { result }).then(res => {
@@ -192,10 +192,7 @@ export default class CheckDetailPage extends BasePage {
                         <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
                     </Flex>
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>转单人：{detail.createUserName}</Text>
-                    </Flex>
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>转单时间：{detail.createDate}</Text>
+                        <Text style={styles.left}>转单人：{detail.createUserName}，转单时间：{detail.createDate}</Text>
                     </Flex>
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every]}>
@@ -203,22 +200,18 @@ export default class CheckDetailPage extends BasePage {
                             <Text
                                 onPress={() => {
                                     if (detail.sourceType === '服务总台') {
-                                        this.props.navigation.navigate('service', { data: { id: detail.relationId } });
+                                        this.props.navigation.navigate('service', { id: detail.relationId });
                                     }
                                     else {
                                         //检查单
-                                        this.props.navigation.navigate('checkDetail', { data: { id: detail.relationId } });
+                                        this.props.navigation.navigate('checkDetail', { id: detail.relationId });
                                     }
                                 }}
                                 style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>
-                    </Flex>
-
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>积分：{detail.score}</Text>
+                        <Text style={styles.left}>维修专业：{detail.repairMajor}，积分：{detail.score}</Text>
                     </Flex>
 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
@@ -228,7 +221,7 @@ export default class CheckDetailPage extends BasePage {
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>增援人：{detail.reinforceName}</Text>
                     </Flex>
-                    {/* <DashLine /> */}
+
                     <Flex justify={'between'} style={{ margin: 15 }}>
                         <TouchableWithoutFeedback onPress={() => this.setState({ result: 1 })}>
                             <Flex>
@@ -245,6 +238,7 @@ export default class CheckDetailPage extends BasePage {
                             </Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
+
                     <UploadImageView
                         style={{ marginTop: 10 }}
                         linkId={this.state.id}

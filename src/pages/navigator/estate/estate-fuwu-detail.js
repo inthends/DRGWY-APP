@@ -17,10 +17,11 @@ import Communicates from '../../../components/communicates';
 import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
+import OperationRecords from '../../../components/operationrecords';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
-//统计页面，仅查看
-export default class EfuwuDetailPage extends BasePage {
+//仅查看
+export default class EfuwuDetailPage extends BasePage { 
     static navigationOptions = ({ navigation }) => {
         return {
             title: '服务单详情',
@@ -35,14 +36,15 @@ export default class EfuwuDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let id = common.getValueFromProps(this.props);
+        let id = common.getValueFromProps(this.props,'id');
         this.state = {
             id,
-            value: '',
             images: [],
             detail: {},
-            communicates: [],
-            lookImageIndex: 0
+            communicates: [],//沟通记录
+            operations: [],//操作记录
+            lookImageIndex: 0,
+            visible: false
         };
     }
 
@@ -56,15 +58,26 @@ export default class EfuwuDetailPage extends BasePage {
             this.setState({
                 detail: {
                     ...item.data,
+                    // businessCode: item.businessCode,
+                    // businessId: item.businessId,
                     statusName: item.statusName
-                },
+                }
             });
         });
+
         WorkService.serviceCommunicates(id).then(res => {
             this.setState({
                 communicates: res
             });
         });
+
+        WorkService.serviceOperations(id).then(res => {
+            this.setState({
+                operations: res
+            });
+        });
+
+
         WorkService.serviceExtra(id).then(images => {
             this.setState({
                 images
@@ -85,6 +98,20 @@ export default class EfuwuDetailPage extends BasePage {
         });
     };
 
+
+    operationClick = (i) => {
+        let c = this.state.operations;
+        let d = c.map(it => {
+            if (it.id === i.id) {
+                it.show = i.show !== true;
+            }
+            return it;
+        });
+        this.setState({
+            operations: d
+        });
+    };
+
     cancel = () => {
         this.setState({
             visible: false
@@ -99,7 +126,7 @@ export default class EfuwuDetailPage extends BasePage {
     };
 
     render() {
-        const { images, detail, communicates } = this.state;
+        const { images, detail, communicates, operations } = this.state;
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
@@ -121,7 +148,7 @@ export default class EfuwuDetailPage extends BasePage {
                         <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
                     </Flex>
 
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>报单人：{detail.contactName}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactPhone)}>
                             <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
@@ -129,31 +156,36 @@ export default class EfuwuDetailPage extends BasePage {
                         </TouchableWithoutFeedback>
                     </Flex>
 
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>报单时间：{detail.createDate}</Text>
                     </Flex>
 
-                    {detail.businessCode ? (
+                    {detail.businessId ? (
                         <TouchableWithoutFeedback>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                                 <Text style={styles.left}>关联单：</Text>
                                 <Text onPress={() => {
                                     if (detail.businessType === 'Repair') {
-                                        this.props.navigation.navigate('weixiuD', { data: detail.businessId });
+                                        this.props.navigation.navigate('weixiuD', { id: detail.businessId });
                                     }
                                     else {
-                                        this.props.navigation.navigate('tousuD', { data: detail.businessId });
+                                        this.props.navigation.navigate('tousuD', { id: detail.businessId });
                                     }
                                 }} style={[styles.right, { color: Macro.work_blue }]}>{detail.businessCode}</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
                     ) : null}
-                    
+
                     <Communicates communicateClick={this.communicateClick} communicates={communicates} />
+                    <OperationRecords communicateClick={this.operationClick} communicates={operations} />
+
                 </ScrollView>
 
+
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
-                    <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
+                    <ImageViewer index={this.state.lookImageIndex}
+                        onCancel={this.cancel}
+                        onClick={this.cancel}
                         imageUrls={this.state.images} />
                 </Modal>
 

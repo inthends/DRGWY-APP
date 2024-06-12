@@ -69,14 +69,19 @@ export default class WorkPage extends BasePage {
         super(props);
         this.state = {
             showLoading: true,
-            count: 0,
             refreshing: false,
             data: {},
-            news: '0'
+            news: '0',
+            authList: []//模块权限
         };
     }
 
     componentDidMount() {
+        //获取模块权限 
+        WorkService.getModuleList().then(authList => {
+            this.setState({ authList });
+        });
+
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
@@ -97,7 +102,7 @@ export default class WorkPage extends BasePage {
             }
         );
     }
- 
+
     componentWillUnmount() {
         this.viewDidAppear.remove();
     }
@@ -111,7 +116,7 @@ export default class WorkPage extends BasePage {
     };
 
     render() {
-        const { data } = this.state;
+        const { data, authList } = this.state;
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#efefef' }}>
                 <ScrollView refreshControl={
@@ -155,20 +160,21 @@ export default class WorkPage extends BasePage {
                                     </Flex>
                                 </TouchableWithoutFeedback>
 
-                                <TouchableWithoutFeedback
-                                    onPress={() => this.props.navigation.push('check')}
-                                >
-                                    <Flex direction='column' style={{ width: '25%' }}>
-                                        <Flex style={{ paddingTop: 20, paddingBottom: 5 }}>
-                                            <Icon
-                                                name="flag"
-                                                size={22}
-                                                color={Macro.work_blue}
-                                            />
+                                {authList.some(item => item == 'Inspect') ?
+                                    <TouchableWithoutFeedback
+                                        onPress={() => this.props.navigation.push('check')}
+                                    >
+                                        <Flex direction='column' style={{ width: '25%' }}>
+                                            <Flex style={{ paddingTop: 20, paddingBottom: 5 }}>
+                                                <Icon
+                                                    name="flag"
+                                                    size={22}
+                                                    color={Macro.work_blue}
+                                                />
+                                            </Flex>
+                                            <Text style={styles.bottom}>现场检查</Text>
                                         </Flex>
-                                        <Text style={styles.bottom}>现场检查</Text>
-                                    </Flex>
-                                </TouchableWithoutFeedback>
+                                    </TouchableWithoutFeedback> : null}
 
                                 <TouchableWithoutFeedback
                                     onPress={() => this.props.navigation.push('chaobiao')}>
@@ -185,33 +191,27 @@ export default class WorkPage extends BasePage {
                                 </TouchableWithoutFeedback>
                             </Flex>
                         </Flex>
+
+
                         <Flex direction='column' align={'start'}
                             style={[styles.card, {
-                                borderLeftColor: Macro.work_blue,
+                                borderLeftColor: Macro.work_green,
                                 borderLeftWidth: 5,
                                 borderStyle: 'solid'
                             }]}>
                             <Flex>
-                                <Text style={styles.title}>工单任务</Text>
-                                <TouchableWithoutFeedback onPress={() =>
-                                    this.props.navigation.push('taskqd', {
-                                        'data': {
-                                            title: '工单列表'
-                                        }
-                                    })
-                                }>
-                                    <Text style={{ fontSize: 16, color: Macro.work_red, textAlign: 'right' }}>待抢工单({data.unqd})</Text>
-                                </TouchableWithoutFeedback>
+                                <Text style={styles.title}>服务单</Text>
                             </Flex>
                             <Flex style={styles.line} />
+
                             <Flex>
                                 <TouchableWithoutFeedback onPress={() => {
                                     if (data.pendingreply == 0) {
                                         return;
                                     }
-                                    this.props.navigation.push('task', {
+                                    this.props.navigation.push('servicedesk', {
                                         'data': {
-                                            'type': 'fuwu',
+                                            type: '0',
                                             title: '待回复列表'
                                         }
                                     })
@@ -221,14 +221,14 @@ export default class WorkPage extends BasePage {
                                         <Text style={styles.bottom}>待回复</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
+
                                 <TouchableWithoutFeedback onPress={() => {
                                     if (data.reply == 0) {
                                         return;
                                     }
-                                    this.props.navigation.push('task', {
+                                    this.props.navigation.push('servicedeskDone', {
                                         'data': {
-                                            'type': 'fuwu',
-                                            overdue: -1,//已经回复不判断是否逾期
+                                            type: '0',
                                             hiddenHeader: true,
                                             title: '已回复列表'
                                         }
@@ -240,13 +240,150 @@ export default class WorkPage extends BasePage {
                                     </Flex>
                                 </TouchableWithoutFeedback>
 
+
+                                <TouchableWithoutFeedback onPress={() => {
+                                    if (data.pendingreply == 0) {
+                                        return;
+                                    }
+                                    this.props.navigation.push('servicedesk', {
+                                        'data': {
+                                            type: 'fuwu',
+                                            title: '待处理列表'
+                                        }
+                                    })
+                                }}>
+                                    <Flex direction='column' style={{ width: '25%' }}>
+                                        <Text style={styles.top}>{data.pendingreply}</Text>
+                                        <Text style={styles.bottom}>待处理</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+
+                                <TouchableWithoutFeedback onPress={() => {
+                                    if (data.reply == 0) {
+                                        return;
+                                    }
+                                    this.props.navigation.push('servicedeskDone', {
+                                        'data': {
+                                            type: 'fuwu',
+                                            overdue: -1,//已经回复不判断是否逾期
+                                            hiddenHeader: true,
+                                            title: '已处理列表'
+                                        }
+                                    })
+                                }}>
+                                    <Flex direction='column' style={{ width: '25%' }}>
+                                        <Text style={styles.top}>{data.reply}</Text>
+                                        <Text style={styles.bottom}>已处理</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+                            </Flex>
+
+
+                            <Flex>
+
+                                <TouchableWithoutFeedback onPress={() => {
+                                    if (data.tobevisit == 0) {
+                                        return;
+                                    }
+                                    this.props.navigation.push('servicedesk', {
+                                        'data': {
+                                            type: 'visit',
+                                            hiddenHeader: true,
+                                            title: '待回访列表'
+                                        }
+                                    })
+                                }}>
+                                    <Flex direction='column' style={{ width: '25%' }}>
+                                        <Text style={styles.top}>{data.tobevisit}</Text>
+                                        <Text style={styles.bottom}>待回访</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+
+                                <TouchableWithoutFeedback onPress={() => {
+                                    if (data.tobevisit == 0) {
+                                        return;
+                                    }
+                                    this.props.navigation.push('servicedeskDone', {
+                                        'data': {
+                                            type: 'visit',
+                                            hiddenHeader: true,
+                                            title: '已回访列表'
+                                        }
+                                    })
+                                }}>
+                                    <Flex direction='column' style={{ width: '25%' }}>
+                                        <Text style={styles.top}>{data.tobevisit}</Text>
+                                        <Text style={styles.bottom}>已回访</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+                                <TouchableWithoutFeedback onPress={() => {
+                                    if (data.tobevisit == 0) {
+                                        return;
+                                    }
+                                    this.props.navigation.push('servicedeskDone', {
+                                        'data': {
+                                            type: 'visit',
+                                            hiddenHeader: true,
+                                            title: '已检验列表'
+                                        }
+                                    })
+                                }}>
+                                    <Flex direction='column' style={{ width: '25%' }}>
+                                        <Text style={styles.top}>{data.tobevisit}</Text>
+                                        <Text style={styles.bottom}>已检验</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+
+                                <TouchableWithoutFeedback onPress={() => {
+                                    if (data.tobevisit == 0) {
+                                        return;
+                                    }
+                                    this.props.navigation.push('servicedeskDone', {
+                                        'data': {
+                                            type: 'visit',
+                                            hiddenHeader: true,
+                                            title: '已归档列表'
+                                        }
+                                    })
+                                }}>
+                                    <Flex direction='column' style={{ width: '25%' }}>
+                                        <Text style={styles.top}>{data.tobevisit}</Text>
+                                        <Text style={styles.bottom}>已归档</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+
+                            </Flex>
+
+                        </Flex>
+
+
+                        <Flex direction='column' align={'start'}
+                            style={[styles.card, {
+                                borderLeftColor: Macro.work_blue,
+                                borderLeftWidth: 5,
+                                borderStyle: 'solid'
+                            }]}>
+                            <Flex>
+                                <Text style={styles.title}>工单</Text>
+
+                                <TouchableWithoutFeedback onPress={() =>
+                                    this.props.navigation.push('taskqd')
+                                }>
+                                    <Text style={{ fontSize: 16, color: Macro.work_red, textAlign: 'right' }}>待抢工单({data.unqd})</Text>
+                                </TouchableWithoutFeedback>
+
+                            </Flex>
+                            <Flex style={styles.line} />
+
+                            <Flex>
+
                                 <TouchableWithoutFeedback onPress={() => {
                                     if (data.todo == 0) {
                                         return;
                                     }
                                     this.props.navigation.push('task', {
                                         'data': {
-                                            'type': '1',
+                                            type: '1',
                                             title: '待派单列表'
                                         }
                                     })
@@ -256,13 +393,14 @@ export default class WorkPage extends BasePage {
                                         <Text style={styles.bottom}>待派单</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
+
                                 <TouchableWithoutFeedback onPress={() => {
                                     if (data.mydo == 0) {
                                         return;
                                     }
                                     this.props.navigation.push('taskDone', {
                                         'data': {
-                                            'type': '2',
+                                            type: '2',
                                             title: '已派单列表'
                                         }
                                     })
@@ -272,15 +410,14 @@ export default class WorkPage extends BasePage {
                                         <Text style={styles.bottom}>已派单</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
-                            </Flex>
-                            <Flex>
+
                                 <TouchableWithoutFeedback onPress={() => {
                                     if (data.going == 0) {
                                         return;
                                     }
                                     this.props.navigation.push('task', {
                                         'data': {
-                                            'type': '2',
+                                            type: '2',
                                             title: '待接单列表'
                                         }
                                     })
@@ -297,7 +434,7 @@ export default class WorkPage extends BasePage {
                                     }
                                     this.props.navigation.push('taskDone', {
                                         'data': {
-                                            'type': '3',
+                                            type: '3',
                                             title: '已接单列表'
                                         }
                                     })
@@ -308,48 +445,18 @@ export default class WorkPage extends BasePage {
                                     </Flex>
                                 </TouchableWithoutFeedback>
 
-                                <TouchableWithoutFeedback onPress={() => {
-                                    if (data.unfinish == 0) {
-                                        return;
-                                    }
-                                    this.props.navigation.push('task', {
-                                        'data': {
-                                            'type': '3',
-                                            title: '待完成列表'
-                                        }
-                                    })
-                                }}>
-                                    <Flex direction='column' style={{ width: '25%' }}>
-                                        <Text style={styles.top}>{data.unfinish}</Text>
-                                        <Text style={styles.bottom}>待完成</Text>
-                                    </Flex>
-                                </TouchableWithoutFeedback>
-                                <TouchableWithoutFeedback onPress={() => {
-                                    if (data.finish == 0) {
-                                        return;
-                                    }
-                                    this.props.navigation.push('taskDone', {
-                                        'data': {
-                                            'type': '4',
-                                            title: '已完成列表'
-                                        }
-                                    })
-                                }}>
-                                    <Flex direction='column' style={{ width: '25%' }}>
-                                        <Text style={styles.top}>{data.finish}</Text>
-                                        <Text style={styles.bottom}>已完成</Text>
-                                    </Flex>
-                                </TouchableWithoutFeedback>
+
                             </Flex>
 
                             <Flex>
+
                                 <TouchableWithoutFeedback onPress={() => {
                                     if (data.assist == 0) {
                                         return;
                                     }
                                     this.props.navigation.push('task', {
                                         'data': {
-                                            'type': 'assist',
+                                            type: 'assist',
                                             hiddenHeader: true,
                                             title: '待协助列表'
                                         }
@@ -361,13 +468,48 @@ export default class WorkPage extends BasePage {
                                     </Flex>
                                 </TouchableWithoutFeedback>
 
+
+                                <TouchableWithoutFeedback onPress={() => {
+                                    if (data.unfinish == 0) {
+                                        return;
+                                    }
+                                    this.props.navigation.push('task', {
+                                        'data': {
+                                            type: '3',
+                                            title: '待完成列表'
+                                        }
+                                    })
+                                }}>
+                                    <Flex direction='column' style={{ width: '25%' }}>
+                                        <Text style={styles.top}>{data.unfinish}</Text>
+                                        <Text style={styles.bottom}>待完成</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+
+                                <TouchableWithoutFeedback onPress={() => {
+                                    if (data.finish == 0) {
+                                        return;
+                                    }
+                                    this.props.navigation.push('taskDone', {
+                                        'data': {
+                                            type: '4',
+                                            title: '已完成列表'
+                                        }
+                                    })
+                                }}>
+                                    <Flex direction='column' style={{ width: '25%' }}>
+                                        <Text style={styles.top}>{data.finish}</Text>
+                                        <Text style={styles.bottom}>已完成</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+
                                 <TouchableWithoutFeedback onPress={() => {
                                     if (data.nottest == 0) {
                                         return;
                                     }
                                     this.props.navigation.push('task', {
                                         'data': {
-                                            'type': '6',
+                                            type: '6',
                                             hiddenHeader: true,
                                             title: '待检验列表'
                                         }
@@ -378,32 +520,17 @@ export default class WorkPage extends BasePage {
                                         <Text style={styles.bottom}>待检验</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
+                            </Flex>
 
-                                <TouchableWithoutFeedback onPress={() => {
-                                    if (data.tobevisit == 0) {
-                                        return;
-                                    }
-                                    this.props.navigation.push('task', {
-                                        'data': {
-                                            'type': 'visit',
-                                            hiddenHeader: true,
-                                            title: '待回访列表'
-                                        }
-                                    })
-                                }}>
-                                    <Flex direction='column' style={{ width: '25%' }}>
-                                        <Text style={styles.top}>{data.tobevisit}</Text>
-                                        <Text style={styles.bottom}>待回访</Text>
-                                    </Flex>
-                                </TouchableWithoutFeedback>
-
+                            <Flex>
+   
                                 <TouchableWithoutFeedback onPress={() => {
                                     if (data.unapprove == 0) {
                                         return;
                                     }
                                     this.props.navigation.push('task', {
                                         'data': {
-                                            'type': '7', 
+                                            type: '7',
                                             hiddenHeader: true,
                                             title: '待审核列表'
                                         }
@@ -414,49 +541,79 @@ export default class WorkPage extends BasePage {
                                         <Text style={styles.bottom}>待审核</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
- 
-                                {/* <TouchableWithoutFeedback onPress={() => {
-                                    if (data.overduedispatch == 0) {
-                                        return;
-                                    }
-                                    this.props.navigation.push('task', {
-                                        'data': {
-                                            'type': '1',
-                                            overdue: 1,
-                                            hiddenHeader: true,
-                                            title: '派单逾期列表'
-                                        }
-                                    })
-                                }}>
-                                    <Flex direction='column' style={{ width: '25%' }}>
-                                        <Text style={styles.top}>{data.overduedispatch}</Text>
-                                        <Text style={styles.bottom}>派单逾期</Text>
-                                    </Flex>
-                                </TouchableWithoutFeedback>
 
                                 <TouchableWithoutFeedback onPress={() => {
-                                    if (data.overduefinish == 0) {
+                                    if (data.unapprove == 0) {
                                         return;
                                     }
                                     this.props.navigation.push('task', {
                                         'data': {
-                                            'type': '3',
-                                            overdue: 1,
+                                            type: '7',
                                             hiddenHeader: true,
-                                            title: '完成逾期列表'
+                                            title: '已审核列表'
                                         }
                                     })
                                 }}>
                                     <Flex direction='column' style={{ width: '25%' }}>
-                                        <Text style={styles.top}>{data.overduefinish}</Text>
-                                        <Text style={styles.bottom}>完成逾期</Text>
+                                        <Text style={styles.top}>{data.unapprove}</Text>
+                                        <Text style={styles.bottom}>已审核</Text>
                                     </Flex>
-                                </TouchableWithoutFeedback> */}
-
+                                </TouchableWithoutFeedback> 
                             </Flex>
                         </Flex>
 
-                        <Flex direction='column' align={'start'}
+
+                        {/* <Flex direction='column' align={'start'}
+                            style={[styles.card, {
+                                borderLeftColor: Macro.work_green,
+                                borderLeftWidth: 5,
+                                borderStyle: 'solid'
+                            }]}>
+                            <Text style={styles.title}>工单查询</Text>
+                            <Flex style={styles.line} />
+                            <Flex>
+                                <TouchableWithoutFeedback
+                                    onPress={() => this.props.navigation.push('e_fuwu')}>
+                                    <Flex direction='column' style={{ width: '33%' }}>
+                                        <Flex style={{ paddingTop: 20, paddingBottom: 5 }}>
+                                            <LoadImage
+                                                style={{ width: 22, height: 22 }}
+                                                defaultImg={require('../../static/images/navigator/fuwudan.png')}
+                                            />
+                                        </Flex>
+                                        <Text style={styles.bottom}>服务单</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+                                <TouchableWithoutFeedback
+                                    onPress={() => this.props.navigation.push('e_weixiu')}
+                                >
+                                    <Flex direction='column' style={{ width: '33%' }}>
+                                        <Flex style={{ paddingTop: 20, paddingBottom: 5 }}>
+                                            <LoadImage
+                                                style={{ width: 22, height: 22 }}
+                                                defaultImg={require('../../static/images/navigator/weixiudan.png')}
+                                            />
+                                        </Flex>
+                                        <Text style={styles.bottom}>维修单</Text>
+                                    </Flex>
+
+                                </TouchableWithoutFeedback>
+                                <TouchableWithoutFeedback
+                                    onPress={() => this.props.navigation.push('e_tousu')}>
+                                    <Flex direction='column' style={{ width: '33%' }}>
+                                        <Flex style={{ paddingTop: 20, paddingBottom: 5 }}>
+                                            <LoadImage
+                                                style={{ width: 22, height: 22 }}
+                                                defaultImg={require('../../static/images/navigator/tousudan.png')}
+                                            />
+                                        </Flex>
+                                        <Text style={styles.bottom}>投诉单</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+                            </Flex>
+                        </Flex> */}
+
+                        {/* <Flex direction='column' align={'start'}
                             style={[styles.card, {
                                 borderLeftColor: Macro.work_green,
                                 borderLeftWidth: 5,
@@ -470,8 +627,8 @@ export default class WorkPage extends BasePage {
                                         return;
                                     }
                                     this.props.navigation.push('orderlist', {
-                                        'data': {
-                                            'type': '0',
+                                        data: {
+                                            type: '0',
                                             title: '待查阅'
                                         }
                                     })
@@ -482,8 +639,8 @@ export default class WorkPage extends BasePage {
                                     </Flex>
                                 </TouchableWithoutFeedback>
                                 <TouchableWithoutFeedback onPress={() => this.props.navigation.push('orderlist', {
-                                    'data': {
-                                        'type': '1',
+                                    data: {
+                                        type: '1',
                                         title: '待回复'
                                     }
                                 })}>
@@ -493,8 +650,8 @@ export default class WorkPage extends BasePage {
                                     </Flex>
                                 </TouchableWithoutFeedback>
                                 <TouchableWithoutFeedback onPress={() => this.props.navigation.push('orderlist', {
-                                    'data': {
-                                        'type': '2',
+                                    data: {
+                                        type: '2',
                                         title: '已回复'
                                     }
                                 })}>
@@ -504,8 +661,8 @@ export default class WorkPage extends BasePage {
                                     </Flex>
                                 </TouchableWithoutFeedback>
                                 <TouchableWithoutFeedback onPress={() => this.props.navigation.push('orderlist', {
-                                    'data': {
-                                        'type': '-1',
+                                    data: {
+                                        type: '-1',
                                         hiddenHeader: true,
                                         title: '已关闭'
                                     }
@@ -516,20 +673,21 @@ export default class WorkPage extends BasePage {
                                     </Flex>
                                 </TouchableWithoutFeedback>
                             </Flex>
-                        </Flex>
+                        </Flex> */}
+
                     </Flex>
                 </ScrollView>
             </CommonView>
         );
     }
 }
- 
 
-const styles = StyleSheet.create({ 
+
+const styles = StyleSheet.create({
     left: {
         flex: 1,
         paddingTop: 30
-    }, 
+    },
     title: {
         paddingTop: 14.67,
         textAlign: 'left',
@@ -555,6 +713,20 @@ const styles = StyleSheet.create({
         fontSize: 16,
         paddingBottom: 20
     },
+
+
+    qd: {
+        color: Macro.work_red,
+        fontSize: 16,
+        paddingBottom: 20
+    },
+    topqd: {
+        paddingTop: 20,
+        color: Macro.work_red,
+        fontSize: 16,
+        paddingBottom: 3
+    },
+
     button: {
         color: '#2C2C2C',
         fontSize: 16,

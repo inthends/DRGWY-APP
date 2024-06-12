@@ -10,7 +10,7 @@ import {
     Keyboard
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Icon, Flex, TextareaItem } from '@ant-design/react-native';
+import { Icon, Flex, Button, TextareaItem } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';
@@ -38,7 +38,7 @@ export default class StartDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let id = common.getValueFromProps(this.props);//维修单
+        let id = common.getValueFromProps(this.props, 'id');//维修单
         //let type = common.getValueFromProps(this.props, 'type');
         this.state = {
             id,
@@ -50,6 +50,7 @@ export default class StartDetailPage extends BasePage {
             lookImageIndex: 0,
             visible: false,
             backMemo: '',
+            showClose: false,
             KeyboardShown: false,
             selectPersons: []
         };
@@ -100,7 +101,7 @@ export default class StartDetailPage extends BasePage {
                     importance: detail.importance,
                     relationId: detail.relationId,
                     statusName: detail.statusName,
-                    assistName: detail.assistName//协助人 
+                    assistName: detail.assistName 
                 }
             });
             //获取维修单的单据动态
@@ -226,39 +227,33 @@ export default class StartDetailPage extends BasePage {
                     </Flex>
 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>转单人：{detail.createUserName}</Text>
-                    </Flex>
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>转单时间：{detail.createDate}</Text>
+                        <Text style={styles.left}>转单人：{detail.createUserName}，转单时间：{detail.createDate}</Text>
                     </Flex>
 
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                             <Text style={styles.left}>关联单：</Text>
-                            <Text 
+                            <Text
                                 onPress={() => {
                                     if (detail.sourceType === '服务总台') {
-                                        this.props.navigation.navigate('service', { data: { id: detail.relationId } });
+                                        this.props.navigation.navigate('service', { id: detail.relationId });
                                     }
                                     else {
                                         //检查单
-                                        this.props.navigation.navigate('checkDetail', { data: { id: detail.relationId } });
+                                        this.props.navigation.navigate('checkDetail', { id: detail.relationId });
                                     }
                                 }}
                                 style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>
-                    </Flex>
-
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>积分：{detail.score}</Text>
+                        <Text style={styles.left}>维修专业：{detail.repairMajor}，积分：{detail.score}</Text>
                     </Flex>
 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>协助人：{detail.assistName}</Text>
                     </Flex>
+
                     <TouchableWithoutFeedback
                         onPress={() => this.props.navigation.navigate('selectRolePersonMulti', { type: 'receive', onSelect: this.onSelectPerson })}>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
@@ -287,7 +282,7 @@ export default class StartDetailPage extends BasePage {
                         />
                     </View>
 
-                    <View style={{ margin: 15 }}>
+                    {/* <View style={{ margin: 15 }}>
                         <TextareaItem
                             rows={4}
                             autoHeight
@@ -296,22 +291,7 @@ export default class StartDetailPage extends BasePage {
                             onChange={value => this.setState({ backMemo: value })}
                             value={this.state.backMemo}
                         />
-                    </View>
-
-
-                    {/*
-                      苹果系统输入框有问题
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <TextInput
-                            maxLength={500}
-                            placeholder='请输入退单原因'
-                            multiline
-                            onChangeText={value => this.setState({ backMemo: value })}
-                            value={this.state.backMemo}
-                            style={{ fontSize: 16, textAlignVertical: 'top' }}
-                            numberOfLines={4}>
-                        </TextInput>
-                    </Flex> */}
+                    </View> */}
 
                     <Flex justify={'center'} style={{ marginTop: 20 }} >
                         <TouchableWithoutFeedback onPress={() => this.click()}>
@@ -319,7 +299,15 @@ export default class StartDetailPage extends BasePage {
                                 <Text style={styles.word}>开始维修</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => this.back('退单')}>
+                        <TouchableWithoutFeedback onPress={() =>
+                        // this.back('退单')
+                        {
+                            this.setState({
+                                backMemo: '',
+                                showClose: true
+                            })
+                        }}
+                        >
                             <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_red }]}>
                                 <Text style={styles.word}>退单</Text>
                             </Flex>
@@ -327,6 +315,51 @@ export default class StartDetailPage extends BasePage {
                     </Flex>
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
+
+                {this.state.showClose && (
+                    //退单
+                    <View style={styles.mengceng}>
+                        <Flex direction={'column'} justify={'center'} align={'center'}
+                            style={{
+                                flex: 1, padding: 25,
+                                backgroundColor: 'rgba(178,178,178,0.5)'
+                            }}>
+                            <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
+                                <View style={{ height: 110, width: 300 }}>
+                                    <TextareaItem
+                                        style={{ height: 100 }}
+                                        placeholder='请输入退单原因'
+                                        maxLength={500}
+                                        onChange={value => this.setState({ backMemo: value })}
+                                        value={this.state.backMemo}
+                                    />
+                                </View>
+                                <Flex style={{ marginTop: 15 }}>
+                                    <Button onPress={() => this.back('退单')} type={'primary'}
+                                        activeStyle={{ backgroundColor: Macro.work_blue }}
+                                        style={{
+                                            width: 110,
+                                            backgroundColor: Macro.work_blue,
+                                            height: 35
+                                        }}>确认</Button>
+                                    <Button onPress={() => {
+                                        this.setState({ showClose: false });
+                                    }}
+                                        type={'primary'}
+                                        activeStyle={{ backgroundColor: Macro.work_blue }}
+                                        style={{
+                                            marginLeft: 30,
+                                            width: 110,
+                                            backgroundColor: '#666',
+                                            borderWidth: 0,
+                                            height: 35
+                                        }}>取消</Button>
+                                </Flex>
+                            </Flex>
+                        </Flex>
+                    </View>
+                )}
+
 
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer
@@ -342,6 +375,13 @@ export default class StartDetailPage extends BasePage {
 
 const styles = StyleSheet.create({
 
+    mengceng: {
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        width: '100%',
+        height: '100%'
+    },
     every: {
         marginLeft: 15,
         marginRight: 15,

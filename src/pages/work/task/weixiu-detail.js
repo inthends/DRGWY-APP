@@ -5,7 +5,7 @@ import {
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    ScrollView, 
+    ScrollView,
     Modal
 } from 'react-native';
 import BasePage from '../../base/base';
@@ -36,7 +36,7 @@ export default class WeixiuDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let id = common.getValueFromProps(this.props);
+        let id = common.getValueFromProps(this.props,'id');
         //let type = common.getValueFromProps(this.props, 'type');
         this.state = {
             id,
@@ -111,8 +111,8 @@ export default class WeixiuDetailPage extends BasePage {
 
     render() {
         const { images, detail, communicates } = this.state;
-        const selectImg = require('../../../static/images/select.png');
-        const noselectImg = require('../../../static/images/no-select.png');
+        // const selectImg = require('../../../static/images/select.png');
+        // const noselectImg = require('../../../static/images/no-select.png');
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
@@ -128,6 +128,7 @@ export default class WeixiuDetailPage extends BasePage {
                                 style={{ width: 16, height: 16 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
+                    
                     <Text style={styles.desc}>{detail.repairContent}</Text>
 
                     <ListImages images={images} lookImage={this.lookImage} />
@@ -137,24 +138,20 @@ export default class WeixiuDetailPage extends BasePage {
                     </Flex>
 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>转单人：{detail.createUserName}</Text>
-                    </Flex>
-
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>转单时间：{detail.createDate}</Text>
+                        <Text style={styles.left}>转单人：{detail.createUserName}，转单时间：{detail.createDate}</Text>
                     </Flex>
 
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every]}>
                             <Text style={styles.left}>关联单：</Text>
-                            <Text 
+                            <Text
                                 onPress={() => {
                                     if (detail.sourceType === '服务总台') {
-                                        this.props.navigation.navigate('service', { data: { id: detail.relationId } });
+                                        this.props.navigation.navigate('service', {  id: detail.relationId  });
                                     }
                                     else {
                                         //检查单
-                                        this.props.navigation.navigate('checkDetail', { data: { id: detail.relationId } });
+                                        this.props.navigation.navigate('checkDetail', { id: detail.relationId  });
                                     }
                                 }}
                                 style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
@@ -162,11 +159,7 @@ export default class WeixiuDetailPage extends BasePage {
                     </TouchableWithoutFeedback>
 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>
-                    </Flex>
-
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>积分：{detail.score}</Text>
+                        <Text style={styles.left}>维修专业：{detail.repairMajor}，积分：{detail.score}</Text>
                     </Flex>
 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
@@ -177,7 +170,8 @@ export default class WeixiuDetailPage extends BasePage {
                         <Text style={styles.left}>增援人：{detail.reinforceName}</Text>
                     </Flex>
 
-                    {detail.testDate ?//进行了检验
+
+                    {/* {detail.testDate ?//进行了检验
                         <Flex justify={'between'} style={{ margin: 15 }}>
                             <Flex>
                                 <LoadImage img={detail.testResult === 1 ? selectImg : noselectImg}
@@ -189,7 +183,21 @@ export default class WeixiuDetailPage extends BasePage {
                                     style={{ width: 15, height: 15 }} />
                                 <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>不合格</Text>
                             </Flex>
-                        </Flex> : null}
+                        </Flex> : null} */}
+
+
+                    {detail.testDate ?//进行了检验
+                        <>
+                            <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                                <Text style={styles.left}>检验人：{detail.testerName}，检验时间：{detail.testDate}</Text>
+                            </Flex>
+
+                            <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                                <Text style={styles.left}>检验结果：{detail.testResult === 1 ? '合格' : '不合格'}</Text>
+                            </Flex>
+
+                            <Text style={styles.desc}>{detail.testRemark}</Text>
+                        </> : null}
 
                     {/* <Communicates communicateClick={this.communicateClick} communicates={communicates} /> */}
                     {/* 维修单显示操作记录，没有沟通记录 */}
@@ -201,7 +209,7 @@ export default class WeixiuDetailPage extends BasePage {
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                         imageUrls={this.state.images} />
                 </Modal>
-                
+
             </CommonView>
         );
     }

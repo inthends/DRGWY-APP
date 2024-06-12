@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -11,7 +11,7 @@ import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 //import ListHeader from '../../../components/list-header';
 import common from '../../../utils/common';
 import LoadImage from '../../../components/load-image';
@@ -23,19 +23,19 @@ import CommonView from '../../../components/CommonView';
 
 
 class EstateTousuPage extends BasePage {
-    static navigationOptions = ({navigation}) => {  
+    static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
             title: '投诉单',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='left' style={{width: 30, marginLeft: 15}}/>
+                    <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
             headerRight: (
                 <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
-                    <Icon name='bars' style={{marginRight: 15}} color="black"/>
+                    <Icon name='bars' style={{ marginRight: 15 }} color="black" />
                 </TouchableWithoutFeedback>
             ),
         };
@@ -47,8 +47,8 @@ class EstateTousuPage extends BasePage {
             key: null
         };
 
-        this.state = { 
-            pageIndex: 1, 
+        this.state = {
+            pageIndex: 1,
             dataInfo: {
                 data: [],
             },
@@ -77,10 +77,10 @@ class EstateTousuPage extends BasePage {
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
-        const nextSelectBuilding = nextProps.selectBuilding; 
+        const nextSelectBuilding = nextProps.selectBuilding;
 
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
-            this.setState({selectBuilding: nextProps.selectBuilding}, () => {
+            this.setState({ selectBuilding: nextProps.selectBuilding }, () => {
                 this.onRefresh();
             });
         }
@@ -90,7 +90,7 @@ class EstateTousuPage extends BasePage {
         /*
         pageIndex, billStatus, treeType, organizeId, billType, startTime, endTime
          */
-        const {billStatus, selectBuilding, time} = this.state;
+        const { billStatus, selectBuilding, time } = this.state;
         let treeType;
         let organizeId;
         if (selectBuilding) {
@@ -101,20 +101,20 @@ class EstateTousuPage extends BasePage {
         // let endTime = common.getMonthLastDay(time);
 
         NavigatorService.tousuList(this.state.pageIndex, billStatus, treeType, organizeId, '', time).
-        then(dataInfo => {
-            if (dataInfo.pageIndex > 1) {
-                dataInfo = {
-                    ...dataInfo,
-                    data: [...this.state.dataInfo.data, ...dataInfo.data]
-                };
-            }
-            this.setState({
-                dataInfo: dataInfo,
-                refreshing: false
-                //canLoadMore: true,
-            }, () => { 
-            });
-        }).catch(err => this.setState({ refreshing: false }));
+            then(dataInfo => {
+                if (dataInfo.pageIndex > 1) {
+                    dataInfo = {
+                        ...dataInfo,
+                        data: [...this.state.dataInfo.data, ...dataInfo.data]
+                    };
+                }
+                this.setState({
+                    dataInfo: dataInfo,
+                    refreshing: false
+                    //canLoadMore: true,
+                }, () => {
+                });
+            }).catch(err => this.setState({ refreshing: false }));
     };
 
 
@@ -122,13 +122,13 @@ class EstateTousuPage extends BasePage {
         this.setState({
             refreshing: true,
             pageIndex: 1,
-        }, () => { 
+        }, () => {
             this.getList();
         });
     };
 
     loadMore = () => {
-        const {data, total, pageIndex} = this.state.dataInfo; 
+        const { data, total, pageIndex } = this.state.dataInfo;
         // if (!this.state.canLoadMore) {
         //     return;
         // }
@@ -143,24 +143,24 @@ class EstateTousuPage extends BasePage {
         }
     };
 
-    _renderItem = ({item, index}) => {
+    _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.props.navigation.navigate('tousuD', {data: item.id});
+                this.props.navigation.navigate('tousuD', { id: item.id });
             }}>
                 <Flex direction='column' align={'start'}
-                      style={[styles.card, index === 0 ? styles.blue : styles.orange]}>
-                    <Flex justify='between' style={{width: '100%'}}>
+                    style={[styles.card, index === 0 ? styles.blue : styles.orange]}>
+                    <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.billCode}</Text>
                         <Text style={styles.title2}>{item.statusName}</Text>
                     </Flex>
-                    <Flex style={styles.line}/>
+                    <Flex style={styles.line} />
                     <Flex align={'start'} direction={'column'}>
                         <Flex justify='between'
-                              style={{width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20}}>
+                            style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>{item.complaintAddress}  {item.complaintUser}</Text>
                             <TouchableWithoutFeedback onPress={() => common.call(item.complaintLink)}>
-                                <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{width: 15, height: 15}}/></Flex>
+                                <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 15, height: 15 }} /></Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
                         <Text style={{
@@ -169,7 +169,6 @@ class EstateTousuPage extends BasePage {
                             paddingBottom: 40,
                             color: '#666',
                         }}>{item.contents}</Text>
-
                     </Flex>
                 </Flex>
             </TouchableWithoutFeedback>
@@ -232,20 +231,20 @@ class EstateTousuPage extends BasePage {
 
 
     render() {
-        const {  dataInfo, ym} = this.state;
+        const { dataInfo, ym } = this.state;
         return (
-            <View style={{flex: 1}}>
-                <CommonView style={{flex: 1}}>
-                    <ScrollTitle onChange={this.statusChange} titles={['全部', '待处理', '待完成', '待回访', '待审核', '已审核']}/>
+            <View style={{ flex: 1 }}>
+                <CommonView style={{ flex: 1 }}>
+                    <ScrollTitle onChange={this.statusChange} titles={['全部', '待处理', '待完成', '待回访', '待审核', '已审核']} />
                     {/*<Tabs tabs={tabs2} initialPage={1} tabBarPosition="top">*/}
                     {/*    {renderContent}*/}
                     {/*</Tabs>*/}
-                    <Flex justify={'between'} style={{marginTop: 15, paddingRight: 15, height: 30}}>
-                        <Flex/>
-                        <MyPopover onChange={this.timeChange} 
-                        //titles={ym} 
-                        titles={['全部', '今日', '本周', '本月', '上月', '本年']}
-                        visible={true}/>
+                    <Flex justify={'between'} style={{ marginTop: 15, paddingRight: 15, height: 30 }}>
+                        <Flex />
+                        <MyPopover onChange={this.timeChange}
+                            //titles={ym} 
+                            titles={['全部', '今日', '本周', '本月', '上月', '本年']}
+                            visible={true} />
                     </Flex>
 
                     <FlatList
@@ -262,8 +261,9 @@ class EstateTousuPage extends BasePage {
                         // onScrollEndDrag={() => this.canAction = false}
                         onMomentumScrollBegin={() => this.canAction = true}
                         onMomentumScrollEnd={() => this.canAction = false}
-                        ListEmptyComponent={<NoDataView/>}
+                        ListEmptyComponent={<NoDataView />}
                     />
+                    <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
                 </CommonView>
             </View>
 
@@ -272,7 +272,7 @@ class EstateTousuPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-     
+
     list: {
         backgroundColor: Macro.color_white,
         margin: 15,
@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
         // textAlign: 'left',
         color: '#404145',
         fontSize: 16,
-        paddingBottom: 10, 
+        paddingBottom: 10,
         marginLeft: 20,
         marginRight: 20
     },
@@ -291,8 +291,8 @@ const styles = StyleSheet.create({
         // textAlign: 'left',
         color: '#404145',
         fontSize: 16,
-        paddingBottom: 10, 
-        marginRight: 20, 
+        paddingBottom: 10,
+        marginRight: 20,
     },
     line: {
         width: ScreenUtil.deviceWidth() - 30 - 15 * 2,
@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         paddingBottom: 15,
     },
-  
+
     card: {
         borderTopWidth: 1,
         borderRightWidth: 1,
@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         backgroundColor: 'white',
         shadowColor: '#00000033',
-        shadowOffset: {h: 10, w: 10},
+        shadowOffset: { h: 10, w: 10 },
         shadowRadius: 5,
         shadowOpacity: 0.8,
     },
@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
     },
 
 });
-const mapStateToProps = ({buildingReducer}) => {
+const mapStateToProps = ({ buildingReducer }) => {
     return {
         selectBuilding: buildingReducer.selectBuilding,
     };

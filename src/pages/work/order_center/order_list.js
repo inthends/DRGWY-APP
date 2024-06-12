@@ -8,9 +8,8 @@ import common from '../../../utils/common';
 import OrderService from './order-service';
 import NoDataView from '../../../components/no-data-view';
 import Macro from '../../../utils/macro';
-import LoadImage from '../../../components/load-image';
-
-let screen_width = ScreenUtil.deviceWidth()
+// import LoadImage from '../../../components/load-image';
+// let screen_width = ScreenUtil.deviceWidth()
 
 export default class OrderlistPage extends BasePage {
     static navigationOptions = ({ navigation }) => {

@@ -94,12 +94,7 @@ export default class TaskPage extends BasePage {
                     <Flex direction={'column'} style={{ padding: 15, flex: 1 }}>
                         {res.data.map(item => (
                             <TouchableWithoutFeedback key={item.id}
-                                onPress={() => this.props.navigation.push('xunjianDetail', {
-                                    'data':
-                                    {
-                                        'id': item.id
-                                    }
-                                })}>
+                                onPress={() => this.props.navigation.push('xunjianDetail', { id: item.id })}>
                                 <Flex direction='column' align={'start'}
                                     style={[styles.card, { borderLeftColor: Macro.work_blue, borderLeftWidth: 5 }]}>
                                     <Text style={styles.title}>{item.pName}</Text>
@@ -143,7 +138,7 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20,
     },
-  
+
     card: {
         borderRadius: 5,
         marginBottom: 15,
@@ -155,5 +150,5 @@ const styles = StyleSheet.create({
         // shadowRadius: 5,
         // shadowOpacity: 0.8,
     },
- 
+
 });

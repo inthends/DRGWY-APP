@@ -49,14 +49,14 @@ class EstateWeixiuPage extends BasePage {
             key: null
         };
 
-        this.state = { 
-            pageIndex: 1, 
+        this.state = {
+            pageIndex: 1,
             dataInfo: {
                 data: []
             },
             refreshing: false,
             //ym: common.getYM('2020-01'),
-            billStatus: -1,
+            billStatus: '',
             //canLoadMore: true,
             //time: common.getCurrentYearAndMonth(),
             time: '全部',
@@ -98,9 +98,9 @@ class EstateWeixiuPage extends BasePage {
         }
         // let startTime = common.getMonthFirstDay(time);
         // let endTime = common.getMonthLastDay(time);
-        NavigatorService.weixiuList(this.state.pageIndex,
+        NavigatorService.weixiuList(
+            this.state.pageIndex,
             billStatus,
-            //treeType,
             organizeId,
             time,
             repairArea).then(dataInfo => {
@@ -147,7 +147,7 @@ class EstateWeixiuPage extends BasePage {
     _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.props.navigation.navigate('weixiuD', { data: item.id });
+                this.props.navigation.navigate('weixiuD', { id: item.id });
             }}>
                 <Flex direction='column' align={'start'}
                     style={[styles.card, index === 0 ? styles.blue : styles.orange]}>
@@ -162,7 +162,7 @@ class EstateWeixiuPage extends BasePage {
                             <Text>{item.address} {item.contactName}</Text>
                             <TouchableWithoutFeedback onPress={() => common.call(item.contactLink)}>
                                 <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
-                                 style={{ width: 16, height: 16 }} /></Flex>
+                                    style={{ width: 16, height: 16 }} /></Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
                         <Text style={{
@@ -171,8 +171,6 @@ class EstateWeixiuPage extends BasePage {
                             paddingBottom: 40,
                             color: '#666',
                         }}>{item.repairContent}</Text>
-
-
                     </Flex>
                 </Flex>
             </TouchableWithoutFeedback>
@@ -190,6 +188,10 @@ class EstateWeixiuPage extends BasePage {
                 billStatus = 2;
                 break;
             }
+            case '待开工': {
+                billStatus = 3;
+                break;
+            }
             case '待完成': {
                 billStatus = 4;
                 break;
@@ -198,11 +200,33 @@ class EstateWeixiuPage extends BasePage {
                 billStatus = 5;
                 break;
             }
-            default: {
+            case '待检验': {
+                billStatus = 6;
+                break;
+            }
+            case '待审核': {
+                billStatus = 7;
+                break;
+            }
+            case '已审核': {
+                billStatus = 8;
+                break;
+            }
+            case '已暂停': {
+                billStatus = 0;
+                break;
+            }
+            case '已作废': {
                 billStatus = -1;
                 break;
             }
+            default: {
+                //已作废
+                billStatus = '';
+                break;
+            }
         }
+
         this.setState({
             billStatus,
             pageIndex: 1
@@ -236,21 +260,22 @@ class EstateWeixiuPage extends BasePage {
 
 
     render() {
-        const { dataInfo, ym } = this.state;
+        const { dataInfo } = this.state;
         return (
             <View style={{ flex: 1 }}>
                 <CommonView style={{ flex: 1 }}>
-                    <ScrollTitle onChange={this.statusChange} titles={['全部', '待派单', '待接单', '待完成', '待回访']} />
+                    <ScrollTitle onChange={this.areaChange} titles={['全部', '客户区域', '公共区域']} />
                     {/*<Tabs tabs={tabs2} initialPage={1} tabBarPosition="top">*/}
                     {/*    {renderContent}*/}
                     {/*</Tabs>*/}
                     <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
-                        <MyPopover onChange={this.areaChange} titles={['全部', '客户区域', '公共区域']}
+                        <MyPopover onChange={this.statusChange} titles={['全部', '待派单', '待接单', '待开工',
+                            '待完成', '待回访', '待检验', '待审核', '已审核', '已暂停', '已作废']}
                             visible={true} />
-                        <MyPopover onChange={this.timeChange} 
-                        //titles={ym}
-                        titles={['全部', '今日', '本周', '本月', '上月', '本年']}
-                         visible={true} />
+                        <MyPopover onChange={this.timeChange}
+                            //titles={ym}
+                            titles={['全部', '今日', '本周', '本月', '上月', '本年']}
+                            visible={true} />
                     </Flex>
                     <FlatList
                         data={dataInfo.data}
@@ -268,6 +293,7 @@ class EstateWeixiuPage extends BasePage {
                         onMomentumScrollEnd={() => this.canAction = false}
                         ListEmptyComponent={<NoDataView />}
                     />
+                    <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
                 </CommonView>
             </View>
 
@@ -276,8 +302,8 @@ class EstateWeixiuPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-   
-   
+
+
     list: {
         backgroundColor: Macro.color_white,
         margin: 15,
@@ -287,17 +313,17 @@ const styles = StyleSheet.create({
         // textAlign: 'left',
         color: '#404145',
         fontSize: 16,
-        paddingBottom: 10, 
+        paddingBottom: 10,
         marginLeft: 20,
-        marginRight: 20, 
+        marginRight: 20,
     },
     title2: {
         paddingTop: 15,
         // textAlign: 'left',
         color: '#404145',
         fontSize: 16,
-        paddingBottom: 10, 
-        marginRight: 20, 
+        paddingBottom: 10,
+        marginRight: 20,
     },
     line: {
         width: ScreenUtil.deviceWidth() - 30 - 15 * 2,
@@ -310,7 +336,7 @@ const styles = StyleSheet.create({
         color: '#000',
         fontSize: 16,
         paddingBottom: 15,
-    }, 
+    },
     card: {
         borderTopWidth: 1,
         borderRightWidth: 1,
@@ -333,7 +359,7 @@ const styles = StyleSheet.create({
     orange: {
         borderLeftColor: Macro.work_orange,
         borderLeftWidth: 5,
-    }, 
+    },
 
 });
 const mapStateToProps = ({ buildingReducer }) => {

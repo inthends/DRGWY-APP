@@ -19,7 +19,7 @@ import CommonView from '../../../components/CommonView';
 import MyPopover from '../../../components/my-popover';
 
 //已经处理的单子，只能查看
-class TaskListDonePage extends BasePage {
+class TaskDoneListPage extends BasePage {
 
     static navigationOptions = ({ navigation }) => {
         return {
@@ -161,7 +161,7 @@ class TaskListDonePage extends BasePage {
         return (
             <TouchableWithoutFeedback onPress={() => {
                 //查看报修单
-                this.props.navigation.navigate('weixiuView', { data: item.id });
+                this.props.navigation.navigate('weixiuView', { id: item.id });
             }}>
                 <Flex direction='column' align={'start'}
                     style={[styles.card, index === 0 ? styles.blue : styles.orange]}>
@@ -182,7 +182,7 @@ class TaskListDonePage extends BasePage {
 
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
-                            <Text>所属区域：{item.repairArea}，是否有偿：{item.isPaid}</Text>
+                            <Text>所属区域：{item.repairArea}，是否有偿：{item.isPaid}，是否允许抢单：{item.isQD == 1 ? '是' : '否'}</Text>
                         </Flex>
 
                         <Flex justify='between'
@@ -301,4 +301,4 @@ const mapStateToProps = ({ buildingReducer }) => {
         selectBuilding: buildingReducer.selectBuilding
     };
 };
-export default connect(mapStateToProps)(TaskListDonePage);
+export default connect(mapStateToProps)(TaskDoneListPage);

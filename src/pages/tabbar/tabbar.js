@@ -46,7 +46,7 @@ import EstateWeixiuPage from '../navigator/estate/estate-weixiu';
 import EstateTousuPage from '../navigator/estate/estate-tousu';
 
 //工作台
- 
+
 //现场检查
 import SelectAllPerson from '../work/select-all-person';
 import SelectRolePersonMulti from '../work/select-role-person-multi';
@@ -80,7 +80,7 @@ import FeeChargeDetail from '../navigator/fee-charge-detail';
 
 import SelectAddressPage from '../work/select-address';
 import SelectRolePerson from '../work/select-role-person';
-import TaskListPage from '../work/task/task-list';
+
 import ServiceDeskDetailPage from '../work/task/servicedesk-detail';
 import DispatchDetailPage from '../work/task/dispatch-detail';
 import ReceiveDetailPage from '../work/task/receive-detail';
@@ -89,10 +89,18 @@ import CompleteDetailPage from '../work/task/complete-detail';
 import CheckDetailPage from '../work/task/check-detail';
 import VisitDetailPage from '../work/task/visit-detail';
 import AssistDetailPage from '../work/task/assist-detail';
-import ApproveDetailPage from '../work/task/approve-detail'; 
-import TaskDoneListPage from '../work/task/task-done-list';
-import TaskQDListPage from '../work/task/task-qd-list'; 
+import ApproveDetailPage from '../work/task/approve-detail';
+
+import TaskQDListPage from '../work/task/task-qd-list';
 import SelectRepairMajor from '../work/select-repairmajor';
+import RobDetailPage from '../work/task/rob-detail';
+ 
+import TaskListPage from '../work/task/task-list';
+import TaskDoneListPage from '../work/task/task-done-list';
+
+//服务单
+import ServicedeskListPage from '../work/task/servicedesk-list';
+import ServicedeskDoneListPage from '../work/task/servicedesk-done-list';
 
 //工作台回访查看单据
 import WeixiuDetailPage from '../work/task/weixiu-detail';
@@ -190,19 +198,6 @@ const navigatorNavigator = createStackNavigator({
   },
 
   gdMoney: gdMoneyPage,
-  e_fuwu: EstateFuwuPage,
-
-  fuwuD: EfuwuDetailPage,//服务单页面点击关联单据，只能查看
-  weixiuD: EweixiuDetailPage, //服务单页面点击关联单据，跳转到维修单，只能查看
-  tousuD: EtousuDetailPage, //投诉单详情，只能查看
-
-
-
-  e_weixiu: EstateWeixiuPage,
-  e_tousu: EstateTousuPage,
-
-
-  
   //固定资产
   gdzcPandian: GdzcPandianPage,
   gdzcDetail: GdzcDetailPage,
@@ -212,7 +207,7 @@ const navigatorNavigator = createStackNavigator({
   qianfei: QianFeiZhangLingPage,
   weixiu_s: WeiXiuRatePage,
   tousu_s: TouSuPage,
-  huifang_s: HuiFangRatePage, 
+  huifang_s: HuiFangRatePage,
   // louPan: LouPan,
   // louDong: LouDong,
   // louCeng: LouCeng,
@@ -247,12 +242,18 @@ const WorkNavigator = createStackNavigator({
   paidan: DispatchDetailPage,
   huifang: VisitDetailPage,
   approve: ApproveDetailPage,
+  rob: RobDetailPage,
 
   scanonly: ScanOnly,
   scandemo: ScanSS,
   task: TaskListPage,
   taskDone: TaskDoneListPage,
   taskqd: TaskQDListPage,
+ 
+  //服务单
+  servicedesk: ServicedeskListPage,
+  servicedeskDone: ServicedeskDoneListPage,
+ 
   newsList: NewsList,
   selectRepairMajor: SelectRepairMajor,
   chaobiao: ChaoBiaoPage,
@@ -278,6 +279,14 @@ const WorkNavigator = createStackNavigator({
   checkAdd: EcheckAddPage,
   addTaskWork: AddWorkPage,
   addRepair: AddRepairPage,
+ 
+  e_fuwu: EstateFuwuPage,
+  e_weixiu: EstateWeixiuPage,
+  e_tousu: EstateTousuPage,
+  fuwuD: EfuwuDetailPage,//服务单页面点击关联单据，只能查看
+  weixiuD: EweixiuDetailPage, //服务单页面点击关联单据，跳转到维修单，只能查看
+  tousuD: EtousuDetailPage, //投诉单详情，只能查看
+ 
   //订单中心
   orderlist: OrderlistPage,
   orderDetail: OrderDetailPage,

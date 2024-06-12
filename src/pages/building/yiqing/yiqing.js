@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { 
+import {
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -22,8 +22,8 @@ class YiQingPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
     return {
       title: '小区管理',
-      headerForceInset:this.headerForceInset,
-            headerLeft: (
+      headerForceInset: this.headerForceInset,
+      headerLeft: (
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="left" style={{ width: 30, marginLeft: 15 }} />
         </TouchableOpacity>
@@ -66,7 +66,7 @@ class YiQingPage extends BasePage {
     return (
       <CommonView style={{ flex: 1 }}>
         <ScrollView>
-          <Text style={styles.title}>{allName}</Text> 
+          <Text style={styles.title}>{allName}</Text>
           <Flex justify={'around'} style={styles.buttons}>
             <Button type={'primary'} style={styles.button1} onPress={this.out}>
               出小区
@@ -76,7 +76,7 @@ class YiQingPage extends BasePage {
               style={styles.button2}
               onPress={() =>
                 this.props.navigation.navigate('yiqinginfo', {
-                  data: { keyvalue: this.state.keyvalue },
+                  id: this.state.keyvalue
                 })
               }
             >

@@ -34,7 +34,7 @@ export default class XunJianDetailPage extends BasePage {
     }
 
     componentDidMount() {
-        let id = common.getValueFromProps(this.props).id;
+        let id = common.getValueFromProps(this.props,'id');//.id;
         XunJianService.xunjianDetail(id).then(data => {
             XunJianService.xunjianDetailExtraData(id).then(images => {
                 this.setState({ images, data });

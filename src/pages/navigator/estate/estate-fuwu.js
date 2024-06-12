@@ -35,7 +35,7 @@ class EstateFuwuPage extends BasePage {
                 <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
                     <Icon name='bars' style={{ marginRight: 15 }} color="black" />
                 </TouchableWithoutFeedback>
-            ),
+            )
         };
     };
 
@@ -45,8 +45,8 @@ class EstateFuwuPage extends BasePage {
             key: null,
         };
 
-        this.state = { 
-            pageIndex: 1, 
+        this.state = {
+            pageIndex: 1,
             dataInfo: {
                 data: [],
             },
@@ -84,7 +84,6 @@ class EstateFuwuPage extends BasePage {
             });
         }
     }
-
 
     getList = () => {
         const { billStatus, selectBuilding, billType, time } = this.state;
@@ -141,7 +140,8 @@ class EstateFuwuPage extends BasePage {
     _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.props.navigation.push('fuwuD', { data: item.id, type: this.state.billType });
+                //this.props.navigation.push('fuwuD', { data: item.id, type: this.state.billType });
+                this.props.navigation.navigate('fuwuD', { id: item.id });
             }}>
                 <Flex direction='column' align={'start'}
                     style={[styles.card, index === 0 ? styles.blue : styles.orange]}>
@@ -234,6 +234,7 @@ class EstateFuwuPage extends BasePage {
             this.onRefresh();
         });
     };
+
     billType = (billType) => {
         this.setState({
             billType,
@@ -242,19 +243,19 @@ class EstateFuwuPage extends BasePage {
             this.onRefresh();
         });
     };
- 
+
     render() {
-        const { dataInfo, ym } = this.state;
+        const { dataInfo } = this.state;
         return (
             <View style={{ flex: 1 }}>
                 <CommonView style={{ flex: 1 }}>
-                    <ScrollTitle onChange={this.billType} titles={['全部', '报修', '投诉', '建议', '咨询']} />
+                    <ScrollTitle onChange={this.billType} titles={['全部', '报修', '投诉','咨询', '建议' ]} />
                     {/*<Tabs tabs={tabs2} initialPage={1} tabBarPosition="top">*/}
                     {/*    {renderContent}*/}
                     {/*</Tabs>*/}
                     <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
                         <MyPopover onChange={this.statusChange}
-                            titles={['全部', '待处理', '待完成', '待回访', '待检验', '已回访', '已检验', '已归档']}
+                            titles={['全部', '待处理', '待完成', '待回访', '待检验', '已回访', '已检验', '已归档', '已作废']}
                             visible={true} />
                         <MyPopover onChange={this.timeChange}
                             //titles={ym} 
@@ -277,6 +278,7 @@ class EstateFuwuPage extends BasePage {
                         onMomentumScrollEnd={() => this.canAction = false}
                         ListEmptyComponent={<NoDataView />}
                     />
+                     <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
                 </CommonView>
             </View>
 
@@ -296,11 +298,8 @@ const styles = StyleSheet.create({
         color: '#404145',
         fontSize: 16,
         paddingBottom: 10,
-        //
         marginLeft: 20,
-        marginRight: 20,
-
-        // width: ,
+        marginRight: 20
     },
     title2: {
         paddingTop: 15,
@@ -308,22 +307,20 @@ const styles = StyleSheet.create({
         color: '#404145',
         fontSize: 16,
         paddingBottom: 10,
-        marginRight: 20,
+        marginRight: 20
     },
     line: {
         width: ScreenUtil.deviceWidth() - 30 - 15 * 2,
         marginLeft: 15,
         backgroundColor: '#eee',
-        height: 1,
+        height: 1
     },
     top: {
         paddingTop: 20,
         color: '#000',
         fontSize: 16,
-        paddingBottom: 15,
+        paddingBottom: 15
     },
-
-
     card: {
         borderTopWidth: 1,
         borderRightWidth: 1,
@@ -346,8 +343,7 @@ const styles = StyleSheet.create({
     orange: {
         borderLeftColor: Macro.work_orange,
         borderLeftWidth: 5
-    },
-
+    }
 });
 const mapStateToProps = ({ buildingReducer }) => {
     return {

@@ -6,7 +6,8 @@ import DownImage from '../static/images/address/down.png';
 import { Flex } from '@ant-design/react-native';
 import Popover from 'react-native-popover-view';
 
-export default class MyPopover extends Component {
+//下拉图标在右侧
+export default class MyPopoverRight extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -47,23 +48,20 @@ export default class MyPopover extends Component {
             <View style={[styles.container, this.props.style]}>
                 <TouchableWithoutFeedback ref={ref => this.touchable = ref} onPress={() => this.showPopover()}>
                     <Flex style={{ height: 40 }}>
-
-                        {!this.props.hiddenImage && (
-                            <Flex>
-                                <LoadImage style={{width: 15, height: 8}}
-                                           defaultImg={this.state.isVisible ? UpImage : DownImage}/>
-                            </Flex>
-                        )}
-
                         <Text style={[{
                             paddingLeft: 10,
                             color: '#666',
                             fontSize: 16,
-                        }, this.props.textStyle]}>{titles[index]}</Text>
-                    </Flex>
-                    
-                </TouchableWithoutFeedback>
-
+                            paddingRight: 10
+                        }, this.props.textStyle]}>{titles[index]}</Text> 
+                        {!this.props.hiddenImage && (
+                            <Flex>
+                                <LoadImage style={{ width: 15, height: 8 }}
+                                    defaultImg={this.state.isVisible ? UpImage : DownImage} />
+                            </Flex>
+                        )} 
+                    </Flex> 
+                </TouchableWithoutFeedback> 
                 <Popover
                     onRequestClose={() => this.closePopover()}
                     fromView={this.touchable}
@@ -75,7 +73,7 @@ export default class MyPopover extends Component {
                                 <Text style={[{
                                     padding: 15,
                                     color: '#666',
-                                    fontSize: 16,
+                                    fontSize: 16
                                 }, this.props.textStyle]}>{item}</Text>
                             </TouchableWithoutFeedback>
                         ))}

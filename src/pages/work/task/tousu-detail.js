@@ -38,7 +38,7 @@ export default class TousuDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let id = common.getValueFromProps(this.props);
+        let id = common.getValueFromProps(this.props,'id');
         //let type = common.getValueFromProps(this.props, 'type');
         this.state = {
             id,
@@ -79,16 +79,8 @@ export default class TousuDetailPage extends BasePage {
             });
         });
     };
+     
     
-    click = (handle) => {
-        const { id, value } = this.state;
-        if (handle === '回复' && !(value && value.length > 0)) {
-            UDToast.showInfo('请输入文字');
-            return;
-        }
-        WorkService.serviceHandle(handle, id, value).then(res => {
-        });
-    };
     communicateClick = (i) => {
         let c = this.state.communicates;
         let d = c.map(it => {

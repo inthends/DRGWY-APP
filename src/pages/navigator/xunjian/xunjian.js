@@ -58,7 +58,7 @@ class XunJianPage extends BasePage {
         }, () => {
             let person = this.state.person || {};
             this.props.navigation.navigate('xunjianBeforeStart', {
-                'data': {
+                data: {
                     person,
                     pointId
                 }
@@ -183,8 +183,8 @@ class XunJianPage extends BasePage {
                 <Flex direction='column' align={'start'} style={[styles.card]}>
                     <Flex>
                         <TouchableWithoutFeedback onPress={() => this.props.navigation.push('xunjiantask', {
-                            'data': {
-                                'status': '',
+                            data: {
+                                status: '',
                                 userId
                             }
                         })}>
@@ -194,8 +194,8 @@ class XunJianPage extends BasePage {
                             </Flex>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={() => this.props.navigation.push('xunjiantask', {
-                            'data': {
-                                'status': '0',
+                            data: {
+                                status: '0',
                                 userId
                             }
                         })}>
@@ -205,8 +205,8 @@ class XunJianPage extends BasePage {
                             </Flex>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={() => this.props.navigation.push('xunjiantask', {
-                            'data': {
-                                'status': '2',
+                            data: {
+                                status: '2',
                                 userId
                             }
                         })}>
@@ -216,10 +216,9 @@ class XunJianPage extends BasePage {
                             </Flex>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={() => this.props.navigation.push('xunjiantask', {
-                            'data': {
-                                'status': '1',
+                            data: {
+                                status: '1',
                                 userId
-
                             }
                         })}>
                             <Flex direction='column' style={{ width: '25%' }}>
@@ -233,7 +232,7 @@ class XunJianPage extends BasePage {
                 <Flex style={styles.line} />
                 {/*<Text style={styles.location}>当前位置：xxxx</Text>*/}
                 <TouchableWithoutFeedback onPress={() => this.props.navigation.push('selectXunjian', {
-                    'data': {
+                    data: {
                         onSelect: this.onSelect,
                         person
                     }
@@ -255,10 +254,10 @@ class XunJianPage extends BasePage {
                                     {item.items.map((it, index) => (
                                         <TouchableWithoutFeedback key={it.name + index}
                                             onPress={() => this.props.navigation.push('xunjianPointDetail', {
-                                                'data': {
+                                                data: {
                                                     lineId: item.lineId,
-                                                    pointId: it.id,
-                                                },
+                                                    pointId: it.id
+                                                }
                                             })}>
                                             <WingBlank>
                                                 <List.Item>{it.name}</List.Item>

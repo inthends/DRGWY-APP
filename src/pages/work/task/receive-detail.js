@@ -6,11 +6,10 @@ import {
     TouchableOpacity,
     StyleSheet,
     ScrollView,
-    Modal,
-    Keyboard
+    Modal
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Flex, Icon, TextareaItem, Button } from '@ant-design/react-native';
+import { Flex, Icon, Button } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';
@@ -38,11 +37,11 @@ export default class ReceiveDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let id = common.getValueFromProps(this.props);
+        let id = common.getValueFromProps(this.props, 'id');
         //let type = common.getValueFromProps(this.props, 'type');
         this.state = {
             id,
-            value: '',
+            //value: '',
             images: [],
             detail: {},
             communicates: [],
@@ -50,39 +49,10 @@ export default class ReceiveDetailPage extends BasePage {
             visible: false,
             KeyboardShown: false
         };
-        this.keyboardDidShowListener = null;
-        this.keyboardDidHideListener = null;
     }
 
     componentDidMount() {
         this.getData();
-    }
-
-    //add new
-    componentWillMount() {
-        //注册鼠标事件，用于文本框输入的时候往上移动 2024年5月23日
-        this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
-            this.setState({
-                KeyboardShown: true,
-            });
-        });
-        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-            this.setState({
-                KeyboardShown: false,
-            });
-        });
-    }
-
-    //add new
-    componentWillUnmount() {
-        //卸载键盘弹出事件监听
-        if (this.keyboardDidShowListener != null) {
-            this.keyboardDidShowListener.remove();
-        }
-        //卸载键盘隐藏事件监听
-        if (this.keyboardDidHideListener != null) {
-            this.keyboardDidHideListener.remove();
-        }
     }
 
     getData = () => {
@@ -115,12 +85,9 @@ export default class ReceiveDetailPage extends BasePage {
         });
     };
     click = (handle) => {
-        const { id, value } = this.state;
-        if (handle === '回复' && !(value && value.length > 0)) {
-            UDToast.showInfo('请输入文字');
-            return;
-        }
-        WorkService.serviceHandle(handle, id, value).then(res => {
+        const { id } = this.state;
+
+        WorkService.serviceHandle(handle, id).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
 
@@ -156,12 +123,12 @@ export default class ReceiveDetailPage extends BasePage {
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
 
-                <ScrollView style={{ marginTop: this.state.KeyboardShown ? - 250 : 0, height: '100%' }}>
+                <ScrollView  >
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.address} {detail.contactName}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
                             <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
@@ -172,42 +139,38 @@ export default class ReceiveDetailPage extends BasePage {
 
                     <ListImages images={images} lookImage={this.lookImage} />
 
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
                     </Flex>
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>派单人：{detail.senderName}</Text>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>派单人：{detail.senderName}，派单时间：{detail.sendDate}</Text>
                     </Flex>
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>派单时间：{detail.sendDate}</Text>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>维修专业：{detail.repairMajor}，积分：{detail.score}</Text>
                     </Flex>
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>
-                    </Flex>
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>积分：{detail.score}</Text>
-                    </Flex>
+
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                             <Text style={styles.left}>关联单：</Text>
                             <Text
                                 onPress={() => {
                                     if (detail.sourceType === '服务总台') {
-                                        this.props.navigation.navigate('service', { data: { id: detail.relationId } });
+                                        this.props.navigation.navigate('service', { id: detail.relationId });
                                     }
                                     else {
                                         //检查单
-                                        this.props.navigation.navigate('checkDetail', { data: { id: detail.relationId } });
+                                        this.props.navigation.navigate('checkDetail', { id: detail.relationId });
                                     }
                                 }}
                                 style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>协助人：{detail.assistName}</Text>
                     </Flex>
 
-                    <View style={{ margin: 15 }}>
+                    {/* <View style={{ margin: 15 }}>
                         <TextareaItem
                             rows={4}
                             autoHeight
@@ -216,19 +179,21 @@ export default class ReceiveDetailPage extends BasePage {
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
-                    </View>
+                    </View> */}
 
                     <Flex justify={'center'}>
                         <Button onPress={() => this.click('接单')} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                width: 200,
+                                width: 110,
                                 backgroundColor: Macro.work_blue,
                                 marginTop: 20,
                                 marginBottom: 10,
                                 height: 40
                             }}>接单</Button>
                     </Flex>
+
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
+
                 </ScrollView>
 
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
@@ -247,12 +212,12 @@ const styles = StyleSheet.create({
         paddingTop: 15,
         paddingBottom: 15
     },
-    every2: {
-        marginLeft: 15,
-        marginRight: 15,
-        paddingBottom: 10,
-        paddingTop: 10
-    },
+    // every2: {
+    //     marginLeft: 15,
+    //     marginRight: 15,
+    //     paddingBottom: 10,
+    //     paddingTop: 10
+    // },
     left: {
         fontSize: 16,
         color: '#404145'

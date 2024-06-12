@@ -19,8 +19,8 @@ import ListJianYanHeader from '../../../components/list-jianyan-header';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 
-//待完成列表
-class TaskListPage extends BasePage {
+//待完成服务单列表
+class ServicedeskListPage extends BasePage {
 
     static navigationOptions = ({ navigation }) => {
         return {
@@ -50,8 +50,7 @@ class TaskListPage extends BasePage {
         const overdue = common.getValueFromProps(this.props).overdue;
         const hiddenHeader = common.getValueFromProps(this.props).hiddenHeader;
         
-        this.state = {
-            count: 0,
+        this.state = { 
             showTabbar: true,
             pageIndex: 1,
             statistics: {},
@@ -90,7 +89,7 @@ class TaskListPage extends BasePage {
 
     getList = () => {
         const { type, overdue, pageIndex } = this.state;
-        WorkService.workList(type, overdue, pageIndex).then(dataInfo => {
+        WorkService.servicedeskList(type, overdue, pageIndex).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -197,7 +196,7 @@ class TaskListPage extends BasePage {
 
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
-                            <Text>紧急：{item.emergencyLevel}，重要：{item.importance}，维修专业：{item.repairMajor}</Text>
+                            <Text>紧急：{item.emergencyLevel}，重要：{item.importance}</Text>
                         </Flex> 
                         <Text style={{
                             paddingLeft: 20,
@@ -313,7 +312,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = ({ buildingReducer }) => {
     return {
-        selectBuilding: buildingReducer.selectBuilding,
+        selectBuilding: buildingReducer.selectBuilding
     };
 };
-export default connect(mapStateToProps)(TaskListPage);
+export default connect(mapStateToProps)(ServicedeskListPage);

@@ -100,7 +100,7 @@ export default {
 
   weixiuList(
     pageIndex,
-    billStatus,
+    status,
     organizeId,
     time,
     repairArea,
@@ -109,7 +109,7 @@ export default {
     return api.postData('/api/MobileMethod/MGetRepairPageListForNavigator', {
       pageIndex,
       pageSize: 10,
-      status: billStatus,
+      status,
       organizeId,
       time,
       repairArea

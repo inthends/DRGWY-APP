@@ -40,7 +40,7 @@ export default class VisitDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let id = common.getValueFromProps(this.props);
+        let id = common.getValueFromProps(this.props,'id');
         //let type = common.getValueFromProps(this.props, 'type');
         this.state = {
             id,
@@ -137,17 +137,17 @@ export default class VisitDetailPage extends BasePage {
 
         WorkService.serviceExtra(id).then(images => {
             this.setState({
-                images,
+                images
             });
         });
     };
 
     click = (handle) => {
         const { id, value, star } = this.state;
-        if (handle === '回复' && !(value && value.length > 0)) {
-            UDToast.showInfo('请输入文字');
-            return;
-        }
+        // if (handle === '回复' && !(value && value.length > 0)) {
+        //     UDToast.showInfo('请输入文字');
+        //     return;
+        // }
         WorkService.serviceHandle(handle, id, value, { grade: star }).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
@@ -236,10 +236,10 @@ export default class VisitDetailPage extends BasePage {
                             <Text style={styles.left}>关联单：</Text>
                             <Text onPress={() => {
                                 if (detail.businessType === 'Repair') {
-                                    this.props.navigation.navigate('weixiuView', { data: detail.businessId });
+                                    this.props.navigation.navigate('weixiuView', { id: detail.businessId });
                                 }
                                 else {
-                                    this.props.navigation.navigate('tousuView', { data: detail.businessId });
+                                    this.props.navigation.navigate('tousuView', { id: detail.businessId });
                                 }
                             }} style={[styles.right, { color: Macro.work_blue }]}>{detail.businessCode}</Text>
 
@@ -270,6 +270,7 @@ export default class VisitDetailPage extends BasePage {
                     </Flex>
 
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
+                    
                 </ScrollView>
 
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>

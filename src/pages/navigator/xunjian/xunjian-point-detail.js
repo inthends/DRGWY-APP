@@ -36,7 +36,7 @@ export default class XunJianPointDetailPage extends BasePage {
             pointId,
             items: [],
             visible: false,
-            images: [],
+            images: []
         };
     }
 

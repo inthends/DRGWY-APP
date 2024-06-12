@@ -151,7 +151,7 @@ class EstateCheckPage extends BasePage {
     _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.props.navigation.push('checkDetail', { data: item.billId });
+                this.props.navigation.push('checkDetail', { id: item.billId });
             }}>
                 <Flex direction='column' align={'start'}
                     style={[styles.card, index === 0 ? styles.blue : styles.orange]}>

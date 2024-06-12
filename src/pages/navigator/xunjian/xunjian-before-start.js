@@ -85,7 +85,7 @@ class XunjianBeforeStart extends BasePage {
                         {items.map(item => (
                             <TouchableWithoutFeedback key={item.id}
                                 onPress={() => this.props.navigation.push('startxunjian', {
-                                    'data': {
+                                    data: {
                                         id: item.id,
                                         person,
                                         pointId,

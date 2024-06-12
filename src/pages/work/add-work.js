@@ -44,9 +44,10 @@ class AddWorkPage extends BasePage {
         const { taskId, address, value } = common.getValueFromProps(this.props) || {};
         this.state = {
             index: 0,
-            data: ['报修', '报事', '巡场'],
+            data: ['报修', '投诉', '咨询', '建议'],
+            // data: ['报修', '报事', '巡场'],
             // images: [{ icon: '' }],
-            images: [''], 
+            images: [''],
             recording: false,
             id: common.getGuid(),
             fileUrl: null,
@@ -58,7 +59,6 @@ class AddWorkPage extends BasePage {
             value,
             isMustServicedeskFile: false
         };
-
         this.keyboardDidShowListener = null;
         this.keyboardDidHideListener = null;
     }
@@ -202,7 +202,7 @@ class AddWorkPage extends BasePage {
         );
     }
 
-    submit = () => { 
+    submit = () => {
         const { id, data, index, address, value, taskId, isMustServicedeskFile, images } = this.state;
 
         if (address == null || address.allName == null) {
@@ -218,9 +218,9 @@ class AddWorkPage extends BasePage {
 
         if (this.canSubmit === false) {
             return;
-        } 
+        }
         this.canSubmit = false;//防止重复提交
-         
+
         const params = {
             id,
             keyvalue: id,
@@ -328,7 +328,10 @@ class AddWorkPage extends BasePage {
                                     placeholder={title2}
                                     autoHeight
                                     style={{
-                                        color: '#404145', fontSize: 16, paddingTop: 15,
+                                        color: '#404145',
+                                        height: 150,
+                                        fontSize: 16, 
+                                        paddingTop: 15,
                                         width: ScreenUtil.deviceWidth() - 30
                                     }}
                                     onChange={value => this.setState({ value })}
@@ -338,7 +341,7 @@ class AddWorkPage extends BasePage {
                             <Flex align={'start'} justify={'start'} style={{
                                 paddingTop: 15,
                                 paddingBottom: 15,
-                                width: ScreenUtil.deviceWidth() - 30,
+                                width: ScreenUtil.deviceWidth() - 30
                             }}>
                                 <TouchableOpacity onPressIn={() => this.startRecord()} onPressOut={() => this.stopRecord()}>
                                     <LoadImage style={{ width: 20, height: 20 }}

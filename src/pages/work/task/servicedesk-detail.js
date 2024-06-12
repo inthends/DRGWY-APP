@@ -25,6 +25,7 @@ import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
 export default class ServiceDeskDetailPage extends BasePage {
+
     static navigationOptions = ({ navigation }) => {
         return {
             title: '服务单详情',
@@ -39,20 +40,22 @@ export default class ServiceDeskDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let id = common.getValueFromProps(this.props);
+        let id = common.getValueFromProps(this.props,'id');
         this.state = {
             isQD: 0,
             repairmajor: null,
             selectPerson: null,
             id,
             value: '',
+            memo: '',
             images: [],
             detail: {
             },
             communicates: [],
             lookImageIndex: 0,
             visible: false,
-            showRepair: false,
+            showRepair: false,//转单
+            showClose: false,//闭单备注
             KeyboardShown: false,
             btnList: []//按钮权限
         };
@@ -61,8 +64,7 @@ export default class ServiceDeskDetailPage extends BasePage {
         this.keyboardDidHideListener = null;
     }
 
-    componentDidMount() {
-
+    componentDidMount() { 
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
@@ -115,7 +117,7 @@ export default class ServiceDeskDetailPage extends BasePage {
             this.setState({
                 detail: {
                     ...item.data,
-                    businessId: item.businessId,
+                    //businessId: item.businessId,
                     statusName: item.statusName
                 }
             });
@@ -137,7 +139,7 @@ export default class ServiceDeskDetailPage extends BasePage {
     reply = () => {
         const { id, value } = this.state;
         if (!(value && value.length > 0)) {
-            UDToast.showInfo('请输入文字');
+            UDToast.showInfo('请输入回复内容');
             return;
         }
         WorkService.serviceHandle('回复', id, value).then(res => {
@@ -148,6 +150,12 @@ export default class ServiceDeskDetailPage extends BasePage {
     };
 
     doWork = (handle) => {
+        const { id, memo } = this.state;
+        if (!(memo && memo.length > 0)) {
+            UDToast.showInfo('请输入说明');
+            return;
+        }
+
         Alert.alert(
             '请确认',
             '是否' + handle + '？',
@@ -155,8 +163,8 @@ export default class ServiceDeskDetailPage extends BasePage {
             {
                 text: '确定',
                 onPress: () => {
-                    const { id, value } = this.state;
-                    WorkService.serviceHandle(handle, id, value).then(res => {
+
+                    WorkService.serviceHandle(handle, id, memo).then(res => {
                         this.props.navigation.goBack();
                     }).catch(err => {
                         UDToast.showError(err);
@@ -167,14 +175,18 @@ export default class ServiceDeskDetailPage extends BasePage {
     };
 
     roRepair = () => {
-
         const { id, isQD, selectPerson, repairmajor } = this.state;
         if (repairmajor == null || repairmajor.id == null) {
             UDToast.showInfo('请选择维修专业');
             return;
         }
 
-        if (isQD == 1 && selectPerson == null) {
+        // if (isQD == 1 && selectPerson == null) {
+        //     UDToast.showInfo('请选择派单人');
+        //     return;
+        // }
+
+        if (selectPerson == null) {
             UDToast.showInfo('请选择派单人');
             return;
         }
@@ -243,6 +255,7 @@ export default class ServiceDeskDetailPage extends BasePage {
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView style={{ marginTop: this.state.KeyboardShown ? - 200 : 0, height: '100%' }}>
+
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.billType}</Text>
@@ -272,37 +285,38 @@ export default class ServiceDeskDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>报单时间：{detail.createDate}</Text>
                     </Flex>
-
-                    <View style={{ margin: 15 }}>
-                        <TextareaItem
-                            rows={4}
-                            autoHeight
-                            placeholder='请输入'
-                            style={{ width: ScreenUtil.deviceWidth() - 32 }}
-                            onChange={value => this.setState({ value })}
-                            value={this.state.value}
-                        />
-                    </View>
-
-                    <Flex justify={'center'}>
-                        <Button onPress={() => this.reply()} type={'primary'}
-                            activeStyle={{ backgroundColor: Macro.work_blue }}
-                            style={{
-                                width: 110,
-                                backgroundColor: Macro.work_blue,
-                                marginTop: 10,
-                                marginBottom: 10,
-                                height: 40
-                            }}>回复</Button>
-                    </Flex>
+  
+                    {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'reply')) ?
+                        <>
+                            <View style={{ margin: 15 }}>
+                                <TextareaItem
+                                    rows={4}
+                                    autoHeight
+                                    maxLength={500}
+                                    placeholder='请输入回复内容'
+                                    style={{ width: ScreenUtil.deviceWidth() - 32 }}
+                                    onChange={value => this.setState({ value })}
+                                    value={this.state.value}
+                                />
+                            </View>
+                            <Flex justify={'center'}>
+                                <Button onPress={() => this.reply()} type={'primary'}
+                                    activeStyle={{ backgroundColor: Macro.work_blue }}
+                                    style={{
+                                        width: 110,
+                                        backgroundColor: Macro.work_blue,
+                                        marginTop: 10,
+                                        marginBottom: 10,
+                                        height: 40
+                                    }}>回复</Button>
+                            </Flex></> : null}
 
                     {detail.status === 1 &&
                         <Flex justify={'center'}>
                             {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'torepair')) ?
                                 <Flex justify={'center'}>
                                     <Button onPress={() => {
-                                        this.setState({
-                                            serviceDeskId: id,
+                                        this.setState({ 
                                             showRepair: true
                                         })
                                     }
@@ -328,22 +342,75 @@ export default class ServiceDeskDetailPage extends BasePage {
 
                             {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'close')) ?
                                 <Flex justify={'center'}>
-                                    <Button onPress={() => this.doWork('闭单')} type={'primary'}
-                                        activeStyle={{ backgroundColor: Macro.work_blue }} style={{
+                                    <Button onPress={() =>
+                                    //this.doWork('闭单')
+                                    {
+                                        this.setState({ 
+                                            memo: '',
+                                            showClose: true
+                                        })
+                                    }}
+                                        type={'primary'}
+                                        activeStyle={{ backgroundColor: Macro.work_blue }}
+                                        style={{
                                             width: 110,
-                                            backgroundColor: Macro.work_blue,
                                             height: 40,
                                             marginLeft: 20,
+                                            borderWidth: 0,
+                                            backgroundColor: '#666',
                                             marginRight: 20
                                         }}>闭单</Button>
                                 </Flex> : null}
                         </Flex>
                     }
-
                     <Communicates communicateClick={this.communicateClick} communicates={communicates} />
-
                 </ScrollView>
 
+                {this.state.showClose && (
+                    //闭单
+                    <View style={styles.mengceng}>
+                        <Flex direction={'column'} justify={'center'} align={'center'}
+                            style={{
+                                flex: 1, padding: 25,
+                                backgroundColor: 'rgba(178,178,178,0.5)'
+                            }}>
+                            <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
+                                <View style={{ height: 110, width: 300 }}>
+                                    <TextareaItem
+                                        //rows={4}
+                                        style={{ height: 100 }}
+                                        placeholder='请输入说明'
+                                        maxLength={500}
+                                        //style={{ width: ScreenUtil.deviceWidth() - 32 }}
+                                        onChange={value => this.setState({ memo: value })}
+                                        value={this.state.memo}
+                                    />
+                                </View>
+                                <Flex style={{ marginTop: 15 }}>
+                                    <Button onPress={() => this.doWork('闭单')} type={'primary'}
+                                        activeStyle={{ backgroundColor: Macro.work_blue }}
+                                        style={{
+                                            width: 110,
+                                            backgroundColor: Macro.work_blue,
+                                            height: 35
+                                        }}>确认</Button>
+                                    <Button onPress={() => {
+                                        this.setState({ showClose: false });
+                                    }}
+                                        type={'primary'}
+                                        activeStyle={{ backgroundColor: Macro.work_blue }}
+                                        style={{
+                                            marginLeft: 30,
+                                            width: 110,
+                                            backgroundColor: '#666',
+                                            borderWidth: 0,
+                                            height: 35
+                                        }}>取消</Button>
+                                </Flex>
+                            </Flex>
+                        </Flex>
+                    </View>
+                )}
 
                 {this.state.showRepair && (
                     // 转报修
@@ -379,7 +446,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                                         </Flex>
                                     </TouchableWithoutFeedback>
                                     <TouchableWithoutFeedback
-                                        onPress={() => this.props.navigation.navigate('selectRolePerson', { type: 'receive', onSelect: this.onSelectPerson })}>
+                                        onPress={() => this.props.navigation.navigate('selectRolePerson', { type: 'dispatch', onSelect: this.onSelectPerson })}>
                                         <Flex justify='between' style={[{
                                             paddingTop: 15,
                                             paddingBottom: 15,

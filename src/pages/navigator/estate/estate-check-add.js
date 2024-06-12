@@ -27,7 +27,7 @@ import SelectImage from '../../../utils/select-image';
 import UDToast from '../../../utils/UDToast';
 import ListImages from '../../../components/list-images';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import MyPopover from '../../../components/my-popover';
+import MyPopoverRight from '../../../components/my-popover-right';
 
 class EcheckAddPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -338,7 +338,7 @@ class EcheckAddPage extends BasePage {
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>检查组：</Text>
-                        <MyPopover
+                        <MyPopoverRight
                             onChange={(title) => {
                                 this.setState({ checkRole: title });
                             }}
@@ -356,8 +356,8 @@ class EcheckAddPage extends BasePage {
                                     paddingBottom: 10
                                 }}
                             >
-                                <Text style={[address ? { fontSize: 16, paddingRight: 10 } :
-                                    { fontSize: 16, color: '#999', paddingRight: 10 }]}>{address ? address.allName : `请选择检查区域`}</Text>
+                                <Text style={[address && address.allName ? { fontSize: 16, paddingRight: 10 } :
+                                    { fontSize: 16, color: '#999', paddingRight: 10 }]}>{address && address.allName ? address.allName : `请选择检查区域`}</Text>
                                 <LoadImage style={{ width: 6, height: 12 }} defaultImg={require('../../../static/images/address/right.png')} />
                             </Flex>
                         </TouchableWithoutFeedback>
@@ -417,7 +417,7 @@ class EcheckAddPage extends BasePage {
                                 height: 40
                             }}>添加明细</Button>
                     </Flex>
-                </Flex> 
+                </Flex>
                 {
                     this.state.showAdd && (
                         <View style={styles.mengceng}>
@@ -436,8 +436,8 @@ class EcheckAddPage extends BasePage {
                                                     marginLeft: 10,
                                                     marginRight: 10
                                                 }, ScreenUtil.borderBottom()]}>
-                                                    <Text style={[address ? { color: '#404145' } :
-                                                        { color: '#999' }]}>{address ? address.allName : `请选择位置`}</Text>
+                                                    <Text style={[address && address.allName ? { color: '#404145' } :
+                                                        { color: '#999' }]}>{address && address.allName ? address.allName : `请选择位置`}</Text>
                                                     <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
                                                 </Flex>
                                             </TouchableWithoutFeedback>
@@ -463,7 +463,7 @@ class EcheckAddPage extends BasePage {
                                                     multiline
                                                     onChangeText={checkMemo => this.setState({ checkMemo })}
                                                     value={this.state.checkMemo}
-                                                    style={{ fontSize: 16, textAlignVertical: 'top', height: 50 }}
+                                                    style={{ textAlignVertical: 'top', height: 50 }}
                                                     numberOfLines={4}>
                                                 </TextInput>
                                             </Flex>
@@ -475,7 +475,7 @@ class EcheckAddPage extends BasePage {
                                                     multiline
                                                     onChangeText={rectification => this.setState({ rectification })}
                                                     value={this.state.rectification}
-                                                    style={{ fontSize: 16, textAlignVertical: 'top', height: 50 }}
+                                                    style={{ textAlignVertical: 'top', height: 50 }}
                                                     numberOfLines={4}>
                                                 </TextInput>
                                             </Flex>
@@ -554,12 +554,12 @@ class EcheckAddPage extends BasePage {
 const styles = StyleSheet.create({
 
     every: {
-        fontSize: 16,
+        //fontSize: 16,
         color: '#666',
-        marginLeft: 15,
-        marginRight: 15,
-        paddingTop: 15,
-        paddingBottom: 15
+        marginLeft: 7,
+        marginRight: 10,
+        paddingTop: 10,
+        paddingBottom: 10
     },
 
     left: {

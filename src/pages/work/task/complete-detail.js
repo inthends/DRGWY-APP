@@ -38,7 +38,7 @@ export default class CompleteDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let id = common.getValueFromProps(this.props);
+        let id = common.getValueFromProps(this.props,'id');
         //let type = common.getValueFromProps(this.props, 'type');
         this.state = {
             id,
@@ -169,7 +169,7 @@ export default class CompleteDetailPage extends BasePage {
     render() {
         const { images, detail, communicates } = this.state;
         return (
-            <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}> 
+            <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView style={{ marginTop: this.state.KeyboardShown ? - 250 : 0, height: '100%' }}>
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.billCode}</Text>
@@ -190,41 +190,37 @@ export default class CompleteDetailPage extends BasePage {
                         <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
                     </Flex>
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>转单人：{detail.createUserName}</Text>
-                    </Flex>
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>转单时间：{detail.createDate}</Text>
+                        <Text style={styles.left}>转单人：{detail.createUserName}，转单时间：{detail.createDate}</Text>
                     </Flex>
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                             <Text style={styles.left}>关联单：</Text>
-                            <Text 
+                            <Text
                                 onPress={() => {
                                     if (detail.sourceType === '服务总台') {
-                                        this.props.navigation.navigate('service', { data: { id: detail.relationId } });
+                                        this.props.navigation.navigate('service', { id: detail.relationId });
                                     }
                                     else {
                                         //检查单
-                                        this.props.navigation.navigate('checkDetail', { data: { id: detail.relationId } });
+                                        this.props.navigation.navigate('checkDetail', { id: detail.relationId });
                                     }
                                 }}
                                 style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>维修专业：{detail.repairMajor}</Text>
-                    </Flex>
 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>积分：{detail.score}</Text>
+                        <Text style={styles.left}>维修专业：{detail.repairMajor}，积分：{detail.score}</Text>
                     </Flex>
 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>协助人：{detail.assistName}</Text>
                     </Flex>
+
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>增援人：{detail.reinforceName}</Text>
                     </Flex>
+
                     <UploadImageView
                         style={{ marginTop: 10 }}
                         linkId={this.state.id}

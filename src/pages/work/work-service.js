@@ -77,6 +77,7 @@ export default {
     serviceDetail(keyvalue) {
         return api.getData('/api/MobileMethod/MGetServicedeskEntity', { keyvalue });
     },
+
     //服务单附件
     serviceExtra(keyvalue) {
         return api.getData('/api/MobileMethod/MGetFilesData', { keyvalue });
@@ -145,9 +146,11 @@ export default {
         }
         else if (handle === '完成维修') {
             url = '/api/MobileMethod/MRepairHandleFinish';
+
         } else if (handle === '完成回访') {
             // url = '/api/MobileMethod/MRepairVisitFinish';
             url = '/api/MobileMethod/MVisitFinish';//服务单完成回访
+
         } else if (handle === '完成检验') {
             url = '/api/MobileMethod/MRepairCheckFinish';
         }
@@ -183,10 +186,16 @@ export default {
         return api.getData('/api/MobileMethod/MGetCommunicates', { keyvalue, pageIndex: 1, pageSize: 100 });
     },
 
+    //操作记录
+    serviceOperations(keyvalue) {
+        return api.getData('/api/MobileMethod/MGetOperations', { keyvalue, pageIndex: 1, pageSize: 100 });
+    },
+
     //维修单单据动态
     getOperationRecord(keyvalue) {
         return api.getData('/api/MobileMethod/MGetOperationRecordList', { keyvalue, pageIndex: 1, pageSize: 100 });
     },
+
     weixiuDetail(keyvalue) {
         return api.getData('/api/MobileMethod/MGetRepairEntity', { keyvalue });
     },
@@ -216,17 +225,17 @@ export default {
             type = overdue;
             overdue = null;
         }
-        else if (type === 'fuwu') {
-            if (overdue === -1) {
-                //已回复，已经回复不判断是否逾期
-                url = '/api/MobileMethod/MGetReplyServiceDeskPageList';
-                type = null;
-            } else {
-                //待回复
-                url = '/api/MobileMethod/MGetUnReplyServiceDeskPageList';
-                type = null;
-            }
-        }
+        // else if (type === 'fuwu') {
+        //     if (overdue === -1) {
+        //         //已回复，已经回复不判断是否逾期
+        //         url = '/api/MobileMethod/MGetReplyServiceDeskPageList';
+        //         type = null;
+        //     } else {
+        //         //待回复
+        //         url = '/api/MobileMethod/MGetUnReplyServiceDeskPageList';
+        //         type = null;
+        //     }
+        // }
         else if (type === 'visit') {
             //待回访的服务单
             url = '/api/MobileMethod/MGetUnVisitServiceDeskPageList';
@@ -239,7 +248,19 @@ export default {
         return api.postData(url, { status: type, isOverdue: overdue, pageIndex, pageSize: 10 });
     },
 
-    //工作台已完成事项列表
+    //工作台已完成服务单列表
+    servicedeskList(type, overdue, pageIndex) {
+        let url = '/api/MobileMethod/MGetServicedeskPageList';
+        return api.postData(url, { type, overdue, pageIndex, pageSize: 10 });
+    },
+
+    //工作台已完成服务单列表
+    servicedeskDoneList(type, time, pageIndex) {
+        let url = '/api/MobileMethod/MGetServicedeskDonePageList';
+        return api.postData(url, { type, time, pageIndex, pageSize: 10 });
+    },
+
+    //工作台已完成工单事项列表
     workDoneList(type, repairMajor, time, pageIndex) {
         let url = '/api/MobileMethod/MGetRepairDonePageList';
         return api.postData(url, { type, repairMajor, time, pageIndex, pageSize: 10 });
@@ -283,6 +304,7 @@ export default {
             assistId
         });
     },
+
     unreadCount() {
         return api.getData('/api/MobileMethod/MGetUnReadNewsCount', {}, false);
     },
@@ -296,6 +318,11 @@ export default {
     //获取按钮权限
     getButtonList() {
         return api.getData('/api/MobileMethod/GetButtonList');
+    },
+
+    //获取模块权限
+    getModuleList() {
+        return api.getData('/api/MobileMethod/GetModuleList');
     },
 
     //获取必填项

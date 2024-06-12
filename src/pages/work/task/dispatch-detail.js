@@ -39,11 +39,11 @@ export default class DispatchDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let id = common.getValueFromProps(this.props);
+        let id = common.getValueFromProps(this.props,'id');
         //let type = common.getValueFromProps(this.props, 'type');
         this.state = {
             id,
-            value: '',
+            //value: '',
             images: [],
             detail: {},
             communicates: [],
@@ -63,8 +63,7 @@ export default class DispatchDetailPage extends BasePage {
             selectPerson: selectItem
         })
     }
-
-    //协助人
+ 
     onSelectAssisPerson = ({ selectItems }) => {
         this.setState({
             assisPersons: selectItems
@@ -164,10 +163,10 @@ export default class DispatchDetailPage extends BasePage {
             UDToast.showInfo('请选择维修专业');
             return;
         }
-
-        //协助人
+ 
         let personIds = assisPersons.map(item => item.id);
-        let assistId = personIds && personIds.length > 0 ? JSON.stringify(personIds) : ''; 
+        let assistId = personIds && personIds.length > 0 ? JSON.stringify(personIds) : '';
+        
         WorkService.paidan(
             id,
             selectPerson.id,
@@ -209,6 +208,7 @@ export default class DispatchDetailPage extends BasePage {
         });
     };
 
+    
     render() {
         const { images, detail, communicates, repairmajor, selectPerson, assisPersons } = this.state; 
         //转换name
@@ -229,6 +229,7 @@ export default class DispatchDetailPage extends BasePage {
                                 style={{ width: 16, height: 16 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
+
                     <Text style={[styles.desc]}>{detail.repairContent}</Text>
 
                     <ListImages images={images} lookImage={this.lookImage} />
@@ -236,28 +237,28 @@ export default class DispatchDetailPage extends BasePage {
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
                     </Flex>
+
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>转单人：{detail.createUserName}</Text>
+                        <Text style={styles.left}>转单人：{detail.createUserName}，转单时间：{detail.createDate}</Text>
                     </Flex>
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>转单时间：{detail.createDate}</Text>
-                    </Flex>
+
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                             <Text style={styles.left}>关联单：</Text>
                             <Text
                                 onPress={() => {
                                     if (detail.sourceType === '服务总台') {
-                                        this.props.navigation.navigate('service', { data: { id: detail.relationId } });
+                                        this.props.navigation.navigate('service', { id: detail.relationId  });
                                     }
                                     else {
                                         //检查单
-                                        this.props.navigation.navigate('checkDetail', { data: { id: detail.relationId } });
+                                        this.props.navigation.navigate('checkDetail', { id: detail.relationId });
                                     }
                                 }}
                                 style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
+                    
                     <TouchableWithoutFeedback
                         onPress={() => this.props.navigation.navigate('selectRepairMajor', {
                             parentName: 'paidan'
@@ -299,8 +300,8 @@ export default class DispatchDetailPage extends BasePage {
                             <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
                         </Flex>
                     </TouchableWithoutFeedback>
-
-                    <View style={{
+                    
+                    {/* <View style={{
                         margin: 15,
                         // borderStyle: 'solid',
                         // borderColor: '#F3F4F2',
@@ -315,7 +316,8 @@ export default class DispatchDetailPage extends BasePage {
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
                         />
-                    </View>
+                    </View> */}
+
                     <Flex justify={'center'}>
                         <Button onPress={() => this.click()} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{

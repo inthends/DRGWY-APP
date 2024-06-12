@@ -25,7 +25,7 @@ class TaskQDListPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
-            title: navigation.getParam('data') ? navigation.getParam('data').title : '',
+            title: '工单列表',//navigation.getParam('data') ? navigation.getParam('data').title : '',
             headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -48,7 +48,8 @@ class TaskQDListPage extends BasePage {
         // let pageParames = common.getValueFromProps(this.props); 
         // const type = common.getValueFromProps(this.props).type;
         // const overdue = common.getValueFromProps(this.props).overdue;
-        //const hiddenHeader = common.getValueFromProps(this.props).hiddenHeader; 
+        // const hiddenHeader = common.getValueFromProps(this.props).hiddenHeader;
+        
         this.state = {
             pageIndex: 1,
             dataInfo: {
@@ -159,31 +160,32 @@ class TaskQDListPage extends BasePage {
             <TouchableWithoutFeedback onPress={() => {
                 switch (item.statusName) {
                     case '待派单': {
-                        this.props.navigation.navigate('weixiuView', { data: item.id });
+                        //跳转抢单页面
+                        this.props.navigation.navigate('rob', { id: item.id });
                         break;
                     }
                     case '待接单': {
-                        this.props.navigation.navigate('jiedan', { data: item.id });
+                        this.props.navigation.navigate('jiedan', { id: item.id });
                         break;
                     }
                     case '待开工': {
-                        this.props.navigation.navigate('kaigong', { data: item.id });
+                        this.props.navigation.navigate('kaigong', { id: item.id });
                         break;
                     }
                     case '待完成': {
-                        this.props.navigation.navigate('wancheng', { data: item.id });
+                        this.props.navigation.navigate('wancheng', { id: item.id });
                         break;
                     }
                     case '待检验': {
-                        this.props.navigation.navigate('jianyan', { data: item.id });
+                        this.props.navigation.navigate('jianyan', { id: item.id });
                         break;
                     }
                     case '待回访': {
-                        this.props.navigation.navigate('huifang', { data: item.id });
+                        this.props.navigation.navigate('huifang', { id: item.id });
                         break;
                     }
                     case '待协助': {
-                        this.props.navigation.navigate('assist', { data: item.id });
+                        this.props.navigation.navigate('assist', { id: item.id });
                         break;
                     }
                     default:

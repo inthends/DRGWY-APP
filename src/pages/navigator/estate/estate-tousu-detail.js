@@ -36,7 +36,7 @@ export default class EtousuDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let id = common.getValueFromProps(this.props);
+        let id = common.getValueFromProps(this.props,'id');
         //let type = common.getValueFromProps(this.props, 'type');
         this.state = {
             id,
@@ -135,7 +135,7 @@ export default class EtousuDetailPage extends BasePage {
                     {detail.relationId && <TouchableWithoutFeedback>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                             <Text style={styles.left}>关联单：</Text>
-                            <Text onPress={() => this.props.navigation.navigate('fuwuD', { data: { id: detail.relationId } })}
+                            <Text onPress={() => this.props.navigation.navigate('fuwuD', { id: detail.relationId  })}
                                 style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>} 

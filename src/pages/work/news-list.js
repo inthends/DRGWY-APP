@@ -107,29 +107,7 @@ class NewsList extends BasePage {
                     //     ...item,
                     //     id: item.linkId
                     // }; 
-                    // switch (type) {
-                    //     case 1:
-                    //     case 2: {
-                    //         this.props.navigation.navigate('service', { data: d });
-                    //         break;
-                    //     }
-                    //     case 3: {
-                    //         this.props.navigation.navigate('paidan', { data: d });
-                    //         break;
-                    //     }
-                    //     case 4: {
-                    //         this.props.navigation.navigate('jiedan', { data: d });
-                    //         break;
-                    //     }
-                    //     case 5: {
-                    //         this.props.navigation.navigate('huifang', { data: d });
-                    //         break;
-                    //     }
-                    //     case 6: {
-                    //         //检验
-                    //         this.props.navigation.navigate('jianyan', { data: d });
-                    //         break;
-                    //     } 
+                    // switch (type) { 
                     //     case 98: //评审回复
                     //     case 99: //催办消息
                     //         {
@@ -139,9 +117,10 @@ class NewsList extends BasePage {
                     //         }
                     // }
                     //根据url跳转
-                    this.props.navigation.navigate(appUrlName, { data: linkId }); 
+                    // this.props.navigation.navigate(appUrlName, { data: linkId }); 
+                    this.props.navigation.navigate(appUrlName, { id: linkId });
                 }}>
-                    
+
                 <Flex direction='column' align={'start'}
                     style={[styles.card, styles.blue]}>
                     <Flex justify='between' style={{ width: '100%' }}>
@@ -191,7 +170,7 @@ class NewsList extends BasePage {
 }
 
 const styles = StyleSheet.create({
-   
+
     content: {
         backgroundColor: Macro.color_white,
         flex: 1
