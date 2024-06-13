@@ -47,11 +47,8 @@ class FeeHousePage extends BasePage {
 
     constructor(props) {
         super(props);
-        this.state = {
-            count: 0,
-            showTabbar: true,
-            pageIndex: 1,
-            statistics: {},
+        this.state = {  
+            pageIndex: 1, 
             dataInfo: {
                 data: [],
             },
@@ -151,7 +148,7 @@ class FeeHousePage extends BasePage {
     };
 
     render() {
-        const { statistics, dataInfo } = this.state;
+        const {   dataInfo } = this.state;
         //const { selectBuilding } = this.props; 
         return (
             <View style={{ flex: 1 }}>
@@ -162,15 +159,13 @@ class FeeHousePage extends BasePage {
                             // ListHeaderComponent={}
                             renderItem={this._renderItem}
                             keyExtractor={(item, index) => item.id}
-                            ItemSeparatorComponent={() => <View style={{ backgroundColor: '#eee', height: 1 }} />}
-
+                            ItemSeparatorComponent={() => <View style={{ backgroundColor: '#eee', height: 1 }} />} 
                             //必须
                             onEndReachedThreshold={0.1}
                             refreshing={this.state.refreshing}
                             onRefresh={this.onRefresh}//下拉刷新
                             onEndReached={this.loadMore}//底部往下拉翻页
-                            onMomentumScrollBegin={() => this.canLoadMore = true}
-
+                            onMomentumScrollBegin={() => this.canLoadMore = true} 
                             ListEmptyComponent={<NoDataView />}
                         />
                     </View>

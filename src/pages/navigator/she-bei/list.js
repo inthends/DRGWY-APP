@@ -43,11 +43,8 @@ class SheBeiList extends BasePage {
             key: null,
         };
 
-        this.state = {
-            count: 0,
-            showTabbar: true,
-            pageIndex: 1,
-            statistics: {},
+        this.state = { 
+            pageIndex: 1, 
             dataInfo: {
                 data: [],
             },

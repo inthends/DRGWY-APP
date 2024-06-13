@@ -150,7 +150,7 @@ export default class EcheckDetailPage extends BasePage {
                     <Text style={{
                         paddingLeft: 20,
                         paddingRight: 20,
-                        paddingBottom: 20,
+                        //paddingBottom: 20,
                         color: '#666'
                     }}>{item.memo}</Text>
                 </Flex>

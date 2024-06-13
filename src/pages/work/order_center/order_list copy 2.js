@@ -32,7 +32,7 @@ export default class OrderlistPage extends BasePage {
             ...(common.getValueFromProps(this.props)),
             dataInfo: {},
             pageIndex: 1,
-            refreshing: false
+            refreshing: true
         };
     }
 

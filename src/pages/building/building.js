@@ -34,10 +34,8 @@ class BuildingPage extends BasePage {
     this.selectBuilding = {
       key: null
     };
-    this.state = {
-      //showTabbar: true,
-      pageIndex: 1,
-      statistics: {},
+    this.state = { 
+      pageIndex: 1, 
       dataInfo: {
         data: []
       },

@@ -88,11 +88,16 @@ export default {
         return api.getData('/api/MobileMethod/MGetCheckFilesData', { keyvalue });
     },
 
-    //附件
+    //删除报修附件
     deleteWorkFile(url) {
         return api.getData('/api/MobileMethod/MDeleteWorkFile', { url });
     },
 
+    //删除现场检查附件
+    deleteCheckFile(url) {
+        return api.getData('/api/MobileMethod/MDeleteCheckFile', { url });
+    },
+     
     changeToRepair(
         keyvalue,
         isQD,

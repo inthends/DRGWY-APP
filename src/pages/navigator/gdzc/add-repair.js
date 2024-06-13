@@ -366,6 +366,7 @@ class AddRepairPage extends BasePage {
                                                     <LoadImageDelete style={{ width: width, height: height }}
                                                         defaultImg={require('../../../static/images/add_pic.png')}
                                                         img={url}
+                                                        top={13}
                                                         delete={() => this.delete(url)}
                                                     />
                                                 </View>

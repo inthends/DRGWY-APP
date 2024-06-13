@@ -56,7 +56,7 @@ class ChaoBiaoPage extends BasePage {
             dataInfo: {
                 data: [],
             },
-            refreshing: true,
+            refreshing: false,
             scan: false,
             nowRead: '',
             showSubmit: false,
@@ -95,8 +95,7 @@ class ChaoBiaoPage extends BasePage {
 
     loadMore = () => {
         const { data, total, pageIndex } = this.state.dataInfo; 
-        if (this.canLoadMore && data.length < total) {
-            // if (data.length < total) {
+        if (this.canLoadMore && data.length < total) { 
             this.canLoadMore = false;
             this.setState({
                 refreshing: true,
@@ -104,15 +103,7 @@ class ChaoBiaoPage extends BasePage {
             }, () => {
                 this.getList();
             });
-        }
-        // if (data.length < total) {
-        //     this.setState({
-        //         refreshing: true,
-        //         pageIndex: pageIndex + 1,
-        //     }, () => {
-        //         this.getList();
-        //     });
-        // }
+        } 
     };
 
     callBack = (keyvalue) => {

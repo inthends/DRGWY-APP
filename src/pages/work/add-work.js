@@ -272,7 +272,6 @@ class AddWorkPage extends BasePage {
         const title2 = '请输入' + title + '内容';
         const width = (ScreenUtil.deviceWidth() - 5 * 20) / 4.0;
         const height = (ScreenUtil.deviceWidth() - 5 * 20) / 4.0;
-
         return (
             <CommonView style={{ flex: 1, backgroundColor: 'F3F4F2' }}>
                 <TouchableWithoutFeedback onPress={() => {
@@ -288,7 +287,7 @@ class AddWorkPage extends BasePage {
                                             marginRight: 5,
                                             backgroundColor: Macro.work_blue,//'#0325FD',
                                             height: 40,
-                                            width: (ScreenUtil.deviceWidth() / 4.0 - 20),
+                                            width: (ScreenUtil.deviceWidth() / 4.0 - 12),
                                             borderRadius: 4
                                         }, index === i && { backgroundColor: '#E67942' }]}>
                                             <Text style={{ color: 'white', fontSize: 14 }}>{item}</Text>
@@ -337,6 +336,7 @@ class AddWorkPage extends BasePage {
                                     value={this.state.value}
                                 />
                             </View>
+
                             <Flex align={'start'} justify={'start'} style={{
                                 paddingTop: 15,
                                 paddingBottom: 15,
@@ -373,6 +373,7 @@ class AddWorkPage extends BasePage {
                                                         style={{ width: width, height: height }}
                                                         defaultImg={require('../../static/images/add_pic.png')}
                                                         img={url}
+                                                        top={17}
                                                         delete={() => this.delete(url)} />
                                                 </View>
                                             </TouchableWithoutFeedback>
@@ -381,12 +382,13 @@ class AddWorkPage extends BasePage {
                                 </Flex>
                             </Flex>
                         </Flex>
+
                         <Flex justify={'center'} align={'start'} style={{
                             height: 80,
                             backgroundColor: '#eee',
                             width: '100%',
-                            marginTop: 20,
                             flex: 1,
+                            //marginTop: 20, 
                             paddingTop: 40
                         }}>
                             <Button style={{ width: '90%', backgroundColor: Macro.work_blue }} type="primary"

@@ -249,22 +249,10 @@ class EstateCheckPage extends BasePage {
                     refreshing={this.state.refreshing}
                     onRefresh={this.onRefresh}//下拉刷新
                     onEndReached={this.loadMore}//底部往下拉翻页
-                    onMomentumScrollBegin={() => this.canLoadMore = true}
-
+                    onMomentumScrollBegin={() => this.canLoadMore = true} 
                     ListEmptyComponent={<NoDataView />}
                 />
-
-                {/* <TouchableWithoutFeedback onPress={() => this.props.navigation.push('checkAdd')}>
-                        <Flex justify={'center'} style={[styles.ii, {
-                            width: '80%',
-                            marginLeft: '10%',
-                            marginRight: '10%',
-                            marginBottom: 20
-                        }, { backgroundColor: Macro.work_blue }]}>
-                            <Text style={styles.word}>开始检查</Text>
-                        </Flex>
-                    </TouchableWithoutFeedback> */}
-
+ 
                 <Flex justify={'center'}>
                     <Button
                         onPress={() => this.props.navigation.push('checkAdd')}

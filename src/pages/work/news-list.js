@@ -25,9 +25,7 @@ class NewsList extends BasePage {
         // this.selectBuilding = {
         //     key: null,
         // };
-        this.state = {
-            count: 0,
-            showTabbar: true,
+        this.state = {  
             pageIndex: 1,
             dataInfo: {
                 data: [],
@@ -85,15 +83,7 @@ class NewsList extends BasePage {
             }, () => {
                 this.getList();
             });
-        }
-        // if (data.length < total) {
-        //     this.setState({
-        //         refreshing: true,
-        //         pageIndex: pageIndex + 1,
-        //     }, () => {
-        //         this.getList();
-        //     });
-        // }
+        } 
     };
 
     _renderItem = ({ item }) => {

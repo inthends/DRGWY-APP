@@ -191,8 +191,7 @@ export default class WorkPage extends BasePage {
                                 </TouchableWithoutFeedback>
                             </Flex>
                         </Flex>
-
-
+ 
                         <Flex direction='column' align={'start'}
                             style={[styles.card, {
                                 borderLeftColor: Macro.work_green,

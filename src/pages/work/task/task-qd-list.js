@@ -55,8 +55,7 @@ class TaskQDListPage extends BasePage {
             dataInfo: {
                 data: []
             },
-            todo: 0,
-            //hiddenHeader,
+            todo: 0, 
             refreshing: false,
             visible: false,
             emergencyLevel: '全部',

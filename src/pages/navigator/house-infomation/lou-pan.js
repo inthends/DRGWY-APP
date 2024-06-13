@@ -34,17 +34,14 @@ class LouPan extends BasePage {
                 <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
                     <Icon name='bars' style={{ marginRight: 15 }} color="black" />
                 </TouchableWithoutFeedback>
-            ),
+            )
         };
     };
 
     constructor(props) {
         super(props);
-        this.state = {
-            count: 0,
-            showTabbar: true,
-            pageIndex: 1,
-            statistics: {},
+        this.state = { 
+            pageIndex: 1, 
             dataInfo: {
                 data: [],
             },
@@ -140,7 +137,7 @@ class LouPan extends BasePage {
     };
 
     render() {
-        const { statistics, dataInfo } = this.state;
+        const {   dataInfo } = this.state;
         //const { selectBuilding } = this.props; 
         return (
             <View style={{ flex: 1 }}>

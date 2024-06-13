@@ -50,18 +50,15 @@ class TaskListPage extends BasePage {
         const overdue = common.getValueFromProps(this.props).overdue;
         const hiddenHeader = common.getValueFromProps(this.props).hiddenHeader;
 
-        this.state = {
-            count: 0,
-            showTabbar: true,
-            pageIndex: 1,
-            statistics: {},
+        this.state = { 
+            pageIndex: 1, 
             type,
             dataInfo: {
                 data: [],
             },
             overdue,
             hiddenHeader,
-            refreshing: false
+            refreshing: true
         };
     }
 

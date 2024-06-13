@@ -2,11 +2,7 @@
 import React from 'react';
 import {
     Text,
-    StyleSheet,
-    //View,
-    // StatusBar,
-    // FlatList,
-    // Linking,
+    StyleSheet, 
     TouchableOpacity,
     TouchableWithoutFeedback,
     ScrollView

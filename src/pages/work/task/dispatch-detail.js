@@ -159,7 +159,7 @@ export default class DispatchDetailPage extends BasePage {
             return;
         }
 
-        if (repairmajor == null) {
+        if (repairmajor == null || repairmajor.id == null) {
             UDToast.showInfo('请选择维修专业');
             return;
         }

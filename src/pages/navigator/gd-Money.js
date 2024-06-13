@@ -50,11 +50,8 @@ class gdMoneyPage extends BasePage {
 
     constructor(props) {
         super(props);
-        this.state = {
-            count: 0,
-            showTabbar: true,
-            pageIndex: 1,
-            statistics: {},
+        this.state = {  
+            pageIndex: 1, 
             dataInfo: {
                 data: [],
             },

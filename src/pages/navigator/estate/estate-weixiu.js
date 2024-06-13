@@ -47,8 +47,7 @@ class EstateWeixiuPage extends BasePage {
         super(props);
         this.selectBuilding = {
             key: null
-        };
-
+        }; 
         this.state = {
             pageIndex: 1,
             dataInfo: {

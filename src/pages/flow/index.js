@@ -4,7 +4,7 @@ import {
   Text,
   TouchableWithoutFeedback,
   StyleSheet,
-  FlatList,
+  FlatList
 } from 'react-native';
 import { Flex, Icon } from '@ant-design/react-native';
 import { connect } from 'react-redux';
@@ -150,8 +150,7 @@ class ApprovePage extends BasePage {
 
   loadMore = () => {
     const { data, total, pageIndex } = this.state.dataInfo;
-    if (this.canLoadMore && data.length < total) {
-      // if (data.length < total) {
+    if (this.canLoadMore && data.length < total) { 
       this.canLoadMore = false;
       this.setState(
         {
@@ -162,15 +161,7 @@ class ApprovePage extends BasePage {
           this.getList();
         }
       );
-    }
-    // if (data.length < total) {
-    //     this.setState({
-    //         refreshing: true,
-    //         pageIndex: pageIndex + 1,
-    //     }, () => {
-    //         this.getList();
-    //     });
-    // }
+    } 
   };
 
   render() {

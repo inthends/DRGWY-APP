@@ -60,6 +60,7 @@ class EcheckAddPage extends BasePage {
             // images: [{ icon: '' }],
             images: [''],
             lookImageIndex: 0,
+            refreshing: false,
             dataInfo: {
                 data: []
             },
@@ -278,7 +279,7 @@ class EcheckAddPage extends BasePage {
 
     //上传图片
     selectImages = () => {
-        SelectImage.select(this.state.detailId, '', '/api/MobileMethod/MUploadCheckDesk').then(url => {
+        SelectImage.select(this.state.detailId, '', '/api/MobileMethod/MUploadCheckFile').then(url => {
             let images = [...this.state.images];
             images.splice(images.length - 1, 0, url);
             if (images.length > 10) {
@@ -303,7 +304,7 @@ class EcheckAddPage extends BasePage {
                 {
                     text: '确定',
                     onPress: () => {
-                        WorkService.deleteWorkFile(url).then(res => {
+                        WorkService.deleteCheckFile(url).then(res => {
                             let index = this.state.images.indexOf(url);
                             let myimages = [...this.state.images];
                             myimages.splice(index, 1);
@@ -494,7 +495,7 @@ class EcheckAddPage extends BasePage {
                                                                 <View style={{
                                                                     paddingLeft: 15,
                                                                     paddingRight: 5,
-                                                                    paddingBottom: 10,
+                                                                    //paddingBottom: 10,
                                                                     paddingTop: 15
                                                                 }}>
                                                                     <LoadImageDelete
@@ -505,6 +506,7 @@ class EcheckAddPage extends BasePage {
                                                                         }}
                                                                         defaultImg={require('../../../static/images/add_pic.png')}
                                                                         img={url}
+                                                                        top={10}
                                                                         delete={() => this.delete(url)}
                                                                     />
                                                                 </View>
@@ -514,7 +516,7 @@ class EcheckAddPage extends BasePage {
                                                 </Flex>
                                             </Flex>
                                         </CommonView>
-                                        <Flex style={{ marginTop: 15 }}>
+                                        <Flex style={{ marginTop: 10 }}>
                                             <Button onPress={this.addDetail} type={'primary'}
                                                 activeStyle={{ backgroundColor: Macro.work_blue }}
                                                 style={{

@@ -48,15 +48,13 @@ class ServicedeskListPage extends BasePage {
         const type = common.getValueFromProps(this.props).type;
         //const overdue = common.getValueFromProps(this.props).overdue;
         const hiddenHeader = common.getValueFromProps(this.props).hiddenHeader;
-        this.state = {
-            //showTabbar: true, 
-            //statistics: {},
+        this.state = {  
             pageIndex: 1,
             type,
             dataInfo: {
                 data: []
             },
-            refreshing: true,
+            refreshing: false,
             overdue: -1,
             hiddenHeader
         };

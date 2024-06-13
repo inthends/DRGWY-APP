@@ -41,8 +41,7 @@ class ZiJinLiuPage extends BasePage {
 
   constructor(props) {
     super(props);
-    this.state = {
-      count: 0,
+    this.state = { 
       //selectBuilding: this.props.selectBuilding || {},
       selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
       //statistics: [],

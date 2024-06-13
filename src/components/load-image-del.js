@@ -64,10 +64,15 @@ export default class LoadImageDelete extends Component {
                             style={{ height: style.height, width: style.width }}
                             source={img}
                             onError={this._loadError} />
+
                         <Icon name='delete'
                             color={Macro.work_blue}
                             onPress={this.props.delete}
-                            style={{ width: 20, height: 20, marginLeft: style.width / 2 - 10, marginTop: 19 - style.height / 2 }} />
+                            style={{
+                                width: 20, height: 20,
+                                marginLeft: style.width / 2 - 10,
+                                marginTop: this.props.top - style.height / 2
+                            }} />
                     </>
                 }
             </>

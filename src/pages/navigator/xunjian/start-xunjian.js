@@ -222,6 +222,7 @@ class StartXunJianPage extends BasePage {
                                             }}
                                                 defaultImg={require('../../../static/images/add_pic.png')}
                                                 img={url}
+                                                top={19}
                                                 delete={() => this.delete(url)} />
                                         </View>
                                     </TouchableWithoutFeedback>

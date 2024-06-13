@@ -185,6 +185,7 @@ export default class ServiceDeskDetailPage extends BasePage {
 
     roRepair = () => {
         const { id, isQD, selectPerson, repairmajor } = this.state;
+        
         if (repairmajor == null || repairmajor.id == null) {
             UDToast.showInfo('请选择维修专业');
             return;
