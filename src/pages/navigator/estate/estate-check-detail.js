@@ -17,6 +17,7 @@ import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ListImages from '../../../components/list-images';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import NoDataView from '../../../components/no-data-view';
 
 export default class EcheckDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -42,7 +43,8 @@ export default class EcheckDetailPage extends BasePage {
                 data: [],
             },
             lookImageIndex: 0,
-            visible: false
+            visible: false,
+            refreshing: true
         };
     }
 
@@ -72,7 +74,7 @@ export default class EcheckDetailPage extends BasePage {
     onRefresh = () => {
         this.setState({
             refreshing: true,
-            pageIndex: 1,
+            pageIndex: 1
         }, () => {
             this.getList();
         });
@@ -90,6 +92,7 @@ export default class EcheckDetailPage extends BasePage {
             }
             this.setState({
                 dataInfo: dataInfo,
+                pageIndex: dataInfo.pageIndex,
                 refreshing: false
             }, () => {
             });
@@ -97,14 +100,12 @@ export default class EcheckDetailPage extends BasePage {
     };
 
     loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo;
-        // if (!this.state.canLoadMore) {
-        //     return;
-        // }
-        if (this.canAction && data.length < total) {
+        const { data, total, pageIndex } = this.state.dataInfo; 
+        if (this.canLoadMore && data.length < total) {
+            this.canLoadMore = false;
             this.setState({
                 refreshing: true,
-                pageIndex: pageIndex + 1,
+                pageIndex: pageIndex + 1
                 // canLoadMore: false,
             }, () => {
                 this.getList();
@@ -174,19 +175,21 @@ export default class EcheckDetailPage extends BasePage {
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>检查组：{detail.checkRole}</Text>
-                    </Flex> 
+                    </Flex>
                     <Text style={[styles.every, ScreenUtil.borderBottom()]}>{detail.memo}</Text>
-                    
+
                     <FlatList
                         data={dataInfo.data}
                         renderItem={this._renderItem}
                         style={styles.list}
                         keyExtractor={(item) => item.id}
-                        onEndReached={() => this.loadMore()}
+                        //必须
                         onEndReachedThreshold={0.1}
-                        onMomentumScrollBegin={() => this.canAction = true}
-                        onMomentumScrollEnd={() => this.canAction = false}
-                    // ListEmptyComponent={<NoDataView />}
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.onRefresh}//下拉刷新
+                        onEndReached={this.loadMore}//底部往下拉翻页
+                        onMomentumScrollBegin={() => this.canLoadMore = true} 
+                        ListEmptyComponent={<NoDataView />}
                     />
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>

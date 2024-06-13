@@ -20,11 +20,11 @@ import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 
 class LouPan extends BasePage {
-    static navigationOptions = ({ navigation }) => { 
+    static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
             title: '项目',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
@@ -59,45 +59,47 @@ class LouPan extends BasePage {
 
     getList = () => {
         NavigatorService.getFeeStatistics(this.state.pageIndex, this.state.selectBuilding ? this.state.selectBuilding.key : '').
-        then(dataInfo => {
-            if (dataInfo.pageIndex > 1) {
-                dataInfo = {
-                    ...dataInfo,
-                    data: [...this.state.dataInfo.data, ...dataInfo.data]
-                };
-            }
-            this.setState({
-                dataInfo: dataInfo,
-                refreshing: false
-            }, () => { 
-            });
-        }).catch(err => this.setState({ refreshing: false }));
+            then(dataInfo => {
+                if (dataInfo.pageIndex > 1) {
+                    dataInfo = {
+                        ...dataInfo,
+                        data: [...this.state.dataInfo.data, ...dataInfo.data]
+                    };
+                }
+                this.setState({
+                    dataInfo: dataInfo,
+                    pageIndex: dataInfo.pageIndex,
+                    refreshing: false
+                }, () => {
+                });
+            }).catch(err => this.setState({ refreshing: false }));
     };
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
-        const nextSelectBuilding = nextProps.selectBuilding; 
+        const nextSelectBuilding = nextProps.selectBuilding;
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
             this.setState({ selectBuilding: nextProps.selectBuilding }, () => {
                 this.onRefresh();
             });
         }
     }
- 
+
     onRefresh = () => {
         this.setState({
             refreshing: true,
-            pageIndex: 1,
+            pageIndex: 1
         }, () => {
             this.getList();
         });
     };
     loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo; 
-        if (this.canAction && data.length < total) {
+        const { data, total, pageIndex } = this.state.dataInfo;
+        if (this.canLoadMore && data.length < total) {
+            this.canLoadMore = false;
             this.setState({
                 refreshing: true,
-                pageIndex: pageIndex + 1,
+                pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
             });
@@ -148,16 +150,16 @@ class LouPan extends BasePage {
                             data={dataInfo.data}
                             // ListHeaderComponent={}
                             renderItem={this._renderItem}
-                            keyExtractor={(item, index) => item.id}
-                            refreshing={this.state.refreshing}
-                            onRefresh={() => this.onRefresh()}
-                            onEndReached={() => this.loadMore()}
-                            onEndReachedThreshold={0.1}
+                            keyExtractor={(item, index) => item.id}   
                             ItemSeparatorComponent={() => <View style={{ backgroundColor: '#eee', height: 1 }} />}
-                            onScrollBeginDrag={() => this.canAction = true}
-                            onScrollEndDrag={() => this.canAction = false}
-                            onMomentumScrollBegin={() => this.canAction = true}
-                            onMomentumScrollEnd={() => this.canAction = false}
+                         
+                            //必须
+                            onEndReachedThreshold={0.1}
+                            refreshing={this.state.refreshing}
+                            onRefresh={this.onRefresh}//下拉刷新
+                            onEndReached={this.loadMore}//底部往下拉翻页
+                            onMomentumScrollBegin={() => this.canLoadMore = true}
+
                             ListEmptyComponent={<NoDataView />}
                         />
                     </View>
@@ -168,7 +170,7 @@ class LouPan extends BasePage {
 }
 
 const styles = StyleSheet.create({
-   
+
     content: {
         backgroundColor: Macro.color_white,
         flex: 1
@@ -181,12 +183,12 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         marginLeft: 20,
         marginRight: 20
-    }, 
+    },
     top: {
         fontSize: 16,
         paddingTop: 10,
         paddingBottom: 10
-    }, 
+    },
     left: {
         flex: 1,
         paddingLeft: 15
@@ -203,7 +205,7 @@ const styles = StyleSheet.create({
     item: {
         width: '100%'
     },
-    name: {  
+    name: {
         fontSize: 16,
         color: '#2c2c2c',
         paddingBottom: 15

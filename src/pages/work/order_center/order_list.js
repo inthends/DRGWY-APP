@@ -51,6 +51,7 @@ export default class OrderlistPage extends BasePage {
             }
             this.setState({
                 dataInfo: dataInfo,
+                pageIndex: dataInfo.pageIndex,
                 refreshing: false
             }, () => {
             });
@@ -60,17 +61,18 @@ export default class OrderlistPage extends BasePage {
     onRefresh = () => {
         this.setState({
             refreshing: true,
-            pageIndex: 1,
+            pageIndex: 1
         }, () => {
             this.getList();
         });
     };
     loadMore = () => {
         const { data, total, pageIndex } = this.state.dataInfo;
-        if (this.canAction && data.length < total) {
+        if (this.canLoadMore && data.length < total) {
+            this.canLoadMore = false;
             this.setState({
                 refreshing: true,
-                pageIndex: pageIndex + 1,
+                pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
             });
@@ -122,14 +124,12 @@ export default class OrderlistPage extends BasePage {
                     renderItem={this._renderItem}
                     style={styles.list}
                     keyExtractor={(item, index) => item.id}
-                    // refreshing={this.state.refreshing}
-                    // onRefresh={() => this.onRefresh()}
-                    // onEndReached={() => this.loadMore()}
-                    onEndReachedThreshold={0}
-                    onScrollBeginDrag={() => this.canAction = true}
-                    onScrollEndDrag={() => this.canAction = false}
-                    onMomentumScrollBegin={() => this.canAction = true}
-                    onMomentumScrollEnd={() => this.canAction = false}
+                    //必须
+                    onEndReachedThreshold={0.1}
+                    refreshing={this.state.refreshing}
+                    onRefresh={this.onRefresh}//下拉刷新
+                    onEndReached={this.loadMore}//底部往下拉翻页
+                    onMomentumScrollBegin={() => this.canLoadMore = true}
                     ListEmptyComponent={<NoDataView />}
                 />
             </CommonView>
@@ -139,7 +139,7 @@ export default class OrderlistPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-  
+
     list: {
         backgroundColor: Macro.color_white,
         margin: 15
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
         // textAlign: 'left',
         color: '#404145',
         fontSize: 16,
-        paddingBottom: 10, 
+        paddingBottom: 10,
         marginLeft: 20,
         marginRight: 20
     },

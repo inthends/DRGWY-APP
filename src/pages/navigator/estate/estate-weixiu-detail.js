@@ -135,7 +135,7 @@ export default class EweixiuDetailPage extends BasePage {
                     </Flex>
 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>转单人：{detail.createUserName}，转单时间：{detail.createDate}</Text>
+                        <Text style={styles.left}>转单人：{detail.createUserName}，{detail.createDate}</Text>
                     </Flex>
 
                     {detail.relationId && <TouchableWithoutFeedback>
@@ -154,6 +154,10 @@ export default class EweixiuDetailPage extends BasePage {
                         </Flex>
                     </TouchableWithoutFeedback>}
 
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>派单人：{detail.senderName}，{detail.sendDate}</Text>
+                    </Flex>
+
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>维修专业：{detail.repairMajor}，积分：{detail.score}</Text>
                     </Flex>
@@ -170,7 +174,7 @@ export default class EweixiuDetailPage extends BasePage {
                     {detail.testDate ?//进行了检验
                         <>
                             <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                                <Text style={styles.left}>检验人：{detail.testerName}，检验时间：{detail.testDate}</Text>
+                                <Text style={styles.left}>检验人：{detail.testerName}，{detail.testDate}</Text>
                             </Flex> 
 
                             <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>

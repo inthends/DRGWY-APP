@@ -110,6 +110,7 @@ class EstateTousuPage extends BasePage {
                 }
                 this.setState({
                     dataInfo: dataInfo,
+                    pageIndex: dataInfo.pageIndex,
                     refreshing: false
                     //canLoadMore: true,
                 }, () => {
@@ -121,7 +122,7 @@ class EstateTousuPage extends BasePage {
     onRefresh = () => {
         this.setState({
             refreshing: true,
-            pageIndex: 1,
+            pageIndex: 1
         }, () => {
             this.getList();
         });
@@ -129,13 +130,11 @@ class EstateTousuPage extends BasePage {
 
     loadMore = () => {
         const { data, total, pageIndex } = this.state.dataInfo;
-        // if (!this.state.canLoadMore) {
-        //     return;
-        // }
-        if (this.canAction && data.length < total) {
+        if (this.canLoadMore && data.length < total) {
+            this.canLoadMore = false;
             this.setState({
                 refreshing: true,
-                pageIndex: pageIndex + 1,
+                pageIndex: pageIndex + 1
                 //canLoadMore: false,
             }, () => {
                 this.getList();
@@ -252,15 +251,14 @@ class EstateTousuPage extends BasePage {
                         // ListHeaderComponent={}
                         renderItem={this._renderItem}
                         style={styles.list}
-                        keyExtractor={(item, index) => item.id}
-                        // refreshing={this.state.refreshing}
-                        // onRefresh={() => this.onRefresh()}
-                        onEndReached={() => this.loadMore()}
+                        keyExtractor={(item, index) => item.id}    
+                        //必须
                         onEndReachedThreshold={0.1}
-                        // onScrollBeginDrag={() => this.canAction = true}
-                        // onScrollEndDrag={() => this.canAction = false}
-                        onMomentumScrollBegin={() => this.canAction = true}
-                        onMomentumScrollEnd={() => this.canAction = false}
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.onRefresh}//下拉刷新
+                        onEndReached={this.loadMore}//底部往下拉翻页
+                        onMomentumScrollBegin={() => this.canLoadMore = true}
+
                         ListEmptyComponent={<NoDataView />}
                     />
                     <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>

@@ -203,8 +203,7 @@ class AddWorkPage extends BasePage {
     }
 
     submit = () => {
-        const { id, data, index, address, value, taskId, isMustServicedeskFile, images } = this.state;
-
+        const { id, data, index, address, value, taskId, isMustServicedeskFile, images } = this.state; 
         if (address == null || address.allName == null) {
             const title = '请选择' + data[index] + '地址';
             UDToast.showInfo(title);
@@ -289,7 +288,7 @@ class AddWorkPage extends BasePage {
                                             marginRight: 5,
                                             backgroundColor: Macro.work_blue,//'#0325FD',
                                             height: 40,
-                                            width: (ScreenUtil.deviceWidth() / 3.0 - 20),
+                                            width: (ScreenUtil.deviceWidth() / 4.0 - 20),
                                             borderRadius: 4
                                         }, index === i && { backgroundColor: '#E67942' }]}>
                                             <Text style={{ color: 'white', fontSize: 14 }}>{item}</Text>

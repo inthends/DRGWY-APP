@@ -150,9 +150,9 @@ class ApprovePage extends BasePage {
 
   loadMore = () => {
     const { data, total, pageIndex } = this.state.dataInfo;
-    if (!this.canAction && data.length < total) {
+    if (this.canLoadMore && data.length < total) {
       // if (data.length < total) {
-      this.canAction = true;
+      this.canLoadMore = false;
       this.setState(
         {
           refreshing: true,
@@ -448,11 +448,12 @@ class ApprovePage extends BasePage {
           )}
           style={styles.list}
           keyExtractor={(item) => item.id}
-          refreshing={this.state.refreshing}
-          onRefresh={() => this.onRefresh()}
-          onEndReached={() => this.loadMore()}
+          //必须
           onEndReachedThreshold={0.1}
-          onMomentumScrollBegin={() => (this.canAction = false)}
+          refreshing={this.state.refreshing}
+          onRefresh={this.onRefresh}//下拉刷新
+          onEndReached={this.loadMore}//底部往下拉翻页
+          onMomentumScrollBegin={() => this.canLoadMore = true}
           ListEmptyComponent={<NoDataView />}
         />
       </View>

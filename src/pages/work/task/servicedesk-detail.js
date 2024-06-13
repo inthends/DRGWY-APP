@@ -341,8 +341,8 @@ export default class ServiceDeskDetailPage extends BasePage {
                                         this.setState({
                                             showRepair: true
                                         })
-                                    }
-                                    } type={'primary'}
+                                    }}
+                                        type={'primary'}
                                         activeStyle={{ backgroundColor: Macro.work_blue }} style={{
                                             width: 110,
                                             backgroundColor: Macro.work_blue,
@@ -386,7 +386,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                         </Flex>
                     }
 
-                    <Communicates communicateClick={this.communicateClick} communicates={communicates} /> 
+                    <Communicates communicateClick={this.communicateClick} communicates={communicates} />
                     <OperationRecords communicateClick={this.operationClick} communicates={operations} />
 
                 </ScrollView>

@@ -535,19 +535,19 @@ export default class WorkPage extends BasePage {
                                 </TouchableWithoutFeedback>
 
                                 <TouchableWithoutFeedback onPress={() => {
-                                    if (data.unapprove == 0) {
+                                    if (data.approve == 0) {
                                         return;
                                     }
-                                    this.props.navigation.push('task', {
+                                    this.props.navigation.push('taskDone', {
                                         'data': {
-                                            type: '7',
+                                            type: '8',
                                             hiddenHeader: true,
                                             title: '已审核列表'
                                         }
                                     })
                                 }}>
                                     <Flex direction='column' style={{ width: '25%' }}>
-                                        <Text style={styles.top}>{data.unapprove}</Text>
+                                        <Text style={styles.top}>{data.approve}</Text>
                                         <Text style={styles.bottom}>已审核</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>

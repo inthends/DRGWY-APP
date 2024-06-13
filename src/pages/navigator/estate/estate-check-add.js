@@ -156,6 +156,7 @@ class EcheckAddPage extends BasePage {
             }
             this.setState({
                 dataInfo: dataInfo,
+                pageIndex: dataInfo.pageIndex,
                 refreshing: false
             }, () => {
             });
@@ -164,13 +165,11 @@ class EcheckAddPage extends BasePage {
 
     loadMore = () => {
         const { data, total, pageIndex } = this.state.dataInfo;
-        // if (!this.state.canLoadMore) {
-        //     return;
-        // }
-        if (this.canAction && data.length < total) {
+        if (this.canLoadMore && data.length < total) {
+            this.canLoadMore = false;
             this.setState({
                 refreshing: true,
-                pageIndex: pageIndex + 1,
+                pageIndex: pageIndex + 1
                 // canLoadMore: false,
             }, () => {
                 this.getList();
@@ -206,8 +205,8 @@ class EcheckAddPage extends BasePage {
                         color: '#666'
                     }}>{item.memo}</Text>
                 </Flex>
-                <ListImages images={item.images} 
-                lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, item.images)} />
+                <ListImages images={item.images}
+                    lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, item.images)} />
             </Flex>
         );
     };
@@ -380,10 +379,12 @@ class EcheckAddPage extends BasePage {
                         renderItem={this._renderItem}
                         style={styles.list}
                         keyExtractor={(item) => item.id}
-                        onEndReached={() => this.loadMore()}
+                        //必须
                         onEndReachedThreshold={0.1}
-                        onMomentumScrollBegin={() => this.canAction = true}
-                        onMomentumScrollEnd={() => this.canAction = false}
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.onRefresh}//下拉刷新
+                        onEndReached={this.loadMore}//底部往下拉翻页
+                        onMomentumScrollBegin={() => this.canLoadMore = true}
                     />
                 </ScrollView>
 

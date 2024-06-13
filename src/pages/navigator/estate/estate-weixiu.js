@@ -112,6 +112,7 @@ class EstateWeixiuPage extends BasePage {
                 }
                 this.setState({
                     dataInfo: dataInfo,
+                    pageIndex: dataInfo.pageIndex,
                     refreshing: false
                     //canLoadMore: true,
                 }, () => {
@@ -133,7 +134,8 @@ class EstateWeixiuPage extends BasePage {
         // if (!this.state.canLoadMore) {
         //     return;
         // }
-        if (this.canAction && data.length < total) {
+        if (this.canLoadMore && data.length < total) {
+            this.canLoadMore = false;
             this.setState({
                 refreshing: true,
                 pageIndex: pageIndex + 1
@@ -277,20 +279,19 @@ class EstateWeixiuPage extends BasePage {
                             titles={['全部', '今日', '本周', '本月', '上月', '本年']}
                             visible={true} />
                     </Flex>
+
                     <FlatList
                         data={dataInfo.data}
                         // ListHeaderComponent={}
                         renderItem={this._renderItem}
                         style={styles.list}
                         keyExtractor={(item, index) => item.id}
-                        // refreshing={this.state.refreshing}
-                        // onRefresh={() => this.onRefresh()}
-                        onEndReached={() => this.loadMore()}
+                        //必须
                         onEndReachedThreshold={0.1}
-                        // onScrollBeginDrag={() => this.canAction = true}
-                        // onScrollEndDrag={() => this.canAction = false}
-                        onMomentumScrollBegin={() => this.canAction = true}
-                        onMomentumScrollEnd={() => this.canAction = false}
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.onRefresh}//下拉刷新
+                        onEndReached={this.loadMore}//底部往下拉翻页
+                        onMomentumScrollBegin={() => this.canLoadMore = true}
                         ListEmptyComponent={<NoDataView />}
                     />
                     <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>

@@ -4,7 +4,7 @@ import {
     StyleSheet,
     FlatList,
     TouchableOpacity,
-    TouchableWithoutFeedback,
+    TouchableWithoutFeedback
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
@@ -49,31 +49,33 @@ class ServicedeskListPage extends BasePage {
         //const overdue = common.getValueFromProps(this.props).overdue;
         const hiddenHeader = common.getValueFromProps(this.props).hiddenHeader;
         this.state = {
-            showTabbar: true,
+            //showTabbar: true, 
+            //statistics: {},
             pageIndex: 1,
-            statistics: {},
             type,
             dataInfo: {
-                data: [],
+                data: []
             },
+            refreshing: true,
             overdue: -1,
-            hiddenHeader,
-            refreshing: false
+            hiddenHeader
         };
     }
 
     componentDidMount() {
-        this.viewDidAppear = this.props.navigation.addListener(
-            'didFocus',
-            (obj) => {
-                this.onRefresh();
-            }
-        );
+        // this.viewDidAppear = this.props.navigation.addListener(
+        //     'didFocus',
+        //     (obj) => {
+        //         this.onRefresh();
+        //     }
+        // );
+
+        this.onRefresh();
     }
 
-    componentWillUnmount() {
-        this.viewDidAppear.remove();
-    }
+    // componentWillUnmount() {
+    //     this.viewDidAppear.remove();
+    // }
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
@@ -91,12 +93,13 @@ class ServicedeskListPage extends BasePage {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
-                    data: [...this.state.dataInfo.data, ...dataInfo.data],
+                    data: [...this.state.dataInfo.data, ...dataInfo.data]
                 };
             }
             this.setState({
                 dataInfo: dataInfo,
-                refreshing: false
+                refreshing: false,
+                pageIndex: dataInfo.pageIndex
             }, () => {
             });
         }).catch(err => this.setState({ refreshing: false }));
@@ -111,9 +114,11 @@ class ServicedeskListPage extends BasePage {
         });
     };
 
+    //加载更多
     loadMore = () => {
         const { data, total, pageIndex } = this.state.dataInfo;
-        if (this.canAction && data.length < total) {
+        if (this.canLoadMore && data.length < total) {
+            this.canLoadMore = false;
             this.setState({
                 refreshing: true,
                 pageIndex: pageIndex + 1
@@ -125,8 +130,8 @@ class ServicedeskListPage extends BasePage {
 
     _renderItem = ({ item, index }) => {
         return (
-            <TouchableWithoutFeedback onPress={() => {  
-                switch (item.statusName) { 
+            <TouchableWithoutFeedback onPress={() => {
+                switch (item.statusName) {
                     case '待处理': {
                         this.props.navigation.navigate('service', { id: item.id });
                         break;
@@ -134,7 +139,7 @@ class ServicedeskListPage extends BasePage {
                     case '待回访': {
                         this.props.navigation.navigate('huifang', { id: item.id });
                         break;
-                    } 
+                    }
                     default:
                         break;
                 }
@@ -165,7 +170,7 @@ class ServicedeskListPage extends BasePage {
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>紧急：{item.emergencyLevel}，重要：{item.importance}</Text>
                         </Flex>
-                        
+
                         <Text style={{
                             paddingLeft: 20,
                             paddingRight: 20,
@@ -186,10 +191,8 @@ class ServicedeskListPage extends BasePage {
 
     render() {
         const { dataInfo, overdue, hiddenHeader, type } = this.state;
-
         return (
             <CommonView style={{ flex: 1 }}>
-
                 {
                     hiddenHeader ? null :
                         (
@@ -209,12 +212,18 @@ class ServicedeskListPage extends BasePage {
                     renderItem={this._renderItem}
                     style={styles.list}
                     keyExtractor={(item) => item.id}
-                    onEndReached={() => this.loadMore()}
-                    onEndReachedThreshold={0}
-                    onScrollBeginDrag={() => this.canAction = true}
-                    onScrollEndDrag={() => this.canAction = false}
-                    onMomentumScrollBegin={() => this.canAction = true}
-                    onMomentumScrollEnd={() => this.canAction = false}
+
+                    //必须
+                    onEndReachedThreshold={0.1}
+                    refreshing={this.state.refreshing}//在等待加载新数据时将此属性设为 true，列表就会显示出一个正在加载的符号
+                    onRefresh={this.onRefresh}//下拉刷新
+                    onEndReached={this.loadMore}//底部往下拉翻页
+                    onMomentumScrollBegin={() => this.canLoadMore = true}
+                    //防止上拉加载更多onReached被触发两次，造成重复请求资源，性能浪费
+                    //开始滑动，当第一次触发完毕之后，将这个flag设置为false，避免重复去执行我们需要做的action操作
+                    // onMomentumScrollEnd={() => this.canLoadMore = true}//结束滑动
+                    // onScrollBeginDrag={() => this.canLoadMore = false}//开始拖拽的时候
+                    // onScrollEndDrag={() => this.canLoadMore = true}//结束拖拽的时候 
                     ListEmptyComponent={<NoDataView />}
                 />
                 <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>

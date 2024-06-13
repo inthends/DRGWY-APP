@@ -68,7 +68,7 @@ class NewsList extends BasePage {
 
     onRefresh = () => {
         this.setState({
-            refreshing: false,
+            refreshing: true,
             pageIndex: 1
         }, () => {
             this.getList();
@@ -77,12 +77,11 @@ class NewsList extends BasePage {
 
     loadMore = () => {
         const { data, total, pageIndex } = this.state.dataInfo;
-        if (!this.canAction && data.length < total) {
-            // if (data.length < total) {
-            this.canAction = true;
+        if (this.canLoadMore && data.length < total) {
+            this.canLoadMore = false;
             this.setState({
                 refreshing: true,
-                pageIndex: pageIndex + 1,
+                pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
             });
@@ -157,11 +156,14 @@ class NewsList extends BasePage {
                     renderItem={this._renderItem}
                     style={styles.list}
                     keyExtractor={(item) => item.id + 'cell'}
-                    refreshing={this.state.refreshing}
-                    onRefresh={() => this.onRefresh()}
-                    onEndReached={() => this.loadMore()}
+
+                    //必须
                     onEndReachedThreshold={0.1}
-                    onMomentumScrollBegin={() => this.canAction = false}
+                    refreshing={this.state.refreshing}
+                    onRefresh={this.onRefresh}//下拉刷新
+                    onEndReached={this.loadMore}//底部往下拉翻页
+                    onMomentumScrollBegin={() => this.canLoadMore = true}
+
                     ListEmptyComponent={<NoDataView />}
                 />
             </View>

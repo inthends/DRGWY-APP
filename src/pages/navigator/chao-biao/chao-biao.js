@@ -50,7 +50,7 @@ class ChaoBiaoPage extends BasePage {
             }
             return year + '-' + month;
         }
-        this.state = { 
+        this.state = {
             //selectBuilding: this.props.selectBuilding || {},
             selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
             dataInfo: {
@@ -90,18 +90,17 @@ class ChaoBiaoPage extends BasePage {
                 pageIndex: dataInfo.pageIndex
             }, () => {
             });
-        }).catch(err => this.setState({ refreshing: false })); 
+        }).catch(err => this.setState({ refreshing: false }));
     };
 
     loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo;
-
-        if (!this.canAction && data.length < total) {
+        const { data, total, pageIndex } = this.state.dataInfo; 
+        if (this.canLoadMore && data.length < total) {
             // if (data.length < total) {
-            this.canAction = true;
+            this.canLoadMore = false;
             this.setState({
                 refreshing: true,
-                pageIndex: pageIndex + 1,
+                pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
             });
@@ -179,23 +178,24 @@ class ChaoBiaoPage extends BasePage {
             });
         });
     };
- 
+
     render() {
-        const { dataInfo, current } = this.state; 
+        const { dataInfo, current } = this.state;
         return (
             <View style={{ flex: 1 }}>
-                <WhiteSpace size={'xl'} /> 
+                <WhiteSpace size={'xl'} />
                 <FlatList
                     data={dataInfo.data}
                     // ListHeaderComponent={}
                     renderItem={({ item }) => <ChaoBiaoCell item={item} />}
                     style={{ height: ScreenUtil.deviceHeight() - 300 }}
                     keyExtractor={(item) => (item.id + '')}
-                    refreshing={this.state.refreshing}
-                    // onRefresh={() => this.onRefresh()}
-                    onEndReached={() => this.loadMore()}
+                    //必须
                     onEndReachedThreshold={0.1}
-                    onMomentumScrollBegin={() => this.canAction = false}
+                    refreshing={this.state.refreshing}
+                    onRefresh={this.onRefresh}//下拉刷新
+                    onEndReached={this.loadMore}//底部往下拉翻页
+                    onMomentumScrollBegin={() => this.canLoadMore = true} 
                     ListEmptyComponent={<NoDataView />}
                 />
                 <Flex style={{ minHeight: 40, marginBottom: 30 }}>
@@ -299,7 +299,7 @@ class ChaoBiaoPage extends BasePage {
                                         value={this.state.date}
                                         onChange={date => this.setState({ date })}
                                         style={{ backgroundColor: 'white' }}
-                                        format={value => value.getYearAndMonth()} 
+                                        format={value => value.getYearAndMonth()}
                                     >
                                         <List.Item arrow="horizontal"
                                             style={{ borderWidth: 0 }}><Text>抄表年月：</Text></List.Item>
@@ -313,7 +313,7 @@ class ChaoBiaoPage extends BasePage {
                                             height: 44,
                                         }}>确认提交</Button>
                                     <Button onPress={() => this.setState({ showSubmit: false })} type={'primary'}
-                                        activeStyle={{ backgroundColor: Macro.work_blue  }} style={{
+                                        activeStyle={{ backgroundColor: Macro.work_blue }} style={{
                                             marginLeft: 30,
                                             width: 130,
                                             backgroundColor: '#ccc',
@@ -323,7 +323,7 @@ class ChaoBiaoPage extends BasePage {
                                 </Flex>
                             </Flex>
                         </Flex>
-                    </View> 
+                    </View>
                 )}
 
 
@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
     //     backgroundColor: Macro.color_sky,
     //     flex: 1
     // },
-    
+
     title: {
         paddingTop: 15,
         // textAlign: 'left',
@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginRight: 20
     },
-  
+
     line: {
         width: ScreenUtil.deviceWidth() - 30 - 15 * 2,
         marginLeft: 15,
@@ -361,8 +361,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
         paddingBottom: 15
     },
-   
-   
+
+
     card: {
         borderTopWidth: 1,
         borderRightWidth: 1,

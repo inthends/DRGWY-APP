@@ -36,7 +36,7 @@ export default class WeixiuDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let id = common.getValueFromProps(this.props,'id');
+        let id = common.getValueFromProps(this.props, 'id');
         //let type = common.getValueFromProps(this.props, 'type');
         this.state = {
             id,
@@ -128,7 +128,7 @@ export default class WeixiuDetailPage extends BasePage {
                                 style={{ width: 16, height: 16 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
-                    
+
                     <Text style={styles.desc}>{detail.repairContent}</Text>
 
                     <ListImages images={images} lookImage={this.lookImage} />
@@ -138,7 +138,7 @@ export default class WeixiuDetailPage extends BasePage {
                     </Flex>
 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>转单人：{detail.createUserName}，转单时间：{detail.createDate}</Text>
+                        <Text style={styles.left}>转单人：{detail.createUserName}，{detail.createDate}</Text>
                     </Flex>
 
                     <TouchableWithoutFeedback>
@@ -147,19 +147,27 @@ export default class WeixiuDetailPage extends BasePage {
                             <Text
                                 onPress={() => {
                                     if (detail.sourceType === '服务总台') {
-                                        this.props.navigation.navigate('service', {  id: detail.relationId  });
+                                        this.props.navigation.navigate('service', { id: detail.relationId });
                                     }
                                     else {
                                         //检查单
-                                        this.props.navigation.navigate('checkDetail', { id: detail.relationId  });
+                                        this.props.navigation.navigate('checkDetail', { id: detail.relationId });
                                     }
                                 }}
                                 style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
 
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>派单人：{detail.senderName}，{detail.sendDate}</Text>
+                    </Flex>
+
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>维修专业：{detail.repairMajor}，积分：{detail.score}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>接单人：{detail.receiverName}，{detail.receiverDate}</Text>
                     </Flex>
 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
@@ -189,7 +197,7 @@ export default class WeixiuDetailPage extends BasePage {
                     {detail.testDate ?//进行了检验
                         <>
                             <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                                <Text style={styles.left}>检验人：{detail.testerName}，检验时间：{detail.testDate}</Text>
+                                <Text style={styles.left}>检验人：{detail.testerName}，{detail.testDate}</Text>
                             </Flex>
 
                             <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>

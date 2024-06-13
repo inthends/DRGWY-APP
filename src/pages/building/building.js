@@ -18,7 +18,7 @@ import { saveUser, saveXunJian } from '../../utils/store/actions/actions';
 //import JPush from 'jpush-react-native';
 import {
   upgrade,
-  addDownListener,
+  addDownListener
   //checkUpdate,
 } from 'rn-app-upgrade';
 import UDToast from '../../utils/UDToast';
@@ -34,12 +34,12 @@ class BuildingPage extends BasePage {
     this.selectBuilding = {
       key: null
     };
-    this.state = { 
-      showTabbar: true,
+    this.state = {
+      //showTabbar: true,
       pageIndex: 1,
       statistics: {},
       dataInfo: {
-        data: [],
+        data: []
       },
       refreshing: true
     };
@@ -53,78 +53,78 @@ class BuildingPage extends BasePage {
     });
   }
 
-  componentDidMount() { 
-      //安卓更新
-      if (!common.isAndroid() === false) {
-        NativeModules.LHNToast.getVersionCode(
-          (version, isYse, isLKL, brandName) => {
-            api.getData('/api/Mobile/GetVersion', { isYse, isLKL, brandName }, true)
-              .then((res) => {
-                let netVersion = common.handlerVersionString(res.appVersionName);
-                let localVersion = common.handlerVersionString(version);
-                if (netVersion > localVersion) {
-                  Alert.alert(
-                    '发现有新版本',
-                    '是否更新？',
-                    [
-                      {
-                        text: '取消',
-                        onPress: () => this.initUI(),
-                        style: 'cancel',
+  componentDidMount() {
+    //安卓更新
+    if (!common.isAndroid() === false) {
+      NativeModules.LHNToast.getVersionCode(
+        (version, isYse, isLKL, brandName) => {
+          api.getData('/api/Mobile/GetVersion', { isYse, isLKL, brandName }, true)
+            .then((res) => {
+              let netVersion = common.handlerVersionString(res.appVersionName);
+              let localVersion = common.handlerVersionString(version);
+              if (netVersion > localVersion) {
+                Alert.alert(
+                  '发现有新版本',
+                  '是否更新？',
+                  [
+                    {
+                      text: '取消',
+                      onPress: () => this.initUI(),
+                      style: 'cancel',
+                    },
+                    {
+                      text: '确定',
+                      onPress: () => {
+                        upgrade(res.versionFile);
                       },
-                      {
-                        text: '确定',
-                        onPress: () => {
-                          upgrade(res.versionFile);
-                        },
-                      },
-                    ],
-                    { cancelable: false },
-                  );
-                } else {
-                  this.initUI();
-                }
-              })
-              .catch(() => {
+                    },
+                  ],
+                  { cancelable: false },
+                );
+              } else {
                 this.initUI();
-              });
-          },
-        );
-      } else {
-        this.initUI();
-
-        //废弃
-        // NativeModules.LHNToast.getVersionCode((err, version) => {
-        //     checkUpdate(common.appId(), version).then(IOSUpdateInfo => {
-        //         if (IOSUpdateInfo.code === 1) {
-        //             Alert.alert(
-        //                 '发现有新版本',
-        //                 '是否更新？',
-        //                 [
-        //                     {
-        //                         text: '取消',
-        //                         onPress: () => console.log('Cancel Pressed'),
-        //                         style: 'cancel',
-        //                     },
-        //                     {
-        //                         text: '确定',
-        //                         onPress: () => {
-        //                             if (Linking.canOpenURL('https://itunes.apple.com/app/id' + common.appId())) {
-        //                                 Linking.openURL('https://itunes.apple.com/app/id' + common.appId());
-        //                             }
-        //                         },
-        //                     },
-        //                 ],
-        //                 {cancelable: false},
-        //             );
-        //
-        //         }
-        //     });
-        // });
-      } 
+              }
+            })
+            .catch(() => {
+              this.initUI();
+            });
+        },
+      );
+    } else {
+      this.initUI();
+      //废弃
+      // NativeModules.LHNToast.getVersionCode((err, version) => {
+      //     checkUpdate(common.appId(), version).then(IOSUpdateInfo => {
+      //         if (IOSUpdateInfo.code === 1) {
+      //             Alert.alert(
+      //                 '发现有新版本',
+      //                 '是否更新？',
+      //                 [
+      //                     {
+      //                         text: '取消',
+      //                         onPress: () => console.log('Cancel Pressed'),
+      //                         style: 'cancel',
+      //                     },
+      //                     {
+      //                         text: '确定',
+      //                         onPress: () => {
+      //                             if (Linking.canOpenURL('https://itunes.apple.com/app/id' + common.appId())) {
+      //                                 Linking.openURL('https://itunes.apple.com/app/id' + common.appId());
+      //                             }
+      //                         },
+      //                     },
+      //                 ],
+      //                 {cancelable: false},
+      //             );
+      //
+      //         }
+      //     });
+      // });
+    }
   }
 
-  initUI() { 
+  initUI() {
+
     BuildingService.getUserInfo().then((res) => {
       this.props.saveUser(res);
     });
@@ -157,12 +157,12 @@ class BuildingPage extends BasePage {
     BuildingService.getStatistics(
       this.state.pageIndex,
       this.selectBuilding.key,
-      showLoading,
+      showLoading
     ).then((dataInfo) => {
       if (dataInfo.pageIndex > 1) {
         dataInfo = {
           ...dataInfo,
-          data: [...this.state.dataInfo.data, ...dataInfo.data],
+          data: [...this.state.dataInfo.data, ...dataInfo.data]
         };
       }
       this.setState(
@@ -190,33 +190,24 @@ class BuildingPage extends BasePage {
       },
       () => {
         this.getList();
-      },
+      }
     );
   };
 
   loadMore = () => {
     const { data, total, pageIndex } = this.state.dataInfo;
-    if (!this.canAction && data.length < total) {
-      // if (data.length < total) {
-      this.canAction = true;
+    if (this.canLoadMore && data.length < total) {
+      this.canLoadMore = false;
       this.setState(
         {
           refreshing: true,
-          pageIndex: pageIndex + 1,
+          pageIndex: pageIndex + 1
         },
         () => {
           this.getList();
         }
       );
     }
-    // if (data.length < total) {
-    //     this.setState({
-    //         refreshing: true,
-    //         pageIndex: pageIndex + 1,
-    //     }, () => {
-    //         this.getList();
-    //     });
-    // }
   };
 
   componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
@@ -256,11 +247,14 @@ class BuildingPage extends BasePage {
               )}
               style={styles.list}
               keyExtractor={(item) => item.id}
-              refreshing={this.state.refreshing}
-              onRefresh={() => this.onRefresh()}
-              onEndReached={() => this.loadMore()}
+
+              //必须
               onEndReachedThreshold={0.1}
-              onMomentumScrollBegin={() => (this.canAction = false)}
+              refreshing={this.state.refreshing}
+              onRefresh={this.onRefresh}//下拉刷新
+              onEndReached={this.loadMore}//底部往下拉翻页
+              onMomentumScrollBegin={() => this.canLoadMore = true}
+
               ListEmptyComponent={<NoDataView />}
             />
           </View>

@@ -1,7 +1,7 @@
 import React from 'react';
 import BasePage from '../../base/base';
-import { Flex,  Icon } from '@ant-design/react-native';
-import { StyleSheet, FlatList, Text, TouchableOpacity,TouchableWithoutFeedback, LoadImage,ScrollView } from 'react-native';
+import { Flex, Icon } from '@ant-design/react-native';
+import { StyleSheet, FlatList, Text, TouchableOpacity, TouchableWithoutFeedback, LoadImage, ScrollView } from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import CommonView from '../../../components/CommonView';
 import common from '../../../utils/common';
@@ -17,7 +17,7 @@ export default class OrderlistPage extends BasePage {
         return {
             tabBarVisible: false,
             title: navigation.state.params.data.title ?? '订单列表',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
@@ -31,17 +31,17 @@ export default class OrderlistPage extends BasePage {
         this.state = {
             ...(common.getValueFromProps(this.props)),
             dataInfo: {},
-            pageIndex:1,
-            refreshing:false
-        }; 
+            pageIndex: 1,
+            refreshing: false
+        };
     }
 
-    componentDidMount()  {
+    componentDidMount() {
         this.onRefresh()
     }
 
     getList = () => {
-        const {type, pageIndex} = this.state;
+        const { type, pageIndex } = this.state;
         OrderService.getOrderDatas(type, pageIndex).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
@@ -51,12 +51,13 @@ export default class OrderlistPage extends BasePage {
             }
             this.setState({
                 dataInfo: dataInfo,
+                pageIndex: dataInfo.pageIndex,
                 refreshing: false
-            }, () => { 
+            }, () => {
             });
         }).catch(err => this.setState({ refreshing: false }));
     };
-    
+
     onRefresh = () => {
         this.setState({
             refreshing: true,
@@ -66,18 +67,19 @@ export default class OrderlistPage extends BasePage {
         });
     };
     loadMore = () => {
-        const {data, total, pageIndex} = this.state.dataInfo; 
-        if (this.canAction && data.length < total) {
+        const { data, total, pageIndex } = this.state.dataInfo;
+        if (this.canLoadMore && data.length < total) {
+            this.canLoadMore = false;
             this.setState({
                 refreshing: true,
-                pageIndex: pageIndex + 1,
+                pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
             });
         }
     };
     //传入status  待查阅0，待回复1，已回复2，已关闭-1
-                    /*
+    /*
 allName: "大象城/第01栋/第01层/1-102"
 billCode: "DXCNo202303140003"
 billDate: "2023-03-14 21:16:58"
@@ -99,33 +101,33 @@ status: 0
 type: "预约看房"
 */
 
-    _renderItem = ({item, index}) => {
+    _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
                 switch (item.status) {
                     case 0: {
-                        this.props.navigation.navigate('paidan', {data: item});
+                        this.props.navigation.navigate('paidan', { data: item });
                         break;
                     }
                     case 1: {
-                        this.props.navigation.navigate('jiedan', {data: item});
+                        this.props.navigation.navigate('jiedan', { data: item });
                         break;
                     }
-                    default: 
+                    default:
                         break;
                 }
-    
+
             }}>
                 <Flex direction='column' align={'start'}
-                      style={[styles.card, index === 0 ? styles.blue : styles.orange]}>
-                    <Flex justify='between' style={{width: '100%'}}>
+                    style={[styles.card, index === 0 ? styles.blue : styles.orange]}>
+                    <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.type ?? ''}</Text>
                         <Text style={styles.aaa}>{item.createDate ?? ''}</Text>
                     </Flex>
-                    <Flex style={styles.line}/>
+                    <Flex style={styles.line} />
                     <Flex align={'start'} direction={'column'}>
                         <Flex justify='between'
-                              style={{width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20}}>
+                            style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>{item.billCode}</Text>
                             {/* <TouchableWithoutFeedback
                                 onPress={() => common.call('666')}>
@@ -147,24 +149,22 @@ type: "预约看房"
 
 
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
-        const { dataInfo, type} = this.state;
+        const { dataInfo, type } = this.state;
         return (
-            <CommonView style={{flex: 1}}>
+            <CommonView style={{ flex: 1 }}>
                 <FlatList
                     data={dataInfo.data}
                     // ListHeaderComponent={}
                     renderItem={this._renderItem}
                     style={styles.list}
                     keyExtractor={(item, index) => item.id}
-                    // refreshing={this.state.refreshing}
-                    // onRefresh={() => this.onRefresh()}
-                    // onEndReached={() => this.loadMore()}
-                    onEndReachedThreshold={0}
-                    onScrollBeginDrag={() => this.canAction = true}
-                    onScrollEndDrag={() => this.canAction = false}
-                    onMomentumScrollBegin={() => this.canAction = true}
-                    onMomentumScrollEnd={() => this.canAction = false}
-                    ListEmptyComponent={<NoDataView/>}
+                    //必须
+                    onEndReachedThreshold={0.1}
+                    refreshing={this.state.refreshing}
+                    onRefresh={this.onRefresh}//下拉刷新
+                    onEndReached={this.loadMore}//底部往下拉翻页
+                    onMomentumScrollBegin={() => this.canLoadMore = true}
+                    ListEmptyComponent={<NoDataView />}
                 />
 
 
@@ -175,8 +175,8 @@ type: "预约看房"
 }
 
 const styles = StyleSheet.create({
-   
-  
+
+
     list: {
         backgroundColor: Macro.color_white,
         margin: 15,
@@ -186,17 +186,17 @@ const styles = StyleSheet.create({
         // textAlign: 'left',
         color: '#404145',
         fontSize: 16,
-        paddingBottom: 10, 
+        paddingBottom: 10,
         marginLeft: 20,
-        marginRight: 20, 
+        marginRight: 20,
     },
- 
+
     line: {
         width: ScreenUtil.deviceWidth() - 30 - 15 * 2,
         marginLeft: 15,
         backgroundColor: '#eee',
         height: 1
-    }, 
+    },
     card: {
         borderTopWidth: 1,
         borderRightWidth: 1,
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         backgroundColor: 'white',
         shadowColor: '#00000033',
-        shadowOffset: {h: 10, w: 10},
+        shadowOffset: { h: 10, w: 10 },
         shadowRadius: 5,
         shadowOpacity: 0.8
     },

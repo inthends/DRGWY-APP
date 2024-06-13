@@ -81,7 +81,7 @@ class SheBeiList extends BasePage {
 
 
     getList = () => {
-        const { text } = this.state;
+        const { text } = this.state;//没有分页
         let params = { keyword: text };
         if (this.state.selectBuilding) {
             params = {
@@ -91,7 +91,7 @@ class SheBeiList extends BasePage {
         }
 
         api.getData('/api/MobileMethod/MGetDeviceList', params).then(res => {
-            this.setState({ data: res });
+            this.setState({ data: res  });
         })
 
     };
@@ -99,7 +99,7 @@ class SheBeiList extends BasePage {
     onRefresh = () => {
         this.setState({
             refreshing: true,
-            pageIndex: 1,
+            pageIndex: 1
         }, () => { 
             this.getList();
         });
@@ -110,10 +110,11 @@ class SheBeiList extends BasePage {
         // if (!this.state.canLoadMore) {
         //     return;
         // }
-        if (this.canAction && data.length < total) {
+        if (this.canLoadMore && data.length < total) {
+            this.canLoadMore = false;
             this.setState({
                 refreshing: true,
-                pageIndex: pageIndex + 1,
+                pageIndex: pageIndex + 1
                 // canLoadMore: false,
             }, () => {
                 this.getList();
@@ -152,24 +153,7 @@ class SheBeiList extends BasePage {
                         data.map((item, index) => {
                             return this._renderItem({ item, index })
                         })
-                    }
-
-                    {/*<FlatList*/}
-                    {/*    data={dataInfo.data}*/}
-                    {/*    // ListHeaderComponent={}*/}
-                    {/*    renderItem={this._renderItem}*/}
-                    {/*    style={styles.list}*/}
-                    {/*    keyExtractor={(item, index) => item.id}*/}
-                    {/*    //refreshing={this.state.refreshing}*/}
-                    {/*    //onRefresh={() => this.onRefresh()}*/}
-                    {/*    onEndReached={() => this.loadMore()}*/}
-                    {/*    onEndReachedThreshold={0.1}*/}
-                    {/*    // onScrollBeginDrag={() => this.canAction = true}*/}
-                    {/*    // onScrollEndDrag={() => this.canAction = false}*/}
-                    {/*    onMomentumScrollBegin={() => this.canAction = true}*/}
-                    {/*    onMomentumScrollEnd={() => this.canAction = false}*/}
-                    {/*    ListEmptyComponent={<NoDataView/>}*/}
-                    {/*/>*/}
+                    } 
                 </CommonView>
             </View>
 

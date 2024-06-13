@@ -29,8 +29,8 @@ import CommonView from '../../components/CommonView';
 let screen_width = ScreenUtil.deviceWidth();
 
 class gdMoneyPage extends BasePage {
-    
-    static navigationOptions = ({ navigation }) => { 
+
+    static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
             title: '固定资产',
@@ -65,7 +65,7 @@ class gdMoneyPage extends BasePage {
         };
     }
 
-    componentDidMount()  {
+    componentDidMount() {
         this.onRefresh();
     }
 
@@ -84,15 +84,16 @@ class gdMoneyPage extends BasePage {
             }
             this.setState({
                 dataInfo: dataInfo,
+                pageIndex: dataInfo.pageIndex,
                 refreshing: false
-            }, () => { 
+            }, () => {
             });
         }).catch(err => this.setState({ refreshing: false }));
     };
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
-        const nextSelectBuilding = nextProps.selectBuilding;  
+        const nextSelectBuilding = nextProps.selectBuilding;
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
             this.setState({
                 selectBuilding: nextProps.selectBuilding,
@@ -113,11 +114,12 @@ class gdMoneyPage extends BasePage {
     };
 
     loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo; 
-        if (this.canAction && data.length < total) {
+        const { data, total, pageIndex } = this.state.dataInfo;
+        if (this.canLoadMore && data.length < total) {
+            this.canLoadMore = false;
             this.setState({
                 refreshing: true,
-                pageIndex: pageIndex + 1,
+                pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
             });
@@ -145,7 +147,7 @@ class gdMoneyPage extends BasePage {
         });
     };
 
-    _renderItem = ({ item }) => { 
+    _renderItem = ({ item }) => {
         return (
             <TouchableWithoutFeedback onPress={() => this.props.navigation.push('gdzcDetail', { data: item })}>
                 <Flex direction="column" style={styles.content}>
@@ -184,15 +186,15 @@ class gdMoneyPage extends BasePage {
                             // ListHeaderComponent={}
                             renderItem={this._renderItem}
                             keyExtractor={(item, index) => item.id}
-                            refreshing={this.state.refreshing}
-                            onRefresh={() => this.onRefresh()}
-                            onEndReached={() => this.loadMore()}
-                            onEndReachedThreshold={0.1}
                             // ItemSeparatorComponent={() => <View style={{ backgroundColor: '#eee', height: 1 }} />}
-                            onScrollBeginDrag={() => this.canAction = true}
-                            onScrollEndDrag={() => this.canAction = false}
-                            onMomentumScrollBegin={() => this.canAction = true}
-                            onMomentumScrollEnd={() => this.canAction = false}
+
+                            //必须
+                            onEndReachedThreshold={0.1}
+                            refreshing={this.state.refreshing}
+                            onRefresh={this.onRefresh}//下拉刷新
+                            onEndReached={this.loadMore}//底部往下拉翻页
+                            onMomentumScrollBegin={() => this.canLoadMore = true}
+
                             ListEmptyComponent={<NoDataView />}
                         />
                     </View>

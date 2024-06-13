@@ -94,11 +94,12 @@ class TaskListPage extends BasePage {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
-                    data: [...this.state.dataInfo.data, ...dataInfo.data],
+                    data: [...this.state.dataInfo.data, ...dataInfo.data]
                 };
             }
             this.setState({
                 dataInfo: dataInfo,
+                pageIndex: dataInfo.pageIndex,
                 refreshing: false
             }, () => {
             });
@@ -116,7 +117,8 @@ class TaskListPage extends BasePage {
 
     loadMore = () => {
         const { data, total, pageIndex } = this.state.dataInfo;
-        if (this.canAction && data.length < total) {
+        if (this.canLoadMore && data.length < total) {
+            this.canLoadMore = false;
             this.setState({
                 refreshing: true,
                 pageIndex: pageIndex + 1
@@ -240,14 +242,12 @@ class TaskListPage extends BasePage {
                     renderItem={this._renderItem}
                     style={styles.list}
                     keyExtractor={(item) => item.id}
-                    // refreshing={this.state.refreshing}
-                    // onRefresh={() => this.onRefresh()}
-                    onEndReached={() => this.loadMore()}
-                    onEndReachedThreshold={0}
-                    onScrollBeginDrag={() => this.canAction = true}
-                    onScrollEndDrag={() => this.canAction = false}
-                    onMomentumScrollBegin={() => this.canAction = true}
-                    onMomentumScrollEnd={() => this.canAction = false}
+                    //必须
+                    onEndReachedThreshold={0.1}
+                    refreshing={this.state.refreshing}
+                    onRefresh={this.onRefresh}//下拉刷新
+                    onEndReached={this.loadMore}//底部往下拉翻页
+                    onMomentumScrollBegin={() => this.canLoadMore = true}
                     ListEmptyComponent={<NoDataView />}
                 />
                 <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>

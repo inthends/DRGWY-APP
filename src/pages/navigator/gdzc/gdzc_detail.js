@@ -44,14 +44,14 @@ export default class GdzcDetailPage extends BasePage {
                 pageIndex: 0
             }
         };
-        this.getInfo() 
+        this.getInfo()
     }
 
     getImages = () => {
         GdzcService.gdzcAssetsFileInfo(this.state.id).then(res => {
             this.setState({
                 imageDatas: res
-            }, () => { 
+            }, () => {
             })
         })
     }
@@ -60,7 +60,7 @@ export default class GdzcDetailPage extends BasePage {
         this.setState({
             indexType: indexType,
             refreshing: true,
-            pageIndex: 1,
+            pageIndex: 1
         }, () => {
             this.getInfo();
         });
@@ -69,10 +69,11 @@ export default class GdzcDetailPage extends BasePage {
     loadMore = () => {
         const { total, pageIndex } = this.state.dataInfo;
         const { datasList } = this.state;
-        if (datasList && datasList.length < total) {
+        if (this.canLoadMore && datasList.length < total) {
+            this.canLoadMore = false;
             this.setState({
                 refreshing: true,
-                pageIndex: pageIndex + 1,
+                pageIndex: pageIndex + 1
             }, () => {
                 this.getInfo();
             });
@@ -98,7 +99,7 @@ export default class GdzcDetailPage extends BasePage {
                     datasList: res.data,
                     total: res.total,
                     refreshing: false
-                }, () => { 
+                }, () => {
                 })
             }).catch(err => this.setState({ refreshing: false }));
         }
@@ -108,7 +109,7 @@ export default class GdzcDetailPage extends BasePage {
                     datasList: res.data,
                     total: res.total,
                     refreshing: false
-                }, () => { 
+                }, () => {
                 })
             }).catch(err => this.setState({ refreshing: false }));
         }
@@ -118,7 +119,7 @@ export default class GdzcDetailPage extends BasePage {
                     datasList: res.data,
                     total: res.total,
                     refreshing: false
-                }, () => { 
+                }, () => {
                 })
             }).catch(err => this.setState({ refreshing: false }));
         }
@@ -212,7 +213,7 @@ export default class GdzcDetailPage extends BasePage {
                             </Flex>
                         })
                     }
-                    
+
                     <ListImages images={images} lookImage={this.lookImage} />
 
                     <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
@@ -229,15 +230,14 @@ export default class GdzcDetailPage extends BasePage {
                     // ListHeaderComponent={}
                     renderItem={this._renderItem}
                     keyExtractor={(item) => item.id}
-                    refreshing={this.state.refreshing}
-                    onRefresh={() => this.onRefresh()}
-                    onEndReached={() => this.loadMore()}
+                    // ItemSeparatorComponent={() => <View style={{ backgroundColor: '#eee', height: 1 }} />} 
+                    //必须
                     onEndReachedThreshold={0.1}
-                    // ItemSeparatorComponent={() => <View style={{ backgroundColor: '#eee', height: 1 }} />}
-                    onScrollBeginDrag={() => this.canAction = true}
-                    onScrollEndDrag={() => this.canAction = false}
-                    onMomentumScrollBegin={() => this.canAction = true}
-                    onMomentumScrollEnd={() => this.canAction = false}
+                    refreshing={this.state.refreshing}
+                    onRefresh={this.onRefresh}//下拉刷新
+                    onEndReached={this.loadMore}//底部往下拉翻页
+                    onMomentumScrollBegin={() => this.canLoadMore = true}
+
                     ListEmptyComponent={<NoDataView />}
                 />
 
@@ -247,8 +247,7 @@ export default class GdzcDetailPage extends BasePage {
                 //                         datasList.map((item) => {
                 //                             let data1 = []
                 //                             if (indexType == 1) {
-                //                                 data1 = [
-
+                //                                 data1 = [ 
                 // /*
                 // allName: "中交/中交世通资产管理(北京)有限公司/资产经营部"
                 // assetsId: "08d8ba78-1d35-4bee-a3b5-755e85eea651"
@@ -315,7 +314,7 @@ export default class GdzcDetailPage extends BasePage {
     }
 
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
-        const { indexType, titles } = this.state; 
+        const { indexType, titles } = this.state;
         return (
             <CommonView style={{ flex: 1, justifyContent: 'flex-start' }}>
                 <TopTitle index={indexType} onChange={this.onChange} titles={titles} />

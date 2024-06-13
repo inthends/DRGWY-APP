@@ -57,7 +57,7 @@ class FeeHousePage extends BasePage {
             },
             refreshing: false,
             selectBuilding: this.props.selectBuilding,
-        }; 
+        };
     }
 
     componentDidMount() {
@@ -76,6 +76,7 @@ class FeeHousePage extends BasePage {
                 }
                 this.setState({
                     dataInfo: dataInfo,
+                    pageIndex: dataInfo.pageIndex,
                     refreshing: false
                 }, () => {
                     //console.log(this.state.dataInfo.data);
@@ -92,24 +93,24 @@ class FeeHousePage extends BasePage {
                 this.onRefresh();
             });
         }
-
     }
-
 
     onRefresh = () => {
         this.setState({
             refreshing: true,
-            pageIndex: 1,
+            pageIndex: 1
         }, () => {
             this.getList();
         });
     };
+
     loadMore = () => {
         const { data, total, pageIndex } = this.state.dataInfo;
-        if (this.canAction && data.length < total) {
+        if (this.canLoadMore && data.length < total) {
+            this.canLoadMore = false;
             this.setState({
                 refreshing: true,
-                pageIndex: pageIndex + 1,
+                pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
             });
@@ -161,15 +162,15 @@ class FeeHousePage extends BasePage {
                             // ListHeaderComponent={}
                             renderItem={this._renderItem}
                             keyExtractor={(item, index) => item.id}
-                            refreshing={this.state.refreshing}
-                            onRefresh={() => this.onRefresh()}
-                            onEndReached={() => this.loadMore()}
-                            onEndReachedThreshold={0.1}
                             ItemSeparatorComponent={() => <View style={{ backgroundColor: '#eee', height: 1 }} />}
-                            onScrollBeginDrag={() => this.canAction = true}
-                            onScrollEndDrag={() => this.canAction = false}
-                            onMomentumScrollBegin={() => this.canAction = true}
-                            onMomentumScrollEnd={() => this.canAction = false}
+
+                            //必须
+                            onEndReachedThreshold={0.1}
+                            refreshing={this.state.refreshing}
+                            onRefresh={this.onRefresh}//下拉刷新
+                            onEndReached={this.loadMore}//底部往下拉翻页
+                            onMomentumScrollBegin={() => this.canLoadMore = true}
+
                             ListEmptyComponent={<NoDataView />}
                         />
                     </View>
@@ -180,7 +181,7 @@ class FeeHousePage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-    
+
     content: {
         backgroundColor: Macro.color_white,
         flex: 1
@@ -194,7 +195,7 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginRight: 20
     },
- 
+
     number: {
         color: '#666',
         fontSize: Macro.font_14
@@ -209,8 +210,8 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         paddingBottom: 10
     },
-    
-   
+
+
 
     left: {
         flex: 1,
@@ -233,7 +234,7 @@ const styles = StyleSheet.create({
         color: '#2c2c2c',
         paddingBottom: 15
     }
-    
+
 });
 
 const mapStateToProps = ({ buildingReducer }) => {

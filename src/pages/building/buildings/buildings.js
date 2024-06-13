@@ -80,15 +80,7 @@ class BuildingsPage extends BasePage {
                         renderItem={this._renderItem}
                         style={styles.list}
                         keyExtractor={(item) => item.id}
-                        ListEmptyComponent={<NoDataView />}
-                        // refreshing={this.state.refreshing}
-                        // onRefresh={() => this.onRefresh()}
-                        // onEndReached={() => this.loadMore()}
-                        // onEndReachedThreshold={0}
-                        // onScrollBeginDrag={() => this.canAction = true}
-                        // onScrollEndDrag={() => this.canAction = false}
-                        // onMomentumScrollBegin={() => this.canAction = true}
-                        // onMomentumScrollEnd={() => this.canAction = false}
+                        ListEmptyComponent={<NoDataView />} 
                     />
                 </View>
             </CommonView>

@@ -52,15 +52,6 @@ export default class FeeBuildingsPage extends BasePage {
         });
     }
 
-    // onRefresh = () => {
-    //     this.setState({
-    //         refreshing: true,
-    //         pageIndex: 1,
-    //     }, () => {
-    //         this.getList();
-    //     });
-    // };
-
     render() {
         const { housing, items } = this.state;
         return (
