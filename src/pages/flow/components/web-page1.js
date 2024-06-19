@@ -3,6 +3,8 @@ import {TouchableOpacity,Icon} from 'react-native'
 import { WebView } from 'react-native-webview';
 import BasePage from '../../base/base';
 import common from '../../../utils/common';
+
+//废弃
 export default class webPage1 extends BasePage {
   static navigationOptions = ({ navigation }) => {  
     return {
@@ -24,7 +26,7 @@ export default class webPage1 extends BasePage {
     super(props);
     let urlStr = common.getValueFromProps(this.props);
     this.state = {
-      urlStr,
+      urlStr
     }
     return (
       <WebView source={{ uri: this.state.urlStr }} />

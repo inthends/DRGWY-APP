@@ -65,7 +65,8 @@ class EcheckAddPage extends BasePage {
                 data: []
             },
             roles: [],
-            checkRole: ''//检查的角色
+            checkRole: '',//检查的角色
+            checkRoleId: ''
         };
     }
 
@@ -79,14 +80,18 @@ class EcheckAddPage extends BasePage {
 
     componentDidMount() {
         //加载有现场检查权限的角色
-        WorkService.getCheckRoles().then(res => {
+        WorkService.getCheckRoles().then(roles => {
             this.setState({
-                roles: [...res.map(item => item.title)]
+                //roles: [...res.map(item => item.title)]
+                //roles: [...res]
+                roles
             });
 
-            if (res.length > 0) {
-                this.setState({ checkRole: res[0].title });
+            if (roles.length > 0) {
+                this.setState({ checkRole: roles[0].name, checkRoleId: roles[0].id });
             }
+
+            //console.log('roles',roles);
         });
 
         this.viewDidAppear = this.props.navigation.addListener(
@@ -236,7 +241,7 @@ class EcheckAddPage extends BasePage {
 
 
     addDetail = () => {
-        const { id, detailId, checkRole, memo, address, selectPerson, checkMemo, rectification } = this.state;
+        const { id, detailId, checkRole, checkRoleId, memo, address, selectPerson, checkMemo, rectification } = this.state;
         if (!checkRole) {
             UDToast.showError('请选择检查角色');
             return;
@@ -261,6 +266,7 @@ class EcheckAddPage extends BasePage {
         WorkService.addCheckDetail(
             id,
             checkRole,
+            checkRoleId,
             memo,
             detailId,
             address.id,
@@ -340,16 +346,21 @@ class EcheckAddPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>检查组：</Text>
                         <MyPopoverRight
-                            onChange={(title) => {
-                                this.setState({ checkRole: title });
+                            onChange={(item) => {
+                                //this.setState({ checkRole: title });
+                                this.setState({ checkRole: item.name, checkRoleId: item.id });
                             }}
-                            titles={roles}
+                            data={roles}
                             visible={true} />
                     </Flex>
+
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>检查区域：</Text>
                         <TouchableWithoutFeedback
-                            onPress={() => this.props.navigation.navigate('selectAddress', { parentName: 'checkAdd' })}>
+                            onPress={() => this.props.navigation.navigate('selectAddress', {
+                                parentName: 'checkAdd',
+                                roleId: this.state.checkRoleId
+                            })}>
                             <Flex
                                 //justify="between"
                                 style={{
@@ -432,7 +443,11 @@ class EcheckAddPage extends BasePage {
                                     <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
                                         <CommonView style={{ height: 350, width: 320 }}>
                                             <TouchableWithoutFeedback
-                                                onPress={() => this.props.navigation.navigate('selectAddress', { parentName: 'checkAdd' })}>
+                                                onPress={() => this.props.navigation.navigate('selectAddress',
+                                                    {
+                                                        parentName: 'checkAdd',
+                                                        roleId: this.state.checkRoleId
+                                                    })}>
                                                 <Flex justify="between" style={[{
                                                     paddingTop: 15,
                                                     paddingBottom: 15,

@@ -71,7 +71,6 @@ import com.android.build.OutputFile
  *   extraPackagerArgs: []
  * ]
  */
-
 project.ext.react = [
         entryFile: "index.js",
 
@@ -80,9 +79,7 @@ project.ext.react = [
         bundleInDebug: true,
         bundleInRelease: true
 ]
-
 apply from: "../../node_modules/react-native/react.gradle"
-
 /**
  * Set this to true to create two separate APKs instead of one:
  *   - An APK that only works on ARM devices
@@ -92,24 +89,19 @@ apply from: "../../node_modules/react-native/react.gradle"
  * the correct one based on the CPU architecture of their device.
  */
 def enableSeparateBuildPerCPUArchitecture = false
-
 /**
  * Run Proguard to shrink the Java bytecode in release builds.
  */
 def enableProguardInReleaseBuilds = false
-
 // def releaseTime() {
 //     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 // }
-
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
     flavorDimensions "default"
     productFlavors {
             // main
@@ -139,7 +131,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "6.3.0"//app版本
+        versionName "6.4.0"//app版本
         missingDimensionStrategy 'react-native-camera', 'general'
 //         manifestPlaceholders = [
 //                 JPUSH_APPKEY : "996f9f0191243d335f473952",         //在此替换你的APPKey

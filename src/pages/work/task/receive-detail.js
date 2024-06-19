@@ -84,9 +84,9 @@ export default class ReceiveDetailPage extends BasePage {
             });
         });
     };
+
     click = (handle) => {
         const { id } = this.state;
-
         WorkService.serviceHandle(handle, id).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();

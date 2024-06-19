@@ -41,12 +41,16 @@ export default class SelectAddressPage extends BasePage {
         };
     }
 
+
     componentDidMount() {
         const { navigation } = this.props;
         //获取父页面的名称
-        var parentName = navigation.state.params.parentName;
-        this.setState({ parentName });
-        this.getData();
+        let parentName = navigation.state.params.parentName;
+        let myroleId = '';
+        if (navigation.state.params.roleId)
+            myroleId = navigation.state.params.roleId;
+        this.setState({ parentName, roleId: myroleId });
+        this.getData(myroleId);
     }
 
     // submit = () => {
@@ -87,7 +91,7 @@ export default class SelectAddressPage extends BasePage {
         }
     };
 
-    getData = () => {
+    getData = (roleId) => {
         const parent = common.getValueFromProps(this.props, 'data');
         let params;
         if (parent) {
@@ -131,7 +135,7 @@ export default class SelectAddressPage extends BasePage {
             this.props.navigation.setParams({
                 title: '选择项目',
             });
-            params = { keyvalue: 0, type: 1 };
+            params = { keyvalue: 0, type: 1, roleId: roleId };
         }
         this.setState({
             parent,
@@ -158,7 +162,7 @@ export default class SelectAddressPage extends BasePage {
                     <ScrollView style={{ flex: 1 }} refreshControl={
                         <RefreshControl
                             refreshing={this.state.refreshing}
-                            onRefresh={() => this.getData()}
+                            onRefresh={() => this.getData(this.state.roleId)}
                         />
                     }>
                         <List>

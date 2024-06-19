@@ -103,7 +103,12 @@ class SelectRolePersonMulti extends BasePage {
                     //缓存选中的值
                     if (it.select) {
                         selectItems.push({ id: it.id, name: it.name });
+                    } else {
+                        //移除
+                        const index = selectItems.findIndex(item => item.id === it.id);
+                        selectItems.splice(index,1);
                     }
+
                 }
                 return it;
             });

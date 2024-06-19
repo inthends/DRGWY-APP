@@ -20,8 +20,7 @@ export default class AddReview extends Component {
   };
 
   save = () => {
-    const { taskId, userId, memo } = this.state;
-
+    const { taskId, userId, memo } = this.state; 
     if (!userId) {
       UDToast.showError('请选择人员');
       return;

@@ -12,6 +12,22 @@ AS自动下载、导入、编译完成。
 2022-12-26
 
 
+法将“react-native”项识别为 cmdlet、函数、脚本文件或可运行程序的名称
+报错解释：
+
+这个错误表明PowerShell无法识别“react-native”这个命令，
+因为它不是一个内置的cmdlet（PowerShell命令）、函数、脚本文件或者可执行程序。
+这通常发生在尝试在命令行中运行一个未安装或未配置正确的程序时。
+
+解决方法：
+
+确认是否已经安装了Node.js和npm（Node包管理器）。
+
+使用npm安装React Native CLI，运行以下命令：
+
+npm install -g react-native-cli
+
+
 "rn-app-upgrade": "^1.0.6"
 
 rn-app-upgrade 组件
@@ -65,5 +81,26 @@ https://cloud.tencent.com/developer/article/1486429?areaSource=102001.11&traceId
 
 ios
 1、VS Code build ios：命令 build-ios
-2、xcode run：连接手机，测试APP是否正常
+2、xcode run：连接手机，测试APP是否正常，或者使用模拟器测试
 3、xcode archive 上架
+
+
+
+ios 运行模拟器
+
+截图
+iphone 11 pro max 6.5
+iphone 8 plus 5.5
+
+报错：building for iOS Simulator, but linking in object file built for iOS
+项目场景：
+VALID_ARCHS→ x86_64
+Excluded Architecture→ arm64
+Build Active Architecture Only→ 设置NO
+
+解决方案：
+VALID_ARCHS→ x86_64
+Excluded Architecture→ arm64
+Build Active Architecture Only→ 设置NO
+————————————————                  
+原文链接：https://blog.csdn.net/weixin_53444763/article/details/126134535

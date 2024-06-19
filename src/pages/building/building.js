@@ -39,6 +39,7 @@ class BuildingPage extends BasePage {
       dataInfo: {
         data: []
       },
+      statistics: {},
       refreshing: true
     };
 

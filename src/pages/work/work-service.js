@@ -36,6 +36,7 @@ export default {
     addCheckDetail(
         billId,
         checkRole,
+        checkRoleId,
         mainMemo,
         detailId,
         unitId,
@@ -47,6 +48,7 @@ export default {
         return api.postData('/api/MobileMethod/MAddCheckDetail', {
             billId,
             checkRole,
+            checkRoleId,
             mainMemo,
             detailId,
             unitId,
