@@ -39,11 +39,11 @@ export default class DispatchDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let id = common.getValueFromProps(this.props,'id');
+        let id = common.getValueFromProps(this.props, 'id');
         //let type = common.getValueFromProps(this.props, 'type');
         this.state = {
             id,
-            //value: '',
+            dispatchMemo: '',
             images: [],
             detail: {},
             communicates: [],
@@ -63,7 +63,7 @@ export default class DispatchDetailPage extends BasePage {
             selectPerson: selectItem
         })
     }
- 
+
     onSelectAssisPerson = ({ selectItems }) => {
         this.setState({
             assisPersons: selectItems
@@ -153,7 +153,7 @@ export default class DispatchDetailPage extends BasePage {
     };
 
     click = () => {
-        const { id, selectPerson, repairmajor, assisPersons } = this.state;
+        const { id, selectPerson, repairmajor, assisPersons, dispatchMemo } = this.state;
         if (selectPerson == null) {
             UDToast.showInfo('请选择接单人');
             return;
@@ -163,17 +163,18 @@ export default class DispatchDetailPage extends BasePage {
             UDToast.showInfo('请选择维修专业');
             return;
         }
- 
+
         let personIds = assisPersons.map(item => item.id);
         let assistId = personIds && personIds.length > 0 ? JSON.stringify(personIds) : '';
-        
+
         WorkService.paidan(
             id,
             selectPerson.id,
             selectPerson.name,
             repairmajor.id,
             repairmajor.name,
-            assistId
+            assistId,
+            dispatchMemo
         ).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
@@ -208,15 +209,14 @@ export default class DispatchDetailPage extends BasePage {
         });
     };
 
-    
+
     render() {
-        const { images, detail, communicates, repairmajor, selectPerson, assisPersons } = this.state; 
+        const { images, detail, communicates, repairmajor, selectPerson, assisPersons } = this.state;
         //转换name
         let personNames = assisPersons.map(item => item.name);
         let mystrNames = personNames.join('，');
         return (
-            <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
-
+            <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}> 
                 <ScrollView style={{ marginTop: this.state.KeyboardShown ? -200 : 0, height: '100%' }}>
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.billCode}</Text>
@@ -248,7 +248,7 @@ export default class DispatchDetailPage extends BasePage {
                             <Text
                                 onPress={() => {
                                     if (detail.sourceType === '服务总台') {
-                                        this.props.navigation.navigate('service', { id: detail.relationId  });
+                                        this.props.navigation.navigate('service', { id: detail.relationId });
                                     }
                                     else {
                                         //检查单
@@ -258,7 +258,7 @@ export default class DispatchDetailPage extends BasePage {
                                 style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
-                    
+
                     <TouchableWithoutFeedback
                         onPress={() => this.props.navigation.navigate('selectRepairMajor', {
                             parentName: 'paidan'
@@ -300,8 +300,8 @@ export default class DispatchDetailPage extends BasePage {
                             <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
                         </Flex>
                     </TouchableWithoutFeedback>
-                    
-                    {/* <View style={{
+
+                    <View style={{
                         margin: 15,
                         // borderStyle: 'solid',
                         // borderColor: '#F3F4F2',
@@ -313,10 +313,10 @@ export default class DispatchDetailPage extends BasePage {
                             autoHeight
                             placeholder='请输入'
                             style={{ width: ScreenUtil.deviceWidth() - 32 }}
-                            onChange={value => this.setState({ value })}
-                            value={this.state.value}
+                            onChange={dispatchMemo => this.setState({ dispatchMemo })}
+                            value={this.state.dispatchMemo}
                         />
-                    </View> */}
+                    </View>
 
                     <Flex justify={'center'}>
                         <Button onPress={() => this.click()} type={'primary'}

@@ -148,6 +148,10 @@ export default class ReceiveDetailPage extends BasePage {
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>说明：{detail.dispatchMemo}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>维修专业：{detail.repairMajor}，积分：{detail.score}</Text>
                     </Flex>
 
@@ -210,15 +214,9 @@ const styles = StyleSheet.create({
     every: {
         marginLeft: 15,
         marginRight: 15,
-        paddingTop: 15,
-        paddingBottom: 15
+        paddingBottom: 10,
+        paddingTop: 10
     },
-    // every2: {
-    //     marginLeft: 15,
-    //     marginRight: 15,
-    //     paddingBottom: 10,
-    //     paddingTop: 10
-    // },
     left: {
         fontSize: 16,
         color: '#404145'

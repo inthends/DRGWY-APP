@@ -175,7 +175,7 @@ export default class CompleteDetailPage extends BasePage {
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.address} {detail.contactName}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
                             <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
@@ -186,10 +186,10 @@ export default class CompleteDetailPage extends BasePage {
 
                     <ListImages images={images} lookImage={this.lookImage} />
 
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
                     </Flex>
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName}，{detail.createDate}</Text>
                     </Flex>
                     <TouchableWithoutFeedback>
@@ -213,15 +213,19 @@ export default class CompleteDetailPage extends BasePage {
                         <Text style={styles.left}>派单人：{detail.senderName}，{detail.sendDate}</Text>
                     </Flex>
 
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>说明：{detail.dispatchMemo}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>维修专业：{detail.repairMajor}，积分：{detail.score}</Text>
                     </Flex>
 
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>协助人：{detail.assistName}</Text>
                     </Flex>
 
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>增援人：{detail.reinforceName}</Text>
                     </Flex>
 
@@ -264,12 +268,6 @@ export default class CompleteDetailPage extends BasePage {
 
 const styles = StyleSheet.create({
     every: {
-        marginLeft: 15,
-        marginRight: 15,
-        paddingTop: 15,
-        paddingBottom: 15
-    },
-    every2: {
         marginLeft: 15,
         marginRight: 15,
         paddingBottom: 10,

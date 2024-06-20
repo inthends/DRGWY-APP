@@ -299,7 +299,8 @@ export default {
         receiverName,
         repairMajorId,
         repairMajorName,
-        assistId
+        assistId,
+        dispatchMemo
     ) {
         return api.postData('/api/MobileMethod/MRepairDispatch', {
             keyvalue,
@@ -307,7 +308,8 @@ export default {
             receiverName,
             repairMajorId,
             repairMajorName,
-            assistId
+            assistId,
+            dispatchMemo
         });
     },
 

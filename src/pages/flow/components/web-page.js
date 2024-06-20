@@ -1,21 +1,19 @@
 
 import React from 'react';
-import { WebView } from 'react-native-webview'; 
+import { WebView } from 'react-native-webview';  
 
 const webPage = props => {
+ 
   let urlStr = props.navigation.state.params.data;
-
-
   if (typeof urlStr !== 'string') {
     urlStr = '';
   }
 
-  if (urlStr.indexOf('pdf') !== -1) {
-    //urlStr = 'http://www.xdocin.com/xdoc?_func=to&_format=html&_cache=true&_xdoc=' + urlStr;//有时间限制
- 
-
-  }
-  else {
+  // if (urlStr.indexOf('pdf') !== -1) {
+  //   //urlStr = 'http://www.xdocin.com/xdoc?_func=to&_format=html&_cache=true&_xdoc=' + urlStr;//有时间限制
+  // 无法实现预览，只能下载后打开 2024年6月20日
+  // }
+  // else {
     //办公文件
     var officetype = /(doc|docx|xls|xlsx|ppt|pptx)$/;
     var type = urlStr.split('.').pop() || '';
@@ -24,6 +22,6 @@ const webPage = props => {
       urlStr = 'https://view.officeapps.live.com/op/view.aspx?src=' + urlStr;
     }
     return <WebView source={{ uri: urlStr }} />;
-  }
+  //}
 }
 export default webPage;
