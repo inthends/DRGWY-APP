@@ -94,7 +94,7 @@ import ApproveDetailPage from '../work/task/approve-detail';
 import TaskQDListPage from '../work/task/task-qd-list';
 import SelectRepairMajor from '../work/select-repairmajor';
 import RobDetailPage from '../work/task/rob-detail';
- 
+
 import TaskListPage from '../work/task/task-list';
 import TaskDoneListPage from '../work/task/task-done-list';
 
@@ -137,6 +137,9 @@ import wuyetui from '../flow/wuye-tui';
 import zulinplan from '../flow/zulin-plan';
 import caigou from '../flow/caigou';
 import baoxiao from '../flow/baoxiao';
+
+import assistance from '../flow/assistance';
+
 import matter from '../flow/matter';
 import task from '../flow/task';
 import admincontract from '../flow/admin-contract';
@@ -249,11 +252,11 @@ const WorkNavigator = createStackNavigator({
   task: TaskListPage,
   taskDone: TaskDoneListPage,
   taskqd: TaskQDListPage,
- 
+
   //服务单
   servicedesk: ServicedeskListPage,
   servicedeskDone: ServicedeskDoneListPage,
- 
+
   newsList: NewsList,
   selectRepairMajor: SelectRepairMajor,
   chaobiao: ChaoBiaoPage,
@@ -279,14 +282,14 @@ const WorkNavigator = createStackNavigator({
   checkAdd: EcheckAddPage,
   addTaskWork: AddWorkPage,
   addRepair: AddRepairPage,
- 
+
   e_fuwu: EstateFuwuPage,
   e_weixiu: EstateWeixiuPage,
   e_tousu: EstateTousuPage,
   fuwuD: EfuwuDetailPage,//服务单页面点击关联单据，只能查看
   weixiuD: EweixiuDetailPage, //服务单页面点击关联单据，跳转到维修单，只能查看
   tousuD: EtousuDetailPage, //投诉单详情，只能查看
- 
+
   //订单中心
   orderlist: OrderlistPage,
   orderDetail: OrderDetailPage,
@@ -324,6 +327,7 @@ const ShenPiNavigator = createStackNavigator({
   zulinplan,
   caigou,
   baoxiao,
+  assistance,
   matter,
   task,
   admincontract,
@@ -334,6 +338,7 @@ const ShenPiNavigator = createStackNavigator({
   question,
   goodsout,
   merchants,
+  weixiuView: WeixiuDetailPage, //审批协办单，详情页面关联报修单，只能查看
   webPage
 });
 

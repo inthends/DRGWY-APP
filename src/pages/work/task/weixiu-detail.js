@@ -215,13 +215,11 @@ export default class WeixiuDetailPage extends BasePage {
                     {/* 维修单显示操作记录，没有沟通记录 */}
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
 
-                </ScrollView>
-
+                </ScrollView> 
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                         imageUrls={this.state.images} />
-                </Modal>
-
+                </Modal> 
             </CommonView>
         );
     }

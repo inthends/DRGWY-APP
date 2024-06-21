@@ -387,6 +387,11 @@ class ApprovePage extends BasePage {
                     break;
                   }
 
+                  case '1010': {
+                    url = 'assistance';//协办单
+                    break;
+                  }
+
                 }
 
                 //传递参数

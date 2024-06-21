@@ -1,12 +1,12 @@
 import { Modal  } from '@ant-design/react-native';
 import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-// import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
 import ShowLine from './show-line';
 import ShowText from './show-text';
 
 const CompanyDetail = forwardRef(({ customer = {} }, ref) => {
+
   const [visible, setVisible] = useState(false);
 
   const showModal = () => {
