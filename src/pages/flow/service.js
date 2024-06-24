@@ -87,9 +87,4 @@ export default {
   addReview(params) {
     return api.postData('/api/MobileMethod/MAddReview', params);
   },
-
-  //获取报修单
-  // getRepairEntity(keyvalue) {
-  //   return api.getData('/api/MobileMethod/MGetRepairEntity4Flow', { keyvalue });
-  // },
 };

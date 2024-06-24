@@ -209,14 +209,13 @@ export default class DispatchDetailPage extends BasePage {
         });
     };
 
-
     render() {
         const { images, detail, communicates, repairmajor, selectPerson, assisPersons } = this.state;
         //转换name
         let personNames = assisPersons.map(item => item.name);
         let mystrNames = personNames.join('，');
         return (
-            <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}> 
+            <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView style={{ marginTop: this.state.KeyboardShown ? -200 : 0, height: '100%' }}>
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.billCode}</Text>
@@ -229,26 +228,27 @@ export default class DispatchDetailPage extends BasePage {
                                 style={{ width: 16, height: 16 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
-
                     <Text style={[styles.desc]}>{detail.repairContent}</Text>
-
                     <ListImages images={images} lookImage={this.lookImage} />
-
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
                     </Flex>
-
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>转单人：{detail.createUserName}，转单时间：{detail.createDate}</Text>
+                        <Text style={styles.left}>转单人：{detail.createUserName}</Text>
                     </Flex>
-
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>转单时间：{detail.createDate}</Text>
+                    </Flex>
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                             <Text style={styles.left}>关联单：</Text>
-                            <Text
-                                onPress={() => {
+                            <Text  onPress={() => {
                                     if (detail.sourceType === '服务总台') {
                                         this.props.navigation.navigate('service', { id: detail.relationId });
+                                    }
+                                    else if (detail.sourceType === '维修单') {
+                                        //检验不通过关联的旧的维修单
+                                        this.props.navigation.navigate('weixiuView', { id: detail.relationId });
                                     }
                                     else {
                                         //检查单

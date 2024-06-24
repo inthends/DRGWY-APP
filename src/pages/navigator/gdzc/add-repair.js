@@ -26,7 +26,7 @@ import { connect } from 'react-redux';
 import { saveXunJianAction } from '../../../utils/store/actions/actions';
 import Macro from '../../../utils/macro';
 
-//固定资产盘点，异常的时候弹出报修单页面
+//固定资产盘点，异常的时候弹出维修单页面
 class AddRepairPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {

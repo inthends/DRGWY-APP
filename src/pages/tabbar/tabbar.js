@@ -338,7 +338,7 @@ const ShenPiNavigator = createStackNavigator({
   question,
   goodsout,
   merchants,
-  weixiuView: WeixiuDetailPage, //审批协办单，详情页面关联报修单，只能查看
+  weixiuView: WeixiuDetailPage, //审批协办单，详情页面关联维修单，只能查看
   webPage
 });
 
