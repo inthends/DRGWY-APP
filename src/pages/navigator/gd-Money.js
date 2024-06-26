@@ -139,8 +139,8 @@ class gdMoneyPage extends BasePage {
         this.props.navigation.push('scanForWork', {
             data: {
                 callBack: this.callBack,
-                needBack: '1',
-            },
+                needBack: '1'
+            }
         });
     };
 

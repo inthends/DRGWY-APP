@@ -24,6 +24,7 @@ import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import OperationRecords from '../../../components/operationrecords';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import Star from '../../../components/star';
 
 export default class ServiceDeskDetailPage extends BasePage {
 
@@ -185,7 +186,7 @@ export default class ServiceDeskDetailPage extends BasePage {
 
     roRepair = () => {
         const { id, isQD, selectPerson, repairmajor } = this.state;
-        
+
         if (repairmajor == null || repairmajor.id == null) {
             UDToast.showInfo('请选择维修专业');
             return;
@@ -283,31 +284,60 @@ export default class ServiceDeskDetailPage extends BasePage {
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.billType}</Text>
                     </Flex>
-
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.address}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
-
                     <Text style={[styles.desc]}>{detail.contents}</Text>
-
                     <ListImages images={images} lookImage={this.lookImage} />
-
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
+                        {/* <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text> */}
+                        <Text style={styles.left}>紧急：{detail.emergencyLevel}</Text>
+                        <Text style={styles.right}>重要：{detail.importance}</Text>
                     </Flex>
-
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>报单人：{detail.contactName} </Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactPhone)}>
                             <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
                                 style={{ width: 18, height: 18 }} /></Flex>
                         </TouchableWithoutFeedback>
-                    </Flex>
-
+                    </Flex> 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>报单时间：{detail.createDate}</Text>
                     </Flex>
+
+                    {detail.returnVisitDate ?
+                        <>
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                                <Text style={styles.left}>回访时间：{detail.returnVisitDate}</Text>
+                            </Flex>
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                                <Text style={styles.left}>回访人：{detail.returnVisiterName}</Text> 
+                                <Text style={styles.right}>回访方式：{detail.returnVisitMode}</Text>
+                            </Flex> 
+                            <Star star={detail.custEvaluate} />
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                                <Text style={styles.left}>回访结果：{detail.returnVisitResult}</Text>
+                            </Flex>
+                        </>
+                        : null
+                    }
+
+                    {detail.testDate ?
+                        <>
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                                <Text style={styles.left}>检验时间：{detail.testDate}</Text>
+                            </Flex>
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                                <Text style={styles.left}>检验人：{detail.testerName}</Text>
+                                <Text style={styles.right}>检验结果：{detail.testResult == 1 ? '合格' : '不合格'}</Text>
+                            </Flex>
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                                <Text style={styles.left}>检验说明：{detail.testRemark}</Text>
+                            </Flex>
+                        </>
+                        : null
+                    }
 
                     {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'reply')) ?
                         <>

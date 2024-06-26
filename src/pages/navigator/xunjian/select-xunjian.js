@@ -10,12 +10,12 @@ import { connect } from 'react-redux';
 import common from '../../../utils/common';
 import XunJianService from './xunjian-service';
 
-
 class SelectXunJianPerson extends BasePage {
+    
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
-            title: '选择人员',
+            title: '选择巡检人员',
             headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -97,6 +97,7 @@ const mapStateToProps = ({ buildingReducer }) => {
         selectBuilding: buildingReducer.selectBuilding,
     };
 };
+
 export default connect(mapStateToProps)(SelectXunJianPerson);
 
 

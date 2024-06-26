@@ -152,12 +152,13 @@ export default class ApproveDetailPage extends BasePage {
                     </Flex>
                     <Text style={styles.desc}>{detail.repairContent}</Text>
 
-                    <ListImages images={images}
-                        lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, images)} />
+                    <ListImages images={images} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, images)} />
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
+                        <Text style={styles.left}>紧急：{detail.emergencyLevel}</Text>
+                        <Text style={styles.right}>重要：{detail.importance}</Text>
                     </Flex>
+
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName}，{detail.createDate}</Text>
                     </Flex>
@@ -183,11 +184,15 @@ export default class ApproveDetailPage extends BasePage {
                     </TouchableWithoutFeedback>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>派单人：{detail.senderName}，{detail.sendDate}</Text>
+                        <Text style={styles.left}>派单人：{detail.senderName}</Text>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>说明：{detail.dispatchMemo}</Text>
+                        <Text style={styles.left}>派单时间：{detail.sendDate}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>派单说明：{detail.dispatchMemo}</Text>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
@@ -214,32 +219,21 @@ export default class ApproveDetailPage extends BasePage {
                         <Text style={styles.left}>完成情况：{detail.achieved}</Text>
                     </Flex>
 
-                    <ListImages images={wcimages}  lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, wcimages)} /> 
+                    <ListImages images={wcimages} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, wcimages)} />
 
                     {detail.testDate ?//进行了检验
                         <>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                                <Text style={styles.left}>检验人：{detail.testerName}，{detail.testDate}</Text>
+                                <Text style={styles.left}>检验时间：{detail.testDate}</Text>
                             </Flex>
-
-                            {/* <Flex justify={'between'} style={{ margin: 15 }}>
-                                <Flex>
-                                    <LoadImage img={detail.testResult === 1 ? selectImg : noselectImg}
-                                        style={{ width: 15, height: 15 }} />
-                                    <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>合格</Text>
-                                </Flex>
-                                <Flex>
-                                    <LoadImage img={detail.testResult === 0 ? selectImg : noselectImg}
-                                        style={{ width: 15, height: 15 }} />
-                                    <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>不合格</Text>
-                                </Flex>
-                            </Flex> */}
-
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                                <Text style={styles.left}>检验结果：{detail.testResult === 1 ? '合格' : '不合格'}</Text>
+                                <Text style={styles.left}>检验人：{detail.testerName}</Text>
+                                <Text style={styles.right}>检验结果：{detail.testResult == 1 ? '合格' : '不合格'}</Text>
                             </Flex>
-
-                            <Text style={styles.desc}>{detail.testRemark}</Text>
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                                <Text style={styles.left}>检验说明：{detail.testRemark}</Text>
+                            </Flex>
+                            {/* <Text style={styles.desc}>{detail.testRemark}</Text> */}
                         </> : null}
 
                     <Flex justify={'center'}>

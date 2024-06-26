@@ -17,7 +17,7 @@ export default class Communicates extends Component {
                     marginBottom: 15,
                     paddingTop: 15,
                 }} justify='between'>
-                    <Text style={styles.left}>沟通记录</Text>
+                    <Text style={styles.title}>沟通记录</Text>
                 </Flex>
                 {this.props.communicates.map((i, index) => (
                     <Fragment key={index}>
@@ -81,6 +81,10 @@ const styles = StyleSheet.create({
         marginRight: 15,
         paddingTop: 5,
         paddingBottom: 5
+    },
+    title: { 
+        fontSize: 14,
+        color: '#666'
     },
     left: {
         paddingLeft: 10,

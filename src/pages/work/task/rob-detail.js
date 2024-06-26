@@ -153,8 +153,9 @@ export default class RobDetailPage extends BasePage {
                     <Text style={styles.desc}>{detail.repairContent}</Text>
                     <ListImages images={images} lookImage={this.lookImage} />
 
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'> 
+                        <Text style={styles.left}>紧急：{detail.emergencyLevel}</Text>
+                        <Text style={styles.right}>重要：{detail.importance}</Text>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
@@ -183,11 +184,15 @@ export default class RobDetailPage extends BasePage {
                     </TouchableWithoutFeedback>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>派单人：{detail.senderName}，{detail.sendDate}</Text>
+                        <Text style={styles.left}>派单人：{detail.senderName}</Text>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>说明：{detail.dispatchMemo}</Text>
+                        <Text style={styles.left}>派单时间：{detail.sendDate}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>派单说明：{detail.dispatchMemo}</Text>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>

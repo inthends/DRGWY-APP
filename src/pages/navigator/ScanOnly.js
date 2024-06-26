@@ -15,8 +15,8 @@ import { Icon } from '@ant-design/react-native';
 import { RNCamera } from 'react-native-camera';
 import Macro from '../../utils/macro';
 import BasePage from '../base/base';
-
-//废弃
+ 
+//巡检、抄表、资产盘点扫码
 export default class ScanOnly extends BasePage {
 
     static navigationOptions = ({ navigation }) => {
@@ -34,7 +34,7 @@ export default class ScanOnly extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            moveAnim: new Animated.Value(0),
+            moveAnim: new Animated.Value(0)
         };
     }
 
@@ -52,8 +52,8 @@ export default class ScanOnly extends BasePage {
             {
                 toValue: -200,
                 duration: 1500,
-                easing: Easing.linear,
-            },
+                easing: Easing.linear
+            }
         ).start(() => this.startAnimation());
     };
 

@@ -200,10 +200,7 @@ const navigatorNavigator = createStackNavigator({
     })
   },
 
-  gdMoney: gdMoneyPage,
-  //固定资产
-  gdzcPandian: GdzcPandianPage,
-  gdzcDetail: GdzcDetailPage,
+
   //报表
   collection: CollectionRatePage,
   zijinliu: ZiJinLiuPage,
@@ -215,9 +212,14 @@ const navigatorNavigator = createStackNavigator({
   // louDong: LouDong,
   // louCeng: LouCeng,
   // louPark: LouPark,
-  //louDetail: LouDetail,
-  shebeiList: SheBeiList,
-  shebeiDetail: ShebeiDetail,
+  // louDetail: LouDetail, 
+ 
+  fuwulist: EstateFuwuPage,
+  weixiulist: EstateWeixiuPage,
+  //e_tousu: EstateTousuPage,
+  fuwuD: EfuwuDetailPage,//服务单页面点击关联单据，只能查看
+  weixiuD: EweixiuDetailPage, //服务单页面点击关联单据，跳转到维修单，只能查看
+  tousuD: EtousuDetailPage, //投诉单详情，只能查看
 });
 
 navigatorNavigator.navigationOptions = ({ navigation }) => ({
@@ -267,7 +269,15 @@ const WorkNavigator = createStackNavigator({
   xunjianBeforeStart: XunjianBeforeStart,
   selectXunjian: SelectXunJianPerson,
   startxunjian: StartXunJianPage,
-  scanForWork: ScanOnly, //扫码支付 
+  scanForWork: ScanOnly,//巡检、抄表、资产盘点扫码
+  gdMoney: gdMoneyPage,
+  //固定资产
+  gdzcPandian: GdzcPandianPage,
+  gdzcDetail: GdzcDetailPage,
+  //设备
+  shebeiList: SheBeiList,
+  shebeiDetail: ShebeiDetail,
+
   scan: ScanScreen, //威富通扫码
   jlscan: JLScanScreen, //嘉联扫码
   bcmscan: BCMScanScreen, //交通银行扫码
@@ -283,12 +293,9 @@ const WorkNavigator = createStackNavigator({
   addTaskWork: AddWorkPage,
   addRepair: AddRepairPage,
 
-  e_fuwu: EstateFuwuPage,
-  e_weixiu: EstateWeixiuPage,
-  e_tousu: EstateTousuPage,
+
   fuwuD: EfuwuDetailPage,//服务单页面点击关联单据，只能查看
   weixiuD: EweixiuDetailPage, //服务单页面点击关联单据，跳转到维修单，只能查看
-  tousuD: EtousuDetailPage, //投诉单详情，只能查看
 
   //订单中心
   orderlist: OrderlistPage,

@@ -2,6 +2,18 @@ import api from '../../utils/api';
 //import common from '../../utils/common';
 
 export default {
+
+  //服务单
+  serverStatistics(time, showLoading) {
+    return api.postData('/api/MobileMethod/MGetServerStatistics', { time }, showLoading);
+  },
+  
+  //工单
+  workStatistics(time, showLoading) {
+    return api.postData('/api/MobileMethod/MGetWorkStatistics', { time }, showLoading);
+  },
+
+
   getFeeStatistics(pageIndex, organizeId, pageSize = 10) {
     return api.postData('/api/MobileMethod/MGetFeeStatistics', {
       pageIndex,
@@ -78,37 +90,38 @@ export default {
     });
   },
 
-  // //服务单
-  // serviceList(
-  //   pageIndex,
-  //   billStatus,
-  //   organizeId,
-  //   billType,
-  //   time
-  // ) {
-
-  //   return api.postData('/api/MobileMethod/MGetServiceDeskPageList', {
-  //     pageIndex,
-  //     pageSize: 10,
-  //     billStatus,
-  //     status: billStatus,
-  //     organizeId,
-  //     billType,
-  //     time
-  //   });
-  // },
+  //服务单
+  serviceList(
+    pageIndex,
+    type,
+    status,
+    organizeId,
+    billType,
+    time
+  ) { 
+    return api.postData('/api/MobileMethod/MGetServiceDeskPageListStatistics', {
+      pageIndex,
+      pageSize: 10,
+      type,
+      status, 
+      organizeId,
+      billType,
+      time
+    });
+  },
 
   weixiuList(
     pageIndex,
+    type,
     status,
     organizeId,
     time,
     repairArea,
-  ) {
-
-    return api.postData('/api/MobileMethod/MGetRepairPageListForNavigator', {
+  ) { 
+    return api.postData('/api/MobileMethod/MGetRepairPageListStatistics', {
       pageIndex,
       pageSize: 10,
+      type,
       status,
       organizeId,
       time,
@@ -116,22 +129,23 @@ export default {
     });
   },
 
-  tousuList(
-    pageIndex,
-    billStatus,
-    organizeId,
-    billType,
-    time
-  ) {
-    return api.postData('/api/MobileMethod/MGetComplaintPageList', {
-      pageIndex,
-      pageSize: 10,
-      status: billStatus,
-      organizeId,
-      billType,
-      time
-    });
-  },
+  // tousuList(
+  //   pageIndex,
+  //   billStatus,
+  //   organizeId,
+  //   billType,
+  //   time
+  // ) {
+  //   return api.postData('/api/MobileMethod/MGetComplaintPageList', {
+  //     pageIndex,
+  //     pageSize: 10,
+  //     status: billStatus,
+  //     organizeId,
+  //     billType,
+  //     time
+  //   });
+  // },
+ 
   // serviceDetail(type,keyvalue) {
   //     let url = '/api/MobileMethod/MGetServicedeskEntity';
   //     if (billType === '报修') {
@@ -265,7 +279,7 @@ export default {
       false
     );
   },
- 
+
   //兴业银行生成收款码
   cibCodePay(tbout_trade_no, isDigital) {
     return api.postData('/api/MobileMethod/CIBPay', { tbout_trade_no, isDigital });

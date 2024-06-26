@@ -40,7 +40,7 @@ export default class VisitDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let id = common.getValueFromProps(this.props,'id');
+        let id = common.getValueFromProps(this.props, 'id');
         //let type = common.getValueFromProps(this.props, 'type');
         this.state = {
             id,
@@ -115,7 +115,7 @@ export default class VisitDetailPage extends BasePage {
     //         });
     //     });
     // };
-    
+
 
     //获取服务单信息
     getData = () => {
@@ -204,8 +204,9 @@ export default class VisitDetailPage extends BasePage {
 
                     <ListImages images={images} lookImage={this.lookImage} />
 
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'> 
+                        <Text style={styles.left}>紧急：{detail.emergencyLevel}</Text>
+                        <Text style={styles.right}>重要：{detail.importance}</Text>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
@@ -216,21 +217,10 @@ export default class VisitDetailPage extends BasePage {
                         </TouchableWithoutFeedback>
                     </Flex>
 
-                    {/* <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>{detail.address} {detail.contactName}</Text>
-                        <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
-                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 16, height: 16 }} /></Flex>
-                        </TouchableWithoutFeedback>
-                    </Flex> 
-                    <Text style={styles.desc}>{detail.repairContent}</Text>  
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>转单人：{detail.createUserName}</Text>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>报单时间：{detail.createDate}</Text>
                     </Flex>
-                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>转单时间：{detail.createDate}</Text>
-                    </Flex>
-                    */}
-
+ 
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                             <Text style={styles.left}>关联单：</Text>
@@ -270,7 +260,7 @@ export default class VisitDetailPage extends BasePage {
                     </Flex>
 
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
-                    
+
                 </ScrollView>
 
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>

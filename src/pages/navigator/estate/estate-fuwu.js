@@ -20,11 +20,14 @@ import NavigatorService from '../navigator-service';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 
+//统计页面服务单列表，仅查看
 class EstateFuwuPage extends BasePage {
+
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
-            title: '服务单',
+            //title: '服务单',
+            title: navigation.getParam('data') ? navigation.getParam('data').title : '',
             headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -43,24 +46,22 @@ class EstateFuwuPage extends BasePage {
         super(props);
         this.selectBuilding = {
             key: null,
-        };
-
+        }; 
+        //列表类型
+        const type = common.getValueFromProps(this.props).type;
         this.state = {
+            type,
             pageIndex: 1,
             dataInfo: {
                 data: [],
             },
             refreshing: false,
-            //ym: common.getYM('2020-01'),
             billType: '全部',
             billStatus: -1,
-            //canLoadMore: true,
-            //time: common.getCurrentYearAndMonth(),
             time: '全部',
             selectBuilding: this.props.selectBuilding
         };
     }
-
 
     componentDidMount() {
         this.viewDidAppear = this.props.navigation.addListener(
@@ -86,16 +87,20 @@ class EstateFuwuPage extends BasePage {
     }
 
     getList = () => {
-        const { billStatus, selectBuilding, billType, time } = this.state;
-        //let treeType;
+        const { type, billStatus, selectBuilding, billType, time } = this.state;
         let organizeId;
         if (selectBuilding) {
             treeType = selectBuilding.type;
             organizeId = selectBuilding.key;
         }
-        // let startTime = common.getMonthFirstDay(time);
-        // let endTime = common.getMonthLastDay(time);
-        NavigatorService.serviceList(this.state.pageIndex, billStatus, organizeId, billType, time)
+
+        NavigatorService.serviceList(
+            this.state.pageIndex,
+            type,
+            billStatus,
+            organizeId,
+            billType,
+            time)
             .then(dataInfo => {
                 if (dataInfo.pageIndex > 1) {
                     dataInfo = {
@@ -107,7 +112,6 @@ class EstateFuwuPage extends BasePage {
                     dataInfo: dataInfo,
                     pageIndex: dataInfo.pageIndex,
                     refreshing: false
-                    //canLoadMore: true,
                 }, () => {
                 });
             }).catch(err => this.setState({ refreshing: false }));
@@ -123,13 +127,12 @@ class EstateFuwuPage extends BasePage {
     };
 
     loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo; 
+        const { data, total, pageIndex } = this.state.dataInfo;
         if (this.canLoadMore && data.length < total) {
             this.canLoadMore = false;
             this.setState({
                 refreshing: true,
                 pageIndex: pageIndex + 1
-                // canLoadMore: false,
             }, () => {
                 this.getList();
             });
@@ -207,7 +210,7 @@ class EstateFuwuPage extends BasePage {
                 billStatus = 6;
                 break;
             }
-            case '已归档': {
+            case '已闭单': {
                 billStatus = 7;
                 break;
             }
@@ -244,20 +247,18 @@ class EstateFuwuPage extends BasePage {
     };
 
     render() {
-        const { dataInfo } = this.state;
+        const { type, dataInfo } = this.state;
         return (
             <View style={{ flex: 1 }}>
                 <CommonView style={{ flex: 1 }}>
-                    <ScrollTitle onChange={this.billType} titles={['全部', '报修', '投诉', '咨询', '建议']} />
-                    {/*<Tabs tabs={tabs2} initialPage={1} tabBarPosition="top">*/}
-                    {/*    {renderContent}*/}
-                    {/*</Tabs>*/}
-                    <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
-                        <MyPopover onChange={this.statusChange}
-                            titles={['全部', '待处理', '待完成', '待回访', '待检验', '已回访', '已检验', '已归档', '已作废']}
-                            visible={true} />
+                    <ScrollTitle onChange={this.billType} titles={['全部', '报修', '投诉', '咨询', '建议']} /> 
+                    <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}> 
+                        {type == 'all' ?
+                            <MyPopover onChange={this.statusChange}
+                                titles={['全部', '待处理', '待完成', '待回访', '待检验', '已回访', '已检验', '已闭单', '已作废']}
+                                visible={true} /> : null}
+
                         <MyPopover onChange={this.timeChange}
-                            //titles={ym} 
                             titles={['全部', '今日', '本周', '本月', '上月', '本年']}
                             visible={true} />
                     </Flex>
@@ -266,15 +267,13 @@ class EstateFuwuPage extends BasePage {
                         // ListHeaderComponent={}
                         renderItem={this._renderItem}
                         style={styles.list}
-                        keyExtractor={(item, index) => item.id}    
- 
+                        keyExtractor={(item, index) => item.id}
                         //必须
                         onEndReachedThreshold={0.1}
                         refreshing={this.state.refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
                         onEndReached={this.loadMore}//底部往下拉翻页
                         onMomentumScrollBegin={() => this.canLoadMore = true}
-
                         ListEmptyComponent={<NoDataView />}
                     />
                     <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>

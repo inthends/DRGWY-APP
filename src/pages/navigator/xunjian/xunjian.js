@@ -67,6 +67,7 @@ class XunJianPage extends BasePage {
     };
 
     start = () => {
+        // test
         // let person = this.state.person || {};
         // this.props.navigation.navigate('xunjianBeforeStart', {
         //     'data': {
@@ -75,6 +76,7 @@ class XunJianPage extends BasePage {
         //     },
         // });
         // return;
+
         this.props.navigation.push('scanForWork', {
             data: {
                 callBack: this.callBack,
@@ -82,7 +84,7 @@ class XunJianPage extends BasePage {
             }
         });
 
-        //2023-10-06 由于不能放大，修改
+        //2023-10-06 由于不能放大，废弃
         // ImagePicker.launchCamera(
         //     {
         //         mediaType: 'photo',
@@ -140,6 +142,7 @@ class XunJianPage extends BasePage {
             });
         });
 
+        //获取巡检路线和任务
         XunJianService.xunjianIndexList(person.id).then(res => {
             Promise.all(res.data.map(item => XunJianService.xunjianIndexDetail(item.lineId))).then(all => {
                 let items = res.data.map((item, index) => {
@@ -270,12 +273,14 @@ class XunJianPage extends BasePage {
                     </Accordion>
                 </ScrollView>
                 <TouchableWithoutFeedback onPress={this.start}>
-                    <Flex justify={'center'} style={[styles.ii, {
-                        width: '80%',
-                        marginLeft: '10%',
-                        marginRight: '10%',
-                        marginBottom: 40
-                    }, { backgroundColor: Macro.work_blue }]}>
+                    <Flex justify={'center'} style={[styles.ii,
+                    {
+                        width: '70%',
+                        marginLeft: '15%',
+                        marginRight: '15%',
+                        marginBottom: 40,
+                        backgroundColor: Macro.work_blue
+                    }]}>
                         <Text style={styles.word}>开始巡检</Text>
                     </Flex>
                 </TouchableWithoutFeedback>
@@ -293,7 +298,6 @@ const styles = StyleSheet.create({
         paddingBottom: 12,
         marginLeft: 20,
         marginRight: 20
-        // width: ,
     },
     line: {
         width: ScreenUtil.deviceWidth() - 30,
@@ -312,7 +316,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         paddingBottom: 20
     },
-
     card: {
         borderRadius: 5,
         // marginBottom: 15,
@@ -322,8 +325,6 @@ const styles = StyleSheet.create({
         // shadowRadius: 5,
         // shadowOpacity: 0.8,
     },
-
-
     location: {
         paddingTop: 15,
         paddingBottom: 10,
@@ -368,6 +369,5 @@ const mapStateToProps = ({ memberReducer, xunJianReducer }) => {
         xunJianData: xunJianReducer.xunJianData
     };
 };
-
 export default connect(mapStateToProps)(XunJianPage);
 

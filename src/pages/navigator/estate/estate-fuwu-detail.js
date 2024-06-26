@@ -19,9 +19,10 @@ import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import OperationRecords from '../../../components/operationrecords';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import Star from '../../../components/star';
 
 //仅查看
-export default class EfuwuDetailPage extends BasePage { 
+export default class EfuwuDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
             title: '服务单详情',
@@ -36,7 +37,7 @@ export default class EfuwuDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let id = common.getValueFromProps(this.props,'id');
+        let id = common.getValueFromProps(this.props, 'id');
         this.state = {
             id,
             images: [],
@@ -76,7 +77,7 @@ export default class EfuwuDetailPage extends BasePage {
                 operations: res
             });
         });
-        
+
         WorkService.serviceExtra(id).then(images => {
             this.setState({
                 images
@@ -143,8 +144,9 @@ export default class EfuwuDetailPage extends BasePage {
 
                     <ListImages images={images} lookImage={this.lookImage} />
 
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'> 
+                        <Text style={styles.left}>紧急：{detail.emergencyLevel}</Text>
+                        <Text style={styles.right}>重要：{detail.importance}</Text>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
@@ -158,6 +160,39 @@ export default class EfuwuDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>报单时间：{detail.createDate}</Text>
                     </Flex>
+
+                    {detail.returnVisitDate ?
+                        <>
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                                <Text style={styles.left}>回访时间：{detail.returnVisitDate}</Text>
+                            </Flex>
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                                <Text style={styles.left}>回访人：{detail.returnVisiterName}</Text> 
+                                <Text style={styles.right}>回访方式：{detail.returnVisitMode}</Text>
+                            </Flex> 
+                            <Star star={detail.custEvaluate} />
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                                <Text style={styles.left}>回访结果：{detail.returnVisitResult}</Text>
+                            </Flex>
+                        </>
+                        : null
+                    }
+
+                    {detail.testDate ?
+                        <>
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                                <Text style={styles.left}>检验时间：{detail.testDate}</Text>
+                            </Flex>
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                                <Text style={styles.left}>检验人：{detail.testerName}</Text>
+                                <Text style={styles.right}>检验结果：{detail.testResult == 1 ? '合格' : '不合格'}</Text>
+                            </Flex>
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                                <Text style={styles.left}>检验说明：{detail.testRemark}</Text>
+                            </Flex>
+                        </>
+                        : null
+                    }
 
                     {detail.businessId ? (
                         <TouchableWithoutFeedback>
@@ -173,13 +208,10 @@ export default class EfuwuDetailPage extends BasePage {
                                 }} style={[styles.right, { color: Macro.work_blue }]}>{detail.businessCode}</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
-                    ) : null}
-
+                    ) : null} 
                     <Communicates communicateClick={this.communicateClick} communicates={communicates} />
-                    <OperationRecords communicateClick={this.operationClick} communicates={operations} />
-
+                    <OperationRecords communicateClick={this.operationClick} communicates={operations} /> 
                 </ScrollView>
-
 
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex}

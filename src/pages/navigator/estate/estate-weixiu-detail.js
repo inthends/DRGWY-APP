@@ -126,10 +126,12 @@ export default class EweixiuDetailPage extends BasePage {
                         </TouchableWithoutFeedback>
                     </Flex>
 
-                    <Text style={[styles.desc, ScreenUtil.borderBottom()]}>{detail.repairContent}</Text> 
-                    <ListImages images={images} lookImage={this.lookImage} /> 
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text>
+                    <Text style={[styles.desc, ScreenUtil.borderBottom()]}>{detail.repairContent}</Text>
+                    <ListImages images={images} lookImage={this.lookImage} />
+                    
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'> 
+                        <Text style={styles.left}>紧急：{detail.emergencyLevel}</Text>
+                        <Text style={styles.right}>重要：{detail.importance}</Text>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
@@ -157,39 +159,39 @@ export default class EweixiuDetailPage extends BasePage {
                     </TouchableWithoutFeedback>}
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>派单人：{detail.senderName}，{detail.sendDate}</Text>
+                        <Text style={styles.left}>派单人：{detail.senderName}</Text>
                     </Flex>
-
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>说明：{detail.dispatchMemo}</Text>
+                        <Text style={styles.left}>派单时间：{detail.sendDate}</Text>
                     </Flex>
-
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>派单说明：{detail.dispatchMemo}</Text>
+                    </Flex>
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>维修专业：{detail.repairMajor}，积分：{detail.score}</Text>
                     </Flex>
-
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>协助人：{detail.assistName}</Text>
                     </Flex>
-
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>增援人：{detail.reinforceName}</Text>
                     </Flex>
- 
- 
+
                     {detail.testDate ?//进行了检验
                         <>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                                <Text style={styles.left}>检验人：{detail.testerName}，{detail.testDate}</Text>
-                            </Flex> 
-
-                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                                <Text style={styles.left}>检验结果：{detail.testResult === 1 ? '合格' : '不合格'}</Text>
+                                <Text style={styles.left}>检验时间：{detail.testDate}</Text>
                             </Flex>
-
-                            <Text style={styles.desc}>{detail.testRemark}</Text>
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                                <Text style={styles.left}>检验人：{detail.testerName}</Text>
+                                <Text style={styles.right}>检验结果：{detail.testResult == 1 ? '合格' : '不合格'}</Text>
+                            </Flex> 
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                                <Text style={styles.left}>检验说明：{detail.testRemark}</Text>
+                            </Flex> 
+                            {/* <Text style={styles.desc}>{detail.testRemark}</Text> */}
                         </> : null}
-  
+
                     {/* 维修单显示操作记录，没有沟通记录 */}
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
 
@@ -204,7 +206,7 @@ export default class EweixiuDetailPage extends BasePage {
     }
 }
 
-const styles = StyleSheet.create({  
+const styles = StyleSheet.create({
     every: {
         marginLeft: 15,
         marginRight: 15,

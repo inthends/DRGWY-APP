@@ -220,7 +220,7 @@ export default {
     //     if (isNaN(index) || index < -1 || index > 4) {
     //         return '';
     //     }
-    //     return ['', '待处理', '待完成', '待回访', '待检验', '已回访', '已检验', '已归档'][index];
+    //     return ['', '待处理', '待完成', '待回访', '待检验', '已回访', '已检验', '已闭单'][index];
     // },
     getMonthFirstDay(ym) { 
         let a = ym.split('-');

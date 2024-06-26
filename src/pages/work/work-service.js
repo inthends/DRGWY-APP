@@ -256,13 +256,13 @@ export default {
 
     //服务单列表
     servicedeskList(type, overdue, pageIndex) { 
-        let url = '/api/MobileMethod/MGetServicedeskPageList';
+        let url = '/api/MobileMethod/MGetServiceDeskPageList';
         return api.postData(url, { type, overdue , pageIndex, pageSize: 10 });
     },
 
     //工作台已完成服务单列表
     servicedeskDoneList(type, time, pageIndex) {
-        let url = '/api/MobileMethod/MGetServicedeskDonePageList';
+        let url = '/api/MobileMethod/MGetServiceDeskDonePageList';
         return api.postData(url, { type, time, pageIndex, pageSize: 10 });
     },
 

@@ -1,21 +1,17 @@
-import React//, {Fragment}
-    from 'react';
+import React from 'react';
 import {
     View,
     Text,
     StyleSheet,
-    //StatusBar,
     FlatList,
     TouchableOpacity,
-    TouchableWithoutFeedback,
-    //Linking,
+    TouchableWithoutFeedback
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
 import { connect } from 'react-redux';
-//import ListHeader from '../../../components/list-header';
 import common from '../../../utils/common';
 import LoadImage from '../../../components/load-image';
 import ScrollTitle from '../../../components/scroll-title';
@@ -25,10 +21,13 @@ import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 
 class EstateWeixiuPage extends BasePage {
+
     static navigationOptions = ({ navigation }) => {
+
         return {
             tabBarVisible: false,
-            title: '维修单',
+            //title: '维修单',
+            title: navigation.getParam('data') ? navigation.getParam('data').title : '',
             headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -47,17 +46,17 @@ class EstateWeixiuPage extends BasePage {
         super(props);
         this.selectBuilding = {
             key: null
-        }; 
+        };
+        //列表类型
+        const type = common.getValueFromProps(this.props).type;
         this.state = {
+            type,
             pageIndex: 1,
             dataInfo: {
                 data: []
             },
             refreshing: false,
-            //ym: common.getYM('2020-01'),
             billStatus: '',
-            //canLoadMore: true,
-            //time: common.getCurrentYearAndMonth(),
             time: '全部',
             selectBuilding: this.props.selectBuilding,
             repairArea: ''
@@ -88,17 +87,16 @@ class EstateWeixiuPage extends BasePage {
     }
 
     getList = () => {
-        const { billStatus, selectBuilding, time, repairArea } = this.state;
-        //let treeType;
+        const { type, billStatus, selectBuilding, time, repairArea } = this.state;
         let organizeId;
         if (selectBuilding) {
             treeType = selectBuilding.type;
             organizeId = selectBuilding.key;
         }
-        // let startTime = common.getMonthFirstDay(time);
-        // let endTime = common.getMonthLastDay(time);
+
         NavigatorService.weixiuList(
             this.state.pageIndex,
+            type,
             billStatus,
             organizeId,
             time,
@@ -113,7 +111,6 @@ class EstateWeixiuPage extends BasePage {
                     dataInfo: dataInfo,
                     pageIndex: dataInfo.pageIndex,
                     refreshing: false
-                    //canLoadMore: true,
                 }, () => {
                 });
             }).catch(err => this.setState({ refreshing: false }));
@@ -130,15 +127,11 @@ class EstateWeixiuPage extends BasePage {
 
     loadMore = () => {
         const { data, total, pageIndex } = this.state.dataInfo;
-        // if (!this.state.canLoadMore) {
-        //     return;
-        // }
         if (this.canLoadMore && data.length < total) {
             this.canLoadMore = false;
             this.setState({
                 refreshing: true,
                 pageIndex: pageIndex + 1
-                //canLoadMore: false,
             }, () => {
                 this.getList();
             });
@@ -222,7 +215,6 @@ class EstateWeixiuPage extends BasePage {
                 break;
             }
             default: {
-                //已作废
                 billStatus = '';
                 break;
             }
@@ -261,20 +253,19 @@ class EstateWeixiuPage extends BasePage {
 
 
     render() {
-        const { dataInfo } = this.state;
+        const { type, dataInfo } = this.state;
         return (
             <View style={{ flex: 1 }}>
                 <CommonView style={{ flex: 1 }}>
                     <ScrollTitle onChange={this.areaChange} titles={['全部', '客户区域', '公共区域']} />
-                    {/*<Tabs tabs={tabs2} initialPage={1} tabBarPosition="top">*/}
-                    {/*    {renderContent}*/}
-                    {/*</Tabs>*/}
                     <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
-                        <MyPopover onChange={this.statusChange} titles={['全部', '待派单', '待接单', '待开工',
-                            '待完成', '待回访', '待检验', '待审核', '已审核', '已暂停', '已作废']}
-                            visible={true} />
+
+                        {type == 'all' ?
+                            <MyPopover onChange={this.statusChange} titles={['全部', '待派单', '待接单', '待开工',
+                                '待完成', '待回访', '待检验', '待审核', '已审核', '已暂停', '已作废']}
+                                visible={true} /> : null}
+
                         <MyPopover onChange={this.timeChange}
-                            //titles={ym}
                             titles={['全部', '今日', '本周', '本月', '上月', '本年']}
                             visible={true} />
                     </Flex>
@@ -296,17 +287,14 @@ class EstateWeixiuPage extends BasePage {
                     <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
                 </CommonView>
             </View>
-
         );
     }
 }
 
 const styles = StyleSheet.create({
-
-
     list: {
         backgroundColor: Macro.color_white,
-        margin: 15,
+        margin: 15
     },
     title: {
         paddingTop: 15,
@@ -315,7 +303,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         paddingBottom: 10,
         marginLeft: 20,
-        marginRight: 20,
+        marginRight: 20
     },
     title2: {
         paddingTop: 15,
@@ -323,19 +311,19 @@ const styles = StyleSheet.create({
         color: '#404145',
         fontSize: 16,
         paddingBottom: 10,
-        marginRight: 20,
+        marginRight: 20
     },
     line: {
         width: ScreenUtil.deviceWidth() - 30 - 15 * 2,
         marginLeft: 15,
         backgroundColor: '#eee',
-        height: 1,
+        height: 1
     },
     top: {
         paddingTop: 20,
         color: '#000',
         fontSize: 16,
-        paddingBottom: 15,
+        paddingBottom: 15
     },
     card: {
         borderTopWidth: 1,
@@ -350,21 +338,21 @@ const styles = StyleSheet.create({
         shadowColor: '#00000033',
         shadowOffset: { h: 10, w: 10 },
         shadowRadius: 5,
-        shadowOpacity: 0.8,
+        shadowOpacity: 0.8
     },
     blue: {
         borderLeftColor: Macro.work_blue,
-        borderLeftWidth: 5,
+        borderLeftWidth: 5
     },
     orange: {
         borderLeftColor: Macro.work_orange,
-        borderLeftWidth: 5,
-    },
-
+        borderLeftWidth: 5
+    }
 });
 const mapStateToProps = ({ buildingReducer }) => {
     return {
         selectBuilding: buildingReducer.selectBuilding,
     };
 };
+
 export default connect(mapStateToProps)(EstateWeixiuPage);

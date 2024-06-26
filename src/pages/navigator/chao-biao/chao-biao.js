@@ -125,13 +125,12 @@ class ChaoBiaoPage extends BasePage {
     };
 
 
-    scan = () => {
-
+    scan = () => { 
         this.props.navigation.push('scanForWork', {
             data: {
                 callBack: this.callBack,
                 needBack: '1'
-            },
+            }
         });
         // this.callBack();
 
