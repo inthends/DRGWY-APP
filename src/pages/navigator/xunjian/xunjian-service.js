@@ -67,6 +67,6 @@ export default {
     //附件
     deletePollingFile(url) {
         return api.getData('/api/MobileMethod/MDeletePollingFile', { url });
-    },
+    }
 
 };

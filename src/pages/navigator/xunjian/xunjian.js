@@ -1,6 +1,6 @@
 import React from 'react';
 import BasePage from '../../base/base';
-import { Flex, Accordion, List, Icon, WingBlank } from '@ant-design/react-native';
+import { Flex, Accordion, List, Icon, WingBlank, Button } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import { StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, ScrollView } from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
@@ -54,7 +54,7 @@ class XunJianPage extends BasePage {
 
     callBack = (pointId) => {
         this.setState({
-            pointId,
+            pointId
         }, () => {
             let person = this.state.person || {};
             this.props.navigation.navigate('xunjianBeforeStart', {
@@ -67,23 +67,6 @@ class XunJianPage extends BasePage {
     };
 
     start = () => {
-        // test
-        // let person = this.state.person || {};
-        // this.props.navigation.navigate('xunjianBeforeStart', {
-        //     'data': {
-        //         person,
-        //         pointId:'7681da78-e5da-4bbe-8d1e-15c78237be97',
-        //     },
-        // });
-        // return;
-
-        this.props.navigation.push('scanForWork', {
-            data: {
-                callBack: this.callBack,
-                needBack: '1'
-            }
-        });
-
         //2023-10-06 由于不能放大，废弃
         // ImagePicker.launchCamera(
         //     {
@@ -103,6 +86,22 @@ class XunJianPage extends BasePage {
         //         });
         //     },
         // )
+
+        //test
+        let person = this.state.person || {};
+        this.props.navigation.navigate('xunjianBeforeStart', {
+            'data': {
+                person,
+                pointId: 'bfb92619-10b6-4466-b3d6-87c7c00927dd'
+            }
+        });
+
+        // this.props.navigation.push('scanForWork', {
+        //     data: {
+        //         callBack: this.callBack,
+        //         needBack: '1'
+        //     }
+        // });
     };
 
     componentDidMount() {
@@ -141,7 +140,6 @@ class XunJianPage extends BasePage {
                 ...res
             });
         });
-
         //获取巡检路线和任务
         XunJianService.xunjianIndexList(person.id).then(res => {
             Promise.all(res.data.map(item => XunJianService.xunjianIndexDetail(item.lineId))).then(all => {
@@ -166,6 +164,12 @@ class XunJianPage extends BasePage {
         this.setState({
             ...params
         });
+    }
+
+    onSelectPerson = ({ selectItem }) => {
+        this.setState({
+            person: selectItem
+        })
     }
 
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
@@ -234,7 +238,8 @@ class XunJianPage extends BasePage {
 
                 <Flex style={styles.line} />
                 {/*<Text style={styles.location}>当前位置：xxxx</Text>*/}
-                <TouchableWithoutFeedback onPress={() => this.props.navigation.push('selectXunjian', {
+
+                {/* <TouchableWithoutFeedback onPress={() => this.props.navigation.push('selectXunjian', {
                     data: {
                         onSelect: this.onSelect,
                         person
@@ -244,13 +249,32 @@ class XunJianPage extends BasePage {
                         <Text style={styles.personText}>{name}</Text>
                         <LoadImage style={{ width: 6, height: 12 }} defaultImg={require('../../../static/images/address/right.png')} />
                     </Flex>
+                </TouchableWithoutFeedback> */}
+
+                <TouchableWithoutFeedback
+                    onPress={() => this.props.navigation.navigate('selectRolePerson',
+                        {
+                            moduleId: 'PollingTask',
+                            enCode: '',
+                            onSelect: this.onSelectPerson
+                        })}>
+                    <Flex justify='between' style={[{
+                        paddingTop: 15,
+                        paddingBottom: 15,
+                        marginLeft: 10,
+                        marginRight: 10,
+                    }, ScreenUtil.borderBottom()]}>
+                        <Text style={[person ? { fontSize: 16, color: '#404145' } :
+                            { color: '#999' }]}>{name ? name : "请选择巡检人"}</Text>
+                        <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
+                    </Flex>
                 </TouchableWithoutFeedback>
 
-                <ScrollView style={{ height: ScreenUtil.contentHeight() - 220 }}>
+
+                <ScrollView style={{ height: ScreenUtil.contentHeight() - 190 }}>
                     <Accordion
                         onChange={this.onChange}
-                        activeSections={this.state.activeSections}
-                    >
+                        activeSections={this.state.activeSections}>
                         {items.map(item => (
                             <Accordion.Panel key={item.lineId} header={item.name}>
                                 <List>
@@ -272,18 +296,17 @@ class XunJianPage extends BasePage {
                         ))}
                     </Accordion>
                 </ScrollView>
-                <TouchableWithoutFeedback onPress={this.start}>
-                    <Flex justify={'center'} style={[styles.ii,
-                    {
-                        width: '70%',
-                        marginLeft: '15%',
-                        marginRight: '15%',
-                        marginBottom: 40,
-                        backgroundColor: Macro.work_blue
-                    }]}>
-                        <Text style={styles.word}>开始巡检</Text>
-                    </Flex>
-                </TouchableWithoutFeedback>
+                <Flex justify={'center'}>
+                    <Button onPress={this.start} type={'primary'}
+                        activeStyle={{ backgroundColor: Macro.work_blue }} style={{
+                            width: 250,
+                            backgroundColor: Macro.work_blue,
+                            marginTop: 20,
+                            marginBottom:20,
+                            height: 40
+                        }}>开始巡检</Button>
+                </Flex>
+
             </CommonView>
         );
     }
@@ -307,7 +330,7 @@ const styles = StyleSheet.create({
     },
     top: {
         paddingTop: 20,
-        color: '#74BAF1',
+        color: '#1890ff',
         fontSize: 16,
         paddingBottom: 3
     },
@@ -342,17 +365,17 @@ const styles = StyleSheet.create({
         width: ScreenUtil.deviceWidth() - 40,
         textAlign: 'center'
     },
-    ii: {
-        marginTop: 50,
-        paddingTop: 10,
-        paddingBottom: 10,
-        marginLeft: 10,
-        marginRight: 10,
-        width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
-        backgroundColor: '#999',
-        borderRadius: 6,
-        marginBottom: 20
-    },
+    // ii: {
+    //     marginTop:10,
+    //     paddingTop: 10,
+    //     paddingBottom: 10,
+    //     marginLeft: 10,
+    //     marginRight: 10,
+    //     width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
+    //     backgroundColor: '#999',
+    //     borderRadius: 6,
+    //     marginBottom: 20
+    // },
     word: {
         color: 'white',
         fontSize: 16

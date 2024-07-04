@@ -8,6 +8,7 @@ import CommonView from '../../../components/CommonView';
 import XunJianService from './xunjian-service';
 import common from '../../../utils/common';
 import { connect } from 'react-redux';
+import UDToast from '../../../utils/UDToast';
 
 class XunjianBeforeStart extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -43,6 +44,9 @@ class XunjianBeforeStart extends BasePage {
         if (this.props.hasNetwork) {
             //this.initUI();
             XunJianService.xunjianPointTasks(pointId).then(items => {
+                if (items.length == 0) {
+                    UDToast.showInfo('当前点位没有任务');
+                }
                 this.setState({ items });
             });
         }
@@ -54,12 +58,12 @@ class XunjianBeforeStart extends BasePage {
             const items = xunJianData.scanLists.filter(item =>
                 item.pointId === pointId && !xunJianAction.hasOwnProperty(item.id)
             );
-            this.setState({ items }); 
+            this.setState({ items });
             //alert('离线巡检数据'+ items.length);
         }
     };
 
-    componentDidMount() { 
+    componentDidMount() {
         //this.onRefresh(); 
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
@@ -138,12 +142,12 @@ const styles = StyleSheet.create({
     },
     top: {
         paddingTop: 10,
-        color: '#74BAF1',
+        color:  Macro.work_blue,//'#74BAF1',
         fontSize: 16,
         paddingBottom: 10,
         paddingLeft: 20,
         paddingRight: 20
-    }, 
+    },
     card: {
         borderRadius: 5,
         marginBottom: 15,

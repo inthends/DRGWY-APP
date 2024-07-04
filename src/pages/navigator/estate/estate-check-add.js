@@ -338,7 +338,7 @@ class EcheckAddPage extends BasePage {
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
-                    
+
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>检查人：{detail.checkUserName} {detail.postName}</Text>
                         <Text>{detail.billDate}</Text>
@@ -359,6 +359,7 @@ class EcheckAddPage extends BasePage {
                         <Text style={styles.left}>检查区域：</Text>
                         <TouchableWithoutFeedback
                             onPress={() => this.props.navigation.navigate('selectAddress', {
+                                title: '选择区域',
                                 parentName: 'checkAdd',
                                 roleId: this.state.checkRoleId
                             })}>
@@ -446,6 +447,7 @@ class EcheckAddPage extends BasePage {
                                             <TouchableWithoutFeedback
                                                 onPress={() => this.props.navigation.navigate('selectAddress',
                                                     {
+                                                        title: '选择区域',
                                                         parentName: 'checkAdd',
                                                         roleId: this.state.checkRoleId
                                                     })}>
@@ -462,7 +464,12 @@ class EcheckAddPage extends BasePage {
                                             </TouchableWithoutFeedback>
 
                                             <TouchableWithoutFeedback
-                                                onPress={() => this.props.navigation.navigate('selectRolePerson', { type: 'dispatch', onSelect: this.onSelectPerson })}>
+                                                onPress={() => this.props.navigation.navigate('selectRolePerson',
+                                                    {
+                                                        moduleId: 'Inspect',
+                                                        enCode: '',
+                                                        onSelect: this.onSelectPerson
+                                                    })}>
                                                 <Flex justify='between' style={[{
                                                     paddingTop: 15,
                                                     paddingBottom: 15,

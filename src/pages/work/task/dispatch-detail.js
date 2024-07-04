@@ -76,7 +76,6 @@ export default class DispatchDetailPage extends BasePage {
             (obj) => {
                 if (obj.state.params.repairmajor) {
                     const { repairmajor } = obj.state.params.repairmajor || {};
-                    console.log('repairmajor', repairmajor);
                     this.setState({ repairmajor });
                 }
             }
@@ -136,8 +135,8 @@ export default class DispatchDetailPage extends BasePage {
             //     });
             // });
 
-            //获取服务单附件作为维修前图片
-            WorkService.serviceExtra(detail.relationId).then(images => {
+            //根据不同单据类型获取附件作为维修前图片
+            WorkService.workPreFiles(detail.entity.sourceType, detail.relationId).then(images => {
                 this.setState({
                     images
                 });
@@ -230,12 +229,12 @@ export default class DispatchDetailPage extends BasePage {
                     </Flex>
                     <Text style={[styles.desc]}>{detail.repairContent}</Text>
                     <ListImages images={images} lookImage={this.lookImage} />
-                     
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'> 
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>紧急：{detail.emergencyLevel}</Text>
                         <Text style={styles.right}>重要：{detail.importance}</Text>
                     </Flex>
-                    
+
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName}</Text>
                     </Flex>
@@ -245,19 +244,19 @@ export default class DispatchDetailPage extends BasePage {
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                             <Text style={styles.left}>关联单：</Text>
-                            <Text  onPress={() => {
-                                    if (detail.sourceType === '服务总台') {
-                                        this.props.navigation.navigate('service', { id: detail.relationId });
-                                    }
-                                    else if (detail.sourceType === '维修单') {
-                                        //检验不通过关联的旧的维修单
-                                        this.props.navigation.navigate('weixiuView', { id: detail.relationId });
-                                    }
-                                    else {
-                                        //检查单
-                                        this.props.navigation.navigate('checkDetail', { id: detail.relationId });
-                                    }
-                                }}
+                            <Text onPress={() => {
+                                if (detail.sourceType === '服务总台') {
+                                    this.props.navigation.navigate('service', { id: detail.relationId });
+                                }
+                                else if (detail.sourceType === '维修单') {
+                                    //检验不通过关联的旧的维修单
+                                    this.props.navigation.navigate('weixiuView', { id: detail.relationId });
+                                }
+                                else {
+                                    //检查单
+                                    this.props.navigation.navigate('checkDetail', { id: detail.relationId });
+                                }
+                            }}
                                 style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
@@ -283,7 +282,12 @@ export default class DispatchDetailPage extends BasePage {
                     </Flex>
 
                     <TouchableWithoutFeedback
-                        onPress={() => this.props.navigation.navigate('selectRolePerson', { type: 'receive', onSelect: this.onMySelect })}>
+                        onPress={() => this.props.navigation.navigate('selectRolePerson',
+                            {
+                                moduleId: 'Repair',
+                                enCode: 'receive',
+                                onSelect: this.onMySelect
+                            })}>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                             <Flex>
                                 <Text style={styles.left}>接单人：</Text>

@@ -203,7 +203,7 @@ class AddWorkPage extends BasePage {
     }
 
     submit = () => {
-        const { id, data, index, address, value, taskId, isMustServicedeskFile, images } = this.state; 
+        const { id, data, index, address, value, taskId, isMustServicedeskFile, images } = this.state;
         if (address == null || address.allName == null) {
             const title = '请选择' + data[index] + '地址';
             UDToast.showInfo(title);
@@ -300,7 +300,7 @@ class AddWorkPage extends BasePage {
                                     onPress={() => {
                                         if (canSelectAddress) {
                                             //this.props.navigation.push('selectAddress', { onSelect: this.onSelectAddress });
-                                            this.props.navigation.push('selectAddress', { parentName: 'addWork' });
+                                            this.props.navigation.push('selectAddress', { title: '选择位置', parentName: 'addWork' });
                                         }
                                     }}>
 
@@ -328,7 +328,7 @@ class AddWorkPage extends BasePage {
                                     style={{
                                         color: '#404145',
                                         height: 150,
-                                        fontSize: 16, 
+                                        fontSize: 16,
                                         paddingTop: 15,
                                         width: ScreenUtil.deviceWidth() - 30
                                     }}

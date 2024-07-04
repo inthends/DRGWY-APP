@@ -4,7 +4,7 @@ import {
     TouchableWithoutFeedback, View, Alert
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Flex, Icon } from '@ant-design/react-native';
+import { Button, Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImageDelete from '../../../components/load-image-del';
@@ -98,7 +98,7 @@ class StartXunJianPage extends BasePage {
     delete = (url) => {
         Alert.alert(
             '请确认',
-            '是否删除？', 
+            '是否删除？',
             [
                 {
                     text: '取消',
@@ -107,7 +107,7 @@ class StartXunJianPage extends BasePage {
                 {
                     text: '确定',
                     onPress: () => {
-                        WorkService.deletePollingFile(url).then(res => {
+                        XunJianService.deletePollingFile(url).then(res => {
                             let index = this.state.images.indexOf(url);
                             let myimages = [...this.state.images];
                             myimages.splice(index, 1);
@@ -191,16 +191,16 @@ class StartXunJianPage extends BasePage {
         this.setState({ inspectData });
     }
 
-    render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
+    render() {//: React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
         const { images, data } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
-                <ScrollView>
+                <ScrollView style={{ height: ScreenUtil.contentHeight() - 160 }}>
                     <Flex direction={'column'} align={'start'} style={styles.content}>
-                        <Text style={styles.title}>{data.pointName}</Text>
+                        <Text style={styles.title}>{data.pName}</Text>
                         <XunJianComponent data={data} _inspecting={this._inspecting.bind(this)} />
                     </Flex>
-                    <Flex justify={'start'} align={'start'} style={{ width: ScreenUtil.deviceWidth() }}>
+                    {/* <Flex justify={'start'} align={'start'} style={{ width: ScreenUtil.deviceWidth() }}>
                         <Flex wrap={'wrap'}>
                             {images.map((url, index) => {
                                 return (
@@ -229,7 +229,7 @@ class StartXunJianPage extends BasePage {
                                 );
                             })}
                         </Flex>
-                    </Flex>
+                    </Flex>  
                     <Flex style={{
                         minHeight: 40,
                         marginBottom: 30,
@@ -242,8 +242,63 @@ class StartXunJianPage extends BasePage {
                                 <Text style={styles.word}>完成</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
-                    </Flex>
+                    </Flex> */}
                 </ScrollView>
+
+                <Flex justify={'start'} align={'start'} style={{ width: ScreenUtil.deviceWidth() }}>
+                    <Flex wrap={'wrap'}>
+                        {images.map((url, index) => {
+                            return (
+                                <TouchableWithoutFeedback key={index} onPress={() => {
+                                    if (index === images.length - 1 && url.length === 0) {
+                                        this.selectImages();
+                                    }
+                                }}>
+                                    <View style={{
+                                        paddingLeft: 15,
+                                        paddingRight: 5,
+                                        //paddingBottom: 10,
+                                        //paddingTop: 10
+                                    }}>
+                                        <LoadImageDelete style={{
+                                            width: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
+                                            height: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
+                                            borderRadius: 5
+                                        }}
+                                            defaultImg={require('../../../static/images/add_pic.png')}
+                                            img={url}
+                                            top={19}
+                                            delete={() => this.delete(url)} />
+                                    </View>
+                                </TouchableWithoutFeedback>
+                            );
+                        })}
+                    </Flex>
+                </Flex>
+
+                {/* <TouchableWithoutFeedback onPress={this.submit}>
+                    <Flex flex={1} justify='center' style={{
+                        width: '70%',
+                        marginLeft: '15%',
+                        marginRight: '15%',
+                        marginBottom: 40,
+                        backgroundColor: Macro.work_blue
+                    }}>
+                        <Text style={styles.word}>完成</Text>
+                    </Flex>
+                </TouchableWithoutFeedback> */}
+
+                <Flex justify={'center'}>
+                    <Button onPress={this.submit} type={'primary'}
+                        activeStyle={{ backgroundColor: Macro.work_blue }} style={{
+                            width: 250,
+                            backgroundColor: Macro.work_blue,
+                            marginTop: 20,
+                            marginBottom: 20,
+                            height: 40
+                        }}>完成</Button>
+                </Flex>
+
             </CommonView>
         );
     }
@@ -261,13 +316,13 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         paddingBottom: 10
     },
-    ii: {
-        paddingTop: 10,
-        paddingBottom: 10,
-        backgroundColor: '#999',
-        borderRadius: 6,
-        marginTop: 30
-    },
+    // ii: {
+    //     paddingTop: 10,
+    //     paddingBottom: 10,
+    //     backgroundColor: '#999',
+    //     borderRadius: 6,
+    //     //marginTop: 30
+    // },
     word: {
         color: 'white',
         fontSize: 16
@@ -277,7 +332,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = ({ memberReducer, xunJianReducer }) => {
 
     return {
-        hasNetwork: memberReducer.hasNetwork,
+        hasNetwork: memberReducer.hasNetwork
     };
 };
 const mapDispatchToProps = (dispatch) => {

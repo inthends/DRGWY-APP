@@ -301,7 +301,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                             <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
                                 style={{ width: 18, height: 18 }} /></Flex>
                         </TouchableWithoutFeedback>
-                    </Flex> 
+                    </Flex>
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>报单时间：{detail.createDate}</Text>
                     </Flex>
@@ -312,9 +312,9 @@ export default class ServiceDeskDetailPage extends BasePage {
                                 <Text style={styles.left}>回访时间：{detail.returnVisitDate}</Text>
                             </Flex>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                                <Text style={styles.left}>回访人：{detail.returnVisiterName}</Text> 
+                                <Text style={styles.left}>回访人：{detail.returnVisiterName}</Text>
                                 <Text style={styles.right}>回访方式：{detail.returnVisitMode}</Text>
-                            </Flex> 
+                            </Flex>
                             <Star star={detail.custEvaluate} />
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                                 <Text style={styles.left}>回访结果：{detail.returnVisitResult}</Text>
@@ -502,7 +502,11 @@ export default class ServiceDeskDetailPage extends BasePage {
                                         </Flex>
                                     </TouchableWithoutFeedback>
                                     <TouchableWithoutFeedback
-                                        onPress={() => this.props.navigation.navigate('selectRolePerson', { type: 'dispatch', onSelect: this.onSelectPerson })}>
+                                        onPress={() => this.props.navigation.navigate('selectRolePerson', {
+                                            moduleId: 'Repair',
+                                            enCode: 'dispatch',
+                                            onSelect: this.onSelectPerson
+                                        })}>
                                         <Flex justify='between' style={[{
                                             paddingTop: 15,
                                             paddingBottom: 15,

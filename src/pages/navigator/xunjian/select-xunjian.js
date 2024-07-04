@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import common from '../../../utils/common';
 import XunJianService from './xunjian-service';
 
+//废弃，改为角色分组显示
 class SelectXunJianPerson extends BasePage {
     
     static navigationOptions = ({ navigation }) => {

@@ -261,11 +261,11 @@ class AddRepairPage extends BasePage {
         }
     };
 
-    onSelectAddress = ({ selectItem }) => {
-        this.setState({
-            address: selectItem
-        })
-    }
+    // onSelectAddress = ({ selectItem }) => {
+    //     this.setState({
+    //         address: selectItem
+    //     })
+    // }
 
     render() {
         const { data, index, images, fileUrl, address, canSelectAddress } = this.state;
@@ -300,7 +300,8 @@ class AddRepairPage extends BasePage {
                                 <TouchableWithoutFeedback
                                     onPress={() => {
                                         if (canSelectAddress) {
-                                            this.props.navigation.push('selectAddress', { onSelect: this.onSelectAddress });
+                                            //this.props.navigation.push('selectAddress', { onSelect: this.onSelectAddress });
+                                            this.props.navigation.push('selectAddress', { title: '选择位置', parentName: 'addRepair' });
                                         }
                                     }
                                     }>

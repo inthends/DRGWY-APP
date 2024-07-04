@@ -184,7 +184,7 @@ class FeeAddPage extends BasePage {
                             width: '100%',
                             borderWidth: 1,
                             borderStyle: 'solid',
-                            borderColor: '#74BAF1'
+                            borderColor: '#1890ff'
                         }}
                         textStyle={{ fontSize: 16 }} onChange={this.typeChange}
                         titles={titles} visible={true} />

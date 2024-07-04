@@ -267,7 +267,7 @@ const WorkNavigator = createStackNavigator({
   xunjianDetail: XunJianDetailPage,
   xunjianPointDetail: XunJianPointDetailPage,
   xunjianBeforeStart: XunjianBeforeStart,
-  selectXunjian: SelectXunJianPerson,
+  // selectXunjian: SelectXunJianPerson,
   startxunjian: StartXunJianPage,
   scanForWork: ScanOnly,//巡检、抄表、资产盘点扫码
   gdMoney: gdMoneyPage,

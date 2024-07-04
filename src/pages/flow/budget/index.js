@@ -60,7 +60,7 @@ export default class DetailPage extends BasePage {
     });
     service.getApproveLog(id).then((records) => {
       this.setState({
-        records,
+        records
       });
     });
 

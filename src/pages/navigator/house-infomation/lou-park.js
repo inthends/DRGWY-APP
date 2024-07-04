@@ -67,7 +67,7 @@ export default class LouPark extends BasePage {
         );
     }
 
-    componentWillUnmount(): void {
+    componentWillUnmount() {
         this.viewDidAppear.remove();
     }
 
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
         color: '#fff'
     },
     blue74BAF1: {
-        backgroundColor: '#74BAF1',
+        backgroundColor: '#1890ff',
         color: '#fff'
     },
 });

@@ -82,7 +82,12 @@ export default {
 
     //服务单附件
     serviceExtra(keyvalue) {
-        return api.getData('/api/MobileMethod/MGetFilesData', { keyvalue });
+        return api.getData('/api/MobileMethod/MGetFilesData', {keyvalue });
+    },
+
+    //根据不同单据类型获取附件作为维修前图片
+    workPreFiles(sourceType,keyvalue) {
+        return api.getData('/api/MobileMethod/MGetWorkPreFiles', {sourceType, keyvalue });
     },
 
     //附件

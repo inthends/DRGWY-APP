@@ -59,7 +59,7 @@ export default class FeeParkingsPage extends BasePage {
         );
     }
 
-    componentWillUnmount(): void {
+    componentWillUnmount() {
         this.viewDidAppear.remove();
     }
 

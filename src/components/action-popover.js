@@ -38,7 +38,7 @@ export default class ActionPopover extends Component {
                     <Flex style={{height: 40}}> 
                         <Text style={[{
                             paddingRight: 10,
-                            color: '#74BAF1',
+                            color: '#1890ff',
                             fontSize: 16,
                         }, this.props.textStyle]}>操作</Text>
                     </Flex>

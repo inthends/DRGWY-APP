@@ -20,8 +20,8 @@ const Item = List.Item;
 export default class SelectAddressPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
-            //title: navigation.getParam('title'),
-            title: '选择位置',
+            title: navigation.getParam('title'),
+            //title: '选择位置',
             headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>

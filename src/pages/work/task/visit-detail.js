@@ -131,7 +131,7 @@ export default class VisitDetailPage extends BasePage {
         });
         WorkService.serviceCommunicates(id).then(res => {
             this.setState({
-                communicates: res,
+                communicates: res
             });
         });
 

@@ -3,7 +3,10 @@ import React, { Fragment } from 'react';
 import BasePage from '../../base/base';
 import { Flex } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
-import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View, TextInput } from 'react-native';
+import {
+    ScrollView, StyleSheet, Text, Keyboard,
+    TouchableWithoutFeedback, View, TextInput
+} from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 
@@ -11,9 +14,14 @@ export default class XunJianDetailPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            list: []
+            list: [],
+            KeyboardShown: false
         };
+        this.keyboardDidShowListener = null;
+        this.keyboardDidHideListener = null;
     }
+
+
 
     isNormal(itemData) {
         let newlist = this.state.list;
@@ -31,7 +39,35 @@ export default class XunJianDetailPage extends BasePage {
             this.props._inspecting(newlist);
     }
 
-    render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
+
+    //add new
+    componentWillMount() {
+        //注册鼠标事件，用于文本框输入的时候往上移动 2024年5月23日
+        this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+            this.setState({
+                KeyboardShown: true,
+            });
+        });
+        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+            this.setState({
+                KeyboardShown: false,
+            });
+        });
+    }
+
+    //add new
+    componentWillUnmount() {
+        //卸载键盘弹出事件监听
+        if (this.keyboardDidShowListener != null) {
+            this.keyboardDidShowListener.remove();
+        }
+        //卸载键盘隐藏事件监听
+        if (this.keyboardDidHideListener != null) {
+            this.keyboardDidHideListener.remove();
+        }
+    }
+
+    render() { //:React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
 
         const { data } = this.props;
         const { list } = this.state;
@@ -40,7 +76,8 @@ export default class XunJianDetailPage extends BasePage {
         const noselectImg = require('../../../static/images/no-select.png');
 
         return (
-            <ScrollView>
+            // <ScrollView>
+            <ScrollView style={{ marginTop: this.state.KeyboardShown ? -200 : 0, height: '100%' }}>
                 <Flex direction={'column'} align={'start'}>
                     <Flex style={{ width: ScreenUtil.deviceWidth() - 30 }} justify={'between'}>
                         <Text style={styles.work}>{data.taskTime} {data.projectName}</Text>
@@ -51,7 +88,7 @@ export default class XunJianDetailPage extends BasePage {
                         <Text style={styles.desc}>{data.roleName}</Text>
                     </Flex>
                     <Text style={styles.title}>执行</Text>
-                    <Flex style={{ width: ScreenUtil.deviceWidth() - 30, marginBottom: 10 }} justify={'between'}>
+                    <Flex style={{ width: ScreenUtil.deviceWidth() - 30  }} justify={'between'}>
                         <Text style={styles.desc}>{data.exctuteTime}</Text>
                         <Text style={styles.desc}>{data.excuteUserName}</Text>
                     </Flex>
@@ -109,7 +146,8 @@ export default class XunJianDetailPage extends BasePage {
                                                 </Flex>
                                             </TouchableWithoutFeedback>
 
-                                            <TextInput maxLength={500}
+                                            <TextInput
+                                                maxLength={500}
                                                 multiline={true}
                                                 editable={currentItem.result === 0}
                                                 keyboardType={'default'}
@@ -145,7 +183,7 @@ const styles = StyleSheet.create({
         color: '#404145',
         fontSize: 16,
         paddingTop: 10
-    }, 
+    },
     contentRect: {
         width: '100%',
         marginTop: 5,
@@ -153,9 +191,9 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5,
         padding: 5
-    }, 
+    },
     blueText: {
-        color: '#5f96eb',
+        color: Macro.work_blue,
         fontSize: 14,
         marginVertical: 2
     },
