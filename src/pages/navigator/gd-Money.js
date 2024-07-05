@@ -11,11 +11,7 @@ import {
     Keyboard
 } from 'react-native';
 import BasePage from '../base/base';
-import {
-    Flex, Icon, SearchBar
-    //Button,  List, WhiteSpace 
-} from '@ant-design/react-native';
-
+import { Flex, Icon, Button, SearchBar } from '@ant-design/react-native';
 import Macro from '../../utils/macro';
 import ScreenUtil from '../../utils/screen-util';
 import { connect } from 'react-redux';
@@ -50,8 +46,8 @@ class gdMoneyPage extends BasePage {
 
     constructor(props) {
         super(props);
-        this.state = {  
-            pageIndex: 1, 
+        this.state = {
+            pageIndex: 1,
             dataInfo: {
                 data: [],
             },
@@ -177,6 +173,7 @@ class gdMoneyPage extends BasePage {
                         value={this.state.text}
                         onChange={text => this.setState({ text })}
                         onSubmit={this.search} />
+
                     <View style={{ flex: 1 }}>
                         <FlatList
                             data={dataInfo.data}
@@ -195,16 +192,32 @@ class gdMoneyPage extends BasePage {
                             ListEmptyComponent={<NoDataView />}
                         />
                     </View>
-                    <TouchableWithoutFeedback onPress={this.start}>
+
+                    {/* <TouchableWithoutFeedback onPress={this.start}>
                         <Flex justify={'center'} style={[styles.ii, {
-                            width: '80%',
-                            marginLeft: '10%',
-                            marginRight: '10%',
-                            marginBottom: 20,
+                            width: '70%',
+                            marginLeft: '15%',
+                            marginRight: '15%',
+                            marginBottom: 10,
                         }, { backgroundColor: Macro.work_blue }]}>
                             <Text style={styles.word}>开始盘点</Text>
                         </Flex>
-                    </TouchableWithoutFeedback>
+                    </TouchableWithoutFeedback> */}
+
+                    <Flex justify={'center'}>
+                        <Button
+                            onPress={this.start}
+                            type={'primary'}
+                            activeStyle={{ backgroundColor: Macro.work_blue }}
+                            style={{
+                                width: 220,
+                                marginBottom: 10,
+                                backgroundColor: Macro.work_blue,
+                                height: 40
+                            }}>开始盘点</Button>
+                    </Flex>
+
+
                 </CommonView>
             </View>
         );

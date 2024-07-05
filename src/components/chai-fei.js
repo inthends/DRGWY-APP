@@ -200,7 +200,7 @@ export default class ChaiFei extends BasePage {
                                 value={this.state.memo}
                             />
                         </Flex>
-                        <Button style={{ width: '100%', marginTop: 10, backgroundColor: Macro.work_blue }} type="primary"
+                        <Button style={{ width: 220, marginTop: 10, backgroundColor: Macro.work_blue }} type="primary"
                             onPress={this.in}>确定</Button>
                     </Flex>
                 </TouchableWithoutFeedback>

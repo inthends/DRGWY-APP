@@ -102,7 +102,7 @@ export default class JianFei extends BasePage {
                         />
                         <Button
                             style={{
-                                width: '100%', marginTop: 10,
+                                width: 220, marginTop: 10,
                                 backgroundColor: Macro.work_blue
                             }}
                             type="primary"

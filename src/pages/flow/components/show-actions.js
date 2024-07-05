@@ -109,6 +109,7 @@ const ShowActions = ({ state, click, isSpecial = false }) => {
                 <Text style={styles.word}>退回</Text>
               </Flex>
             </TouchableWithoutFeedback>
+            
             <TouchableWithoutFeedback
               onPress={() => {
                 onClick('通过');
@@ -135,7 +136,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
-    backgroundColor: '#999',
+    //backgroundColor: '#999',
     borderRadius: 6,
     marginBottom: 20
   },

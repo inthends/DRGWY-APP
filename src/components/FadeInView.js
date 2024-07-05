@@ -14,14 +14,13 @@ export default class FadeInView extends React.Component {
             this.state.fadeAnim,            // 动画中的变量值
             {
                 toValue: 1,                   // 透明度最终变为1，即完全不透明
-                duration: 10000,              // 让动画持续一段时间
+                duration: 10000             // 让动画持续一段时间
             },
         ).start();                        // 开始执行动画
     }
 
     render() {
-        let {fadeAnim} = this.state;
-
+        let {fadeAnim} = this.state; 
         return (
             <Animated.View                 // 使用专门的可动画化的View组件
                 style={{

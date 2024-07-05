@@ -204,7 +204,7 @@ export default class VisitDetailPage extends BasePage {
 
                     <ListImages images={images} lookImage={this.lookImage} />
 
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'> 
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>紧急：{detail.emergencyLevel}</Text>
                         <Text style={styles.right}>重要：{detail.importance}</Text>
                     </Flex>
@@ -220,7 +220,7 @@ export default class VisitDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>报单时间：{detail.createDate}</Text>
                     </Flex>
- 
+
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                             <Text style={styles.left}>关联单：</Text>
@@ -250,9 +250,10 @@ export default class VisitDetailPage extends BasePage {
                     </View>
 
                     <Flex justify={'center'}>
-                        <Button onPress={() => this.click('完成回访')} type={'primary'}
+                        <Button onPress={() => this.click('完成回访')}
+                            type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                width: 130,
+                                width: 220,
                                 backgroundColor: Macro.work_blue,
                                 marginTop: 20,
                                 height: 40

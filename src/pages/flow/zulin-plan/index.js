@@ -2,7 +2,7 @@ import React from 'react';
 import BasePage from '../../base/base';
 import { Flex, Icon, Modal, Button, TextareaItem } from '@ant-design/react-native';
 import {
-  ScrollView,Text, View, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, Keyboard
+  ScrollView, Text, View, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, Keyboard
 } from 'react-native';
 import CommonView from '../../../components/CommonView';
 import ShowTitle from '../components/show-title';
@@ -193,7 +193,7 @@ export default class DetailPage extends BasePage {
                   </Flex>
                   <Button
                     style={{
-                      width: '100%',
+                      width: 130,
                       marginTop: 10,
                       backgroundColor: Macro.work_blue
                     }}
@@ -204,7 +204,7 @@ export default class DetailPage extends BasePage {
             </View>
           </Flex>
         </Modal>
-        
+
         <Modal
           //弹出沟通页面
           transparent
@@ -233,11 +233,11 @@ export default class DetailPage extends BasePage {
   }
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
   txt: {
     fontSize: 14,
     paddingBottom: 10,
-  }, 
+  },
   text: {
     fontSize: 14
   },

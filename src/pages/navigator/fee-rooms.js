@@ -45,7 +45,7 @@ export default class FeeRoomsPage extends BasePage {
     }
 
 
-    componentDidMount(): void {
+    componentDidMount() {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {

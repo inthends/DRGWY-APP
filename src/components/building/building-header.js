@@ -12,9 +12,6 @@ export default class BuildingHeader extends BasePage {
         super(props);
     }
 
-    // componentDidMount()  { 
-    // }
-
     // scan = () => {
     //     this.props.navigation.push('scanForHome', {
     //         data: {

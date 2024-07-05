@@ -347,8 +347,7 @@ class EcheckAddPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>检查组：</Text>
                         <MyPopoverRight
-                            onChange={(item) => {
-                                //this.setState({ checkRole: title });
+                            onChange={(item) => { 
                                 this.setState({ checkRole: item.name, checkRoleId: item.id });
                             }}
                             data={roles}
@@ -363,12 +362,11 @@ class EcheckAddPage extends BasePage {
                                 parentName: 'checkAdd',
                                 roleId: this.state.checkRoleId
                             })}>
-                            <Flex
-                                //justify="between"
-                                style={{
-                                    paddingTop: 10,
-                                    paddingBottom: 10
-                                }}
+                            <Flex 
+                            // style={{
+                            //     paddingTop: 5,
+                            //     paddingBottom: 5
+                            // }}
                             >
                                 <Text style={[address && address.allName ? { fontSize: 16, paddingRight: 10 } :
                                     { fontSize: 16, color: '#999', paddingRight: 10 }]}>{address && address.allName ? address.allName : `请选择检查区域`}</Text>

@@ -18,6 +18,7 @@ import AddReview from '../components/add-review';
 import ShowReviews from '../components/show-reviews';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
+import moment from 'moment';
 
 export default class DetailPage extends BasePage {
 
@@ -188,7 +189,7 @@ export default class DetailPage extends BasePage {
                   </Flex>
                   <Button
                     style={{
-                      width: '100%',
+                      width: 130,
                       marginTop: 10,
                       backgroundColor: Macro.work_blue
                     }}

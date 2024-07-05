@@ -205,7 +205,7 @@ export default class DetailPage extends BasePage {
                   </Flex>
                   <Button
                     style={{
-                      width: '100%',
+                      width: 130,
                       marginTop: 10,
                       backgroundColor: Macro.work_blue
                     }}
@@ -241,6 +241,7 @@ export default class DetailPage extends BasePage {
             />
           </Flex>
         </Modal>
+        
         <CompanyDetail
           customer={customer}
           ref={(ref) => (this.companyDetailRef = ref)}

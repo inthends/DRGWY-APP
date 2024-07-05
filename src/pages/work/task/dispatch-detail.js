@@ -328,7 +328,7 @@ export default class DispatchDetailPage extends BasePage {
                     <Flex justify={'center'}>
                         <Button onPress={() => this.click()} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                width: 130,
+                                width: 220,
                                 backgroundColor: Macro.work_blue,
                                 marginTop: 20,
                                 height: 40

@@ -62,7 +62,6 @@ class SecondDetailBuildingPage extends BasePage {
         };
     }
 
-    //componentDidMount(): void {
     componentDidMount() {
         //详情
         BuildingService.roomDetail(this.state.item.id).then(room => {

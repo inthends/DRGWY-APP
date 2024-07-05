@@ -291,7 +291,7 @@ class StartXunJianPage extends BasePage {
                 <Flex justify={'center'}>
                     <Button onPress={this.submit} type={'primary'}
                         activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                            width: 250,
+                            width: 220,
                             backgroundColor: Macro.work_blue,
                             marginTop: 20,
                             marginBottom: 20,

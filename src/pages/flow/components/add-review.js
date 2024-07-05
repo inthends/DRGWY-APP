@@ -76,7 +76,7 @@ export default class AddReview extends Component {
             </Flex>
             <Button
               style={{
-                width: '100%',
+                width: 139,
                 marginTop: 10,
                 backgroundColor: Macro.work_blue
               }}

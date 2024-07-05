@@ -1,4 +1,4 @@
-import { Modal  } from '@ant-design/react-native';
+import { Modal } from '@ant-design/react-native';
 import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
@@ -12,7 +12,7 @@ const CompanyDetail = forwardRef(({ customer = {} }, ref) => {
   const showModal = () => {
     setVisible(true);
   };
-  
+
   const closeModal = () => {
     setVisible(false);
   };
@@ -34,8 +34,8 @@ const CompanyDetail = forwardRef(({ customer = {} }, ref) => {
     >
       <View>
         <View>
-          <Text style={[styles.txt, { fontSize: 16 }]}>{customer.name}</Text>
-          <ShowLine /> 
+          <Text style={styles.txt}>{customer.name}</Text>
+          <ShowLine />
           <ShowText word="联系人" title={customer.linkMan} />
           <ShowText word="联系电话" title={customer.linkPhoneNum} />
           <ShowText word="联系地址" showInModal title={customer.address} />
@@ -45,10 +45,11 @@ const CompanyDetail = forwardRef(({ customer = {} }, ref) => {
   );
 });
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
   txt: {
-    fontSize: 14,
-    paddingBottom: 10,
+    color: '#404145',
+    fontSize: 16,
+    paddingBottom: 10
   }
 });
 

@@ -16,10 +16,6 @@ export default class FeeStatisticPage extends BasePage {
         super(props); 
     }
 
-    // componentDidMount() { 
-    // }
-
-
     render() {
         //const {statistics, dataInfo} = this.state;
         const option = {

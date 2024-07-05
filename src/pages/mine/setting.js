@@ -36,9 +36,6 @@ class SettingPage extends BasePage {
         };
     }
 
-    // componentDidMount(): void { 
-    // }
-
     logout = () => {
         this.showActionSheet();
     };

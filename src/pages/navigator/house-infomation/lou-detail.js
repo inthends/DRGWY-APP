@@ -68,12 +68,6 @@ class LouDetail extends BasePage {
         });
     }
 
-    // componentDidMount(): void { 
-    // }
-
-    // componentWillUnmount(): void { 
-    // }
-
     handleDate = (string) => {
         return string && string.split(' ')[0];
     };

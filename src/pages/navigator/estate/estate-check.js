@@ -221,8 +221,7 @@ class EstateCheckPage extends BasePage {
 
     render() {
         const { dataInfo } = this.state;
-        return (
-            // <View style={{ flex: 1 }}>
+        return ( 
             <CommonView style={{ flex: 1 }}>
                 <ScrollTitle onChange={this.billType} titles={['我的', '全部']} />
                 {/*<Tabs tabs={tabs2} initialPage={1} tabBarPosition="top">*/}
@@ -242,8 +241,7 @@ class EstateCheckPage extends BasePage {
                     data={dataInfo.data}
                     renderItem={this._renderItem}
                     style={styles.list}
-                    keyExtractor={(item) => item.billId}  
-
+                    keyExtractor={(item) => item.billId}
                     //必须
                     onEndReachedThreshold={0.1}
                     refreshing={this.state.refreshing}
@@ -258,15 +256,14 @@ class EstateCheckPage extends BasePage {
                         onPress={() => this.props.navigation.push('checkAdd')}
                         type={'primary'}
                         activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                            width: 130,
-                            marginBottom: 20,
+                            width: 220,
+                            marginBottom: 10,
                             backgroundColor: Macro.work_blue,
                             height: 40
                         }}>开始检查</Button>
                 </Flex>
-            </CommonView>
 
-            // </View>
+            </CommonView>
         );
     }
 }
@@ -274,7 +271,7 @@ class EstateCheckPage extends BasePage {
 const styles = StyleSheet.create({
     list: {
         backgroundColor: Macro.color_white,
-        margin: 15
+        margin: 10
     },
     title: {
         paddingTop: 15,
@@ -325,20 +322,7 @@ const styles = StyleSheet.create({
     orange: {
         borderLeftColor: Macro.work_orange,
         borderLeftWidth: 5,
-    },
-    ii: {
-        paddingTop: 10,
-        paddingBottom: 10,
-        marginLeft: 10,
-        marginRight: 10,
-        width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
-        backgroundColor: '#999',
-        borderRadius: 6
-    },
-    word: {
-        color: 'white',
-        fontSize: 16
-    }
+    },  
 });
 
 const mapStateToProps = ({ buildingReducer }) => {

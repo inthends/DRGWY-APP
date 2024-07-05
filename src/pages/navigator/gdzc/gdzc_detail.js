@@ -125,9 +125,6 @@ export default class GdzcDetailPage extends BasePage {
         }
     }
 
-    // componentDidMount() {
-    // }
-
     lookImage = (lookImageIndex) => {
         this.setState({
             lookImageIndex,

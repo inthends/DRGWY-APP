@@ -88,20 +88,20 @@ class XunJianPage extends BasePage {
         // )
 
         //test
-        let person = this.state.person || {};
-        this.props.navigation.navigate('xunjianBeforeStart', {
-            'data': {
-                person,
-                pointId: 'bfb92619-10b6-4466-b3d6-87c7c00927dd'
-            }
-        });
-
-        // this.props.navigation.push('scanForWork', {
-        //     data: {
-        //         callBack: this.callBack,
-        //         needBack: '1'
+        // let person = this.state.person || {};
+        // this.props.navigation.navigate('xunjianBeforeStart', {
+        //     'data': {
+        //         person,
+        //         pointId: 'bfb92619-10b6-4466-b3d6-87c7c00927dd'
         //     }
         // });
+
+        this.props.navigation.push('scanForWork', {
+            data: {
+                callBack: this.callBack,
+                needBack: '1'
+            }
+        });
     };
 
     componentDidMount() {
@@ -172,7 +172,7 @@ class XunJianPage extends BasePage {
         })
     }
 
-    render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
+    render(){//: React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
         const { person, today, todo, missed, finish, items } = this.state;
         const { user } = this.props;
         let name;
@@ -271,7 +271,7 @@ class XunJianPage extends BasePage {
                 </TouchableWithoutFeedback>
 
 
-                <ScrollView style={{ height: ScreenUtil.contentHeight() - 190 }}>
+                <ScrollView style={{ height: ScreenUtil.contentHeight() - 210 }}>
                     <Accordion
                         onChange={this.onChange}
                         activeSections={this.state.activeSections}>
@@ -296,17 +296,17 @@ class XunJianPage extends BasePage {
                         ))}
                     </Accordion>
                 </ScrollView>
+
                 <Flex justify={'center'}>
                     <Button onPress={this.start} type={'primary'}
                         activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                            width: 250,
+                            width: 220,
                             backgroundColor: Macro.work_blue,
                             marginTop: 20,
                             marginBottom:20,
                             height: 40
                         }}>开始巡检</Button>
                 </Flex>
-
             </CommonView>
         );
     }

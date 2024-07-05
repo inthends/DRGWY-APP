@@ -94,8 +94,8 @@ class ChaoBiaoPage extends BasePage {
     };
 
     loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo; 
-        if (this.canLoadMore && data.length < total) { 
+        const { data, total, pageIndex } = this.state.dataInfo;
+        if (this.canLoadMore && data.length < total) {
             this.canLoadMore = false;
             this.setState({
                 refreshing: true,
@@ -103,7 +103,7 @@ class ChaoBiaoPage extends BasePage {
             }, () => {
                 this.getList();
             });
-        } 
+        }
     };
 
     callBack = (keyvalue) => {
@@ -125,7 +125,7 @@ class ChaoBiaoPage extends BasePage {
     };
 
 
-    scan = () => { 
+    scan = () => {
         this.props.navigation.push('scanForWork', {
             data: {
                 callBack: this.callBack,
@@ -185,7 +185,7 @@ class ChaoBiaoPage extends BasePage {
                     refreshing={this.state.refreshing}
                     onRefresh={this.onRefresh}//下拉刷新
                     onEndReached={this.loadMore}//底部往下拉翻页
-                    onMomentumScrollBegin={() => this.canLoadMore = true} 
+                    onMomentumScrollBegin={() => this.canLoadMore = true}
                     ListEmptyComponent={<NoDataView />}
                 />
                 <Flex style={{ minHeight: 40, marginBottom: 30 }}>
@@ -238,7 +238,7 @@ class ChaoBiaoPage extends BasePage {
                                             <Flex style={{ marginBottom: 15 }}>
                                                 <Button type={'primary'} style={{
                                                     backgroundColor: Macro.work_blue,
-                                                    width: 100,
+                                                    width: 130,
                                                     height: 44,
                                                     borderWidth: 0,
                                                 }} onPress={this.tanchuangSubmit}>
@@ -248,7 +248,7 @@ class ChaoBiaoPage extends BasePage {
                                                     style={{
                                                         marginLeft: 50,
                                                         backgroundColor: '#CCCCCC',
-                                                        width: 100,
+                                                        width: 130,
                                                         height: 44,
                                                         borderWidth: 0,
                                                     }} onPress={() => this.setState({ scan: false })}>
@@ -302,11 +302,12 @@ class ChaoBiaoPage extends BasePage {
                                             backgroundColor: Macro.work_blue,
                                             height: 44,
                                         }}>确认提交</Button>
+
                                     <Button onPress={() => this.setState({ showSubmit: false })} type={'primary'}
                                         activeStyle={{ backgroundColor: Macro.work_blue }} style={{
                                             marginLeft: 30,
                                             width: 130,
-                                            backgroundColor: '#ccc',
+                                            backgroundColor: '#666',
                                             borderWidth: 0,
                                             height: 44,
                                         }}>取消</Button>

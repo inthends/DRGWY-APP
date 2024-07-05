@@ -41,7 +41,6 @@ export default class SelectAddressPage extends BasePage {
         };
     }
 
-
     componentDidMount() {
         const { navigation } = this.props;
         //获取父页面的名称
@@ -81,12 +80,13 @@ export default class SelectAddressPage extends BasePage {
 
     next = (item) => {
         if (item.type !== 5) {
-            const { parentName } = this.state;
+            const { parentName, roleId } = this.state;
             this.props.navigation.push('selectAddress', {
                 'data': {
                     ...item
                 },
-                parentName//传递主页面到楼栋、楼层
+                parentName,//传递主页面到楼栋、楼层
+                roleId
             });
         }
     };
@@ -130,6 +130,7 @@ export default class SelectAddressPage extends BasePage {
             params = {
                 ...params,
                 type,
+                roleId
             };
         } else {
             this.props.navigation.setParams({
@@ -142,6 +143,8 @@ export default class SelectAddressPage extends BasePage {
             refreshing: true
         });
 
+        //alert(params.roleId);
+
         WorkService.getPStructs(params).then(items => {
             this.setState({ items, refreshing: false });
         }).catch(err => this.setState({ refreshing: false }));
@@ -151,8 +154,13 @@ export default class SelectAddressPage extends BasePage {
         const { items, parent, selectItem } = this.state;
 
         return (
-            <CommonView style={{ flex: 1, backgroundColor: '#eee' }}>
-                <View style={{ flex: 1 }}>
+            <CommonView style={{
+                flex: 1,
+                backgroundColor: '#eee'
+            }}>
+                <View
+                    style={{ flex: 1 }}
+                >
                     {parent ?
                         <Item arrow="empty">
                             {parent.allName}
@@ -185,11 +193,19 @@ export default class SelectAddressPage extends BasePage {
                         </List>
                     </ScrollView>
 
-                    <Flex justify={'center'} style={{ height: 80, backgroundColor: '#eee' }}>
+                    <Flex justify={'center'}
+                        style={{ //height: 80, 
+                            backgroundColor: '#eee'
+                        }}
+                    >
                         <Button style={{
-                            width: '90%',
+                            width: 220,
+                            height: 40,
+                            marginTop:10,
+                            marginBottom: 10,
                             backgroundColor: Macro.work_blue
-                        }} type="primary"
+                        }}
+                            type="primary"
                             onPress={() => this.submit()}>确定</Button>
                     </Flex>
 

@@ -30,9 +30,6 @@ export default class ModifyPsdPage extends BasePage {
         }; 
     }
 
-    // componentDidMount(): void {
-    // }
-
     submit = () => {
         const {oldPassword, newPassword, confirmPassword} = this.state;
         if (newPassword === confirmPassword) {

@@ -48,20 +48,17 @@ export default class MyPopoverRight extends Component {
 
     render() {
         const { data, index } = this.state;
-        // console.log('data',data);
-        // console.log('data[index]',data[index]);
         return (
             <View style={[styles.container, this.props.style]}>
                 <TouchableWithoutFeedback ref={ref => this.touchable = ref} onPress={() => this.showPopover()}>
-                    <Flex style={{ height: 40 }}>
+                    <Flex>
                         <Text style={[{
                             paddingLeft: 10,
+                            paddingRight: 10,
                             color: '#666',
-                            fontSize: 16,
-                            paddingRight: 10
+                            fontSize: 16
                         }, this.props.textStyle]}>
                             {data[index] && data[index].name}
-                            {/* 没有值的情况需要考虑 */}
                         </Text>
                         {!this.props.hiddenImage && (
                             <Flex>
@@ -76,7 +73,7 @@ export default class MyPopoverRight extends Component {
                     fromView={this.touchable}
                     placement={'auto'}
                     isVisible={this.state.isVisible}>
-                    <ScrollView style={{ maxHeight: 400 }}>
+                    <ScrollView style={{ maxHeight: 500 }}>
                         {data.map((item, index) => (
                             <TouchableWithoutFeedback key={item + index} onPress={() => this.select(index, item)}>
                                 <Text style={[{

@@ -380,7 +380,7 @@ class AddRepairPage extends BasePage {
                         <Flex justify={'center'} align={'start'} style={{
                             height: 80,
                             backgroundColor: '#eee',
-                            width: '100%',
+                            width: 220,
                             marginTop: 20,
                             flex: 1,
                             paddingTop: 40,

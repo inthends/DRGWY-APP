@@ -69,7 +69,7 @@ class BuildingPage extends BasePage {
                     {
                       text: '取消',
                       onPress: () => this.initUI(),
-                      style: 'cancel',
+                      style: 'cancel'
                     },
                     {
                       text: '确定',
@@ -78,7 +78,7 @@ class BuildingPage extends BasePage {
                       },
                     },
                   ],
-                  { cancelable: false },
+                  { cancelable: false }
                 );
               } else {
                 this.initUI();

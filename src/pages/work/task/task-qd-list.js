@@ -234,7 +234,7 @@ class TaskQDListPage extends BasePage {
                                     onPress={() => this.qd(item.id)}
                                     activeStyle={{ backgroundColor: Macro.work_blue }}
                                     style={{
-                                        width: 130,
+                                        width: 220,
                                         width: 70,
                                         backgroundColor: Macro.work_blue,
                                         height: 30

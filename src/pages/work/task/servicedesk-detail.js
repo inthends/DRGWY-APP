@@ -450,6 +450,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                                             backgroundColor: Macro.work_blue,
                                             height: 35
                                         }}>确认</Button>
+                                        
                                     <Button onPress={() => {
                                         this.setState({ showClose: false });
                                     }}

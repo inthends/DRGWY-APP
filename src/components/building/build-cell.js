@@ -16,7 +16,6 @@ export default class BuildingCell extends BasePage {
         super(props);
     }
 
-    //componentDidMount() {}
     //louDetail shebeiDetail
     //<TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('feeDetail',{})}>
     //DetailBuilding

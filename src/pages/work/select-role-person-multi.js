@@ -106,7 +106,7 @@ class SelectRolePersonMulti extends BasePage {
                     } else {
                         //移除
                         const index = selectItems.findIndex(item => item.id === it.id);
-                        selectItems.splice(index,1);
+                        selectItems.splice(index, 1);
                     }
 
                 }
@@ -170,7 +170,7 @@ class SelectRolePersonMulti extends BasePage {
 
                 <Flex justify={'center'} style={{ height: 80, backgroundColor: '#eee' }}>
                     <Button style={{
-                        width: '90%',
+                        width: 220,
                         backgroundColor: Macro.work_blue
                     }} type="primary"
                         onPress={() => this.submit()}>确定</Button>

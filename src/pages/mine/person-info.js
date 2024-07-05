@@ -30,10 +30,7 @@ export default class PersonInfoPage extends BasePage {
             checked: false,
         };
     }
-
-    componentDidMount(): void {
-    }
-
+    
     logout = () => {
         this.showActionSheet();
 
@@ -41,7 +38,7 @@ export default class PersonInfoPage extends BasePage {
     showActionSheet = () => {
         const BUTTONS = [
             '确认退出',
-            '取消',
+            '取消'
         ];
         ActionSheet.showActionSheetWithOptions(
             {

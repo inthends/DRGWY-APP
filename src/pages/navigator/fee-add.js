@@ -25,7 +25,7 @@ import UDToast from '../../utils/UDToast';
 // import QRCode from 'react-native-qrcode-svg';
 import CommonView from '../../components/CommonView';
 import MyPopover from '../../components/my-popover';
-import Macro from '../../utils/macro'; 
+import Macro from '../../utils/macro';
 const Item = List.Item;
 
 class FeeAddPage extends BasePage {
@@ -47,7 +47,7 @@ class FeeAddPage extends BasePage {
     constructor(props) {
         super(props);
         //let room = common.getValueFromProps(this.props) || {id:'FY-XHF-01-0101'};
-        let room = common.getValueFromProps(this.props); 
+        let room = common.getValueFromProps(this.props);
         this.state = {
             room,
             pageIndex: 1,
@@ -121,7 +121,7 @@ class FeeAddPage extends BasePage {
             if (res.length === 0) {
                 UDToast.showError('暂无可加费项目');
                 return;
-            } 
+            }
             const items = res[0].children;
             let big;
             if (items.length === 0) {
@@ -133,7 +133,7 @@ class FeeAddPage extends BasePage {
                 items: res[0].children,
                 big,
                 show: true
-            }, () => {  }); 
+            }, () => { });
         });
     }
 
@@ -159,7 +159,7 @@ class FeeAddPage extends BasePage {
                     number: res.number + '',
                     amount: res.amount + ''
                 },
-            }, () => { 
+            }, () => {
             });
         }).catch(error => {
             this.setState({
@@ -266,7 +266,12 @@ class FeeAddPage extends BasePage {
                     )}
                 </ScrollView>
                 {fee &&
-                    <Button type={'primary'} style={{ margin: 20,backgroundColor: Macro.work_blue  }} onPress={this.save}>保 存</Button>}
+                    <Button type={'primary'}
+                        style={{
+                            margin: 20,
+                            width: 220,
+                            backgroundColor: Macro.work_blue }}
+                onPress={this.save}>保 存</Button>}
             </CommonView>
         );
     }
@@ -308,10 +313,10 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderColor: '#74BAF1'
     },
-  
+
     titleWord: {
         color: '#404145',
-        fontSize:16
+        fontSize: 16
     },
     word: {
         color: '#404145',

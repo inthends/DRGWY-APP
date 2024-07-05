@@ -157,7 +157,7 @@ export default class SelectRepairMajor extends BasePage {
                     </ScrollView>
                     <Flex justify={'center'} style={{ height: 80, backgroundColor: '#eee' }}>
                         <Button style={{
-                            width: '90%',
+                            width: 220,
                             backgroundColor: Macro.work_blue
                         }} type="primary"
                             onPress={() => this.submit()}>确定</Button>

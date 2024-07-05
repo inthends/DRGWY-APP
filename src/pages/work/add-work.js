@@ -386,7 +386,7 @@ class AddWorkPage extends BasePage {
                         <Flex justify={'center'} align={'start'} style={{
                             height: 80,
                             backgroundColor: '#eee',
-                            width: '100%',
+                            width: 220,
                             flex: 1,
                             //marginTop: 20, 
                             paddingTop: 40

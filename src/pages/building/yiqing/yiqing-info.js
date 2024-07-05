@@ -100,7 +100,7 @@ class YiQingInfoPage extends BasePage {
                         />
                     </Flex>
                 </WingBlank>
-                <Button style={{ width: '90%', marginLeft: '5%', marginTop: 60 }} type="primary"
+                <Button style={{ width: 220, marginLeft: '5%', marginTop: 60 }} type="primary"
                     onPress={this.in}>确定</Button>
             </CommonView>
 
