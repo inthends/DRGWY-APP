@@ -50,8 +50,8 @@ class TaskListPage extends BasePage {
         const overdue = common.getValueFromProps(this.props).overdue;
         const hiddenHeader = common.getValueFromProps(this.props).hiddenHeader;
 
-        this.state = { 
-            pageIndex: 1, 
+        this.state = {
+            pageIndex: 1,
             type,
             dataInfo: {
                 data: [],
@@ -62,6 +62,8 @@ class TaskListPage extends BasePage {
         };
     }
 
+
+    //必须，刷新数据
     componentDidMount() {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
@@ -71,6 +73,7 @@ class TaskListPage extends BasePage {
         );
     }
 
+    //必须
     componentWillUnmount() {
         this.viewDidAppear.remove();
     }
@@ -196,8 +199,14 @@ class TaskListPage extends BasePage {
 
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
-                            <Text>紧急：{item.emergencyLevel}，重要：{item.importance}，维修专业：{item.repairMajor}</Text>
+                            <Text>紧急程度：{item.emergencyLevel}，重要程度：{item.importance}</Text>
                         </Flex>
+
+                        <Flex justify='between'
+                            style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
+                            <Text>维修专业：{item.repairMajor}，积分：{item.score}</Text>
+                        </Flex>
+
                         <Text style={{
                             paddingLeft: 20,
                             paddingRight: 20,

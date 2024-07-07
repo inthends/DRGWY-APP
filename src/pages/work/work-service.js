@@ -300,6 +300,8 @@ export default {
     // },
 
     paidan(keyvalue,
+        emergencyLevel,
+        importance,
         receiverId,
         receiverName,
         repairMajorId,
@@ -309,6 +311,8 @@ export default {
     ) {
         return api.postData('/api/MobileMethod/MRepairDispatch', {
             keyvalue,
+            emergencyLevel,
+            importance,
             receiverId,
             receiverName,
             repairMajorId,

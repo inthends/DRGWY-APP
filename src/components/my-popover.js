@@ -47,21 +47,18 @@ export default class MyPopover extends Component {
             <View style={[styles.container, this.props.style]}>
                 <TouchableWithoutFeedback ref={ref => this.touchable = ref} onPress={() => this.showPopover()}>
                     <Flex style={{ height: 40 }}>
-
                         {!this.props.hiddenImage && (
                             <Flex>
                                 <LoadImage style={{width: 15, height: 8}}
                                            defaultImg={this.state.isVisible ? UpImage : DownImage}/>
                             </Flex>
                         )}
-
                         <Text style={[{
                             paddingLeft: 10,
                             color: '#666',
                             fontSize: 16,
                         }, this.props.textStyle]}>{titles[index]}</Text>
                     </Flex>
-                    
                 </TouchableWithoutFeedback>
 
                 <Popover

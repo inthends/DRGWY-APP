@@ -83,6 +83,7 @@ export default class UploadImageView extends Component {
                                     <LoadImageDelete style={{ width: width, height: height }}
                                         defaultImg={require('../static/images/add_pic.png')}
                                         img={url}
+                                        top={15}
                                         delete={() => this.delete(url)} />
 
                                 </View>

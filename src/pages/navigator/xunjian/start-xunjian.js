@@ -138,15 +138,29 @@ class StartXunJianPage extends BasePage {
             } catch (error) { }
         }
         else {
+            
+            var errIndex = "";
+            let i = 0;
             inspectData.map((subItem) => {
-                newInspectData.push({
-                    id: subItem.id,
-                    taskId: item.id,
-                    contentId: subItem.contentId,
-                    result: subItem.result,
-                    memo: subItem.msg
-                })
-            })
+                i++;
+                if (subItem.msg == '') {
+                    errIndex += "," + i;
+                } else {
+                    newInspectData.push({
+                        id: subItem.id,
+                        taskId: item.id,
+                        contentId: subItem.contentId,
+                        result: subItem.result,
+                        memo: subItem.msg
+                    });
+                }
+            });
+
+            if (errIndex != "") {
+                errIndex = errIndex.slice(1);
+                message.warn("第" + errIndex + "行异常情况说明为空，请检查");
+                return;
+            }
         }
 
         if (this.props.hasNetwork) {
@@ -267,7 +281,7 @@ class StartXunJianPage extends BasePage {
                                         }}
                                             defaultImg={require('../../../static/images/add_pic.png')}
                                             img={url}
-                                            top={19}
+                                            top={18}
                                             delete={() => this.delete(url)} />
                                     </View>
                                 </TouchableWithoutFeedback>

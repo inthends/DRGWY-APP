@@ -373,7 +373,7 @@ class AddWorkPage extends BasePage {
                                                         style={{ width: width, height: height }}
                                                         defaultImg={require('../../static/images/add_pic.png')}
                                                         img={url}
-                                                        top={17}
+                                                        top={15}
                                                         delete={() => this.delete(url)} />
                                                 </View>
                                             </TouchableWithoutFeedback>
@@ -384,16 +384,22 @@ class AddWorkPage extends BasePage {
                         </Flex>
 
                         <Flex justify={'center'} align={'start'} style={{
-                            height: 80,
+                            height: 60,
                             backgroundColor: '#eee',
-                            width: 220,
-                            flex: 1,
-                            //marginTop: 20, 
-                            paddingTop: 40
+                            width: '100%',
+                            marginTop: 20,
+                            flex: 1
+                            //paddingTop: 40
                         }}>
-                            <Button style={{ width: '90%', backgroundColor: Macro.work_blue }} type="primary"
+                            <Button
+                                style={{
+                                    width: 220,
+                                    backgroundColor: Macro.work_blue
+                                }}
+                                type="primary"
                                 onPress={() => this.submit()}>确定</Button>
                         </Flex>
+
                     </View>
                 </TouchableWithoutFeedback>
             </CommonView>
@@ -401,13 +407,13 @@ class AddWorkPage extends BasePage {
     }
 }
 
-const mapStateToProps = ({ memberReducer, xunJianReducer }) => {
-
+const mapStateToProps = ({ memberReducer, xunJianReducer }) => { 
     return {
         hasNetwork: memberReducer.hasNetwork,
-        ...xunJianReducer,
+        ...xunJianReducer
     };
 };
+
 const mapDispatchToProps = (dispatch) => {
     return {
         saveXunJianAction(data) {

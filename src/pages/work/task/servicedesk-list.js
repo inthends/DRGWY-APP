@@ -59,21 +59,19 @@ class ServicedeskListPage extends BasePage {
             hiddenHeader
         };
     }
-
+ 
     componentDidMount() {
-        // this.viewDidAppear = this.props.navigation.addListener(
-        //     'didFocus',
-        //     (obj) => {
-        //         this.onRefresh();
-        //     }
-        // );
-
-        this.onRefresh();
+        this.viewDidAppear = this.props.navigation.addListener(
+            'didFocus',
+            (obj) => {
+                this.onRefresh();
+            }
+        );
     }
 
-    // componentWillUnmount() {
-    //     this.viewDidAppear.remove();
-    // }
+    componentWillUnmount() {
+        this.viewDidAppear.remove();
+    }
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
@@ -166,7 +164,7 @@ class ServicedeskListPage extends BasePage {
 
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
-                            <Text>紧急：{item.emergencyLevel}，重要：{item.importance}</Text>
+                            <Text>紧急程度：{item.emergencyLevel}，重要程度：{item.importance}</Text>
                         </Flex>
 
                         <Text style={{

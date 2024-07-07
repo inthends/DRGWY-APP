@@ -290,10 +290,11 @@ export default class ServiceDeskDetailPage extends BasePage {
                     </Flex>
                     <Text style={[styles.desc]}>{detail.contents}</Text>
                     <ListImages images={images} lookImage={this.lookImage} />
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        {/* <Text style={styles.left}>紧急：{detail.emergencyLevel}，重要：{detail.importance}</Text> */}
-                        <Text style={styles.left}>紧急：{detail.emergencyLevel}</Text>
-                        <Text style={styles.right}>重要：{detail.importance}</Text>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'> 
+                        <Text style={styles.left}>紧急程度：{detail.emergencyLevel}</Text> 
+                    </Flex>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>  
+                        <Text style={styles.right}>重要程度：{detail.importance}</Text>
                     </Flex>
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>报单人：{detail.contactName} </Text>
@@ -313,6 +314,8 @@ export default class ServiceDeskDetailPage extends BasePage {
                             </Flex>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                                 <Text style={styles.left}>回访人：{detail.returnVisiterName}</Text>
+                            </Flex>
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                                 <Text style={styles.right}>回访方式：{detail.returnVisitMode}</Text>
                             </Flex>
                             <Star star={detail.custEvaluate} />

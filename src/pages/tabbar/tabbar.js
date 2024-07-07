@@ -93,6 +93,8 @@ import ApproveDetailPage from '../work/task/approve-detail';
 
 import TaskQDListPage from '../work/task/task-qd-list';
 import SelectRepairMajor from '../work/select-repairmajor';
+import SelectType from '../work/select-type';
+
 import RobDetailPage from '../work/task/rob-detail';
 
 import TaskListPage from '../work/task/task-list';
@@ -260,7 +262,9 @@ const WorkNavigator = createStackNavigator({
   servicedeskDone: ServicedeskDoneListPage,
 
   newsList: NewsList,
-  selectRepairMajor: SelectRepairMajor,
+  selectRepairMajor: SelectRepairMajor, 
+  selectType: SelectType,
+
   chaobiao: ChaoBiaoPage,
   xunjian: XunJianPage,
   xunjiantask: TaskPage,

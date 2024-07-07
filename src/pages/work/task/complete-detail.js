@@ -38,12 +38,14 @@ export default class CompleteDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let id = common.getValueFromProps(this.props,'id');
+        let id = common.getValueFromProps(this.props, 'id');
         //let type = common.getValueFromProps(this.props, 'type');
         this.state = {
             id,
             value: '',
-            images: [],
+            preimages: [],
+            startimages: [],
+            images: [],//完成图片
             isUpload: false,//是否上传了图片
             detail: {},
             communicates: [],
@@ -93,15 +95,28 @@ export default class CompleteDetailPage extends BasePage {
             this.setState({
                 detail: {
                     ...detail.entity,
-                    serviceDeskCode: detail.serviceDeskCode,
-                    emergencyLevel: detail.emergencyLevel,
-                    importance: detail.importance,
                     relationId: detail.relationId,
+                    serviceDeskCode: detail.serviceDeskCode,
                     statusName: detail.statusName,
                     assistName: detail.assistName,//协助人 
                     reinforceName: detail.reinforceName//增援人 
                 }
             });
+
+            //根据不同单据类型获取附件作为维修前图片
+            WorkService.workPreFiles(detail.entity.sourceType, detail.relationId).then(preimages => {
+                this.setState({
+                    preimages
+                });
+            });
+
+            WorkService.weixiuExtra(id).then(images => {
+                const startimages = images.filter(t => t.type === '开工') || [];
+                this.setState({
+                    startimages
+                });
+            });
+
             //获取维修单的单据动态
             WorkService.getOperationRecord(id).then(res => {
                 this.setState({
@@ -110,11 +125,11 @@ export default class CompleteDetailPage extends BasePage {
             });
         });
 
-        WorkService.weixiuExtra(id).then(images => {
-            this.setState({
-                images
-            });
-        });
+        // WorkService.weixiuExtra(id).then(images => {
+        //     this.setState({
+        //         images
+        //     });
+        // });
     };
 
     click = (handle) => {
@@ -123,8 +138,8 @@ export default class CompleteDetailPage extends BasePage {
         //     UDToast.showInfo('请输入文字');
         //     return;
         // }
-        const wcimages = images.filter(t => t.type === '完成');
-        if (wcimages.length == 0 && !isUpload) {
+        //const wcimages = images.filter(t => t.type === '完成');
+        if (images.length == 0 && !isUpload) {
             UDToast.showInfo('请上传完成图片');
             return;
         }
@@ -152,10 +167,11 @@ export default class CompleteDetailPage extends BasePage {
         });
     };
 
-    lookImage = (lookImageIndex) => {
+    lookImage = (lookImageIndex, files) => {
         this.setState({
             lookImageIndex,
-            visible: true,
+            selectimages: files,//需要缓存是哪个明细的图片
+            visible: true
         });
     };
 
@@ -167,7 +183,7 @@ export default class CompleteDetailPage extends BasePage {
     }
 
     render() {
-        const { images, detail, communicates } = this.state;
+        const { preimages, startimages, detail, communicates } = this.state;
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView style={{ marginTop: this.state.KeyboardShown ? - 250 : 0, height: '100%' }}>
@@ -184,13 +200,16 @@ export default class CompleteDetailPage extends BasePage {
                     </Flex>
                     <Text style={styles.desc}>{detail.repairContent}</Text>
 
-                    <ListImages images={images} lookImage={this.lookImage} />
+                    <ListImages images={preimages} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, preimages)} />
 
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'> 
-                        <Text style={styles.left}>紧急：{detail.emergencyLevel}</Text>
-                        <Text style={styles.right}>重要：{detail.importance}</Text>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>紧急程度：{detail.emergencyLevel}</Text>
                     </Flex>
-                    
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.right}>重要程度：{detail.importance}</Text>
+                    </Flex>
+
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName}，{detail.createDate}</Text>
                     </Flex>
@@ -238,6 +257,14 @@ export default class CompleteDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>增援人：{detail.reinforceName}</Text>
                     </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>开工时间：{detail.beginDate}</Text>
+                    </Flex>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>预估完成时间：{detail.estimateDate}</Text>
+                    </Flex>
+                    <ListImages images={startimages} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, startimages)} />
 
                     <UploadImageView
                         style={{ marginTop: 10 }}

@@ -42,6 +42,9 @@ export default class WeixiuDetailPage extends BasePage {
             id,
             value: '',
             images: [],
+            startimages: [],
+            finishimages: [],
+            checkimages: [],
             detail: {},
             communicates: [],
             lookImageIndex: 0,
@@ -59,26 +62,36 @@ export default class WeixiuDetailPage extends BasePage {
             this.setState({
                 detail: {
                     ...detail.entity,
-                    serviceDeskCode: detail.serviceDeskCode,
-                    emergencyLevel: detail.emergencyLevel,
-                    importance: detail.importance,
                     relationId: detail.relationId,
+                    serviceDeskCode: detail.serviceDeskCode,
                     statusName: detail.statusName,
                     assistName: detail.assistName,//协助人 
                     reinforceName: detail.reinforceName//增援人 
                 }
             });
 
+            //根据不同单据类型获取附件作为维修前图片
+            WorkService.workPreFiles(detail.entity.sourceType, detail.relationId).then(images => {
+                this.setState({
+                    images
+                });
+            });
+
+            WorkService.weixiuExtra(id).then(images => {
+                const startimages = images.filter(t => t.type === '开工') || [];
+                const finishimages = images.filter(t => t.type === '完成') || [];
+                const checkimages = images.filter(t => t.type === '检验') || [];
+                this.setState({
+                    startimages,
+                    finishimages,
+                    checkimages
+                });
+            });
+
             WorkService.getOperationRecord(id).then(res => {
                 this.setState({
                     communicates: res
                 });
-            });
-        });
-
-        WorkService.weixiuExtra(id).then(images => {
-            this.setState({
-                images
             });
         });
     };
@@ -102,15 +115,27 @@ export default class WeixiuDetailPage extends BasePage {
         });
     };
 
-    lookImage = (lookImageIndex) => {
+    // lookImage = (lookImageIndex) => {
+    //     this.setState({
+    //         lookImageIndex,
+    //         visible: true
+    //     });
+    // };
+
+    lookImage = (lookImageIndex, files) => {
         this.setState({
             lookImageIndex,
+            selectimages: files,//需要缓存是哪个明细的图片
             visible: true
         });
     };
 
     render() {
-        const { images, detail, communicates } = this.state;
+        const { images,
+            startimages,
+            finishimages,
+            checkimages,
+            detail, communicates } = this.state;
         // const selectImg = require('../../../static/images/select.png');
         // const noselectImg = require('../../../static/images/no-select.png');
         return (
@@ -131,11 +156,14 @@ export default class WeixiuDetailPage extends BasePage {
 
                     <Text style={styles.desc}>{detail.repairContent}</Text>
 
-                    <ListImages images={images} lookImage={this.lookImage} />
+                    <ListImages images={images} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, images)} />
 
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'> 
-                        <Text style={styles.left}>紧急：{detail.emergencyLevel}</Text>
-                        <Text style={styles.right}>重要：{detail.importance}</Text>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>紧急程度：{detail.emergencyLevel}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.right}>重要程度：{detail.importance}</Text>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
@@ -180,7 +208,11 @@ export default class WeixiuDetailPage extends BasePage {
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>接单人：{detail.receiverName}，{detail.receiverDate}</Text>
+                        <Text style={styles.left}>接单人：{detail.receiverName}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>接单时间：{detail.receiverDate}</Text>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
@@ -191,35 +223,37 @@ export default class WeixiuDetailPage extends BasePage {
                         <Text style={styles.left}>增援人：{detail.reinforceName}</Text>
                     </Flex>
 
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>开工时间：{detail.beginDate}</Text>
+                    </Flex>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>预估完成时间：{detail.estimateDate}</Text>
+                    </Flex>
+                    <ListImages images={startimages} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, startimages)} />
 
-                    {/* {detail.testDate ?//进行了检验
-                        <Flex justify={'between'} style={{ margin: 15 }}>
-                            <Flex>
-                                <LoadImage img={detail.testResult === 1 ? selectImg : noselectImg}
-                                    style={{ width: 15, height: 15 }} />
-                                <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>合格</Text>
-                            </Flex>
-                            <Flex>
-                                <LoadImage img={detail.testResult === 0 ? selectImg : noselectImg}
-                                    style={{ width: 15, height: 15 }} />
-                                <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>不合格</Text>
-                            </Flex>
-                        </Flex> : null} */}
-
-
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>完成时间：{detail.endDate}，用时：{detail.useTime}分</Text>
+                    </Flex>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>完成情况：{detail.achieved}</Text>
+                    </Flex>
+                    <ListImages images={finishimages} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, finishimages)} />
+ 
                     {detail.testDate ?//进行了检验
                         <>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                                 <Text style={styles.left}>检验时间：{detail.testDate}</Text>
                             </Flex>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                                <Text style={styles.left}>检验人：{detail.testerName}</Text>
+                                <Text style={styles.left}>检验人：{detail.testerName}</Text> 
+                            </Flex>
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'> 
                                 <Text style={styles.right}>检验结果：{detail.testResult == 1 ? '合格' : '不合格'}</Text>
                             </Flex>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                                 <Text style={styles.left}>检验说明：{detail.testRemark}</Text>
                             </Flex>
-                            {/* <Text style={styles.desc}>{detail.testRemark}</Text> */}
+                            <ListImages images={checkimages} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, checkimages)} />
                         </> : null}
 
                     {/* <Communicates communicateClick={this.communicateClick} communicates={communicates} /> */}
@@ -229,7 +263,7 @@ export default class WeixiuDetailPage extends BasePage {
                 </ScrollView>
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
-                        imageUrls={this.state.images} />
+                        imageUrls={this.state.selectimages} />
                 </Modal>
             </CommonView>
         );

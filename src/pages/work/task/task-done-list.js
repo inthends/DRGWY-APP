@@ -58,20 +58,20 @@ class TaskDoneListPage extends BasePage {
             refreshing: false,
             visible: false,
             repairMajor: '全部',
-            time: '全部',
-            repairMajors: []//维修专业
+            time: '全部'
+            //repairMajors: []//维修专业
         };
     }
 
     componentDidMount() {
         //获取维修专业
-        WorkService.getCommonItems('RepairMajor').then(res => {
-            if (res.length > 0) {
-                this.setState({
-                    repairMajors: ['全部', ...res.map(item => item.title)]
-                });
-            }
-        });
+        // WorkService.getCommonItems('RepairMajor').then(res => {
+        //     if (res.length > 0) {
+        //         this.setState({
+        //             repairMajors: ['全部', ...res.map(item => item.title)]
+        //         });
+        //     }
+        // });
 
         //获取已经派单数量
         // const { repairMajor, time } = this.state;
@@ -189,7 +189,12 @@ class TaskDoneListPage extends BasePage {
 
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
-                            <Text>紧急：{item.emergencyLevel}，重要：{item.importance}，专业：{item.repairMajor}</Text>
+                            <Text>紧急程度：{item.emergencyLevel}，重要程度：{item.importance}</Text>
+                        </Flex>
+
+                        <Flex justify='between'
+                            style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
+                            <Text>维修专业：{item.repairMajor}，积分：{item.score}</Text>
                         </Flex>
 
                         <Flex justify='between'
@@ -215,13 +220,10 @@ class TaskDoneListPage extends BasePage {
 
 
     render() {
-        const { dataInfo, repairMajors, } = this.state;
+        const { dataInfo } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
                 <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
-                    {/* <MyPopover onChange={this.typeChange}
-                        titles={repairMajors}
-                        visible={true} /> */}
                     <MyPopover onChange={this.timeChange}
                         titles={['全部', '今日', '本周', '本月', '上月', '本年']}
                         visible={true} />

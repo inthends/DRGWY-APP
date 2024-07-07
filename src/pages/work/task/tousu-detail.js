@@ -13,7 +13,7 @@ import { Icon, Flex } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';
-import UDToast from '../../../utils/UDToast';
+// import UDToast from '../../../utils/UDToast';
 //import DashLine from '../../../components/dash-line';
 import WorkService from '../../work/work-service';
 import ListImages from '../../../components/list-images';
@@ -67,15 +67,17 @@ export default class TousuDetailPage extends BasePage {
                     statusName: detail.statusName,
                 },
             });
+
             WorkService.serviceCommunicates(detail.relationId).then(res => {
                 this.setState({
                     communicates: res,
                 });
             });
         });
+
         WorkService.tousuExtra(id).then(images => {
             this.setState({
-                images,
+                images
             });
         });
     };
@@ -90,7 +92,7 @@ export default class TousuDetailPage extends BasePage {
             return it;
         });
         this.setState({
-            communicates: d,
+            communicates: d
         });
     };
     cancel = () => {
@@ -102,7 +104,7 @@ export default class TousuDetailPage extends BasePage {
     lookImage = (lookImageIndex) => {
         this.setState({
             lookImageIndex,
-            visible: true,
+            visible: true
         });
     };
 
@@ -121,8 +123,7 @@ export default class TousuDetailPage extends BasePage {
                             <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 16, height: 16 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>  
-                    <Text style={styles.desc}>{detail.contents}</Text> 
-
+                    <Text style={styles.desc}>{detail.contents}</Text>
                     <ListImages images={images} lookImage={this.lookImage} />
 
                     <Flex style={[styles.every2]} justify='between'>

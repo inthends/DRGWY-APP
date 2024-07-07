@@ -111,8 +111,7 @@ class FeeChargeDetail extends BasePage {
                                     }}> {item.beginDate + '至' + item.endDate}</Text> : null}
                                 </Flex>
                             </Flex>
-                        ))}
-                        <WhiteSpace />
+                        ))} 
                         <WhiteSpace />
                         <Flex justify={'center'}>
                             <Text style={{

@@ -133,13 +133,12 @@ unfinish: 0
         return (
             <View style={styles.all}>
                 <Text style={styles.name}>工单绩效</Text>
-
                 <Flex style={styles.date} justify={'around'}>
                     {/*<Text style={styles.select}>2020-08</Text>*/}
                     <View style={styles.select}>
                         <MyPopover hiddenImage={true} onChange={begin => {
                             this.setState({
-                                begin,
+                                begin
                             }, () => {
                                 this.getData();
                             });
@@ -151,7 +150,7 @@ unfinish: 0
                     <View style={styles.select}>
                         <MyPopover hiddenImage={true} onChange={end => {
                             this.setState({
-                                end,
+                                end
                             }, () => {
                                 this.getData();
                             });

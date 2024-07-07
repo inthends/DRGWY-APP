@@ -45,7 +45,6 @@ export default class VisitDetailPage extends BasePage {
         this.state = {
             id,
             value: '',
-            // type,
             images: [],
             detail: {},
             communicates: [],
@@ -200,13 +199,15 @@ export default class VisitDetailPage extends BasePage {
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
 
-                    <Text style={[styles.desc]}>{detail.contents}</Text>
-
+                    <Text style={[styles.desc]}>{detail.contents}</Text> 
                     <ListImages images={images} lookImage={this.lookImage} />
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>紧急：{detail.emergencyLevel}</Text>
-                        <Text style={styles.right}>重要：{detail.importance}</Text>
+                        <Text style={styles.left}>紧急程度：{detail.emergencyLevel}</Text> 
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'> 
+                        <Text style={styles.right}>重要程度：{detail.importance}</Text>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>

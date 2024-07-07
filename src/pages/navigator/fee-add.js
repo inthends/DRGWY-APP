@@ -266,12 +266,17 @@ class FeeAddPage extends BasePage {
                     )}
                 </ScrollView>
                 {fee &&
-                    <Button type={'primary'}
-                        style={{
-                            margin: 20,
-                            width: 220,
-                            backgroundColor: Macro.work_blue }}
-                onPress={this.save}>保 存</Button>}
+                    <Flex justify={'center'}>
+                        <Button type={'primary'}
+                            style={{
+                                //margin: 20,
+                                width: 220,
+                                height: 40,
+                                marginBottom: 10,
+                                backgroundColor: Macro.work_blue
+                            }}
+                            onPress={this.save}>保存</Button>
+                    </Flex>}
             </CommonView>
         );
     }

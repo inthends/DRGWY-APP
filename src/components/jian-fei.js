@@ -55,7 +55,7 @@ export default class JianFei extends BasePage {
             this.props.onClose();
         });
     };
- 
+
     render() {
         const { types } = this.state;
         return (
@@ -93,7 +93,7 @@ export default class JianFei extends BasePage {
                         <TextareaItem
                             //style={styles.area}
                             placeholder={'请输入说明'}
-                            style={{ 
+                            style={{
                                 width: ScreenUtil.deviceWidth() - 150
                             }}
                             rows={4}
@@ -102,7 +102,8 @@ export default class JianFei extends BasePage {
                         />
                         <Button
                             style={{
-                                width: 220, marginTop: 10,
+                                width: 220,
+                                marginTop: 10,
                                 backgroundColor: Macro.work_blue
                             }}
                             type="primary"

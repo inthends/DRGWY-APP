@@ -22,6 +22,7 @@ import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
+// import MyPopover from '../../../components/my-popover';
 
 export default class DispatchDetailPage extends BasePage {
 
@@ -52,7 +53,10 @@ export default class DispatchDetailPage extends BasePage {
             selectPerson: null,
             assisPersons: [],
             repairmajor: null,
+            emergencyLevel: null,
+            importance: null,
             KeyboardShown: false
+
         };
         this.keyboardDidShowListener = null;
         this.keyboardDidHideListener = null;
@@ -74,9 +78,22 @@ export default class DispatchDetailPage extends BasePage {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
+
+                //选择维修专业
                 if (obj.state.params.repairmajor) {
                     const { repairmajor } = obj.state.params.repairmajor || {};
                     this.setState({ repairmajor });
+                }
+
+                //选择类型
+                if (obj.state.params.emergencyLevel) {
+                    const { emergencyLevel } = obj.state.params || null;
+                    this.setState({ emergencyLevel });
+                }
+
+                if (obj.state.params.importance) {
+                    const { importance } = obj.state.params || null;
+                    this.setState({ importance });
                 }
             }
         );
@@ -116,17 +133,19 @@ export default class DispatchDetailPage extends BasePage {
             this.setState({
                 detail: {
                     ...detail.entity,
-                    serviceDeskCode: detail.serviceDeskCode,
-                    emergencyLevel: detail.emergencyLevel,
-                    importance: detail.importance,
                     relationId: detail.relationId,
-                    statusName: detail.statusName
+                    serviceDeskCode: detail.serviceDeskCode,
+                    statusName: detail.statusName,
+                    assistName: detail.assistName,//协助人 
+                    reinforceName: detail.reinforceName//增援人 
                 },
                 repairmajor: {
                     id: detail.entity.repairMajorId,
                     name: detail.entity.repairMajor,
                     score: detail.entity.score
-                }
+                },
+                emergencyLevel: detail.entity.emergencyLevel,
+                importance: detail.entity.importance
             });
 
             // WorkService.weixiuExtra(id).then(images => { 
@@ -152,7 +171,7 @@ export default class DispatchDetailPage extends BasePage {
     };
 
     click = () => {
-        const { id, selectPerson, repairmajor, assisPersons, dispatchMemo } = this.state;
+        const { id, selectPerson, repairmajor, assisPersons, dispatchMemo, emergencyLevel, importance } = this.state;
         if (selectPerson == null) {
             UDToast.showInfo('请选择接单人');
             return;
@@ -168,6 +187,8 @@ export default class DispatchDetailPage extends BasePage {
 
         WorkService.paidan(
             id,
+            emergencyLevel,
+            importance,
             selectPerson.id,
             selectPerson.name,
             repairmajor.id,
@@ -209,10 +230,12 @@ export default class DispatchDetailPage extends BasePage {
     };
 
     render() {
-        const { images, detail, communicates, repairmajor, selectPerson, assisPersons } = this.state;
+        const { images, detail, communicates, repairmajor, selectPerson,
+            assisPersons, emergencyLevel, importance } = this.state;
         //转换name
         let personNames = assisPersons.map(item => item.name);
         let mystrNames = personNames.join('，');
+
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView style={{ marginTop: this.state.KeyboardShown ? -200 : 0, height: '100%' }}>
@@ -228,12 +251,8 @@ export default class DispatchDetailPage extends BasePage {
                         </TouchableWithoutFeedback>
                     </Flex>
                     <Text style={[styles.desc]}>{detail.repairContent}</Text>
-                    <ListImages images={images} lookImage={this.lookImage} />
 
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>紧急：{detail.emergencyLevel}</Text>
-                        <Text style={styles.right}>重要：{detail.importance}</Text>
-                    </Flex>
+                    <ListImages images={images} lookImage={this.lookImage} />
 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName}</Text>
@@ -258,6 +277,36 @@ export default class DispatchDetailPage extends BasePage {
                                 }
                             }}
                                 style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
+                        </Flex>
+                    </TouchableWithoutFeedback>
+
+                    <TouchableWithoutFeedback
+                        onPress={() => this.props.navigation.navigate('selectType', {
+                            parentName: 'paidan',
+                            type: 'emergencyLevel',
+                            title: '选择紧急程度'
+                        })}>
+                        <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                            <Flex>
+                                <Text style={styles.left}>紧急程度：</Text>
+                                <Text style={[styles.right, emergencyLevel ? { color: Macro.work_blue } : { color: '#666' }]}>{emergencyLevel ? emergencyLevel : "请选择紧急程度"}</Text>
+                            </Flex>
+                            <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
+                        </Flex>
+                    </TouchableWithoutFeedback>
+
+                    <TouchableWithoutFeedback
+                        onPress={() => this.props.navigation.navigate('selectType', {
+                            parentName: 'paidan',
+                            type: 'importance',
+                            title: '选择重要程度'
+                        })}>
+                        <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                            <Flex>
+                                <Text style={styles.left}>重要程度：</Text>
+                                <Text style={[styles.right, importance ? { color: Macro.work_blue } : { color: '#666' }]}>{importance ? importance : "请选择重要程度"}</Text>
+                            </Flex>
+                            <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
                         </Flex>
                     </TouchableWithoutFeedback>
 
@@ -298,7 +347,11 @@ export default class DispatchDetailPage extends BasePage {
                     </TouchableWithoutFeedback>
 
                     <TouchableWithoutFeedback
-                        onPress={() => this.props.navigation.navigate('selectRolePersonMulti', { type: 'receive', onSelect: this.onSelectAssisPerson })}>
+                        onPress={() => this.props.navigation.navigate('selectRolePersonMulti', {
+                            moduleId: 'Repair',
+                            enCode: 'receive',
+                            onSelect: this.onSelectAssisPerson
+                        })}>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                             <Flex>
                                 <Text style={styles.left}>协助人：</Text>
@@ -334,8 +387,7 @@ export default class DispatchDetailPage extends BasePage {
                                 height: 40
                             }}>派单</Button>
                     </Flex>
-                    <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
-
+                    <OperationRecords communicateClick={this.communicateClick} communicates={communicates} /> 
                 </ScrollView>
 
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>

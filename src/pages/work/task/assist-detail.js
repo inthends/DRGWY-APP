@@ -35,7 +35,7 @@ export default class AssistDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let id = common.getValueFromProps(this.props,'id');
+        let id = common.getValueFromProps(this.props, 'id');
         this.state = {
             id,
             value: '',
@@ -58,14 +58,19 @@ export default class AssistDetailPage extends BasePage {
             this.setState({
                 detail: {
                     ...detail.entity,
-                    serviceDeskCode: detail.serviceDeskCode,
-                    emergencyLevel: detail.emergencyLevel,
-                    importance: detail.importance,
                     relationId: detail.relationId,
+                    serviceDeskCode: detail.serviceDeskCode,
                     statusName: detail.statusName,
                     assistName: detail.assistName,//协助人 
                     reinforceName: detail.reinforceName//增援人 
                 }
+            });
+
+            //根据不同单据类型获取附件作为维修前图片
+            WorkService.workPreFiles(detail.entity.sourceType, detail.relationId).then(images => {
+                this.setState({
+                    images
+                });
             });
 
             //获取维修单的单据动态
@@ -76,11 +81,11 @@ export default class AssistDetailPage extends BasePage {
             });
         });
 
-        WorkService.weixiuExtra(id).then(images => {
-            this.setState({
-                images
-            });
-        });
+        // WorkService.weixiuExtra(id).then(images => {
+        //     this.setState({
+        //         images
+        //     });
+        // });
     };
 
     click = (handle) => {
@@ -148,11 +153,13 @@ export default class AssistDetailPage extends BasePage {
 
                     <ListImages images={images} lookImage={this.lookImage} />
 
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'> 
-                        <Text style={styles.left}>紧急：{detail.emergencyLevel}</Text>
-                        <Text style={styles.right}>重要：{detail.importance}</Text>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>紧急程度：{detail.emergencyLevel}</Text>
                     </Flex>
 
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.right}>重要程度：{detail.importance}</Text>
+                    </Flex>
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName}，{detail.createDate}</Text>
                     </Flex>
@@ -163,7 +170,7 @@ export default class AssistDetailPage extends BasePage {
                             <Text
                                 onPress={() => {
                                     if (detail.sourceType === '服务总台') {
-                                         this.props.navigation.navigate('service', { id: detail.relationId });
+                                        this.props.navigation.navigate('service', { id: detail.relationId });
                                     }
                                     else if (detail.sourceType === '维修单') {
                                         //检验不通过关联的旧的维修单

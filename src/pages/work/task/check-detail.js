@@ -38,13 +38,17 @@ export default class CheckDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let id = common.getValueFromProps(this.props,'id');
+        let id = common.getValueFromProps(this.props, 'id');
         //let type = common.getValueFromProps(this.props, 'type');
         this.state = {
             id,
             value: '',
-            result: 1,
-            images: [],
+            result: 1, 
+            preimages: [],
+            isUpload: false,//是否上传了图片
+            images: [],//检验图片
+            startimages: [],
+            finishimages: [],
             detail: {},
             communicates: [],
             lookImageIndex: 0,
@@ -92,11 +96,11 @@ export default class CheckDetailPage extends BasePage {
             this.setState({
                 detail: {
                     ...detail.entity,
-                    serviceDeskCode: detail.serviceDeskCode,
-                    emergencyLevel: detail.emergencyLevel,
-                    importance: detail.importance,
                     relationId: detail.relationId,
-                    statusName: detail.statusName
+                    serviceDeskCode: detail.serviceDeskCode,
+                    statusName: detail.statusName,
+                    assistName: detail.assistName,//协助人 
+                    reinforceName: detail.reinforceName//增援人 
                 }
             });
 
@@ -106,6 +110,22 @@ export default class CheckDetailPage extends BasePage {
             //     });
             // });
 
+            //根据不同单据类型获取附件作为维修前图片
+            WorkService.workPreFiles(detail.entity.sourceType, detail.relationId).then(preimages => {
+                this.setState({
+                    preimages
+                });
+            });
+
+            WorkService.weixiuExtra(id).then(images => {
+                const startimages = images.filter(t => t.type === '开工') || [];
+                const finishimages = images.filter(t => t.type === '完成') || [];
+                this.setState({
+                    startimages,
+                    finishimages
+                });
+            });
+
             //获取维修单的单据动态
             WorkService.getOperationRecord(id).then(res => {
                 this.setState({
@@ -114,19 +134,25 @@ export default class CheckDetailPage extends BasePage {
             });
         });
 
-        WorkService.weixiuExtra(id).then(images => {
-            this.setState({
-                images
-            });
-        });
+        // WorkService.weixiuExtra(id).then(images => {
+        //     this.setState({
+        //         images
+        //     });
+        // });
     };
 
     click = (handle) => {
-        const { id, value, result } = this.state;
+        const { id, value, images,isUpload, result } = this.state;
         if (!(value && value.length > 0)) {
             UDToast.showInfo('请输入检验情况');
             return;
         }
+
+        if (images.length == 0 && !isUpload) {
+            UDToast.showInfo('请上传检验图片');
+            return;
+        }
+
         WorkService.serviceHandle(handle, id, value, { result }).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
@@ -151,9 +177,17 @@ export default class CheckDetailPage extends BasePage {
         });
     };
 
-    lookImage = (lookImageIndex) => {
+    // lookImage = (lookImageIndex) => {
+    //     this.setState({
+    //         lookImageIndex,
+    //         visible: true
+    //     });
+    // };
+
+    lookImage = (lookImageIndex, files) => {
         this.setState({
             lookImageIndex,
+            selectimages: files,//需要缓存是哪个明细的图片
             visible: true
         });
     };
@@ -166,12 +200,19 @@ export default class CheckDetailPage extends BasePage {
     }
 
     render() {
-        const { images, detail, communicates, result } = this.state;
+        const {
+            preimages,
+            startimages,
+            finishimages,
+            detail,
+            communicates,
+            result } = this.state;
+
         const selectImg = require('../../../static/images/select.png');
         const noselectImg = require('../../../static/images/no-select.png');
+
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
-
                 <ScrollView style={{ marginTop: this.state.KeyboardShown ? -200 : 0, height: '100%' }}>
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.billCode}</Text>
@@ -183,19 +224,22 @@ export default class CheckDetailPage extends BasePage {
                             <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 16, height: 16 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
-                    {/* <DashLine /> */}
                     <Text style={styles.desc}>{detail.repairContent}</Text>
                     {/* <DashLine /> */}
-                    <ListImages images={images} lookImage={this.lookImage} />
- 
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'> 
-                        <Text style={styles.left}>紧急：{detail.emergencyLevel}</Text>
-                        <Text style={styles.right}>重要：{detail.importance}</Text>
+                    <ListImages images={preimages} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, preimages)} />
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>紧急程度：{detail.emergencyLevel}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.right}>重要程度：{detail.importance}</Text>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName}，{detail.createDate}</Text>
                     </Flex>
+
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every]}>
                             <Text style={styles.left}>关联单：</Text>
@@ -240,6 +284,22 @@ export default class CheckDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>增援人：{detail.reinforceName}</Text>
                     </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>开工时间：{detail.beginDate}</Text>
+                    </Flex>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>预估完成时间：{detail.estimateDate}</Text>
+                    </Flex>
+                    <ListImages images={startimages} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, startimages)} />
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>完成时间：{detail.endDate}，用时：{detail.useTime}分</Text>
+                    </Flex>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>完成情况：{detail.achieved}</Text>
+                    </Flex>
+                    <ListImages images={finishimages} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, finishimages)} />
 
                     <Flex justify={'between'} style={{ margin: 15 }}>
                         <TouchableWithoutFeedback onPress={() => this.setState({ result: 1 })}>
@@ -295,7 +355,7 @@ export default class CheckDetailPage extends BasePage {
 
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
-                        imageUrls={this.state.images} />
+                        imageUrls={this.state.selectimages} />
                 </Modal>
             </CommonView>
         );

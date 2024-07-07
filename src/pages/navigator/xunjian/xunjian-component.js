@@ -21,8 +21,6 @@ export default class XunJianDetailPage extends BasePage {
         this.keyboardDidHideListener = null;
     }
 
-
-
     isNormal(itemData) {
         let newlist = this.state.list;
         newlist.filter((item) => {
@@ -150,7 +148,7 @@ export default class XunJianDetailPage extends BasePage {
                                                 maxLength={500}
                                                 multiline={true}
                                                 editable={currentItem.result === 0}
-                                                keyboardType={'default'}
+                                                keyboardType={'default'} 
                                                 style={currentItem.result === 0 ? styles.textInput : { height: 1 }}
                                                 onChangeText={memo => {
                                                     currentItem.msg = memo;

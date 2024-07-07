@@ -73,7 +73,7 @@ class SelectRolePerson extends BasePage {
         const moduleId = navigation.state.params.moduleId;
         const enCode = navigation.state.params.enCode;
         let url = '/api/MobileMethod/MGetRoleList'; //获取角色
-        let url2 = '/api/MobileMethod/MGetReceiveByRoleUserList';//获取角色人员 
+        let url2 = '/api/MobileMethod/MGetUsersByRoleId';//获取角色人员 
         api.getData(url, this.state.selectBuilding ? { moduleId: moduleId, enCode: enCode, organizeId: this.state.selectBuilding.key } : {}).then(res => {
             Promise.all(
                 res.map(item => api.getData(url2, { roleId: item.roleId }))).

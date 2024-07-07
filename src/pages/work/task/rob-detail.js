@@ -37,7 +37,7 @@ export default class RobDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
-        let id = common.getValueFromProps(this.props,'id');
+        let id = common.getValueFromProps(this.props, 'id');
         this.state = {
             id,
             value: '',
@@ -60,13 +60,21 @@ export default class RobDetailPage extends BasePage {
             this.setState({
                 detail: {
                     ...detail.entity,
-                    serviceDeskCode: detail.serviceDeskCode,
-                    emergencyLevel: detail.emergencyLevel,
-                    importance: detail.importance,
                     relationId: detail.relationId,
-                    statusName: detail.statusName
+                    serviceDeskCode: detail.serviceDeskCode,
+                    statusName: detail.statusName,
+                    assistName: detail.assistName,//协助人 
+                    reinforceName: detail.reinforceName//增援人 
                 }
             });
+
+            //根据不同单据类型获取附件作为维修前图片
+            WorkService.workPreFiles(detail.entity.sourceType, detail.relationId).then(images => {
+                this.setState({
+                    images
+                });
+            });
+
             //获取维修单的单据动态
             WorkService.getOperationRecord(id).then(res => {
                 this.setState({
@@ -75,11 +83,11 @@ export default class RobDetailPage extends BasePage {
             });
         });
 
-        WorkService.weixiuExtra(id).then(images => {
-            this.setState({
-                images
-            });
-        });
+        // WorkService.weixiuExtra(id).then(images => {
+        //     this.setState({
+        //         images
+        //     });
+        // });
     };
 
     click = () => {
@@ -153,15 +161,18 @@ export default class RobDetailPage extends BasePage {
                     <Text style={styles.desc}>{detail.repairContent}</Text>
                     <ListImages images={images} lookImage={this.lookImage} />
 
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'> 
-                        <Text style={styles.left}>紧急：{detail.emergencyLevel}</Text>
-                        <Text style={styles.right}>重要：{detail.importance}</Text>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>紧急程度：{detail.emergencyLevel}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.right}>重要程度：{detail.importance}</Text>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName}，{detail.createDate}</Text>
                     </Flex>
-                    
+
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                             <Text style={styles.left}>关联单：</Text>

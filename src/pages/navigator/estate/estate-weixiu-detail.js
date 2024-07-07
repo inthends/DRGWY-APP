@@ -40,6 +40,9 @@ export default class EweixiuDetailPage extends BasePage {
             id,
             value: '',
             images: [],
+            startimages: [],
+            finishimages: [],
+            checkimages: [],
             detail: {},
             communicates: [],
             lookImageIndex: 0,
@@ -57,12 +60,30 @@ export default class EweixiuDetailPage extends BasePage {
             this.setState({
                 detail: {
                     ...detail.entity,
-                    serviceDeskCode: detail.serviceDeskCode,
-                    emergencyLevel: detail.emergencyLevel,
-                    importance: detail.importance,
                     relationId: detail.relationId,
-                    statusName: detail.statusName
+                    serviceDeskCode: detail.serviceDeskCode,
+                    statusName: detail.statusName,
+                    assistName: detail.assistName,//协助人 
+                    reinforceName: detail.reinforceName//增援人 
                 },
+            });
+
+            //根据不同单据类型获取附件作为维修前图片
+            WorkService.workPreFiles(detail.entity.sourceType, detail.relationId).then(images => {
+                this.setState({
+                    images
+                });
+            });
+
+            WorkService.weixiuExtra(id).then(images => {
+                const startimages = images.filter(t => t.type === '开工') || [];
+                const finishimages = images.filter(t => t.type === '完成') || [];
+                const checkimages = images.filter(t => t.type === '检验') || [];
+                this.setState({
+                    startimages,
+                    finishimages,
+                    checkimages
+                });
             });
 
             WorkService.getOperationRecord(id).then(res => {
@@ -72,12 +93,12 @@ export default class EweixiuDetailPage extends BasePage {
             });
         });
 
-        //维修单附件
-        WorkService.weixiuExtra(id).then(images => {
-            this.setState({
-                images
-            });
-        });
+        // //维修单附件
+        // WorkService.weixiuExtra(id).then(images => {
+        //     this.setState({
+        //         images
+        //     });
+        // });
     };
 
     communicateClick = (i) => {
@@ -99,17 +120,22 @@ export default class EweixiuDetailPage extends BasePage {
         });
     };
 
-    lookImage = (lookImageIndex) => {
+    lookImage = (lookImageIndex, files) => {
         this.setState({
             lookImageIndex,
+            selectimages: files,//需要缓存是哪个明细的图片
             visible: true
         });
     };
 
     render() {
-        const { images, detail, communicates } = this.state;
-        const selectImg = require('../../../static/images/select.png');
-        const noselectImg = require('../../../static/images/no-select.png');
+        const { images,
+            startimages,
+            finishimages,
+            checkimages,
+            detail, communicates } = this.state;
+        // const selectImg = require('../../../static/images/select.png');
+        // const noselectImg = require('../../../static/images/no-select.png');
 
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
@@ -127,11 +153,15 @@ export default class EweixiuDetailPage extends BasePage {
                     </Flex>
 
                     <Text style={[styles.desc, ScreenUtil.borderBottom()]}>{detail.repairContent}</Text>
-                    <ListImages images={images} lookImage={this.lookImage} />
-                    
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'> 
-                        <Text style={styles.left}>紧急：{detail.emergencyLevel}</Text>
-                        <Text style={styles.right}>重要：{detail.importance}</Text>
+                    <ListImages images={images} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, images)} />
+
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>紧急程度：{detail.emergencyLevel}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.right}>重要程度：{detail.importance}</Text>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
@@ -176,6 +206,22 @@ export default class EweixiuDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>增援人：{detail.reinforceName}</Text>
                     </Flex>
+ 
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>开工时间：{detail.beginDate}</Text>
+                    </Flex>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>预估完成时间：{detail.estimateDate}</Text>
+                    </Flex>
+                    <ListImages images={startimages} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, startimages)} />
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>完成时间：{detail.endDate}，用时：{detail.useTime}分</Text>
+                    </Flex>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>完成情况：{detail.achieved}</Text>
+                    </Flex>
+                    <ListImages images={finishimages} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, finishimages)} />
 
                     {detail.testDate ?//进行了检验
                         <>
@@ -183,13 +229,15 @@ export default class EweixiuDetailPage extends BasePage {
                                 <Text style={styles.left}>检验时间：{detail.testDate}</Text>
                             </Flex>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                                <Text style={styles.left}>检验人：{detail.testerName}</Text>
+                                <Text style={styles.left}>检验人：{detail.testerName}</Text> 
+                            </Flex>
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'> 
                                 <Text style={styles.right}>检验结果：{detail.testResult == 1 ? '合格' : '不合格'}</Text>
-                            </Flex> 
+                            </Flex>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                                 <Text style={styles.left}>检验说明：{detail.testRemark}</Text>
-                            </Flex> 
-                            {/* <Text style={styles.desc}>{detail.testRemark}</Text> */}
+                            </Flex>
+                            <ListImages images={checkimages} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, checkimages)} />
                         </> : null}
 
                     {/* 维修单显示操作记录，没有沟通记录 */}
@@ -199,7 +247,7 @@ export default class EweixiuDetailPage extends BasePage {
 
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
-                        imageUrls={this.state.images} />
+                        imageUrls={this.state.selectimages} />
                 </Modal>
             </CommonView>
         );

@@ -64,8 +64,7 @@ class TaskQDListPage extends BasePage {
         };
     }
 
-    componentDidMount() {
-
+    componentDidMount() { 
         //获取维修专业
         // WorkService.getCommonItems('RepairMajor').then(res => {
         //     if (res.length > 0) {
@@ -73,8 +72,7 @@ class TaskQDListPage extends BasePage {
         //             repairMajors: ['全部', ...res.map(item => item.title)]
         //         });
         //     }
-        // });
-
+        // }); 
         //获取已经派单数量
         // const { repairMajor, time } = this.state;
         // WorkService.workDispatchCount(repairMajor, time).then(count => {
@@ -217,7 +215,12 @@ class TaskQDListPage extends BasePage {
 
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
-                            <Text>紧急：{item.emergencyLevel}，重要：{item.importance}，专业：{item.repairMajor}</Text>
+                            <Text>紧急程度：{item.emergencyLevel}，重要程度：{item.importance}</Text>
+                        </Flex>
+
+                        <Flex justify='between'
+                            style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
+                            <Text>维修专业：{item.repairMajor}，积分：{item.score}</Text>
                         </Flex>
 
                         <Text style={{
@@ -234,7 +237,7 @@ class TaskQDListPage extends BasePage {
                                     onPress={() => this.qd(item.id)}
                                     activeStyle={{ backgroundColor: Macro.work_blue }}
                                     style={{
-                                        width: 220,
+                                        width: 130,
                                         width: 70,
                                         backgroundColor: Macro.work_blue,
                                         height: 30

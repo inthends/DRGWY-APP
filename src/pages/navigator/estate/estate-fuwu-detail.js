@@ -144,9 +144,12 @@ export default class EfuwuDetailPage extends BasePage {
 
                     <ListImages images={images} lookImage={this.lookImage} />
 
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'> 
-                        <Text style={styles.left}>紧急：{detail.emergencyLevel}</Text>
-                        <Text style={styles.right}>重要：{detail.importance}</Text>
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>紧急程度：{detail.emergencyLevel}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.right}>重要程度：{detail.importance}</Text>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
@@ -167,9 +170,11 @@ export default class EfuwuDetailPage extends BasePage {
                                 <Text style={styles.left}>回访时间：{detail.returnVisitDate}</Text>
                             </Flex>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                                <Text style={styles.left}>回访人：{detail.returnVisiterName}</Text> 
+                                <Text style={styles.left}>回访人：{detail.returnVisiterName}</Text>
+                            </Flex>
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                                 <Text style={styles.right}>回访方式：{detail.returnVisitMode}</Text>
-                            </Flex> 
+                            </Flex>
                             <Star star={detail.custEvaluate} />
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                                 <Text style={styles.left}>回访结果：{detail.returnVisitResult}</Text>
@@ -185,6 +190,8 @@ export default class EfuwuDetailPage extends BasePage {
                             </Flex>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                                 <Text style={styles.left}>检验人：{detail.testerName}</Text>
+                            </Flex>
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                                 <Text style={styles.right}>检验结果：{detail.testResult == 1 ? '合格' : '不合格'}</Text>
                             </Flex>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
@@ -208,9 +215,9 @@ export default class EfuwuDetailPage extends BasePage {
                                 }} style={[styles.right, { color: Macro.work_blue }]}>{detail.businessCode}</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
-                    ) : null} 
+                    ) : null}
                     <Communicates communicateClick={this.communicateClick} communicates={communicates} />
-                    <OperationRecords communicateClick={this.operationClick} communicates={operations} /> 
+                    <OperationRecords communicateClick={this.operationClick} communicates={operations} />
                 </ScrollView>
 
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
