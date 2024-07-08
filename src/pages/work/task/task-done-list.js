@@ -199,7 +199,7 @@ class TaskDoneListPage extends BasePage {
 
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
-                            <Text>是否允许抢单：{item.isQD == 1 ? '是' : '否'}</Text>
+                            <Text>是否允许抢单：{item.isQD == 1 ? '是' : '否'}，单据来源：{item.sourceType}</Text>
                         </Flex>
 
                         <Text style={{

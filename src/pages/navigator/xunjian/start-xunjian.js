@@ -138,12 +138,12 @@ class StartXunJianPage extends BasePage {
             } catch (error) { }
         }
         else {
-            
-            var errIndex = "";
+
+            let errIndex = "";
             let i = 0;
             inspectData.map((subItem) => {
                 i++;
-                if (subItem.msg == '') {
+                if (subItem.result == 0 && subItem.msg == '') {
                     errIndex += "," + i;
                 } else {
                     newInspectData.push({
@@ -158,7 +158,7 @@ class StartXunJianPage extends BasePage {
 
             if (errIndex != "") {
                 errIndex = errIndex.slice(1);
-                message.warn("第" + errIndex + "行异常情况说明为空，请检查");
+                UDToast.showError("第" + errIndex + "行异常情况说明为空，请检查");
                 return;
             }
         }
@@ -171,7 +171,7 @@ class StartXunJianPage extends BasePage {
                 });
             }
             else {
-                UDToast.showSuccess('请上传图片');
+                UDToast.showError('请上传图片');
             }
 
         } else {
@@ -259,7 +259,7 @@ class StartXunJianPage extends BasePage {
                     </Flex> */}
                 </ScrollView>
 
-                <Flex justify={'start'} align={'start'} style={{ width: ScreenUtil.deviceWidth() }}>
+                <Flex justify={'start'} align={'start'} style={{ width: ScreenUtil.deviceWidth(), marginTop: 10 }}>
                     <Flex wrap={'wrap'}>
                         {images.map((url, index) => {
                             return (
@@ -272,7 +272,7 @@ class StartXunJianPage extends BasePage {
                                         paddingLeft: 15,
                                         paddingRight: 5,
                                         //paddingBottom: 10,
-                                        //paddingTop: 10
+                                        paddingTop: 10
                                     }}>
                                         <LoadImageDelete style={{
                                             width: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
@@ -281,7 +281,7 @@ class StartXunJianPage extends BasePage {
                                         }}
                                             defaultImg={require('../../../static/images/add_pic.png')}
                                             img={url}
-                                            top={18}
+                                            top={17}
                                             delete={() => this.delete(url)} />
                                     </View>
                                 </TouchableWithoutFeedback>
@@ -290,25 +290,13 @@ class StartXunJianPage extends BasePage {
                     </Flex>
                 </Flex>
 
-                {/* <TouchableWithoutFeedback onPress={this.submit}>
-                    <Flex flex={1} justify='center' style={{
-                        width: '70%',
-                        marginLeft: '15%',
-                        marginRight: '15%',
-                        marginBottom: 40,
-                        backgroundColor: Macro.work_blue
-                    }}>
-                        <Text style={styles.word}>完成</Text>
-                    </Flex>
-                </TouchableWithoutFeedback> */}
-
                 <Flex justify={'center'}>
                     <Button onPress={this.submit} type={'primary'}
                         activeStyle={{ backgroundColor: Macro.work_blue }} style={{
                             width: 220,
                             backgroundColor: Macro.work_blue,
-                            marginTop: 20,
-                            marginBottom: 20,
+                            marginTop: 10,
+                            marginBottom: 15,
                             height: 40
                         }}>完成</Button>
                 </Flex>

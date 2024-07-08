@@ -347,7 +347,7 @@ class EcheckAddPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>检查组：</Text>
                         <MyPopoverRight
-                            onChange={(item) => { 
+                            onChange={(item) => {
                                 this.setState({ checkRole: item.name, checkRoleId: item.id });
                             }}
                             data={roles}
@@ -362,7 +362,7 @@ class EcheckAddPage extends BasePage {
                                 parentName: 'checkAdd',
                                 roleId: this.state.checkRoleId
                             })}>
-                            <Flex 
+                            <Flex
                             // style={{
                             //     paddingTop: 5,
                             //     paddingBottom: 5
@@ -464,8 +464,10 @@ class EcheckAddPage extends BasePage {
                                             <TouchableWithoutFeedback
                                                 onPress={() => this.props.navigation.navigate('selectRolePerson',
                                                     {
-                                                        moduleId: 'Inspect',
-                                                        enCode: '',
+                                                        // moduleId: 'Inspect',
+                                                        // enCode: '',
+                                                        moduleId: 'Repair',
+                                                        enCode: 'dispatch',
                                                         onSelect: this.onSelectPerson
                                                     })}>
                                                 <Flex justify='between' style={[{
@@ -504,39 +506,45 @@ class EcheckAddPage extends BasePage {
                                                 </TextInput>
                                             </Flex>
 
-                                            <Flex justify={'start'} align={'start'} style={{ width: ScreenUtil.deviceWidth() }}>
-                                                <Flex wrap={'wrap'}>
-                                                    {images.map((url, index) => {
-                                                        return (
-                                                            <TouchableWithoutFeedback key={index} onPress={() => {
-                                                                if (index === images.length - 1 && url.length === 0) {
-                                                                    this.selectImages();
-                                                                }
-                                                            }}>
-                                                                <View style={{
-                                                                    paddingLeft: 15,
-                                                                    paddingRight: 5,
-                                                                    //paddingBottom: 10,
-                                                                    paddingTop: 15
+                                            <ScrollView>
+                                                <Flex justify={'start'} align={'start'}
+                                                //style={{ width: ScreenUtil.deviceWidth() }}
+                                                >
+                                                    <Flex wrap={'wrap'}>
+                                                        {images.map((url, index) => {
+                                                            return (
+                                                                <TouchableWithoutFeedback key={index} onPress={() => {
+                                                                    if (index === images.length - 1 && url.length === 0) {
+                                                                        this.selectImages();
+                                                                    }
                                                                 }}>
-                                                                    <LoadImageDelete
-                                                                        style={{
-                                                                            width: (ScreenUtil.deviceWidth() - 15) / 5.0 - 20,
-                                                                            height: (ScreenUtil.deviceWidth() - 15) / 5.0 - 20,
-                                                                            borderRadius: 5
-                                                                        }}
-                                                                        defaultImg={require('../../../static/images/add_pic.png')}
-                                                                        img={url}
-                                                                        top={10}
-                                                                        delete={() => this.delete(url)}
-                                                                    />
-                                                                </View>
-                                                            </TouchableWithoutFeedback>
-                                                        );
-                                                    })}
+                                                                    <View style={{
+                                                                        paddingLeft: 15,
+                                                                        paddingRight: 5,
+                                                                        //paddingBottom: 10,
+                                                                        paddingTop: 15
+                                                                    }}>
+                                                                        <LoadImageDelete
+                                                                            style={{
+                                                                                width: (ScreenUtil.deviceWidth() - 15) / 5.0 - 20,
+                                                                                height: (ScreenUtil.deviceWidth() - 15) / 5.0 - 20,
+                                                                                borderRadius: 5
+                                                                            }}
+                                                                            defaultImg={require('../../../static/images/add_pic.png')}
+                                                                            img={url}
+                                                                            top={10}
+                                                                            delete={() => this.delete(url)}
+                                                                        />
+                                                                    </View>
+                                                                </TouchableWithoutFeedback>
+                                                            );
+                                                        })}
+                                                    </Flex>
                                                 </Flex>
-                                            </Flex>
+                                            </ScrollView>
+
                                         </CommonView>
+
                                         <Flex style={{ marginTop: 10 }}>
                                             <Button onPress={this.addDetail} type={'primary'}
                                                 activeStyle={{ backgroundColor: Macro.work_blue }}

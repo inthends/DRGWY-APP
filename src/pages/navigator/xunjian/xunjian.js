@@ -92,7 +92,7 @@ class XunJianPage extends BasePage {
         // this.props.navigation.navigate('xunjianBeforeStart', {
         //     'data': {
         //         person,
-        //         pointId: 'bfb92619-10b6-4466-b3d6-87c7c00927dd'
+        //         pointId: ''
         //     }
         // });
 
@@ -102,6 +102,7 @@ class XunJianPage extends BasePage {
                 needBack: '1'
             }
         });
+
     };
 
     componentDidMount() {

@@ -20,7 +20,7 @@ export default class ListImages extends Component {
                             <TouchableWithoutFeedback key={item.uid} onPress={() => this.props.lookImage && this.props.lookImage(index, item.uid)}>
                                 <View style={{
                                     paddingLeft: 15,
-                                    paddingRight: 5,
+                                    //paddingRight: 5,
                                     paddingBottom: 10,
                                     paddingTop: 10,
                                 }}>

@@ -137,8 +137,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                 operations: res
             });
         });
-
-
+ 
         WorkService.serviceExtra(id).then(images => {
             this.setState({
                 images
