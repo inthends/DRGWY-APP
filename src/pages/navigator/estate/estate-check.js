@@ -54,7 +54,7 @@ class EstateCheckPage extends BasePage {
             },
             refreshing: false,
             //ym: common.getYM('2020-01'),
-            billType: '全部',
+            billType: '我的',
             billStatus: -1,
             //time: common.getCurrentYearAndMonth(),
             time: '全部',
@@ -111,7 +111,7 @@ class EstateCheckPage extends BasePage {
                 if (dataInfo.pageIndex > 1) {
                     dataInfo = {
                         ...dataInfo,
-                        data: [...this.state.dataInfo.data, ...dataInfo.data],
+                        data: [...this.state.dataInfo.data, ...dataInfo.data]
                     };
                 }
                 this.setState({

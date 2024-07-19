@@ -1,12 +1,14 @@
 import React from 'react';
 import {
     Text,
+    View,
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
     ScrollView,
     Modal,
-    Alert
+    Alert,
+    TextInput
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Button, Icon, Flex } from '@ant-design/react-native';
@@ -49,12 +51,19 @@ export default class ApproveDetailPage extends BasePage {
             communicates: [],
             selectimages: [],//选中的图片集合，用于弹出展示
             lookImageIndex: 0,
-            visible: false
+            visible: false,
+            isModifyRepairScore: false,
+            showClose: false,
+            appScore: null
         };
     }
 
     componentDidMount() {
         this.getData();
+        //获取附件是否允许修改维修单积分 
+        WorkService.getSetting('isModifyRepairScore').then(res => {
+            this.setState({ isModifyRepairScore: res });
+        });
     }
 
     getData = () => {
@@ -95,7 +104,6 @@ export default class ApproveDetailPage extends BasePage {
                     communicates: res
                 });
             });
-
         });
 
     };
@@ -108,11 +116,20 @@ export default class ApproveDetailPage extends BasePage {
             {
                 text: '确定',
                 onPress: () => {
-                    const { id } = this.state;
-                    WorkService.approve(id).then(res => {
-                        UDToast.showInfo('审核完成');
-                        this.props.navigation.goBack();
-                    });
+                    const { isModifyRepairScore, detail, id } = this.state;
+                    if (isModifyRepairScore == true) {
+                        //需要弹出修正积分界面
+                        this.setState({
+                            appScore: detail.score.toString(),//转换为字符串
+                            showClose: true
+                        });
+                    }
+                    else {
+                        WorkService.approve(id,null).then(res => {
+                            UDToast.showInfo('审核完成');
+                            this.props.navigation.goBack();
+                        });
+                    }
                 }
             }
             ], { cancelable: false });
@@ -145,15 +162,23 @@ export default class ApproveDetailPage extends BasePage {
         });
     };
 
+    setScore = () => {
+        this.setState({ showClose: true });
+        WorkService.approve(id,this.state.appScore).then(res => {
+            UDToast.showInfo('审核完成');
+            this.props.navigation.goBack();
+        });
+    };
+
     render() {
-        const { images,
+        const {
+            images,
             startimages,
             finishimages,
             checkimages,
             detail,
             communicates } = this.state;
-        // const selectImg = require('../../../static/images/select.png');
-        // const noselectImg = require('../../../static/images/no-select.png');
+
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView style={{ height: '100%' }}>
@@ -183,6 +208,7 @@ export default class ApproveDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName}，{detail.createDate}</Text>
                     </Flex>
+
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                             <Text style={styles.left}>关联单：</Text>
@@ -220,6 +246,11 @@ export default class ApproveDetailPage extends BasePage {
                         <Text style={styles.left}>维修专业：{detail.repairMajor}，积分：{detail.score}</Text>
                     </Flex>
 
+                    {/* {this.state.appScore != null ?
+                        <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                            <Text style={styles.leftscore}>修正积分：{this.state.appScore}</Text>
+                        </Flex> : null} */}
+
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>接单人：{detail.receiverName}，{detail.receiverDate}</Text>
                     </Flex>
@@ -235,14 +266,17 @@ export default class ApproveDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>开工时间：{detail.beginDate}</Text>
                     </Flex>
+
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>预估完成时间：{detail.estimateDate}</Text>
                     </Flex>
+
                     <ListImages images={startimages} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, startimages)} />
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>完成时间：{detail.endDate}，用时：{detail.useTime}分</Text>
                     </Flex>
+
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>完成情况：{detail.achieved}</Text>
                     </Flex>
@@ -285,12 +319,65 @@ export default class ApproveDetailPage extends BasePage {
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                         imageUrls={this.state.selectimages} />
                 </Modal>
-            </CommonView>
+
+                {
+                    this.state.showClose && (
+                        //修正积分
+                        <View style={styles.mengceng}>
+                            <Flex direction={'column'} justify={'center'} align={'center'}
+                                style={{
+                                    flex: 1, padding: 25,
+                                    backgroundColor: 'rgba(178,178,178,0.5)'
+                                }}>
+                                <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
+                                    <View style={[styles.input, ScreenUtil.borderBottom()]}
+                                    >
+                                        <TextInput
+                                            keyboardType={'decimal-pad'}
+                                            value={this.state.appScore}
+                                            onChangeText={appScore => this.setState({ appScore })}
+                                            placeholder='请输入积分' />
+                                    </View>
+                                    <Flex style={{ marginTop: 15 }}>
+                                        <Button onPress={() => this.setScore()}
+                                            type={'primary'}
+                                            activeStyle={{ backgroundColor: Macro.work_blue }}
+                                            style={{
+                                                width: 70,
+                                                backgroundColor: Macro.work_blue,
+                                                height: 35
+                                            }}>确认</Button>
+
+                                        <Button onPress={() => {
+                                            this.setState({ showClose: false });
+                                        }}
+                                            type={'primary'}
+                                            activeStyle={{ backgroundColor: Macro.work_blue }}
+                                            style={{
+                                                marginLeft: 15,
+                                                width: 70,
+                                                backgroundColor: '#666',
+                                                borderWidth: 0,
+                                                height: 35
+                                            }}>取消</Button>
+                                    </Flex>
+                                </Flex>
+                            </Flex>
+                        </View>
+                    )
+                }
+
+            </CommonView >
         );
     }
 }
 
 const styles = StyleSheet.create({
+
+    input: {
+        height: 50, width: 160
+    },
+
     every: {
         marginLeft: 15,
         marginRight: 15,
@@ -300,6 +387,10 @@ const styles = StyleSheet.create({
     left: {
         fontSize: 14,
         color: '#404145'
+    },
+    leftscore: {
+        fontSize: 14,
+        color: 'red'
     },
     right: {
         fontSize: 14,
@@ -322,5 +413,12 @@ const styles = StyleSheet.create({
     word: {
         color: 'white',
         fontSize: 16
+    },
+    mengceng: {
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        width: '100%',
+        height: '100%'
     }
 });

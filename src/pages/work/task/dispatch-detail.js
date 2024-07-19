@@ -173,12 +173,12 @@ export default class DispatchDetailPage extends BasePage {
     click = () => {
         const { id, selectPerson, repairmajor, assisPersons, dispatchMemo, emergencyLevel, importance } = this.state;
         if (selectPerson == null) {
-            UDToast.showInfo('请选择接单人');
+            UDToast.showError('请选择接单人');
             return;
         }
 
         if (repairmajor == null || repairmajor.id == null) {
-            UDToast.showInfo('请选择维修专业');
+            UDToast.showError('请选择维修专业');
             return;
         }
 

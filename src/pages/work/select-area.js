@@ -1,3 +1,4 @@
+//选择区域
 import React from 'react';
 import {
     View,
@@ -17,7 +18,8 @@ import CommonView from '../../components/CommonView';
 import Macro from '../../utils/macro';
 const Item = List.Item;
 
-export default class SelectAddressPage extends BasePage {
+//只选择项目、楼栋
+export default class SelectAreaPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
             title: navigation.getParam('title'),
@@ -49,6 +51,11 @@ export default class SelectAddressPage extends BasePage {
         if (navigation.state.params.roleId)
             myroleId = navigation.state.params.roleId;
         this.setState({ parentName, roleId: myroleId });
+        //获取加载层级
+        WorkService.getSetting('loadAssetType').then(res => {
+            this.setState({ loadAssetType: res });
+        });
+
         this.getData(myroleId);
     }
 
@@ -79,9 +86,24 @@ export default class SelectAddressPage extends BasePage {
     };
 
     next = (item) => {
-        if (item.type !== 5) {
+        let loadAssetType = this.state.loadAssetType;
+        //根据配置项来加载区域
+        let type = '1';
+        if (loadAssetType == '项目') {
+            type = '1';
+        } else if (loadAssetType == '楼栋') {
+            //包含楼栋和车库2和8
+            type = '2,8';
+        } else if (loadAssetType == '楼层') {
+            type = '4';
+        }
+        else if (loadAssetType == '房产') {
+            //包含房间和车位
+            type = '6,9';
+        }
+        if (type.indexOf(item.type)) {
             const { parentName, roleId } = this.state;
-            this.props.navigation.push('selectAddress', {
+            this.props.navigation.push('selectArea', {
                 'data': {
                     ...item
                 },
@@ -118,7 +140,7 @@ export default class SelectAddressPage extends BasePage {
                     type = 5;
                     this.props.navigation.setParams({
                         data: parent,
-                        title: '选择房屋',
+                        title: '选择房产',
                     });
                     break;
                 }
@@ -141,28 +163,39 @@ export default class SelectAddressPage extends BasePage {
         this.setState({
             parent,
             refreshing: true
-        }); 
-        //alert(params.roleId);
+        });
+
         WorkService.getPStructs(params).then(items => {
             this.setState({ items, refreshing: false });
         }).catch(err => this.setState({ refreshing: false }));
     };
 
     render() {
-        const { items, parent, selectItem } = this.state;
+        const { items, parent, selectItem, loadAssetType } = this.state;
+        //根据配置项来加载区域
+        let type = '1';
+        if (loadAssetType == '项目') {
+            type = '1';
+        } else if (loadAssetType == '楼栋') {
+            //包含楼栋和车库2和8
+            type = '2,8';
+        } else if (loadAssetType == '楼层') {
+            type = '4';
+        }
+        else if (loadAssetType == '房产') {
+            //包含房间和车位
+            type = '6,9';
+        }
 
         return (
             <CommonView style={{
                 flex: 1,
                 backgroundColor: '#eee'
             }}>
-                <View
-                    style={{ flex: 1 }}
-                >
+                <View style={{ flex: 1 }}>
                     {parent ?
                         <Item arrow="empty">
-                            {parent.allName}
-                            {/* {parent ? parent.allName : '/'} */}
+                            {parent.allName}{/* {parent ? parent.allName : '/'} */}
                         </Item> : null}
 
                     <ScrollView style={{ flex: 1 }} refreshControl={
@@ -173,7 +206,9 @@ export default class SelectAddressPage extends BasePage {
                     }>
                         <List>
                             {items.map((item, index) => (
-                                <Item key={index} arrow={item.type !== 5 ? 'horizontal' : 'empty'}
+                                <Item key={index}
+                                    // arrow={item.type !== 2 ? 'horizontal' : 'empty'}
+                                    arrow={type.indexOf(item.type) ? 'horizontal' : 'empty'}
                                     onPress={() => this.next(item)}>
                                     <Flex>
                                         <TouchableWithoutFeedback onPress={() => this.setState({
@@ -212,9 +247,8 @@ export default class SelectAddressPage extends BasePage {
                             type="primary"
                             onPress={() => this.submit()}>确定</Button>
                     </Flex>
-
                 </View>
-            </CommonView>
+            </CommonView >
         );
     }
 }

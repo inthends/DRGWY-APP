@@ -207,6 +207,11 @@ export default class WeixiuDetailPage extends BasePage {
                         <Text style={styles.left}>维修专业：{detail.repairMajor}，积分：{detail.score}</Text>
                     </Flex>
 
+                    {detail.appScore != null ?
+                        <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                            <Text style={styles.leftscore}>修正积分：{detail.appScore}</Text>
+                        </Flex> : null}
+
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>接单人：{detail.receiverName}</Text>
                     </Flex>

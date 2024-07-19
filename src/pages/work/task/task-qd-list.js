@@ -147,7 +147,7 @@ class TaskQDListPage extends BasePage {
             if (res.flag == true) {
                 UDToast.showInfo('抢单成功');
             } else {
-                UDToast.showInfo('抢单失败，' + res.msg);
+                UDToast.showError('抢单失败，' + res.msg);
             }
 
             this.onRefresh();

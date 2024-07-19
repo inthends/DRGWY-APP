@@ -19,21 +19,21 @@ export default class XunJianDetailViewPage extends BasePage {
         const noselectImg = require('../../../static/images/no-select.png');
 
         return (
-            <ScrollView> 
+            <ScrollView>
                 <Flex direction={'column'} align={'start'}>
                     <Flex style={{ width: ScreenUtil.deviceWidth() - 30 }} justify={'between'}>
                         <Text style={styles.work}>{data.taskTime} {data.projectName}</Text>
-                    </Flex> 
+                    </Flex>
                     <Text style={styles.title}>计划</Text>
                     <Flex style={{ width: ScreenUtil.deviceWidth() - 30 }} justify={'between'}>
                         <Text style={styles.desc}>{data.planTime}</Text>
                         <Text style={styles.desc}>{data.roleName}</Text>
-                    </Flex> 
+                    </Flex>
                     <Text style={styles.title}>执行</Text>
                     <Flex style={{ width: ScreenUtil.deviceWidth() - 30, marginBottom: 10 }} justify={'between'}>
                         <Text style={styles.desc}>{data.exctuteTime}</Text>
                         <Text style={styles.desc}>{data.excuteUserName}</Text>
-                    </Flex> 
+                    </Flex>
                     <Text style={styles.title}>内容</Text>
                     {!!data.contents && data.contents.map((item, index) => {
                         return <Fragment key={item.id}>
@@ -56,7 +56,7 @@ export default class XunJianDetailViewPage extends BasePage {
                                             <Flex>
                                                 <LoadImage img={item.result === 1 ? selectImg : noselectImg}
                                                     style={{ width: 15, height: 15 }} />
-                                                <Text style={{ color: '#666', fontSize: 16, marginLeft: 15 }}>正常</Text>
+                                                <Text style={{ color: '#333333', fontSize: 14, marginLeft: 15 }}>正常</Text>
                                             </Flex>
                                         </TouchableWithoutFeedback>
 
@@ -65,7 +65,7 @@ export default class XunJianDetailViewPage extends BasePage {
                                                 <Flex>
                                                     <LoadImage img={item.result === 0 ? selectImg : noselectImg}
                                                         style={{ width: 15, height: 15 }} />
-                                                    <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>异常</Text>
+                                                    <Text style={{ color: '#333333', fontSize: 14, paddingLeft: 15 }}>异常</Text>
                                                 </Flex>
                                             </TouchableWithoutFeedback>
 
@@ -73,7 +73,7 @@ export default class XunJianDetailViewPage extends BasePage {
                                                 multiline={true}
                                                 editable={false}
                                                 keyboardType={'default'}
-                                                style={item.result === 0 ? styles.textInput : { height: 1 }} 
+                                                style={item.result === 0 ? styles.textInput : { height: 1 }}
                                             ></TextInput>
                                         </View>
                                     </View>
@@ -102,23 +102,22 @@ const styles = StyleSheet.create({
         fontSize: 16,
         paddingTop: 10
     },
-
     contentRect: {
         width: '100%',
         marginTop: 5,
-        borderColor: '#eeeeee',
+        borderColor:'#eeeeee',
         borderWidth: 1,
         borderRadius: 5,
         padding: 5
     },
 
     blueText: {
-        color: '#5f96eb',
+        color: Macro.work_blue,//'#5f96eb',
         fontSize: 14,
         marginVertical: 2
     },
     normalText: {
-        color: '#999999',
+        color: '#333333', //'#999999',
         fontSize: 14,
         marginVertical: 2
     },

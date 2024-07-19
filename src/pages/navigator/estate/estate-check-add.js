@@ -28,6 +28,7 @@ import UDToast from '../../../utils/UDToast';
 import ListImages from '../../../components/list-images';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import MyPopoverRight from '../../../components/my-popover-right';
+import ActionPopover from '../../../components/action-popover';
 
 class EcheckAddPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -44,7 +45,9 @@ class EcheckAddPage extends BasePage {
 
     constructor(props) {
         super(props);
-        const { id, address } = common.getValueFromProps(this.props) || {};
+        const { id
+            //, address
+        } = common.getValueFromProps(this.props) || {};
         this.state = {
             id,
             detailId: '',
@@ -52,7 +55,7 @@ class EcheckAddPage extends BasePage {
             showAdd: false,
             pageIndex: 1,
             memo: '',
-            address,
+            address: null,
             selectPerson: null,
             checkMemo: '',
             rectification: '',
@@ -66,7 +69,8 @@ class EcheckAddPage extends BasePage {
             },
             roles: [],
             checkRole: '',//检查的角色
-            checkRoleId: ''
+            checkRoleId: '',
+            operateType: 'add'//明细操作类型，添加还是修改
         };
     }
 
@@ -191,12 +195,62 @@ class EcheckAddPage extends BasePage {
         });
     };
 
+    deleteDetail = (id) => {
+        Alert.alert(
+            '请确认',
+            '是否删除？',
+            [
+                {
+                    text: '取消',
+                    onPress: () => {
+                    },
+                    style: 'cancel',
+                },
+                {
+                    text: '确定',
+                    onPress: () => {
+                        WorkService.deleteCheckDetail(id).then(res => {
+                            this.onRefresh();
+                        });
+                    },
+                },
+            ],
+            { cancelable: false }
+        );
+    };
+
     _renderItem = ({ item, index }) => {
+
         return (
             <Flex direction='column' align={'start'}
                 style={[styles.card, index === 0 ? styles.blue : styles.orange]}>
                 <Flex justify='between' style={{ width: '100%' }}>
                     <Text style={styles.title}>{item.allName}</Text>
+                    <ActionPopover
+                        textStyle={{ fontSize: 14 }}
+                        hiddenImage={true}
+                        onChange={(title) => {
+                            if (title === '删除') {
+                                this.deleteDetail(item.id);
+                            } else if (title === '修改') {
+                                let myimages = [...this.state.images];
+                                myimages.splice(myimages.length - 1, 0);
+                                this.setState({
+                                    showAdd: true,
+                                    operateType: 'modify',
+                                    id: item.mainId,
+                                    images: myimages,
+                                    detailId: item.id,
+                                    address: { id: item.unitId, allName: item.allName, organizeId: item.organizeId },//设置默认值
+                                    selectPerson: { id: item.dutyUserId, name: item.dutyUserName },
+                                    checkMemo: item.memo,
+                                    rectification: item.rectification
+                                });
+                            }
+                        }}
+                        titles={['修改', '删除']}
+                        visible={true} />
+
                 </Flex>
                 <Flex style={styles.line} />
                 <Flex align={'start'} direction={'column'}>
@@ -240,8 +294,12 @@ class EcheckAddPage extends BasePage {
     };
 
 
+
     addDetail = () => {
-        const { id, detailId, checkRole, checkRoleId, memo, address, selectPerson, checkMemo, rectification } = this.state;
+        const { id, detailId, checkRole, checkRoleId, memo,
+            address, selectPerson, checkMemo,
+            rectification, operateType } = this.state;
+
         if (!checkRole) {
             UDToast.showError('请选择检查角色');
             return;
@@ -274,14 +332,19 @@ class EcheckAddPage extends BasePage {
             selectPerson.id,
             selectPerson.name,
             checkMemo,
-            rectification
+            rectification,
+            operateType
         ).then(() => {
-            UDToast.showError('添加成功');
+            if (operateType == 'add')
+                UDToast.showError('添加成功');
+            else
+                UDToast.showError('修改成功');
             this.setState({ showAdd: false });
             this.getData();
             this.onRefresh();
         });
     };
+
 
     //上传图片
     selectImages = () => {
@@ -357,8 +420,8 @@ class EcheckAddPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>检查区域：</Text>
                         <TouchableWithoutFeedback
-                            onPress={() => this.props.navigation.navigate('selectAddress', {
-                                title: '选择区域',
+                            onPress={() => this.props.navigation.navigate('selectArea', {
+                                title: '选择检查区域',
                                 parentName: 'checkAdd',
                                 roleId: this.state.checkRoleId
                             })}>
@@ -374,7 +437,6 @@ class EcheckAddPage extends BasePage {
                             </Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
-
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <TextInput
                             maxLength={500}
@@ -411,6 +473,10 @@ class EcheckAddPage extends BasePage {
                     </Flex>
                     <Flex justify={'center'}>
                         <Button onPress={() => {
+                            if (address == null || address.id == null) {
+                                UDToast.showError('选择检查区域');
+                                return;
+                            }
                             let mydetailId = this.guid();
                             this.setState({
                                 showAdd: true,
@@ -419,7 +485,8 @@ class EcheckAddPage extends BasePage {
                                 address: address,//设置默认值
                                 selectPerson: null,
                                 checkMemo: '',
-                                rectification: ''
+                                rectification: '',
+                                operateType: 'add'
                             });
                         }}
                             type={'primary'}
@@ -432,6 +499,7 @@ class EcheckAddPage extends BasePage {
                             }}>添加明细</Button>
                     </Flex>
                 </Flex>
+
                 {
                     this.state.showAdd && (
                         <View style={styles.mengceng}>
@@ -445,7 +513,7 @@ class EcheckAddPage extends BasePage {
                                             <TouchableWithoutFeedback
                                                 onPress={() => this.props.navigation.navigate('selectAddress',
                                                     {
-                                                        title: '选择区域',
+                                                        title: '选择位置',
                                                         parentName: 'checkAdd',
                                                         roleId: this.state.checkRoleId
                                                     })}>
@@ -462,12 +530,9 @@ class EcheckAddPage extends BasePage {
                                             </TouchableWithoutFeedback>
 
                                             <TouchableWithoutFeedback
-                                                onPress={() => this.props.navigation.navigate('selectRolePerson',
+                                                onPress={() => this.props.navigation.navigate('selectRolePersonInspect',
                                                     {
-                                                        // moduleId: 'Inspect',
-                                                        // enCode: '',
-                                                        moduleId: 'Repair',
-                                                        enCode: 'dispatch',
+                                                        organizeId: address.organizeId,
                                                         onSelect: this.onSelectPerson
                                                     })}>
                                                 <Flex justify='between' style={[{
@@ -542,7 +607,6 @@ class EcheckAddPage extends BasePage {
                                                     </Flex>
                                                 </Flex>
                                             </ScrollView>
-
                                         </CommonView>
 
                                         <Flex style={{ marginTop: 10 }}>

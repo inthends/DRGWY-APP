@@ -43,7 +43,7 @@ import EfuwuDetailPage from '../navigator/estate/estate-fuwu-detail';
 import EtousuDetailPage from '../navigator/estate/estate-tousu-detail';
 import EweixiuDetailPage from '../navigator/estate/estate-weixiu-detail';
 import EstateWeixiuPage from '../navigator/estate/estate-weixiu';
-import EstateTousuPage from '../navigator/estate/estate-tousu';
+//import EstateTousuPage from '../navigator/estate/estate-tousu';
 
 //工作台
 
@@ -60,7 +60,7 @@ import ScanSS from '../navigator/scan-ss';
 import XunJianPage from '../navigator/xunjian/xunjian';
 import TaskPage from '../navigator/xunjian/task';
 import XunJianDetailPage from '../navigator/xunjian/xunjian-detail';
-import SelectXunJianPerson from '../navigator/xunjian/select-xunjian';
+// import SelectXunJianPerson from '../navigator/xunjian/select-xunjian';
 import StartXunJianPage from '../navigator/xunjian/start-xunjian';
 
 //固定资产
@@ -80,6 +80,8 @@ import FeeChargeDetail from '../navigator/fee-charge-detail';
 
 import SelectAddressPage from '../work/select-address';
 import SelectRolePerson from '../work/select-role-person';
+import SelectRolePersonInspect from '../work/select-role-person-inspect';
+import SelectAreaPage from '../work/select-area';
 
 import ServiceDeskDetailPage from '../work/task/servicedesk-detail';
 import DispatchDetailPage from '../work/task/dispatch-detail';
@@ -238,6 +240,7 @@ const WorkNavigator = createStackNavigator({
   },
   addWork: AddWorkPage,
   selectAddress: SelectAddressPage,
+  selectArea:SelectAreaPage,
   service: ServiceDeskDetailPage,
   weixiuView: WeixiuDetailPage, //工作台里面，待回访点击跳转的维修单，只能查看
   tousuView: TousuDetailPage, //工作台里面，待回访点击跳转的投诉单，只能查看 
@@ -305,6 +308,7 @@ const WorkNavigator = createStackNavigator({
   orderlist: OrderlistPage,
   orderDetail: OrderDetailPage,
   selectRolePerson: SelectRolePerson,
+  selectRolePersonInspect: SelectRolePersonInspect,
   feeRooms: FeeRoomsPage, //房间
   feeParkings: FeeParkingsPage, //车位
   feeBuildings: FeeBuildingsPage,

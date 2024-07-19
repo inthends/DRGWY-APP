@@ -144,7 +144,7 @@ export default class VisitDetailPage extends BasePage {
     click = (handle) => {
         const { id, value, star } = this.state;
         // if (handle === '回复' && !(value && value.length > 0)) {
-        //     UDToast.showInfo('请输入文字');
+        //     UDToast.showError('请输入文字');
         //     return;
         // }
         WorkService.serviceHandle(handle, id, value, { grade: star }).then(res => {

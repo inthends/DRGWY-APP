@@ -137,7 +137,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                 operations: res
             });
         });
- 
+
         WorkService.serviceExtra(id).then(images => {
             this.setState({
                 images
@@ -148,7 +148,7 @@ export default class ServiceDeskDetailPage extends BasePage {
     reply = () => {
         const { id, value } = this.state;
         if (!(value && value.length > 0)) {
-            UDToast.showInfo('请输入回复内容');
+            UDToast.showError('请输入回复内容');
             return;
         }
         WorkService.serviceHandle('回复', id, value).then(res => {
@@ -161,7 +161,7 @@ export default class ServiceDeskDetailPage extends BasePage {
     doWork = (handle) => {
         const { id, memo } = this.state;
         if (!(memo && memo.length > 0)) {
-            UDToast.showInfo('请输入说明');
+            UDToast.showError('请输入说明');
             return;
         }
 
@@ -187,17 +187,17 @@ export default class ServiceDeskDetailPage extends BasePage {
         const { id, isQD, selectPerson, repairmajor } = this.state;
 
         if (repairmajor == null || repairmajor.id == null) {
-            UDToast.showInfo('请选择维修专业');
+            UDToast.showError('请选择维修专业');
             return;
         }
 
         // if (isQD == 1 && selectPerson == null) {
-        //     UDToast.showInfo('请选择派单人');
+        //     UDToast.showError('请选择派单人');
         //     return;
         // }
 
         if (selectPerson == null) {
-            UDToast.showInfo('请选择派单人');
+            UDToast.showError('请选择派单人');
             return;
         }
 
@@ -289,10 +289,10 @@ export default class ServiceDeskDetailPage extends BasePage {
                     </Flex>
                     <Text style={[styles.desc]}>{detail.contents}</Text>
                     <ListImages images={images} lookImage={this.lookImage} />
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'> 
-                        <Text style={styles.left}>紧急程度：{detail.emergencyLevel}</Text> 
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>紧急程度：{detail.emergencyLevel}</Text>
                     </Flex>
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>  
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.right}>重要程度：{detail.importance}</Text>
                     </Flex>
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
@@ -427,47 +427,60 @@ export default class ServiceDeskDetailPage extends BasePage {
                 {this.state.showClose && (
                     //闭单
                     <View style={styles.mengceng}>
-                        <Flex direction={'column'} justify={'center'} align={'center'}
-                            style={{
-                                flex: 1, padding: 25,
-                                backgroundColor: 'rgba(178,178,178,0.5)'
-                            }}>
-                            <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
-                                <View style={{ height: 110, width: 300 }}>
-                                    <TextareaItem
-                                        //rows={4}
-                                        style={{ height: 100 }}
-                                        placeholder='请输入说明'
-                                        maxLength={500}
-                                        //style={{ width: ScreenUtil.deviceWidth() - 32 }}
-                                        onChange={value => this.setState({ memo: value })}
-                                        value={this.state.memo}
-                                    />
-                                </View>
-                                <Flex style={{ marginTop: 15 }}>
-                                    <Button onPress={() => this.doWork('闭单')} type={'primary'}
-                                        activeStyle={{ backgroundColor: Macro.work_blue }}
-                                        style={{
-                                            width: 130,
-                                            backgroundColor: Macro.work_blue,
-                                            height: 35
-                                        }}>确认</Button>
-                                        
-                                    <Button onPress={() => {
-                                        this.setState({ showClose: false });
-                                    }}
-                                        type={'primary'}
-                                        activeStyle={{ backgroundColor: Macro.work_blue }}
-                                        style={{
-                                            marginLeft: 30,
-                                            width: 130,
-                                            backgroundColor: '#666',
-                                            borderWidth: 0,
-                                            height: 35
-                                        }}>取消</Button>
+                        <TouchableWithoutFeedback onPress={() => {
+                            Keyboard.dismiss();
+                        }}>
+                            <Flex direction={'column'} justify={'center'} align={'center'}
+                                style={{
+                                    flex: 1, padding: 25,
+                                    backgroundColor: 'rgba(178,178,178,0.5)'
+                                }}>
+                                <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
+                                    <View style={{ height: 110, width: 300 }}>
+                                        <TextareaItem
+                                            //rows={4}
+                                            // style={{ height: 100 }}
+                                            // placeholder='请输入说明'
+                                            // maxLength={500}
+                                            // //style={{ width: ScreenUtil.deviceWidth() - 32 }}
+                                            // onChange={value => this.setState({ memo: value })}
+                                            // value={this.state.memo}
+ 
+                                            rows={4}
+                                            autoHeight
+                                            maxLength={500}
+                                            style={{ height: 100 }}
+                                            placeholder='请输入说明' 
+                                            onChange={memo => this.setState({ memo })}
+                                            value={this.state.memo} 
+
+                                        />
+                                    </View>
+                                    <Flex style={{ marginTop: 15 }}>
+                                        <Button onPress={() => this.doWork('闭单')} type={'primary'}
+                                            activeStyle={{ backgroundColor: Macro.work_blue }}
+                                            style={{
+                                                width: 130,
+                                                backgroundColor: Macro.work_blue,
+                                                height: 35
+                                            }}>确认</Button>
+
+                                        <Button onPress={() => {
+                                            this.setState({ showClose: false });
+                                        }}
+                                            type={'primary'}
+                                            activeStyle={{ backgroundColor: Macro.work_blue }}
+                                            style={{
+                                                marginLeft: 30,
+                                                width: 130,
+                                                backgroundColor: '#666',
+                                                borderWidth: 0,
+                                                height: 35
+                                            }}>取消</Button>
+                                    </Flex>
                                 </Flex>
                             </Flex>
-                        </Flex>
+                        </TouchableWithoutFeedback>
                     </View>
                 )}
 

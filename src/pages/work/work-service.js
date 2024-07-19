@@ -44,7 +44,8 @@ export default {
         dutyUserId,
         dutyUserName,
         checkMemo,
-        rectification) {
+        rectification,
+        operateType) {
         return api.postData('/api/MobileMethod/MAddCheckDetail', {
             billId,
             checkRole,
@@ -56,7 +57,8 @@ export default {
             dutyUserId,
             dutyUserName,
             checkMemo,
-            rectification
+            rectification,
+            operateType
         });
     },
 
@@ -82,12 +84,12 @@ export default {
 
     //服务单附件
     serviceExtra(keyvalue) {
-        return api.getData('/api/MobileMethod/MGetFilesData', {keyvalue });
+        return api.getData('/api/MobileMethod/MGetFilesData', { keyvalue });
     },
 
     //根据不同单据类型获取附件作为维修前图片
-    workPreFiles(sourceType,keyvalue) {
-        return api.getData('/api/MobileMethod/MGetWorkPreFiles', {sourceType, keyvalue });
+    workPreFiles(sourceType, keyvalue) {
+        return api.getData('/api/MobileMethod/MGetWorkPreFiles', { sourceType, keyvalue });
     },
 
     //附件
@@ -104,7 +106,7 @@ export default {
     deleteCheckFile(url) {
         return api.getData('/api/MobileMethod/MDeleteCheckFile', { url });
     },
-     
+
     changeToRepair(
         keyvalue,
         isQD,
@@ -159,7 +161,7 @@ export default {
         else if (handle === '完成维修') {
             url = '/api/MobileMethod/MRepairHandleFinish';
 
-        } else if (handle === '完成回访') { 
+        } else if (handle === '完成回访') {
             url = '/api/MobileMethod/MVisitFinish';//服务单完成回访
 
         } else if (handle === '完成检验') {
@@ -181,8 +183,8 @@ export default {
     },
 
     //审核
-    approve(keyvalue) {
-        let params = { keyvalue };
+    approve(keyvalue, appScore) {
+        let params = { keyvalue, appScore };
         return api.postData('/api/MobileMethod/MRepairApprove', params);
     },
 
@@ -260,9 +262,9 @@ export default {
     },
 
     //服务单列表
-    servicedeskList(type, overdue, pageIndex) { 
+    servicedeskList(type, overdue, pageIndex) {
         let url = '/api/MobileMethod/MGetServiceDeskPageList';
-        return api.postData(url, { type, overdue , pageIndex, pageSize: 10 });
+        return api.postData(url, { type, overdue, pageIndex, pageSize: 10 });
     },
 
     //工作台已完成服务单列表
@@ -344,6 +346,10 @@ export default {
 
     //获取必填项
     getSetting(type) {
-        return api.getData('/api/MobileMethod/GetSetting', { type });
-    }
+        return api.getData('/api/SysSetting/GetSetting', { type });
+    },
+
+    deleteCheckDetail(keyvalue) {
+        return api.postData('/api/MobileMethod/DeleteCheckDetail', { keyvalue });
+    },
 };

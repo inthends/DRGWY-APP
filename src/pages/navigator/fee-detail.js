@@ -194,7 +194,7 @@ class FeeDetailPage extends BasePage {
             switch (title) {
                 //app 不支持刷卡
                 case '扫码': {
-                    NavigatorService.createOrder(ids, isML, mlType, mlScale, 1).then(res => { 
+                    NavigatorService.createOrder(ids, isML, mlType, mlScale, 1).then(res => {
                         if (!res.posType) {
                             UDToast.showError(res);
                             return;
@@ -204,7 +204,7 @@ class FeeDetailPage extends BasePage {
                         // if (posType === '银盛') {
                         //     if (!this.state.isYse) {
                         //         // 只有是银盛pos机才能扫码和收款码
-                        //         UDToast.showInfo('银盛不支持手机扫码，请使用POS机！');
+                        //         UDToast.showError('银盛不支持手机扫码，请使用POS机！');
                         //     } else {
                         //         this.setState({
                         //             out_trade_no: res.out_trade_no,
@@ -300,7 +300,7 @@ class FeeDetailPage extends BasePage {
                         // if (posType === '银盛') {
                         //     if (!this.state.isYse) {
                         //         // 只有是银盛pos机才能扫码和收款码
-                        //         UDToast.showInfo('银盛不支持手机收款码，请使用POS机！');
+                        //         UDToast.showError('银盛不支持手机收款码，请使用POS机！');
                         //     } else { 
                         //         this.setState({
                         //             out_trade_no: res.out_trade_no,
@@ -434,7 +434,7 @@ class FeeDetailPage extends BasePage {
                 case '现金': {
                     Alert.alert(
                         '请确认',
-                        '是否现金支付？', 
+                        '是否现金支付？',
                         [
                             {
                                 text: '取消',
@@ -667,7 +667,7 @@ class FeeDetailPage extends BasePage {
     delete = (item) => {
         Alert.alert(
             '请确认',
-            '是否作废？', 
+            '是否作废？',
             [
                 {
                     text: '取消',
@@ -710,7 +710,7 @@ class FeeDetailPage extends BasePage {
                 onPress={() => this.changeItem(item)}>
                 <Flex style={styles.check}>
                     {type !== '已收' && <Checkbox
-                        checked={item.select === true} 
+                        checked={item.select === true}
                         onChange={event => {
                             this.changeItem(item);
                         }}
@@ -841,7 +841,7 @@ class FeeDetailPage extends BasePage {
                 {type === '已收' || dataInfo.data.length === 0 ? null : (
                     <Flex style={{ marginBottom: 30 }} direction={'column'}>
                         <Flex justify={'between'}>
-                            <Checkbox 
+                            <Checkbox
                                 onChange={event => {
                                     this.checkAll();
                                 }}
@@ -926,7 +926,7 @@ class FeeDetailPage extends BasePage {
                                     >
                                         <Text style={styles.word}>兴生活</Text>
                                     </Flex>
-                                </TouchableWithoutFeedback> : null} 
+                                </TouchableWithoutFeedback> : null}
                             {/* 
                                  //手机都不能刷卡
                                 <TouchableWithoutFeedback
@@ -1068,7 +1068,7 @@ const styles = StyleSheet.create({
         fontSize: Macro.font_16,
         fontWeight: '600',
         paddingBottom: 10
-    }, 
+    },
     ii: {
         paddingTop: 10,
         paddingBottom: 10,
@@ -1083,7 +1083,7 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 16
     },
-    pp: { 
+    pp: {
         backgroundColor: 'rgba(0,0,0,0.6)',
         position: 'absolute',
         left: 0,

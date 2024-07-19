@@ -45,8 +45,11 @@ class XunjianBeforeStart extends BasePage {
             //this.initUI();
             XunJianService.xunjianPointTasks(pointId).then(items => {
                 if (items.length == 0) {
-                    UDToast.showInfo('当前点位没有任务');
+                    //UDToast.showError('当前点位没有任务');
+                    //该点位没有待完成的巡检任务，跳转到上一个页面
+                    this.props.navigation.goBack(); 
                 }
+                
                 this.setState({ items });
             });
         }
@@ -60,6 +63,7 @@ class XunjianBeforeStart extends BasePage {
             );
             this.setState({ items });
             //alert('离线巡检数据'+ items.length);
+
         }
     };
 

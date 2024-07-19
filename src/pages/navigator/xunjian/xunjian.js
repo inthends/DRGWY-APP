@@ -53,17 +53,40 @@ class XunJianPage extends BasePage {
     };
 
     callBack = (pointId) => {
-        this.setState({
-            pointId
-        }, () => {
-            let person = this.state.person || {};
-            this.props.navigation.navigate('xunjianBeforeStart', {
-                data: {
-                    person,
-                    pointId
-                }
+
+
+        //判断巡检点位状态
+        XunJianService.checkPollingState(pointId).then(res => {
+
+            if (res == null) {
+                UDToast.showError('点位不存在');
+                return;
+            }
+
+            if (res.state == '作废') {
+                UDToast.showError('点位已经作废');
+                return;
+            }
+
+            if (res.state == '历史') {
+                UDToast.showError('点位为历史状态，无法巡检');
+                return;
+            }
+
+            this.setState({
+                pointId
+            }, () => {
+                let person = this.state.person || {};
+                this.props.navigation.navigate('xunjianBeforeStart', {
+                    data: {
+                        person,
+                        pointId
+                    }
+                });
             });
+
         });
+
     };
 
     start = () => {
@@ -114,7 +137,7 @@ class XunJianPage extends BasePage {
                     let person = this.state.person || this.props.user;
                     XunJianService.xunjianData(person.id, false).then(res => {
                         this.setState({
-                            ...res,
+                            ...res
                         });
                     });
                 }
@@ -173,7 +196,7 @@ class XunJianPage extends BasePage {
         })
     }
 
-    render(){//: React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
+    render() {//: React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
         const { person, today, todo, missed, finish, items } = this.state;
         const { user } = this.props;
         let name;
@@ -239,7 +262,6 @@ class XunJianPage extends BasePage {
 
                 <Flex style={styles.line} />
                 {/*<Text style={styles.location}>当前位置：xxxx</Text>*/}
-
                 {/* <TouchableWithoutFeedback onPress={() => this.props.navigation.push('selectXunjian', {
                     data: {
                         onSelect: this.onSelect,
@@ -251,7 +273,6 @@ class XunJianPage extends BasePage {
                         <LoadImage style={{ width: 6, height: 12 }} defaultImg={require('../../../static/images/address/right.png')} />
                     </Flex>
                 </TouchableWithoutFeedback> */}
-
                 <TouchableWithoutFeedback
                     onPress={() => this.props.navigation.navigate('selectRolePerson',
                         {
@@ -260,10 +281,10 @@ class XunJianPage extends BasePage {
                             onSelect: this.onSelectPerson
                         })}>
                     <Flex justify='between' style={[{
-                        paddingTop: 15,
-                        paddingBottom: 15,
-                        marginLeft: 10,
-                        marginRight: 10,
+                        paddingTop: 13,
+                        paddingBottom: 13,
+                        marginLeft: 14,
+                        marginRight: 14
                     }, ScreenUtil.borderBottom()]}>
                         <Text style={[person ? { fontSize: 16, color: '#404145' } :
                             { color: '#999' }]}>{name ? name : "请选择巡检人"}</Text>
@@ -272,9 +293,13 @@ class XunJianPage extends BasePage {
                 </TouchableWithoutFeedback>
 
 
-                <ScrollView style={{ height: ScreenUtil.contentHeight() - 210 }}>
+                <ScrollView style={{ height: ScreenUtil.contentHeight() - 190 }}>
                     <Accordion
                         onChange={this.onChange}
+                        style={{
+                            marginLeft: 14,
+                            marginRight: 14
+                        }}
                         activeSections={this.state.activeSections}>
                         {items.map(item => (
                             <Accordion.Panel key={item.lineId} header={item.name}>
@@ -304,7 +329,7 @@ class XunJianPage extends BasePage {
                             width: 220,
                             backgroundColor: Macro.work_blue,
                             marginTop: 20,
-                            marginBottom:20,
+                            marginBottom: 15,
                             height: 40
                         }}>开始巡检</Button>
                 </Flex>
@@ -330,15 +355,15 @@ const styles = StyleSheet.create({
         height: 1
     },
     top: {
-        paddingTop: 20,
+        paddingTop: 15,
         color: '#1890ff',
         fontSize: 16,
         paddingBottom: 3
     },
     bottom: {
-        color: '#999999',
+        //color: '#999999',
         fontSize: 16,
-        paddingBottom: 20
+        paddingBottom: 15
     },
     card: {
         borderRadius: 5,

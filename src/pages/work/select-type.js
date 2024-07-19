@@ -57,7 +57,7 @@ export default class SelectType extends BasePage {
                     this.props.navigation.navigate(parentName, { importance: selectItem });
             }
         } else {
-            UDToast.showInfo('请先选择');
+            UDToast.showError('请先选择');
         }
     };
 

@@ -136,7 +136,7 @@ export default {
     },
     call(phone) {
         if (!phone) {
-            UDToast.showInfo('手机号不能为空');
+            UDToast.showError('手机号不能为空');
             return;
         }
         const url = `tel:${phone}`;
@@ -149,7 +149,7 @@ export default {
                 }
                 return Linking.openURL(url);
             })
-            .catch(err => UDToast.showInfo(err));
+            .catch(err => UDToast.showError(err));
 
     },
     getYM(ym) {

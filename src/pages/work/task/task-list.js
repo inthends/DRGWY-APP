@@ -207,6 +207,11 @@ class TaskListPage extends BasePage {
                             <Text>维修专业：{item.repairMajor}，积分：{item.score}</Text>
                         </Flex>
 
+                        <Flex justify='between'
+                            style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
+                            <Text>是否允许抢单：{item.isQD == 1 ? '是' : '否'}，单据来源：{item.sourceType}</Text>
+                        </Flex>
+
                         <Text style={{
                             paddingLeft: 20,
                             paddingRight: 20,

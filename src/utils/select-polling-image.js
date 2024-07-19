@@ -7,7 +7,6 @@ const options: ImagePickerOptions = {
     title: '请选择',
     cancelButtonTitle: '取消',
     takePhotoButtonTitle: '相机',
-    chooseFromLibraryButtonTitle: '相册',
     //设置照片最大尺寸，压缩照片，减少上传时间
     maxWidth: 1000,
     maxWidth: 1000,
@@ -21,10 +20,12 @@ const options: ImagePickerOptions = {
         text: '请在系统设置中打开拍照或选择图片的权限',
         reTryTitle: '重试',
         okTitle: '取消'
-    }
+    },
+    mediaType: 'photo'
 };
 
-export default class SelectImage {
+//选择巡检图片，打开就直接启动相机
+export default class SelectPollingImage {
     static select(id, type, uploadUrl, hasNetwork = true) {
         if (uploadUrl == '/api/MobileMethod/MUploadPollingTask') {
             //如果是巡检，则禁止选择相册，防止作弊 2023-10-30
@@ -32,19 +33,23 @@ export default class SelectImage {
         } else {
             options.chooseFromLibraryButtonTitle = '相册';//还原
         }
+
+
         return new Promise((resolve, reject) => {
-  
-            ImagePicker.showImagePicker(options, (response) => {
+
+            //打开直接拍照
+            ImagePicker.launchCamera(options, (response) => {
                 if (response.didCancel) {
-                    // UDToast.showError('已取消选择图片');
+                    //console.log('用户取消了拍照');
                 } else if (response.error) {
+                    //console.log('拍照错误：', response.error);
                     UDToast.showError('没有权限，请在设置中开启权限');
                 } else {
-                    // let formData = new FormData();//如果需要上传多张图片,需要遍历数组,把图片的路径数组放入formData中
-                    // let file = {uri: response.uri, type: 'multipart/form-data', name: 'image.png'};   //这里的key(uri和type和name)不能改变,
-                    // formData.append("files",file);   //这里的files就是后台需要的key
-                    // You can also display the image using data:
-                    // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+                    //response.uri 是图片的本地文件路径
+                    //console.log('图片路径：', response.uri);
+                    //在这里处理图片，比如上传到服务器或者保存到状态
+
                     if (hasNetwork) {
                         api.uploadFile(response.uri, id, type, uploadUrl).then(res => {
                             if (!!res) {
@@ -61,6 +66,7 @@ export default class SelectImage {
                     }
                 }
             });
+ 
         });
     }
 }

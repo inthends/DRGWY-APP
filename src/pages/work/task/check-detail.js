@@ -144,12 +144,12 @@ export default class CheckDetailPage extends BasePage {
     click = (handle) => {
         const { id, value, images,isUpload, result } = this.state;
         if (!(value && value.length > 0)) {
-            UDToast.showInfo('请输入检验情况');
+            UDToast.showError('请输入检验情况');
             return;
         }
 
         if (images.length == 0 && !isUpload) {
-            UDToast.showInfo('请上传检验图片');
+            UDToast.showError('请上传检验图片');
             return;
         }
 
@@ -357,6 +357,7 @@ export default class CheckDetailPage extends BasePage {
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                         imageUrls={this.state.selectimages} />
                 </Modal>
+                
             </CommonView>
         );
     }

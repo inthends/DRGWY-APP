@@ -114,7 +114,7 @@ class AddRepairPage extends BasePage {
                 this.setState({ isAuthorised: true });
             }
             if (!isAuthorised) {
-                UDToast.showInfo('录音功能未授权');
+                UDToast.showError('录音功能未授权');
             } else {
                 if (!this.state.recording) {
                     let audioPath = AudioUtils.DocumentDirectoryPath + '/test.aac';
@@ -204,12 +204,12 @@ class AddRepairPage extends BasePage {
 
         if (address == null || address.allName == null) {
             const title = '请选择' + data[index] + '地址';
-            UDToast.showInfo(title);
+            UDToast.showError(title);
             return;
         }
 
         if (isMustServicedeskFile == true && images.length == 1) {
-            UDToast.showInfo('请上传附件');
+            UDToast.showError('请上传附件');
             return;
         }
 

@@ -131,12 +131,12 @@ export default class StartDetailPage extends BasePage {
         const { id, isUpload, images, value, selectPersons } = this.state;
         // if (handle === '回复' && !(value&&value.length > 0)) {
         if (!(value && value.length > 0)) {
-            UDToast.showInfo('请输入故障判断');
+            UDToast.showError('请输入故障判断');
             return;
         }
         //const kgimages = images.filter(t => t.type === '开工');
         if (images.length == 0 && !isUpload) {
-            UDToast.showInfo('请上传开工图片');
+            UDToast.showError('请上传开工图片');
             return;
         }
 
@@ -152,7 +152,7 @@ export default class StartDetailPage extends BasePage {
         const { id, backMemo } = this.state;
         // if (handle === '回复' && !(value&&value.length > 0)) {
         if (!(backMemo && backMemo.length > 0)) {
-            UDToast.showInfo('请输入退单原因');
+            UDToast.showError('请输入退单原因');
             return;
         }
         WorkService.serviceHandle(handle, id, backMemo).then(res => {

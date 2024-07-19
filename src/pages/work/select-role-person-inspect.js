@@ -10,11 +10,11 @@ import {
     ScrollView
 } from 'react-native';
 import Macro from '../../utils/macro';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 import api from '../../utils/api';
 
-class SelectRolePerson extends BasePage {
-    //根据角色分组来选择人员
+class SelectRolePersonInspect extends BasePage {
+    //现场检查选择人员
     static navigationOptions = ({ navigation }) => {
         return {
             title: '选择人员',
@@ -24,19 +24,18 @@ class SelectRolePerson extends BasePage {
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
-            headerRight: (
-                <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
-                    <Icon name='bars' style={{ marginRight: 15 }} color="black" />
-                </TouchableWithoutFeedback>
-            )
+            // headerRight: (
+            //     <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
+            //         <Icon name='bars' style={{ marginRight: 15 }} color="black" />
+            //     </TouchableWithoutFeedback>
+            // )
         };
     };
 
     constructor(props) {
         super(props);
         this.state = {
-            //selectBuilding: this.props.selectBuilding || {},
-            selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
+            //selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
             data: [],
             activeSections: []
         };
@@ -49,31 +48,29 @@ class SelectRolePerson extends BasePage {
         this.initData();
     }
 
-    componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void { 
-        const selectBuilding = this.state.selectBuilding;
-        const nextSelectBuilding = nextProps.selectBuilding;
-        //console.log('nextSelectBuilding:' + nextSelectBuilding);
-
-        if (!(selectBuilding
-            && nextSelectBuilding
-            && selectBuilding.key === nextSelectBuilding.key)) {
-            this.setState({
-                selectBuilding: nextProps.selectBuilding
-                // estateId: nextProps.selectBuilding.key,
-                //index: 0,
-            }, () => {
-                this.initData();
-            });
-        }
-    }
+    // componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void { 
+    //     const selectBuilding = this.state.selectBuilding;
+    //     const nextSelectBuilding = nextProps.selectBuilding;
+    //     //console.log('nextSelectBuilding:' + nextSelectBuilding); 
+    //     if (!(selectBuilding
+    //         && nextSelectBuilding
+    //         && selectBuilding.key === nextSelectBuilding.key)) {
+    //         this.setState({
+    //             selectBuilding: nextProps.selectBuilding
+    //             // estateId: nextProps.selectBuilding.key,
+    //             //index: 0,
+    //         }, () => {
+    //             this.initData();
+    //         });
+    //     }
+    // }
 
     initData() {
         const { navigation } = this.props;
-        const moduleId = navigation.state.params.moduleId;
-        const enCode = navigation.state.params.enCode;
-        let url = '/api/MobileMethod/MGetRoleList'; //获取角色
+        const organizeId = navigation.state.params.organizeId;
+        let url = '/api/MobileMethod/MGetRoleListInspect'; //获取角色
         let url2 = '/api/MobileMethod/MGetUsersByRoleId';//获取角色人员 
-        api.getData(url, this.state.selectBuilding ? { moduleId: moduleId, enCode: enCode, organizeId: this.state.selectBuilding.key } : {}).then(res => {
+        api.getData(url, { organizeId: organizeId }).then(res => {
             Promise.all(
                 res.map(item => api.getData(url2, { roleId: item.roleId }))).
                 then(ress => {
@@ -162,9 +159,13 @@ const styles = StyleSheet.create({
     }
 });
 
-const mapStateToProps = ({ buildingReducer }) => {
-    return {
-        selectBuilding: buildingReducer.selectBuilding,
-    };
-};
-export default connect(mapStateToProps)(SelectRolePerson);
+// const mapStateToProps = ({ buildingReducer }) => {
+//     return {
+//         selectBuilding: buildingReducer.selectBuilding,
+//     };
+// };
+// export default connect(mapStateToProps)(SelectRolePersonInspect);
+
+
+//从选择的区域里面传递项目id，来控制人员权限，2024年7月11日
+export default SelectRolePersonInspect;

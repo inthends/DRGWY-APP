@@ -31,7 +31,7 @@ export default class TaskPage extends BasePage {
             res: {
                 data: [],
             },
-            titles: ['全部', '待完成', '漏检', '已完成'],
+            titles: ['全部', '待完成', '漏检', '已完成']
         };
     }
 

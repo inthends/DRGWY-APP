@@ -80,7 +80,7 @@ export default class ChaiFei extends BasePage {
                                 </Text>
                                 <DatePicker
                                     style={{ 
-                                        width: 108//105
+                                        width: 108
                                      }}
                                     date={this.state.firstEndDate ? this.state.firstEndDate.format('YYYY-MM-DD') : ''}
                                     mode="date"
@@ -154,7 +154,7 @@ export default class ChaiFei extends BasePage {
                                         this.setState({ firstEndDate: null, firstAmount: null, secondBeginDate: null, secondAmount: null });
                                     }
                                 }} style={styles.input}
-                                placeholder={'请输入金额'} />
+                                placeholder='请输入金额' />
 
                         </Flex>
                         <WhiteSpace size={'lg'} />

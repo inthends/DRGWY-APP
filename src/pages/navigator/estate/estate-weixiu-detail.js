@@ -200,13 +200,19 @@ export default class EweixiuDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>维修专业：{detail.repairMajor}，积分：{detail.score}</Text>
                     </Flex>
+
+                    {detail.appScore != null ?
+                        <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                            <Text style={styles.leftscore}>修正积分：{detail.appScore}</Text>
+                        </Flex> : null}
+
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>协助人：{detail.assistName}</Text>
                     </Flex>
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>增援人：{detail.reinforceName}</Text>
                     </Flex>
- 
+
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>开工时间：{detail.beginDate}</Text>
                     </Flex>
@@ -229,9 +235,9 @@ export default class EweixiuDetailPage extends BasePage {
                                 <Text style={styles.left}>检验时间：{detail.testDate}</Text>
                             </Flex>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                                <Text style={styles.left}>检验人：{detail.testerName}</Text> 
+                                <Text style={styles.left}>检验人：{detail.testerName}</Text>
                             </Flex>
-                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'> 
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                                 <Text style={styles.right}>检验结果：{detail.testResult == 1 ? '合格' : '不合格'}</Text>
                             </Flex>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>

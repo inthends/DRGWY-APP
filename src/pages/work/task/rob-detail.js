@@ -108,7 +108,7 @@ export default class RobDetailPage extends BasePage {
                             UDToast.showInfo('抢单成功');
                             this.props.navigation.goBack();
                         } else {
-                            UDToast.showInfo('抢单失败，' + res.msg);
+                            UDToast.showError('抢单失败，' + res.msg);
                         }
                     });
                 }

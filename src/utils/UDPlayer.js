@@ -6,7 +6,7 @@ export default {
         Sound.setCategory('Playback');
         const whoosh = new Sound(url, Sound.MAIN_BUNDLE, (error) => {
             if (error) {
-                UDToast.showInfo('播放失败');
+                UDToast.showError('播放失败');
                 return;
             }
             // loaded successfully

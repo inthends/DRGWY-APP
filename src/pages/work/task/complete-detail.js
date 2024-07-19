@@ -135,12 +135,12 @@ export default class CompleteDetailPage extends BasePage {
     click = (handle) => {
         const { id, isUpload, images, value } = this.state;
         // if (!(value && value.length > 0)) {
-        //     UDToast.showInfo('请输入文字');
+        //     UDToast.showError('请输入文字');
         //     return;
         // }
         //const wcimages = images.filter(t => t.type === '完成');
         if (images.length == 0 && !isUpload) {
-            UDToast.showInfo('请上传完成图片');
+            UDToast.showError('请上传完成图片');
             return;
         }
         WorkService.serviceHandle(handle, id, value).then(res => {
@@ -264,6 +264,10 @@ export default class CompleteDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>预估完成时间：{detail.estimateDate}</Text>
                     </Flex>
+
+                    <Flex style={styles.every} justify='between'>
+                        <Text style={styles.left}>开工图片</Text>
+                    </Flex>
                     <ListImages images={startimages} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, startimages)} />
 
                     <UploadImageView
@@ -296,7 +300,7 @@ export default class CompleteDetailPage extends BasePage {
 
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
-                        imageUrls={this.state.images} />
+                        imageUrls={this.state.selectimages} />
                 </Modal>
             </CommonView>
         );

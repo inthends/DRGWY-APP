@@ -91,13 +91,13 @@ export default class AssistDetailPage extends BasePage {
     click = (handle) => {
         const { id } = this.state;
         // if ( !(value && value.length > 0)) {
-        //     UDToast.showInfo('请输入文字');
+        //     UDToast.showError('请输入文字');
         //     return;
         // }
 
         // const wcimages = images.filter(t => t.type === '完成');
         // if (wcimages.length == 0 && !isUpload) {
-        //     UDToast.showInfo('请上传完成图片');
+        //     UDToast.showError('请上传完成图片');
         //     return;
         // }
 
@@ -247,6 +247,7 @@ export default class AssistDetailPage extends BasePage {
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                         imageUrls={this.state.images} />
                 </Modal>
+                
             </CommonView>
         );
     }

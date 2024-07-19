@@ -13,7 +13,7 @@ import { Icon, Flex, TextareaItem, Button } from '@ant-design/react-native';
 import ScreenUtil from '../../utils/screen-util';
 import LoadImage from '../../components/load-image';
 import LoadImageDelete from '../../components/load-image-del';
-import SelectImage from '../../utils/select-image';
+import SelectImage from '../../utils/select-image'; 
 import common from '../../utils/common';
 import UDRecord from '../../utils/UDRecord';
 import api from '../../utils/api';
@@ -115,7 +115,7 @@ class AddWorkPage extends BasePage {
                 this.setState({ isAuthorised: true });
             }
             if (!isAuthorised) {
-                UDToast.showInfo('录音功能未授权');
+                UDToast.showError('录音功能未授权');
             } else {
                 if (!this.state.recording) {
                     let audioPath = AudioUtils.DocumentDirectoryPath + '/test.aac';
@@ -206,12 +206,12 @@ class AddWorkPage extends BasePage {
         const { id, data, index, address, value, taskId, isMustServicedeskFile, images } = this.state;
         if (address == null || address.allName == null) {
             const title = '请选择' + data[index] + '地址';
-            UDToast.showInfo(title);
+            UDToast.showError(title);
             return;
         }
 
         if (isMustServicedeskFile == true && images.length == 1) {
-            UDToast.showInfo('请上传附件');
+            UDToast.showError('请上传附件');
             return;
         }
 

@@ -8,14 +8,18 @@ export default {
     xunjianData(userId, showLoading = true) {
         return api.postData('/api/MobileMethod/MGetPollingStatistics', { userId }, showLoading);
     },
-
+ 
+    //判断巡检点位状态
+    checkPollingState(pointId) {
+        return api.getData('/api/MobileMethod/MCheckPollingState', { pointId });
+    },
 
     xunjianTaskList(status, userId) {
         return api.postData('/api/MobileMethod/MGetPollingTaskPageList', {
             pageIndex: 1,
-            pageSize: 1000000,
+            pageSize: 10000,
             status,
-            userId,
+            userId
         });
     },
     xunjianDetail(taskId) {

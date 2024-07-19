@@ -61,7 +61,7 @@ export default class SelectRepairMajor extends BasePage {
             // navigation.goBack();
 
         } else {
-            UDToast.showInfo('请先选择');
+            UDToast.showError('请先选择');
         }
     };
 
@@ -93,7 +93,7 @@ export default class SelectRepairMajor extends BasePage {
                 }
             }
             if (type === -1) {
-                UDToast.showInfo('类型错误');
+                UDToast.showError('类型错误');
                 return;
             }
             params = { keyvalue: parent.id, type };
