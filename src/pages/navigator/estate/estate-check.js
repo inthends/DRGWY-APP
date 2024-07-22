@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-    //View,
     Text,
     StyleSheet,
     TouchableOpacity,
@@ -134,7 +133,7 @@ class EstateCheckPage extends BasePage {
     };
 
     loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo; 
+        const { data, total, pageIndex } = this.state.dataInfo;
         if (this.canLoadMore && data.length < total) {
             this.canLoadMore = false;
             this.setState({
@@ -221,7 +220,7 @@ class EstateCheckPage extends BasePage {
 
     render() {
         const { dataInfo } = this.state;
-        return ( 
+        return (
             <CommonView style={{ flex: 1 }}>
                 <ScrollTitle onChange={this.billType} titles={['我的', '全部']} />
                 {/*<Tabs tabs={tabs2} initialPage={1} tabBarPosition="top">*/}
@@ -247,10 +246,11 @@ class EstateCheckPage extends BasePage {
                     refreshing={this.state.refreshing}
                     onRefresh={this.onRefresh}//下拉刷新
                     onEndReached={this.loadMore}//底部往下拉翻页
-                    onMomentumScrollBegin={() => this.canLoadMore = true} 
+                    onMomentumScrollBegin={() => this.canLoadMore = true}
                     ListEmptyComponent={<NoDataView />}
                 />
- 
+                <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
+
                 <Flex justify={'center'}>
                     <Button
                         onPress={() => this.props.navigation.push('checkAdd')}
@@ -271,7 +271,8 @@ class EstateCheckPage extends BasePage {
 const styles = StyleSheet.create({
     list: {
         backgroundColor: Macro.color_white,
-        margin: 10
+        //margin: 10
+        marginTop: 10, marginLeft: 10, marginRight: 10
     },
     title: {
         paddingTop: 15,
@@ -322,7 +323,7 @@ const styles = StyleSheet.create({
     orange: {
         borderLeftColor: Macro.work_orange,
         borderLeftWidth: 5,
-    },  
+    },
 });
 
 const mapStateToProps = ({ buildingReducer }) => {

@@ -1,8 +1,7 @@
 import React//, {Fragment} 
     from 'react';
 import {
-    Text, View, StyleSheet, FlatList, TouchableOpacity
-    //Text, SafeAreaView, StatusBar, TextInput
+    Text, View, StyleSheet, FlatList, TouchableOpacity 
 } from 'react-native';
 import BasePage from '../../base/base';
 //import BuildingHeader from '../../../components/building/building-header';
@@ -82,6 +81,7 @@ class BuildingsPage extends BasePage {
                         keyExtractor={(item) => item.id}
                         ListEmptyComponent={<NoDataView />} 
                     />
+                     <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
                 </View>
             </CommonView>
         );

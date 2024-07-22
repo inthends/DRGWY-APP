@@ -3,8 +3,7 @@ import React from 'react';
 import {
     Text,
     TouchableOpacity,
-    StyleSheet,
-    ScrollView,
+    StyleSheet, 
     FlatList,
     Modal
 } from 'react-native';
@@ -100,7 +99,7 @@ export default class EcheckDetailPage extends BasePage {
     };
 
     loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo; 
+        const { data, total, pageIndex } = this.state.dataInfo;
         if (this.canLoadMore && data.length < total) {
             this.canLoadMore = false;
             this.setState({
@@ -150,7 +149,7 @@ export default class EcheckDetailPage extends BasePage {
                     <Text style={{
                         paddingLeft: 20,
                         paddingRight: 20,
-                        //paddingBottom: 20,
+                        paddingBottom: 5,
                         color: '#666'
                     }}>{item.memo}</Text>
                 </Flex>
@@ -163,7 +162,7 @@ export default class EcheckDetailPage extends BasePage {
         const { detail, dataInfo } = this.state;
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
-                <ScrollView>
+                {/* <ScrollView> */}
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
@@ -188,10 +187,11 @@ export default class EcheckDetailPage extends BasePage {
                         refreshing={this.state.refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
                         onEndReached={this.loadMore}//底部往下拉翻页
-                        onMomentumScrollBegin={() => this.canLoadMore = true} 
+                        onMomentumScrollBegin={() => this.canLoadMore = true}
                         ListEmptyComponent={<NoDataView />}
                     />
-                </ScrollView>
+                    <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
+                {/* </ScrollView> */}
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                         imageUrls={this.state.images} />

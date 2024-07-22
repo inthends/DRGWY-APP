@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Text,
   View,
   StyleSheet,
   FlatList,
@@ -245,17 +246,16 @@ class BuildingPage extends BasePage {
                 />
               )}
               style={styles.list}
-              keyExtractor={(item) => item.id}
-
+              keyExtractor={(item) => item.id} 
               //必须
               onEndReachedThreshold={0.1}
               refreshing={this.state.refreshing}
               onRefresh={this.onRefresh}//下拉刷新
               onEndReached={this.loadMore}//底部往下拉翻页
-              onMomentumScrollBegin={() => this.canLoadMore = true}
-
+              onMomentumScrollBegin={() => this.canLoadMore = true} 
               ListEmptyComponent={<NoDataView />}
             />
+             <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
           </View>
         </CommonView>
       </View>

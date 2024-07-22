@@ -125,7 +125,7 @@ export default class ApproveDetailPage extends BasePage {
                         });
                     }
                     else {
-                        WorkService.approve(id,null).then(res => {
+                        WorkService.approve(id, null).then(res => {
                             UDToast.showInfo('审核完成');
                             this.props.navigation.goBack();
                         });
@@ -164,7 +164,8 @@ export default class ApproveDetailPage extends BasePage {
 
     setScore = () => {
         this.setState({ showClose: true });
-        WorkService.approve(id,this.state.appScore).then(res => {
+        const { id, appScore } = this.state;
+        WorkService.approve(id, appScore).then(res => {
             UDToast.showInfo('审核完成');
             this.props.navigation.goBack();
         });

@@ -168,6 +168,8 @@ class FeeHousePage extends BasePage {
                             onMomentumScrollBegin={() => this.canLoadMore = true} 
                             ListEmptyComponent={<NoDataView />}
                         />
+                         <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
+
                     </View>
                 </CommonView>
             </View>

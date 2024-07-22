@@ -187,10 +187,11 @@ class gdMoneyPage extends BasePage {
                             refreshing={this.state.refreshing}
                             onRefresh={this.onRefresh}//下拉刷新
                             onEndReached={this.loadMore}//底部往下拉翻页
-                            onMomentumScrollBegin={() => this.canLoadMore = true}
-
+                            onMomentumScrollBegin={() => this.canLoadMore = true} 
                             ListEmptyComponent={<NoDataView />}
                         />
+                         <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
+
                     </View>
 
                     {/* <TouchableWithoutFeedback onPress={this.start}>

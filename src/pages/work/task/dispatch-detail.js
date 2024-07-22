@@ -251,9 +251,7 @@ export default class DispatchDetailPage extends BasePage {
                         </TouchableWithoutFeedback>
                     </Flex>
                     <Text style={[styles.desc]}>{detail.repairContent}</Text>
-
-                    <ListImages images={images} lookImage={this.lookImage} />
-
+                    <ListImages images={images} lookImage={this.lookImage} /> 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName}</Text>
                     </Flex>
@@ -387,7 +385,7 @@ export default class DispatchDetailPage extends BasePage {
                                 height: 40
                             }}>派单</Button>
                     </Flex>
-                    <OperationRecords communicateClick={this.communicateClick} communicates={communicates} /> 
+                    <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
 
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
@@ -426,7 +424,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         padding: 15,
         color: '#404145',
-        paddingBottom: 40
+        //paddingBottom: 40
     },
     ii: {
         paddingTop: 10,
