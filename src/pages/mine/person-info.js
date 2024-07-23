@@ -57,7 +57,7 @@ export default class PersonInfoPage extends BasePage {
     };
 
     render() {
-        const { data } = this.state;
+        //const { data } = this.state;
         return (
             <View style={{ flex: 1 }}>
                 <Flex direction={'column'} style={{ paddingTop: 30, paddingBottom: 30 }}>

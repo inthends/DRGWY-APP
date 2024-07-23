@@ -149,6 +149,7 @@ class TaskListPage extends BasePage {
                             this.props.navigation.navigate('kaigong', { id: item.id });
                             break;
                         }
+                        case '已暂停':
                         case '待完成': {
                             this.props.navigation.navigate('wancheng', { id: item.id });
                             break;

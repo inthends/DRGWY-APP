@@ -338,6 +338,7 @@ export default class CheckDetailPage extends BasePage {
                             style={{ width: ScreenUtil.deviceWidth() - 32 }}
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
+                            maxLength={500}
                         />
                     </View>
 

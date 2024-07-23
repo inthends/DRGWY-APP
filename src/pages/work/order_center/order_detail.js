@@ -160,6 +160,7 @@ export default class OrderDetailPage extends BasePage {
                                 style={{ paddingTop: 10, width: ScreenUtil.deviceWidth() - 32 }}
                                 onChange={inputMsg => this.setState({ inputMsg })}
                                 value={this.state.inputMsg}
+                                maxLength={500}
                             />
                             <Flex justify={'between'} style={{ minHeight: 40, marginBottom: 30, width: screen_width - 30, marginVertical: 10 }}>
                                 <TouchableWithoutFeedback onPress={() => this._btnClick(0)}>
@@ -183,6 +184,7 @@ export default class OrderDetailPage extends BasePage {
                                 style={{ paddingTop: 10, width: ScreenUtil.deviceWidth() - 32 }}
                                 onChange={inputMsg => this.setState({ inputMsg })}
                                 value={this.state.inputMsg}
+                                maxLength={500}
                             />
                             <Flex justify={'between'} style={{ minHeight: 40, marginBottom: 30, width: screen_width - 30, marginVertical: 10 }}>
                                 <TouchableWithoutFeedback onPress={() => this._btnClick(1)}>
@@ -206,6 +208,7 @@ export default class OrderDetailPage extends BasePage {
                                 style={{  paddingTop: 10,  width: ScreenUtil.deviceWidth() - 32  }}
                                 onChange={inputMsg => this.setState({ inputMsg })}
                                 value={this.state.inputMsg}
+                                maxLength={500}
                             />
                             <Flex justify={'center'} style={{ minHeight: 40, marginBottom: 30, width: screen_width - 30, marginVertical: 10 }}>
                                 <TouchableWithoutFeedback onPress={() => this._btnClick(2)}>

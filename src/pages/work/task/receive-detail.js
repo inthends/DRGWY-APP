@@ -192,18 +192,7 @@ export default class ReceiveDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>协助人：{detail.assistName}</Text>
                     </Flex>
-
-                    {/* <View style={{ margin: 15 }}>
-                        <TextareaItem
-                            rows={4}
-                            autoHeight
-                            placeholder='请输入'
-                            style={{ width: ScreenUtil.deviceWidth() - 32 }}
-                            onChange={value => this.setState({ value })}
-                            value={this.state.value}
-                        />
-                    </View> */}
-
+  
                     <Flex justify={'center'}>
                         <Button onPress={() => this.click('接单')} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{

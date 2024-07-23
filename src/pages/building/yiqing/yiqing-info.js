@@ -97,6 +97,7 @@ class YiQingInfoPage extends BasePage {
                             rows={5}
                             onChange={memo => this.setState({ memo })}
                             value={this.state.memo}
+                            maxLength={500}
                         />
                     </Flex>
                 </WingBlank>

@@ -321,19 +321,9 @@ export default class StartDetailPage extends BasePage {
                             style={{ width: ScreenUtil.deviceWidth() - 32 }}
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
+                            maxLength={500}
                         />
                     </View>
-
-                    {/* <View style={{ margin: 15 }}>
-                        <TextareaItem
-                            rows={4}
-                            autoHeight
-                            placeholder='请输入退单原因'
-                            style={{ width: ScreenUtil.deviceWidth() - 32 }}
-                            onChange={value => this.setState({ backMemo: value })}
-                            value={this.state.backMemo}
-                        />
-                    </View> */}
 
                     <Flex justify={'center'} style={{ marginTop: 20 }} >
                         <TouchableWithoutFeedback onPress={() => this.click()}>

@@ -99,6 +99,7 @@ export default class JianFei extends BasePage {
                             rows={4}
                             onChange={memo => this.setState({ memo })}
                             value={this.state.memo}
+                            maxLength={500}
                         />
                         <Button
                             style={{

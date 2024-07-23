@@ -113,7 +113,8 @@ export default {
         senderId,
         senderName,
         repairMajorId,
-        repairMajorName
+        repairMajorName,
+        convertMemo
     ) {
         let params = {
             keyvalue,
@@ -121,9 +122,22 @@ export default {
             senderId,
             senderName,
             repairMajorId,
-            repairMajorName
+            repairMajorName,
+            convertMemo
         };
         let url = '/api/MobileMethod/MChangeToRepair';
+        return api.postData(url, params);
+    },
+ 
+    changeToComplaint(
+        keyvalue, 
+        convertMemo
+    ) {
+        let params = {
+            keyvalue, 
+            convertMemo
+        };
+        let url = '/api/MobileMethod/MChangeToComplaint';
         return api.postData(url, params);
     },
 
@@ -139,9 +153,10 @@ export default {
         }
         if (handle === '回复') {
             url = '/api/MobileMethod/MSendCommunicate';
-        } else if (handle === '转投诉') {
-            url = '/api/MobileMethod/MChangeToComplaint';
-        }
+        } 
+        // else if (handle === '转投诉') {
+        //     url = '/api/MobileMethod/MChangeToComplaint';
+        // }
         // else if (handle === '转维修') {
         //     url = '/api/MobileMethod/MChangeToRepair';
         // } 
@@ -188,6 +203,12 @@ export default {
         return api.postData('/api/MobileMethod/MRepairApprove', params);
     },
 
+    //暂停
+    pause(keyvalue, stopDateBegin, pauseMemo) {
+        let params = { keyvalue, stopDateBegin, pauseMemo };
+        return api.postData('/api/MobileMethod/MRepairPause', params);
+    },
+ 
     //抢单
     qdRepair(keyvalue) {
         let params = { keyvalue };

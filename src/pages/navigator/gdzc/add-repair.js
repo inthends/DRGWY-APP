@@ -330,6 +330,7 @@ class AddRepairPage extends BasePage {
                                     style={{ paddingTop: 15, width: ScreenUtil.deviceWidth() - 30 }}
                                     onChange={value => this.setState({ value })}
                                     value={this.state.value}
+                                    maxLength={500}
                                 />
                             </View>
                             <Flex align={'start'} justify={'start'} style={{

@@ -70,7 +70,7 @@ class ChaoBiaoPage extends BasePage {
 
     onRefresh() {
         this.setState({
-            pageIndex: 1,
+            pageIndex: 1
         }, () => {
             this.getList();
         });
@@ -289,7 +289,7 @@ class ChaoBiaoPage extends BasePage {
                                         value={this.state.date}
                                         onChange={date => this.setState({ date })}
                                         style={{ backgroundColor: 'white' }}
-                                        format={value => value.getYearAndMonth()}
+                                        //format={value => value.getYearAndMonth()}
                                     >
                                         <List.Item arrow="horizontal"
                                             style={{ borderWidth: 0 }}><Text>抄表年月：</Text></List.Item>

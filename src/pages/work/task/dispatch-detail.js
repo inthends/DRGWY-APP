@@ -56,7 +56,6 @@ export default class DispatchDetailPage extends BasePage {
             emergencyLevel: null,
             importance: null,
             KeyboardShown: false
-
         };
         this.keyboardDidShowListener = null;
         this.keyboardDidHideListener = null;
@@ -97,6 +96,7 @@ export default class DispatchDetailPage extends BasePage {
                 }
             }
         );
+
         this.getData();
     }
 
@@ -105,12 +105,12 @@ export default class DispatchDetailPage extends BasePage {
         //注册鼠标事件，用于文本框输入的时候往上移动 2024年5月23日
         this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
             this.setState({
-                KeyboardShown: true,
+                KeyboardShown: true
             });
         });
         this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
             this.setState({
-                KeyboardShown: false,
+                KeyboardShown: false
             });
         });
     }
@@ -230,11 +230,13 @@ export default class DispatchDetailPage extends BasePage {
     };
 
     render() {
-        const { images, detail, communicates, repairmajor, selectPerson,
-            assisPersons, emergencyLevel, importance } = this.state;
+        const { images, detail, communicates, repairmajor, selectPerson, assisPersons, emergencyLevel, importance } = this.state;
         //转换name
         let personNames = assisPersons.map(item => item.name);
         let mystrNames = personNames.join('，');
+
+        // if (repairmajor)
+        //     alert('积分：' + repairmajor.score);
 
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
@@ -251,7 +253,7 @@ export default class DispatchDetailPage extends BasePage {
                         </TouchableWithoutFeedback>
                     </Flex>
                     <Text style={[styles.desc]}>{detail.repairContent}</Text>
-                    <ListImages images={images} lookImage={this.lookImage} /> 
+                    <ListImages images={images} lookImage={this.lookImage} />
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName}</Text>
                     </Flex>
@@ -315,7 +317,7 @@ export default class DispatchDetailPage extends BasePage {
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                             <Flex>
                                 <Text style={styles.left}>维修专业：</Text>
-                                <Text style={[styles.right, repairmajor && repairmajor.name ? { color: Macro.work_blue } : { color: '#666' }]}>{repairmajor && repairmajor.name ? repairmajor.name : "请选择维修专业"}</Text>
+                                <Text style={[styles.right, repairmajor ? { color: Macro.work_blue } : { color: '#666' }]}>{repairmajor ? repairmajor.name : "请选择维修专业"}</Text>
                             </Flex>
                             <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
                         </Flex>
@@ -324,7 +326,7 @@ export default class DispatchDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Flex>
                             <Text style={styles.left}>积分：</Text>
-                            <Text style={[styles.right, repairmajor && repairmajor.score ? { color: '#404145' } : { color: '#666' }]}>{repairmajor && repairmajor.score ? repairmajor.score : "自动获取"}</Text>
+                            <Text style={[styles.right, repairmajor ? { color: '#404145' } : { color: '#666' }]}>{repairmajor ? repairmajor.score : "自动获取"}</Text>
                         </Flex>
                     </Flex>
 
@@ -373,6 +375,7 @@ export default class DispatchDetailPage extends BasePage {
                             style={{ width: ScreenUtil.deviceWidth() - 32 }}
                             onChange={dispatchMemo => this.setState({ dispatchMemo })}
                             value={this.state.dispatchMemo}
+                            maxLength={500}
                         />
                     </View>
 

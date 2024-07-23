@@ -77,6 +77,7 @@ const ShowActions = ({ state, click, isSpecial = false }) => {
           }}
           onChange={(val) => setValue(val)}
           value={value}
+          maxLength={500}
         />
         // </View>
       }

@@ -198,6 +198,7 @@ export default class ChaiFei extends BasePage {
                                 rows={3}
                                 onChange={memo => this.setState({ memo })}
                                 value={this.state.memo}
+                                maxLength={500}
                             />
                         </Flex>
                         <Button style={{ width: 220, marginTop: 10, backgroundColor: Macro.work_blue }} type="primary"

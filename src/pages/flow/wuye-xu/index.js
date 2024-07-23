@@ -120,6 +120,7 @@ export default class DetailPage extends BasePage {
               }}
               onChange={(value) => this.setState({ value })}
               value={this.state.value}
+              maxLength={500}
             />
           </View>
 

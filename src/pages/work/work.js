@@ -218,7 +218,7 @@ export default class WorkPage extends BasePage {
                                         </Flex>
                                         <Text style={styles.bottom}>固定资产</Text>
                                     </Flex>
-                                </TouchableWithoutFeedback> 
+                                </TouchableWithoutFeedback>
                             </Flex>
 
                         </Flex>
@@ -399,7 +399,7 @@ export default class WorkPage extends BasePage {
                             </Flex>
                             <Flex style={styles.line} />
 
-                            <Flex> 
+                            <Flex>
                                 <TouchableWithoutFeedback onPress={() => {
                                     if (data.todo == 0) {
                                         return;
@@ -469,7 +469,7 @@ export default class WorkPage extends BasePage {
                                 </TouchableWithoutFeedback>
                             </Flex>
 
-                            <Flex> 
+                            <Flex>
                                 <TouchableWithoutFeedback onPress={() => {
                                     if (data.assist == 0) {
                                         return;
@@ -507,6 +507,24 @@ export default class WorkPage extends BasePage {
                                 </TouchableWithoutFeedback>
 
                                 <TouchableWithoutFeedback onPress={() => {
+                                    if (data.stop == 0) {
+                                        return;
+                                    }
+                                    this.props.navigation.push('task', {
+                                        'data': {
+                                            type: '0',
+                                            hiddenHeader: true,
+                                            title: '已暂停列表'
+                                        }
+                                    })
+                                }}>
+                                    <Flex direction='column' style={{ width: '25%' }}>
+                                        <Text style={styles.top}>{data.stop}</Text>
+                                        <Text style={styles.bottom}>已暂停</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+
+                                <TouchableWithoutFeedback onPress={() => {
                                     if (data.finish == 0) {
                                         return;
                                     }
@@ -521,7 +539,11 @@ export default class WorkPage extends BasePage {
                                         <Text style={styles.top}>{data.finish}</Text>
                                         <Text style={styles.bottom}>已完成</Text>
                                     </Flex>
-                                </TouchableWithoutFeedback>
+                                </TouchableWithoutFeedback> 
+
+                            </Flex>
+
+                            <Flex>
 
                                 <TouchableWithoutFeedback onPress={() => {
                                     if (data.nottest == 0) {
@@ -540,9 +562,6 @@ export default class WorkPage extends BasePage {
                                         <Text style={styles.bottom}>待检验</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
-                            </Flex>
-
-                            <Flex>
 
                                 <TouchableWithoutFeedback onPress={() => {
                                     if (data.unapprove == 0) {
@@ -581,7 +600,7 @@ export default class WorkPage extends BasePage {
                                 </TouchableWithoutFeedback>
                             </Flex>
                         </Flex>
- 
+
                         {/* <Flex direction='column' align={'start'}
                             style={[styles.card, {
                                 borderLeftColor: Macro.work_green,
@@ -681,7 +700,7 @@ const styles = StyleSheet.create({
         color: '#404145',//'#333'
         fontSize: 16,
         paddingBottom: 10
-    }, 
+    },
     qd: {
         color: Macro.work_red,
         fontSize: 16,

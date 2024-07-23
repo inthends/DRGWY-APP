@@ -15,12 +15,12 @@ import LoadImage from '../../components/load-image';
 import LoadImageDelete from '../../components/load-image-del';
 import SelectImage from '../../utils/select-image'; 
 import common from '../../utils/common';
-import UDRecord from '../../utils/UDRecord';
-import api from '../../utils/api';
-import UDPlayer from '../../utils/UDPlayer';
+// import UDRecord from '../../utils/UDRecord';
+// import api from '../../utils/api';
+// import UDPlayer from '../../utils/UDPlayer';
 import UDToast from '../../utils/UDToast';
 import WorkService from './work-service';
-import { AudioRecorder, AudioUtils } from 'react-native-audio';
+// import { AudioRecorder, AudioUtils } from 'react-native-audio';
 import CommonView from '../../components/CommonView';
 import { connect } from 'react-redux';
 import { saveXunJianAction } from '../../utils/store/actions/actions';
@@ -107,61 +107,61 @@ class AddWorkPage extends BasePage {
         }
     }
 
-    startRecord = () => {
-        AudioRecorder.requestAuthorization().then((isAuthorised) => {
-            if (!isAuthorised) {
-                this.setState({ isAuthorised: false });
-            } else {
-                this.setState({ isAuthorised: true });
-            }
-            if (!isAuthorised) {
-                UDToast.showError('录音功能未授权');
-            } else {
-                if (!this.state.recording) {
-                    let audioPath = AudioUtils.DocumentDirectoryPath + '/test.aac';
-                    AudioRecorder.prepareRecordingAtPath(audioPath, {
-                        SampleRate: 22050,
-                        Channels: 1,
-                        AudioQuality: 'Low',
-                        AudioEncoding: 'aac'
-                    });
-                    AudioRecorder.onProgress = (data) => {
-                        // this.setState({currentTime: Math.floor(data.currentTime)});
-                    };
-                    AudioRecorder.onFinished = (data) => {
-                        // Android callback comes in the form of a promise instead. 
-                        // if (common.isIOS()) {
-                        //     resolve(data.audioFileURL);
-                        // } 
-                        api.uploadFile(data.audioFileURL,
-                            this.state.id, '',
-                            '/api/MobileMethod/MUploadServiceDesk', false).then(url => {
-                                this.setState({ fileUrl: url });
-                            }).catch(error => { });
-                    };
-                    this.recordId = UDToast.showLoading('正在录音中...');
-                    this.setState({ recording: true }, () => {
-                        UDRecord.startRecord();
-                    });
-                }
-            }
-        });
-    };
+    // startRecord = () => {
+    //     AudioRecorder.requestAuthorization().then((isAuthorised) => {
+    //         if (!isAuthorised) {
+    //             this.setState({ isAuthorised: false });
+    //         } else {
+    //             this.setState({ isAuthorised: true });
+    //         }
+    //         if (!isAuthorised) {
+    //             UDToast.showError('录音功能未授权');
+    //         } else {
+    //             if (!this.state.recording) {
+    //                 let audioPath = AudioUtils.DocumentDirectoryPath + '/test.aac';
+    //                 AudioRecorder.prepareRecordingAtPath(audioPath, {
+    //                     SampleRate: 22050,
+    //                     Channels: 1,
+    //                     AudioQuality: 'Low',
+    //                     AudioEncoding: 'aac'
+    //                 });
+    //                 AudioRecorder.onProgress = (data) => {
+    //                     // this.setState({currentTime: Math.floor(data.currentTime)});
+    //                 };
+    //                 AudioRecorder.onFinished = (data) => {
+    //                     // Android callback comes in the form of a promise instead. 
+    //                     // if (common.isIOS()) {
+    //                     //     resolve(data.audioFileURL);
+    //                     // } 
+    //                     api.uploadFile(data.audioFileURL,
+    //                         this.state.id, '',
+    //                         '/api/MobileMethod/MUploadServiceDesk', false).then(url => {
+    //                             this.setState({ fileUrl: url });
+    //                         }).catch(error => { });
+    //                 };
+    //                 this.recordId = UDToast.showLoading('正在录音中...');
+    //                 this.setState({ recording: true }, () => {
+    //                     UDRecord.startRecord();
+    //                 });
+    //             }
+    //         }
+    //     });
+    // };
 
-    stopRecord = () => {
-        if (this.state.isAuthorised && this.state.recording) {
-            setTimeout(() => {
-                UDToast.hiddenLoading(this.recordId);
-                this.setState({ recording: false }, () => {
-                    UDRecord.stopRecord();
-                });
-            }, 1000);
-        }
-    };
+    // stopRecord = () => {
+    //     if (this.state.isAuthorised && this.state.recording) {
+    //         setTimeout(() => {
+    //             UDToast.hiddenLoading(this.recordId);
+    //             this.setState({ recording: false }, () => {
+    //                 UDRecord.stopRecord();
+    //             });
+    //         }, 1000);
+    //     }
+    // };
 
-    play = () => {
-        UDPlayer.play(this.state.fileUrl);
-    };
+    // play = () => {
+    //     UDPlayer.play(this.state.fileUrl);
+    // };
 
     selectImages = () => {
         SelectImage.select(this.state.id, '', '/api/MobileMethod/MUploadServiceDesk').then(url => {
@@ -334,10 +334,11 @@ class AddWorkPage extends BasePage {
                                     }}
                                     onChange={value => this.setState({ value })}
                                     value={this.state.value}
+                                    maxLength={500}
                                 />
                             </View>
 
-                            <Flex align={'start'} justify={'start'} style={{
+                            {/* <Flex align={'start'} justify={'start'} style={{
                                 paddingTop: 15,
                                 paddingBottom: 15,
                                 width: ScreenUtil.deviceWidth() - 30
@@ -352,7 +353,7 @@ class AddWorkPage extends BasePage {
                                             defaultImg={require('../../static/images/icon_s.png')} />
                                     </TouchableOpacity>
                                     : null}
-                            </Flex>
+                            </Flex> */}
 
                             <Flex justify={'start'} align={'start'} style={{ width: ScreenUtil.deviceWidth() }}>
                                 <Flex wrap={'wrap'}>
@@ -366,8 +367,8 @@ class AddWorkPage extends BasePage {
                                                 <View style={{
                                                     paddingLeft: 15,
                                                     paddingRight: 5,
-                                                    paddingBottom: 10,
-                                                    paddingTop: 10
+                                                    //paddingBottom: 10,
+                                                    paddingTop: 20
                                                 }}>
                                                     <LoadImageDelete
                                                         style={{ width: width, height: height }}
@@ -387,9 +388,9 @@ class AddWorkPage extends BasePage {
                             height: 60,
                             backgroundColor: '#eee',
                             width: '100%',
-                            marginTop: 20,
-                            flex: 1
-                            //paddingTop: 40
+                            //marginTop: 20,
+                            flex: 1,
+                            paddingTop: 20
                         }}>
                             <Button
                                 style={{

@@ -163,7 +163,7 @@ export default class ApproveDetailPage extends BasePage {
     };
 
     setScore = () => {
-        this.setState({ showClose: true });
+        this.setState({ showClose: false });
         const { id, appScore } = this.state;
         WorkService.approve(id, appScore).then(res => {
             UDToast.showInfo('审核完成');

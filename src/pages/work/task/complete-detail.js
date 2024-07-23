@@ -7,10 +7,11 @@ import {
     StyleSheet,
     ScrollView,
     Modal,
+    TextInput,
     Keyboard
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Icon, Flex, Button, TextareaItem } from '@ant-design/react-native';
+import { Icon, Flex, Button, List, TextareaItem, DatePicker } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';
@@ -52,7 +53,10 @@ export default class CompleteDetailPage extends BasePage {
             lookImageIndex: 0,
             visible: false,
             KeyboardShown: false,
-            isUpload: false
+            isUpload: false,
+            showClose: false,
+            stopDateBegin: new Date(),
+            pauseMemo: '',
         };
         this.keyboardDidShowListener = null;
         this.keyboardDidHideListener = null;
@@ -132,7 +136,7 @@ export default class CompleteDetailPage extends BasePage {
         // });
     };
 
-    click = (handle) => {
+    click = () => {
         const { id, isUpload, images, value } = this.state;
         // if (!(value && value.length > 0)) {
         //     UDToast.showError('请输入文字');
@@ -143,7 +147,7 @@ export default class CompleteDetailPage extends BasePage {
             UDToast.showError('请上传完成图片');
             return;
         }
-        WorkService.serviceHandle(handle, id, value).then(res => {
+        WorkService.serviceHandle('完成维修', id, value).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
         });
@@ -181,6 +185,16 @@ export default class CompleteDetailPage extends BasePage {
             isUpload: true
         });
     }
+
+
+    pause = () => {
+        this.setState({ showClose: false });
+        const { id, pauseMemo, stopDateBegin } = this.state;
+        WorkService.pause(id, stopDateBegin, pauseMemo).then(res => {
+            UDToast.showInfo('暂停成功');
+            this.props.navigation.goBack();
+        });
+    };
 
     render() {
         const { preimages, startimages, detail, communicates } = this.state;
@@ -284,16 +298,32 @@ export default class CompleteDetailPage extends BasePage {
                             style={{ width: ScreenUtil.deviceWidth() - 32 }}
                             onChange={value => this.setState({ value })}
                             value={this.state.value}
+                            maxLength={500}
                         />
                     </View>
                     <Flex justify={'center'}>
-                        <Button onPress={() => this.click('完成维修')} type={'primary'}
+                        <Button onPress={this.click} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                width: 220,
+                                width: 130,
                                 backgroundColor: Macro.work_blue,
                                 marginTop: 20,
                                 height: 40
                             }}>完成维修</Button>
+
+                        {detail.status != 0 ?
+                            <Button onPress={() => this.setState({
+                                showClose: true,
+                                pauseMemo: ''
+                            })}
+                                type={'primary'}
+                                activeStyle={{ backgroundColor: Macro.work_red }} style={{
+                                    width: 130,
+                                    backgroundColor: Macro.work_red,
+                                    marginLeft: 50,
+                                    marginTop: 20,
+                                    borderWidth: 0,
+                                    height: 40
+                                }}>暂停</Button> : null}
                     </Flex>
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
@@ -302,6 +332,71 @@ export default class CompleteDetailPage extends BasePage {
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                         imageUrls={this.state.selectimages} />
                 </Modal>
+ 
+                {
+                    this.state.showClose && (
+                        <View style={styles.mengceng}>
+                            <TouchableWithoutFeedback onPress={() => {
+                                Keyboard.dismiss();//隐藏键盘
+                            }}>
+                                <Flex direction={'column'} justify={'center'} align={'center'}
+                                    style={{ flex: 1, padding: 25, backgroundColor: 'rgba(178,178,178,0.5)' }}>
+                                    <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
+                                        <CommonView style={{ height: 150, width: 300 }}>
+                                            <List style={{
+                                                marginLeft: 10,
+                                                marginRight: 10,
+                                                paddingBottom: 10,
+                                                paddingTop: 10
+                                            }}>
+                                                <DatePicker
+                                                    mode="date"
+                                                    title="选择时间"
+                                                    value={this.state.stopDateBegin}
+                                                    onChange={stopDateBegin => this.setState({ stopDateBegin })}
+                                                    style={{ backgroundColor: 'white' }}
+                                                >
+                                                    <List.Item arrow="horizontal"><Text style={{ marginLeft: -10, color: '#666' }}>暂停开始时间</Text></List.Item>
+                                                </DatePicker>
+                                            </List> 
+                                            <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                                                <TextInput
+                                                    maxLength={500}
+                                                    placeholder='请输入暂停原因'
+                                                    multiline
+                                                    onChangeText={pauseMemo => this.setState({ pauseMemo })}
+                                                    value={this.state.pauseMemo}
+                                                    style={{ textAlignVertical: 'top', height: 50 }}
+                                                    numberOfLines={4}>
+                                                </TextInput>
+                                            </Flex>
+                                        </CommonView>
+
+                                        <Flex style={{ marginTop: 10 }}>
+                                            <Button onPress={this.pause} type={'primary'}
+                                                activeStyle={{ backgroundColor: Macro.work_blue }}
+                                                style={{
+                                                    width: 110,
+                                                    backgroundColor: Macro.work_blue,
+                                                    height: 35
+                                                }}>确认</Button>
+                                            <Button onPress={() => this.setState({ showClose: false })}
+                                                type={'primary'}
+                                                activeStyle={{ backgroundColor: Macro.work_blue }}
+                                                style={{
+                                                    marginLeft: 30,
+                                                    width: 110,
+                                                    backgroundColor: '#666',
+                                                    borderWidth: 0,
+                                                    height: 35
+                                                }}>取消</Button>
+                                        </Flex>
+                                    </Flex>
+                                </Flex>
+                            </TouchableWithoutFeedback>
+                        </View>
+                    )}
+
             </CommonView>
         );
     }
@@ -311,6 +406,12 @@ const styles = StyleSheet.create({
     every: {
         marginLeft: 15,
         marginRight: 15,
+        paddingBottom: 10,
+        paddingTop: 10
+    },
+    every2: {
+        marginLeft: 10,
+        marginRight: 10,
         paddingBottom: 10,
         paddingTop: 10
     },
@@ -328,5 +429,11 @@ const styles = StyleSheet.create({
         padding: 15,
         paddingBottom: 40
     },
-
+    mengceng: {
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        width: '100%',
+        height: '100%'
+    }
 });
