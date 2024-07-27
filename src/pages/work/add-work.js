@@ -75,8 +75,7 @@ class AddWorkPage extends BasePage {
         );
 
         //获取附件是否必填验证 
-        WorkService.getSetting('isMustServicedeskFile').then(res => {
-            //console.log('isMustServicedeskFile',res);
+        WorkService.getSetting('isMustServicedeskFile').then(res => { 
             this.setState({ isMustServicedeskFile: res });
         });
     }

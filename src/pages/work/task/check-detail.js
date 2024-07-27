@@ -43,7 +43,7 @@ export default class CheckDetailPage extends BasePage {
         this.state = {
             id,
             value: '',
-            result: 1, 
+            result: 1,
             preimages: [],
             isUpload: false,//是否上传了图片
             images: [],//检验图片
@@ -53,7 +53,8 @@ export default class CheckDetailPage extends BasePage {
             communicates: [],
             lookImageIndex: 0,
             visible: false,
-            KeyboardShown: false
+            KeyboardShown: false,
+            isMustCheckFile: false
         };
         this.keyboardDidShowListener = null;
         this.keyboardDidHideListener = null;
@@ -61,6 +62,10 @@ export default class CheckDetailPage extends BasePage {
 
     componentDidMount() {
         this.getData();
+        //获取附件是否必填验证 
+        WorkService.getSetting('isMustCheckFile').then(res => {
+            this.setState({ isMustCheckFile: res });
+        });
     }
 
     //add new
@@ -142,13 +147,13 @@ export default class CheckDetailPage extends BasePage {
     };
 
     click = (handle) => {
-        const { id, value, images,isUpload, result } = this.state;
+        const { id, value, images, isUpload, result, isMustCheckFile } = this.state;
         if (!(value && value.length > 0)) {
             UDToast.showError('请输入检验情况');
             return;
         }
 
-        if (images.length == 0 && !isUpload) {
+        if (images.length == 0 && !isUpload && isMustCheckFile == true) {
             UDToast.showError('请上传检验图片');
             return;
         }
@@ -358,7 +363,7 @@ export default class CheckDetailPage extends BasePage {
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                         imageUrls={this.state.selectimages} />
                 </Modal>
-                
+
             </CommonView>
         );
     }
@@ -380,8 +385,9 @@ const styles = StyleSheet.create({
         color: '#404145'
     },
     desc: {
-        padding: 15,
-        paddingBottom: 40
+        lineHeight: 20,
+        fontSize: 15,
+        padding: 15
     },
     ii: {
         paddingTop: 10,

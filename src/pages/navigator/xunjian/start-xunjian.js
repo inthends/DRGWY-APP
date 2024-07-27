@@ -136,8 +136,7 @@ class StartXunJianPage extends BasePage {
                 })
             } catch (error) { }
         }
-        else {
-
+        else { 
             let errIndex = "";
             let i = 0;
             inspectData.map((subItem) => {
@@ -195,12 +194,12 @@ class StartXunJianPage extends BasePage {
     }
 
     _inspecting(newdata) {
-        let inspectData = newdata.filter((item) => {
-            if (item.result === 1) {
-                item.msg = '';
-            }
-            return item;
-        })
+        // let inspectData = newdata.filter((item) => {
+        //     if (item.result === 1) {
+        //         item.msg = '';
+        //     }
+        //     return item;
+        // });
         this.setState({ inspectData });
     }
 

@@ -398,8 +398,9 @@ const styles = StyleSheet.create({
         color: '#404145'
     },
     desc: {
-        padding: 15,
-        paddingBottom: 40
+        lineHeight:20,
+        fontSize:15,
+        padding: 15
     },
     ii: {
         paddingTop: 10,

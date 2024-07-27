@@ -128,6 +128,11 @@ export default {
         let url = '/api/MobileMethod/MChangeToRepair';
         return api.postData(url, params);
     },
+
+    //验证协助人
+    checkAssistUser(keyvalue) {
+        return api.getData('/api/MobileMethod/MCheckAssistUser', { keyvalue });
+    },
  
     changeToComplaint(
         keyvalue, 
@@ -138,6 +143,29 @@ export default {
             convertMemo
         };
         let url = '/api/MobileMethod/MChangeToComplaint';
+        return api.postData(url, params);
+    },
+
+    //续派
+    continueRepair(
+        keyvalue,
+        isQD,
+        senderId,
+        senderName,
+        repairMajorId,
+        repairMajorName,
+        continueMemo
+    ) {
+        let params = {
+            keyvalue,
+            isQD,
+            senderId,
+            senderName,
+            repairMajorId,
+            repairMajorName,
+            continueMemo
+        };
+        let url = '/api/MobileMethod/MContinueRepair';
         return api.postData(url, params);
     },
 
@@ -162,7 +190,11 @@ export default {
         // } 
         else if (handle === '闭单') {
             url = '/api/MobileMethod/MFinish';
-        } else if (handle === '派单') {
+        }
+        else if (handle === '拒派') {
+            url = '/api/MobileMethod/MRefuse';
+        } 
+        else if (handle === '派单') {
             url = '/api/MobileMethod/MRepairDispatch';
         } else if (handle === '接单') {
             url = '/api/MobileMethod/MRepairAccept';

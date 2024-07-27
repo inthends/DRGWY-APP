@@ -61,7 +61,7 @@ export default class XunJianDetailPage extends BasePage {
             <CommonView>
                 <ScrollView>
                     <Flex direction={'column'} align={'start'} style={styles.content}>
-                        <Text style={styles.title}>{data.pointName}</Text>
+                        <Text style={styles.title}>{data.pName}</Text>
                         <XunJianViewComponent data={data} />
                     </Flex>
                     <ListImages images={images} lookImage={this.lookImage} /> 

@@ -55,7 +55,9 @@ export default class DispatchDetailPage extends BasePage {
             repairmajor: null,
             emergencyLevel: null,
             importance: null,
-            KeyboardShown: false
+            KeyboardShown: false,
+            refuseMemo: '',
+            showClose: false
         };
         this.keyboardDidShowListener = null;
         this.keyboardDidHideListener = null;
@@ -96,7 +98,6 @@ export default class DispatchDetailPage extends BasePage {
                 }
             }
         );
-
         this.getData();
     }
 
@@ -176,15 +177,12 @@ export default class DispatchDetailPage extends BasePage {
             UDToast.showError('请选择接单人');
             return;
         }
-
         if (repairmajor == null || repairmajor.id == null) {
             UDToast.showError('请选择维修专业');
             return;
         }
-
         let personIds = assisPersons.map(item => item.id);
         let assistId = personIds && personIds.length > 0 ? JSON.stringify(personIds) : '';
-
         WorkService.paidan(
             id,
             emergencyLevel,
@@ -199,8 +197,20 @@ export default class DispatchDetailPage extends BasePage {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
         })
-
     };
+
+    //拒派
+    refuse = () => {
+        const { id, refuseMemo } = this.state;
+        if (!(refuseMemo && refuseMemo.length > 0)) {
+            UDToast.showError('请输入拒派原因');
+            return;
+        }
+        WorkService.serviceHandle('拒派', id, refuseMemo).then(res => {
+            UDToast.showInfo('操作成功');
+            this.props.navigation.goBack();
+        });
+    }
 
     communicateClick = (i) => {
         let c = this.state.communicates;
@@ -382,19 +392,79 @@ export default class DispatchDetailPage extends BasePage {
                     <Flex justify={'center'}>
                         <Button onPress={() => this.click()} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                width: 220,
+                                width: 130,
                                 backgroundColor: Macro.work_blue,
                                 marginTop: 20,
                                 height: 40
                             }}>派单</Button>
+
+                        <Button onPress={() => {
+                             this.setState({
+                                refuseMemo: '',
+                                showClose: true
+                            })
+                        }} type={'primary'}
+                            activeStyle={{ backgroundColor: Macro.work_red }} style={{
+                                width: 130,
+                                backgroundColor: Macro.work_red,
+                                marginTop: 20,
+                                marginLeft: 50,
+                                borderWidth: 0,
+                                height: 40
+                            }}>拒派</Button>
                     </Flex>
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
+
+                {this.state.showClose && (
+                    //退单
+                    <View style={styles.mengceng}>
+                        <Flex direction={'column'} justify={'center'} align={'center'}
+                            style={{
+                                flex: 1, padding: 25,
+                                backgroundColor: 'rgba(178,178,178,0.5)'
+                            }}>
+                            <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
+                                <View style={{ height: 110, width: 300 }}>
+                                    <TextareaItem
+                                        style={{ height: 100 }}
+                                        placeholder='请输入拒派原因'
+                                        maxLength={500}
+                                        onChange={value => this.setState({ refuseMemo: value })}
+                                        value={this.state.refuseMemo}
+                                    />
+                                </View>
+                                <Flex style={{ marginTop: 15 }}>
+                                    <Button onPress={() => this.refuse()} type={'primary'}
+                                        activeStyle={{ backgroundColor: Macro.work_blue }}
+                                        style={{
+                                            width: 130,
+                                            backgroundColor: Macro.work_blue,
+                                            height: 35
+                                        }}>确认</Button>
+                                    <Button onPress={() => {
+                                        this.setState({ showClose: false });
+                                    }}
+                                        type={'primary'}
+                                        activeStyle={{ backgroundColor: Macro.work_blue }}
+                                        style={{
+                                            marginLeft: 30,
+                                            width: 130,
+                                            backgroundColor: '#666',
+                                            borderWidth: 0,
+                                            height: 35
+                                        }}>取消</Button>
+                                </Flex>
+                            </Flex>
+                        </Flex>
+                    </View>
+                )}
 
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                         imageUrls={this.state.images} />
                 </Modal>
+
 
             </CommonView>
         );
@@ -402,6 +472,14 @@ export default class DispatchDetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
+
+    mengceng: {
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        width: '100%',
+        height: '100%'
+    },
 
     every: {
         marginLeft: 15,
@@ -424,10 +502,9 @@ const styles = StyleSheet.create({
         color: '#404145'
     },
     desc: {
-        fontSize: 16,
-        padding: 15,
-        color: '#404145',
-        //paddingBottom: 40
+        lineHeight: 20,
+        fontSize: 15,
+        padding: 15
     },
     ii: {
         paddingTop: 10,

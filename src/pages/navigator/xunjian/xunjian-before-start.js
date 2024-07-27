@@ -8,7 +8,7 @@ import CommonView from '../../../components/CommonView';
 import XunJianService from './xunjian-service';
 import common from '../../../utils/common';
 import { connect } from 'react-redux';
-import UDToast from '../../../utils/UDToast';
+// import UDToast from '../../../utils/UDToast';
 
 class XunjianBeforeStart extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -49,7 +49,6 @@ class XunjianBeforeStart extends BasePage {
                     //该点位没有待完成的巡检任务，跳转到上一个页面
                     this.props.navigation.goBack(); 
                 }
-                
                 this.setState({ items });
             });
         }

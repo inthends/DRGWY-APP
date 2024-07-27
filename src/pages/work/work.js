@@ -435,6 +435,23 @@ export default class WorkPage extends BasePage {
                                 </TouchableWithoutFeedback>
 
                                 <TouchableWithoutFeedback onPress={() => {
+                                    if (data.myrefuse == 0) {
+                                        return;
+                                    }
+                                    this.props.navigation.push('taskDone', {
+                                        'data': {
+                                            type: '9',
+                                            title: '已拒派列表'
+                                        }
+                                    })
+                                }}>
+                                    <Flex direction='column' style={{ width: '25%' }}>
+                                        <Text style={styles.top}>{data.myrefuse}</Text>
+                                        <Text style={styles.bottom}>已拒派</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback>
+
+                                <TouchableWithoutFeedback onPress={() => {
                                     if (data.going == 0) {
                                         return;
                                     }
@@ -450,7 +467,9 @@ export default class WorkPage extends BasePage {
                                         <Text style={styles.bottom}>待接单</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
+                            </Flex>
 
+                            <Flex>
                                 <TouchableWithoutFeedback onPress={() => {
                                     if (data.receivedone == 0) {
                                         return;
@@ -467,9 +486,7 @@ export default class WorkPage extends BasePage {
                                         <Text style={styles.bottom}>已接单</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
-                            </Flex>
 
-                            <Flex>
                                 <TouchableWithoutFeedback onPress={() => {
                                     if (data.assist == 0) {
                                         return;
@@ -487,8 +504,7 @@ export default class WorkPage extends BasePage {
                                         <Text style={styles.bottom}>待协助</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
-
-
+ 
                                 <TouchableWithoutFeedback onPress={() => {
                                     if (data.unfinish == 0) {
                                         return;
@@ -523,6 +539,9 @@ export default class WorkPage extends BasePage {
                                         <Text style={styles.bottom}>已暂停</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
+                            </Flex>
+
+                            <Flex>
 
                                 <TouchableWithoutFeedback onPress={() => {
                                     if (data.finish == 0) {
@@ -539,11 +558,7 @@ export default class WorkPage extends BasePage {
                                         <Text style={styles.top}>{data.finish}</Text>
                                         <Text style={styles.bottom}>已完成</Text>
                                     </Flex>
-                                </TouchableWithoutFeedback> 
-
-                            </Flex>
-
-                            <Flex>
+                                </TouchableWithoutFeedback>
 
                                 <TouchableWithoutFeedback onPress={() => {
                                     if (data.nottest == 0) {

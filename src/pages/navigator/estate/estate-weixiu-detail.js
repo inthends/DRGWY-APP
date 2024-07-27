@@ -276,9 +276,8 @@ const styles = StyleSheet.create({
         color: '#404145'
     },
     desc: {
-        padding: 15,
-        paddingBottom: 40,
-        fontSize: 16,
-        color: '#404145'
+        lineHeight:20,
+        padding: 15, 
+        fontSize: 15
     }
 });

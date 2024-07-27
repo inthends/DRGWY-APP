@@ -57,6 +57,7 @@ export default class CompleteDetailPage extends BasePage {
             showClose: false,
             stopDateBegin: new Date(),
             pauseMemo: '',
+            isMustFinishFile: false
         };
         this.keyboardDidShowListener = null;
         this.keyboardDidHideListener = null;
@@ -64,6 +65,9 @@ export default class CompleteDetailPage extends BasePage {
 
     componentDidMount() {
         this.getData();
+        WorkService.getSetting('isMustFinishFile').then(res => {
+            this.setState({ isMustFinishFile: res });
+        });
     }
 
     //add new
@@ -137,13 +141,13 @@ export default class CompleteDetailPage extends BasePage {
     };
 
     click = () => {
-        const { id, isUpload, images, value } = this.state;
+        const { id, isUpload, images, value,isMustFinishFile } = this.state;
         // if (!(value && value.length > 0)) {
         //     UDToast.showError('请输入文字');
         //     return;
         // }
         //const wcimages = images.filter(t => t.type === '完成');
-        if (images.length == 0 && !isUpload) {
+        if (images.length == 0 && !isUpload && isMustFinishFile == true) {
             UDToast.showError('请上传完成图片');
             return;
         }
@@ -332,7 +336,7 @@ export default class CompleteDetailPage extends BasePage {
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                         imageUrls={this.state.selectimages} />
                 </Modal>
- 
+
                 {
                     this.state.showClose && (
                         <View style={styles.mengceng}>
@@ -358,7 +362,7 @@ export default class CompleteDetailPage extends BasePage {
                                                 >
                                                     <List.Item arrow="horizontal"><Text style={{ marginLeft: -10, color: '#666' }}>暂停开始时间</Text></List.Item>
                                                 </DatePicker>
-                                            </List> 
+                                            </List>
                                             <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                                                 <TextInput
                                                     maxLength={500}
@@ -424,10 +428,10 @@ const styles = StyleSheet.create({
         color: '#404145'
     },
     desc: {
-        fontSize: 16,
-        color: '#404145',
-        padding: 15,
-        paddingBottom: 40
+        lineHeight: 20,
+        fontSize: 15,
+        // color: '#404145',
+        padding: 15
     },
     mengceng: {
         position: 'absolute',

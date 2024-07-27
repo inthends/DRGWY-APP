@@ -213,12 +213,17 @@ class TaskListPage extends BasePage {
                             <Text>是否允许抢单：{item.isQD == 1 ? '是' : '否'}，单据来源：{item.sourceType}</Text>
                         </Flex>
 
-                        <Text style={{
+                        <Text numberOfLines={2}
+                        style={{
+                            lineHeight:20,
                             paddingLeft: 20,
                             paddingRight: 20,
-                            paddingBottom: 20,
+                            paddingBottom: 10,
                             color: '#666'
-                        }}>{item.repairContent || item.contents}</Text>
+                        }}
+                        >{item.contents}
+                        </Text>
+
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>{item.billDate}</Text>

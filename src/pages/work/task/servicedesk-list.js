@@ -48,7 +48,7 @@ class ServicedeskListPage extends BasePage {
         const type = common.getValueFromProps(this.props).type;
         //const overdue = common.getValueFromProps(this.props).overdue;
         const hiddenHeader = common.getValueFromProps(this.props).hiddenHeader;
-        this.state = {  
+        this.state = {
             pageIndex: 1,
             type,
             dataInfo: {
@@ -59,7 +59,7 @@ class ServicedeskListPage extends BasePage {
             hiddenHeader
         };
     }
- 
+
     componentDidMount() {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
@@ -167,12 +167,14 @@ class ServicedeskListPage extends BasePage {
                             <Text>紧急程度：{item.emergencyLevel}，重要程度：{item.importance}</Text>
                         </Flex>
 
-                        <Text style={{
-                            paddingLeft: 20,
-                            paddingRight: 20,
-                            paddingBottom: 20,
-                            color: '#666'
-                        }}>{item.repairContent || item.contents}</Text>
+                        <Text 
+                            style={{
+                                lineHeight:20,
+                                paddingLeft: 20,
+                                paddingRight: 20,
+                                paddingBottom: 10,
+                                color: '#666'
+                            }}>{item.contents}</Text>
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>{item.billDate}</Text>

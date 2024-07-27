@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
         color: '#404145'
     },
     desc: {
-        padding: 15,
-        paddingBottom: 40
+        lineHeight:20,
+        padding: 15
     }
 });

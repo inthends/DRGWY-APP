@@ -252,9 +252,10 @@ const styles = StyleSheet.create({
         fontSize: 16
     },
     desc: {
+        lineHeight:20,
+        fontSize: 15,
         marginLeft: 15,
         marginRight: 15,
-        paddingTop: 15,
-        paddingBottom: 15
+        paddingTop: 15
     },
 });

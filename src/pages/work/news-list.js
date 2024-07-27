@@ -126,6 +126,7 @@ class NewsList extends BasePage {
                             }}
                         >
                             <Text style={{
+                                lineHeight:20,
                                 color: '#666',
                                 fontSize: 15
                             }}>{item.contents}</Text>

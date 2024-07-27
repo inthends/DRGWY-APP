@@ -233,10 +233,9 @@ const styles = StyleSheet.create({
         color: '#404145'
     },
     desc: {
-        fontSize: 16,
-        color: '#404145',
-        padding: 15,
-        paddingBottom: 40
+        lineHeight:20,
+        fontSize: 15, 
+        padding: 15
     },
     word: {
         color: 'white',

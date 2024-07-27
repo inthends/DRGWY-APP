@@ -89,18 +89,7 @@ export default class AssistDetailPage extends BasePage {
     };
 
     click = (handle) => {
-        const { id } = this.state;
-        // if ( !(value && value.length > 0)) {
-        //     UDToast.showError('请输入文字');
-        //     return;
-        // }
-
-        // const wcimages = images.filter(t => t.type === '完成');
-        // if (wcimages.length == 0 && !isUpload) {
-        //     UDToast.showError('请上传完成图片');
-        //     return;
-        // }
-
+        const { id } = this.state; 
         WorkService.assistRepair(id, handle).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
@@ -269,10 +258,9 @@ const styles = StyleSheet.create({
         color: '#404145'
     },
     desc: {
-        fontSize: 16,
-        color: '#404145',
-        padding: 15,
-        paddingBottom: 40
+        lineHeight:20,
+        fontSize: 15, 
+        padding: 15
     },
     ii: {
         paddingTop: 10,

@@ -1,4 +1,4 @@
-//服务单详情
+
 import React from 'react';
 import {
     View,
@@ -51,6 +51,8 @@ export default class ServiceDeskDetailPage extends BasePage {
             id,
             value: '',
             memo: '',
+            showMemo: false,//弹出回复页面
+
             images: [],
             detail: {
             },
@@ -59,9 +61,13 @@ export default class ServiceDeskDetailPage extends BasePage {
             lookImageIndex: 0,
             visible: false,
             showRepair: false,//转单
-            convertMemo: '',//转单说明 
+            convertMemo: '',//转单说明
             showComplaint: false,//转投诉
             showClose: false,//闭单备注
+
+            showContinue: false,//续派
+            continueMemo: '',//续派说明
+
             KeyboardShown: false,
             btnList: []//按钮权限
         };
@@ -123,8 +129,19 @@ export default class ServiceDeskDetailPage extends BasePage {
             this.setState({
                 detail: {
                     ...item.data,
+                    isRefuse: item.isRefuse,
                     //businessId: item.businessId,
                     statusName: item.statusName
+                },
+
+                repairmajor: {
+                    id: item.repairMajorId,
+                    name: item.repairMajor,
+                },
+                isQD: item.isQD,
+                selectPerson: {
+                    id: item.senderId,
+                    name: item.senderName
                 }
             });
         });
@@ -191,8 +208,7 @@ export default class ServiceDeskDetailPage extends BasePage {
         if (repairmajor == null || repairmajor.id == null) {
             UDToast.showError('请选择维修专业');
             return;
-        }
-
+        } 
         // if (isQD == 1 && selectPerson == null) {
         //     UDToast.showError('请选择派单人');
         //     return;
@@ -240,6 +256,50 @@ export default class ServiceDeskDetailPage extends BasePage {
                 onPress: () => {
                     const { id, convertMemo } = this.state;
                     WorkService.changeToComplaint(id, convertMemo).then(res => {
+                        this.props.navigation.goBack();
+                    }).catch(err => {
+                        UDToast.showError(err);
+                    });
+                }
+            }
+            ], { cancelable: false });
+    };
+
+
+    //续派
+    toContinue = () => {
+        const { id, isQD, selectPerson, repairmajor, continueMemo } = this.state;
+        if (repairmajor == null || repairmajor.id == null) {
+            UDToast.showError('请选择维修专业');
+            return;
+        }
+
+        if (selectPerson == null) {
+            UDToast.showError('请选择派单人');
+            return;
+        }
+
+        if (continueMemo == '') {
+            UDToast.showError('请输入说明');
+            return;
+        }
+
+        Alert.alert(
+            '请确认',
+            '是否续派？',
+            [{ text: '取消', tyle: 'cancel' },
+            {
+                text: '确定',
+                onPress: () => {
+                    WorkService.continueRepair(
+                        id,
+                        isQD,
+                        senderId = selectPerson ? selectPerson.id : null,
+                        senderName = selectPerson ? selectPerson.name : null,
+                        repairmajor.id,
+                        repairmajor.name,
+                        continueMemo
+                    ).then(res => {
                         this.props.navigation.goBack();
                     }).catch(err => {
                         UDToast.showError(err);
@@ -364,7 +424,8 @@ export default class ServiceDeskDetailPage extends BasePage {
                         : null
                     }
 
-                    {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'reply')) ?
+
+                    {/* {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'reply')) ?
                         <>
                             <View style={{ margin: 15 }}>
                                 <TextareaItem
@@ -388,268 +449,465 @@ export default class ServiceDeskDetailPage extends BasePage {
                                         height: 40
                                     }}>回复</Button>
                             </Flex></> : null}
+                             */}
 
-                    {detail.status === 1 &&
-                        <Flex justify={'center'}>
-                            {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'torepair')) ?
+
+                    <Flex justify={'center'}>
+                        {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'reply')) ?
+                            <Flex justify={'center'}>
+                                <Button onPress={() => {
+                                    this.setState({
+                                        showMemo: true,
+                                        value: ''
+                                    })
+                                }}
+                                    type={'primary'}
+                                    activeStyle={{ backgroundColor: Macro.work_blue }}
+                                    style={{
+                                        width: 90,
+                                        backgroundColor: Macro.work_blue,
+                                        marginTop: 10,
+                                        marginBottom: 10,
+                                        height: 40
+                                    }}>回复</Button>
+                            </Flex> : null}
+
+                        {detail.status === 1 && !detail.isRefuse ?
+                            <>
+                                {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'torepair')) ?
+                                    <Flex justify={'center'}>
+                                        <Button onPress={() => {
+                                            this.setState({
+                                                showRepair: true,
+                                                convertMemo: ''
+                                            })
+                                        }}
+                                            type={'primary'}
+                                            activeStyle={{ backgroundColor: Macro.work_blue }} style={{
+                                                width: 90,
+                                                backgroundColor: Macro.work_blue,
+                                                height: 40,
+                                                marginLeft: 10
+                                            }}>转维修</Button>
+                                    </Flex> : null}
+
+                                {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'tocomplaint')) ?
+                                    <Flex justify={'center'}>
+                                        <Button onPress={() =>
+                                            this.setState({
+                                                showComplaint: true,
+                                                convertMemo: ''
+                                            })
+
+                                        } type={'primary'}
+                                            activeStyle={{ backgroundColor: Macro.work_blue }} style={{
+                                                width: 90,
+                                                backgroundColor: Macro.work_blue,
+                                                height: 40,
+                                                marginLeft: 10
+                                            }}>转投诉</Button>
+                                    </Flex> : null}
+
+                                {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'close')) ?
+                                    <Flex justify={'center'}>
+                                        <Button onPress={() => {
+                                            this.setState({
+                                                memo: '',
+                                                showClose: true
+                                            })
+                                        }}
+                                            type={'primary'}
+                                            activeStyle={{ backgroundColor: Macro.work_red }}
+                                            style={{
+                                                width: 90,
+                                                height: 40,
+                                                marginLeft: 10,
+                                                borderWidth: 0,
+                                                backgroundColor: Macro.work_red,
+                                            }}>闭单</Button>
+                                    </Flex> : null}
+                            </>
+                            : null
+                        }
+
+                        {detail.isRefuse ?
+                            btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'continue')) ?
                                 <Flex justify={'center'}>
                                     <Button onPress={() => {
                                         this.setState({
-                                            showRepair: true,
-                                            convertMemo: ''
-                                        })
-                                    }}
-                                        type={'primary'}
-                                        activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                            width: 110,
-                                            backgroundColor: Macro.work_blue,
-                                            height: 40,
-                                            marginLeft: 20
-                                        }}>转维修</Button>
-                                </Flex> : null}
-
-                            {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'tocomplaint')) ?
-                                <Flex justify={'center'}>
-                                    <Button onPress={() =>
-                                        this.setState({
-                                            showComplaint: true,
-                                            convertMemo: ''
-                                        })
-
-                                    } type={'primary'}
-                                        activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                            width: 110,
-                                            backgroundColor: Macro.work_blue,
-                                            height: 40,
-                                            marginLeft: 20
-                                        }}>转投诉</Button>
-                                </Flex> : null}
-
-                            {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'close')) ?
-                                <Flex justify={'center'}>
-                                    <Button onPress={() =>
-                                    //this.doWork('闭单')
-                                    {
-                                        this.setState({
-                                            memo: '',
-                                            showClose: true
+                                            showContinue: true,
+                                            continueMemo: ''
                                         })
                                     }}
                                         type={'primary'}
                                         activeStyle={{ backgroundColor: Macro.work_blue }}
                                         style={{
-                                            width: 110,
+                                            width: 90,
+                                            backgroundColor: Macro.work_blue,
                                             height: 40,
-                                            marginLeft: 20,
-                                            borderWidth: 0,
-                                            backgroundColor: '#666',
-                                            marginRight: 20
-                                        }}>闭单</Button>
-                                </Flex> : null}
-                        </Flex>
-                    }
+                                            marginLeft: 20
+                                        }}>续派</Button>
+                                </Flex> : null
+                            : null
+                        }
+                    </Flex>
 
                     <Communicates communicateClick={this.communicateClick} communicates={communicates} />
                     <OperationRecords communicateClick={this.operationClick} communicates={operations} />
 
                 </ScrollView>
 
-                {this.state.showClose && (
-                    //闭单
-                    <View style={styles.mengceng}>
-                        <TouchableWithoutFeedback onPress={() => {
-                            Keyboard.dismiss();
-                        }}>
-                            <Flex direction={'column'} justify={'center'} align={'center'}
-                                style={{
-                                    flex: 1, padding: 25,
-                                    backgroundColor: 'rgba(178,178,178,0.5)'
-                                }}>
-                                <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
-                                    <View style={{ height: 110, width: 300 }}>
-                                        <TextareaItem
-                                            rows={4}
-                                            autoHeight
-                                            maxLength={500}
-                                            style={{ height: 100 }}
-                                            placeholder='请输入说明'
-                                            onChange={memo => this.setState({ memo })}
-                                            value={this.state.memo}
-                                        />
-                                    </View>
-                                    <Flex style={{ marginTop: 15 }}>
-                                        <Button onPress={() => this.doWork('闭单')} type={'primary'}
-                                            activeStyle={{ backgroundColor: Macro.work_blue }}
-                                            style={{
-                                                width: 130,
-                                                backgroundColor: Macro.work_blue,
-                                                height: 35
-                                            }}>确认</Button>
+                {
+                    this.state.showMemo && (
+                        //回复
+                        <View style={styles.mengceng}>
+                            <TouchableWithoutFeedback onPress={() => {
+                                Keyboard.dismiss();
+                            }}>
+                                <Flex direction={'column'} justify={'center'} align={'center'}
+                                    style={{
+                                        flex: 1, padding: 25,
+                                        backgroundColor: 'rgba(178,178,178,0.5)'
+                                    }}>
+                                    <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
+                                        <View style={{ height: 110, width: 300 }}>
+                                            <TextareaItem
+                                                rows={4}
+                                                autoHeight
+                                                maxLength={500}
+                                                style={{ height: 100 }}
+                                                placeholder='请输入回复内容'
+                                                onChange={value => this.setState({ value })}
+                                                value={this.state.value}
+                                            />
+                                        </View>
+                                        <Flex style={{ marginTop: 15 }}>
+                                            <Button onPress={this.reply} type={'primary'}
+                                                activeStyle={{ backgroundColor: Macro.work_blue }}
+                                                style={{
+                                                    width: 125,
+                                                    backgroundColor: Macro.work_blue,
+                                                    height: 35
+                                                }}>确认</Button>
 
-                                        <Button onPress={() => {
-                                            this.setState({ showClose: false });
-                                        }}
-                                            type={'primary'}
-                                            activeStyle={{ backgroundColor: Macro.work_blue }}
-                                            style={{
-                                                marginLeft: 30,
-                                                width: 130,
-                                                backgroundColor: '#666',
-                                                borderWidth: 0,
-                                                height: 35
-                                            }}>取消</Button>
+                                            <Button onPress={() => {
+                                                this.setState({ showMemo: false });
+                                            }}
+                                                type={'primary'}
+                                                activeStyle={{ backgroundColor: Macro.work_blue }}
+                                                style={{
+                                                    marginLeft: 30,
+                                                    width: 125,
+                                                    backgroundColor: '#666',
+                                                    borderWidth: 0,
+                                                    height: 35
+                                                }}>取消</Button>
+                                        </Flex>
                                     </Flex>
                                 </Flex>
-                            </Flex>
-                        </TouchableWithoutFeedback>
-                    </View>
-                )}
+                            </TouchableWithoutFeedback>
+                        </View>
+                    )
+                }
 
-                {this.state.showRepair && (
-                    //转报修
-                    <View style={styles.mengceng}>
-                        <TouchableWithoutFeedback onPress={() => {
-                            Keyboard.dismiss();
-                        }}>
-                            <Flex direction={'column'} justify={'center'} align={'center'}
-                                style={{ flex: 1, padding: 25, backgroundColor: 'rgba(178,178,178,0.5)' }}>
-                                <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
-                                    <CommonView style={{ height: 260, width: 300 }}>
-                                        <Flex justify='between' style={[styles.every, ScreenUtil.borderBottom()]}>
-                                            <Text style={styles.text}>是否抢单</Text>
-                                            <Flex onPress={() => this.setState({ isQD: 1 })}>
-                                                <LoadImage style={{ width: 18, height: 18 }}
-                                                    defaultImg={isQD === 1 ? selectImg : noselectImg} />
-                                                <Text style={styles.state}> 是</Text>
-                                            </Flex>
-                                            <Flex style={{ paddingLeft: 10 }} onPress={() => this.setState({ isQD: 0 })}>
-                                                <LoadImage style={{ width: 18, height: 18 }}
-                                                    defaultImg={isQD === 0 ? selectImg : noselectImg} />
-                                                <Text style={styles.state}> 否</Text>
-                                            </Flex>
-                                        </Flex>
-                                        <TouchableWithoutFeedback
-                                            onPress={() => this.props.navigation.navigate('selectRepairMajor', { parentName: 'service' })}>
-                                            <Flex justify="between" style={[{
-                                                paddingTop: 15,
-                                                paddingBottom: 15,
-                                                marginLeft: 10,
-                                                marginRight: 10
-                                            }, ScreenUtil.borderBottom()]}>
-                                                <Text style={[repairmajor ? { color: '#404145' } :
-                                                    { color: '#999' }]}>{repairmajor  ? repairmajor.name : `请选择维修专业`}</Text>
-                                                <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
-                                            </Flex>
-                                        </TouchableWithoutFeedback>
-                                        <TouchableWithoutFeedback
-                                            onPress={() => this.props.navigation.navigate('selectRolePerson', {
-                                                moduleId: 'Repair',
-                                                enCode: 'dispatch',
-                                                onSelect: this.onSelectPerson
-                                            })}>
-                                            <Flex justify='between' style={[{
-                                                paddingTop: 15,
-                                                paddingBottom: 15,
-                                                marginLeft: 10,
-                                                marginRight: 10,
-                                            }, ScreenUtil.borderBottom()]}>
-                                                <Text style={[selectPerson ? { fontSize: 16, color: '#404145' } :
-                                                    { color: '#999' }]}>{selectPerson ? selectPerson.name : "请选择派单人"}</Text>
-                                                <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
-                                            </Flex>
-                                        </TouchableWithoutFeedback>
 
-                                        <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                                            <TextInput
+                {
+                    this.state.showClose && (
+                        //闭单
+                        <View style={styles.mengceng}>
+                            <TouchableWithoutFeedback onPress={() => {
+                                Keyboard.dismiss();
+                            }}>
+                                <Flex direction={'column'} justify={'center'} align={'center'}
+                                    style={{
+                                        flex: 1, padding: 25,
+                                        backgroundColor: 'rgba(178,178,178,0.5)'
+                                    }}>
+                                    <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
+                                        <View style={{ height: 110, width: 300 }}>
+                                            <TextareaItem
+                                                rows={4}
+                                                autoHeight
                                                 maxLength={500}
+                                                style={{ height: 100 }}
                                                 placeholder='请输入说明'
-                                                multiline
+                                                onChange={memo => this.setState({ memo })}
+                                                value={this.state.memo}
+                                            />
+                                        </View>
+                                        <Flex style={{ marginTop: 15 }}>
+                                            <Button onPress={() => this.doWork('闭单')} type={'primary'}
+                                                activeStyle={{ backgroundColor: Macro.work_blue }}
+                                                style={{
+                                                    width: 125,
+                                                    backgroundColor: Macro.work_blue,
+                                                    height: 35
+                                                }}>确认</Button>
+
+                                            <Button onPress={() => {
+                                                this.setState({ showClose: false });
+                                            }}
+                                                type={'primary'}
+                                                activeStyle={{ backgroundColor: Macro.work_blue }}
+                                                style={{
+                                                    marginLeft: 30,
+                                                    width: 125,
+                                                    backgroundColor: '#666',
+                                                    borderWidth: 0,
+                                                    height: 35
+                                                }}>取消</Button>
+                                        </Flex>
+                                    </Flex>
+                                </Flex>
+                            </TouchableWithoutFeedback>
+                        </View>
+                    )
+                }
+
+                {
+                    this.state.showRepair && (
+                        //转报修
+                        <View style={styles.mengceng}>
+                            <TouchableWithoutFeedback onPress={() => {
+                                Keyboard.dismiss();
+                            }}>
+                                <Flex direction={'column'} justify={'center'} align={'center'}
+                                    style={{ flex: 1, padding: 25, backgroundColor: 'rgba(178,178,178,0.5)' }}>
+                                    <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
+                                        <CommonView style={{ height: 260, width: 300 }}>
+                                            <Flex justify='between' style={[styles.every, ScreenUtil.borderBottom()]}>
+                                                <Text style={styles.text}>是否抢单</Text>
+                                                <Flex onPress={() => this.setState({ isQD: 1 })}>
+                                                    <LoadImage style={{ width: 18, height: 18 }}
+                                                        defaultImg={isQD === 1 ? selectImg : noselectImg} />
+                                                    <Text style={styles.state}> 是</Text>
+                                                </Flex>
+                                                <Flex style={{ paddingLeft: 10 }} onPress={() => this.setState({ isQD: 0 })}>
+                                                    <LoadImage style={{ width: 18, height: 18 }}
+                                                        defaultImg={isQD === 0 ? selectImg : noselectImg} />
+                                                    <Text style={styles.state}> 否</Text>
+                                                </Flex>
+                                            </Flex>
+                                            <TouchableWithoutFeedback
+                                                onPress={() => this.props.navigation.navigate('selectRepairMajor', { parentName: 'service' })}>
+                                                <Flex justify="between" style={[{
+                                                    paddingTop: 15,
+                                                    paddingBottom: 15,
+                                                    marginLeft: 10,
+                                                    marginRight: 10
+                                                }, ScreenUtil.borderBottom()]}>
+                                                    <Text style={[repairmajor ? { color: '#404145' } :
+                                                        { color: '#999' }]}>{repairmajor ? repairmajor.name : `请选择维修专业`}</Text>
+                                                    <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
+                                                </Flex>
+                                            </TouchableWithoutFeedback>
+                                            <TouchableWithoutFeedback
+                                                onPress={() => this.props.navigation.navigate('selectRolePerson', {
+                                                    moduleId: 'Repair',
+                                                    enCode: 'dispatch',
+                                                    onSelect: this.onSelectPerson
+                                                })}>
+                                                <Flex justify='between' style={[{
+                                                    paddingTop: 15,
+                                                    paddingBottom: 15,
+                                                    marginLeft: 10,
+                                                    marginRight: 10,
+                                                }, ScreenUtil.borderBottom()]}>
+                                                    <Text style={[selectPerson ? { fontSize: 16, color: '#404145' } :
+                                                        { color: '#999' }]}>{selectPerson ? selectPerson.name : "请选择派单人"}</Text>
+                                                    <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
+                                                </Flex>
+                                            </TouchableWithoutFeedback>
+
+                                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                                                <TextInput
+                                                    maxLength={500}
+                                                    placeholder='请输入说明'
+                                                    multiline
+                                                    onChangeText={convertMemo => this.setState({ convertMemo })}
+                                                    value={this.state.convertMemo}
+                                                    style={{ textAlignVertical: 'top', height: 70 }}
+                                                    numberOfLines={4}>
+                                                </TextInput>
+                                            </Flex>
+
+                                        </CommonView>
+                                        <Flex style={{ marginTop: 15 }}>
+                                            <Button onPress={this.toRepair} type={'primary'}
+                                                activeStyle={{ backgroundColor: Macro.work_blue }}
+                                                style={{
+                                                    width: 125,
+                                                    backgroundColor: Macro.work_blue,
+                                                    height: 35
+                                                }}>确认</Button>
+                                            <Button onPress={() => {
+                                                this.setState({ showRepair: false });
+                                            }}
+                                                type={'primary'}
+                                                activeStyle={{ backgroundColor: Macro.work_blue }}
+                                                style={{
+                                                    marginLeft: 30,
+                                                    width: 125,
+                                                    backgroundColor: '#666',
+                                                    borderWidth: 0,
+                                                    height: 35
+                                                }}>取消</Button>
+                                        </Flex>
+                                    </Flex>
+                                </Flex>
+                            </TouchableWithoutFeedback>
+                        </View>
+                    )
+                }
+
+                {
+                    this.state.showComplaint && (
+                        //转投诉
+                        <View style={styles.mengceng}>
+                            <TouchableWithoutFeedback onPress={() => {
+                                Keyboard.dismiss();
+                            }}>
+                                <Flex direction={'column'} justify={'center'} align={'center'}
+                                    style={{
+                                        flex: 1, padding: 25,
+                                        backgroundColor: 'rgba(178,178,178,0.5)'
+                                    }}>
+                                    <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
+                                        <View style={{ height: 110, width: 300 }}>
+                                            <TextareaItem
+                                                rows={4}
+                                                autoHeight
+                                                maxLength={500}
+                                                style={{ height: 100 }}
+                                                placeholder='请输入说明'
                                                 onChangeText={convertMemo => this.setState({ convertMemo })}
                                                 value={this.state.convertMemo}
-                                                style={{ textAlignVertical: 'top', height: 70 }}
-                                                numberOfLines={4}>
-                                            </TextInput>
+                                            />
+                                        </View>
+                                        <Flex style={{ marginTop: 15 }}>
+                                            <Button onPress={this.toComplaint} type={'primary'}
+                                                activeStyle={{ backgroundColor: Macro.work_blue }}
+                                                style={{
+                                                    width: 125,
+                                                    backgroundColor: Macro.work_blue,
+                                                    height: 35
+                                                }}>确认</Button>
+
+                                            <Button onPress={() => {
+                                                this.setState({ showComplaint: false });
+                                            }}
+                                                type={'primary'}
+                                                activeStyle={{ backgroundColor: Macro.work_blue }}
+                                                style={{
+                                                    marginLeft: 30,
+                                                    width: 125,
+                                                    backgroundColor: '#666',
+                                                    borderWidth: 0,
+                                                    height: 35
+                                                }}>取消</Button>
                                         </Flex>
-
-                                    </CommonView>
-                                    <Flex style={{ marginTop: 15 }}>
-                                        <Button onPress={this.toRepair} type={'primary'}
-                                            activeStyle={{ backgroundColor: Macro.work_blue }}
-                                            style={{
-                                                width: 130,
-                                                backgroundColor: Macro.work_blue,
-                                                height: 35
-                                            }}>确认</Button>
-                                        <Button onPress={() => {
-                                            this.setState({ showRepair: false });
-                                        }}
-                                            type={'primary'}
-                                            activeStyle={{ backgroundColor: Macro.work_blue }}
-                                            style={{
-                                                marginLeft: 30,
-                                                width: 130,
-                                                backgroundColor: '#666',
-                                                borderWidth: 0,
-                                                height: 35
-                                            }}>取消</Button>
                                     </Flex>
                                 </Flex>
-                            </Flex>
-                        </TouchableWithoutFeedback>
-                    </View>
-                )}
+                            </TouchableWithoutFeedback>
+                        </View>
+                    )
+                }
 
+                {
+                    this.state.showContinue && (
+                        //续派
+                        <View style={styles.mengceng}>
+                            <TouchableWithoutFeedback onPress={() => {
+                                Keyboard.dismiss();
+                            }}>
+                                <Flex direction={'column'} justify={'center'} align={'center'}
+                                    style={{ flex: 1, padding: 25, backgroundColor: 'rgba(178,178,178,0.5)' }}>
+                                    <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
+                                        <CommonView style={{ height: 260, width: 300 }}>
+                                            <Flex justify='between' style={[styles.every, ScreenUtil.borderBottom()]}>
+                                                <Text style={styles.text}>是否抢单</Text>
+                                                <Flex onPress={() => this.setState({ isQD: 1 })}>
+                                                    <LoadImage style={{ width: 18, height: 18 }}
+                                                        defaultImg={isQD === 1 ? selectImg : noselectImg} />
+                                                    <Text style={styles.state}> 是</Text>
+                                                </Flex>
+                                                <Flex style={{ paddingLeft: 10 }} onPress={() => this.setState({ isQD: 0 })}>
+                                                    <LoadImage style={{ width: 18, height: 18 }}
+                                                        defaultImg={isQD === 0 ? selectImg : noselectImg} />
+                                                    <Text style={styles.state}> 否</Text>
+                                                </Flex>
+                                            </Flex>
+                                            <TouchableWithoutFeedback
+                                                onPress={() => this.props.navigation.navigate('selectRepairMajor', { parentName: 'service' })}>
+                                                <Flex justify="between" style={[{
+                                                    paddingTop: 15,
+                                                    paddingBottom: 15,
+                                                    marginLeft: 10,
+                                                    marginRight: 10
+                                                }, ScreenUtil.borderBottom()]}>
+                                                    <Text style={[repairmajor ? { color: '#404145' } :
+                                                        { color: '#999' }]}>{repairmajor ? repairmajor.name : `请选择维修专业`}</Text>
+                                                    <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
+                                                </Flex>
+                                            </TouchableWithoutFeedback>
+                                            <TouchableWithoutFeedback
+                                                onPress={() => this.props.navigation.navigate('selectRolePerson', {
+                                                    moduleId: 'Repair',
+                                                    enCode: 'dispatch',
+                                                    onSelect: this.onSelectPerson
+                                                })}>
+                                                <Flex justify='between' style={[{
+                                                    paddingTop: 15,
+                                                    paddingBottom: 15,
+                                                    marginLeft: 10,
+                                                    marginRight: 10,
+                                                }, ScreenUtil.borderBottom()]}>
+                                                    <Text style={[selectPerson ? { fontSize: 16, color: '#404145' } :
+                                                        { color: '#999' }]}>{selectPerson ? selectPerson.name : "请选择派单人"}</Text>
+                                                    <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
+                                                </Flex>
+                                            </TouchableWithoutFeedback>
 
-                {this.state.showComplaint && (
-                    //转投诉
-                    <View style={styles.mengceng}>
-                        <TouchableWithoutFeedback onPress={() => {
-                            Keyboard.dismiss();
-                        }}>
-                            <Flex direction={'column'} justify={'center'} align={'center'}
-                                style={{
-                                    flex: 1, padding: 25,
-                                    backgroundColor: 'rgba(178,178,178,0.5)'
-                                }}>
-                                <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
-                                    <View style={{ height: 110, width: 300 }}>
-                                        <TextareaItem
-                                            rows={4}
-                                            autoHeight
-                                            maxLength={500}
-                                            style={{ height: 100 }}
-                                            placeholder='请输入说明'
-                                            onChangeText={convertMemo => this.setState({ convertMemo })}
-                                            value={this.state.convertMemo}
-                                        />
-                                    </View>
-                                    <Flex style={{ marginTop: 15 }}>
-                                        <Button onPress={this.toComplaint} type={'primary'}
-                                            activeStyle={{ backgroundColor: Macro.work_blue }}
-                                            style={{
-                                                width: 130,
-                                                backgroundColor: Macro.work_blue,
-                                                height: 35
-                                            }}>确认</Button>
+                                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                                                <TextInput
+                                                    maxLength={500}
+                                                    placeholder='请输入说明'
+                                                    multiline
+                                                    onChangeText={continueMemo => this.setState({ continueMemo })}
+                                                    value={this.state.continueMemo}
+                                                    style={{ textAlignVertical: 'top', height: 70 }}
+                                                    numberOfLines={4}>
+                                                </TextInput>
+                                            </Flex>
 
-                                        <Button onPress={() => {
-                                            this.setState({ showClose: false });
-                                        }}
-                                            type={'primary'}
-                                            activeStyle={{ backgroundColor: Macro.work_blue }}
-                                            style={{
-                                                marginLeft: 30,
-                                                width: 130,
-                                                backgroundColor: '#666',
-                                                borderWidth: 0,
-                                                height: 35
-                                            }}>取消</Button>
+                                        </CommonView>
+                                        <Flex style={{ marginTop: 15 }}>
+                                            <Button onPress={this.toContinue} type={'primary'}
+                                                activeStyle={{ backgroundColor: Macro.work_blue }}
+                                                style={{
+                                                    width: 125,
+                                                    backgroundColor: Macro.work_blue,
+                                                    height: 35
+                                                }}>确认</Button>
+                                            <Button onPress={() => {
+                                                this.setState({ showContinue: false });
+                                            }}
+                                                type={'primary'}
+                                                activeStyle={{ backgroundColor: Macro.work_blue }}
+                                                style={{
+                                                    marginLeft: 30,
+                                                    width: 125,
+                                                    backgroundColor: '#666',
+                                                    borderWidth: 0,
+                                                    height: 35
+                                                }}>取消</Button>
+                                        </Flex>
                                     </Flex>
                                 </Flex>
-                            </Flex>
-                        </TouchableWithoutFeedback>
-                    </View>
-                )}
+                            </TouchableWithoutFeedback>
+                        </View>
+                    )
+                }
 
 
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
@@ -659,7 +917,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                         imageUrls={this.state.images} />
                 </Modal>
 
-            </CommonView>
+            </CommonView >
         );
     }
 }
@@ -696,10 +954,12 @@ const styles = StyleSheet.create({
     },
 
     desc: {
-        fontSize: 16,
-        color: '#404145',
-        padding: 15,
-        paddingBottom: 40
+        lineHeight: 20,//必须，否则显示不全
+        fontSize: 15,
+        //color: '#404145',
+        paddingTop: 15,
+        paddingLeft: 15,
+        paddingRight: 15
     },
     ii: {
         paddingTop: 10,

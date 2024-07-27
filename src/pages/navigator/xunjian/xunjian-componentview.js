@@ -3,9 +3,12 @@ import React, { Fragment } from 'react';
 import BasePage from '../../base/base';
 import { Flex } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
-import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View, TextInput } from 'react-native';
+import {
+    ScrollView, StyleSheet, Text, View,
+    //TouchableWithoutFeedback, View, TextInput
+} from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
-import LoadImage from '../../../components/load-image';
+// import LoadImage from '../../../components/load-image';
 
 export default class XunJianDetailViewPage extends BasePage {
     constructor(props) {
@@ -15,13 +18,14 @@ export default class XunJianDetailViewPage extends BasePage {
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
 
         const { data } = this.props;
-        const selectImg = require('../../../static/images/select.png');
-        const noselectImg = require('../../../static/images/no-select.png');
+        // const selectImg = require('../../../static/images/select.png');
+        // const noselectImg = require('../../../static/images/no-select.png');
 
         return (
             <ScrollView>
                 <Flex direction={'column'} align={'start'}>
-                    <Flex style={{ width: ScreenUtil.deviceWidth() - 30 }} justify={'between'}>
+                    <Flex //style={{ width: ScreenUtil.deviceWidth() - 30 }} 
+                        justify={'between'}>
                         <Text style={styles.work}>{data.taskTime} {data.projectName}</Text>
                     </Flex>
                     <Text style={styles.title}>计划</Text>
@@ -30,7 +34,7 @@ export default class XunJianDetailViewPage extends BasePage {
                         <Text style={styles.desc}>{data.roleName}</Text>
                     </Flex>
                     <Text style={styles.title}>执行</Text>
-                    <Flex style={{ width: ScreenUtil.deviceWidth() - 30, marginBottom: 10 }} justify={'between'}>
+                    <Flex style={{ width: ScreenUtil.deviceWidth() - 30 }} justify={'between'}>
                         <Text style={styles.desc}>{data.exctuteTime}</Text>
                         <Text style={styles.desc}>{data.excuteUserName}</Text>
                     </Flex>
@@ -39,27 +43,38 @@ export default class XunJianDetailViewPage extends BasePage {
                         return <Fragment key={item.id}>
                             <Flex direction={'column'}
                                 align={'start'}
-                                style={styles.contentRect}>
-                                <Text style={styles.blueText}>{item.name}</Text>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Text style={styles.blueText}>方法：</Text>
-                                    <Text style={styles.normalText}>{item.checkWay}</Text>
-                                </View>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Text style={styles.blueText}>标准：</Text>
-                                    <Text style={styles.normalText}>{item.criterion}</Text>
-                                </View>
-                                <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-                                    <Text style={styles.blueText}>结果：</Text>
-                                    <View style={{ flexDirection: 'column', paddingTop: 2 }}>
-                                        <TouchableWithoutFeedback>
-                                            <Flex>
-                                                <LoadImage img={item.result === 1 ? selectImg : noselectImg}
-                                                    style={{ width: 15, height: 15 }} />
-                                                <Text style={{ color: '#333333', fontSize: 14, marginLeft: 15 }}>正常</Text>
-                                            </Flex>
-                                        </TouchableWithoutFeedback>
+                                style={styles.contentRect}> 
 
+                                <Text style={styles.moreText}>{item.name}</Text>
+
+                                <View style={{ flexDirection: 'row', paddingTop: 5 }} >
+                                    <Text style={styles.blueText}>方法：</Text>
+                                    <Text style={styles.moreText2}>{item.checkWay}</Text>
+                                </View>
+
+                                <View style={{ flexDirection: 'row', paddingTop: 5 }} >
+                                    <Text style={styles.blueText}>标准：</Text>
+                                    <Text style={styles.moreText2}>{item.criterion}</Text>
+                                </View>
+
+                                <View style={{ flexDirection: 'row', paddingTop: 5 }}>
+                                    <Text style={styles.blueText}>结果：</Text>
+                                    <Text style={styles.moreText2}>{item.result === 1 ? '正常' : '异常'} {item.memo}</Text>
+                                    {/* <View style={{ flexDirection: 'column', paddingTop: 5 }}> 
+                                        <View flexDirection={'row'} marginTop={5} style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+                                            <TouchableWithoutFeedback >
+                                                <Flex>
+                                                    <LoadImage img={item.result === 1 ? selectImg : noselectImg}
+                                                        style={{ width: 15, height: 15 }} />
+                                                    <Text style={{ color: '#333333', fontSize: 14, paddingLeft: 15 }}>正常</Text>
+                                                </Flex>
+                                            </TouchableWithoutFeedback>
+                                            <TextInput
+                                                multiline={true}
+                                                editable={false}
+                                                value={item.memo}
+                                            ></TextInput>
+                                        </View> 
                                         <View flexDirection={'row'} marginTop={5} style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
                                             <TouchableWithoutFeedback >
                                                 <Flex>
@@ -68,16 +83,15 @@ export default class XunJianDetailViewPage extends BasePage {
                                                     <Text style={{ color: '#333333', fontSize: 14, paddingLeft: 15 }}>异常</Text>
                                                 </Flex>
                                             </TouchableWithoutFeedback>
-
-                                            <TextInput maxLength={500}
+                                            <TextInput
                                                 multiline={true}
                                                 editable={false}
-                                                keyboardType={'default'}
-                                                style={item.result === 0 ? styles.textInput : { height: 1 }}
+                                                value={item.memo}
                                             ></TextInput>
                                         </View>
-                                    </View>
+                                    </View> */}
                                 </View>
+
                             </Flex>
                         </Fragment>
                     })}
@@ -95,8 +109,20 @@ const styles = StyleSheet.create({
     title: {
         color: '#404145',
         fontSize: 16,
-        paddingTop: 15
+        paddingTop: 5
     },
+
+    moreText: {
+        lineHeight: 20,
+        fontSize: 14
+    },
+
+    moreText2: {
+        lineHeight: 20,
+        fontSize: 14,
+        width: ScreenUtil.deviceWidth() - 85
+    },
+
     desc: {
         color: '#404145',
         fontSize: 16,
@@ -105,7 +131,7 @@ const styles = StyleSheet.create({
     contentRect: {
         width: '100%',
         marginTop: 5,
-        borderColor:'#eeeeee',
+        borderColor: '#eeeeee',
         borderWidth: 1,
         borderRadius: 5,
         padding: 5
@@ -116,17 +142,12 @@ const styles = StyleSheet.create({
         fontSize: 14,
         marginVertical: 2
     },
-    normalText: {
-        color: '#333333', //'#999999',
-        fontSize: 14,
-        marginVertical: 2
-    },
 
-    textInput: {
-        width: ScreenUtil.deviceWidth() - 150,
-        borderBottomColor: '#333333',
-        paddingBottom: 5,
-        paddingVertical: 0,
-        borderBottomWidth: 1
-    }
+    // textInput: {
+    //     width: ScreenUtil.deviceWidth() - 150,
+    //     borderBottomColor: '#333333',
+    //     paddingBottom: 5,
+    //     paddingVertical: 0,
+    //     borderBottomWidth: 1
+    // }
 });

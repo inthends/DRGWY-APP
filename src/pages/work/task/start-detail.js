@@ -53,7 +53,8 @@ export default class StartDetailPage extends BasePage {
             backMemo: '',
             showClose: false,
             KeyboardShown: false,
-            selectPersons: []
+            selectPersons: [],
+            isMustStartFile: false
         };
         this.keyboardDidShowListener = null;
         this.keyboardDidHideListener = null;
@@ -61,6 +62,9 @@ export default class StartDetailPage extends BasePage {
 
     componentDidMount() {
         this.getData();
+        WorkService.getSetting('isMustStartFile').then(res => {
+            this.setState({ isMustStartFile: res });
+        });
     }
 
     //add new
@@ -104,7 +108,6 @@ export default class StartDetailPage extends BasePage {
                     reinforceName: detail.reinforceName//增援人 
                 }
             });
-
             //根据不同单据类型获取附件作为维修前图片
             WorkService.workPreFiles(detail.entity.sourceType, detail.relationId).then(preimages => {
                 this.setState({
@@ -128,34 +131,44 @@ export default class StartDetailPage extends BasePage {
     };
 
     click = () => {
-        const { id, isUpload, images, value, selectPersons } = this.state;
-        // if (handle === '回复' && !(value&&value.length > 0)) {
-        if (!(value && value.length > 0)) {
-            UDToast.showError('请输入故障判断');
-            return;
-        }
-        //const kgimages = images.filter(t => t.type === '开工');
-        if (images.length == 0 && !isUpload) {
-            UDToast.showError('请上传开工图片');
-            return;
-        }
+        const { id, isUpload, images, value, isMustStartFile, selectPersons } = this.state;
 
-        let personIds = selectPersons.map(item => item.id);
-        let reinforceId = personIds && personIds.length > 0 ? JSON.stringify(personIds) : '';
-        WorkService.startRepair(id, value, reinforceId).then(res => {
-            UDToast.showInfo('操作成功');
-            this.props.navigation.goBack();
+        //判断协助人是否都已经加入，如果没有加入，则弹出提示
+        WorkService.checkAssistUser(id).then(res => {
+            if (res.flag == false) {
+                UDToast.showError(res.msg);
+                return;
+            }
+            else {
+                // if (handle === '回复' && !(value&&value.length > 0)) {
+                if (!(value && value.length > 0)) {
+                    UDToast.showError('请输入故障判断');
+                    return;
+                }
+                //const kgimages = images.filter(t => t.type === '开工');
+                if (images.length == 0 && !isUpload && isMustStartFile == true) {
+                    UDToast.showError('请上传开工图片');
+                    return;
+                }
+
+                let personIds = selectPersons.map(item => item.id);
+                let reinforceId = personIds && personIds.length > 0 ? JSON.stringify(personIds) : '';
+
+                WorkService.startRepair(id, value, reinforceId).then(res => {
+                    UDToast.showInfo('操作成功');
+                    this.props.navigation.goBack();
+                });
+            }
         });
     };
 
-    back = (handle) => {
+    back = () => {
         const { id, backMemo } = this.state;
-        // if (handle === '回复' && !(value&&value.length > 0)) {
         if (!(backMemo && backMemo.length > 0)) {
             UDToast.showError('请输入退单原因');
             return;
         }
-        WorkService.serviceHandle(handle, id, backMemo).then(res => {
+        WorkService.serviceHandle('退单', id, backMemo).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
         });
@@ -202,6 +215,7 @@ export default class StartDetailPage extends BasePage {
         });
     }
 
+    //选择增援人
     onSelectPerson = ({ selectItems }) => {
         this.setState({
             selectPersons: selectItems
@@ -325,15 +339,15 @@ export default class StartDetailPage extends BasePage {
                         />
                     </View>
 
-                    <Flex justify={'center'} style={{ marginTop: 20 }} >
+                    <Flex justify={'center'} style={{ marginTop: 20 }}>
+
                         <TouchableWithoutFeedback onPress={() => this.click()}>
                             <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
                                 <Text style={styles.word}>开始维修</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() =>
-                        // this.back('退单')
-                        {
+
+                        <TouchableWithoutFeedback onPress={() => {
                             this.setState({
                                 backMemo: '',
                                 showClose: true
@@ -367,7 +381,7 @@ export default class StartDetailPage extends BasePage {
                                     />
                                 </View>
                                 <Flex style={{ marginTop: 15 }}>
-                                    <Button onPress={() => this.back('退单')} type={'primary'}
+                                    <Button onPress={this.back} type={'primary'}
                                         activeStyle={{ backgroundColor: Macro.work_blue }}
                                         style={{
                                             width: 130,
@@ -391,7 +405,7 @@ export default class StartDetailPage extends BasePage {
                         </Flex>
                     </View>
                 )}
- 
+
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer
                         index={this.state.lookImageIndex}
@@ -429,10 +443,9 @@ const styles = StyleSheet.create({
         color: '#404145'
     },
     desc: {
-        fontSize: 16,
-        color: '#404145',
-        padding: 15,
-        paddingBottom: 40
+        lineHeight: 20,
+        fontSize: 15,
+        padding: 15
     },
     ii: {
         paddingTop: 10,

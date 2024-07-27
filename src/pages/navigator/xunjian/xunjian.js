@@ -110,12 +110,14 @@ class XunJianPage extends BasePage {
         //     },
         // )
 
-        //test
+
+ 
+        //test 需要注释掉
         // let person = this.state.person || {};
         // this.props.navigation.navigate('xunjianBeforeStart', {
         //     'data': {
         //         person,
-        //         pointId: ''
+        //         pointId: '7f1a7d4b-7775-4cf6-9b5a-aab22bf4b998'
         //     }
         // });
 
@@ -293,7 +295,7 @@ class XunJianPage extends BasePage {
                 </TouchableWithoutFeedback>
 
 
-                <ScrollView style={{ height: ScreenUtil.contentHeight() - 190 }}>
+                <ScrollView style={{ height: ScreenUtil.contentHeight() - 180 }}>
                     <Accordion
                         onChange={this.onChange}
                         style={{
@@ -328,8 +330,8 @@ class XunJianPage extends BasePage {
                         activeStyle={{ backgroundColor: Macro.work_blue }} style={{
                             width: 220,
                             backgroundColor: Macro.work_blue,
-                            marginTop: 20,
-                            marginBottom: 15,
+                            marginTop: 10,
+                            marginBottom: 10,
                             height: 40
                         }}>开始巡检</Button>
                 </Flex>

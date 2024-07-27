@@ -135,7 +135,7 @@ export default class DetailPage extends BasePage {
               }}
             />
             <Text>
-              {detail.contents}{"\n"}
+              {detail.contents}
             </Text>
           </Flex>
 

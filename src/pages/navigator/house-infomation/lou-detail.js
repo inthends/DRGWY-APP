@@ -229,6 +229,7 @@ class LouDetail extends BasePage {
                                         <Text>{item.statusName}</Text>
                                     </Flex>
                                     <Text style={{
+                                        lineHeight:20,
                                         paddingBottom: 20,
                                         color: '#666',
                                     }}>{item.contents}</Text>

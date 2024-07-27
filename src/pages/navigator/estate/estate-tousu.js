@@ -163,6 +163,7 @@ class EstateTousuPage extends BasePage {
                             </TouchableWithoutFeedback>
                         </Flex>
                         <Text style={{
+                            lineHeight:20,
                             paddingLeft: 20,
                             paddingRight: 20,
                             paddingBottom: 40,

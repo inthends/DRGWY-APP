@@ -159,16 +159,18 @@ class EstateFuwuPage extends BasePage {
                             <Text>{item.statusName}</Text>
                         </Flex>
                         <Text
-                            numberOfLines={3}
-                            ellipsizeMode='tail'
+                            // numberOfLines={3}
+                            // ellipsizeMode='tail'
                             style={{
+                                lineHeight:20,
                                 height: 60,
                                 paddingLeft: 20,
                                 paddingRight: 20,
                                 paddingBottom: 20,
                                 color: '#666'
                             }}>
-                            {item.contents}{"\n"}
+                            {item.contents}
+                            {/* {"\n"} */}
                         </Text>
                         <Flex justify='between'
                             style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>

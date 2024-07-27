@@ -86,7 +86,7 @@ export default class XunJianDetailPage extends BasePage {
                         <Text style={styles.desc}>{data.roleName}</Text>
                     </Flex>
                     <Text style={styles.title}>执行</Text>
-                    <Flex style={{ width: ScreenUtil.deviceWidth() - 30  }} justify={'between'}>
+                    <Flex style={{ width: ScreenUtil.deviceWidth() - 30 }} justify={'between'}>
                         <Text style={styles.desc}>{data.exctuteTime}</Text>
                         <Text style={styles.desc}>{data.excuteUserName}</Text>
                     </Flex>
@@ -107,19 +107,19 @@ export default class XunJianDetailPage extends BasePage {
                             <Flex direction={'column'}
                                 align={'start'}
                                 style={styles.contentRect}>
-                                <Text style={styles.blueText}>{item.name}</Text>
-                                <View style={{ flexDirection: 'row' }}>
+                                <Text style={styles.moreText}>{item.name}</Text>
+                                <View style={{ flexDirection: 'row' , paddingTop: 5}}>
                                     <Text style={styles.blueText}>方法：</Text>
-                                    <Text style={styles.normalText}>{item.checkWay}</Text>
+                                    <Text style={styles.moreText2}>{item.checkWay}</Text>
                                 </View>
-                                <View style={{ flexDirection: 'row' }}>
+                                <View style={{ flexDirection: 'row', paddingTop: 5}}>
                                     <Text style={styles.blueText}>标准：</Text>
-                                    <Text style={styles.normalText}>{item.criterion}</Text>
+                                    <Text style={styles.moreText2}>{item.criterion}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
                                     <Text style={styles.blueText}>结果：</Text>
-                                    <View style={{ flexDirection: 'column', paddingTop: 2 }}>
-                                        <TouchableWithoutFeedback
+                                    <View style={{ flexDirection: 'column', paddingTop: 5 }}> 
+                                        {/* <TouchableWithoutFeedback
                                             onPress={() => {
                                                 currentItem.result = 1;
                                                 this.isNormal(currentItem);
@@ -129,11 +129,41 @@ export default class XunJianDetailPage extends BasePage {
                                                     style={{ width: 15, height: 15 }} />
                                                 <Text style={{ color: '#666', fontSize: 16, marginLeft: 15 }}>正常</Text>
                                             </Flex>
-                                        </TouchableWithoutFeedback>
+                                        </TouchableWithoutFeedback> */}
 
                                         <View flexDirection={'row'} marginTop={5} style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
                                             <TouchableWithoutFeedback
                                                 onPress={() => {
+                                                    Keyboard.dismiss();
+                                                    currentItem.result = 1;
+                                                    this.isNormal(currentItem);
+                                                }}>
+                                                <Flex>
+                                                    <LoadImage img={currentItem.result === 1 ? selectImg : noselectImg}
+                                                        style={{ width: 15, height: 15 }} />
+                                                    <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>正常</Text>
+                                                </Flex>
+                                            </TouchableWithoutFeedback>
+
+                                            {/* 正常也需要输入备注，客户要求 */}
+                                            <TextInput
+                                                maxLength={500}
+                                                multiline={true}
+                                                editable={true}
+                                                keyboardType={'default'}
+                                                style={styles.textInput}
+                                                onChangeText={memo => {
+                                                    currentItem.msg = memo;
+                                                    this.isNormal(currentItem);
+                                                }}
+                                            ></TextInput>
+                                        </View>
+
+
+                                        <View flexDirection={'row'} marginTop={5} style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+                                            <TouchableWithoutFeedback
+                                                onPress={() => {
+                                                    Keyboard.dismiss();
                                                     currentItem.result = 0;
                                                     this.isNormal(currentItem);
                                                 }}>
@@ -147,9 +177,11 @@ export default class XunJianDetailPage extends BasePage {
                                             <TextInput
                                                 maxLength={500}
                                                 multiline={true}
-                                                editable={currentItem.result === 0}
-                                                keyboardType={'default'} 
-                                                style={currentItem.result === 0 ? styles.textInput : { height: 1 }}
+                                                //editable={currentItem.result === 0}
+                                                editable={true}
+                                                keyboardType={'default'}
+                                                // style={currentItem.result === 0 ? styles.textInput : { height: 1 }}
+                                                style={styles.textInput}
                                                 onChangeText={memo => {
                                                     currentItem.msg = memo;
                                                     this.isNormal(currentItem);
@@ -168,6 +200,17 @@ export default class XunJianDetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
+
+    moreText: {
+        lineHeight: 20,
+        fontSize: 14
+    },
+
+    moreText2: {
+        lineHeight: 20,
+        fontSize: 14,
+        width: ScreenUtil.deviceWidth() - 85
+    },
     work: {
         color: Macro.work_blue,
         fontSize: 16

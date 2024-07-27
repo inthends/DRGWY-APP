@@ -34,16 +34,18 @@ export default class ModifyPsdPage extends BasePage {
 
 
     componentDidMount() {
-        MineService.getSetting('isComplexPassword').then((res) => { 
-            this.setState({ isComplexPassword:res });
+        MineService.getSetting('isComplexPassword').then((res) => {
+            this.setState({ isComplexPassword: res });
         });
     }
 
     submit = () => {
-        const { oldPassword, newPassword, confirmPassword } = this.state;
+        
+        const { oldPassword, newPassword, confirmPassword, isComplexPassword } = this.state;
+
         if (newPassword === confirmPassword) {
- 
-            if (newPassword != '') {
+
+            if (newPassword != '' && isComplexPassword) {
                 //验证新密码
                 let reg = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,20}$/;
                 var isok = reg.test(newPassword);
@@ -65,12 +67,12 @@ export default class ModifyPsdPage extends BasePage {
 
 
     render() {
-        const {isComplexPassword} = this.state;
+        const { isComplexPassword } = this.state;
         return (
             <View style={styles.content}>
                 <Flex justify='between' aligen='center' style={styles.header}>
                     <Flex direction='column' align='start'>
-                        <Text style={styles.name}>修改密码</Text> 
+                        <Text style={styles.name}>修改密码</Text>
                     </Flex>
                 </Flex>
 
@@ -156,7 +158,7 @@ const styles = StyleSheet.create({
         paddingTop: 5,
     },
     button: {
-        marginTop:15,
+        marginTop: 15,
         backgroundColor: Macro.work_blue
     },
 });
