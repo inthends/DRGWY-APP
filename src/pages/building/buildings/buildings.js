@@ -68,20 +68,20 @@ class BuildingsPage extends BasePage {
     };
 
     render() {
+        const { data } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
                 <View style={styles.content}>
                     {/* <BackTitleNavigationBar {...this.props} title={this.state.item.name} /> */}
                     <Text style={{ paddingLeft: 20, paddingTop: 15, fontSize: 20, color: '#2c2c2c' }}>{this.state.item.name}</Text>
                     <FlatList
-                        data={this.state.data}
+                        data={data}
                         // ListHeaderComponent={}
                         renderItem={this._renderItem}
                         style={styles.list}
                         keyExtractor={(item) => item.id}
                         ListEmptyComponent={<NoDataView />} 
-                    />
-                     <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
+                    /> 
                 </View>
             </CommonView>
         );

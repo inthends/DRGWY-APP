@@ -8,8 +8,8 @@ import { Button, Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImageDelete from '../../../components/load-image-del';
-import CommonView from '../../../components/CommonView'; 
-import XunJianComponent from './xunjian-component'; 
+import CommonView from '../../../components/CommonView';
+import XunJianComponent from './xunjian-component';
 import SelectImage from '../../../utils/select-polling-image';
 import XunJianService from './xunjian-service';
 import common from '../../../utils/common';
@@ -136,7 +136,7 @@ class StartXunJianPage extends BasePage {
                 })
             } catch (error) { }
         }
-        else { 
+        else {
             let errIndex = "";
             let i = 0;
             inspectData.map((subItem) => {
@@ -194,13 +194,14 @@ class StartXunJianPage extends BasePage {
     }
 
     _inspecting(newdata) {
+        //正常异常都可以输入备注，取消过滤
         // let inspectData = newdata.filter((item) => {
         //     if (item.result === 1) {
         //         item.msg = '';
         //     }
         //     return item;
         // });
-        this.setState({ inspectData });
+        this.setState({ inspectData: newdata });
     }
 
     render() {//: React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {

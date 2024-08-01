@@ -9,11 +9,14 @@ import {
     Alert
 } from 'react-native';
 import BasePage from '../base/base';
-import { Icon, Flex, TextareaItem, Button } from '@ant-design/react-native';
+import {
+    Icon, Flex, TextareaItem,
+    Button
+} from '@ant-design/react-native';
 import ScreenUtil from '../../utils/screen-util';
 import LoadImage from '../../components/load-image';
 import LoadImageDelete from '../../components/load-image-del';
-import SelectImage from '../../utils/select-image'; 
+import SelectImage from '../../utils/select-image';
 import common from '../../utils/common';
 // import UDRecord from '../../utils/UDRecord';
 // import api from '../../utils/api';
@@ -50,7 +53,7 @@ class AddWorkPage extends BasePage {
             images: [''],
             recording: false,
             id: common.getGuid(),
-            fileUrl: null,
+            //fileUrl: null,
             playing: false,
             taskId,
             KeyboardShown: false,
@@ -75,7 +78,7 @@ class AddWorkPage extends BasePage {
         );
 
         //获取附件是否必填验证 
-        WorkService.getSetting('isMustServicedeskFile').then(res => { 
+        WorkService.getSetting('isMustServicedeskFile').then(res => {
             this.setState({ isMustServicedeskFile: res });
         });
     }
@@ -266,7 +269,7 @@ class AddWorkPage extends BasePage {
     // }
 
     render() {
-        const { data, index, images, fileUrl, address, canSelectAddress } = this.state;
+        const { data, index, images, address, canSelectAddress } = this.state;
         const title = data[index];
         const title2 = '请输入' + title + '内容';
         const width = (ScreenUtil.deviceWidth() - 5 * 20) / 4.0;
@@ -276,7 +279,8 @@ class AddWorkPage extends BasePage {
                 <TouchableWithoutFeedback onPress={() => {
                     Keyboard.dismiss();//ScrollView等同此功能，如果有滚动，则不需要
                 }}>
-                    <View style={{ marginTop: this.state.KeyboardShown ? -100 : 0, height: '100%' }}>
+                    {/* <View style={{ marginTop: this.state.KeyboardShown ? -10 : 0, height: '100%' }}> */}
+                    <View style={{ height: '100%' }}>
                         <Flex direction='column'>
                             <Flex justify='between' style={styles.header}>
                                 {data.map((item, i) => (
@@ -298,11 +302,21 @@ class AddWorkPage extends BasePage {
                                 <TouchableWithoutFeedback
                                     onPress={() => {
                                         if (canSelectAddress) {
-                                            //this.props.navigation.push('selectAddress', { onSelect: this.onSelectAddress });
-                                            this.props.navigation.push('selectAddress', { title: '选择位置', parentName: 'addWork' });
+                                            // this.props.navigation.push('selectAddress',
+                                            //     {
+                                            //         title: '选择位置',
+                                            //         parentName: 'addWork'
+                                            //     }
+                                            // );
+                                            //调整为根据层级配置来加载
+                                            this.props.navigation.push('selectArea',
+                                                {
+                                                    title: '选择位置',
+                                                    parentName: 'addWork'
+                                                }
+                                            );
                                         }
                                     }}>
-
                                     <Flex justify="between" style={[{
                                         paddingTop: 15,
                                         paddingBottom: 15,
@@ -319,23 +333,27 @@ class AddWorkPage extends BasePage {
                                     </Flex>
                                 </TouchableWithoutFeedback>
                             </Flex>
+
                             <View>
                                 <TextareaItem
                                     rows={12}
                                     placeholder={title2}
-                                    autoHeight
+                                    //autoHeight
                                     style={{
                                         color: '#404145',
-                                        height: 150,
                                         fontSize: 16,
                                         paddingTop: 15,
-                                        width: ScreenUtil.deviceWidth() - 30
+                                        width: ScreenUtil.deviceWidth() - 30,
+                                        height: ScreenUtil.deviceHeight() - 400
                                     }}
                                     onChange={value => this.setState({ value })}
                                     value={this.state.value}
                                     maxLength={500}
                                 />
                             </View>
+
+
+
 
                             {/* <Flex align={'start'} justify={'start'} style={{
                                 paddingTop: 15,
@@ -366,8 +384,8 @@ class AddWorkPage extends BasePage {
                                                 <View style={{
                                                     paddingLeft: 15,
                                                     paddingRight: 5,
-                                                    //paddingBottom: 10,
-                                                    paddingTop: 20
+                                                    paddingTop: 20,
+                                                    paddingBottom: 20
                                                 }}>
                                                     <LoadImageDelete
                                                         style={{ width: width, height: height }}
@@ -407,7 +425,7 @@ class AddWorkPage extends BasePage {
     }
 }
 
-const mapStateToProps = ({ memberReducer, xunJianReducer }) => { 
+const mapStateToProps = ({ memberReducer, xunJianReducer }) => {
     return {
         hasNetwork: memberReducer.hasNetwork,
         ...xunJianReducer

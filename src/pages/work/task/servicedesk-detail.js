@@ -132,18 +132,40 @@ export default class ServiceDeskDetailPage extends BasePage {
                     isRefuse: item.isRefuse,
                     //businessId: item.businessId,
                     statusName: item.statusName
-                },
-
-                repairmajor: {
-                    id: item.repairMajorId,
-                    name: item.repairMajor,
-                },
-                isQD: item.isQD,
-                selectPerson: {
-                    id: item.senderId,
-                    name: item.senderName
                 }
+                // repairmajor: {
+                //     id: item.repairMajorId,
+                //     name: item.repairMajor,
+                // },
+                // isQD: item.isQD,//设置默认值0
+                // selectPerson: {
+                //     id: item.senderId,
+                //     name: item.senderName
+                // }
             });
+
+
+            if (item.isQD) {
+                this.setState({ isQD: item.isQD });
+            }
+
+            if (item.repairMajorId) {
+                this.setState({
+                    repairmajor: {
+                        id: item.repairMajorId,
+                        name: item.repairMajor,
+                    }
+                });
+            }
+
+            if (item.senderId) {
+                this.setState({
+                    selectPerson: {
+                        id: item.senderId,
+                        name: item.senderName
+                    }
+                });
+            }
         });
 
         WorkService.serviceCommunicates(id).then(res => {
@@ -208,13 +230,13 @@ export default class ServiceDeskDetailPage extends BasePage {
         if (repairmajor == null || repairmajor.id == null) {
             UDToast.showError('请选择维修专业');
             return;
-        } 
+        }
         // if (isQD == 1 && selectPerson == null) {
         //     UDToast.showError('请选择派单人');
         //     return;
         // }
 
-        if (selectPerson == null) {
+        if (selectPerson == null || selectPerson.id == null) {
             UDToast.showError('请选择派单人');
             return;
         }
@@ -366,10 +388,15 @@ export default class ServiceDeskDetailPage extends BasePage {
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.billType}</Text>
                     </Flex>
+
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>{detail.address}</Text>
-                        <Text style={styles.right}>{detail.statusName}</Text>
+                        <Text style={styles.left}>单据状态：{detail.statusName}</Text>
                     </Flex>
+
+                    <Flex style={[styles.every3, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>{detail.address}</Text>
+                    </Flex>
+
                     <Text style={[styles.desc]}>{detail.contents}</Text>
                     <ListImages images={images} lookImage={this.lookImage} />
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
@@ -385,6 +412,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                                 style={{ width: 18, height: 18 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
+
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>报单时间：{detail.createDate}</Text>
                     </Flex>
@@ -423,7 +451,6 @@ export default class ServiceDeskDetailPage extends BasePage {
                         </>
                         : null
                     }
-
 
                     {/* {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'reply')) ?
                         <>
@@ -464,9 +491,9 @@ export default class ServiceDeskDetailPage extends BasePage {
                                     type={'primary'}
                                     activeStyle={{ backgroundColor: Macro.work_blue }}
                                     style={{
-                                        width: 90,
+                                        width: 88,
                                         backgroundColor: Macro.work_blue,
-                                        marginTop: 10,
+                                        marginTop: 10, 
                                         marginBottom: 10,
                                         height: 40
                                     }}>回复</Button>
@@ -484,10 +511,10 @@ export default class ServiceDeskDetailPage extends BasePage {
                                         }}
                                             type={'primary'}
                                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                                width: 90,
+                                                width: 88,
                                                 backgroundColor: Macro.work_blue,
-                                                height: 40,
-                                                marginLeft: 10
+                                                height: 40, 
+                                                marginLeft: 8
                                             }}>转维修</Button>
                                     </Flex> : null}
 
@@ -501,10 +528,10 @@ export default class ServiceDeskDetailPage extends BasePage {
 
                                         } type={'primary'}
                                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                                width: 90,
+                                                width: 88,
                                                 backgroundColor: Macro.work_blue,
-                                                height: 40,
-                                                marginLeft: 10
+                                                height: 40, 
+                                                marginLeft: 8
                                             }}>转投诉</Button>
                                     </Flex> : null}
 
@@ -519,9 +546,9 @@ export default class ServiceDeskDetailPage extends BasePage {
                                             type={'primary'}
                                             activeStyle={{ backgroundColor: Macro.work_red }}
                                             style={{
-                                                width: 90,
-                                                height: 40,
-                                                marginLeft: 10,
+                                                width: 88,
+                                                height: 40, 
+                                                marginLeft: 8,
                                                 borderWidth: 0,
                                                 backgroundColor: Macro.work_red,
                                             }}>闭单</Button>
@@ -542,10 +569,10 @@ export default class ServiceDeskDetailPage extends BasePage {
                                         type={'primary'}
                                         activeStyle={{ backgroundColor: Macro.work_blue }}
                                         style={{
-                                            width: 90,
+                                            width: 88, 
                                             backgroundColor: Macro.work_blue,
                                             height: 40,
-                                            marginLeft: 20
+                                            marginLeft: 8
                                         }}>续派</Button>
                                 </Flex> : null
                             : null
@@ -585,7 +612,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                                             <Button onPress={this.reply} type={'primary'}
                                                 activeStyle={{ backgroundColor: Macro.work_blue }}
                                                 style={{
-                                                    width: 125,
+                                                    width: 120,
                                                     backgroundColor: Macro.work_blue,
                                                     height: 35
                                                 }}>确认</Button>
@@ -597,7 +624,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                                                 activeStyle={{ backgroundColor: Macro.work_blue }}
                                                 style={{
                                                     marginLeft: 30,
-                                                    width: 125,
+                                                    width: 120,
                                                     backgroundColor: '#666',
                                                     borderWidth: 0,
                                                     height: 35
@@ -609,7 +636,6 @@ export default class ServiceDeskDetailPage extends BasePage {
                         </View>
                     )
                 }
-
 
                 {
                     this.state.showClose && (
@@ -639,7 +665,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                                             <Button onPress={() => this.doWork('闭单')} type={'primary'}
                                                 activeStyle={{ backgroundColor: Macro.work_blue }}
                                                 style={{
-                                                    width: 125,
+                                                    width: 120,
                                                     backgroundColor: Macro.work_blue,
                                                     height: 35
                                                 }}>确认</Button>
@@ -651,7 +677,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                                                 activeStyle={{ backgroundColor: Macro.work_blue }}
                                                 style={{
                                                     marginLeft: 30,
-                                                    width: 125,
+                                                    width: 120,
                                                     backgroundColor: '#666',
                                                     borderWidth: 0,
                                                     height: 35
@@ -666,7 +692,7 @@ export default class ServiceDeskDetailPage extends BasePage {
 
                 {
                     this.state.showRepair && (
-                        //转报修
+                        //转维修
                         <View style={styles.mengceng}>
                             <TouchableWithoutFeedback onPress={() => {
                                 Keyboard.dismiss();
@@ -736,7 +762,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                                             <Button onPress={this.toRepair} type={'primary'}
                                                 activeStyle={{ backgroundColor: Macro.work_blue }}
                                                 style={{
-                                                    width: 125,
+                                                    width: 120,
                                                     backgroundColor: Macro.work_blue,
                                                     height: 35
                                                 }}>确认</Button>
@@ -747,7 +773,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                                                 activeStyle={{ backgroundColor: Macro.work_blue }}
                                                 style={{
                                                     marginLeft: 30,
-                                                    width: 125,
+                                                    width: 120,
                                                     backgroundColor: '#666',
                                                     borderWidth: 0,
                                                     height: 35
@@ -930,6 +956,15 @@ const styles = StyleSheet.create({
         top: 0,
         width: '100%',
         height: '100%'
+    },
+
+    every3: {
+
+        lineHeight: 20,//必须，否则显示不全
+        marginLeft: 15,
+        marginRight: 15,
+        paddingTop: 15,
+        paddingBottom: 15
     },
 
     every: {

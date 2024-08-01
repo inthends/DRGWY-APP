@@ -184,6 +184,7 @@ class TaskListPage extends BasePage {
                     </Flex>
                     <Flex style={styles.line} />
                     <Flex align={'start'} direction={'column'}>
+                        
                         <Flex justify='between'
                             style={{ width: '100%', paddingTop: 10, paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>{item.address} {item.contactName}</Text>

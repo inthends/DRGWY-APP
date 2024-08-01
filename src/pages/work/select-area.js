@@ -18,7 +18,7 @@ import CommonView from '../../components/CommonView';
 import Macro from '../../utils/macro';
 const Item = List.Item;
 
-//只选择项目、楼栋
+//根据层级配置来加载层级
 export default class SelectAreaPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
@@ -55,7 +55,6 @@ export default class SelectAreaPage extends BasePage {
         WorkService.getSetting('loadAssetType').then(res => {
             this.setState({ loadAssetType: res });
         });
-
         this.getData(myroleId);
     }
 
@@ -71,9 +70,9 @@ export default class SelectAreaPage extends BasePage {
     submit = () => {
         const { selectItem, parentName } = this.state;
         if (selectItem) {
-            // const { navigation } = this.props;
-            // navigation.state.params.onSelect({ selectItem });
-            // navigation.goBack();
+            //const { navigation } = this.props;
+            //navigation.state.params.onSelect({ selectItem });
+            //navigation.goBack();
             //第一层可以调用，到楼栋，楼层就无法调用事件
             //this.props.navigation.navigate('addWork', { data: { address: selectItem } }); 
             if (parentName) {

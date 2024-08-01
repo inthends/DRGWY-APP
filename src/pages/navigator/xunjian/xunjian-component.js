@@ -43,12 +43,12 @@ export default class XunJianDetailPage extends BasePage {
         //注册鼠标事件，用于文本框输入的时候往上移动 2024年5月23日
         this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
             this.setState({
-                KeyboardShown: true,
+                KeyboardShown: true
             });
         });
         this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
             this.setState({
-                KeyboardShown: false,
+                KeyboardShown: false
             });
         });
     }
@@ -176,8 +176,7 @@ export default class XunJianDetailPage extends BasePage {
 
                                             <TextInput
                                                 maxLength={500}
-                                                multiline={true}
-                                                //editable={currentItem.result === 0}
+                                                multiline={true} 
                                                 editable={true}
                                                 keyboardType={'default'}
                                                 // style={currentItem.result === 0 ? styles.textInput : { height: 1 }}
