@@ -46,7 +46,7 @@ class EstateFuwuPage extends BasePage {
         super(props);
         this.selectBuilding = {
             key: null,
-        }; 
+        };
         //列表类型
         const type = common.getValueFromProps(this.props).type;
         this.state = {
@@ -155,14 +155,14 @@ class EstateFuwuPage extends BasePage {
                     <Flex align={'start'} direction={'column'}>
                         <Flex justify='between'
                             style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
-                            <Text>{item.address} </Text>
+                            <Text style={{ lineHeight: 20 }}>{item.address} </Text>
                             <Text>{item.statusName}</Text>
                         </Flex>
                         <Text
                             // numberOfLines={3}
                             // ellipsizeMode='tail'
                             style={{
-                                lineHeight:20,
+                                lineHeight: 20,
                                 height: 60,
                                 paddingLeft: 20,
                                 paddingRight: 20,
@@ -253,8 +253,8 @@ class EstateFuwuPage extends BasePage {
         return (
             <View style={{ flex: 1 }}>
                 <CommonView style={{ flex: 1 }}>
-                    <ScrollTitle onChange={this.billType} titles={['全部', '报修', '投诉', '咨询', '建议']} /> 
-                    <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}> 
+                    <ScrollTitle onChange={this.billType} titles={['全部', '报修', '投诉', '咨询', '建议']} />
+                    <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
                         {type == 'all' ?
                             <MyPopover onChange={this.statusChange}
                                 titles={['全部', '待处理', '待完成', '待回访', '待检验', '已回访', '已检验', '已闭单', '已作废']}

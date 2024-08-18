@@ -388,8 +388,7 @@ export default class WorkPage extends BasePage {
                                 borderStyle: 'solid'
                             }]}>
                             <Flex>
-                                <Text style={styles.title}>工单</Text>
-
+                                <Text style={styles.title}>工单</Text> 
                                 <TouchableWithoutFeedback onPress={() =>
                                     this.props.navigation.push('taskqd')
                                 }>

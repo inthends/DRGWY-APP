@@ -44,7 +44,7 @@ export default class StartDetailPage extends BasePage {
             id,
             value: '',
             preimages: [],
-            images: [],
+            images: [],//开工照片
             isUpload: false,//是否上传了图片
             detail: {},
             communicates: [],
@@ -106,12 +106,29 @@ export default class StartDetailPage extends BasePage {
                     statusName: detail.statusName,
                     assistName: detail.assistName,//协助人 
                     reinforceName: detail.reinforceName//增援人 
-                }
+                },
+                value: detail.entity.faultJudgement,
+                //增援人赋值
+                selectPersons: detail.selectPersons
             });
+
             //根据不同单据类型获取附件作为维修前图片
             WorkService.workPreFiles(detail.entity.sourceType, detail.relationId).then(preimages => {
                 this.setState({
                     preimages
+                });
+            });
+
+            //获取开工照片
+            WorkService.weixiuExtra(id).then(allimages => {
+                const images = allimages.filter(t => t.type === '开工') || [];
+                if (images.length > 0) {
+                    this.setState({
+                        isUpload: true
+                    });
+                }
+                this.setState({
+                    images
                 });
             });
 
@@ -132,7 +149,6 @@ export default class StartDetailPage extends BasePage {
 
     click = () => {
         const { id, isUpload, images, value, isMustStartFile, selectPersons } = this.state;
-
         //判断协助人是否都已经加入，如果没有加入，则弹出提示
         WorkService.checkAssistUser(id).then(res => {
             if (res.flag == false) {
@@ -319,14 +335,12 @@ export default class StartDetailPage extends BasePage {
                             <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
                         </Flex>
                     </TouchableWithoutFeedback>
-
                     <UploadImageView
                         style={{ marginTop: 10 }}
                         linkId={this.state.id}
                         reload={this.reload}
                         type='开工'
                     />
-
                     <View style={{ margin: 15 }}>
                         <TextareaItem
                             rows={4}
@@ -339,14 +353,12 @@ export default class StartDetailPage extends BasePage {
                         />
                     </View>
 
-                    <Flex justify={'center'} style={{ marginTop: 20 }}>
-
+                    {/* <Flex justify={'center'} style={{ marginTop: 20 }}>
                         <TouchableWithoutFeedback onPress={() => this.click()}>
                             <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_blue }]}>
                                 <Text style={styles.word}>开始维修</Text>
                             </Flex>
-                        </TouchableWithoutFeedback>
-
+                        </TouchableWithoutFeedback> 
                         <TouchableWithoutFeedback onPress={() => {
                             this.setState({
                                 backMemo: '',
@@ -358,7 +370,33 @@ export default class StartDetailPage extends BasePage {
                                 <Text style={styles.word}>退单</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
+                    </Flex> */}
+
+
+                    <Flex justify={'center'}>
+                        <Button onPress={this.click} type={'primary'}
+                            activeStyle={{ backgroundColor: Macro.work_blue }} style={{
+                                width: 130,
+                                backgroundColor: Macro.work_blue,
+                                marginTop: 20,
+                                height: 40
+                            }}>开始维修</Button>
+
+                        <Button onPress={() => this.setState({
+                            backMemo: '',
+                            showClose: true
+                        })}
+                            type={'primary'}
+                            activeStyle={{ backgroundColor: Macro.work_red }} style={{
+                                width: 130,
+                                backgroundColor: Macro.work_red,
+                                marginLeft: 30,
+                                marginTop: 20,
+                                borderWidth: 0,
+                                height: 40
+                            }}>退单</Button>
                     </Flex>
+
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
 
@@ -418,8 +456,7 @@ export default class StartDetailPage extends BasePage {
     }
 }
 
-const styles = StyleSheet.create({
-
+const styles = StyleSheet.create({ 
     mengceng: {
         position: 'absolute',
         left: 0,
@@ -447,18 +484,18 @@ const styles = StyleSheet.create({
         fontSize: 15,
         padding: 15
     },
-    ii: {
-        paddingTop: 10,
-        paddingBottom: 10,
-        marginLeft: 10,
-        marginRight: 10,
-        width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
-        backgroundColor: '#999',
-        borderRadius: 6,
-        marginBottom: 20
-    },
-    word: {
-        color: 'white',
-        fontSize: 16
-    }
+    // ii: {
+    //     paddingTop: 10,
+    //     paddingBottom: 10,
+    //     marginLeft: 10,
+    //     marginRight: 10,
+    //     width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
+    //     backgroundColor: '#999',
+    //     borderRadius: 6,
+    //     marginBottom: 20
+    // },
+    // word: {
+    //     color: 'white',
+    //     fontSize: 16
+    // }
 });

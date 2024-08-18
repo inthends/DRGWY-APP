@@ -145,11 +145,13 @@ class TaskListPage extends BasePage {
                             this.props.navigation.navigate('jiedan', { id: item.id });
                             break;
                         }
+
+                        case '已暂停':
                         case '待开工': {
                             this.props.navigation.navigate('kaigong', { id: item.id });
                             break;
                         }
-                        case '已暂停':
+
                         case '待完成': {
                             this.props.navigation.navigate('wancheng', { id: item.id });
                             break;
@@ -184,10 +186,9 @@ class TaskListPage extends BasePage {
                     </Flex>
                     <Flex style={styles.line} />
                     <Flex align={'start'} direction={'column'}>
-                        
                         <Flex justify='between'
                             style={{ width: '100%', paddingTop: 10, paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
-                            <Text>{item.address} {item.contactName}</Text>
+                            <Text style={{ lineHeight: 20 }}>{item.address} {item.contactName}</Text>
                             <TouchableWithoutFeedback
                                 onPress={() => common.call(item.contactLink || item.contactPhone)}>
                                 <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 15, height: 15 }} /></Flex>
@@ -215,13 +216,13 @@ class TaskListPage extends BasePage {
                         </Flex>
 
                         <Text numberOfLines={2}
-                        style={{
-                            lineHeight:20,
-                            paddingLeft: 20,
-                            paddingRight: 20,
-                            paddingBottom: 10,
-                            color: '#666'
-                        }}
+                            style={{
+                                lineHeight: 20,
+                                paddingLeft: 20,
+                                paddingRight: 20,
+                                paddingBottom: 10,
+                                color: '#666'
+                            }}
                         >{item.contents}
                         </Text>
 

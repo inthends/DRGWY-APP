@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     StyleSheet,
     Keyboard,
-    Alert
+    Alert,
+    ScrollView
 } from 'react-native';
 import BasePage from '../base/base';
 import {
@@ -170,7 +171,7 @@ class AddWorkPage extends BasePage {
             let images = [...this.state.images];
             // images.splice(images.length - 1, 0, { icon: res });
             images.splice(images.length - 1, 0, url);
-            if (images.length > 10) {
+            if (images.length > 8) {
                 images = images.filter((item, index) => index !== images.length - 1);
             }
             this.setState({ images });
@@ -334,26 +335,21 @@ class AddWorkPage extends BasePage {
                                 </TouchableWithoutFeedback>
                             </Flex>
 
-                            <View>
-                                <TextareaItem
-                                    rows={12}
-                                    placeholder={title2}
-                                    //autoHeight
-                                    style={{
-                                        color: '#404145',
-                                        fontSize: 16,
-                                        paddingTop: 15,
-                                        width: ScreenUtil.deviceWidth() - 30,
-                                        height: ScreenUtil.deviceHeight() - 400
-                                    }}
-                                    onChange={value => this.setState({ value })}
-                                    value={this.state.value}
-                                    maxLength={500}
-                                />
-                            </View>
-
-
-
+                            <TextareaItem
+                                rows={12}
+                                placeholder={title2}
+                                //autoHeight
+                                style={[{
+                                    color: '#404145',
+                                    fontSize: 16,
+                                    paddingTop: 15,
+                                    width: ScreenUtil.deviceWidth() - 30,
+                                    height: ScreenUtil.deviceHeight() - 350,
+                                }, ScreenUtil.borderBottom()]}
+                                onChange={value => this.setState({ value })}
+                                value={this.state.value}
+                                maxLength={500}
+                            />
 
                             {/* <Flex align={'start'} justify={'start'} style={{
                                 paddingTop: 15,
@@ -372,7 +368,11 @@ class AddWorkPage extends BasePage {
                                     : null}
                             </Flex> */}
 
-                            <Flex justify={'start'} align={'start'} style={{ width: ScreenUtil.deviceWidth() }}>
+                            <ScrollView style={{ maxHeight: 100 }}>
+                            <Flex justify={'start'} align={'start'}
+                                style={{
+                                    width: ScreenUtil.deviceWidth()
+                                }}>
                                 <Flex wrap={'wrap'}>
                                     {images.map((url, index) => {
                                         return (
@@ -384,8 +384,8 @@ class AddWorkPage extends BasePage {
                                                 <View style={{
                                                     paddingLeft: 15,
                                                     paddingRight: 5,
-                                                    paddingTop: 20,
-                                                    paddingBottom: 20
+                                                    paddingTop: 10,
+                                                    paddingBottom: 10
                                                 }}>
                                                     <LoadImageDelete
                                                         style={{ width: width, height: height }}
@@ -399,15 +399,18 @@ class AddWorkPage extends BasePage {
                                     })}
                                 </Flex>
                             </Flex>
+                            </ScrollView> 
                         </Flex>
 
                         <Flex justify={'center'} align={'start'} style={{
                             height: 60,
                             backgroundColor: '#eee',
                             width: '100%',
-                            //marginTop: 20,
                             flex: 1,
-                            paddingTop: 20
+                            paddingTop: 8,
+                            paddingBottom: 10,
+                            marginTop: ScreenUtil.deviceHeight() - 140,
+                            position: 'absolute'
                         }}>
                             <Button
                                 style={{
@@ -443,8 +446,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(AddWorkPage);
 
 const styles = StyleSheet.create({
     header: {
-        paddingTop: 15,
-        paddingBottom: 15,
+        paddingTop: 10,
+        paddingBottom: 10,
         paddingLeft: 15,
         paddingRight: 15,
         backgroundColor: '#F3F4F2'

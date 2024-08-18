@@ -557,8 +557,9 @@ export default class ServiceDeskDetailPage extends BasePage {
                             : null
                         }
 
-                        {detail.isRefuse ?
-                            btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'continue')) ?
+                        {detail.isRefuse ? 
+                            <>
+                            {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'continue')) ?
                                 <Flex justify={'center'}>
                                     <Button onPress={() => {
                                         this.setState({
@@ -574,7 +575,27 @@ export default class ServiceDeskDetailPage extends BasePage {
                                             height: 40,
                                             marginLeft: 8
                                         }}>续派</Button>
-                                </Flex> : null
+                                </Flex>: null}
+
+                                {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'close')) ?
+                                    <Flex justify={'center'}>
+                                        <Button onPress={() => {
+                                            this.setState({
+                                                memo: '',
+                                                showClose: true
+                                            })
+                                        }}
+                                            type={'primary'}
+                                            activeStyle={{ backgroundColor: Macro.work_red }}
+                                            style={{
+                                                width: 88,
+                                                height: 40, 
+                                                marginLeft: 8,
+                                                borderWidth: 0,
+                                                backgroundColor: Macro.work_red,
+                                            }}>闭单</Button>
+                                    </Flex> : null}
+                                    </> 
                             : null
                         }
                     </Flex>

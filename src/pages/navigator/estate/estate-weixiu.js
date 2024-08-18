@@ -153,7 +153,7 @@ class EstateWeixiuPage extends BasePage {
                     <Flex align={'start'} direction={'column'}>
                         <Flex justify='between'
                             style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
-                            <Text>{item.address} {item.contactName}</Text>
+                            <Text  style={{ lineHeight: 20 }}>{item.address} {item.contactName}</Text>
                             <TouchableWithoutFeedback onPress={() => common.call(item.contactLink)}>
                                 <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
                                     style={{ width: 16, height: 16 }} /></Flex>

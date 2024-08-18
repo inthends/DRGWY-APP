@@ -57,7 +57,9 @@ export default class CompleteDetailPage extends BasePage {
             showClose: false,
             stopDateBegin: new Date(),
             pauseMemo: '',
-            isMustFinishFile: false
+            isMustFinishFile: false,
+            backMemo: '',
+            showBack: false,
         };
         this.keyboardDidShowListener = null;
         this.keyboardDidHideListener = null;
@@ -141,7 +143,7 @@ export default class CompleteDetailPage extends BasePage {
     };
 
     click = () => {
-        const { id, isUpload, images, value,isMustFinishFile } = this.state;
+        const { id, isUpload, images, value, isMustFinishFile } = this.state;
         // if (!(value && value.length > 0)) {
         //     UDToast.showError('请输入文字');
         //     return;
@@ -196,6 +198,18 @@ export default class CompleteDetailPage extends BasePage {
         const { id, pauseMemo, stopDateBegin } = this.state;
         WorkService.pause(id, stopDateBegin, pauseMemo).then(res => {
             UDToast.showInfo('暂停成功');
+            this.props.navigation.goBack();
+        });
+    };
+
+    back = () => {
+        const { id, backMemo } = this.state;
+        if (!(backMemo && backMemo.length > 0)) {
+            UDToast.showError('请输入退单原因');
+            return;
+        }
+        WorkService.serviceHandle('退单', id, backMemo).then(res => {
+            UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
         });
     };
@@ -305,14 +319,21 @@ export default class CompleteDetailPage extends BasePage {
                             maxLength={500}
                         />
                     </View>
+
                     <Flex justify={'center'}>
-                        <Button onPress={this.click} type={'primary'}
-                            activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                width: 130,
-                                backgroundColor: Macro.work_blue,
+                        <Button onPress={() => this.setState({
+                            backMemo: '',
+                            showBack: true
+                        })}
+                            type={'primary'}
+                            activeStyle={{ backgroundColor: Macro.work_red }} style={{
+                                width: 110,
+                                backgroundColor: Macro.work_red,
+                                //marginLeft: 20,
                                 marginTop: 20,
+                                borderWidth: 0,
                                 height: 40
-                            }}>完成维修</Button>
+                            }}>退单</Button>
 
                         {detail.status != 0 ?
                             <Button onPress={() => this.setState({
@@ -321,14 +342,25 @@ export default class CompleteDetailPage extends BasePage {
                             })}
                                 type={'primary'}
                                 activeStyle={{ backgroundColor: Macro.work_red }} style={{
-                                    width: 130,
+                                    width: 110,
                                     backgroundColor: Macro.work_red,
-                                    marginLeft: 50,
+                                    marginLeft: 20,
                                     marginTop: 20,
                                     borderWidth: 0,
                                     height: 40
                                 }}>暂停</Button> : null}
+
+                        <Button onPress={this.click} type={'primary'}
+                            activeStyle={{ backgroundColor: Macro.work_blue }} style={{
+                                width: 110,
+                                backgroundColor: Macro.work_blue,
+                                marginLeft: 20,
+                                marginTop: 20,
+                                height: 40
+                            }}>完成维修</Button>
+
                     </Flex>
+
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
 
@@ -337,69 +369,112 @@ export default class CompleteDetailPage extends BasePage {
                         imageUrls={this.state.selectimages} />
                 </Modal>
 
-                {
-                    this.state.showClose && (
-                        <View style={styles.mengceng}>
-                            <TouchableWithoutFeedback onPress={() => {
-                                Keyboard.dismiss();//隐藏键盘
-                            }}>
-                                <Flex direction={'column'} justify={'center'} align={'center'}
-                                    style={{ flex: 1, padding: 25, backgroundColor: 'rgba(178,178,178,0.5)' }}>
-                                    <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
-                                        <CommonView style={{ height: 150, width: 300 }}>
-                                            <List style={{
-                                                marginLeft: 10,
-                                                marginRight: 10,
-                                                paddingBottom: 10,
-                                                paddingTop: 10
-                                            }}>
-                                                <DatePicker
-                                                    mode="date"
-                                                    title="选择时间"
-                                                    value={this.state.stopDateBegin}
-                                                    onChange={stopDateBegin => this.setState({ stopDateBegin })}
-                                                    style={{ backgroundColor: 'white' }}
-                                                >
-                                                    <List.Item arrow="horizontal"><Text style={{ marginLeft: -10, color: '#666' }}>暂停开始时间</Text></List.Item>
-                                                </DatePicker>
-                                            </List>
-                                            <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
-                                                <TextInput
-                                                    maxLength={500}
-                                                    placeholder='请输入暂停原因'
-                                                    multiline
-                                                    onChangeText={pauseMemo => this.setState({ pauseMemo })}
-                                                    value={this.state.pauseMemo}
-                                                    style={{ textAlignVertical: 'top', height: 50 }}
-                                                    numberOfLines={4}>
-                                                </TextInput>
-                                            </Flex>
-                                        </CommonView>
-
-                                        <Flex style={{ marginTop: 10 }}>
-                                            <Button onPress={this.pause} type={'primary'}
-                                                activeStyle={{ backgroundColor: Macro.work_blue }}
-                                                style={{
-                                                    width: 110,
-                                                    backgroundColor: Macro.work_blue,
-                                                    height: 35
-                                                }}>确认</Button>
-                                            <Button onPress={() => this.setState({ showClose: false })}
-                                                type={'primary'}
-                                                activeStyle={{ backgroundColor: Macro.work_blue }}
-                                                style={{
-                                                    marginLeft: 30,
-                                                    width: 110,
-                                                    backgroundColor: '#666',
-                                                    borderWidth: 0,
-                                                    height: 35
-                                                }}>取消</Button>
+                {this.state.showClose && (
+                    <View style={styles.mengceng}>
+                        <TouchableWithoutFeedback onPress={() => {
+                            Keyboard.dismiss();//隐藏键盘
+                        }}>
+                            <Flex direction={'column'} justify={'center'} align={'center'}
+                                style={{ flex: 1, padding: 25, backgroundColor: 'rgba(178,178,178,0.5)' }}>
+                                <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
+                                    <CommonView style={{ height: 150, width: 300 }}>
+                                        <List style={{
+                                            marginLeft: 10,
+                                            marginRight: 10,
+                                            paddingBottom: 10,
+                                            paddingTop: 10
+                                        }}>
+                                            <DatePicker
+                                                mode="date"
+                                                title="选择时间"
+                                                value={this.state.stopDateBegin}
+                                                onChange={stopDateBegin => this.setState({ stopDateBegin })}
+                                                style={{ backgroundColor: 'white' }}
+                                            >
+                                                <List.Item arrow="horizontal"><Text style={{ marginLeft: -10, color: '#666' }}>暂停开始时间</Text></List.Item>
+                                            </DatePicker>
+                                        </List>
+                                        <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
+                                            <TextInput
+                                                maxLength={500}
+                                                placeholder='请输入暂停原因'
+                                                multiline
+                                                onChangeText={pauseMemo => this.setState({ pauseMemo })}
+                                                value={this.state.pauseMemo}
+                                                style={{ textAlignVertical: 'top', height: 50 }}
+                                                numberOfLines={4}>
+                                            </TextInput>
                                         </Flex>
+                                    </CommonView>
+
+                                    <Flex style={{ marginTop: 10 }}>
+                                        <Button onPress={this.pause} type={'primary'}
+                                            activeStyle={{ backgroundColor: Macro.work_blue }}
+                                            style={{
+                                                width: 110,
+                                                backgroundColor: Macro.work_blue,
+                                                height: 35
+                                            }}>确认</Button>
+                                        <Button onPress={() => this.setState({ showClose: false })}
+                                            type={'primary'}
+                                            activeStyle={{ backgroundColor: Macro.work_blue }}
+                                            style={{
+                                                marginLeft: 30,
+                                                width: 110,
+                                                backgroundColor: '#666',
+                                                borderWidth: 0,
+                                                height: 35
+                                            }}>取消</Button>
                                     </Flex>
                                 </Flex>
-                            </TouchableWithoutFeedback>
-                        </View>
-                    )}
+                            </Flex>
+                        </TouchableWithoutFeedback>
+                    </View>
+                )}
+
+                {this.state.showBack && (
+                    //退单
+                    <View style={styles.mengceng}>
+                        <Flex direction={'column'} justify={'center'} align={'center'}
+                            style={{
+                                flex: 1, padding: 25,
+                                backgroundColor: 'rgba(178,178,178,0.5)'
+                            }}>
+                            <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
+                                <View style={{ height: 110, width: 300 }}>
+                                    <TextareaItem
+                                        style={{ height: 100 }}
+                                        placeholder='请输入退单原因'
+                                        maxLength={500}
+                                        onChange={value => this.setState({ backMemo: value })}
+                                        value={this.state.backMemo}
+                                    />
+                                </View>
+                                <Flex style={{ marginTop: 15 }}>
+                                    <Button onPress={this.back} type={'primary'}
+                                        activeStyle={{ backgroundColor: Macro.work_blue }}
+                                        style={{
+                                            width: 130,
+                                            backgroundColor: Macro.work_blue,
+                                            height: 35
+                                        }}>确认</Button>
+                                    <Button onPress={() => {
+                                        this.setState({ showBack: false });
+                                    }}
+                                        type={'primary'}
+                                        activeStyle={{ backgroundColor: Macro.work_blue }}
+                                        style={{
+                                            marginLeft: 30,
+                                            width: 130,
+                                            backgroundColor: '#666',
+                                            borderWidth: 0,
+                                            height: 35
+                                        }}>取消</Button>
+                                </Flex>
+                            </Flex>
+                        </Flex>
+                    </View>
+                )}
 
             </CommonView>
         );
