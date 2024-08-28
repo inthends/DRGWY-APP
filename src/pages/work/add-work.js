@@ -222,11 +222,10 @@ class AddWorkPage extends BasePage {
             return;
         }
         this.canSubmit = false;//防止重复提交
-
         const params = {
             id,
             keyvalue: id,
-            source: '员工APP',
+            //source: '员工APP',
             billType: data[index],
             roomId: address.id,
             address: address.allName,
@@ -234,7 +233,6 @@ class AddWorkPage extends BasePage {
             isAdd: true,
             taskId: this.state.taskId
         };
-
         if (this.props.hasNetwork || !taskId) {
             WorkService.saveForm(params).then(res => {
                 UDToast.showInfo('提交成功', true);

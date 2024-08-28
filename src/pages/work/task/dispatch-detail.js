@@ -360,7 +360,8 @@ export default class DispatchDetailPage extends BasePage {
                         onPress={() => this.props.navigation.navigate('selectRolePersonMulti', {
                             moduleId: 'Repair',
                             enCode: 'receive',
-                            onSelect: this.onSelectAssisPerson
+                            onSelect: this.onSelectAssisPerson,
+                            exceptUserId: selectPerson ? selectPerson.id : null//要过滤掉的用户
                         })}>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                             <Flex>
@@ -399,7 +400,7 @@ export default class DispatchDetailPage extends BasePage {
                             }}>派单</Button>
 
                         <Button onPress={() => {
-                             this.setState({
+                            this.setState({
                                 refuseMemo: '',
                                 showClose: true
                             })

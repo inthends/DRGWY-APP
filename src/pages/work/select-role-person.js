@@ -20,7 +20,10 @@ class SelectRolePerson extends BasePage {
             title: '选择人员',
             headerForceInset: this.headerForceInset,
             headerLeft: (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
+                <TouchableOpacity onPress={() => {
+                    navigation.state.params.onSelect({});//没有选择，重置值
+                    navigation.goBack();
+                }}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
@@ -49,7 +52,7 @@ class SelectRolePerson extends BasePage {
         this.initData();
     }
 
-    componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void { 
+    componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
         const nextSelectBuilding = nextProps.selectBuilding;
         //console.log('nextSelectBuilding:' + nextSelectBuilding);

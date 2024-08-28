@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import BasePage from '../base/base'; 
 import { Flex, Icon } from '@ant-design/react-native';
-import ScreenUtil from '../../utils/screen-util';
+// import ScreenUtil from '../../utils/screen-util';
 import Macro from '../../utils/macro';
 import MineService from './mine-service';
 import { connect } from 'react-redux';
@@ -10,6 +10,7 @@ import Echarts from 'native-echarts';
 import common from '../../utils/common';
 import MyPopover from '../../components/my-popover';
  
+//废弃
 class Jixiao extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
@@ -19,8 +20,7 @@ class Jixiao extends BasePage {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
-            ),
-
+            )
         };
     };
 
@@ -34,13 +34,12 @@ class Jixiao extends BasePage {
             }
             return year + '-' + month;
         }
-
         let current = new Date().getYearAndMonth();
         this.state = {
             ym: common.getYM('2020-01'),
             begin: current,
             end: current,
-            data: {},
+            data: {}
         };
     }
 
@@ -52,45 +51,39 @@ class Jixiao extends BasePage {
         const { begin, end } = this.state;
         MineService.getMyAchievement(begin, end).then(res => {
             this.setState({
-                data: res,
+                data: res
             })
         })
     }
-
-
-
-
+ 
     render() {
-        const { ym, data } = this.state;
-
+        const { ym, data } = this.state; 
         /*
         allreceive: 0
-going: 0
-nottestandvisit: 0
-testandvisit: 0
-unfinish: 0
-        */
-
+        going: 0
+        nottestandvisit: 0
+        testandvisit: 0
+        unfinish: 0
+        */ 
         const { allreceive = 0, going = 0, nottestandvisit = 0, testandvisit = 0, unfinish = 0 } = data;
-
 
         const items = [
             {
                 'name': '待接单',
-                value: going,
+                value: going
             },
             {
                 'name': '待完成',
-                value: unfinish,
+                value: unfinish
             },
             {
-                'name': '待检验/回访',
-                value: nottestandvisit,
+                'name': '待检验/待回访',
+                value: nottestandvisit
             },
             {
-                'name': '已检验/回访',
-                value: testandvisit,
-            },
+                'name': '已检验/待回访',
+                value: testandvisit
+            }
         ];
 
         const option = {
@@ -127,9 +120,7 @@ unfinish: 0
                 }
             ]
         };
-
-
-
+ 
         return (
             <View style={styles.all}>
                 <Text style={styles.name}>工单绩效</Text>
@@ -155,15 +146,10 @@ unfinish: 0
                                 this.getData();
                             });
                         }} titles={ym} visible={true} />
-                    </View>
-
-                </Flex>
-
-                <Text style={styles.jiedan}>总接单：{allreceive}</Text>
-
-                <Echarts option={option || {}} height={300} />
-
-
+                    </View> 
+                </Flex> 
+                <Text style={styles.jiedan}>总接单：{allreceive}</Text> 
+                <Echarts option={option || {}} height={350} />  
             </View>
         );
     }
@@ -172,16 +158,14 @@ unfinish: 0
 const styles = StyleSheet.create({
     all: {
         backgroundColor: Macro.color_white,
-        flex: 1,
+        flex: 1
     },
-    
     name: {
-        fontSize: 20,
+        fontSize: 16,
         color: '#404145',
         paddingTop: 15,
         paddingLeft: 15
     },
-    
     item: {
         fontSize: 16,
         color: '#404145' 
@@ -197,8 +181,8 @@ const styles = StyleSheet.create({
     select: {
         color: '#404145',
         fontSize: 16,
-        paddingLeft: 20,
-        paddingRight: 20,
+        paddingLeft: 10,
+        paddingRight: 10,
         paddingTop: 4,
         paddingBottom: 4,
         borderStyle: 'solid',
@@ -223,8 +207,8 @@ const mapStateToProps = ({ buildingReducer, memberReducer }) => {
         selectBuilding: buildingReducer.selectBuilding || {},
         user: {
             ...user,
-            id: user.userId,
-        },
+            id: user.userId
+        }
     };
 };
 export default connect(mapStateToProps)(Jixiao);

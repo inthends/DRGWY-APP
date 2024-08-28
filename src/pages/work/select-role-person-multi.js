@@ -69,15 +69,18 @@ class SelectRolePersonMulti extends BasePage {
 
     initData() {
         const { navigation } = this.props;
-        const moduleId = navigation.state.params.moduleId;
-        const enCode = navigation.state.params.enCode;
+        let moduleId = navigation.state.params.moduleId;
+        let enCode = navigation.state.params.enCode;
+        let exceptUserId = navigation.state.params.exceptUserId;
         let url = '/api/MobileMethod/MGetRoleList'; //获取角色
         let url2 = '/api/MobileMethod/MGetUsersByRoleId';//获取角色人员 
-        api.getData(url, this.state.selectBuilding ? { moduleId: moduleId, enCode: enCode, organizeId: this.state.selectBuilding.key } : {}).then(res => {
+        api.getData(url, this.state.selectBuilding ? {
+            moduleId,
+            enCode,
+            organizeId: this.state.selectBuilding.key
+        } : {}).then(res => {
             Promise.all(
-                res.map(item => api.getData(url2, { roleId: item.roleId }))).
-                then(ress => {
-
+                res.map(item => api.getData(url2, { roleId: item.roleId, exceptUserId }))).then(ress => {
                     let data = res.map((item, index) => ({
                         ...item,
                         children: ress[index]

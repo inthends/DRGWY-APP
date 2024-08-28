@@ -324,7 +324,8 @@ export default class StartDetailPage extends BasePage {
                         onPress={() => this.props.navigation.navigate('selectRolePersonMulti', {
                             moduleId: 'Repair',
                             enCode: 'receive',
-                            onSelect: this.onSelectPerson
+                            onSelect: this.onSelectPerson,
+                            exceptUserId: detail.receiverId//要过滤掉的接单人
                         })}>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                             <Flex>
@@ -456,7 +457,7 @@ export default class StartDetailPage extends BasePage {
     }
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
     mengceng: {
         position: 'absolute',
         left: 0,

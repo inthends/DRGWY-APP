@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    View,
     Text,
     StyleSheet,
     TouchableOpacity,
@@ -19,6 +20,8 @@ import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 import { DrawerType } from '../../../utils/store/action-types/action-types';
 import { saveSelectDrawerType } from '../../../utils/store/actions/actions';
+import MyPopoverRight from '../../../components/my-popover-right';
+import WorkService from '../../work/work-service';
 
 class EstateCheckPage extends BasePage {
 
@@ -46,6 +49,8 @@ class EstateCheckPage extends BasePage {
             key: null
         };
         this.state = {
+            roles: [],
+            showAdd: true,//默认弹出选择检查组界面
             selectBuilding: {},//默认为空，防止别地方选择了机构
             pageIndex: 1,
             dataInfo: {
@@ -57,11 +62,24 @@ class EstateCheckPage extends BasePage {
             billStatus: -1,
             //time: common.getCurrentYearAndMonth(),
             time: '全部',
-            selectBuilding: this.props.selectBuilding
+            selectBuilding: this.props.selectBuilding,
+            checkRole: '',//检查的角色
+            checkRoleId: ''
         };
     }
 
     componentDidMount() {
+
+        //加载有现场检查权限的角色
+        WorkService.getCheckRoles().then(roles => {
+            this.setState({
+                roles
+            });
+            // if (roles.length > 0) {
+            //     this.setState({ checkRole: roles[0].name, checkRoleId: roles[0].id });
+            // }
+        });
+
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
@@ -219,7 +237,7 @@ class EstateCheckPage extends BasePage {
     };
 
     render() {
-        const { dataInfo } = this.state;
+        const { dataInfo, roles, checkRole, checkRoleId } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
                 <ScrollTitle onChange={this.billType} titles={['我的', '全部']} />
@@ -253,7 +271,14 @@ class EstateCheckPage extends BasePage {
 
                 <Flex justify={'center'}>
                     <Button
-                        onPress={() => this.props.navigation.push('checkAdd')}
+                        onPress={() =>
+                            this.props.navigation.push('checkAdd', {
+                                data: {
+                                    checkRole: checkRole,
+                                    checkRoleId: checkRoleId
+                                }
+                            })
+                        }
                         type={'primary'}
                         activeStyle={{ backgroundColor: Macro.work_blue }} style={{
                             width: 220,
@@ -263,12 +288,73 @@ class EstateCheckPage extends BasePage {
                         }}>开始检查</Button>
                 </Flex>
 
+                {this.state.showAdd && (
+                    <View style={styles.mengceng}>
+                        <Flex direction={'column'} justify={'center'} align={'center'}
+                            style={{ flex: 1, padding: 25, backgroundColor: 'rgba(178,178,178,0.5)' }}>
+                            <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
+                                <CommonView style={{ height: 50, width: 220 }}>
+                                    <Flex style={[styles.every]} justify='between'>
+                                        <Text style={styles.left}>检查组：</Text>
+                                        <MyPopoverRight
+                                            onChange={(item) => {
+                                                this.setState({ checkRole: item.name, checkRoleId: item.id });
+                                            }}
+                                            data={roles}
+                                            visible={true} />
+                                    </Flex>
+                                </CommonView>
+
+                                <Flex style={{ marginTop: 10 }}>
+                                    <Button
+                                        type={'primary'}
+                                        onPress={() => { 
+                                            //alert('this.state.checkRole:'+ this.state.checkRole); 
+                                            if (this.state.checkRole == '') {
+                                                return;
+                                            }
+
+                                            this.setState({ showAdd: false });
+                                            this.onRefresh();
+                                        }}
+                                        activeStyle={{ backgroundColor: Macro.work_blue }}
+                                        style={{
+                                            width: 130,
+                                            backgroundColor: Macro.work_blue,
+                                            height: 35
+                                        }}>确认</Button>
+                                </Flex>
+                            </Flex>
+                        </Flex>
+                    </View>
+                )}
+
             </CommonView>
         );
     }
 }
 
 const styles = StyleSheet.create({
+    every: {
+        //fontSize: 16,
+        color: '#666',
+        marginLeft: 7,
+        marginRight: 10,
+        paddingTop: 10,
+        paddingBottom: 10
+    },
+    left: {
+        fontSize: 16,
+        color: '#666'
+    },
+    mengceng: {
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        width: '100%',
+        height: '100%'
+    },
+
     list: {
         backgroundColor: Macro.color_white,
         //margin: 10

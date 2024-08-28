@@ -133,13 +133,13 @@ export default {
     checkAssistUser(keyvalue) {
         return api.getData('/api/MobileMethod/MCheckAssistUser', { keyvalue });
     },
- 
+
     changeToComplaint(
-        keyvalue, 
+        keyvalue,
         convertMemo
     ) {
         let params = {
-            keyvalue, 
+            keyvalue,
             convertMemo
         };
         let url = '/api/MobileMethod/MChangeToComplaint';
@@ -181,7 +181,7 @@ export default {
         }
         if (handle === '回复') {
             url = '/api/MobileMethod/MSendCommunicate';
-        } 
+        }
         // else if (handle === '转投诉') {
         //     url = '/api/MobileMethod/MChangeToComplaint';
         // }
@@ -193,7 +193,7 @@ export default {
         }
         else if (handle === '拒派') {
             url = '/api/MobileMethod/MRefuse';
-        } 
+        }
         else if (handle === '派单') {
             url = '/api/MobileMethod/MRepairDispatch';
         } else if (handle === '接单') {
@@ -240,7 +240,7 @@ export default {
         let params = { keyvalue, stopDateBegin, pauseMemo };
         return api.postData('/api/MobileMethod/MRepairPause', params);
     },
- 
+
     //抢单
     qdRepair(keyvalue) {
         let params = { keyvalue };
@@ -279,7 +279,7 @@ export default {
     },
 
     //待办工作台列表
-    workList(type, overdue, pageIndex) {
+    workList(type, overdue, time, senderId, pageIndex) {
         let url = '/api/MobileMethod/MGetRepairPageList';
         if (type === '3') {
             //待完成的维修单
@@ -288,8 +288,8 @@ export default {
         else if (type === '6') {
             //待检验的维修单
             url = '/api/MobileMethod/MGetTestRepairPageList';
-            type = overdue;
-            overdue = null;
+            // type = overdue;
+            // overdue = null;
         }
         // else if (type === 'fuwu') {
         //     if (overdue === -1) {
@@ -311,13 +311,13 @@ export default {
             //待协助列表
             url = '/api/MobileMethod/MGetAssistRepairPageList';
         }
-        return api.postData(url, { status: type, isOverdue: overdue, pageIndex, pageSize: 10 });
+        return api.postData(url, { status: type, isOverdue: overdue, time, senderId, pageIndex, pageSize: 10 });
     },
 
     //服务单列表
-    servicedeskList(type, overdue, pageIndex) {
+    servicedeskList(type, overdue, time, pageIndex) {
         let url = '/api/MobileMethod/MGetServiceDeskPageList';
-        return api.postData(url, { type, overdue, pageIndex, pageSize: 10 });
+        return api.postData(url, { type, overdue, time, pageIndex, pageSize: 10 });
     },
 
     //工作台已完成服务单列表

@@ -109,9 +109,16 @@ import ServicedeskDoneListPage from '../work/task/servicedesk-done-list';
 //工作台回访查看单据
 import WeixiuDetailPage from '../work/task/weixiu-detail';
 import TousuDetailPage from '../work/task/tousu-detail';
+
+//我的
 import Contact from '../mine/contact/contact';
 import ContactDetail from '../mine/contact/contact-detail';
-//import Jixiao from '../mine/jixiao';
+//import Jixiao from '../mine/jixiao'; 
+import Score from '../mine/score-list';
+
+
+
+
 // import LouPan from '../navigator/house-infomation/lou-pan';
 // import LouDong from '../navigator/house-infomation/lou-dong';
 // import LouCeng from '../navigator/house-infomation/lou-ceng';
@@ -217,7 +224,7 @@ const navigatorNavigator = createStackNavigator({
   // louCeng: LouCeng,
   // louPark: LouPark,
   // louDetail: LouDetail, 
- 
+
   fuwulist: EstateFuwuPage,
   weixiulist: EstateWeixiuPage,
   //e_tousu: EstateTousuPage,
@@ -240,7 +247,7 @@ const WorkNavigator = createStackNavigator({
   },
   addWork: AddWorkPage,
   selectAddress: SelectAddressPage,
-  selectArea:SelectAreaPage,
+  selectArea: SelectAreaPage,
   service: ServiceDeskDetailPage,
   weixiuView: WeixiuDetailPage, //工作台里面，待回访点击跳转的维修单，只能查看
   tousuView: TousuDetailPage, //工作台里面，待回访点击跳转的投诉单，只能查看 
@@ -265,7 +272,7 @@ const WorkNavigator = createStackNavigator({
   servicedeskDone: ServicedeskDoneListPage,
 
   newsList: NewsList,
-  selectRepairMajor: SelectRepairMajor, 
+  selectRepairMajor: SelectRepairMajor,
   selectType: SelectType,
 
   chaobiao: ChaoBiaoPage,
@@ -376,6 +383,7 @@ const MineNavigator = createStackNavigator({
   contact: Contact,
   contactDetail: ContactDetail,
   //jixiao: Jixiao
+  score: Score
 });
 
 MineNavigator.navigationOptions = ({ navigation }) => ({

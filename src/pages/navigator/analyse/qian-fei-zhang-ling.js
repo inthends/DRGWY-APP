@@ -246,16 +246,13 @@ class QianFeiZhangLingPage extends BasePage {
                 onChange={this.typeChange}
                 titles={titles}
                 visible={true}
-              />
-
+              /> 
               <MyPopover onChange={this.timeChange} titles={ym} visible={true} />
-
             </Flex>
           </Flex>
           <DashLine
             style={{ marginTop: -10, marginLeft: 15, marginRight: 15 }}
-          />
-
+          /> 
           <Text style={styles.xx}>{xName}</Text>
           <Text style={styles.xx}>{yName}</Text>
           <Echarts option={option || {}} height={300} />

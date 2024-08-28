@@ -18,6 +18,7 @@ import WorkService from '../work-service';
 import ListJianYanHeader from '../../../components/list-jianyan-header';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
+import MyPopover from '../../../components/my-popover';
 
 //待完成列表
 class TaskListPage extends BasePage {
@@ -45,11 +46,9 @@ class TaskListPage extends BasePage {
         this.selectBuilding = {
             key: null
         };
-
         const type = common.getValueFromProps(this.props).type;
         const overdue = common.getValueFromProps(this.props).overdue;
         const hiddenHeader = common.getValueFromProps(this.props).hiddenHeader;
-
         this.state = {
             pageIndex: 1,
             type,
@@ -58,10 +57,11 @@ class TaskListPage extends BasePage {
             },
             overdue,
             hiddenHeader,
-            refreshing: true
+            refreshing: true,
+            time: '全部',
+            selectPerson: null,
         };
     }
-
 
     //必须，刷新数据
     componentDidMount() {
@@ -89,8 +89,9 @@ class TaskListPage extends BasePage {
     }
 
     getList = () => {
-        const { type, overdue, pageIndex } = this.state;
-        WorkService.workList(type, overdue, pageIndex).then(dataInfo => {
+        const { type, overdue, time, selectPerson, pageIndex } = this.state;
+        let senderId = selectPerson ? selectPerson.id : '';
+        WorkService.workList(type, overdue, time, senderId, pageIndex).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -145,13 +146,11 @@ class TaskListPage extends BasePage {
                             this.props.navigation.navigate('jiedan', { id: item.id });
                             break;
                         }
-
                         case '已暂停':
                         case '待开工': {
                             this.props.navigation.navigate('kaigong', { id: item.id });
                             break;
                         }
-
                         case '待完成': {
                             this.props.navigation.navigate('wancheng', { id: item.id });
                             break;
@@ -237,9 +236,23 @@ class TaskListPage extends BasePage {
         );
     };
 
+    timeChange = (time) => {
+        this.setState({
+            time,
+            pageIndex: 1
+        }, () => {
+            this.onRefresh();
+        });
+    };
+
+    onSelectPerson = ({ selectItem }) => {
+        this.setState({
+            selectPerson: selectItem
+        })
+    }
 
     render() {
-        const { dataInfo, overdue, hiddenHeader, type } = this.state;
+        const { dataInfo, overdue, hiddenHeader, type, selectPerson } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
                 {
@@ -255,6 +268,32 @@ class TaskListPage extends BasePage {
                                 })} />
                         )
                 }
+
+                <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
+                    <MyPopover onChange={this.timeChange}
+                        titles={['全部', '今日', '本周', '本月', '上月', '本年']}
+                        visible={true} />
+
+                    <TouchableWithoutFeedback
+                        onPress={() => this.props.navigation.navigate('selectRolePerson', {
+                            moduleId: 'Repair',
+                            enCode: 'dispatch',
+                            onSelect: this.onSelectPerson
+                        })}>
+                        <Flex justify='between' style={{
+                            paddingTop: 15,
+                            paddingBottom: 15,
+                            marginLeft: 10,
+                            marginRight: 10
+                        }}>
+                            <Text style={[selectPerson ? { fontSize: 16, color: '#404145' } :
+                                { color: '#666' }]}>{selectPerson ? selectPerson.name : "请选择派单人"}</Text> 
+                            <LoadImage style={{ width: 6, height: 11, marginLeft: 8 }}
+                                defaultImg={require('../../../static/images/address/right.png')} />
+                        </Flex>
+                    </TouchableWithoutFeedback> 
+                </Flex>
+
                 <FlatList
                     data={dataInfo.data}
                     // ListHeaderComponent={}

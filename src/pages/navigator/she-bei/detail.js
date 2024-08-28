@@ -207,7 +207,6 @@ class ShebeiDetail extends BasePage {
                         style={{ paddingTop: 5, paddingLeft: 20, paddingRight: 20 }}>
                         <Flex justify={'between'} style={{ width: '100%' }}>
                             <Flex direction={'column'}>
-
                                 <Flex style={[styles.item, { paddingTop: 10 }]} justify={'center'} align={'center'}>
                                     <MyPopover hiddenImage={true}
                                         onChange={(time) => this.setState({ startTime: time }, () => this.timeChange())}
@@ -216,18 +215,14 @@ class ShebeiDetail extends BasePage {
                                 </Flex>
                             </Flex>
                             <Flex direction={'column'}>
-
                                 <Text style={styles.text}>至</Text>
                             </Flex>
                             <Flex direction={'column'}>
-
                                 <Flex style={[styles.item, { paddingTop: 10 }]} justify={'center'} align={'center'}>
-
                                     <MyPopover hiddenImage={true}
                                         onChange={(time) => this.setState({ endTime: time }, () => this.timeChange())}
                                         titles={ym}
                                         visible={true} />
-
                                 </Flex>
                             </Flex>
                         </Flex>

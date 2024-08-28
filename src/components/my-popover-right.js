@@ -18,10 +18,14 @@ export default class MyPopoverRight extends Component {
     }
 
     componentDidUpdate(prevProps) {//Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
-        if (this.props.data.length !== prevProps.data.length) {
+        if (this.props.data.length !== prevProps.data.length) { 
+            //设置默认值
+            let roleId = this.props.roleId;
+            let mydata = this.props.data;
+            let roleIndex = mydata.findIndex(item => item.id == roleId); 
             this.setState({
-                data: this.props.data,
-                index: 0
+                data: mydata,
+                index: roleIndex//0
             });
         }
     }

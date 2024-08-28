@@ -45,9 +45,14 @@ class EcheckAddPage extends BasePage {
 
     constructor(props) {
         super(props);
-        const { id
-            //, address
+        const {
+            id,
+            checkRole,
+            checkRoleId
         } = common.getValueFromProps(this.props) || {};
+
+        //alert(checkRole);
+
         this.state = {
             id,
             detailId: '',
@@ -68,8 +73,9 @@ class EcheckAddPage extends BasePage {
                 data: []
             },
             roles: [],
-            checkRole: '',//检查的角色
-            checkRoleId: '',
+            roleIndex: 0,//角色在数组里面的序号
+            checkRole: checkRole,//'',//检查的角色
+            checkRoleId: checkRoleId,//'',
             operateType: 'add'//明细操作类型，添加还是修改
         };
     }
@@ -90,12 +96,14 @@ class EcheckAddPage extends BasePage {
                 //roles: [...res]
                 roles
             });
+            // if (roles.length > 0) {
+            //     this.setState({ checkRole: roles[0].name, checkRoleId: roles[0].id });
+            // }
 
-            if (roles.length > 0) {
-                this.setState({ checkRole: roles[0].name, checkRoleId: roles[0].id });
-            }
-
-            //console.log('roles',roles);
+            //选择的角色id
+            // let roleIndex = roles.findIndex(item => item.id == this.state.checkRoleId);
+            // this.setState({ roleIndex });//设置角色序号
+            //alert('roleIndex:' + roleIndex);
         });
 
         this.viewDidAppear = this.props.navigation.addListener(
@@ -293,8 +301,6 @@ class EcheckAddPage extends BasePage {
         });
     };
 
-
-
     addDetail = () => {
         const { id, detailId, checkRole, checkRoleId, memo,
             address, selectPerson, checkMemo,
@@ -393,7 +399,7 @@ class EcheckAddPage extends BasePage {
     };
 
     render() {
-        const { detail, dataInfo, address, selectPerson, roles, images } = this.state;
+        const { detail, dataInfo, address, selectPerson, roles, checkRoleId, images } = this.state;
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
@@ -414,6 +420,7 @@ class EcheckAddPage extends BasePage {
                                 this.setState({ checkRole: item.name, checkRoleId: item.id });
                             }}
                             data={roles}
+                            roleId={checkRoleId}
                             visible={true} />
                     </Flex>
 
@@ -649,7 +656,6 @@ class EcheckAddPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-
     every: {
         //fontSize: 16,
         color: '#666',

@@ -98,10 +98,8 @@ export default class NavigatorPage extends BasePage {
     this.viewDidAppear.remove();
   }
 
-  render() {
-
+  render() { 
     const { serverdata, workdata } = this.state;
-
     return (
       <CommonView style={{ flex: 1 }}>
         <ScrollView

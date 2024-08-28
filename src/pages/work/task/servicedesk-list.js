@@ -18,6 +18,7 @@ import WorkService from '../work-service';
 import ListJianYanHeader from '../../../components/list-jianyan-header';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
+import MyPopover from '../../../components/my-popover';
 
 //待完成服务单列表
 class ServicedeskListPage extends BasePage {
@@ -56,7 +57,8 @@ class ServicedeskListPage extends BasePage {
             },
             refreshing: false,
             overdue: -1,
-            hiddenHeader
+            hiddenHeader,
+            time: '全部',
         };
     }
 
@@ -84,8 +86,8 @@ class ServicedeskListPage extends BasePage {
     }
 
     getList = () => {
-        const { type, overdue, pageIndex } = this.state;
-        WorkService.servicedeskList(type, overdue, pageIndex).then(dataInfo => {
+        const { type, overdue, time, pageIndex } = this.state;
+        WorkService.servicedeskList(type, overdue, time, pageIndex).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -150,26 +152,23 @@ class ServicedeskListPage extends BasePage {
                     <Flex align={'start'} direction={'column'}>
                         <Flex justify='between'
                             style={{ width: '100%', paddingTop: 10, paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
-                            <Text  style={{ lineHeight: 20 }}>{item.address} {item.contactName}</Text>
+                            <Text style={{ lineHeight: 20 }}>{item.address} {item.contactName}</Text>
                             <TouchableWithoutFeedback
                                 onPress={() => common.call(item.contactLink || item.contactPhone)}>
                                 <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 15, height: 15 }} /></Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
-
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>所属区域：{item.repairArea}，是否有偿：{item.isPaid}</Text>
                         </Flex>
-
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>紧急程度：{item.emergencyLevel}，重要程度：{item.importance}</Text>
                         </Flex>
-
-                        <Text 
+                        <Text
                             style={{
-                                lineHeight:20,
+                                lineHeight: 20,
                                 paddingLeft: 20,
                                 paddingRight: 20,
                                 paddingBottom: 10,
@@ -186,6 +185,15 @@ class ServicedeskListPage extends BasePage {
         );
     };
 
+
+    timeChange = (time) => {
+        this.setState({
+            time,
+            pageIndex: 1
+        }, () => {
+            this.onRefresh();
+        });
+    };
 
     render() {
         const { dataInfo, overdue, hiddenHeader, type } = this.state;
@@ -205,12 +213,18 @@ class ServicedeskListPage extends BasePage {
                         )
                 }
 
+                <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
+                    <MyPopover onChange={this.timeChange}
+                        titles={['全部', '今日', '本周', '本月', '上月', '本年']}
+                        visible={true} />
+                </Flex>
+
+
                 <FlatList
                     data={dataInfo.data}
                     renderItem={this._renderItem}
                     style={styles.list}
                     keyExtractor={(item) => item.id}
-
                     //必须
                     onEndReachedThreshold={0.1}
                     refreshing={this.state.refreshing}//在等待加载新数据时将此属性设为 true，列表就会显示出一个正在加载的符号
@@ -226,13 +240,11 @@ class ServicedeskListPage extends BasePage {
                 />
                 <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
             </CommonView>
-
         );
     }
 }
 
 const styles = StyleSheet.create({
-
     list: {
         backgroundColor: Macro.color_white,
         //margin: 15

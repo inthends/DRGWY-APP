@@ -20,5 +20,16 @@ export default {
     //获取配置
     getSetting(type) {
         return api.getData('/api/SysSetting/GetSetting', { type });
-    }
+    },
+
+    //工单积分
+    getRepairScore() {
+        return api.getData('/api/MobileMethod/MGetRepairScore');
+    },
+ 
+    //工单积分统计
+    getRepairScoreList(pageIndex) {
+        let url = '/api/MobileMethod/MGetRepairScorePageList';
+        return api.postData(url, {pageIndex, pageSize: 10 });
+    },
 };

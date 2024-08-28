@@ -599,12 +599,9 @@ export default class ServiceDeskDetailPage extends BasePage {
                             : null
                         }
                     </Flex>
-
                     <Communicates communicateClick={this.communicateClick} communicates={communicates} />
                     <OperationRecords communicateClick={this.operationClick} communicates={operations} />
-
                 </ScrollView>
-
                 {
                     this.state.showMemo && (
                         //回复

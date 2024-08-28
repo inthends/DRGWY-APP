@@ -19,17 +19,31 @@ export default class MinePage extends BasePage {
     super(props);
     this.state = {
       user: {},
+      score: 0
     };
   }
 
   componentDidMount() {
-    MineService.getUserInfo().then((user) => {
-      this.setState({ user });
-    });
+    this.viewDidAppear = this.props.navigation.addListener(
+      'didFocus',
+      (obj) => {
+        MineService.getUserInfo().then((user) => {
+          this.setState({ user });
+        });
+
+        MineService.getRepairScore().then((score) => {
+          this.setState({ score });
+        });
+      }
+    );
+  }
+
+  componentWillUnmount() {
+    this.viewDidAppear.remove();
   }
 
   render() {
-    const { user } = this.state;
+    const { user, score } = this.state;
     return (
       <View style={{ flex: 1 }}>
         <ScrollView>
@@ -60,6 +74,64 @@ export default class MinePage extends BasePage {
               </TouchableWithoutFeedback>
             </ImageBackground>
 
+            <TouchableWithoutFeedback 
+              onPress={() => this.props.navigation.push('score')}
+            >
+              <Flex
+                justify="between"
+                style={[
+                  {
+                    marginTop: 30,
+                    paddingBottom: 20,
+                    paddingLeft: 30,
+                    paddingRight: 25
+                  },
+                  ScreenUtil.borderBottom()
+                ]}
+              >
+                <Flex>
+                  <LoadImage
+                    style={{ width: 18, height: 18 }}
+                    defaultImg={require('../../static/images/img-kong.png')}
+                  />
+                  <Text style={styles.item}>工单积分 ({score})</Text>
+                </Flex>
+                <LoadImage
+                  style={{ width: 8, height: 15 }}
+                  defaultImg={require('../../static/images/address/right.png')}
+                />
+              </Flex>
+            </TouchableWithoutFeedback>
+
+            <TouchableWithoutFeedback
+              onPress={() => this.props.navigation.push('contact')}
+            >
+              <Flex
+                justify="between"
+                style={[
+                  {
+                    marginTop: 30,
+                    paddingBottom: 20,
+                    paddingLeft: 30,
+                    paddingRight: 25
+                  },
+                  ScreenUtil.borderBottom()
+                ]}
+              >
+                <Flex>
+                  <LoadImage
+                    style={{ width: 18, height: 18 }}
+                    defaultImg={require('../../static/images/paiyipai.png')}
+                  />
+                  <Text style={styles.item}>通讯录</Text>
+                </Flex>
+                <LoadImage
+                  style={{ width: 8, height: 15 }}
+                  defaultImg={require('../../static/images/address/right.png')}
+                />
+              </Flex>
+            </TouchableWithoutFeedback>
+
             <TouchableWithoutFeedback
               onPress={() => this.props.navigation.push('ModifyPsd')}
             >
@@ -67,7 +139,7 @@ export default class MinePage extends BasePage {
                 justify="between"
                 style={[
                   {
-                    marginTop: 45,
+                    marginTop: 30,
                     paddingBottom: 20,
                     paddingLeft: 30,
                     paddingRight: 25
@@ -88,63 +160,6 @@ export default class MinePage extends BasePage {
                 />
               </Flex>
             </TouchableWithoutFeedback>
-            {/* <TouchableWithoutFeedback
-              onPress={() => this.props.navigation.push('jixiao')}
-            >
-              <Flex
-                justify="between"
-                style={[
-                  {
-                    marginTop: 30,
-                    paddingBottom: 20,
-                    paddingLeft: 30,
-                    paddingRight: 25
-                  },
-                  ScreenUtil.borderBottom(),
-                ]}
-              >
-                <Flex>
-                  <LoadImage
-                    style={{ width: 18, height: 18 }}
-                    defaultImg={require('../../static/images/img-kong.png')}
-                  />
-                  <Text style={styles.item}>我的绩效</Text>
-                </Flex>
-                <LoadImage
-                  style={{ width: 8, height: 15 }}
-                  defaultImg={require('../../static/images/address/right.png')}
-                />
-              </Flex>
-            </TouchableWithoutFeedback> */}
-
-            <TouchableWithoutFeedback
-              onPress={() => this.props.navigation.push('contact')}
-            >
-              <Flex
-                justify="between"
-                style={[
-                  {
-                    marginTop: 30,
-                    paddingBottom: 20,
-                    paddingLeft: 30,
-                    paddingRight: 25
-                  },
-                  ScreenUtil.borderBottom(),
-                ]}
-              >
-                <Flex>
-                  <LoadImage
-                    style={{ width: 18, height: 18 }}
-                    defaultImg={require('../../static/images/paiyipai.png')}
-                  />
-                  <Text style={styles.item}>通讯录</Text>
-                </Flex>
-                <LoadImage
-                  style={{ width: 8, height: 15 }}
-                  defaultImg={require('../../static/images/address/right.png')}
-                />
-              </Flex>
-            </TouchableWithoutFeedback>
 
             <TouchableWithoutFeedback
               onPress={() => this.props.navigation.push('Setting')}
@@ -153,7 +168,7 @@ export default class MinePage extends BasePage {
                 justify="between"
                 style={[
                   {
-                    paddingTop: 30,
+                    marginTop: 30,
                     paddingBottom: 20,
                     paddingLeft: 30,
                     paddingRight: 25
@@ -181,7 +196,6 @@ export default class MinePage extends BasePage {
   }
 }
 const styles = StyleSheet.create({
- 
   content: {
     flex: 1,
     backgroundColor: Macro.color_white
@@ -192,7 +206,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center'
   },
- 
+
   name: {
     paddingTop: 15,
     fontSize: 20,
