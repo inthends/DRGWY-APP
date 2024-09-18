@@ -116,9 +116,7 @@ import ContactDetail from '../mine/contact/contact-detail';
 //import Jixiao from '../mine/jixiao'; 
 import Score from '../mine/score-list';
 
-
-
-
+  
 // import LouPan from '../navigator/house-infomation/lou-pan';
 // import LouDong from '../navigator/house-infomation/lou-dong';
 // import LouCeng from '../navigator/house-infomation/lou-ceng';
@@ -132,6 +130,7 @@ import BCMScanScreen from '../navigator/bcmscanner';
 import CIBScanScreen from '../navigator/cibscanner';
 import LKLScanScreen from '../navigator/lklscanner';
 import NJScanScreen from '../navigator/njscanner';
+import CCBScanScreen from '../navigator/ccbscanner';
 
 //流程审批
 import ApprovePage from '../flow';
@@ -297,7 +296,8 @@ const WorkNavigator = createStackNavigator({
   bcmscan: BCMScanScreen, //交通银行扫码
   cibscan: CIBScanScreen, //兴业银行扫码 
   lklscan: LKLScanScreen, //拉卡拉聚合扫码
-  njscan: NJScanScreen, //南京银行扫码 
+  njscan: NJScanScreen, //南京银行扫码
+  ccbscan: CCBScanScreen,//建设银行扫码
   //现场检查
   selectAllPerson: SelectAllPerson,
   selectRolePersonMulti: SelectRolePersonMulti,
@@ -489,8 +489,7 @@ const tabbar = createBottomTabNavigator(
       return {
         tabBarIcon: ({ focused }) => {
           const { routeName } = navigation.state;
-          let name;
-
+          let name; 
           switch (routeName) {
             case 'Building':
               name = 'bank';

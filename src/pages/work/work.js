@@ -387,7 +387,7 @@ export default class WorkPage extends BasePage {
                                 borderStyle: 'solid'
                             }]}>
                             <Flex>
-                                <Text style={styles.title}>工单</Text> 
+                                <Text style={styles.title}>工单</Text>
                                 <TouchableWithoutFeedback onPress={() =>
                                     this.props.navigation.push('taskqd')
                                 }>
@@ -502,7 +502,7 @@ export default class WorkPage extends BasePage {
                                         <Text style={styles.bottom}>待协助</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
- 
+
                                 <TouchableWithoutFeedback onPress={() => {
                                     if (data.unfinish == 0) {
                                         return;
@@ -540,7 +540,6 @@ export default class WorkPage extends BasePage {
                             </Flex>
 
                             <Flex>
-
                                 <TouchableWithoutFeedback onPress={() => {
                                     if (data.finish == 0) {
                                         return;
@@ -731,7 +730,7 @@ const styles = StyleSheet.create({
         paddingTop: 4
     },
     buttonInfo: {
-        color: Macro.color_FA3951,
+        color: 'red',
         fontSize: 16
     },
     card: {

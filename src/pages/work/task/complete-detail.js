@@ -308,6 +308,7 @@ export default class CompleteDetailPage extends BasePage {
                         reload={this.reload}
                         type='完成'
                     />
+                    
                     <View style={{ margin: 15 }}>
                         <TextareaItem
                             rows={4}

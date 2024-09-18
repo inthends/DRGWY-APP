@@ -1,6 +1,5 @@
 export default class Macro {
-    //color   
-    static color_FA3951 = '#FA3951'; 
+    //color    
     static color_sky = '#5796ce';
     static color_sky_dark = '#1B80D0';
         

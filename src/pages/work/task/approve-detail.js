@@ -11,7 +11,7 @@ import {
     TextInput
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Button, Icon, Flex } from '@ant-design/react-native';
+import { Button, Icon, Flex, TextareaItem } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';
@@ -54,13 +54,15 @@ export default class ApproveDetailPage extends BasePage {
             visible: false,
             isModifyRepairScore: false,
             showClose: false,
-            appScore: null
+            appScore: '',
+            verifyMemo: '',
+            verifyResult: 1
         };
     }
 
     componentDidMount() {
         this.getData();
-        //获取附件是否允许修改维修单积分 
+        //获取是否允许修改维修单积分 
         WorkService.getSetting('isModifyRepairScore').then(res => {
             this.setState({ isModifyRepairScore: res });
         });
@@ -77,7 +79,8 @@ export default class ApproveDetailPage extends BasePage {
                     statusName: detail.statusName,
                     assistName: detail.assistName,//协助人 
                     reinforceName: detail.reinforceName//增援人 
-                }
+                },
+                appScore: detail.entity.score.toString()//默认积分
             });
 
             //根据不同单据类型获取附件作为维修前图片
@@ -105,10 +108,19 @@ export default class ApproveDetailPage extends BasePage {
                 });
             });
         });
-
     };
 
     click = () => {
+        const { isModifyRepairScore, appScore } = this.state;
+        if (isModifyRepairScore == true && appScore == '') {
+            //需要弹出修正积分界面
+            // this.setState({
+            //     appScore: detail.score.toString(),//转换为字符串
+            //     showClose: true
+            // }); 
+            UDToast.showError('请输入修正积分');
+            return;
+        }
         Alert.alert(
             '请确认',
             '是否审核？',
@@ -116,20 +128,11 @@ export default class ApproveDetailPage extends BasePage {
             {
                 text: '确定',
                 onPress: () => {
-                    const { isModifyRepairScore, detail, id } = this.state;
-                    if (isModifyRepairScore == true) {
-                        //需要弹出修正积分界面
-                        this.setState({
-                            appScore: detail.score.toString(),//转换为字符串
-                            showClose: true
-                        });
-                    }
-                    else {
-                        WorkService.approve(id, null).then(res => {
-                            UDToast.showInfo('审核完成');
-                            this.props.navigation.goBack();
-                        });
-                    }
+                    const { id, verifyResult, verifyMemo } = this.state;
+                    WorkService.approve(id, appScore, verifyResult, verifyMemo).then(res => {
+                        UDToast.showInfo('审核完成');
+                        this.props.navigation.goBack();
+                    });
                 }
             }
             ], { cancelable: false });
@@ -162,23 +165,37 @@ export default class ApproveDetailPage extends BasePage {
         });
     };
 
-    setScore = () => {
-        this.setState({ showClose: false });
-        const { id, appScore } = this.state;
-        WorkService.approve(id, appScore).then(res => {
-            UDToast.showInfo('审核完成');
-            this.props.navigation.goBack();
-        });
-    };
+    // setScore = () => {
+    //     this.setState({ showClose: false });
+    //     const { id,
+    //         appScore,
+    //         verifyResult,
+    //         verifyMemo
+    //     } = this.state;
+    //     WorkService.approve(
+    //         id,
+    //         appScore,
+    //         verifyResult,
+    //         verifyMemo
+    //     ).then(res => {
+    //         UDToast.showInfo('审核完成');
+    //         this.props.navigation.goBack();
+    //     });
+    // };
 
     render() {
         const {
+            isModifyRepairScore,
+            verifyResult,
             images,
             startimages,
             finishimages,
             checkimages,
             detail,
             communicates } = this.state;
+
+        const selectImg = require('../../../static/images/select.png');
+        const noselectImg = require('../../../static/images/no-select.png');
 
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
@@ -247,11 +264,6 @@ export default class ApproveDetailPage extends BasePage {
                         <Text style={styles.left}>维修专业：{detail.repairMajor}，积分：{detail.score}</Text>
                     </Flex>
 
-                    {/* {this.state.appScore != null ?
-                        <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.leftscore}>修正积分：{this.state.appScore}</Text>
-                        </Flex> : null} */}
-
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>接单人：{detail.receiverName}，{detail.receiverDate}</Text>
                     </Flex>
@@ -304,6 +316,48 @@ export default class ApproveDetailPage extends BasePage {
                             <ListImages images={checkimages} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, checkimages)} />
                         </> : null}
 
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <TouchableWithoutFeedback onPress={() => this.setState({ verifyResult: 1 })}>
+                            <Flex>
+                                <LoadImage img={verifyResult === 1 ? selectImg : noselectImg}
+                                    style={{ width: 15, height: 15 }} />
+                                <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>通过</Text>
+                            </Flex>
+                        </TouchableWithoutFeedback>
+                        <TouchableWithoutFeedback onPress={() => this.setState({ verifyResult: 0 })}>
+                            <Flex>
+                                <LoadImage img={verifyResult === 0 ? selectImg : noselectImg}
+                                    style={{ width: 15, height: 15 }} />
+                                <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>不通过</Text>
+                            </Flex>
+                        </TouchableWithoutFeedback>
+                    </Flex>
+
+                    <Flex style={[styles.every2, ScreenUtil.borderBottom()]}>
+                        <Text style={styles.left}>修正积分：</Text>
+                        <TextInput
+                            keyboardType={'decimal-pad'}
+                            value={this.state.appScore}
+                            style={{ fontSize: 14, color: 'red' }}
+                            readOnly={!isModifyRepairScore}
+                            onChangeText={appScore => this.setState({ appScore })}
+                            placeholder='请输入修正积分' />
+                    </Flex>
+
+                    <View style={{
+                        margin: 15
+                    }}>
+                        <TextareaItem
+                            rows={4}
+                            autoHeight
+                            placeholder='请输入审核情况'
+                            style={{ fontSize: 14, width: ScreenUtil.deviceWidth() - 32 }}
+                            onChange={verifyMemo => this.setState({ verifyMemo })}
+                            value={this.state.verifyMemo}
+                            maxLength={500}
+                        />
+                    </View>
+
                     <Flex justify={'center'}>
                         <Button onPress={() => this.click()} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
@@ -320,7 +374,7 @@ export default class ApproveDetailPage extends BasePage {
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                         imageUrls={this.state.selectimages} />
                 </Modal>
-
+                {/* 
                 {
                     this.state.showClose && (
                         //修正积分
@@ -366,7 +420,7 @@ export default class ApproveDetailPage extends BasePage {
                             </Flex>
                         </View>
                     )
-                }
+                } */}
 
             </CommonView >
         );
@@ -375,9 +429,9 @@ export default class ApproveDetailPage extends BasePage {
 
 const styles = StyleSheet.create({
 
-    input: {
-        height: 50, width: 160
-    },
+    // input: {
+    //     height: 50, width: 160
+    // },
 
     every: {
         marginLeft: 15,
@@ -385,21 +439,23 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         paddingTop: 10
     },
+
+    every2: {
+        marginLeft: 15,
+        marginRight: 15
+    },
+
     left: {
         fontSize: 14,
         color: '#404145'
-    },
-    leftscore: {
-        fontSize: 14,
-        color: 'red'
     },
     right: {
         fontSize: 14,
         color: '#404145'
     },
     desc: {
-        lineHeight:20,
-        fontSize:15,
+        lineHeight: 20,
+        fontSize: 15,
         padding: 15
     },
     ii: {

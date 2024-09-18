@@ -177,10 +177,12 @@ export default class DispatchDetailPage extends BasePage {
             UDToast.showError('请选择接单人');
             return;
         }
+        
         if (repairmajor == null || repairmajor.id == null) {
             UDToast.showError('请选择维修专业');
             return;
         }
+
         let personIds = assisPersons.map(item => item.id);
         let assistId = personIds && personIds.length > 0 ? JSON.stringify(personIds) : '';
         WorkService.paidan(

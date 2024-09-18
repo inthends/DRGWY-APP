@@ -230,8 +230,8 @@ export default {
     },
 
     //审核
-    approve(keyvalue, appScore) {
-        let params = { keyvalue, appScore };
+    approve(keyvalue, appScore, verifyResult, verifyMemo) {
+        let params = { keyvalue, appScore, verifyResult, verifyMemo };
         return api.postData('/api/MobileMethod/MRepairApprove', params);
     },
 
@@ -290,6 +290,10 @@ export default {
             url = '/api/MobileMethod/MGetTestRepairPageList';
             // type = overdue;
             // overdue = null;
+        }
+        else if (type === '7') {
+            //待审核的维修单
+            url = '/api/MobileMethod/MGetApproveRepairPageList';
         }
         // else if (type === 'fuwu') {
         //     if (overdue === -1) {

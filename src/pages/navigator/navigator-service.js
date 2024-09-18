@@ -7,7 +7,7 @@ export default {
   serverStatistics(time, showLoading) {
     return api.postData('/api/MobileMethod/MGetServerStatistics', { time }, showLoading);
   },
-  
+
   //工单
   workStatistics(time, showLoading) {
     return api.postData('/api/MobileMethod/MGetWorkStatistics', { time }, showLoading);
@@ -98,12 +98,12 @@ export default {
     organizeId,
     billType,
     time
-  ) { 
+  ) {
     return api.postData('/api/MobileMethod/MGetServiceDeskPageListStatistics', {
       pageIndex,
       pageSize: 10,
       type,
-      status, 
+      status,
       organizeId,
       billType,
       time
@@ -117,7 +117,7 @@ export default {
     organizeId,
     time,
     repairArea,
-  ) { 
+  ) {
     return api.postData('/api/MobileMethod/MGetRepairPageListStatistics', {
       pageIndex,
       pageSize: 10,
@@ -145,7 +145,7 @@ export default {
   //     time
   //   });
   // },
- 
+
   // serviceDetail(type,keyvalue) {
   //     let url = '/api/MobileMethod/MGetServicedeskEntity';
   //     if (billType === '报修') {
@@ -398,6 +398,40 @@ export default {
     );
   },
 
+  //建设银行生成收款码
+  ccbCodePay(tbout_trade_no) {
+    return api.postData('/api/MobileMethod/CCBPay', { tbout_trade_no });
+  },
+
+  //建设银行扫码
+  ccbScanPay(auth_code, tbout_trade_no) {
+    return api.postData('/api/MobileMethod/CCBScanPay', {
+      auth_code,
+      tbout_trade_no
+    });
+  },
+
+  //建设银行扫码，查询支付结果
+  ccbScanPayQuery(auth_code, tbout_trade_no) {
+    return api.postData(
+      '/api/MobileMethod/CCBScanPayQuery',
+      {
+        auth_code,
+        tbout_trade_no
+      },
+      false
+    );
+  },
+
+  //建设银行扫码，接口支付失败，关单
+  ccbScanPayReserve(tbout_trade_no) {
+    return api.postData(
+      '/api/MobileMethod/CCBScanPayReserve',
+      { tbout_trade_no },
+      false
+    );
+  },
+ 
   //现金收款
   cashPay(linkId, isML, mlType, mlScale) {
     return api.postData('/api/MobileMethod/MCharge', {

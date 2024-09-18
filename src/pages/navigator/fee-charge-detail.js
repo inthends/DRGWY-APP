@@ -1,25 +1,25 @@
-import React  from 'react';
+import React from 'react';
 import {
     View,
     Text,
-    StyleSheet, 
-    TouchableOpacity, 
+    StyleSheet,
+    TouchableOpacity,
     ScrollView, NativeModules,
 } from 'react-native';
 import BasePage from '../base/base';
-import {  Flex, Icon, WhiteSpace } from '@ant-design/react-native';
-import Macro from '../../utils/macro'; 
-import { connect } from 'react-redux'; 
-import common from '../../utils/common'; 
-import NavigatorService from './navigator-service'; 
+import { Flex, Icon, WhiteSpace } from '@ant-design/react-native';
+import Macro from '../../utils/macro';
+import { connect } from 'react-redux';
+import common from '../../utils/common';
+import NavigatorService from './navigator-service';
 import CommonView from '../../components/CommonView';
 
 class FeeChargeDetail extends BasePage {
-    static navigationOptions = ({ navigation }) => {  
+    static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
             title: '收款单详情',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
@@ -50,9 +50,9 @@ class FeeChargeDetail extends BasePage {
             print: this.print,
         });
     }
-    
+
     print = () => {
-        const {data} = this.state;
+        const { data } = this.state;
         //补打
         NavigatorService.rePrintInfo(data.billId).then(res => {
             NativeModules.LHNToast.printTicket({
@@ -83,39 +83,55 @@ class FeeChargeDetail extends BasePage {
                         <Text style={{
                             paddingLeft: 15,
                             paddingTop: 10,
-                            fontSize: 16,
+                            fontSize: 15,
+                            color: 'green'
                         }}>{data.allName} {data.createUserName}</Text>
                         <Text style={{
                             paddingLeft: 15,
                             paddingTop: 10,
-                            fontSize: 16,
+                            fontSize: 15,
                         }}>单号：{data.billCode}</Text>
                         <Text style={{
                             paddingLeft: 15,
                             paddingTop: 10,
-                            fontSize: 16,
+                            fontSize: 15,
                         }}>日期：{data.billDate}</Text>
+
                         {this.state.items.map((item, index) => (
                             <Flex key={index} style={styles.item}>
-                                <Flex align={'start'} direction={'column'} style={{ marginLeft: 3, flex: 1 }}>
+                                <Flex align={'start'} direction={'column'}
+                                    style={{
+                                        //marginLeft: 3,
+                                        flex: 1
+                                    }}
+                                >
                                     <Flex justify={'between'}
-                                        style={{ paddingLeft: 10, paddingTop: 5, paddingBottom: 5, width: '100%' }}>
-                                        <Text style={{ fontSize: 16 }}>{item.feeName}</Text>
+                                        style={{
+                                            paddingTop: 3,
+                                            paddingLeft: 5,
+                                            width: '100%'
+                                        }}>
+                                        <Text style={{ fontSize: 15 }}>{item.feeName}</Text>
                                         <Flex>
-                                            <Text style={{ paddingRight: 10, fontSize: 16 }}>{item.amount}</Text>
+                                            <Text style={{ fontSize: 15, color: 'red' }}>{item.amount}</Text>
                                         </Flex>
                                     </Flex>
-                                    {item.beginDate ? <Text style={{
-                                        paddingLeft: 10,
-                                        paddingTop: 10,
-                                    }}> {item.beginDate + '至' + item.endDate}</Text> : null}
+
+                                    {item.beginDate ?
+                                        <Text style={{
+                                            fontSize: 15,
+                                            paddingTop: 10
+                                        }}> {item.beginDate + '至' + item.endDate}</Text>
+                                        : null}
                                 </Flex>
                             </Flex>
-                        ))} 
-                        <WhiteSpace />
-                        <Flex justify={'center'}>
+                        ))}
+                        <Flex justify='end'>
                             <Text style={{
-                                fontSize: 16,
+                                fontSize: 15,
+                                paddingTop: 5,
+                                paddingRight: 9,
+                                color: 'red'
                             }}>抹零：{data.mlAmount}，合计：{data.amount}</Text>
                         </Flex>
                     </ScrollView>
@@ -126,14 +142,7 @@ class FeeChargeDetail extends BasePage {
 }
 
 const styles = StyleSheet.create({
-    title: {
-        color: '#404145',
-        fontSize: 16,
-    },
-    left: {
-        flex: 1
-    },
-  
+
     item: {
         borderRadius: 6,
         borderWidth: 1,
@@ -141,21 +150,15 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         paddingLeft: 10,
         paddingRight: 10,
-        // width: (ScreenUtil.deviceWidth() - 50) / 3.0-1,
         paddingTop: 10,
         paddingBottom: 10,
         marginTop: 10,
         marginRight: 10,
         marginLeft: 10,
-    },
-    name: {
-        fontSize: Macro.font_16,
-        fontWeight: '600',
-        paddingBottom: 10,
     }
 });
 
-const mapStateToProps = ({ memberReducer,buildingReducer }) => {
+const mapStateToProps = ({ memberReducer, buildingReducer }) => {
     return {
         selectBuilding: buildingReducer.selectBuilding,
         userInfo: memberReducer.userInfo

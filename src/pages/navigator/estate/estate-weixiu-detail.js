@@ -203,7 +203,7 @@ export default class EweixiuDetailPage extends BasePage {
 
                     {detail.appScore != null ?
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.leftscore}>修正积分：{detail.appScore}</Text>
+                            <Text style={styles.left}>修正积分：{detail.appScore}</Text>
                         </Flex> : null}
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>

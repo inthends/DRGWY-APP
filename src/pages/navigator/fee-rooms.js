@@ -113,11 +113,11 @@ export default class FeeRoomsPage extends BasePage {
 const styles = StyleSheet.create({
     all: {
         backgroundColor: Macro.color_sky,
-        flex: 1,
+        flex: 1
     },
     title: {
         color: '#404145',
-        fontSize: 16,
+        fontSize: 16
     }, 
     left: {
         flex: 1
@@ -127,16 +127,16 @@ const styles = StyleSheet.create({
         borderLeftWidth: 4,
         borderLeftColor: Macro.color_f39d39,
         marginLeft: 15,
-        marginTop: 15,
+        marginTop: 15
     },
     se: {
         paddingLeft: 10,
         fontSize: 16,
-        color: '#666',
+        color: '#666'
     },
     image: {
         height: 90,
-        width: 90,
+        width: 90
     },
     item: {
         borderRadius: 6,
@@ -152,19 +152,19 @@ const styles = StyleSheet.create({
         marginRight: 5,
         marginLeft: 5,
         backgroundColor: '#eee',
-        color: '#666',
+        color: '#666'
     },
     name: {
         fontSize: Macro.font_16,
         fontWeight: '600',
-        paddingBottom: 15,
+        paddingBottom: 15
     }, 
     orange: {
         backgroundColor: Macro.color_f39d39,
-        color: '#fff',
+        color: '#fff'
     },
     blue74BAF1: {
         backgroundColor: '#74BAF1',
-        color: '#fff',
-    },
+        color: '#fff'
+    }
 });

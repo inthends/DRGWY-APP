@@ -21,8 +21,7 @@ import CommonView from '../../../components/CommonView';
 import MyPopover from '../../../components/my-popover';
 
 //待完成列表
-class TaskListPage extends BasePage {
-
+class TaskListPage extends BasePage { 
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
@@ -137,7 +136,6 @@ class TaskListPage extends BasePage {
                     this.props.navigation.navigate('service', { id: item.id });
                 } else {
                     switch (item.statusName) {
-
                         case '待派单': {
                             this.props.navigation.navigate('paidan', { id: item.id });
                             break;

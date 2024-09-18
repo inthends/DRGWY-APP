@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
         fontSize: 16
     },
     unread: {
-        color: Macro.color_FA3951,
+        color: 'red', 
         fontSize: 16
     },
     read: {

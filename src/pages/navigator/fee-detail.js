@@ -90,7 +90,7 @@ class FeeDetailPage extends BasePage {
                 data: [],
             },
             isCIBLife: false,
-            type: null,
+            type: '未收',
             isShow: true,
             out_trade_no: null,
             visible: false,
@@ -194,6 +194,7 @@ class FeeDetailPage extends BasePage {
             switch (title) {
                 //app 不支持刷卡
                 case '扫码': {
+
                     NavigatorService.createOrder(ids, isML, mlType, mlScale, 1).then(res => {
                         if (!res.posType) {
                             UDToast.showError(res);
@@ -201,89 +202,126 @@ class FeeDetailPage extends BasePage {
                         }
 
                         let posType = res.posType;
-                        // if (posType === '银盛') {
-                        //     if (!this.state.isYse) {
-                        //         // 只有是银盛pos机才能扫码和收款码
-                        //         UDToast.showError('银盛不支持手机扫码，请使用POS机！');
-                        //     } else {
-                        //         this.setState({
-                        //             out_trade_no: res.out_trade_no,
-                        //         });
-                        //         NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
-                        //             ...res,
-                        //             transType: 1070, //pos机扫顾客
-                        //         });
-                        //     }
-                        // } else
-                        if (posType === '拉卡拉') {
-                            this.setState({
-                                out_trade_no: res.out_trade_no,
-                            });
-                            NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
-                                ...res,
-                                "proc_cd": "660000", //拉卡拉消费
-                                "pay_tp": "1"
-                            });
-                        }
-                        else if (posType === '拉卡拉聚合') {
-                            this.props.navigation.push('lklscan', {
-                                out_trade_no: res.out_trade_no
-                            });
-                        }
-                        else if (posType === '威富通') {
-                            this.props.navigation.push('scan', {
-                                // data: ids,
-                                // isML: isML,
-                                // mlType: mlType,
-                                // mlScale: mlScale,
-                                // mlAmount: mlAmount,
-                                out_trade_no: res.out_trade_no,
-                                printAgain: false,
-                                callBack: this.callBack
-                            });
-                        }
-                        else if (posType === '嘉联') {
-                            this.props.navigation.push('jlscan', {
-                                out_trade_no: res.out_trade_no
-                            });
-                        }
-                        else if (posType === '交通银行') {
-                            this.props.navigation.push('bcmscan', {
-                                isDigital: isDigital,
-                                out_trade_no: res.out_trade_no
-                            });
-                        }
-                        else if (posType === '兴业银行') {
-                            this.props.navigation.push('cibscan', {
-                                isDigital: isDigital,
-                                out_trade_no: res.out_trade_no
-                            });
-                        }
-                        else if (posType === '南京银行') {
-                            // this.setState({
-                            //     nanjingRes: res
-                            // });
-                            // this.props.navigation.push('scanForHome', {
-                            //     data: {
-                            //         callBack: (scanCodeData) => {
-                            //             setTimeout(() => {
-                            //                 NativeModules.LHNToast.startActivityFromJS(
-                            //                     'com.statistics.LKLPayActivity',
-                            //                     {
-                            //                         ...res,
-                            //                         transName: '二维码被扫',
-                            //                         scanCodeData
-                            //                     }
-                            //                 );
-                            //             }, 2000);
-                            //         },
-                            //         needBack: '1'
+
+
+                        switch (posType) {
+                            // case '银盛':
+                            //     {
+                            //         if (!this.state.isYse) {
+                            //             // 只有是银盛pos机才能扫码和收款码
+                            //             UDToast.showError('银盛不支持手机扫码，请使用POS机！');
+                            //         } else {
+                            //             this.setState({
+                            //                 out_trade_no: res.out_trade_no,
+                            //             });
+                            //             NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
+                            //                 ...res,
+                            //                 transType: 1070, //pos机扫顾客
+                            //             });
+                            //         }
+                            //         break;
                             //     }
-                            // }); 
-                            //扫码接口
-                            this.props.navigation.push('njscan', {
-                                out_trade_no: res.out_trade_no
-                            });
+                            case '拉卡拉':
+                                {
+                                    this.setState({
+                                        out_trade_no: res.out_trade_no,
+                                    });
+                                    NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
+                                        ...res,
+                                        "proc_cd": "660000", //拉卡拉消费
+                                        "pay_tp": "1"
+                                    });
+                                    break;
+                                }
+
+                            case '拉卡拉聚合':
+                                {
+                                    this.props.navigation.push('lklscan', {
+                                        out_trade_no: res.out_trade_no
+                                    });
+                                    break;
+                                }
+
+                            case '威富通':
+                                {
+                                    this.props.navigation.push('scan', {
+                                        // data: ids,
+                                        // isML: isML,
+                                        // mlType: mlType,
+                                        // mlScale: mlScale,
+                                        // mlAmount: mlAmount,
+                                        out_trade_no: res.out_trade_no,
+                                        printAgain: false,
+                                        callBack: this.callBack
+                                    });
+                                    break;
+                                }
+
+                            case '嘉联':
+                                {
+                                    this.props.navigation.push('jlscan', {
+                                        out_trade_no: res.out_trade_no
+                                    });
+                                    break;
+                                }
+
+                            case '交通银行':
+                                {
+                                    this.props.navigation.push('bcmscan', {
+                                        isDigital: isDigital,
+                                        out_trade_no: res.out_trade_no
+                                    });
+                                    break;
+                                }
+
+                            case '兴业银行':
+                                {
+                                    this.props.navigation.push('cibscan', {
+                                        isDigital: isDigital,
+                                        out_trade_no: res.out_trade_no
+                                    });
+                                    break;
+                                }
+
+                            case '南京银行':
+                                {
+                                    // this.setState({
+                                    //     nanjingRes: res
+                                    // });
+                                    // this.props.navigation.push('scanForHome', {
+                                    //     data: {
+                                    //         callBack: (scanCodeData) => {
+                                    //             setTimeout(() => {
+                                    //                 NativeModules.LHNToast.startActivityFromJS(
+                                    //                     'com.statistics.LKLPayActivity',
+                                    //                     {
+                                    //                         ...res,
+                                    //                         transName: '二维码被扫',
+                                    //                         scanCodeData
+                                    //                     }
+                                    //                 );
+                                    //             }, 2000);
+                                    //         },
+                                    //         needBack: '1'
+                                    //     }
+                                    // }); 
+                                    //扫码接口
+                                    this.props.navigation.push('njscan', {
+                                        out_trade_no: res.out_trade_no
+                                    });
+                                    break;
+                                }
+
+                            case '建设银行':
+                                {
+                                    this.props.navigation.push('ccbscan', {
+                                        out_trade_no: res.out_trade_no
+                                    });
+                                    break;
+                                }
+
+                            default:
+                                break;
                         }
                     }).catch(err => { UDToast.showError(err); });
                     break;
@@ -295,142 +333,192 @@ class FeeDetailPage extends BasePage {
                             UDToast.showError(res);
                             return;
                         }
-
                         let posType = res.posType;
-                        // if (posType === '银盛') {
-                        //     if (!this.state.isYse) {
-                        //         // 只有是银盛pos机才能扫码和收款码
-                        //         UDToast.showError('银盛不支持手机收款码，请使用POS机！');
-                        //     } else { 
-                        //         this.setState({
-                        //             out_trade_no: res.out_trade_no,
-                        //         });
-                        //         NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
-                        //             ...res,
-                        //             transType: 1054, //顾客扫pos机
-                        //         });
-                        //     }
-                        // } else 
-                        if (posType === '拉卡拉') {
-                            //提供给拉卡拉POS机使用
-                            this.setState({
-                                out_trade_no: res.out_trade_no,
-                            });
-                            NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
-                                ...res,
-                                "proc_cd": "710000", //拉卡拉消费
-                                "pay_tp": "1"
-                            });
-                        }
-                        else if (posType === '拉卡拉聚合') {
-                            //拉卡拉聚合收银台支付
-                            NavigatorService.lklallqrcodePay(res.out_trade_no).then(code => {
-                                this.setState({
-                                    visible: true,
-                                    cancel: false,
-                                    code,
-                                    needPrint: true,
-                                    printAgain: false
-                                }, () => {
-                                    this.getOrderStatus(res.out_trade_no);
-                                });
-                            });
-                        }
-                        else if (posType === '威富通') {
-                            NavigatorService.qrcodePay(res.out_trade_no, isDigital).then(code => {
-                                this.setState({
-                                    visible: true,
-                                    cancel: false,
-                                    code,
-                                    needPrint: true,
-                                    printAgain: false
-                                }, () => {
-                                    this.getOrderStatus(res.out_trade_no);
-                                });
-                            });
-                        } else if (posType === '嘉联') {
-                            NavigatorService.jlqrcodePay(res.out_trade_no).then(code => {
-                                this.setState({
-                                    visible: true,
-                                    cancel: false,
-                                    code,
-                                    needPrint: false,
-                                    printAgain: false
-                                }, () => {
-                                    this.getOrderStatus(res.out_trade_no);
-                                    //this.getJLOrderStatus(res.out_trade_no);
-                                });
-                            });
-                        }
-                        else if (posType === '交通银行') {
-                            NavigatorService.bcmCodePay(res.out_trade_no, isDigital).then(code => {
-                                this.setState({
-                                    visible: true,
-                                    cancel: false,
-                                    code,
-                                    needPrint: true,
-                                    printAgain: false
-                                }, () => {
-                                    this.getOrderStatus(res.out_trade_no);
-                                });
-                            });
-                        }
-                        else if (posType === '兴业银行') {
-                            NavigatorService.cibCodePay(res.out_trade_no, isDigital).then(code => {
-                                this.setState({
-                                    visible: true,
-                                    cancel: false,
-                                    code,
-                                    needPrint: true,
-                                    printAgain: false
-                                }, () => {
-                                    this.getOrderStatus(res.out_trade_no);
-                                });
-                            });
-                        }
-                        else if (posType === '兴生活H5') {
-                            NavigatorService.cibH5CodePay(res.out_trade_no, isDigital).then(code => {
-                                this.setState({
-                                    visible: true,
-                                    cancel: false,
-                                    code,
-                                    needPrint: true,
-                                    printAgain: false
-                                }, () => {
-                                    this.getOrderStatus(res.out_trade_no);
-                                });
-                            });
-                        }
-                        else if (posType === '南京银行') {
+                        switch (posType) {
+                            //case "银盛":
+                            //{
+                            //     if (!this.state.isYse) {
+                            //         // 只有是银盛pos机才能扫码和收款码
+                            //         UDToast.showError('银盛不支持手机收款码，请使用POS机！');
+                            //     } else { 
+                            //         this.setState({
+                            //             out_trade_no: res.out_trade_no,
+                            //         });
+                            //         NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
+                            //             ...res,
+                            //             transType: 1054, //顾客扫pos机
+                            //         });
+                            //     }
+                            //break;
+                            //}
 
-                            // this.setState({
-                            //     nanjingRes: res,
-                            // });
-                            // NativeModules.LHNToast.startActivityFromJS(
-                            //     'com.statistics.LKLPayActivity',
-                            //     {
-                            //         ...res,
-                            //         transName: '二维码主扫',
-                            //         scanCodeData: ''
-                            //     },
-                            // );
+                            case "拉卡拉":
+                                {
+                                    //提供给拉卡拉POS机使用
+                                    this.setState({
+                                        out_trade_no: res.out_trade_no,
+                                    });
+                                    NativeModules.LHNToast.startActivityFromJS('com.statistics.LKLPayActivity', {
+                                        ...res,
+                                        "proc_cd": "710000", //拉卡拉消费
+                                        "pay_tp": "1"
+                                    });
+                                    break;
+                                }
 
-                            //生成收款码接口 2024年4月17日
-                            NavigatorService.njCodePay(res.out_trade_no).then(code => {
-                                this.setState({
-                                    visible: true,
-                                    cancel: false,
-                                    code,
-                                    needPrint: true,
-                                    printAgain: false
-                                }, () => {
-                                    this.getOrderStatus(res.out_trade_no);
-                                });
-                            });
+                            case "拉卡拉聚合":
+                                {
+                                    //拉卡拉聚合收银台支付
+                                    NavigatorService.lklallqrcodePay(res.out_trade_no).then(code => {
+                                        this.setState({
+                                            visible: true,
+                                            cancel: false,
+                                            code,
+                                            needPrint: true,
+                                            printAgain: false
+                                        }, () => {
+                                            this.getOrderStatus(res.out_trade_no);
+                                        });
+                                    });
+                                    break;
+                                }
+
+                            case "威富通":
+                                {
+                                    NavigatorService.qrcodePay(res.out_trade_no, isDigital).then(code => {
+                                        this.setState({
+                                            visible: true,
+                                            cancel: false,
+                                            code,
+                                            needPrint: true,
+                                            printAgain: false
+                                        }, () => {
+                                            this.getOrderStatus(res.out_trade_no);
+                                        });
+                                    });
+                                    break;
+                                }
+
+                            case "嘉联":
+                                {
+                                    NavigatorService.jlqrcodePay(res.out_trade_no).then(code => {
+                                        this.setState({
+                                            visible: true,
+                                            cancel: false,
+                                            code,
+                                            needPrint: false,
+                                            printAgain: false
+                                        }, () => {
+                                            this.getOrderStatus(res.out_trade_no);
+                                            //this.getJLOrderStatus(res.out_trade_no);
+                                        });
+                                    });
+
+                                    break;
+                                }
+
+                            case "交通银行":
+                                {
+                                    NavigatorService.bcmCodePay(res.out_trade_no, isDigital).then(code => {
+                                        this.setState({
+                                            visible: true,
+                                            cancel: false,
+                                            code,
+                                            needPrint: true,
+                                            printAgain: false
+                                        }, () => {
+                                            this.getOrderStatus(res.out_trade_no);
+                                        });
+                                    });
+                                    break;
+                                }
+
+                            case "兴业银行":
+                                {
+                                    NavigatorService.cibCodePay(res.out_trade_no, isDigital).then(code => {
+                                        this.setState({
+                                            visible: true,
+                                            cancel: false,
+                                            code,
+                                            needPrint: true,
+                                            printAgain: false
+                                        }, () => {
+                                            this.getOrderStatus(res.out_trade_no);
+                                        });
+                                    });
+                                    break;
+                                }
+
+                            case "兴生活H5":
+                                {
+                                    NavigatorService.cibH5CodePay(res.out_trade_no, isDigital).then(code => {
+                                        this.setState({
+                                            visible: true,
+                                            cancel: false,
+                                            code,
+                                            needPrint: true,
+                                            printAgain: false
+                                        }, () => {
+                                            this.getOrderStatus(res.out_trade_no);
+                                        });
+                                    });
+                                    break;
+                                }
+
+                            case "南京银行":
+                                {
+                                    // this.setState({
+                                    //     nanjingRes: res,
+                                    // });
+                                    // NativeModules.LHNToast.startActivityFromJS(
+                                    //     'com.statistics.LKLPayActivity',
+                                    //     {
+                                    //         ...res,
+                                    //         transName: '二维码主扫',
+                                    //         scanCodeData: ''
+                                    //     },
+                                    // );
+                                    //生成收款码接口 2024年4月17日
+                                    NavigatorService.njCodePay(res.out_trade_no).then(code => {
+                                        this.setState({
+                                            visible: true,
+                                            cancel: false,
+                                            code,
+                                            needPrint: true,
+                                            printAgain: false
+                                        }, () => {
+                                            this.getOrderStatus(res.out_trade_no);
+                                        });
+                                    });
+                                    break;
+                                }
+
+                            case "建设银行":
+                                {
+                                    NavigatorService.ccbCodePay(res.out_trade_no).then(code => {
+                                        this.setState({
+                                            visible: true,
+                                            cancel: false,
+                                            code,
+                                            needPrint: true,
+                                            printAgain: false
+                                        }, () => {
+                                            this.getOrderStatus(res.out_trade_no);
+                                        });
+                                    });
+
+                                    break;
+                                }
+
+                            default:
+                                break;
+
                         }
+
                     }).catch(err => { UDToast.showError(err); });
                     break;
                 }
+
                 case '现金': {
                     Alert.alert(
                         '请确认',
@@ -561,8 +649,6 @@ class FeeDetailPage extends BasePage {
     //全选
     checkAll = () => {
         const { isML, mlType, mlScale, type } = this.state;
-        if (type === '已收') {
-        } else {
             let data = this.state.dataInfo.data;
             data = data.map(it => {
                 it.select = it.select !== true;
@@ -583,7 +669,6 @@ class FeeDetailPage extends BasePage {
             } else {
                 this.setState({ price: 0.00, mlAmount: 0.00 });
             }
-        }
     }
 
     //抹零计算
@@ -614,6 +699,7 @@ class FeeDetailPage extends BasePage {
         });
     };
 
+    //通用订单状态查询
     getOrderStatus = (out_trade_no) => {
         clearTimeout(this.timeOut);
         NavigatorService.orderStatus(out_trade_no).then(res => {
@@ -709,18 +795,18 @@ class FeeDetailPage extends BasePage {
                 key={item.id}
                 onPress={() => this.changeItem(item)}>
                 <Flex style={styles.check}>
-                    {type !== '已收' && <Checkbox
-                        checked={item.select === true}
-                        onChange={event => {
-                            this.changeItem(item);
-                        }}
-                    />}
-                    <Flex align={'start'} direction={'column'} style={{ marginLeft: 3, flex: 1 }}>
-                        <Flex justify={'between'}
-                            style={{ paddingLeft: 10, paddingTop: 5, paddingBottom: 5, width: '100%' }}>
-                            <Text style={{ fontSize: 16, width: '80%', color: 'green' }}>{item.allName}</Text>
-                            {type !== '已收' &&
-                                (
+                    {type == '未收' ?
+                        <>
+                            <Checkbox
+                                checked={item.select === true}
+                                onChange={event => {
+                                    this.changeItem(item);
+                                }}
+                            />
+                            <Flex align={'start'} direction={'column'} style={{ marginLeft: 3, flex: 1 }}>
+                                <Flex justify={'between'}
+                                    style={{ paddingLeft: 10, paddingTop: 3, paddingBottom: 3, width: '100%' }}>
+                                    <Text style={{ fontSize: 15, width: '80%', color: 'green' }}>{item.allName}</Text>
                                     <ActionPopover
                                         textStyle={{ fontSize: 14 }}
                                         hiddenImage={true}
@@ -760,76 +846,74 @@ class FeeDetailPage extends BasePage {
                                         }}
                                         titles={titles}
                                         visible={true} />
-                                )}
-                        </Flex>
-                        <Flex justify={'between'}
-                            style={[{
-                                paddingLeft: 10,
-                                paddingTop: 10,
-                                paddingBottom: 5,
-                                width: '100%',
-                            }, type === '已收' ? { paddingBottom: 10 } : {}]}>
-                            {/* <Text style={{ fontSize: 16 }}>{type === '已收' ?
-                                            item.billCode :
-                                            item.feeName
-                                        }</Text> */}
-                            {type === '已收' ? <Text style={{ fontSize: 16 }}>{item.billCode}</Text> :
-                                item.rmid ?
+                                </Flex>
+                                <Flex justify={'between'}
+                                    style={{
+                                        paddingLeft: 9,
+                                        paddingBottom: 3,
+                                        width: '100%'
+                                    }}>
+                                    {item.rmid ?
+                                        <Flex>
+                                            <Text style={{ fontSize: 15, color: '#666' }}>{item.feeName + ' '}</Text>
+                                            <Text style={{
+                                                color: 'red',
+                                                fontSize: 8,
+                                                paddingBottom: 16
+                                            }}>惠</Text>
+                                        </Flex> : <Text style={{ fontSize: 15, color: '#666' }}>{item.feeName}</Text>
+                                    }
                                     <Flex>
-                                        <Text style={{ fontSize: 16, color: '#666' }}>{item.feeName + ' '}</Text>
-                                        <Text style={{
-                                            color: 'red',
-                                            fontSize: 8,
-                                            paddingBottom: 16
-                                        }}>惠</Text>
+                                        <Text style={{ fontSize: 15, paddingRight: 10, color: 'red' }}>{item.amount}</Text>
                                     </Flex>
-                                    :
-                                    <Text style={{ fontSize: 16, color: '#666' }}>{item.feeName}</Text>
-                            }
-                            <Flex>
-                                <Text style={{ paddingRight: 10, fontSize: 16, color: '#666' }}>{item.amount}</Text>
+                                </Flex>
+                                {item.beginDate ?
+                                    <Text style={{
+                                        paddingLeft: 10,
+                                        paddingTop: 7,
+                                        color: '#666'
+                                    }}>{item.beginDate + '至' + item.endDate}</Text> : null
+                                }
                             </Flex>
-                        </Flex>
-
-                        {/* {item.beginDate ? <Text style={{
-                                        paddingLeft: 15,
-                                        paddingTop: 10,
-                                    }}> {item.beginDate + '至' + item.endDate}</Text> : null} */}
-
-                        {type === '已收' ?
-                            <Text style={{
-                                paddingLeft: 10,
-                                paddingTop: 10,
-                                color: '#666'
-                            }}> {item.billDate + '，收款人：' + item.createUserName}
-                            </Text>
-                            : item.beginDate ?
+                        </>
+                        :
+                        <>
+                            <Flex align={'start'} direction={'column'} style={{ marginLeft: 3, flex: 1 }}>
+                                <Flex justify={'between'}
+                                    style={{ paddingLeft: 5, paddingTop: 10, paddingBottom: 5, width: '100%' }}>
+                                    <Text style={{ fontSize: 15, width: '80%', color: 'green' }}>{item.allName}</Text>
+                                </Flex>
+                                <Flex justify={'between'}
+                                    style={{
+                                        paddingLeft: 5,
+                                        paddingBottom: 5,
+                                        width: '100%',
+                                        paddingTop: 8,
+                                        paddingBottom: 8
+                                    }}>
+                                    <Text style={{ fontSize: 15 }}>{item.billCode}</Text>
+                                    <Flex>
+                                        <Text style={{ fontSize: 15, paddingRight: 8, color: 'red' }}>{item.amount}</Text>
+                                    </Flex>
+                                </Flex>
                                 <Text style={{
-                                    paddingLeft: 10,
-                                    paddingTop: 10,
+                                    paddingLeft: 4,
                                     color: '#666'
-                                }}>{item.beginDate + '至' + item.endDate}</Text> : null
-                        }
-
-                    </Flex>
+                                }}>{item.billDate + '，收款人：' + item.createUserName}
+                                </Text>
+                            </Flex>
+                        </>
+                    }
                 </Flex>
             </TouchableWithoutFeedback>
         );
     };
 
-    //dateonChange = (value) => { 
-    // this.setState({
-    //     chaifeiDate: value,
-    // })
-    //}
-
     render() {
         const { isDigital, isML, dataInfo, type, room, price, mlAmount } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
-                <ScrollView
-                //onScrollBeginDrag={() => console.log('onScrollBeginDrag')}
-                >
+                <ScrollView>
                     <Text style={{ paddingLeft: 10, paddingTop: 10, fontSize: 16, color: '#2c2c2c' }}>{room.allName} {room.tenantName}</Text>
                     <TwoChange onChange={this.typeOnChange} />
                     <Flex style={{ backgroundColor: '#eee', height: 1, marginLeft: 10, marginRight: 10, marginTop: 10 }} />
@@ -845,14 +929,14 @@ class FeeDetailPage extends BasePage {
                                 onChange={event => {
                                     this.checkAll();
                                 }}
-                            ><Text style={{ paddingTop: 3, paddingLeft: 3, color: '#666' }}>全选</Text></Checkbox>
+                            ><Text style={{ fontSize: 15, paddingTop: 3, paddingLeft: 3, paddingRight: 3, color: '#666' }}>全选</Text></Checkbox>
                             <Checkbox
                                 defaultChecked={false}
                                 checked={isDigital}
                                 onChange={(e) => {
                                     this.setState({ isDigital: e.target.checked });
                                 }}
-                            ><Text style={{ paddingTop: 3, paddingLeft: 3, color: '#666' }}>数字货币</Text></Checkbox>
+                            ><Text style={{ fontSize: 15, paddingTop: 3, paddingLeft: 3, paddingRight: 3, color: '#666' }}>数字货币</Text></Checkbox>
                             <Checkbox
                                 defaultChecked={false}
                                 checked={isML}
@@ -860,9 +944,10 @@ class FeeDetailPage extends BasePage {
                                     this.setState({ isML: e.target.checked });
                                     //算抹零金额
                                     this.mlCal(e.target.checked, this.state.mlType, this.state.mlScale);
-                                }}><Text style={{ paddingTop: 3, paddingLeft: 3, paddingRight: 3, color: '#666' }}>抹零</Text></Checkbox>
+                                }}><Text style={{ fontSize: 15, paddingTop: 3, paddingLeft: 3, paddingRight: 3, color: '#666' }}>抹零</Text></Checkbox>
                             <MyPopover
-                                textStyle={{ fontSize: 14 }}
+                                style={{ paddingRight: 3 }}
+                                textStyle={{ paddingLeft: 3, fontSize: 15 }}
                                 onChange={(title) => {
                                     this.setState({ mlType: title });
                                     this.mlCal(this.state.isML, title, this.state.mlScale);
@@ -870,7 +955,7 @@ class FeeDetailPage extends BasePage {
                                 titles={['抹去角', '抹去分']}
                                 visible={true} />
                             <MyPopover
-                                textStyle={{ paddingLeft: 3, fontSize: 14 }}
+                                textStyle={{ paddingLeft: 3, fontSize: 15 }}
                                 onChange={(title) => {
                                     this.setState({ mlScale: title });
                                     this.mlCal(this.state.isML, this.state.mlType, title, title);
@@ -880,19 +965,18 @@ class FeeDetailPage extends BasePage {
                         </Flex>
 
                         <Flex align={'center'}>
-                            <Text style={{ paddingLeft: 10, fontSize: 16, color: '#666' }}>抹零：</Text>
                             <Text style={{
-                                paddingLeft: 5,
-                                fontSize: 16,
-                                color: Macro.color_FA3951,
+                                fontSize: 15, color: '#666'
+                            }}>抹零：</Text>
+                            <Text style={{
+                                fontSize: 15,
+                                color: 'red'
                             }}>¥{mlAmount}</Text>
-
-                            <Text style={{ paddingLeft: 10, fontSize: 16, color: '#666' }}>合计：</Text>
+                            <Text style={{ paddingLeft: 5, fontSize: 15, color: '#666' }}>合计：</Text>
                             <Text
                                 style={{
-                                    paddingLeft: 5,
-                                    fontSize: 16,
-                                    color: Macro.color_FA3951,
+                                    fontSize: 15,
+                                    color: 'red'
                                 }}>¥{price}</Text>
                         </Flex>
                         <Flex style={{ minHeight: 40 }}>
@@ -1021,35 +1105,6 @@ class FeeDetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-
-    title: {
-        color: '#404145',
-        fontSize: 16
-    },
-
-    top: {
-        fontSize: 16,
-        paddingBottom: 10
-    },
-    bottom: {
-        color: '#868688',
-        fontSize: 16,
-        paddingBottom: 10
-    },
-
-    left: {
-        flex: 1
-    },
-    right: {
-        flex: 3,
-        paddingTop: 10,
-        paddingBottom: 10,
-        marginLeft: 10
-    },
-    image: {
-        height: 90,
-        width: 90
-    },
     check: {
         borderRadius: 6,
         borderWidth: 1,
@@ -1057,17 +1112,11 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         paddingLeft: 10,
         paddingRight: 10,
-        // width: (ScreenUtil.deviceWidth() - 50) / 3.0-1,
-        paddingTop: 10,
+        //paddingTop: 10,
         paddingBottom: 10,
         marginTop: 10,
         marginRight: 10,
         marginLeft: 10
-    },
-    name: {
-        fontSize: Macro.font_16,
-        fontWeight: '600',
-        paddingBottom: 10
     },
     ii: {
         paddingTop: 10,
