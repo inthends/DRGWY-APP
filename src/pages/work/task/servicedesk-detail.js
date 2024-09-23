@@ -9,6 +9,7 @@ import {
     ScrollView,
     Keyboard,
     Modal,
+    FlatList,
     TextInput,
     Alert
 } from 'react-native';
@@ -26,6 +27,8 @@ import CommonView from '../../../components/CommonView';
 import OperationRecords from '../../../components/operationrecords';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import Star from '../../../components/star';
+import ActionPopover from '../../../components/action-popover';
+import moment from 'moment';
 
 export default class ServiceDeskDetailPage extends BasePage {
 
@@ -49,10 +52,10 @@ export default class ServiceDeskDetailPage extends BasePage {
             repairmajor: null,
             selectPerson: null,
             id,
-            value: '',
-            memo: '',
-            showMemo: false,//弹出回复页面
-
+            contents: '',//事项
+            value: '',//回复内容
+            memo: '',//闭单说明
+            showMemo: false,//弹出回复页面 
             images: [],
             detail: {
             },
@@ -63,13 +66,17 @@ export default class ServiceDeskDetailPage extends BasePage {
             showRepair: false,//转单
             convertMemo: '',//转单说明
             showComplaint: false,//转投诉
-            showClose: false,//闭单备注
-
+            showClose: false,//闭单备注 
             showContinue: false,//续派
-            continueMemo: '',//续派说明
-
+            continueMemo: '',//续派说明 
             KeyboardShown: false,
-            btnList: []//按钮权限
+            btnList: [],//按钮权限
+
+            pageIndex: 1,
+            refreshing: false,
+            dataInfo: {
+                data: []
+            }
         };
 
         this.keyboardDidShowListener = null;
@@ -84,6 +91,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                     const { repairmajor } = obj.state.params.repairmajor || {};
                     this.setState({ repairmajor });
                 }
+                this.getList();//刷新费用明细，必须
             }
         );
 
@@ -132,7 +140,8 @@ export default class ServiceDeskDetailPage extends BasePage {
                     isRefuse: item.isRefuse,
                     //businessId: item.businessId,
                     statusName: item.statusName
-                }
+                },
+                contents: item.data.contents
                 // repairmajor: {
                 //     id: item.repairMajorId,
                 //     name: item.repairMajor,
@@ -185,6 +194,9 @@ export default class ServiceDeskDetailPage extends BasePage {
                 images
             });
         });
+
+        this.getList();
+
     };
 
     reply = () => {
@@ -226,7 +238,7 @@ export default class ServiceDeskDetailPage extends BasePage {
     };
 
     toRepair = () => {
-        const { id, isQD, selectPerson, repairmajor, convertMemo } = this.state;
+        const { id, isQD, selectPerson, repairmajor, convertMemo, contents } = this.state;
         if (repairmajor == null || repairmajor.id == null) {
             UDToast.showError('请选择维修专业');
             return;
@@ -255,7 +267,8 @@ export default class ServiceDeskDetailPage extends BasePage {
                         senderName = selectPerson ? selectPerson.name : null,
                         repairmajor.id,
                         repairmajor.name,
-                        convertMemo
+                        convertMemo,
+                        contents
                     ).then(res => {
                         this.props.navigation.goBack();
                     }).catch(err => {
@@ -265,7 +278,6 @@ export default class ServiceDeskDetailPage extends BasePage {
             }
             ], { cancelable: false });
     };
-
 
     //转投诉
     toComplaint = () => {
@@ -286,7 +298,6 @@ export default class ServiceDeskDetailPage extends BasePage {
             }
             ], { cancelable: false });
     };
-
 
     //续派
     toContinue = () => {
@@ -376,28 +387,175 @@ export default class ServiceDeskDetailPage extends BasePage {
         })
     }
 
+
+    onRefresh = () => {
+        this.setState({
+            refreshing: true,
+            pageIndex: 1
+        }, () => {
+            this.getList();
+        });
+    };
+
+    //费用明细
+    getList = () => {
+        const { id } = this.state;
+        WorkService.serverFeeList(this.state.pageIndex, id).then(dataInfo => {
+            if (dataInfo.pageIndex > 1) {
+                dataInfo = {
+                    ...dataInfo,
+                    data: [...this.state.dataInfo.data, ...dataInfo.data]
+                };
+            }
+            this.setState({
+                dataInfo: dataInfo,
+                pageIndex: dataInfo.pageIndex,
+                refreshing: false
+            }, () => {
+            });
+        }).catch(err => this.setState({ refreshing: false }));
+    };
+
+    loadMore = () => {
+        const { data, total, pageIndex } = this.state.dataInfo;
+        if (this.canLoadMore && data.length < total) {
+            this.canLoadMore = false;
+            this.setState({
+                refreshing: true,
+                pageIndex: pageIndex + 1
+                // canLoadMore: false,
+            }, () => {
+                this.getList();
+            });
+        }
+    };
+
+    //作废
+    doInvalid = (item) => {
+        WorkService.checkBillFee(item.id).then((res) => {
+            if (res == 0) {
+                Alert.alert(
+                    '请确认',
+                    `您确定要作废${item.feeName}？`,
+                    [{ text: '取消', tyle: 'cancel' },
+                    {
+                        text: '确定',
+                        onPress: () => {
+                            WorkService.invalidDetailForm(item.id).then(res => {
+                                UDToast.showInfo('作废成功');
+                                this.getList();
+                            }).catch(err => {
+                                UDToast.showError(err);
+                            });
+                        }
+                    }
+                    ], { cancelable: false });
+            }
+            else {
+                if (res == 1) {
+                    UDToast.showError('该费用已经生成了通知单，不允许作废');
+                } else if (res == 2) {
+                    UDToast.showError('该费用已经生成了减免单，不允许作废');
+                } else if (res == 3) {
+                    UDToast.showError('该费用已经生成了冲抵单，不允许作废');
+                }
+                else {
+                    UDToast.showError('该费用已经生成了优惠单，不允许作废');
+                }
+            }
+        });
+    }
+
+
+    //推送账单
+    send = (item) => {
+        Alert.alert(
+            '请确认',
+            `您确定要推送${item.feeName}账单？`,
+            [{ text: '取消', tyle: 'cancel' },
+            {
+                text: '确定',
+                onPress: () => {
+                    WorkService.sendServiceDeskFee(item.id).then(res => {
+                        UDToast.showInfo('推送账单成功');
+                        this.getList();
+                    }).catch(err => {
+                        UDToast.showError(err);
+                    });
+                }
+            }
+            ], { cancelable: false });
+    };
+
+    _renderItem = ({ item, index }) => {
+        return (
+            <Flex
+                direction='column' align={'start'}
+                style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
+                <Flex justify='between' style={{ width: '100%' }}>
+                    <Text style={styles.title}>{item.feeName}</Text>
+                    <ActionPopover
+                        textStyle={{ fontSize: 14 }}
+                        hiddenImage={true}
+                        onChange={(title) => {
+                            if (title === '作废') {
+                                this.doInvalid(item);
+                            } else if (title === '推送') {
+                                if (item.noticeId) {
+                                    UDToast.showError('该费用已经推送');
+                                    return;
+                                }
+                                this.send(item);
+                            }
+                        }}
+                        titles={['推送', '作废']}
+                        visible={true} />
+                </Flex>
+                <Flex style={styles.line} />
+                <Flex align={'start'} direction={'column'}>
+                    <Flex justify='between'
+                        style={{ width: '100%', paddingTop: 5, paddingLeft: 15, paddingRight: 15, lineHeight: 20 }}>
+                        <Text>应收金额：{item.amount}
+                            ，减免金额：{item.reductionAmount}
+                            ，已收金额：{item.receiveAmount}
+                            ，未收金额：{item.lastAmount}</Text>
+                    </Flex>
+                    <Flex justify='between'
+                        style={{ width: '100%', paddingTop: 5, paddingBottom: 5, paddingLeft: 15, paddingRight: 15 }}>
+                        {item.beginDate ?
+                            <Text>{moment(item.beginDate).format('YYYY-MM-DD') + '至' + moment(item.endDate).format('YYYY-MM-DD')}</Text> : null
+                        }
+                        <Text>是否推送账单：{item.noticeId ? '是' : '否'} </Text>
+                    </Flex>
+                    {/* <Text style={{
+                        paddingLeft: 15,
+                        paddingRight: 15,
+                        paddingBottom: 5,
+                        color: '#666'
+                    }}>{item.memo}</Text> */}
+                </Flex>
+            </Flex>
+        );
+    };
+
     render() {
-        const { images, detail, communicates, operations, isQD, repairmajor, selectPerson, btnList } = this.state;
+        const { images, detail, communicates, operations, isQD, repairmajor, selectPerson, btnList, dataInfo } = this.state;
         const selectImg = require('../../../static/images/select.png');
         const noselectImg = require('../../../static/images/no-select.png');
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView style={{ marginTop: this.state.KeyboardShown ? - 200 : 0, height: '100%' }}>
-
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.billType}</Text>
                     </Flex>
-
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>单据状态：{detail.statusName}</Text>
                     </Flex>
-
                     <Flex style={[styles.every3, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.address}</Text>
                     </Flex>
 
-                    <Text style={[styles.desc]}>{detail.contents}</Text>
                     <ListImages images={images} lookImage={this.lookImage} />
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>紧急程度：{detail.emergencyLevel}</Text>
@@ -412,7 +570,6 @@ export default class ServiceDeskDetailPage extends BasePage {
                                 style={{ width: 18, height: 18 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
-
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>报单时间：{detail.createDate}</Text>
                     </Flex>
@@ -452,32 +609,34 @@ export default class ServiceDeskDetailPage extends BasePage {
                         : null
                     }
 
-                    {/* {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'reply')) ?
-                        <>
-                            <View style={{ margin: 15 }}>
-                                <TextareaItem
-                                    rows={4}
-                                    autoHeight
-                                    maxLength={500}
-                                    placeholder='请输入回复内容'
-                                    style={{ width: ScreenUtil.deviceWidth() - 32 }}
-                                    onChange={value => this.setState({ value })}
-                                    value={this.state.value}
-                                />
-                            </View>
-                            <Flex justify={'center'}>
-                                <Button onPress={() => this.reply()} type={'primary'}
-                                    activeStyle={{ backgroundColor: Macro.work_blue }}
-                                    style={{
-                                        width: 110,
-                                        backgroundColor: Macro.work_blue,
-                                        marginTop: 10,
-                                        marginBottom: 10,
-                                        height: 40
-                                    }}>回复</Button>
-                            </Flex></> : null}
-                             */}
+                    {detail.status === 1 ?
+                        <Flex style={[styles.every]} justify='between'>
+                            <TextareaItem
+                                rows={4}
+                                autoHeight
+                                maxLength={500}
+                                placeholder='请输入事项'
+                                onChange={contents => this.setState({ contents })}
+                                value={this.state.contents}
+                            />
+                        </Flex>
+                        : <Text style={styles.desc}>{detail.contents}</Text>}
 
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>费用明细{detail.testDate}</Text>
+                    </Flex>
+                    <FlatList
+                        data={dataInfo.data}
+                        renderItem={this._renderItem}
+                        style={styles.list}
+                        keyExtractor={(item) => 'flatList' + item.id}
+                        //必须
+                        onEndReachedThreshold={0.1}
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.onRefresh}//下拉刷新
+                        onEndReached={this.loadMore}//底部往下拉翻页
+                        onMomentumScrollBegin={() => this.canLoadMore = true}
+                    />
 
                     <Flex justify={'center'}>
                         {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'reply')) ?
@@ -491,14 +650,38 @@ export default class ServiceDeskDetailPage extends BasePage {
                                     type={'primary'}
                                     activeStyle={{ backgroundColor: Macro.work_blue }}
                                     style={{
-                                        width: 88,
+                                        width: 120,
                                         backgroundColor: Macro.work_blue,
-                                        marginTop: 10, 
+                                        marginTop: 10,
                                         marginBottom: 10,
                                         height: 40
                                     }}>回复</Button>
                             </Flex> : null}
 
+                        <Flex justify={'center'}>
+                            <Button onPress={() => {
+                                this.props.navigation.navigate('feeAdd', {
+                                    data: {
+                                        billSource: '服务单',
+                                        id: detail.roomId,
+                                        linkId: detail.id
+                                    }
+                                });
+                            }}
+                                type={'primary'}
+                                activeStyle={{ backgroundColor: Macro.work_blue }}
+                                style={{
+                                    width: 120,
+                                    backgroundColor: Macro.work_blue,
+                                    marginTop: 10,
+                                    marginBottom: 10,
+                                    marginLeft: 8,
+                                    height: 40
+                                }}>加费</Button>
+                        </Flex>
+                    </Flex>
+
+                    <Flex justify={'center'}>
                         {detail.status === 1 && !detail.isRefuse ?
                             <>
                                 {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'torepair')) ?
@@ -511,9 +694,11 @@ export default class ServiceDeskDetailPage extends BasePage {
                                         }}
                                             type={'primary'}
                                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                                width: 88,
+                                                width: 120,
                                                 backgroundColor: Macro.work_blue,
-                                                height: 40, 
+                                                marginTop: 10,
+                                                marginBottom: 10,
+                                                height: 40,
                                                 marginLeft: 8
                                             }}>转维修</Button>
                                     </Flex> : null}
@@ -528,9 +713,11 @@ export default class ServiceDeskDetailPage extends BasePage {
 
                                         } type={'primary'}
                                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                                width: 88,
+                                                width: 120,
                                                 backgroundColor: Macro.work_blue,
-                                                height: 40, 
+                                                marginTop: 10,
+                                                marginBottom: 10,
+                                                height: 40,
                                                 marginLeft: 8
                                             }}>转投诉</Button>
                                     </Flex> : null}
@@ -546,8 +733,10 @@ export default class ServiceDeskDetailPage extends BasePage {
                                             type={'primary'}
                                             activeStyle={{ backgroundColor: Macro.work_red }}
                                             style={{
-                                                width: 88,
-                                                height: 40, 
+                                                width: 120,
+                                                height: 40,
+                                                marginTop: 10,
+                                                marginBottom: 10,
                                                 marginLeft: 8,
                                                 borderWidth: 0,
                                                 backgroundColor: Macro.work_red,
@@ -557,25 +746,26 @@ export default class ServiceDeskDetailPage extends BasePage {
                             : null
                         }
 
-                        {detail.isRefuse ? 
+                        {detail.isRefuse ?
                             <>
-                            {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'continue')) ?
-                                <Flex justify={'center'}>
-                                    <Button onPress={() => {
-                                        this.setState({
-                                            showContinue: true,
-                                            continueMemo: ''
-                                        })
-                                    }}
-                                        type={'primary'}
-                                        activeStyle={{ backgroundColor: Macro.work_blue }}
-                                        style={{
-                                            width: 88, 
-                                            backgroundColor: Macro.work_blue,
-                                            height: 40,
-                                            marginLeft: 8
-                                        }}>续派</Button>
-                                </Flex>: null}
+                                {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'continue')) ?
+                                    <Flex justify={'center'}>
+                                        <Button onPress={() => {
+                                            this.setState({
+                                                showContinue: true,
+                                                continueMemo: ''
+                                            })
+                                        }}
+                                            type={'primary'}
+                                            activeStyle={{ backgroundColor: Macro.work_blue }}
+                                            style={{
+                                                width: 120,
+                                                backgroundColor: Macro.work_blue,
+                                                marginTop: 10,
+                                                marginBottom: 10,
+                                                height: 40
+                                            }}>续派</Button>
+                                    </Flex> : null}
 
                                 {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'close')) ?
                                     <Flex justify={'center'}>
@@ -588,124 +778,128 @@ export default class ServiceDeskDetailPage extends BasePage {
                                             type={'primary'}
                                             activeStyle={{ backgroundColor: Macro.work_red }}
                                             style={{
-                                                width: 88,
-                                                height: 40, 
+                                                width: 120,
+                                                height: 40,
+                                                marginTop: 10,
+                                                marginBottom: 10,
                                                 marginLeft: 8,
                                                 borderWidth: 0,
                                                 backgroundColor: Macro.work_red,
                                             }}>闭单</Button>
                                     </Flex> : null}
-                                    </> 
+                            </>
                             : null
                         }
+
                     </Flex>
+
                     <Communicates communicateClick={this.communicateClick} communicates={communicates} />
                     <OperationRecords communicateClick={this.operationClick} communicates={operations} />
                 </ScrollView>
-                {
-                    this.state.showMemo && (
-                        //回复
-                        <View style={styles.mengceng}>
-                            <TouchableWithoutFeedback onPress={() => {
-                                Keyboard.dismiss();
-                            }}>
-                                <Flex direction={'column'} justify={'center'} align={'center'}
-                                    style={{
-                                        flex: 1, padding: 25,
-                                        backgroundColor: 'rgba(178,178,178,0.5)'
-                                    }}>
-                                    <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
-                                        <View style={{ height: 110, width: 300 }}>
-                                            <TextareaItem
-                                                rows={4}
-                                                autoHeight
-                                                maxLength={500}
-                                                style={{ height: 100 }}
-                                                placeholder='请输入回复内容'
-                                                onChange={value => this.setState({ value })}
-                                                value={this.state.value}
-                                            />
-                                        </View>
-                                        <Flex style={{ marginTop: 15 }}>
-                                            <Button onPress={this.reply} type={'primary'}
-                                                activeStyle={{ backgroundColor: Macro.work_blue }}
-                                                style={{
-                                                    width: 120,
-                                                    backgroundColor: Macro.work_blue,
-                                                    height: 35
-                                                }}>确认</Button>
 
-                                            <Button onPress={() => {
-                                                this.setState({ showMemo: false });
-                                            }}
-                                                type={'primary'}
-                                                activeStyle={{ backgroundColor: Macro.work_blue }}
-                                                style={{
-                                                    marginLeft: 30,
-                                                    width: 120,
-                                                    backgroundColor: '#666',
-                                                    borderWidth: 0,
-                                                    height: 35
-                                                }}>取消</Button>
-                                        </Flex>
+
+                {this.state.showMemo && (
+                    //回复
+                    <View style={styles.mengceng}>
+                        <TouchableWithoutFeedback onPress={() => {
+                            Keyboard.dismiss();
+                        }}>
+                            <Flex direction={'column'} justify={'center'} align={'center'}
+                                style={{
+                                    flex: 1, padding: 25,
+                                    backgroundColor: 'rgba(178,178,178,0.5)'
+                                }}>
+                                <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
+                                    <View style={{ height: 110, width: 300 }}>
+                                        <TextareaItem
+                                            rows={4}
+                                            autoHeight
+                                            maxLength={500}
+                                            style={{ height: 100 }}
+                                            placeholder='请输入回复内容'
+                                            onChange={value => this.setState({ value })}
+                                            value={this.state.value}
+                                        />
+                                    </View>
+                                    <Flex style={{ marginTop: 15 }}>
+                                        <Button onPress={this.reply} type={'primary'}
+                                            activeStyle={{ backgroundColor: Macro.work_blue }}
+                                            style={{
+                                                width: 120,
+                                                backgroundColor: Macro.work_blue,
+                                                height: 35
+                                            }}>确认</Button>
+
+                                        <Button onPress={() => {
+                                            this.setState({ showMemo: false });
+                                        }}
+                                            type={'primary'}
+                                            activeStyle={{ backgroundColor: Macro.work_blue }}
+                                            style={{
+                                                marginLeft: 30,
+                                                width: 120,
+                                                backgroundColor: '#666',
+                                                borderWidth: 0,
+                                                height: 35
+                                            }}>取消</Button>
                                     </Flex>
                                 </Flex>
-                            </TouchableWithoutFeedback>
-                        </View>
-                    )
+                            </Flex>
+                        </TouchableWithoutFeedback>
+                    </View>
+                )
                 }
 
-                {
-                    this.state.showClose && (
-                        //闭单
-                        <View style={styles.mengceng}>
-                            <TouchableWithoutFeedback onPress={() => {
-                                Keyboard.dismiss();
-                            }}>
-                                <Flex direction={'column'} justify={'center'} align={'center'}
-                                    style={{
-                                        flex: 1, padding: 25,
-                                        backgroundColor: 'rgba(178,178,178,0.5)'
-                                    }}>
-                                    <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
-                                        <View style={{ height: 110, width: 300 }}>
-                                            <TextareaItem
-                                                rows={4}
-                                                autoHeight
-                                                maxLength={500}
-                                                style={{ height: 100 }}
-                                                placeholder='请输入说明'
-                                                onChange={memo => this.setState({ memo })}
-                                                value={this.state.memo}
-                                            />
-                                        </View>
-                                        <Flex style={{ marginTop: 15 }}>
-                                            <Button onPress={() => this.doWork('闭单')} type={'primary'}
-                                                activeStyle={{ backgroundColor: Macro.work_blue }}
-                                                style={{
-                                                    width: 120,
-                                                    backgroundColor: Macro.work_blue,
-                                                    height: 35
-                                                }}>确认</Button>
+                {this.state.showClose && (
+                    //闭单
+                    <View style={styles.mengceng}>
+                        <TouchableWithoutFeedback onPress={() => {
+                            Keyboard.dismiss();
+                        }}>
+                            <Flex direction={'column'} justify={'center'} align={'center'}
+                                style={{
+                                    flex: 1, padding: 25,
+                                    backgroundColor: 'rgba(178,178,178,0.5)'
+                                }}>
+                                <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
+                                    <View style={{ height: 110, width: 300 }}>
+                                        <TextareaItem
+                                            rows={4}
+                                            autoHeight
+                                            maxLength={500}
+                                            style={{ height: 100 }}
+                                            placeholder='请输入闭单说明'
+                                            onChange={memo => this.setState({ memo })}
+                                            value={this.state.memo}
+                                        />
+                                    </View>
+                                    <Flex style={{ marginTop: 15 }}>
+                                        <Button onPress={() => this.doWork('闭单')} type={'primary'}
+                                            activeStyle={{ backgroundColor: Macro.work_blue }}
+                                            style={{
+                                                width: 120,
+                                                backgroundColor: Macro.work_blue,
+                                                height: 35
+                                            }}>确认</Button>
 
-                                            <Button onPress={() => {
-                                                this.setState({ showClose: false });
-                                            }}
-                                                type={'primary'}
-                                                activeStyle={{ backgroundColor: Macro.work_blue }}
-                                                style={{
-                                                    marginLeft: 30,
-                                                    width: 120,
-                                                    backgroundColor: '#666',
-                                                    borderWidth: 0,
-                                                    height: 35
-                                                }}>取消</Button>
-                                        </Flex>
+                                        <Button onPress={() => {
+                                            this.setState({ showClose: false });
+                                        }}
+                                            type={'primary'}
+                                            activeStyle={{ backgroundColor: Macro.work_blue }}
+                                            style={{
+                                                marginLeft: 30,
+                                                width: 120,
+                                                backgroundColor: '#666',
+                                                borderWidth: 0,
+                                                height: 35
+                                            }}>取消</Button>
                                     </Flex>
                                 </Flex>
-                            </TouchableWithoutFeedback>
-                        </View>
-                    )
+                            </Flex>
+                        </TouchableWithoutFeedback>
+                    </View>
+                )
                 }
 
                 {
@@ -968,6 +1162,53 @@ export default class ServiceDeskDetailPage extends BasePage {
 
 const styles = StyleSheet.create({
 
+    list: {
+        backgroundColor: Macro.color_white,
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 10
+    },
+
+    card: {
+        borderTopWidth: 1,
+        borderRightWidth: 1,
+        borderBottomWidth: 1,
+        borderTopColor: '#c8c8c8',
+        borderBottomColor: '#c8c8c8',
+        borderRightColor: '#c8c8c8',
+        borderRadius: 5,
+        marginBottom: 10,
+        backgroundColor: 'white',
+        shadowColor: '#00000033',
+        shadowOffset: { h: 10, w: 10 },
+        shadowRadius: 5,
+        shadowOpacity: 0.8
+    },
+
+    blue: {
+        borderLeftColor: Macro.work_blue,
+        borderLeftWidth: 5,
+    },
+    orange: {
+        borderLeftColor: Macro.work_orange,
+        borderLeftWidth: 5,
+    },
+
+    title: {
+        paddingTop: 10,
+        color: '#404145',
+        fontSize: 14,
+        paddingBottom: 5,
+        marginLeft: 15,
+        marginRight: 15
+    },
+    line: {
+        width: ScreenUtil.deviceWidth() - 30 - 10 * 2,
+        marginLeft: 15,
+        backgroundColor: '#eee',
+        height: 1
+    },
+
     mengceng: {
         position: 'absolute',
         left: 0,
@@ -977,7 +1218,6 @@ const styles = StyleSheet.create({
     },
 
     every3: {
-
         lineHeight: 20,//必须，否则显示不全
         marginLeft: 15,
         marginRight: 15,
@@ -1014,16 +1254,16 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
         paddingRight: 15
     },
-    ii: {
-        paddingTop: 10,
-        paddingBottom: 10,
-        marginLeft: 10,
-        marginRight: 10,
-        width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
-        backgroundColor: '#999',
-        borderRadius: 6,
-        marginBottom: 20
-    },
+    // ii: {
+    //     paddingTop: 10,
+    //     paddingBottom: 10,
+    //     marginLeft: 10,
+    //     marginRight: 10,
+    //     width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
+    //     backgroundColor: '#999',
+    //     borderRadius: 6,
+    //     marginBottom: 20
+    // },
     word: {
         color: 'white',
         fontSize: 16

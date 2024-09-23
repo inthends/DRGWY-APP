@@ -78,7 +78,7 @@ class SelectRolePerson extends BasePage {
         let url2 = '/api/MobileMethod/MGetUsersByRoleId';//获取角色人员 
         api.getData(url, this.state.selectBuilding ? { moduleId: moduleId, enCode: enCode, organizeId: this.state.selectBuilding.key } : {}).then(res => {
             Promise.all(
-                res.map(item => api.getData(url2, { roleId: item.roleId }))).
+                res.map(item => api.getData(url2, { enCode: enCode, roleId: item.roleId }))).
                 then(ress => {
 
                     let data = res.map((item, index) => ({
@@ -104,13 +104,11 @@ class SelectRolePerson extends BasePage {
                     <View style={styles.content}>
                         <Accordion
                             onChange={this.onChange}
-                            activeSections={this.state.activeSections}
-                        >
+                            activeSections={this.state.activeSections}>
                             {data.map(item => (
                                 <Accordion.Panel
                                     key={item.roleId}
-                                    header={item.fullName}
-                                >
+                                    header={item.fullName}>
                                     <List>
                                         {item.children.map(i => (
                                             <TouchableWithoutFeedback key={'Touch' + i.id} onPress={() => this.click(i)}>

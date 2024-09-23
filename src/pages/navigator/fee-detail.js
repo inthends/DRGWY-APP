@@ -60,7 +60,10 @@ class FeeDetailPage extends BasePage {
 
     addFee = () => {
         this.props.navigation.navigate('feeAdd', {
-            data: this.state.room,
+            data: {
+                id: this.state.room.id,
+                billSource: '临时加费'
+            } //this.state.room
         });
     };
 
@@ -79,7 +82,7 @@ class FeeDetailPage extends BasePage {
     constructor(props) {
         super(props);
         this.props.navigation.setParams({
-            addFee: this.addFee,
+            addFee: this.addFee
         });
         let room = common.getValueFromProps(this.props);
         // let room = common.getValueFromProps(this.props);
@@ -649,26 +652,26 @@ class FeeDetailPage extends BasePage {
     //全选
     checkAll = () => {
         const { isML, mlType, mlScale, type } = this.state;
-            let data = this.state.dataInfo.data;
-            data = data.map(it => {
-                it.select = it.select !== true;
-                return it;
-            });
-            this.setState({
-                dataInfo: {
-                    ...this.state.dataInfo,
-                    data,
-                }
-            });
-            const items = data.filter(item => item.select === true);
-            if (items.length != 0) {
-                let ids = JSON.stringify((items.map(item => item.id)));
-                NavigatorService.CalFee(isML, mlType, mlScale, ids).then(res => {
-                    this.setState({ price: res.lastAmount, mlAmount: res.mlAmount });
-                });
-            } else {
-                this.setState({ price: 0.00, mlAmount: 0.00 });
+        let data = this.state.dataInfo.data;
+        data = data.map(it => {
+            it.select = it.select !== true;
+            return it;
+        });
+        this.setState({
+            dataInfo: {
+                ...this.state.dataInfo,
+                data,
             }
+        });
+        const items = data.filter(item => item.select === true);
+        if (items.length != 0) {
+            let ids = JSON.stringify((items.map(item => item.id)));
+            NavigatorService.CalFee(isML, mlType, mlScale, ids).then(res => {
+                this.setState({ price: res.lastAmount, mlAmount: res.mlAmount });
+            });
+        } else {
+            this.setState({ price: 0.00, mlAmount: 0.00 });
+        }
     }
 
     //抹零计算

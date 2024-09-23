@@ -89,7 +89,17 @@ export default class AssistDetailPage extends BasePage {
     };
 
     click = (handle) => {
-        const { id } = this.state; 
+        const { id } = this.state;
+        if (type == '加入') {
+            //维修人员有开工没有完成的维修单，不允许加入增援、协助工单
+            WorkService.checkStartWork(id).then(res => {
+                if (res == true) {
+                    UDToast.showError('维修人员有开工没有完成的维修单，不允许加入增援、协助工单');
+                    return;
+                }
+            });
+        }
+
         WorkService.assistRepair(id, handle).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
@@ -236,7 +246,7 @@ export default class AssistDetailPage extends BasePage {
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                         imageUrls={this.state.images} />
                 </Modal>
-                
+
             </CommonView>
         );
     }
@@ -258,8 +268,8 @@ const styles = StyleSheet.create({
         color: '#404145'
     },
     desc: {
-        lineHeight:20,
-        fontSize: 15, 
+        lineHeight: 20,
+        fontSize: 15,
         padding: 15
     },
     ii: {

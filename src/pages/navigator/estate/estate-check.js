@@ -170,7 +170,7 @@ class EstateCheckPage extends BasePage {
                 this.props.navigation.push('checkDetail', { id: item.billId });
             }}>
                 <Flex direction='column' align={'start'}
-                    style={[styles.card, index === 0 ? styles.blue : styles.orange]}>
+                    style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
                     <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.billCode}</Text>
                         <Text style={styles.title2}>{item.statusName}</Text>

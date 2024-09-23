@@ -80,7 +80,7 @@ class SelectRolePersonMulti extends BasePage {
             organizeId: this.state.selectBuilding.key
         } : {}).then(res => {
             Promise.all(
-                res.map(item => api.getData(url2, { roleId: item.roleId, exceptUserId }))).then(ress => {
+                res.map(item => api.getData(url2, { enCode: enCode,  roleId: item.roleId, exceptUserId }))).then(ress => {
                     let data = res.map((item, index) => ({
                         ...item,
                         children: ress[index]

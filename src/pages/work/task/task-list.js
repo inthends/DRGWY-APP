@@ -21,7 +21,7 @@ import CommonView from '../../../components/CommonView';
 import MyPopover from '../../../components/my-popover';
 
 //待完成列表
-class TaskListPage extends BasePage { 
+class TaskListPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
@@ -176,7 +176,7 @@ class TaskListPage extends BasePage {
                 }
             }}>
                 <Flex direction='column' align={'start'}
-                    style={[styles.card, index === 0 ? styles.blue : styles.orange]}>
+                    style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
                     <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.billCode}</Text>
                         <Text style={styles.aaa}>{item.statusName}</Text>
@@ -285,11 +285,11 @@ class TaskListPage extends BasePage {
                             marginRight: 10
                         }}>
                             <Text style={[selectPerson ? { fontSize: 16, color: '#404145' } :
-                                { color: '#666' }]}>{selectPerson ? selectPerson.name : "请选择派单人"}</Text> 
+                                { color: '#666' }]}>{selectPerson ? selectPerson.name : "请选择派单人"}</Text>
                             <LoadImage style={{ width: 6, height: 11, marginLeft: 8 }}
                                 defaultImg={require('../../../static/images/address/right.png')} />
                         </Flex>
-                    </TouchableWithoutFeedback> 
+                    </TouchableWithoutFeedback>
                 </Flex>
 
                 <FlatList

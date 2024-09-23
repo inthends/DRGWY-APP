@@ -86,7 +86,7 @@ export default class OrderlistPage extends BasePage {
 
             }}>
                 <Flex direction='column' align={'start'}
-                    style={[styles.card, index === 0 ? styles.blue : styles.orange]}>
+                    style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
                     <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.type ?? ''}</Text>
                         <Text style={styles.aaa}>{item.createDate ?? ''}</Text>

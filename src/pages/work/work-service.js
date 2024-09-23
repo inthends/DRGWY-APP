@@ -114,7 +114,8 @@ export default {
         senderName,
         repairMajorId,
         repairMajorName,
-        convertMemo
+        convertMemo,
+        contents
     ) {
         let params = {
             keyvalue,
@@ -123,7 +124,8 @@ export default {
             senderName,
             repairMajorId,
             repairMajorName,
-            convertMemo
+            convertMemo,
+            contents
         };
         let url = '/api/MobileMethod/MChangeToRepair';
         return api.postData(url, params);
@@ -132,6 +134,11 @@ export default {
     //验证协助人
     checkAssistUser(keyvalue) {
         return api.getData('/api/MobileMethod/MCheckAssistUser', { keyvalue });
+    },
+
+    //维修人员有开工没有完成的维修单
+    checkStartWork(keyvalue) {
+        return api.getData('/api/MobileMethod/MCheckStartWork', { keyvalue });
     },
 
     changeToComplaint(
@@ -409,4 +416,32 @@ export default {
     deleteCheckDetail(keyvalue) {
         return api.postData('/api/MobileMethod/DeleteCheckDetail', { keyvalue });
     },
+
+    //服务单费用明细
+    serverFeeList(
+        pageIndex,
+        billId
+    ) {
+        return api.postData('/api/MobileMethod/MGetServerFeePageList', {
+            pageIndex,
+            pageSize: 10,
+            billId
+        });
+    },
+
+    //判断费用
+    checkBillFee(keyvalue) {
+        return api.getData('/api/BillingMain/CheckBillFee', { keyvalue });
+    },
+
+    //作废计费明细
+    invalidDetailForm(keyvalue) {
+        return api.postData(`/api/BillingMain/InvalidDetailForm?keyvalue=${keyvalue}`);
+    },
+
+    //推送服务单账单
+    sendServiceDeskFee(keyvalue) {
+        return api.postData(`/api/ServiceDesk/SendServiceDeskFee?keyvalue=${keyvalue}`);
+    },
+ 
 };

@@ -267,6 +267,7 @@ const WorkNavigator = createStackNavigator({
   taskqd: TaskQDListPage,
 
   //服务单
+  feeAdd: FeeAddPage,
   servicedesk: ServicedeskListPage,
   servicedeskDone: ServicedeskDoneListPage,
 

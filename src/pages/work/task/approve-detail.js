@@ -121,6 +121,7 @@ export default class ApproveDetailPage extends BasePage {
             UDToast.showError('请输入修正积分');
             return;
         }
+
         Alert.alert(
             '请确认',
             '是否审核？',
@@ -128,7 +129,7 @@ export default class ApproveDetailPage extends BasePage {
             {
                 text: '确定',
                 onPress: () => {
-                    const { id, verifyResult, verifyMemo } = this.state;
+                    const { id, verifyResult, verifyMemo } = this.state; 
                     WorkService.approve(id, appScore, verifyResult, verifyMemo).then(res => {
                         UDToast.showInfo('审核完成');
                         this.props.navigation.goBack();

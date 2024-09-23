@@ -227,11 +227,10 @@ class EcheckAddPage extends BasePage {
         );
     };
 
-    _renderItem = ({ item, index }) => {
-
+    _renderItem = ({ item, index }) => { 
         return (
             <Flex direction='column' align={'start'}
-                style={[styles.card, index === 0 ? styles.blue : styles.orange]}>
+                style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
                 <Flex justify='between' style={{ width: '100%' }}>
                     <Text style={styles.title}>{item.allName}</Text>
                     <ActionPopover

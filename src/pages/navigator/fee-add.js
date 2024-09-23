@@ -5,24 +5,16 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
     ScrollView,
-    // NativeModules,
-    // Alert,
-    // DeviceEventEmitter,
     TextInput,
     View
 } from 'react-native';
 import BasePage from '../base/base';
 import { Flex, Icon, List, DatePicker, Button } from '@ant-design/react-native';
-//import Macro from '../../utils/macro';
 import ScreenUtil from '../../utils/screen-util';
 import { connect } from 'react-redux';
-// import ListHeader from '../../components/list-header';
 import common from '../../utils/common';
-// import LoadImage from '../../components/load-image';
-// import TwoChange from '../../components/two-change';
 import NavigatorService from './navigator-service';
 import UDToast from '../../utils/UDToast';
-// import QRCode from 'react-native-qrcode-svg';
 import CommonView from '../../components/CommonView';
 import MyPopover from '../../components/my-popover';
 import Macro from '../../utils/macro';
@@ -47,9 +39,9 @@ class FeeAddPage extends BasePage {
     constructor(props) {
         super(props);
         //let room = common.getValueFromProps(this.props) || {id:'FY-XHF-01-0101'};
-        let room = common.getValueFromProps(this.props);
+        let data = common.getValueFromProps(this.props);
         this.state = {
-            room,
+            data,
             pageIndex: 1,
             dataInfo: {
                 data: [],
@@ -70,7 +62,6 @@ class FeeAddPage extends BasePage {
             small: null,
             fee: null
         };
-
         Date.prototype.yearMonthDay = function () {
             let year = this.getFullYear();
             let month = this.getMonth() + 1 + '';
@@ -100,23 +91,28 @@ class FeeAddPage extends BasePage {
     };
 
     save = () => {
-        let { fee } = this.state;
+
+        let { fee, data } = this.state;
+        if (!fee.amount) {
+            UDToast.showError('请输入金额');
+            return;
+        }
+
         fee = {
             ...fee,
             beginDate: fee.beginDate == null ? null : fee.beginDate.yearMonthDay(),
             endDate: fee.endDate == null ? null : fee.endDate.yearMonthDay()
         };
-        NavigatorService.saveFee([fee]).then(res => {
-            UDToast.showError('保存成功');
+        NavigatorService.saveFee(data.billSource, data.linkId, [fee]).then(res => {
+            UDToast.showInfo('保存成功');
             setTimeout(() => {
                 this.props.navigation.goBack();
             }, 1000);
         });
-
     };
 
     componentDidMount() {
-        NavigatorService.getFeeItemTreeJson(this.state.room.id).then(resp => {
+        NavigatorService.getFeeItemTreeJson(this.state.data.id).then(resp => {
             const res = resp.filter(item => item.children.length > 0);
             if (res.length === 0) {
                 UDToast.showError('暂无可加费项目');
@@ -145,11 +141,12 @@ class FeeAddPage extends BasePage {
                 ...this.state.fee,
                 number,
                 amount: isNaN(amount) ? null : amount,
-            },
+            }
         });
     };
+
     click = (item) => {
-        NavigatorService.getFeeItemDetail(this.state.room.id, item.key).then(res => {
+        NavigatorService.getFeeItemDetail(this.state.data.id, item.key).then(res => {
             this.setState({
                 small: item,
                 fee: {
@@ -157,14 +154,14 @@ class FeeAddPage extends BasePage {
                     beginDate: (res.beginDate == null ? null : new Date(res.beginDate.split(' ')[0])),
                     endDate: (res.endDate == null ? null : new Date(res.endDate.split(' ')[0])),
                     number: res.number + '',
-                    amount: res.amount + ''
-                },
+                    amount: res.amount == 0 ? null : res.amount + ''
+                }
             }, () => {
             });
         }).catch(error => {
             this.setState({
                 small: null,
-                fee: null,
+                fee: null
             });
         });
     };
@@ -270,7 +267,7 @@ class FeeAddPage extends BasePage {
                         <Button type={'primary'}
                             style={{
                                 //margin: 20,
-                                width: 220,
+                                width: 180,
                                 height: 40,
                                 marginBottom: 10,
                                 backgroundColor: Macro.work_blue
@@ -339,7 +336,9 @@ const styles = StyleSheet.create({
         borderWidth: 0,
     }
 });
+
 const mapStateToProps = ({ memberReducer }) => {
     return { userInfo: memberReducer.userInfo };
 };
+
 export default connect(mapStateToProps)(FeeAddPage);

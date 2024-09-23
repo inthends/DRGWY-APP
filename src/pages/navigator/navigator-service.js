@@ -431,7 +431,7 @@ export default {
       false
     );
   },
- 
+
   //现金收款
   cashPay(linkId, isML, mlType, mlScale) {
     return api.postData('/api/MobileMethod/MCharge', {
@@ -473,8 +473,10 @@ export default {
     });
   },
 
-  saveFee(bills) {
+  saveFee(billSource, linkId, bills) {
     return api.postData('/api/MobileMethod/SaveFee', {
+      billSource,
+      linkId,
       bills: JSON.stringify(bills)
     });
   },

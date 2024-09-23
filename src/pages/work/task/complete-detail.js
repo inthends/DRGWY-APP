@@ -194,8 +194,12 @@ export default class CompleteDetailPage extends BasePage {
 
 
     pause = () => {
-        this.setState({ showClose: false });
+        //this.setState({ showClose: false });
         const { id, pauseMemo, stopDateBegin } = this.state;
+        if (!(pauseMemo && pauseMemo.length > 0)) {
+            UDToast.showError('请输入暂停原因');
+            return;
+        }
         WorkService.pause(id, stopDateBegin, pauseMemo).then(res => {
             UDToast.showInfo('暂停成功');
             this.props.navigation.goBack();
@@ -308,7 +312,7 @@ export default class CompleteDetailPage extends BasePage {
                         reload={this.reload}
                         type='完成'
                     />
-                    
+
                     <View style={{ margin: 15 }}>
                         <TextareaItem
                             rows={4}
@@ -371,6 +375,7 @@ export default class CompleteDetailPage extends BasePage {
                 </Modal>
 
                 {this.state.showClose && (
+                    //暂停
                     <View style={styles.mengceng}>
                         <TouchableWithoutFeedback onPress={() => {
                             Keyboard.dismiss();//隐藏键盘

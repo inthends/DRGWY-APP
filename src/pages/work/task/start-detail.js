@@ -148,7 +148,15 @@ export default class StartDetailPage extends BasePage {
     };
 
     click = () => {
-        const { id, isUpload, images, value, isMustStartFile, selectPersons } = this.state;
+        const { id, isUpload, images, value, isMustStartFile, selectPersons } = this.state; 
+        //维修人员有开工没有完成的维修单，不允许再开工新的维修单
+        WorkService.checkStartWork(id).then(res => {
+            if (res == true) {
+                UDToast.showError('维修人员有开工没有完成的维修单，不允许再开工新的维修单');
+                return;
+            }
+        });
+ 
         //判断协助人是否都已经加入，如果没有加入，则弹出提示
         WorkService.checkAssistUser(id).then(res => {
             if (res.flag == false) {
