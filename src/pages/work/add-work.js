@@ -207,9 +207,15 @@ class AddWorkPage extends BasePage {
 
     submit = () => {
         const { id, data, index, address, value, taskId, isMustServicedeskFile, images } = this.state;
+        
         if (address == null || address.allName == null) {
             const title = '请选择' + data[index] + '地址';
             UDToast.showError(title);
+            return;
+        }
+
+        if (value == '') {
+            UDToast.showError('请输入内容');
             return;
         }
 
@@ -221,6 +227,7 @@ class AddWorkPage extends BasePage {
         if (this.canSubmit === false) {
             return;
         }
+
         this.canSubmit = false;//防止重复提交
         const params = {
             id,
@@ -367,37 +374,37 @@ class AddWorkPage extends BasePage {
                             </Flex> */}
 
                             <ScrollView style={{ maxHeight: 100 }}>
-                            <Flex justify={'start'} align={'start'}
-                                style={{
-                                    width: ScreenUtil.deviceWidth()
-                                }}>
-                                <Flex wrap={'wrap'}>
-                                    {images.map((url, index) => {
-                                        return (
-                                            <TouchableWithoutFeedback key={index} onPress={() => {
-                                                if (index === images.length - 1 && url.length === 0) {
-                                                    this.selectImages();
-                                                }
-                                            }}>
-                                                <View style={{
-                                                    paddingLeft: 15,
-                                                    paddingRight: 5,
-                                                    paddingTop: 10,
-                                                    paddingBottom: 10
+                                <Flex justify={'start'} align={'start'}
+                                    style={{
+                                        width: ScreenUtil.deviceWidth()
+                                    }}>
+                                    <Flex wrap={'wrap'}>
+                                        {images.map((url, index) => {
+                                            return (
+                                                <TouchableWithoutFeedback key={index} onPress={() => {
+                                                    if (index === images.length - 1 && url.length === 0) {
+                                                        this.selectImages();
+                                                    }
                                                 }}>
-                                                    <LoadImageDelete
-                                                        style={{ width: width, height: height }}
-                                                        defaultImg={require('../../static/images/add_pic.png')}
-                                                        img={url}
-                                                        top={15}
-                                                        delete={() => this.delete(url)} />
-                                                </View>
-                                            </TouchableWithoutFeedback>
-                                        );
-                                    })}
+                                                    <View style={{
+                                                        paddingLeft: 15,
+                                                        paddingRight: 5,
+                                                        paddingTop: 10,
+                                                        paddingBottom: 10
+                                                    }}>
+                                                        <LoadImageDelete
+                                                            style={{ width: width, height: height }}
+                                                            defaultImg={require('../../static/images/add_pic.png')}
+                                                            img={url}
+                                                            top={15}
+                                                            delete={() => this.delete(url)} />
+                                                    </View>
+                                                </TouchableWithoutFeedback>
+                                            );
+                                        })}
+                                    </Flex>
                                 </Flex>
-                            </Flex>
-                            </ScrollView> 
+                            </ScrollView>
                         </Flex>
 
                         <Flex justify={'center'} align={'start'} style={{

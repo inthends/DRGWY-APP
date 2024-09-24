@@ -109,8 +109,7 @@ export default {
         });
     },
 
-    uploadFile(uri, id, type,
-        uploadUrl, isPicture = true) {
+    uploadFile(uri, id, type, uploadUrl, isPicture = true) {
         return new Promise(resolve => {
             const formData = new FormData();//如果需要上传多张图片，需要遍历数组,把图片的路径数组放入formData中
             const name = isPicture ? 'picture.png' : 'file.aac';
