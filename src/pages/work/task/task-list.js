@@ -220,8 +220,7 @@ class TaskListPage extends BasePage {
                                 paddingBottom: 10,
                                 color: '#666'
                             }}
-                        >{item.contents}
-                        </Text>
+                        >{item.repairContent || item.contents}</Text>
 
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>

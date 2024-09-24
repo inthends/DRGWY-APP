@@ -72,6 +72,7 @@ export default class ServiceDeskDetailPage extends BasePage {
             KeyboardShown: false,
             btnList: [],//按钮权限
 
+            //费用明细
             pageIndex: 1,
             refreshing: false,
             dataInfo: {
@@ -226,7 +227,6 @@ export default class ServiceDeskDetailPage extends BasePage {
             {
                 text: '确定',
                 onPress: () => {
-
                     WorkService.serviceHandle(handle, id, memo).then(res => {
                         this.props.navigation.goBack();
                     }).catch(err => {
@@ -610,20 +610,22 @@ export default class ServiceDeskDetailPage extends BasePage {
                     }
 
                     {detail.status === 1 ?
-                        <Flex style={[styles.every]} justify='between'>
-                            <TextareaItem
-                                rows={4}
-                                autoHeight
-                                maxLength={500}
-                                placeholder='请输入事项'
-                                onChange={contents => this.setState({ contents })}
-                                value={this.state.contents}
-                            />
-                        </Flex>
+                        <TextareaItem
+                            rows={4}
+                            autoHeight
+                            maxLength={500}
+                            placeholder='请输入事项'
+                            onChange={contents => this.setState({ contents })}
+                            value={this.state.contents}
+                            style={{
+                                width: ScreenUtil.deviceWidth() - 150,
+                                fontSize: 14
+                            }}
+                        />
                         : <Text style={styles.desc}>{detail.contents}</Text>}
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>费用明细{detail.testDate}</Text>
+                        <Text style={styles.left}>费用明细</Text>
                     </Flex>
                     <FlatList
                         data={dataInfo.data}
@@ -1189,6 +1191,7 @@ const styles = StyleSheet.create({
         borderLeftColor: Macro.work_blue,
         borderLeftWidth: 5,
     },
+
     orange: {
         borderLeftColor: Macro.work_orange,
         borderLeftWidth: 5,
@@ -1231,11 +1234,7 @@ const styles = StyleSheet.create({
         paddingTop: 15,
         paddingBottom: 15
     },
-    every2: {
-        marginLeft: 15,
-        marginRight: 15,
-        paddingBottom: 5
-    },
+
     left: {
         fontSize: 16,
         color: '#404145'
@@ -1253,19 +1252,5 @@ const styles = StyleSheet.create({
         paddingTop: 15,
         paddingLeft: 15,
         paddingRight: 15
-    },
-    // ii: {
-    //     paddingTop: 10,
-    //     paddingBottom: 10,
-    //     marginLeft: 10,
-    //     marginRight: 10,
-    //     width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
-    //     backgroundColor: '#999',
-    //     borderRadius: 6,
-    //     marginBottom: 20
-    // },
-    word: {
-        color: 'white',
-        fontSize: 16
     }
 });

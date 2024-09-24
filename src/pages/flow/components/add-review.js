@@ -59,8 +59,7 @@ export default class AddReview extends Component {
                 onChange={item => this.setState({ userId: item.id })}
                 data={this.state.users}
                 visible={true} />
-            </Flex>
-
+            </Flex> 
             <Flex align={'center'} style={{ width: '100%' }} >
               <TextareaItem
                 maxLength={500}

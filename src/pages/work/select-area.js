@@ -98,7 +98,7 @@ export default class SelectAreaPage extends BasePage {
         }
         else if (loadAssetType == '房产') {
             //包含房间和车位
-            type = '6,9';
+            type = '5,6,9';
         }
         if (type.indexOf(item.type)) {
             const { parentName, roleId } = this.state;
@@ -183,7 +183,7 @@ export default class SelectAreaPage extends BasePage {
         }
         else if (loadAssetType == '房产') {
             //包含房间和车位
-            type = '6,9';
+            type = '5,6,9';
         }
 
         return (
@@ -205,9 +205,8 @@ export default class SelectAreaPage extends BasePage {
                     }>
                         <List>
                             {items.map((item, index) => (
-                                <Item key={index}
-                                    // arrow={item.type !== 2 ? 'horizontal' : 'empty'}
-                                    arrow={type.indexOf(item.type) ? 'horizontal' : 'empty'}
+                                <Item key={index} 
+                                    arrow={type.indexOf(item.type) >= 0 ? 'empty' : 'horizontal'}
                                     onPress={() => this.next(item)}>
                                     <Flex>
                                         <TouchableWithoutFeedback onPress={() => this.setState({

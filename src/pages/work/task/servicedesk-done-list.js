@@ -161,7 +161,7 @@ class ServicedeskDoneListPage extends BasePage {
         return (
             <TouchableWithoutFeedback onPress={() => {
                 //查看服务单
-                this.props.navigation.navigate('fuwuD', { id: item.id });
+                this.props.navigation.navigate('serverDeskView', { id: item.id });
             }}>
                 <Flex direction='column' align={'start'}
                     style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>

@@ -5,6 +5,7 @@ import {
     TouchableOpacity,
     StyleSheet,
     ScrollView,
+    FlatList,
     Modal
 } from 'react-native';
 import BasePage from '../../base/base';
@@ -20,6 +21,7 @@ import CommonView from '../../../components/CommonView';
 import OperationRecords from '../../../components/operationrecords';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import Star from '../../../components/star';
+import moment from 'moment';
 
 //仅查看
 export default class EfuwuDetailPage extends BasePage {
@@ -45,7 +47,14 @@ export default class EfuwuDetailPage extends BasePage {
             communicates: [],//沟通记录
             operations: [],//操作记录
             lookImageIndex: 0,
-            visible: false
+            visible: false,
+
+            //费用明细
+            pageIndex: 1,
+            refreshing: false,
+            dataInfo: {
+                data: []
+            }
         };
     }
 
@@ -83,6 +92,8 @@ export default class EfuwuDetailPage extends BasePage {
                 images
             });
         });
+
+        this.getList();
     };
 
     communicateClick = (i) => {
@@ -97,7 +108,6 @@ export default class EfuwuDetailPage extends BasePage {
             communicates: d
         });
     };
-
 
     operationClick = (i) => {
         let c = this.state.operations;
@@ -125,8 +135,79 @@ export default class EfuwuDetailPage extends BasePage {
         });
     };
 
+    onRefresh = () => {
+        this.setState({
+            refreshing: true,
+            pageIndex: 1
+        }, () => {
+            this.getList();
+        });
+    };
+
+    //费用明细
+    getList = () => {
+        const { id } = this.state;
+        WorkService.serverFeeList(this.state.pageIndex, id).then(dataInfo => {
+            if (dataInfo.pageIndex > 1) {
+                dataInfo = {
+                    ...dataInfo,
+                    data: [...this.state.dataInfo.data, ...dataInfo.data]
+                };
+            }
+            this.setState({
+                dataInfo: dataInfo,
+                pageIndex: dataInfo.pageIndex,
+                refreshing: false
+            }, () => {
+            });
+        }).catch(err => this.setState({ refreshing: false }));
+    };
+
+    loadMore = () => {
+        const { data, total, pageIndex } = this.state.dataInfo;
+        if (this.canLoadMore && data.length < total) {
+            this.canLoadMore = false;
+            this.setState({
+                refreshing: true,
+                pageIndex: pageIndex + 1
+                // canLoadMore: false,
+            }, () => {
+                this.getList();
+            });
+        }
+    };
+
+    _renderItem = ({ item, index }) => {
+        return (
+            <Flex
+                direction='column' align={'start'}
+                style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
+                <Flex justify='between' style={{ width: '100%' }}>
+                    <Text style={styles.title}>{item.feeName}</Text>
+                </Flex>
+                <Flex style={styles.line} />
+                <Flex align={'start'} direction={'column'}>
+                    <Flex justify='between'
+                        style={{ width: '100%', paddingTop: 5, paddingLeft: 15, paddingRight: 15, lineHeight: 20 }}>
+                        <Text>应收金额：{item.amount}
+                            ，减免金额：{item.reductionAmount}
+                            ，已收金额：{item.receiveAmount}
+                            ，未收金额：{item.lastAmount}</Text>
+                    </Flex>
+                    <Flex justify='between'
+                        style={{ width: '100%', paddingTop: 5, paddingBottom: 5, paddingLeft: 15, paddingRight: 15 }}>
+                        {item.beginDate ?
+                            <Text>{moment(item.beginDate).format('YYYY-MM-DD') + '至' + moment(item.endDate).format('YYYY-MM-DD')}</Text> : null
+                        }
+                        <Text>是否推送账单：{item.noticeId ? '是' : '否'} </Text>
+                    </Flex>
+                </Flex>
+            </Flex>
+        );
+    };
+
     render() {
-        const { images, detail, communicates, operations } = this.state;
+        const { images, detail, communicates, operations, dataInfo } = this.state;
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
@@ -141,9 +222,7 @@ export default class EfuwuDetailPage extends BasePage {
                     </Flex>
 
                     <Text style={[styles.desc]}>{detail.contents}</Text>
-
                     <ListImages images={images} lookImage={this.lookImage} />
-
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>紧急程度：{detail.emergencyLevel}</Text>
                     </Flex>
@@ -216,6 +295,24 @@ export default class EfuwuDetailPage extends BasePage {
                             </Flex>
                         </TouchableWithoutFeedback>
                     ) : null}
+
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>费用明细</Text>
+                    </Flex>
+                    <FlatList
+                        data={dataInfo.data}
+                        renderItem={this._renderItem}
+                        style={styles.list}
+                        keyExtractor={(item) => 'flatList' + item.id}
+                        //必须
+                        onEndReachedThreshold={0.1}
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.onRefresh}//下拉刷新
+                        onEndReached={this.loadMore}//底部往下拉翻页
+                        onMomentumScrollBegin={() => this.canLoadMore = true}
+                    />
+
                     <Communicates communicateClick={this.communicateClick} communicates={communicates} />
                     <OperationRecords communicateClick={this.operationClick} communicates={operations} />
                 </ScrollView>
@@ -233,6 +330,57 @@ export default class EfuwuDetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
+
+    list: {
+        backgroundColor: Macro.color_white,
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 10
+    },
+
+    card: {
+        borderTopWidth: 1,
+        borderRightWidth: 1,
+        borderBottomWidth: 1,
+        borderTopColor: '#c8c8c8',
+        borderBottomColor: '#c8c8c8',
+        borderRightColor: '#c8c8c8',
+        borderRadius: 5,
+        marginBottom: 10,
+        backgroundColor: 'white',
+        shadowColor: '#00000033',
+        shadowOffset: { h: 10, w: 10 },
+        shadowRadius: 5,
+        shadowOpacity: 0.8
+    },
+
+    blue: {
+        borderLeftColor: Macro.work_blue,
+        borderLeftWidth: 5,
+    },
+
+    orange: {
+        borderLeftColor: Macro.work_orange,
+        borderLeftWidth: 5,
+    },
+
+    title: {
+        paddingTop: 10,
+        color: '#404145',
+        fontSize: 14,
+        paddingBottom: 5,
+        marginLeft: 15,
+        marginRight: 15
+    },
+
+    line: {
+        width: ScreenUtil.deviceWidth() - 30 - 10 * 2,
+        marginLeft: 15,
+        backgroundColor: '#eee',
+        height: 1
+    },
+
+
     every: {
         fontSize: 16,
         marginLeft: 15,
@@ -252,7 +400,7 @@ const styles = StyleSheet.create({
         fontSize: 16
     },
     desc: {
-        lineHeight:20,
+        lineHeight: 20,
         fontSize: 15,
         marginLeft: 15,
         marginRight: 15,

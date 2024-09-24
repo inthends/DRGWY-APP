@@ -227,7 +227,7 @@ const navigatorNavigator = createStackNavigator({
   fuwulist: EstateFuwuPage,
   weixiulist: EstateWeixiuPage,
   //e_tousu: EstateTousuPage,
-  fuwuD: EfuwuDetailPage,//服务单页面点击关联单据，只能查看
+  serverDeskView: EfuwuDetailPage,//服务单页面点击关联单据，只能查看
   weixiuD: EweixiuDetailPage, //服务单页面点击关联单据，跳转到维修单，只能查看
   tousuD: EtousuDetailPage, //投诉单详情，只能查看
 });
@@ -307,9 +307,9 @@ const WorkNavigator = createStackNavigator({
   checkAdd: EcheckAddPage,
   addTaskWork: AddWorkPage,
   addRepair: AddRepairPage,
-
-
-  fuwuD: EfuwuDetailPage,//服务单页面点击关联单据，只能查看
+ 
+  
+  serverDeskView: EfuwuDetailPage,//服务单页面点击关联单据，只能查看
   weixiuD: EweixiuDetailPage, //服务单页面点击关联单据，跳转到维修单，只能查看
 
   //订单中心

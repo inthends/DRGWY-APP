@@ -148,42 +148,44 @@ export default class StartDetailPage extends BasePage {
     };
 
     click = () => {
-        const { id, isUpload, images, value, isMustStartFile, selectPersons } = this.state; 
+        const { id, isUpload, images, value, isMustStartFile, selectPersons } = this.state;
         //维修人员有开工没有完成的维修单，不允许再开工新的维修单
         WorkService.checkStartWork(id).then(res => {
             if (res == true) {
                 UDToast.showError('维修人员有开工没有完成的维修单，不允许再开工新的维修单');
                 return;
             }
-        });
  
-        //判断协助人是否都已经加入，如果没有加入，则弹出提示
-        WorkService.checkAssistUser(id).then(res => {
-            if (res.flag == false) {
-                UDToast.showError(res.msg);
-                return;
-            }
-            else {
-                // if (handle === '回复' && !(value&&value.length > 0)) {
-                if (!(value && value.length > 0)) {
-                    UDToast.showError('请输入故障判断');
+            //判断协助人是否都已经加入，如果没有加入，则弹出提示
+            WorkService.checkAssistUser(id).then(res => {
+                if (res.flag == false) {
+                    UDToast.showError(res.msg);
                     return;
                 }
-                //const kgimages = images.filter(t => t.type === '开工');
-                if (images.length == 0 && !isUpload && isMustStartFile == true) {
-                    UDToast.showError('请上传开工图片');
-                    return;
+                else {
+                    // if (handle === '回复' && !(value&&value.length > 0)) {
+                    if (!(value && value.length > 0)) {
+                        UDToast.showError('请输入故障判断');
+                        return;
+                    }
+                    //const kgimages = images.filter(t => t.type === '开工');
+                    if (images.length == 0 && !isUpload && isMustStartFile == true) {
+                        UDToast.showError('请上传开工图片');
+                        return;
+                    }
+
+                    let personIds = selectPersons.map(item => item.id);
+                    let reinforceId = personIds && personIds.length > 0 ? JSON.stringify(personIds) : '';
+
+                    WorkService.startRepair(id, value, reinforceId).then(res => {
+                        UDToast.showInfo('操作成功');
+                        this.props.navigation.goBack();
+                    });
                 }
-
-                let personIds = selectPersons.map(item => item.id);
-                let reinforceId = personIds && personIds.length > 0 ? JSON.stringify(personIds) : '';
-
-                WorkService.startRepair(id, value, reinforceId).then(res => {
-                    UDToast.showInfo('操作成功');
-                    this.props.navigation.goBack();
-                });
-            }
+            });
+            
         });
+
     };
 
     back = () => {

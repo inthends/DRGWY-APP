@@ -153,10 +153,20 @@ export default class CompleteDetailPage extends BasePage {
             UDToast.showError('请上传完成图片');
             return;
         }
-        WorkService.serviceHandle('完成维修', id, value).then(res => {
-            UDToast.showInfo('操作成功');
-            this.props.navigation.goBack();
+
+
+        WorkService.checkReinforceUser(id).then(res => {
+            if (res.flag == false) {
+                UDToast.showError(res.msg);
+                return;
+            }
+
+            WorkService.serviceHandle('完成维修', id, value).then(res => {
+                UDToast.showInfo('操作成功');
+                this.props.navigation.goBack();
+            });
         });
+ 
     };
 
     communicateClick = (i) => {

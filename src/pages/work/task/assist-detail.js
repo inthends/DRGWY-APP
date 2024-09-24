@@ -88,9 +88,19 @@ export default class AssistDetailPage extends BasePage {
         // });
     };
 
-    click = (handle) => {
-        const { id } = this.state;
-        if (type == '加入') {
+    click = (type) => {
+        const { id, detail } = this.state;
+        if (type == '加入') { 
+
+            if (detail.status == 0) {
+                UDToast.showError('该工单暂停，继续维修后再加入');
+                return;
+            } 
+
+            if (detail.status == 2) {
+                UDToast.showError('接单人还没有接单不允许加入');
+                return;
+            }
             //维修人员有开工没有完成的维修单，不允许加入增援、协助工单
             WorkService.checkStartWork(id).then(res => {
                 if (res == true) {
@@ -99,8 +109,7 @@ export default class AssistDetailPage extends BasePage {
                 }
             });
         }
-
-        WorkService.assistRepair(id, handle).then(res => {
+        WorkService.assistRepair(id, type).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
         });

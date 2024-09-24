@@ -136,6 +136,11 @@ export default {
         return api.getData('/api/MobileMethod/MCheckAssistUser', { keyvalue });
     },
 
+    //验证增援人
+    checkReinforceUser(keyvalue) {
+        return api.getData('/api/MobileMethod/MCheckReinforceUser', { keyvalue });
+    },
+
     //维修人员有开工没有完成的维修单
     checkStartWork(keyvalue) {
         return api.getData('/api/MobileMethod/MCheckStartWork', { keyvalue });
@@ -443,5 +448,5 @@ export default {
     sendServiceDeskFee(keyvalue) {
         return api.postData(`/api/ServiceDesk/SendServiceDeskFee?keyvalue=${keyvalue}`);
     },
- 
+
 };

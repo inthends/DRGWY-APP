@@ -5,6 +5,7 @@ import {
     TouchableOpacity,
     StyleSheet,
     ScrollView,
+    FlatList,
     Modal
 } from 'react-native';
 import BasePage from '../../base/base';
@@ -18,6 +19,7 @@ import OperationRecords from '../../../components/operationrecords';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import moment from 'moment';
 
 //仅查看
 export default class EweixiuDetailPage extends BasePage {
@@ -46,7 +48,14 @@ export default class EweixiuDetailPage extends BasePage {
             detail: {},
             communicates: [],
             lookImageIndex: 0,
-            visible: false
+            visible: false,
+
+            //费用明细
+            pageIndex: 1,
+            refreshing: false,
+            dataInfo: {
+                data: []
+            }
         };
     }
 
@@ -99,6 +108,8 @@ export default class EweixiuDetailPage extends BasePage {
         //         images
         //     });
         // });
+
+        this.getList();
     };
 
     communicateClick = (i) => {
@@ -127,13 +138,80 @@ export default class EweixiuDetailPage extends BasePage {
             visible: true
         });
     };
+ 
+    onRefresh = () => {
+        this.setState({
+            refreshing: true,
+            pageIndex: 1
+        }, () => {
+            this.getList();
+        });
+    };
+
+    //费用明细
+    getList = () => {
+        const { detail } = this.state;
+        WorkService.serverFeeList(this.state.pageIndex, detail.relationId).then(dataInfo => {
+            if (dataInfo.pageIndex > 1) {
+                dataInfo = {
+                    ...dataInfo,
+                    data: [...this.state.dataInfo.data, ...dataInfo.data]
+                };
+            }
+            this.setState({
+                dataInfo: dataInfo,
+                pageIndex: dataInfo.pageIndex,
+                refreshing: false
+            }, () => {
+            });
+        }).catch(err => this.setState({ refreshing: false }));
+    };
+
+    loadMore = () => {
+        const { data, total, pageIndex } = this.state.dataInfo;
+        if (this.canLoadMore && data.length < total) {
+            this.canLoadMore = false;
+            this.setState({
+                refreshing: true,
+                pageIndex: pageIndex + 1
+                // canLoadMore: false,
+            }, () => {
+                this.getList();
+            });
+        }
+    };
+
+    _renderItem = ({ item, index }) => {
+        return (
+            <Flex
+                direction='column' align={'start'}
+                style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
+                <Flex justify='between' style={{ width: '100%' }}>
+                    <Text style={styles.title}>{item.feeName}</Text>
+                </Flex>
+                <Flex style={styles.line} />
+                <Flex align={'start'} direction={'column'}>
+                    <Flex justify='between'
+                        style={{ width: '100%', paddingTop: 5, paddingLeft: 15, paddingRight: 15, lineHeight: 20 }}>
+                        <Text>应收金额：{item.amount}
+                            ，减免金额：{item.reductionAmount}
+                            ，已收金额：{item.receiveAmount}
+                            ，未收金额：{item.lastAmount}</Text>
+                    </Flex>
+                    <Flex justify='between'
+                        style={{ width: '100%', paddingTop: 5, paddingBottom: 5, paddingLeft: 15, paddingRight: 15 }}>
+                        {item.beginDate ?
+                            <Text>{moment(item.beginDate).format('YYYY-MM-DD') + '至' + moment(item.endDate).format('YYYY-MM-DD')}</Text> : null
+                        }
+                        <Text>是否推送账单：{item.noticeId ? '是' : '否'} </Text>
+                    </Flex>
+                </Flex>
+            </Flex>
+        );
+    };
 
     render() {
-        const { images,
-            startimages,
-            finishimages,
-            checkimages,
-            detail, communicates } = this.state;
+        const { images, startimages, finishimages, checkimages, detail, communicates, dataInfo } = this.state;
         // const selectImg = require('../../../static/images/select.png');
         // const noselectImg = require('../../../static/images/no-select.png');
 
@@ -155,7 +233,6 @@ export default class EweixiuDetailPage extends BasePage {
                     <Text style={[styles.desc, ScreenUtil.borderBottom()]}>{detail.repairContent}</Text>
                     <ListImages images={images} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, images)} />
 
-
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>紧急程度：{detail.emergencyLevel}</Text>
                     </Flex>
@@ -173,7 +250,7 @@ export default class EweixiuDetailPage extends BasePage {
                             <Text style={styles.left}>关联单：</Text>
                             <Text onPress={() => {
                                 if (detail.sourceType === '服务总台') {
-                                    this.props.navigation.navigate('fuwuD', { id: detail.relationId });
+                                    this.props.navigation.navigate('serverDeskView', { id: detail.relationId });
                                 }
                                 else if (detail.sourceType === '维修单') {
                                     //检验不通过关联的旧的维修单
@@ -246,6 +323,23 @@ export default class EweixiuDetailPage extends BasePage {
                             <ListImages images={checkimages} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, checkimages)} />
                         </> : null}
 
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>费用明细</Text>
+                    </Flex>
+                    <FlatList
+                        data={dataInfo.data}
+                        renderItem={this._renderItem}
+                        style={styles.list}
+                        keyExtractor={(item) => 'flatList' + item.id}
+                        //必须
+                        onEndReachedThreshold={0.1}
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.onRefresh}//下拉刷新
+                        onEndReached={this.loadMore}//底部往下拉翻页
+                        onMomentumScrollBegin={() => this.canLoadMore = true}
+                    />
+
                     {/* 维修单显示操作记录，没有沟通记录 */}
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
 
@@ -261,6 +355,56 @@ export default class EweixiuDetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
+
+    list: {
+        backgroundColor: Macro.color_white,
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 10
+    },
+
+    card: {
+        borderTopWidth: 1,
+        borderRightWidth: 1,
+        borderBottomWidth: 1,
+        borderTopColor: '#c8c8c8',
+        borderBottomColor: '#c8c8c8',
+        borderRightColor: '#c8c8c8',
+        borderRadius: 5,
+        marginBottom: 10,
+        backgroundColor: 'white',
+        shadowColor: '#00000033',
+        shadowOffset: { h: 10, w: 10 },
+        shadowRadius: 5,
+        shadowOpacity: 0.8
+    },
+
+    blue: {
+        borderLeftColor: Macro.work_blue,
+        borderLeftWidth: 5,
+    },
+
+    orange: {
+        borderLeftColor: Macro.work_orange,
+        borderLeftWidth: 5,
+    },
+
+    title: {
+        paddingTop: 10,
+        color: '#404145',
+        fontSize: 14,
+        paddingBottom: 5,
+        marginLeft: 15,
+        marginRight: 15
+    },
+
+    line: {
+        width: ScreenUtil.deviceWidth() - 30 - 10 * 2,
+        marginLeft: 15,
+        backgroundColor: '#eee',
+        height: 1
+    },
+
     every: {
         marginLeft: 15,
         marginRight: 15,
@@ -276,8 +420,8 @@ const styles = StyleSheet.create({
         color: '#404145'
     },
     desc: {
-        lineHeight:20,
-        padding: 15, 
+        lineHeight: 20,
+        padding: 15,
         fontSize: 15
     }
 });

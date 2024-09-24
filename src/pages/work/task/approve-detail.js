@@ -121,7 +121,6 @@ export default class ApproveDetailPage extends BasePage {
             UDToast.showError('请输入修正积分');
             return;
         }
-
         Alert.alert(
             '请确认',
             '是否审核？',
@@ -129,7 +128,7 @@ export default class ApproveDetailPage extends BasePage {
             {
                 text: '确定',
                 onPress: () => {
-                    const { id, verifyResult, verifyMemo } = this.state; 
+                    const { id, verifyResult, verifyMemo } = this.state;
                     WorkService.approve(id, appScore, verifyResult, verifyMemo).then(res => {
                         UDToast.showInfo('审核完成');
                         this.props.navigation.goBack();
@@ -325,7 +324,7 @@ export default class ApproveDetailPage extends BasePage {
                                 <Text style={{ color: '#666', fontSize: 16, paddingLeft: 15 }}>通过</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => this.setState({ verifyResult: 0 })}>
+                        <TouchableWithoutFeedback onPress={() => this.setState({ verifyResult: 0, appScore: '0' })}>
                             <Flex>
                                 <LoadImage img={verifyResult === 0 ? selectImg : noselectImg}
                                     style={{ width: 15, height: 15 }} />
@@ -340,7 +339,7 @@ export default class ApproveDetailPage extends BasePage {
                             keyboardType={'decimal-pad'}
                             value={this.state.appScore}
                             style={{ fontSize: 14, color: 'red' }}
-                            readOnly={!isModifyRepairScore}
+                            readOnly={!isModifyRepairScore || verifyResult == 0}
                             onChangeText={appScore => this.setState({ appScore })}
                             placeholder='请输入修正积分' />
                     </Flex>
@@ -358,7 +357,7 @@ export default class ApproveDetailPage extends BasePage {
                             maxLength={500}
                         />
                     </View>
-
+ 
                     <Flex justify={'center'}>
                         <Button onPress={() => this.click()} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
