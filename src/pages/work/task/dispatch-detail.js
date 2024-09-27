@@ -201,14 +201,14 @@ export default class DispatchDetailPage extends BasePage {
         })
     };
 
-    //拒派
+    //驳回
     refuse = () => {
         const { id, refuseMemo } = this.state;
         if (!(refuseMemo && refuseMemo.length > 0)) {
-            UDToast.showError('请输入拒派原因');
+            UDToast.showError('请输入驳回原因');
             return;
         }
-        WorkService.serviceHandle('拒派', id, refuseMemo).then(res => {
+        WorkService.serviceHandle('驳回', id, refuseMemo).then(res => {
             UDToast.showInfo('操作成功');
             this.props.navigation.goBack();
         });
@@ -384,7 +384,7 @@ export default class DispatchDetailPage extends BasePage {
                         <TextareaItem
                             rows={4}
                             autoHeight
-                            placeholder='请输入'
+                            placeholder='请输入派单说明'
                             style={{ width: ScreenUtil.deviceWidth() - 32 }}
                             onChange={dispatchMemo => this.setState({ dispatchMemo })}
                             value={this.state.dispatchMemo}
@@ -414,7 +414,7 @@ export default class DispatchDetailPage extends BasePage {
                                 marginLeft: 50,
                                 borderWidth: 0,
                                 height: 40
-                            }}>拒派</Button>
+                            }}>驳回</Button>
                     </Flex>
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
                 </ScrollView>
@@ -431,7 +431,7 @@ export default class DispatchDetailPage extends BasePage {
                                 <View style={{ height: 110, width: 300 }}>
                                     <TextareaItem
                                         style={{ height: 100 }}
-                                        placeholder='请输入拒派原因'
+                                        placeholder='请输入驳回原因'
                                         maxLength={500}
                                         onChange={value => this.setState({ refuseMemo: value })}
                                         value={this.state.refuseMemo}

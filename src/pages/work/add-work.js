@@ -213,8 +213,8 @@ class AddWorkPage extends BasePage {
             UDToast.showError(title);
             return;
         }
-
-        if (value == '') {
+ 
+        if (!(value && value.length > 0)) {
             UDToast.showError('请输入内容');
             return;
         }

@@ -166,6 +166,7 @@ export default {
         senderName,
         repairMajorId,
         repairMajorName,
+        contents,
         continueMemo
     ) {
         let params = {
@@ -175,6 +176,7 @@ export default {
             senderName,
             repairMajorId,
             repairMajorName,
+            contents,
             continueMemo
         };
         let url = '/api/MobileMethod/MContinueRepair';
@@ -203,7 +205,7 @@ export default {
         else if (handle === '闭单') {
             url = '/api/MobileMethod/MFinish';
         }
-        else if (handle === '拒派') {
+        else if (handle === '驳回') {
             url = '/api/MobileMethod/MRefuse';
         }
         else if (handle === '派单') {

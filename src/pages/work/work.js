@@ -439,13 +439,13 @@ export default class WorkPage extends BasePage {
                                     this.props.navigation.push('taskDone', {
                                         'data': {
                                             type: '9',
-                                            title: '已拒派列表'
+                                            title: '已驳回列表'
                                         }
                                     })
                                 }}>
                                     <Flex direction='column' style={{ width: '25%' }}>
                                         <Text style={styles.top}>{data.myrefuse}</Text>
-                                        <Text style={styles.bottom}>已拒派</Text>
+                                        <Text style={styles.bottom}>已驳回</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
 

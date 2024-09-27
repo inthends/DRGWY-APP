@@ -219,7 +219,6 @@ export default class ServiceDeskDetailPage extends BasePage {
             UDToast.showError('请输入说明');
             return;
         }
-
         Alert.alert(
             '请确认',
             '是否' + handle + '？',
@@ -239,6 +238,12 @@ export default class ServiceDeskDetailPage extends BasePage {
 
     toRepair = () => {
         const { id, isQD, selectPerson, repairmajor, convertMemo, contents } = this.state;
+
+        if (contents == '') {
+            UDToast.showError('请输入事项');
+            return;
+        }
+
         if (repairmajor == null || repairmajor.id == null) {
             UDToast.showError('请选择维修专业');
             return;
@@ -281,14 +286,19 @@ export default class ServiceDeskDetailPage extends BasePage {
 
     //转投诉
     toComplaint = () => {
+        const { id, contents, convertMemo } = this.state;
+        if (contents == '') {
+            UDToast.showError('请输入事项');
+            return;
+        }
+
         Alert.alert(
             '请确认',
             '是否转投诉？',
             [{ text: '取消', tyle: 'cancel' },
             {
                 text: '确定',
-                onPress: () => {
-                    const { id, convertMemo } = this.state;
+                onPress: () => { 
                     WorkService.changeToComplaint(id, convertMemo).then(res => {
                         this.props.navigation.goBack();
                     }).catch(err => {
@@ -301,7 +311,17 @@ export default class ServiceDeskDetailPage extends BasePage {
 
     //续派
     toContinue = () => {
-        const { id, isQD, selectPerson, repairmajor, continueMemo } = this.state;
+        const { id, isQD,
+            selectPerson,
+            repairmajor,
+            contents,
+            continueMemo } = this.state;
+
+        if (contents == '') {
+            UDToast.showError('请输入事项');
+            return;
+        }
+
         if (repairmajor == null || repairmajor.id == null) {
             UDToast.showError('请选择维修专业');
             return;
@@ -309,11 +329,6 @@ export default class ServiceDeskDetailPage extends BasePage {
 
         if (selectPerson == null) {
             UDToast.showError('请选择派单人');
-            return;
-        }
-
-        if (continueMemo == '') {
-            UDToast.showError('请输入说明');
             return;
         }
 
@@ -331,6 +346,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                         senderName = selectPerson ? selectPerson.name : null,
                         repairmajor.id,
                         repairmajor.name,
+                        contents,
                         continueMemo
                     ).then(res => {
                         this.props.navigation.goBack();
@@ -610,18 +626,19 @@ export default class ServiceDeskDetailPage extends BasePage {
                     }
 
                     {detail.status === 1 ?
-                        <TextareaItem
-                            rows={4}
-                            autoHeight
-                            maxLength={500}
-                            placeholder='请输入事项'
-                            onChange={contents => this.setState({ contents })}
-                            value={this.state.contents}
-                            style={{
-                                width: ScreenUtil.deviceWidth() - 150,
-                                fontSize: 14
-                            }}
-                        />
+                        <View style={{
+                            margin: 15
+                        }}>
+                            <TextareaItem
+                                rows={4}
+                                autoHeight
+                                maxLength={500}
+                                placeholder='请输入事项'
+                                onChange={contents => this.setState({ contents })}
+                                value={this.state.contents}
+                                style={{ width: ScreenUtil.deviceWidth() - 32 }}
+                            />
+                        </View>
                         : <Text style={styles.desc}>{detail.contents}</Text>}
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
@@ -959,19 +976,33 @@ export default class ServiceDeskDetailPage extends BasePage {
                                                 </Flex>
                                             </TouchableWithoutFeedback>
 
-                                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                                            {/* <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                                                 <TextInput
                                                     maxLength={500}
-                                                    placeholder='请输入说明'
+                                                    placeholder='请输入转单说明'
                                                     multiline
                                                     onChangeText={convertMemo => this.setState({ convertMemo })}
                                                     value={this.state.convertMemo}
                                                     style={{ textAlignVertical: 'top', height: 70 }}
                                                     numberOfLines={4}>
                                                 </TextInput>
-                                            </Flex>
+                                            </Flex> */}
+
+                                            <View style={{ height: 110, width: 300 }}>
+                                                <TextareaItem
+                                                    rows={4}
+                                                    autoHeight
+                                                    maxLength={500}
+                                                    style={{ height: 100 }}
+                                                    placeholder='请输入转单说明'
+                                                    onChange={convertMemo => this.setState({ convertMemo })}
+                                                    value={this.state.convertMemo}
+                                                />
+                                            </View>
 
                                         </CommonView>
+
+
                                         <Flex style={{ marginTop: 15 }}>
                                             <Button onPress={this.toRepair} type={'primary'}
                                                 activeStyle={{ backgroundColor: Macro.work_blue }}
@@ -1019,7 +1050,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                                                 autoHeight
                                                 maxLength={500}
                                                 style={{ height: 100 }}
-                                                placeholder='请输入说明'
+                                                placeholder='请输入转单说明'
                                                 onChangeText={convertMemo => this.setState({ convertMemo })}
                                                 value={this.state.convertMemo}
                                             />
@@ -1111,7 +1142,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                                                 <TextInput
                                                     maxLength={500}
-                                                    placeholder='请输入说明'
+                                                    placeholder='请输入派单说明'
                                                     multiline
                                                     onChangeText={continueMemo => this.setState({ continueMemo })}
                                                     value={this.state.continueMemo}
