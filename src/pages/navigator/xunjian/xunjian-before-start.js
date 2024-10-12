@@ -52,8 +52,7 @@ class XunjianBeforeStart extends BasePage {
                 this.setState({ items });
             });
         }
-        else {
-
+        else { 
             //const items = this.props.xunJianData.scanLists.filter(item => item.pointId === pointId);
             const { xunJianData, xunJianAction } = this.props;
             //过滤已经完成的，任务id存在巡检结果里面的数据属于完成的
@@ -62,7 +61,6 @@ class XunjianBeforeStart extends BasePage {
             );
             this.setState({ items });
             //alert('离线巡检数据'+ items.length);
-
         }
     };
 

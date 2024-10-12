@@ -54,25 +54,37 @@ class XunJianPage extends BasePage {
 
     callBack = (pointId) => {
 
+        if (this.props.hasNetwork) {
 
-        //判断巡检点位状态
-        XunJianService.checkPollingState(pointId).then(res => {
+            //判断巡检点位状态
+            XunJianService.checkPollingState(pointId).then(res => {
+                if (res == null) {
+                    UDToast.showError('点位不存在');
+                    return;
+                }
+                if (res.state == '作废') {
+                    UDToast.showError('点位已经作废');
+                    return;
+                }
+                if (res.state == '历史') {
+                    UDToast.showError('点位为历史状态，无法巡检');
+                    return;
+                }
+                this.setState({
+                    pointId
+                }, () => {
+                    let person = this.state.person || {};
+                    this.props.navigation.navigate('xunjianBeforeStart', {
+                        data: {
+                            person,
+                            pointId
+                        }
+                    });
+                });
+            });
 
-            if (res == null) {
-                UDToast.showError('点位不存在');
-                return;
-            }
-
-            if (res.state == '作废') {
-                UDToast.showError('点位已经作废');
-                return;
-            }
-
-            if (res.state == '历史') {
-                UDToast.showError('点位为历史状态，无法巡检');
-                return;
-            }
-
+        } else { 
+            //离线巡检，不判断点位状态
             this.setState({
                 pointId
             }, () => {
@@ -84,8 +96,7 @@ class XunJianPage extends BasePage {
                     }
                 });
             });
-
-        });
+        }
 
     };
 
@@ -111,13 +122,12 @@ class XunJianPage extends BasePage {
         // )
 
 
- 
         //test 需要注释掉
         // let person = this.state.person || {};
         // this.props.navigation.navigate('xunjianBeforeStart', {
         //     'data': {
         //         person,
-        //         pointId: '7f1a7d4b-7775-4cf6-9b5a-aab22bf4b998'
+        //         pointId: 'f94af7b8-0d7c-40e0-be3c-5183f3390bd0'
         //     }
         // });
 

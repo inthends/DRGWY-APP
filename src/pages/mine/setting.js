@@ -167,8 +167,7 @@ class SettingPage extends BasePage {
             }
         }
 
-        if (xunJians.length > 0) {
-
+        if (xunJians.length > 0) { 
             //alert('上传巡检数据'+ xunJians.length);
             this.loading = UDToast.showLoading('正在上传中...');
             Promise.all(xunJians.map(item => {

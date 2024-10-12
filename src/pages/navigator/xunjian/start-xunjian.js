@@ -106,12 +106,20 @@ class StartXunJianPage extends BasePage {
                 {
                     text: '确定',
                     onPress: () => {
-                        XunJianService.deletePollingFile(url).then(res => {
+                        if (this.props.hasNetwork) {
+                            XunJianService.deletePollingFile(url).then(res => {
+                                let index = this.state.images.indexOf(url);
+                                let myimages = [...this.state.images];
+                                myimages.splice(index, 1);
+                                this.setState({ images: myimages });
+                            });
+                        } else {
+                            //没有网络，直接移除数组里面的图片
                             let index = this.state.images.indexOf(url);
                             let myimages = [...this.state.images];
                             myimages.splice(index, 1);
                             this.setState({ images: myimages });
-                        });
+                        }
                     }
                 }
             ],
@@ -120,8 +128,7 @@ class StartXunJianPage extends BasePage {
     }
 
     submit = () => {
-        const { id, person, address, item, inspectData } = this.state;
-        const { data } = this.state;
+        const { id, person, address, item, inspectData, data, images } = this.state;
         let newInspectData = [];
         if (inspectData.length === 0) {
             try {
@@ -162,7 +169,8 @@ class StartXunJianPage extends BasePage {
         }
 
         if (this.props.hasNetwork) {
-            if (this.state.images.length > 1) {
+
+            if (images.length > 1) {
                 let arrStr = JSON.stringify(newInspectData);
                 XunJianService.xunjianExecute(id, person.id, person.name, arrStr).then(res => {
                     this.props.navigation.goBack();
@@ -174,7 +182,8 @@ class StartXunJianPage extends BasePage {
 
         } else {
             //离线缓存巡检结果
-            let images = this.state.images.filter(item => item.icon.fileUri && item.icon.fileUri.length > 0);
+            let myimages = [];
+            myimages = images && images.filter(item => item.fileUri && item.fileUri.length > 0);
             this.props.saveXunJianAction({
                 [item.id]: {
                     xunjianParams: {
@@ -184,7 +193,7 @@ class StartXunJianPage extends BasePage {
                         inspectData: newInspectData//巡检任务明细
                     },
                     idForUploadImage: item.id,
-                    images,
+                    images: myimages,
                     address
                 }
             });

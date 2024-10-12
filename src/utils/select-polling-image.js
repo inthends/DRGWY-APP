@@ -35,8 +35,7 @@ export default class SelectPollingImage {
         }
 
 
-        return new Promise((resolve, reject) => {
-
+        return new Promise((resolve, reject) => { 
             //打开直接拍照
             ImagePicker.launchCamera(options, (response) => {
                 if (response.didCancel) {
@@ -55,8 +54,7 @@ export default class SelectPollingImage {
                             if (!!res) {
                                 resolve(res);
                             }
-                        }).catch(error => {
-                        });
+                        }).catch(error => { });
                     } else {
                         //没有网络，暂存
                         resolve({
