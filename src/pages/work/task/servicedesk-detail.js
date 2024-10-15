@@ -238,7 +238,6 @@ export default class ServiceDeskDetailPage extends BasePage {
 
     toRepair = () => {
         const { id, isQD, selectPerson, repairmajor, convertMemo, contents } = this.state;
-
         if (contents == '') {
             UDToast.showError('请输入事项');
             return;
@@ -298,7 +297,7 @@ export default class ServiceDeskDetailPage extends BasePage {
             [{ text: '取消', tyle: 'cancel' },
             {
                 text: '确定',
-                onPress: () => { 
+                onPress: () => {
                     WorkService.changeToComplaint(id, convertMemo).then(res => {
                         this.props.navigation.goBack();
                     }).catch(err => {
@@ -708,6 +707,8 @@ export default class ServiceDeskDetailPage extends BasePage {
                                         <Button onPress={() => {
                                             this.setState({
                                                 showRepair: true,
+                                                repairmajor: null,
+                                                selectPerson: null,
                                                 convertMemo: ''
                                             })
                                         }}
@@ -953,8 +954,8 @@ export default class ServiceDeskDetailPage extends BasePage {
                                                     marginLeft: 10,
                                                     marginRight: 10
                                                 }, ScreenUtil.borderBottom()]}>
-                                                    <Text style={[repairmajor ? { color: '#404145' } :
-                                                        { color: '#999' }]}>{repairmajor ? repairmajor.name : `请选择维修专业`}</Text>
+                                                    <Text style={[repairmajor ? { fontSize: 16, color: '#404145' } :
+                                                        { fontSize: 16, color: '#999' }]}>{repairmajor ? repairmajor.name : `请选择维修专业`}</Text>
                                                     <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
                                                 </Flex>
                                             </TouchableWithoutFeedback>
@@ -987,7 +988,6 @@ export default class ServiceDeskDetailPage extends BasePage {
                                                     numberOfLines={4}>
                                                 </TextInput>
                                             </Flex> */}
-
                                             <View style={{ height: 110, width: 300 }}>
                                                 <TextareaItem
                                                     rows={4}
@@ -999,9 +999,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                                                     value={this.state.convertMemo}
                                                 />
                                             </View>
-
                                         </CommonView>
-
 
                                         <Flex style={{ marginTop: 15 }}>
                                             <Button onPress={this.toRepair} type={'primary'}
@@ -1117,7 +1115,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                                                     marginRight: 10
                                                 }, ScreenUtil.borderBottom()]}>
                                                     <Text style={[repairmajor ? { color: '#404145' } :
-                                                        { color: '#999' }]}>{repairmajor ? repairmajor.name : `请选择维修专业`}</Text>
+                                                        { fontSize: 16, color: '#999' }]}>{repairmajor ? repairmajor.name : `请选择维修专业`}</Text>
                                                     <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
                                                 </Flex>
                                             </TouchableWithoutFeedback>

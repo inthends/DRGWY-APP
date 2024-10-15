@@ -49,19 +49,18 @@ class AddWorkPage extends BasePage {
         this.state = {
             index: 0,
             data: ['报修', '投诉', '咨询', '建议'],
-            // data: ['报修', '报事', '巡场'],
             // images: [{ icon: '' }],
             images: [''],
             recording: false,
             id: common.getGuid(),
-            //fileUrl: null,
             playing: false,
             taskId,
             KeyboardShown: false,
             canSelectAddress: !address,
             address,
             value,
-            isMustServicedeskFile: false
+            isMustServicedeskFile: false,
+            isAutoSend: false//是否自动派单
         };
         this.keyboardDidShowListener = null;
         this.keyboardDidHideListener = null;
@@ -75,12 +74,22 @@ class AddWorkPage extends BasePage {
                     const { address, value } = obj.state.params.data || {};
                     this.setState({ address, value });
                 }
+
+                if (obj.state.params && obj.state.params.repairmajor) {
+                    const { repairmajor } = obj.state.params.repairmajor || {};
+                    this.setState({ repairmajor });
+                }
             }
         );
 
         //获取附件是否必填验证 
         WorkService.getSetting('isMustServicedeskFile').then(res => {
             this.setState({ isMustServicedeskFile: res });
+        });
+
+        //获取是否自动派单
+        WorkService.getSetting('isAutoSend').then(res => {
+            this.setState({ isAutoSend: res });
         });
     }
 
@@ -175,8 +184,7 @@ class AddWorkPage extends BasePage {
                 images = images.filter((item, index) => index !== images.length - 1);
             }
             this.setState({ images });
-        }).catch(error => {
-        });
+        }).catch(error => { });
     };
 
     //删除附件
@@ -206,21 +214,27 @@ class AddWorkPage extends BasePage {
     }
 
     submit = () => {
-        const { id, data, index, address, value, taskId, isMustServicedeskFile, images } = this.state;
-        
+        const { id, data, index, address, value, taskId, isMustServicedeskFile, images, isAutoSend, repairmajor } = this.state;
+
         if (address == null || address.allName == null) {
             const title = '请选择' + data[index] + '地址';
             UDToast.showError(title);
             return;
         }
- 
+
+
+        if (isAutoSend && (repairmajor == null || repairmajor.id == null)) {
+            UDToast.showError('请选择维修专业');
+            return;
+        }
+
         if (!(value && value.length > 0)) {
             UDToast.showError('请输入内容');
             return;
         }
 
         if (isMustServicedeskFile == true && images.length == 1) {
-            UDToast.showError('请上传附件');
+            UDToast.showError('请上传图片');
             return;
         }
 
@@ -238,7 +252,9 @@ class AddWorkPage extends BasePage {
             address: address.allName,
             contents: value,
             isAdd: true,
-            taskId: this.state.taskId
+            taskId: this.state.taskId,
+            repairMajorId: repairmajor ? repairmajor.id : null,
+            repairMajor: repairmajor ? repairmajor.name : null
         };
         if (this.props.hasNetwork || !taskId) {
             WorkService.saveForm(params).then(res => {
@@ -275,9 +291,9 @@ class AddWorkPage extends BasePage {
     // }
 
     render() {
-        const { data, index, images, address, canSelectAddress } = this.state;
-        const title = data[index];
-        const title2 = '请输入' + title + '内容';
+        const { data, index, images, address, canSelectAddress, isAutoSend, repairmajor } = this.state;
+        //const title = data[index];
+        //const title2 = '请输入' + title + '内容';
         const width = (ScreenUtil.deviceWidth() - 5 * 20) / 4.0;
         const height = (ScreenUtil.deviceWidth() - 5 * 20) / 4.0;
         return (
@@ -333,23 +349,43 @@ class AddWorkPage extends BasePage {
                                         <Text style={[address && address.allName ? { color: '#404145', fontSize: 16 } : {
                                             color: '#999',
                                             fontSize: 16,
-                                        }]}>{address && address.allName ? address.allName : `请选择${title}地址`}</Text>
+                                        }]}>{address && address.allName ? address.allName :
+                                            //`请选择${title}地址`
+                                            '请选择地址'
+                                            }</Text>
                                         <LoadImage style={{ width: 6, height: 11 }}
                                             defaultImg={require('../../static/images/address/right.png')} />
                                     </Flex>
                                 </TouchableWithoutFeedback>
                             </Flex>
 
+                            {isAutoSend ?
+                                <TouchableWithoutFeedback
+                                    onPress={() => this.props.navigation.navigate('selectRepairMajor', { parentName: 'addWork' })}>
+                                    <Flex justify="between" style={[{
+                                        paddingTop: 15,
+                                        paddingBottom: 15,
+                                        marginLeft: 10,
+                                        marginRight: 10,
+                                        width: ScreenUtil.deviceWidth() - 30
+                                    }, ScreenUtil.borderBottom()]}>
+                                        <Text style={[repairmajor ? { fontSize: 16, color: '#404145' } :
+                                            { fontSize: 16, color: '#999' }]}>{repairmajor ? repairmajor.name : `请选择维修专业`}</Text>
+                                        <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../static/images/address/right.png')} />
+                                    </Flex>
+                                </TouchableWithoutFeedback> : null}
+
                             <TextareaItem
                                 rows={12}
-                                placeholder={title2}
+                                //placeholder={title2}
+                                placeholder='请输入内容'
                                 //autoHeight
                                 style={[{
                                     color: '#404145',
                                     fontSize: 16,
                                     paddingTop: 15,
                                     width: ScreenUtil.deviceWidth() - 30,
-                                    height: ScreenUtil.deviceHeight() - 350,
+                                    height: isAutoSend ? ScreenUtil.deviceHeight() - 420 : ScreenUtil.deviceHeight() - 370,
                                 }, ScreenUtil.borderBottom()]}
                                 onChange={value => this.setState({ value })}
                                 value={this.state.value}

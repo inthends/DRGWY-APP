@@ -50,9 +50,7 @@ class EcheckAddPage extends BasePage {
             checkRole,
             checkRoleId
         } = common.getValueFromProps(this.props) || {};
-
-        //alert(checkRole);
-
+        //alert(checkRole); 
         this.state = {
             id,
             detailId: '',
@@ -61,6 +59,7 @@ class EcheckAddPage extends BasePage {
             pageIndex: 1,
             memo: '',
             address: null,
+            repairmajor: null,
             selectPerson: null,
             checkMemo: '',
             rectification: '',
@@ -76,6 +75,7 @@ class EcheckAddPage extends BasePage {
             roleIndex: 0,//角色在数组里面的序号
             checkRole: checkRole,//'',//检查的角色
             checkRoleId: checkRoleId,//'',
+            isAutoSend: false,//是否自动派单
             operateType: 'add'//明细操作类型，添加还是修改
         };
     }
@@ -103,7 +103,12 @@ class EcheckAddPage extends BasePage {
             //选择的角色id
             // let roleIndex = roles.findIndex(item => item.id == this.state.checkRoleId);
             // this.setState({ roleIndex });//设置角色序号
-            //alert('roleIndex:' + roleIndex);
+            // alert('roleIndex:' + roleIndex); 
+        });
+
+        //获取是否自动派单
+        WorkService.getSetting('isAutoSend').then(res => {
+            this.setState({ isAutoSend: res });
         });
 
         this.viewDidAppear = this.props.navigation.addListener(
@@ -112,6 +117,11 @@ class EcheckAddPage extends BasePage {
                 if (obj.state.params) {
                     const { address } = obj.state.params.data || {};
                     this.setState({ address });
+                }
+
+                if (obj.state.params.repairmajor) {
+                    const { repairmajor } = obj.state.params.repairmajor || {};
+                    this.setState({ repairmajor });
                 }
             }
         );
@@ -227,7 +237,7 @@ class EcheckAddPage extends BasePage {
         );
     };
 
-    _renderItem = ({ item, index }) => { 
+    _renderItem = ({ item, index }) => {
         return (
             <Flex direction='column' align={'start'}
                 style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
@@ -263,14 +273,22 @@ class EcheckAddPage extends BasePage {
                 <Flex align={'start'} direction={'column'}>
                     <Flex justify='between'
                         style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
-                        <Text>责任人：{item.dutyUserName} {item.postName}</Text>
+                        <Text>责任人：{item.dutyUserName} {item.postName}，维修专业：{item.repairMajor}</Text>
                     </Flex>
                     <Text style={{
                         paddingLeft: 20,
                         paddingRight: 20,
-                        paddingBottom: 20,
+                        paddingBottom: 15,
                         color: '#666'
-                    }}>{item.memo}</Text>
+                    }}>检查情况：{item.memo}</Text>
+
+                    <Text style={{
+                        paddingLeft: 20,
+                        paddingRight: 20,
+                        paddingBottom: 5,
+                        color: '#666'
+                    }}>整改要求：{item.rectification}</Text>
+
                 </Flex>
                 <ListImages images={item.images}
                     lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, item.images)} />
@@ -301,9 +319,8 @@ class EcheckAddPage extends BasePage {
     };
 
     addDetail = () => {
-        const { id, detailId, checkRole, checkRoleId, memo,
-            address, selectPerson, checkMemo,
-            rectification, operateType } = this.state;
+        const { id, detailId, checkRole, checkRoleId, memo, address, selectPerson, checkMemo,
+            rectification, operateType, repairmajor, isAutoSend } = this.state;
 
         if (!checkRole) {
             UDToast.showError('请选择检查角色');
@@ -317,6 +334,11 @@ class EcheckAddPage extends BasePage {
 
         if (!selectPerson) {
             UDToast.showError('请选择责任人');
+            return;
+        }
+
+        if (isAutoSend && (repairmajor == null || repairmajor.id == null)) {
+            UDToast.showError('请选择维修专业');
             return;
         }
 
@@ -336,6 +358,8 @@ class EcheckAddPage extends BasePage {
             address.allName,
             selectPerson.id,
             selectPerson.name,
+            repairmajor ? repairmajor.id : null,
+            repairmajor ? repairmajor.name : null,
             checkMemo,
             rectification,
             operateType
@@ -398,7 +422,7 @@ class EcheckAddPage extends BasePage {
     };
 
     render() {
-        const { detail, dataInfo, address, selectPerson, roles, checkRoleId, images } = this.state;
+        const { detail, dataInfo, address, selectPerson, repairmajor, roles, checkRoleId, images, isAutoSend, showAdd } = this.state;
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
@@ -451,7 +475,7 @@ class EcheckAddPage extends BasePage {
                             style={{ fontSize: 16, textAlignVertical: 'top' }}
                             onChangeText={memo => this.setState({ memo })}
                             value={this.state.memo}
-                            numberOfLines={4}>
+                            numberOfLines={3}>
                         </TextInput>
                     </Flex>
                     <FlatList
@@ -490,6 +514,7 @@ class EcheckAddPage extends BasePage {
                                 images: [''],
                                 address: address,//设置默认值
                                 selectPerson: null,
+                                repairmajor: null,
                                 checkMemo: '',
                                 rectification: '',
                                 operateType: 'add'
@@ -507,7 +532,7 @@ class EcheckAddPage extends BasePage {
                 </Flex>
 
                 {
-                    this.state.showAdd && (
+                    showAdd && (
                         <View style={styles.mengceng}>
                             <TouchableWithoutFeedback onPress={() => {
                                 Keyboard.dismiss();//隐藏键盘
@@ -515,7 +540,7 @@ class EcheckAddPage extends BasePage {
                                 <Flex direction={'column'} justify={'center'} align={'center'}
                                     style={{ flex: 1, padding: 25, backgroundColor: 'rgba(178,178,178,0.5)' }}>
                                     <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
-                                        <CommonView style={{ height: 350, width: 320 }}>
+                                        <CommonView style={{ height: isAutoSend ? 380 : 350, width: 320 }}>
                                             <TouchableWithoutFeedback
                                                 onPress={() => this.props.navigation.navigate('selectAddress',
                                                     {
@@ -552,6 +577,21 @@ class EcheckAddPage extends BasePage {
                                                     <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
                                                 </Flex>
                                             </TouchableWithoutFeedback>
+
+                                            {isAutoSend ?
+                                                <TouchableWithoutFeedback
+                                                    onPress={() => this.props.navigation.navigate('selectRepairMajor', { parentName: 'checkAdd' })}>
+                                                    <Flex justify="between" style={[{
+                                                        paddingTop: 15,
+                                                        paddingBottom: 15,
+                                                        marginLeft: 10,
+                                                        marginRight: 10
+                                                    }, ScreenUtil.borderBottom()]}>
+                                                        <Text style={[repairmajor ? { fontSize: 16, color: '#404145' } :
+                                                            {fontSize: 16,  color: '#999' }]}>{repairmajor ? repairmajor.name : `请选择维修专业`}</Text>
+                                                        <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
+                                                    </Flex>
+                                                </TouchableWithoutFeedback> : null}
 
                                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                                                 <TextInput

@@ -3,7 +3,7 @@ import React from 'react';
 import {
     Text,
     TouchableOpacity,
-    StyleSheet, 
+    StyleSheet,
     FlatList,
     Modal
 } from 'react-native';
@@ -144,14 +144,20 @@ export default class EcheckDetailPage extends BasePage {
                 <Flex align={'start'} direction={'column'}>
                     <Flex justify='between'
                         style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
-                        <Text>责任人：{item.dutyUserName} {item.postName}</Text>
+                        <Text>责任人：{item.dutyUserName} {item.postName}，维修专业：{item.repairMajor}</Text>
                     </Flex>
+                    <Text style={{
+                        paddingLeft: 20,
+                        paddingRight: 20,
+                        paddingBottom: 10,
+                        color: '#666'
+                    }}>检查情况：{item.memo}</Text>
                     <Text style={{
                         paddingLeft: 20,
                         paddingRight: 20,
                         paddingBottom: 5,
                         color: '#666'
-                    }}>{item.memo}</Text>
+                    }}>整改要求：{item.rectification}</Text>
                 </Flex>
                 <ListImages images={item.images} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, item.images)} />
             </Flex>
@@ -163,34 +169,33 @@ export default class EcheckDetailPage extends BasePage {
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 {/* <ScrollView> */}
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>{detail.billCode}</Text>
-                        <Text style={styles.right}>{detail.statusName}</Text>
-                    </Flex>
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>检查人：{detail.checkUserName} {detail.postName}</Text>
-                        <Text style={styles.right}>{detail.billDate}</Text>
-                    </Flex>
+                <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                    <Text style={styles.left}>{detail.billCode}</Text>
+                    <Text style={styles.right}>{detail.statusName}</Text>
+                </Flex>
+                <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                    <Text style={styles.left}>检查人：{detail.checkUserName} {detail.postName}</Text>
+                    <Text style={styles.right}>{detail.billDate}</Text>
+                </Flex>
+                <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                    <Text style={styles.left}>检查组：{detail.checkRole}</Text>
+                </Flex>
+                <Text style={[styles.every, ScreenUtil.borderBottom()]}>{detail.memo}</Text>
 
-                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>检查组：{detail.checkRole}</Text>
-                    </Flex>
-                    <Text style={[styles.every, ScreenUtil.borderBottom()]}>{detail.memo}</Text>
-
-                    <FlatList
-                        data={dataInfo.data}
-                        renderItem={this._renderItem}
-                        style={styles.list}
-                        keyExtractor={(item) => item.id}
-                        //必须
-                        onEndReachedThreshold={0.1}
-                        refreshing={this.state.refreshing}
-                        onRefresh={this.onRefresh}//下拉刷新
-                        onEndReached={this.loadMore}//底部往下拉翻页
-                        onMomentumScrollBegin={() => this.canLoadMore = true}
-                        ListEmptyComponent={<NoDataView />}
-                    />
-                    <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
+                <FlatList
+                    data={dataInfo.data}
+                    renderItem={this._renderItem}
+                    style={styles.list}
+                    keyExtractor={(item) => item.id}
+                    //必须
+                    onEndReachedThreshold={0.1}
+                    refreshing={this.state.refreshing}
+                    onRefresh={this.onRefresh}//下拉刷新
+                    onEndReached={this.loadMore}//底部往下拉翻页
+                    onMomentumScrollBegin={() => this.canLoadMore = true}
+                    ListEmptyComponent={<NoDataView />}
+                />
+                <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
                 {/* </ScrollView> */}
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}

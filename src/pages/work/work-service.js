@@ -43,6 +43,8 @@ export default {
         allName,
         dutyUserId,
         dutyUserName,
+        repairMajorId,
+        repairMajor,
         checkMemo,
         rectification,
         operateType) {
@@ -56,6 +58,8 @@ export default {
             allName,
             dutyUserId,
             dutyUserName,
+            repairMajorId,
+            repairMajor,
             checkMemo,
             rectification,
             operateType

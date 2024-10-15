@@ -80,7 +80,7 @@ export default class DispatchDetailPage extends BasePage {
             'didFocus',
             (obj) => {
 
-                //选择维修专业
+                //获取维修专业弹出界面的返回值
                 if (obj.state.params.repairmajor) {
                     const { repairmajor } = obj.state.params.repairmajor || {};
                     this.setState({ repairmajor });
