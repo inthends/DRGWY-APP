@@ -245,16 +245,15 @@ class AddWorkPage extends BasePage {
         this.canSubmit = false;//防止重复提交
         const params = {
             id,
-            keyvalue: id,
-            //source: '员工APP',
+            keyvalue: id, 
             billType: data[index],
             roomId: address.id,
             address: address.allName,
             contents: value,
             isAdd: true,
             taskId: this.state.taskId,
-            repairMajorId: repairmajor ? repairmajor.id : null,
-            repairMajor: repairmajor ? repairmajor.name : null
+            repairMajorId: repairmajor ? repairmajor.id : null
+            //repairMajor: repairmajor ? repairmajor.name : null
         };
         if (this.props.hasNetwork || !taskId) {
             WorkService.saveForm(params).then(res => {
