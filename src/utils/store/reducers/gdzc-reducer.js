@@ -1,5 +1,4 @@
-import {ACTIONS} from '../action-types/action-types';
-
+import { ACTIONS } from '../action-types/action-types';
 const initialState = {
     gdzcData: {
         allData:{},
@@ -26,4 +25,5 @@ const gdzcReducer = (state = initialState, action) => {
             return state;
     }
 };
+
 export default gdzcReducer;

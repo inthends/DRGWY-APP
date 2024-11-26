@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React  from 'react';
 import {
     Text,
     StyleSheet,
@@ -6,8 +6,7 @@ import {
     ImageBackground,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    Animated,
-    View
+    Animated
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Flex, Icon, Checkbox } from '@ant-design/react-native';

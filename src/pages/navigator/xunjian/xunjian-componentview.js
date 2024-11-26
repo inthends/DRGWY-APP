@@ -44,22 +44,18 @@ export default class XunJianDetailViewPage extends BasePage {
                             <Flex direction={'column'}
                                 align={'start'}
                                 style={styles.contentRect}> 
-
-                                <Text style={styles.moreText}>{item.name}</Text>
-
+                                <Text style={styles.moreText}>{item.name}</Text> 
                                 <View style={{ flexDirection: 'row', paddingTop: 5 }} >
                                     <Text style={styles.blueText}>方法：</Text>
                                     <Text style={styles.moreText2}>{item.checkWay}</Text>
-                                </View>
-
+                                </View> 
                                 <View style={{ flexDirection: 'row', paddingTop: 5 }} >
                                     <Text style={styles.blueText}>标准：</Text>
                                     <Text style={styles.moreText2}>{item.criterion}</Text>
-                                </View>
-
+                                </View> 
                                 <View style={{ flexDirection: 'row', paddingTop: 5 }}>
                                     <Text style={styles.blueText}>结果：</Text>
-                                    <Text style={styles.moreText2}>{item.result === 1 ? '正常' : '异常'} {item.memo}</Text>
+                                    <Text style={styles.moreText2}>{item.result ? (item.result === 1 ? '正常' : '异常') : ''} {item.memo}</Text>
                                     {/* <View style={{ flexDirection: 'column', paddingTop: 5 }}> 
                                         <View flexDirection={'row'} marginTop={5} style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
                                             <TouchableWithoutFeedback >
@@ -90,8 +86,7 @@ export default class XunJianDetailViewPage extends BasePage {
                                             ></TextInput>
                                         </View>
                                     </View> */}
-                                </View>
-
+                                </View> 
                             </Flex>
                         </Fragment>
                     })}

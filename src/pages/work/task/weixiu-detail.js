@@ -1,4 +1,4 @@
-//工作台里面，待回访点击跳转的维修单，只能查看
+//工作台里面，只能查看
 import React from 'react';
 import {
     Text,
@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     StyleSheet,
     ScrollView,
+    FlatList,
     Modal
 } from 'react-native';
 import BasePage from '../../base/base';
@@ -19,6 +20,7 @@ import OperationRecords from '../../../components/operationrecords';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import Macro from '../../../utils/macro';
+import moment from 'moment';
 
 export default class WeixiuDetailPage extends BasePage {
 
@@ -48,7 +50,14 @@ export default class WeixiuDetailPage extends BasePage {
             detail: {},
             communicates: [],
             lookImageIndex: 0,
-            visible: false
+            visible: false,
+
+            //费用明细
+            pageIndex: 1,
+            refreshing: false,
+            dataInfo: {
+                data: []
+            }
         };
     }
 
@@ -93,6 +102,8 @@ export default class WeixiuDetailPage extends BasePage {
                     communicates: res
                 });
             });
+
+            this.getList();
         });
     };
 
@@ -130,12 +141,80 @@ export default class WeixiuDetailPage extends BasePage {
         });
     };
 
+
+    //费用明细
+    getList = () => {
+        const { detail } = this.state;
+        WorkService.serverFeeList(this.state.pageIndex, detail.relationId).then(dataInfo => {
+            if (dataInfo.pageIndex > 1) {
+                dataInfo = {
+                    ...dataInfo,
+                    data: [...this.state.dataInfo.data, ...dataInfo.data]
+                };
+            }
+            this.setState({
+                dataInfo: dataInfo,
+                pageIndex: dataInfo.pageIndex,
+                refreshing: false
+            }, () => {
+            });
+        }).catch(err => this.setState({ refreshing: false }));
+    };
+
+    loadMore = () => {
+        const { data, total, pageIndex } = this.state.dataInfo;
+        if (this.canLoadMore && data.length < total) {
+            this.canLoadMore = false;
+            this.setState({
+                refreshing: true,
+                pageIndex: pageIndex + 1
+                // canLoadMore: false,
+            }, () => {
+                this.getList();
+            });
+        }
+    };
+
+    _renderItem = ({ item, index }) => {
+        return (
+            <Flex
+                direction='column' align={'start'}
+                style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
+                <Flex justify='between' style={{ width: '100%' }}>
+                    <Text style={styles.title}>{item.feeName}</Text>
+                    {item.status == 0 ? <Text style={styles.statusred}>未收</Text> : <Text style={styles.statusblue}>已收</Text>}
+                </Flex>
+                <Flex style={styles.line} />
+                <Flex align={'start'} direction={'column'}>
+                    <Flex justify='between'
+                        style={{ width: '100%', paddingTop: 5, paddingLeft: 15, paddingRight: 15 }}>
+                        <Text style={{ lineHeight: 20 }}>应收金额：{item.amount}
+                            ，减免金额：{item.reductionAmount}
+                            ，已收金额：{item.receiveAmount}
+                            ，未收金额：{item.lastAmount}</Text>
+                    </Flex>
+                    <Flex justify='between'
+                        style={{ width: '100%', paddingTop: 5, paddingBottom: 5, paddingLeft: 15, paddingRight: 15 }}>
+                        {item.beginDate ?
+                            <Text>{moment(item.beginDate).format('YYYY-MM-DD') + '至' + moment(item.endDate).format('YYYY-MM-DD')}</Text> : null
+                        }
+                        <Text>是否推送账单：{item.noticeId ? '是' : '否'} </Text>
+                    </Flex>
+                </Flex>
+            </Flex>
+        );
+    };
+
     render() {
-        const { images,
+        const {
+            images,
             startimages,
             finishimages,
             checkimages,
-            detail, communicates } = this.state;
+            detail,
+            communicates,
+            dataInfo
+        } = this.state;
         // const selectImg = require('../../../static/images/select.png');
         // const noselectImg = require('../../../static/images/no-select.png');
         return (
@@ -167,7 +246,11 @@ export default class WeixiuDetailPage extends BasePage {
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>转单人：{detail.createUserName}，{detail.createDate}</Text>
+                        <Text style={styles.left}>转单人：{detail.createUserName}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>转单时间：{detail.createDate}</Text>
                     </Flex>
 
                     <TouchableWithoutFeedback>
@@ -176,7 +259,7 @@ export default class WeixiuDetailPage extends BasePage {
                             <Text
                                 onPress={() => {
                                     if (detail.sourceType === '服务总台') {
-                                        this.props.navigation.navigate('service', { id: detail.relationId });
+                                        this.props.navigation.navigate('serverDeskView', { id: detail.relationId });
                                     }
                                     else if (detail.sourceType === '维修单') {
                                         //检验不通过关联的旧的维修单
@@ -243,16 +326,16 @@ export default class WeixiuDetailPage extends BasePage {
                         <Text style={styles.left}>完成情况：{detail.achieved}</Text>
                     </Flex>
                     <ListImages images={finishimages} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, finishimages)} />
- 
+
                     {detail.testDate ?//进行了检验
                         <>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                                 <Text style={styles.left}>检验时间：{detail.testDate}</Text>
                             </Flex>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                                <Text style={styles.left}>检验人：{detail.testerName}</Text> 
+                                <Text style={styles.left}>检验人：{detail.testerName}</Text>
                             </Flex>
-                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'> 
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                                 <Text style={styles.right}>检验结果：{detail.testResult == 1 ? '合格' : '不合格'}</Text>
                             </Flex>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
@@ -260,6 +343,23 @@ export default class WeixiuDetailPage extends BasePage {
                             </Flex>
                             <ListImages images={checkimages} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, checkimages)} />
                         </> : null}
+
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>费用明细</Text>
+                    </Flex>
+                    <FlatList
+                        data={dataInfo.data}
+                        renderItem={this._renderItem}
+                        style={styles.list}
+                        keyExtractor={(item) => 'flatList' + item.id}
+                        //必须
+                        onEndReachedThreshold={0.1}
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.onRefresh}//下拉刷新
+                        onEndReached={this.loadMore}//底部往下拉翻页
+                        onMomentumScrollBegin={() => this.canLoadMore = true}
+                    />
 
                     {/* <Communicates communicateClick={this.communicateClick} communicates={communicates} /> */}
                     {/* 维修单显示操作记录，没有沟通记录 */}
@@ -276,6 +376,70 @@ export default class WeixiuDetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
+
+    list: {
+        backgroundColor: Macro.color_white,
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 10
+    },
+
+    card: {
+        borderTopWidth: 1,
+        borderRightWidth: 1,
+        borderBottomWidth: 1,
+        borderTopColor: '#c8c8c8',
+        borderBottomColor: '#c8c8c8',
+        borderRightColor: '#c8c8c8',
+        borderRadius: 5,
+        marginBottom: 10,
+        backgroundColor: 'white',
+        shadowColor: '#00000033',
+        shadowOffset: { h: 10, w: 10 },
+        shadowRadius: 5,
+        shadowOpacity: 0.8
+    },
+
+    blue: {
+        borderLeftColor: Macro.work_blue,
+        borderLeftWidth: 5,
+    },
+
+    orange: {
+        borderLeftColor: Macro.work_orange,
+        borderLeftWidth: 5,
+    },
+
+    title: {
+        paddingTop: 10,
+        color: '#404145',
+        fontSize: 14,
+        paddingBottom: 5,
+        marginLeft: 15,
+        marginRight: 15
+    },
+
+    statusred: {
+        paddingTop: 10,
+        marginRight: 15,
+        paddingBottom: 5,
+        color: Macro.work_red
+    },
+
+    statusblue: {
+        paddingTop: 10,
+        marginRight: 15,
+        paddingBottom: 5,
+        color: Macro.work_blue
+    },
+
+    line: {
+        width: ScreenUtil.deviceWidth() - 30 - 10 * 2,
+        marginLeft: 15,
+        backgroundColor: '#eee',
+        height: 1
+    },
+
     every: {
         marginLeft: 15,
         marginRight: 15,
@@ -291,7 +455,7 @@ const styles = StyleSheet.create({
         color: '#404145'
     },
     desc: {
-        lineHeight:20,
+        lineHeight: 20,
         padding: 15
     }
 });

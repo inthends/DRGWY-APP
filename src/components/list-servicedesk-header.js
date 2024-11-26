@@ -1,21 +1,27 @@
-import React, {Component, Fragment} from 'react';
-import {View, Text,  StyleSheet, Animated,TouchableWithoutFeedback} from 'react-native';
-import {Flex} from '@ant-design/react-native';
+import React, { Component, Fragment } from 'react';
+import { View, Text, StyleSheet, Animated, TouchableWithoutFeedback } from 'react-native';
+import { Flex } from '@ant-design/react-native';
 import ScreenUtil from '../utils/screen-util';
-const single_width = 60;
+const item_width = ScreenUtil.deviceWidth() / 3.0;
+const single_width = 50;
 
-export default class HousingHeader extends Component {
+export default class ListServicedeskHeader extends Component {
     constructor(props) {
         super(props);
+        let index = 0;
+        if (this.props.overdue) {
+            index = parseInt(this.props.overdue) + 1;
+        }
+
+        let value = (item_width) * index + (item_width - single_width) / 2.0;
         this.state = {
-            fadeAnim: new Animated.Value((ScreenUtil.deviceWidth()-(28*2+single_width*3))/2.0),
-            index: 0
+            fadeAnim: new Animated.Value(value),
+            index: index,
         };
     }
 
     tap = (index) => {
-        let value = (28+single_width) * index + (ScreenUtil.deviceWidth()-(28*2+single_width*3))/2.0;
-
+        let value = (item_width) * index + (item_width - single_width) / 2.0; 
         Animated.timing(                  // 随时间变化而执行动画
             this.state.fadeAnim,          // 动画中的变量值
             {
@@ -23,18 +29,23 @@ export default class HousingHeader extends Component {
                 duration: 200             // 让动画持续一段时间
             },
         ).start();
-        this.setState({index: index});
+        const datas = [{ 'title': '全部', value: -1 }, { 'title': '新建', value: 0 }, { 'title': '驳回', value: 1 }];
+        this.setState({ index: index }, () => {
+            if (this.props.onChange) {
+                this.props.onChange(datas[index].value);
+            }
+        });
     };
 
     render() {
-        const datas = [{'title': '收缴率', select: true}, {'title': '欠费账龄'}, {'title': '日收款'}];
+        const datas = [{ 'title': '全部', select: true }, { 'title': '新建' }, { 'title': '驳回' }];
         return (
             <Fragment>
                 <Flex direction={'column'} align={'start'}>
                     <Flex justify={'center'} style={[styles.content, this.props.style]}>
                         {datas.map((item, index) => {
                             return (
-                                <TouchableWithoutFeedback key={item.title} onPress={()=>this.tap(index)}>
+                                <TouchableWithoutFeedback key={item.title} onPress={() => this.tap(index)}>
                                     <View>
                                         <Text style={[index === this.state.index ? styles.title_select : styles.title]}>
                                             {item.title}
@@ -45,7 +56,7 @@ export default class HousingHeader extends Component {
                             );
                         })}
                     </Flex>
-                    <Animated.View style={[styles.line,{marginLeft:this.state.fadeAnim}]}/>
+                    <Animated.View style={[styles.line, { marginLeft: this.state.fadeAnim }]} />
                 </Flex>
             </Fragment>
         );
@@ -59,21 +70,21 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 16,
         color: '#999',
-        paddingLeft: 15,
-        paddingRight: 15,
-        paddingTop: 15
+        width: item_width,
+        paddingTop: 15,
+        textAlign: 'center',
     },
     title_select: {
         fontSize: 16,
         color: '#404145',
-        paddingLeft: 15,
-        paddingRight: 15,
-        paddingTop: 15
+        width: item_width,
+        paddingTop: 15,
+        textAlign: 'center'
     },
     line: {
         height: 2,
         backgroundColor: '#5f96eb',
         width: single_width,
-        marginTop:10
-    },
+        marginTop: 10
+    }
 });

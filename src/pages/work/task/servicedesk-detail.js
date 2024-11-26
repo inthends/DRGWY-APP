@@ -71,7 +71,6 @@ export default class ServiceDeskDetailPage extends BasePage {
             continueMemo: '',//续派说明 
             KeyboardShown: false,
             btnList: [],//按钮权限
-
             //费用明细
             pageIndex: 1,
             refreshing: false,
@@ -290,7 +289,6 @@ export default class ServiceDeskDetailPage extends BasePage {
             UDToast.showError('请输入事项');
             return;
         }
-
         Alert.alert(
             '请确认',
             '是否转投诉？',
@@ -315,7 +313,6 @@ export default class ServiceDeskDetailPage extends BasePage {
             repairmajor,
             contents,
             continueMemo } = this.state;
-
         if (contents == '') {
             UDToast.showError('请输入事项');
             return;
@@ -481,7 +478,6 @@ export default class ServiceDeskDetailPage extends BasePage {
         });
     }
 
-
     //推送账单
     send = (item) => {
         Alert.alert(
@@ -502,35 +498,73 @@ export default class ServiceDeskDetailPage extends BasePage {
             ], { cancelable: false });
     };
 
+    //退款
+    refund = (item) => {
+        if (!item.payId) {
+            UDToast.showError('非在线支付的费用，无法在线退款');
+            return;
+        }
+
+        Alert.alert(
+            '请确认',
+            `您确定要退款${item.feeName}？`,
+            [{ text: '取消', tyle: 'cancel' },
+            {
+                text: '确定',
+                onPress: () => {
+                    WorkService.refundForm(item.receiveId, item.payId).then(res => {
+                        UDToast.showInfo('退款成功');
+                        this.getList();
+                    });
+                }
+            }
+            ], { cancelable: false });
+    }
+
     _renderItem = ({ item, index }) => {
         return (
             <Flex
                 direction='column' align={'start'}
                 style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
                 <Flex justify='between' style={{ width: '100%' }}>
-                    <Text style={styles.title}>{item.feeName}</Text>
-                    <ActionPopover
-                        textStyle={{ fontSize: 14 }}
-                        hiddenImage={true}
-                        onChange={(title) => {
-                            if (title === '作废') {
-                                this.doInvalid(item);
-                            } else if (title === '推送') {
-                                if (item.noticeId) {
-                                    UDToast.showError('该费用已经推送');
-                                    return;
+                    <Flex>
+                        <Text style={styles.title}>{item.feeName}</Text>
+                        {item.status == 0 ? <Text style={styles.statusred}>未收</Text> : <Text style={styles.statusblue}>已收</Text>}
+                    </Flex>
+                    {item.status == 0 ?
+                        <ActionPopover
+                            textStyle={{ fontSize: 14 }}
+                            //hiddenImage={true}
+                            onChange={(title) => {
+                                if (title === '作废') {
+                                    this.doInvalid(item);
+                                } else if (title === '推送') {
+                                    if (item.noticeId) {
+                                        UDToast.showError('该费用已经推送');
+                                        return;
+                                    }
+                                    this.send(item);
                                 }
-                                this.send(item);
-                            }
-                        }}
-                        titles={['推送', '作废']}
-                        visible={true} />
+                            }}
+                            titles={['推送', '作废']}
+                            visible={true} /> :
+
+                        (item.payStatus && item.payStatus == -1 ? null :
+                            <ActionPopover
+                                textStyle={{ fontSize: 14 }}
+                                //hiddenImage={true}
+                                onChange={() => {
+                                    this.refund(item);
+                                }}
+                                titles={['退款']}
+                                visible={true} />)
+                    }
                 </Flex>
                 <Flex style={styles.line} />
                 <Flex align={'start'} direction={'column'}>
                     <Flex justify='between'
-                        style={{ width: '100%', paddingTop: 5, paddingLeft: 15, paddingRight: 15, lineHeight: 20 }}>
-                        <Text>应收金额：{item.amount}
+                        style={{ width: '100%', paddingTop: 5, paddingLeft: 15, paddingRight: 15 }}>
+                        <Text style={{ lineHeight: 20 }}>应收金额：{item.amount}
                             ，减免金额：{item.reductionAmount}
                             ，已收金额：{item.receiveAmount}
                             ，未收金额：{item.lastAmount}</Text>
@@ -540,7 +574,8 @@ export default class ServiceDeskDetailPage extends BasePage {
                         {item.beginDate ?
                             <Text>{moment(item.beginDate).format('YYYY-MM-DD') + '至' + moment(item.endDate).format('YYYY-MM-DD')}</Text> : null
                         }
-                        <Text>是否推送账单：{item.noticeId ? '是' : '否'} </Text>
+                        <Text>账单是否推送：{item.noticeId ? '是' : '否'} </Text>
+                        <Text>是否退款：{item.payStatus && item.payStatus == -1 ? '是' : '否'}</Text>
                     </Flex>
                     {/* <Text style={{
                         paddingLeft: 15,
@@ -569,8 +604,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                     </Flex>
                     <Flex style={[styles.every3, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.address}</Text>
-                    </Flex>
-
+                    </Flex> 
                     <ListImages images={images} lookImage={this.lookImage} />
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>紧急程度：{detail.emergencyLevel}</Text>
@@ -588,7 +622,6 @@ export default class ServiceDeskDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>报单时间：{detail.createDate}</Text>
                     </Flex>
-
                     {detail.returnVisitDate ?
                         <>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
@@ -639,7 +672,6 @@ export default class ServiceDeskDetailPage extends BasePage {
                             />
                         </View>
                         : <Text style={styles.desc}>{detail.contents}</Text>}
-
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>费用明细</Text>
                     </Flex>
@@ -655,7 +687,6 @@ export default class ServiceDeskDetailPage extends BasePage {
                         onEndReached={this.loadMore}//底部往下拉翻页
                         onMomentumScrollBegin={() => this.canLoadMore = true}
                     />
-
                     <Flex justify={'center'}>
                         {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'reply')) ?
                             <Flex justify={'center'}>
@@ -665,18 +696,18 @@ export default class ServiceDeskDetailPage extends BasePage {
                                         value: ''
                                     })
                                 }}
-                                    type={'primary'}
-                                    activeStyle={{ backgroundColor: Macro.work_blue }}
-                                    style={{
-                                        width: 120,
-                                        backgroundColor: Macro.work_blue,
-                                        marginTop: 10,
-                                        marginBottom: 10,
-                                        height: 40
-                                    }}>回复</Button>
+                                type={'primary'}
+                                activeStyle={{ backgroundColor: Macro.work_blue }}
+                                style={{
+                                    width: 120,
+                                    backgroundColor: Macro.work_blue,
+                                    marginTop: 10,
+                                    marginBottom: 10,
+                                    height: 40
+                                }}>回复</Button>
                             </Flex> : null}
 
-                        <Flex justify={'center'}>
+                         <Flex justify={'center'}>
                             <Button onPress={() => {
                                 this.props.navigation.navigate('feeAdd', {
                                     data: {
@@ -1234,6 +1265,21 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         marginRight: 15
     },
+
+    statusred: {
+        paddingTop: 10,
+        marginRight: 15,
+        paddingBottom: 5,
+        color: Macro.work_red
+    },
+
+    statusblue: {
+        paddingTop: 10,
+        marginRight: 15,
+        paddingBottom: 5,
+        color: Macro.work_blue
+    },
+
     line: {
         width: ScreenUtil.deviceWidth() - 30 - 10 * 2,
         marginLeft: 15,

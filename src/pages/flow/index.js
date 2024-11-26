@@ -166,7 +166,6 @@ class ApprovePage extends BasePage {
 
   render() {
     const { todo, read, done, taskType, dataInfo = {} } = this.state;
-
     return (
       <View style={{ flex: 1 }}>
         <Flex
@@ -481,7 +480,6 @@ const styles = StyleSheet.create({
     color: '#404145',
     fontSize: 14
   },
-
 
   note: {
     borderRadius: 4,

@@ -90,8 +90,7 @@ export default class AssistDetailPage extends BasePage {
 
     click = (type) => {
         const { id, detail } = this.state;
-        if (type == '加入') { 
-
+        if (type == '加入') {
             if (detail.status == 0) {
                 UDToast.showError('该工单暂停，继续维修后再加入');
                 return;

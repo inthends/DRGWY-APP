@@ -54,8 +54,7 @@ export default class JLScanScreen extends BasePage {
     onBarCodeRead = (result) => {
         if (this.state.result) {
             return;
-        }
-
+        } 
         this.setState({
             time: 30,
             result

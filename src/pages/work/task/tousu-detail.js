@@ -31,8 +31,7 @@ export default class TousuDetailPage extends BasePage {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
-            ),
-
+            )
         };
     };
 
@@ -122,13 +121,16 @@ export default class TousuDetailPage extends BasePage {
                         <TouchableWithoutFeedback onPress={() => common.call(detail.complaintLink)}>
                             <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 16, height: 16 }} /></Flex>
                         </TouchableWithoutFeedback>
-                    </Flex>  
+                    </Flex>
+
                     <Text style={styles.desc}>{detail.contents}</Text>
+
                     <ListImages images={images} lookImage={this.lookImage} />
 
                     <Flex style={[styles.every2]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName}</Text>
-                    </Flex> 
+                    </Flex>
+
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单时间：{detail.createDate}</Text>
                     </Flex>

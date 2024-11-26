@@ -170,7 +170,11 @@ export default class RobDetailPage extends BasePage {
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>转单人：{detail.createUserName}，{detail.createDate}</Text>
+                        <Text style={styles.left}>转单人：{detail.createUserName}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>转单时间：{detail.createDate}</Text>
                     </Flex>
 
                     <TouchableWithoutFeedback>

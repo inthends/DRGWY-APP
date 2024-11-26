@@ -247,7 +247,7 @@ class FeeDetailPage extends BasePage {
 
                             case '威富通':
                                 {
-                                    this.props.navigation.push('scan', {
+                                    this.props.navigation.push('wftscan', {
                                         // data: ids,
                                         // isML: isML,
                                         // mlType: mlType,

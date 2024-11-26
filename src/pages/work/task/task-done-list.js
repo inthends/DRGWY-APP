@@ -166,7 +166,7 @@ class TaskDoneListPage extends BasePage {
                 this.props.navigation.navigate('weixiuView', { id: item.id });
             }}>
                 <Flex direction='column' align={'start'}
-                    style={[styles.card, index % 2 == 0? styles.blue : styles.orange]}>
+                    style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
                     <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.billCode}</Text>
                         <Text style={styles.aaa}>{item.statusName}</Text>
@@ -175,7 +175,7 @@ class TaskDoneListPage extends BasePage {
                     <Flex align={'start'} direction={'column'}>
                         <Flex justify='between'
                             style={{ width: '100%', paddingTop: 10, paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
-                            <Text  style={{ lineHeight: 20 }}>{item.address} {item.contactName}</Text>
+                            <Text style={{ lineHeight: 20 }}>{item.address} {item.contactName}</Text>
                             <TouchableWithoutFeedback
                                 onPress={() => common.call(item.contactLink || item.contactPhone)}>
                                 <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 15, height: 15 }} /></Flex>
@@ -203,6 +203,7 @@ class TaskDoneListPage extends BasePage {
                         </Flex>
 
                         <Text style={{
+                            lineHeight: 20,
                             paddingLeft: 20,
                             paddingRight: 20,
                             paddingBottom: 20,

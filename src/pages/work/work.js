@@ -16,6 +16,7 @@ import CommonView from '../../components/CommonView';
 import JPush from 'jpush-react-native';
 
 export default class WorkPage extends BasePage {
+
     static navigationOptions = options => {
         const { navigation } = options;
         const params = navigation.state.params;
@@ -28,13 +29,6 @@ export default class WorkPage extends BasePage {
             headerForceInset: this.headerForceInset,
             headerLeft: (
                 <Fragment>
-                    {/* <TouchableWithoutFeedback onPress={() => navigation.push('scanonly')}>
-                        <Flex direction='column' style={{ marginLeft: 20 }}>
-                            <LoadImage defaultImg={require('../../static/images/scan2.png')}
-                                style={{ width: 20, height: 19 }} />
-                            <Text style={styles.button}>扫一扫</Text>
-                        </Flex>
-                    </TouchableWithoutFeedback> */}
                     <TouchableWithoutFeedback onPress={() => navigation.push('addWork')}>
                         <Flex direction='column' style={{ marginLeft: 20 }}>
                             <LoadImage defaultImg={require('../../static/images/paiyipai.png')}
@@ -42,6 +36,25 @@ export default class WorkPage extends BasePage {
                             <Text style={styles.button}>拍一拍</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
+
+                    {/* <TouchableWithoutFeedback onPress={() => {
+                        // navigation.push('scanonly', {
+                        //     data: {
+                        //         callBack: (id) => {
+                        //             navigation.navigate('visit', { data: id });
+                        //         }
+                        //     }
+                        // });
+                        //navigation.push('visit');
+                    } 
+                    }>
+                        <Flex direction='column' style={{ marginLeft: 20 }}>
+                            <LoadImage defaultImg={require('../../static/images/scan2.png')}
+                                style={{ width: 20, height: 19 }} />
+                            <Text style={styles.button}>扫一扫</Text>
+                        </Flex>
+                    </TouchableWithoutFeedback> */}
+
                 </Fragment>
             ),
             headerRight: (
@@ -52,6 +65,7 @@ export default class WorkPage extends BasePage {
                             <Text style={styles.button}>消息</Text>
                         </Flex>
                     </TouchableWithoutFeedback>
+
                     {/* <TouchableWithoutFeedback>
                         <Flex direction='column' style={{ marginRight: 20 }}>
                             <LoadImage defaultImg={require('../../static/images/qiandao.png')}
@@ -176,7 +190,7 @@ export default class WorkPage extends BasePage {
                                     </TouchableWithoutFeedback> : null}
                             </Flex>
                             <Flex>
-                                <TouchableWithoutFeedback
+                                {/* <TouchableWithoutFeedback
                                     onPress={() => this.props.navigation.push('chaobiao')}>
                                     <Flex direction='column' style={{ width: '33%' }}>
                                         <Flex style={{ paddingTop: 10, paddingBottom: 5 }}>
@@ -187,6 +201,20 @@ export default class WorkPage extends BasePage {
                                             />
                                         </Flex>
                                         <Text style={styles.bottom}>移动抄表</Text>
+                                    </Flex>
+                                </TouchableWithoutFeedback> */}
+
+                                <TouchableWithoutFeedback
+                                    onPress={() => this.props.navigation.push('visit')}>
+                                    <Flex direction='column' style={{ width: '33%' }}>
+                                        <Flex style={{ paddingTop: 10, paddingBottom: 5 }}>
+                                            <Icon
+                                                name="form"
+                                                size={22}
+                                                color={Macro.work_orange}
+                                            />
+                                        </Flex>
+                                        <Text style={styles.bottom}>访客登记</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
 
@@ -206,7 +234,7 @@ export default class WorkPage extends BasePage {
                                 </TouchableWithoutFeedback>
 
                                 <TouchableWithoutFeedback
-                                    onPress={() => this.props.navigation.push('gdMoney')}>
+                                    onPress={() => this.props.navigation.push('assets')}>
                                     <Flex direction='column' style={{ width: '33%' }}>
                                         <Flex style={{ paddingTop: 10, paddingBottom: 5 }}>
                                             <Icon
@@ -274,9 +302,8 @@ export default class WorkPage extends BasePage {
                                     if (data.servicetodo == 0) {
                                         return;
                                     }
-                                    this.props.navigation.push('servicedesk', {
+                                    this.props.navigation.push('servicedeskunfinish', {
                                         'data': {
-                                            type: 1,
                                             title: '待处理列表'
                                         }
                                     })
@@ -402,7 +429,7 @@ export default class WorkPage extends BasePage {
                                     if (data.todo == 0) {
                                         return;
                                     }
-                                    this.props.navigation.push('task', {
+                                    this.props.navigation.push('taskunsend', {
                                         'data': {
                                             type: '1',
                                             title: '待派单列表'
@@ -419,7 +446,7 @@ export default class WorkPage extends BasePage {
                                     if (data.mydo == 0) {
                                         return;
                                     }
-                                    this.props.navigation.push('taskDone', {
+                                    this.props.navigation.push('taskdone', {
                                         'data': {
                                             type: '2',
                                             title: '已派单列表'
@@ -436,7 +463,7 @@ export default class WorkPage extends BasePage {
                                     if (data.myrefuse == 0) {
                                         return;
                                     }
-                                    this.props.navigation.push('taskDone', {
+                                    this.props.navigation.push('taskdone', {
                                         'data': {
                                             type: '9',
                                             title: '已驳回列表'
@@ -472,7 +499,7 @@ export default class WorkPage extends BasePage {
                                     if (data.receivedone == 0) {
                                         return;
                                     }
-                                    this.props.navigation.push('taskDone', {
+                                    this.props.navigation.push('taskdone', {
                                         'data': {
                                             type: '3',
                                             title: '已接单列表'
@@ -507,9 +534,8 @@ export default class WorkPage extends BasePage {
                                     if (data.unfinish == 0) {
                                         return;
                                     }
-                                    this.props.navigation.push('task', {
+                                    this.props.navigation.push('taskunfinish', {
                                         'data': {
-                                            type: '3',
                                             title: '待完成列表'
                                         }
                                     })
@@ -544,9 +570,8 @@ export default class WorkPage extends BasePage {
                                     if (data.finish == 0) {
                                         return;
                                     }
-                                    this.props.navigation.push('taskDone', {
+                                    this.props.navigation.push('taskfinish', {
                                         'data': {
-                                            type: '4',
                                             title: '已完成列表'
                                         }
                                     })
@@ -597,7 +622,7 @@ export default class WorkPage extends BasePage {
                                     if (data.approve == 0) {
                                         return;
                                     }
-                                    this.props.navigation.push('taskDone', {
+                                    this.props.navigation.push('taskdone', {
                                         'data': {
                                             type: '8',
                                             hiddenHeader: true,

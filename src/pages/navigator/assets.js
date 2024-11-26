@@ -1,10 +1,9 @@
-import React//, { Fragment } 
+import React 
     from 'react';
 import {
     View,
     Text,
-    StyleSheet,
-    //StatusBar, Linking,
+    StyleSheet, 
     FlatList,
     TouchableOpacity,
     TouchableWithoutFeedback,
@@ -14,17 +13,13 @@ import BasePage from '../base/base';
 import { Flex, Icon, Button, SearchBar } from '@ant-design/react-native';
 import Macro from '../../utils/macro';
 import ScreenUtil from '../../utils/screen-util';
-import { connect } from 'react-redux';
-//import ListHeader from '../../components/list-header';
-//import common from '../../utils/common';
-//import LoadImage from '../../components/load-image';
+import { connect } from 'react-redux'; 
 import NavigatorService from './navigator-service';
 import NoDataView from '../../components/no-data-view';
-import CommonView from '../../components/CommonView';
-
+import CommonView from '../../components/CommonView'; 
 let screen_width = ScreenUtil.deviceWidth();
 
-class gdMoneyPage extends BasePage {
+class AssetsPage extends BasePage {
 
     static navigationOptions = ({ navigation }) => {
         return {
@@ -132,10 +127,10 @@ class gdMoneyPage extends BasePage {
     };
 
     start = () => {
-        this.props.navigation.push('scanForWork', {
+        this.props.navigation.push('scanonly', {
             data: {
                 callBack: this.callBack,
-                needBack: '1'
+                //needBack: '1'
             }
         });
     };
@@ -211,8 +206,9 @@ class gdMoneyPage extends BasePage {
                             type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }}
                             style={{
-                                width: 220,
+                                width: 180,
                                 marginBottom: 10,
+                                marginTop:10,
                                 backgroundColor: Macro.work_blue,
                                 height: 40
                             }}>开始盘点</Button>
@@ -266,14 +262,14 @@ const styles = StyleSheet.create({
     },
     word: {
         color: 'white',
-        fontSize: 16,
+        fontSize: 16
     }
 });
 
 const mapStateToProps = ({ buildingReducer }) => {
     return {
-        selectBuilding: buildingReducer.selectBuilding,
+        selectBuilding: buildingReducer.selectBuilding
     };
 };
 
-export default connect(mapStateToProps)(gdMoneyPage);
+export default connect(mapStateToProps)(AssetsPage);

@@ -29,7 +29,7 @@ export default class HomePage extends BasePage {
 
 
     render() {
-        const {goods, kinds} = this.state;
+        //const {goods, kinds} = this.state;
         return (
             <View style={styles.content}>
 

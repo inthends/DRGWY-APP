@@ -60,8 +60,7 @@ export default class BCMScanScreen extends BasePage {
             result
         }, () => {
             let out_trade_no = common.getValueFromProps(this.props, 'out_trade_no');
-            let isDigital = common.getValueFromProps(this.props, 'isDigital');
-
+            let isDigital = common.getValueFromProps(this.props, 'isDigital'); 
             if (isDigital) {
                 //扫数字货币付款码
                 NavigatorService.bcmMisScanPay(result.data, out_trade_no).then(resp => {

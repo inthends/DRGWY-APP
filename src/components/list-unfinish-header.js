@@ -5,14 +5,13 @@ import ScreenUtil from '../utils/screen-util';
 const item_width = ScreenUtil.deviceWidth() / 3.0;
 const single_width = 50;
 
-export default class ListHeader extends Component {
+export default class ListUnFinishHeader extends Component {
     constructor(props) {
         super(props);
         let index = 0;
-        if (this.props.overdue) {
-            index = parseInt(this.props.overdue) + 1;
-        }
-
+        if (this.props.status) {
+            index = parseInt(this.props.status) + 1;
+        } 
         let value = (item_width) * index + (item_width - single_width) / 2.0;
         this.state = {
             fadeAnim: new Animated.Value(value),
@@ -29,7 +28,7 @@ export default class ListHeader extends Component {
                 duration: 200              // 让动画持续一段时间
             },
         ).start();
-        const datas = [{ 'title': '全部', value: -1 }, { 'title': '未逾期', value: 0 }, { 'title': '已逾期', value: 1 }];
+        const datas = [{ 'title': '全部', value: -1 }, { 'title': '待开工', value: 0 }, { 'title': '待完成', value: 1 }];
         this.setState({ index: index }, () => {
             if (this.props.onChange) {
                 this.props.onChange(datas[index].value);
@@ -38,7 +37,7 @@ export default class ListHeader extends Component {
     };
 
     render() {
-        const datas = [{ 'title': '全部', select: true }, { 'title': '未逾期' }, { 'title': '已逾期' }];
+        const datas = [{ 'title': '全部', select: true }, { 'title': '待开工' }, { 'title': '待完成' }];
         return (
             <Fragment>
                 <Flex direction={'column'} align={'start'}>

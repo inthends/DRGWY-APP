@@ -20,13 +20,15 @@ import DetailParkingPage from '../building/detail-parking/detail-parking';
 import BuildingsPage from '../building/buildings/buildings';
 import FeeStatisticPage from '../navigator/fee-statistic/fee-statistic';
 import AddWorkPage from '../work/add-work';
+import VisitPage from '../work/visit';
+
 import PersonInfoPage from '../mine/person-info';
 import SettingPage from '../mine/setting';
 import ModifyPsdPage from '../mine/modify-psd';
 
 //统计
 import FeeHousePage from '../navigator/fee-housing';
-import gdMoneyPage from '../navigator/gd-Money';
+import AssetsPage from '../navigator/assets';
 import FeeBuildingsPage from '../navigator/fee-buildings';
 import FeeRoomsPage from '../navigator/fee-rooms';
 import FeeParkingsPage from '../navigator/fee-parkings';
@@ -45,6 +47,8 @@ import EweixiuDetailPage from '../navigator/estate/estate-weixiu-detail';
 import EstateWeixiuPage from '../navigator/estate/estate-weixiu';
 //import EstateTousuPage from '../navigator/estate/estate-tousu';
 
+
+
 //工作台
 
 //现场检查
@@ -55,8 +59,8 @@ import EstateCheckPage from '../navigator/estate/estate-check';
 import EcheckDetailPage from '../navigator/estate/estate-check-detail';
 import EcheckAddPage from '../navigator/estate/estate-check-add';
 
-import ScanOnly from '../navigator/ScanOnly';
-import ScanSS from '../navigator/scan-ss';
+import ScanOnly from '../navigator/scanonly';
+// import ScanSS from '../navigator/scan-ss';
 import XunJianPage from '../navigator/xunjian/xunjian';
 import TaskPage from '../navigator/xunjian/task';
 import XunJianDetailPage from '../navigator/xunjian/xunjian-detail';
@@ -101,9 +105,13 @@ import RobDetailPage from '../work/task/rob-detail';
 
 import TaskListPage from '../work/task/task-list';
 import TaskDoneListPage from '../work/task/task-done-list';
+import TaskUnFinishListPage from '../work/task/task-unfinish-list';
+import TaskFinishListPage from '../work/task/task-finish-list';
+import TaskUnSendListPage from '../work/task/task-unsend-list';
 
 //服务单
 import ServicedeskListPage from '../work/task/servicedesk-list';
+import ServicedeskUnFinishListPage from '../work/task/servicedesk-unfinish-list';
 import ServicedeskDoneListPage from '../work/task/servicedesk-done-list';
 
 //工作台回访查看单据
@@ -124,7 +132,7 @@ import Score from '../mine/score-list';
 // import LouDetail from '../navigator/house-infomation/lou-detail';
 import SheBeiList from '../navigator/she-bei/list';
 import ShebeiDetail from '../navigator/she-bei/detail';
-import ScanScreen from '../navigator/qrcode-scanner';
+import WFTScanScreen from '../navigator/wftscanner';
 import JLScanScreen from '../navigator/jlscanner';
 import BCMScanScreen from '../navigator/bcmscanner';
 import CIBScanScreen from '../navigator/cibscanner';
@@ -159,7 +167,7 @@ import inquiry from '../flow/inquiry';
 import budget from '../flow/budget';
 import question from '../flow/question';
 import goodsout from '../flow/goodsout';
-import merchants from '../flow/merchants';
+import merchants from '../flow/merchants';  
 
 const BuildingNavigator = createStackNavigator(
   {
@@ -209,8 +217,7 @@ const navigatorNavigator = createStackNavigator({
       title: '统计'
     })
   },
-
-
+ 
   //报表
   collection: CollectionRatePage,
   zijinliu: ZiJinLiuPage,
@@ -244,6 +251,8 @@ const WorkNavigator = createStackNavigator({
       headerBackTitle: null
     })
   },
+ 
+  visit: VisitPage,//访客登记 
   addWork: AddWorkPage,
   selectAddress: SelectAddressPage,
   selectArea: SelectAreaPage,
@@ -260,15 +269,19 @@ const WorkNavigator = createStackNavigator({
   approve: ApproveDetailPage,
   rob: RobDetailPage,
 
-  scanonly: ScanOnly,
-  scandemo: ScanSS,
+  //scanonly: ScanOnly,
+  //scandemo: ScanSS,
   task: TaskListPage,
-  taskDone: TaskDoneListPage,
+  taskdone: TaskDoneListPage,
   taskqd: TaskQDListPage,
+  taskunfinish: TaskUnFinishListPage,
+  taskfinish: TaskFinishListPage,
+  taskunsend: TaskUnSendListPage,
 
   //服务单
   feeAdd: FeeAddPage,
   servicedesk: ServicedeskListPage,
+  servicedeskunfinish: ServicedeskUnFinishListPage,
   servicedeskDone: ServicedeskDoneListPage,
 
   newsList: NewsList,
@@ -283,16 +296,17 @@ const WorkNavigator = createStackNavigator({
   xunjianBeforeStart: XunjianBeforeStart,
   // selectXunjian: SelectXunJianPerson,
   startxunjian: StartXunJianPage,
-  scanForWork: ScanOnly,//巡检、抄表、资产盘点扫码
-  gdMoney: gdMoneyPage,
+  scanonly: ScanOnly,//访客登记、巡检、抄表、资产盘点扫码
+
   //固定资产
+  assets: AssetsPage,
   gdzcPandian: GdzcPandianPage,
   gdzcDetail: GdzcDetailPage,
   //设备
   shebeiList: SheBeiList,
   shebeiDetail: ShebeiDetail,
 
-  scan: ScanScreen, //威富通扫码
+  wftscan: WFTScanScreen, //威富通扫码
   jlscan: JLScanScreen, //嘉联扫码
   bcmscan: BCMScanScreen, //交通银行扫码
   cibscan: CIBScanScreen, //兴业银行扫码 
@@ -492,6 +506,7 @@ const tabbar = createBottomTabNavigator(
           const { routeName } = navigation.state;
           let name; 
           switch (routeName) {
+
             case 'Building':
               name = 'bank';
               break;

@@ -237,7 +237,7 @@ class AddRepairPage extends BasePage {
                     this.canSubmit = true;
                     //this.props.navigation.goBack(); 
                     //盘点结束跳转到固定资产列表
-                    this.props.navigation.navigate('gdMoney');
+                    this.props.navigation.navigate('assets');
                 }, 2000);
             }).catch(res => {
                 this.canSubmit = true;

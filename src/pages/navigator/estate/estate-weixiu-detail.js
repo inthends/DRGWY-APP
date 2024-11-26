@@ -138,7 +138,7 @@ export default class EweixiuDetailPage extends BasePage {
             visible: true
         });
     };
- 
+
     onRefresh = () => {
         this.setState({
             refreshing: true,
@@ -188,12 +188,13 @@ export default class EweixiuDetailPage extends BasePage {
                 style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
                 <Flex justify='between' style={{ width: '100%' }}>
                     <Text style={styles.title}>{item.feeName}</Text>
+                    {item.status == 0 ? <Text style={styles.statusred}>未收</Text> : <Text style={styles.statusblue}>已收</Text>}
                 </Flex>
                 <Flex style={styles.line} />
                 <Flex align={'start'} direction={'column'}>
                     <Flex justify='between'
-                        style={{ width: '100%', paddingTop: 5, paddingLeft: 15, paddingRight: 15, lineHeight: 20 }}>
-                        <Text>应收金额：{item.amount}
+                        style={{ width: '100%', paddingTop: 5, paddingLeft: 15, paddingRight: 15 }}>
+                        <Text style={{ lineHeight: 20 }}>应收金额：{item.amount}
                             ，减免金额：{item.reductionAmount}
                             ，已收金额：{item.receiveAmount}
                             ，未收金额：{item.lastAmount}</Text>
@@ -214,7 +215,6 @@ export default class EweixiuDetailPage extends BasePage {
         const { images, startimages, finishimages, checkimages, detail, communicates, dataInfo } = this.state;
         // const selectImg = require('../../../static/images/select.png');
         // const noselectImg = require('../../../static/images/no-select.png');
-
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
@@ -242,7 +242,11 @@ export default class EweixiuDetailPage extends BasePage {
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>转单人：{detail.createUserName}，{detail.createDate}</Text>
+                        <Text style={styles.left}>转单人：{detail.createUserName}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>转单时间：{detail.createDate}</Text>
                     </Flex>
 
                     {detail.relationId && <TouchableWithoutFeedback>
@@ -396,6 +400,20 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
         marginLeft: 15,
         marginRight: 15
+    },
+
+    statusred: {
+        paddingTop: 10,
+        marginRight: 15,
+        paddingBottom: 5,
+        color: Macro.work_red
+    },
+
+    statusblue: {
+        paddingTop: 10,
+        marginRight: 15,
+        paddingBottom: 5,
+        color: Macro.work_blue
     },
 
     line: {

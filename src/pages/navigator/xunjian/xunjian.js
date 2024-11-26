@@ -131,7 +131,7 @@ class XunJianPage extends BasePage {
         //     }
         // });
 
-        this.props.navigation.push('scanForWork', {
+        this.props.navigation.push('scanonly', {
             data: {
                 callBack: this.callBack,
                 needBack: '1'

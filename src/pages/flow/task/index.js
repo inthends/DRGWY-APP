@@ -124,7 +124,7 @@ export default class DetailPage extends BasePage {
           <ShowFiles files={detail.files} onPress={
             (fileStr) => {
               this.props.navigation.navigate('webPage', {
-                data: fileStr,
+                data: fileStr
               });
             }
           } />

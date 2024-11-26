@@ -458,7 +458,7 @@ export default class NavigatorPage extends BasePage {
                 </Flex>
               </TouchableWithoutFeedback>
               <TouchableWithoutFeedback
-                onPress={() => this.props.navigation.push('gdMoney')}
+                onPress={() => this.props.navigation.push('assets')}
               >
                 <Flex style={styles.right}>
                   <Icon

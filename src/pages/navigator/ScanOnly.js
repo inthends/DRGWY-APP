@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
     StyleSheet,
@@ -16,7 +15,6 @@ import { RNCamera } from 'react-native-camera';
 import Macro from '../../utils/macro';
 import BasePage from '../base/base';
  
-//巡检、抄表、资产盘点扫码
 export default class ScanOnly extends BasePage {
 
     static navigationOptions = ({ navigation }) => {
@@ -40,9 +38,11 @@ export default class ScanOnly extends BasePage {
 
     componentDidMount() {
         this.startAnimation();
-        // setTimeout(()=>{
-        //     this.onBarCodeRead({data:'0a8a0462-e820-4eb8-b6bf-311f91f6c8e5'})
-        // },2000);
+        
+        //test
+        // setTimeout(() => {
+        //     this.onBarCodeRead({ data: 'ea680082-44ad-4f6b-ba82-da433c0da40c' })
+        // }, 1000);
     }
 
     startAnimation = () => {
@@ -62,9 +62,11 @@ export default class ScanOnly extends BasePage {
         const { data } = result;
         let callBack = common.getValueFromProps(this.props).callBack;
         let needBack = common.getValueFromProps(this.props).needBack;
+        
         if (callBack && !!data) {
             callBack(data);
         }
+
         if (needBack) {
             this.props.navigation.goBack();
         }
@@ -80,7 +82,7 @@ export default class ScanOnly extends BasePage {
                     style={styles.preview}
                     type={RNCamera.Constants.Type.back}
                     barCodeTypes={[RNCamera.Constants.BarCodeType.qr]}
-                    googleVisionBarcodeType={RNCamera.Constants.GoogleVisionBarcodeDetection.BarcodeType.QR_CODE} 
+                    googleVisionBarcodeType={RNCamera.Constants.GoogleVisionBarcodeDetection.BarcodeType.QR_CODE}
                     flashMode={RNCamera.Constants.FlashMode.auto}
                     onBarCodeRead={this.onBarCodeRead}
                 >
@@ -129,8 +131,8 @@ const styles = StyleSheet.create({
         flex: 0,
         width: 200,
         height: 2,
-        backgroundColor: Macro.work_blue,
-    },
+        backgroundColor: Macro.work_blue
+    }
 });
 
 

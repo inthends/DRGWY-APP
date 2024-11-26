@@ -168,8 +168,7 @@ class StartXunJianPage extends BasePage {
             }
         }
 
-        if (this.props.hasNetwork) {
-
+        if (this.props.hasNetwork) { 
             if (images.length > 1) {
                 let arrStr = JSON.stringify(newInspectData);
                 XunJianService.xunjianExecute(id, person.id, person.name, arrStr).then(res => {
@@ -178,8 +177,7 @@ class StartXunJianPage extends BasePage {
             }
             else {
                 UDToast.showError('请上传图片');
-            }
-
+            } 
         } else {
             //离线缓存巡检结果
             let myimages = [];

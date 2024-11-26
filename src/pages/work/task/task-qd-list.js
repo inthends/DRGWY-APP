@@ -55,7 +55,7 @@ class TaskQDListPage extends BasePage {
             dataInfo: {
                 data: []
             },
-            todo: 0, 
+            todo: 0,
             refreshing: false,
             visible: false,
             emergencyLevel: '全部',
@@ -64,7 +64,7 @@ class TaskQDListPage extends BasePage {
         };
     }
 
-    componentDidMount() { 
+    componentDidMount() {
         //获取维修专业
         // WorkService.getCommonItems('RepairMajor').then(res => {
         //     if (res.length > 0) {
@@ -201,7 +201,7 @@ class TaskQDListPage extends BasePage {
                     <Flex align={'start'} direction={'column'}>
                         <Flex justify='between'
                             style={{ width: '100%', paddingTop: 10, paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
-                            <Text  style={{ lineHeight: 20 }}>{item.address} {item.contactName}</Text>
+                            <Text style={{ lineHeight: 20 }}>{item.address} {item.contactName}</Text>
                             <TouchableWithoutFeedback
                                 onPress={() => common.call(item.contactLink || item.contactPhone)}>
                                 <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 15, height: 15 }} /></Flex>
@@ -224,6 +224,7 @@ class TaskQDListPage extends BasePage {
                         </Flex>
 
                         <Text style={{
+                            lineHeight: 20,
                             paddingLeft: 20,
                             paddingRight: 20,
                             paddingBottom: 20,

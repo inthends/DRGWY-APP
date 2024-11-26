@@ -11,17 +11,16 @@ import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
 import { connect } from 'react-redux';
-import ListHeader from '../../../components/list-header';
 import common from '../../../utils/common';
 import LoadImage from '../../../components/load-image';
 import WorkService from '../work-service';
-import ListJianYanHeader from '../../../components/list-jianyan-header';
+import ListHeader from '../../../components/list-unsend-header';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 import MyPopover from '../../../components/my-popover';
 
-//待完成列表
-class TaskListPage extends BasePage {
+//待派单列表
+class TaskUnSendListPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
@@ -46,19 +45,15 @@ class TaskListPage extends BasePage {
             key: null
         };
         const type = common.getValueFromProps(this.props).type;
-        const overdue = common.getValueFromProps(this.props).overdue;
-        const hiddenHeader = common.getValueFromProps(this.props).hiddenHeader;
         this.state = {
             pageIndex: 1,
-            type,
+            type:-1,//待派单类型
+            time: '全部',
+            selectPerson: null,
             dataInfo: {
                 data: [],
             },
-            overdue,
-            hiddenHeader,
-            refreshing: true,
-            time: '全部',
-            selectPerson: null,
+            refreshing: true
         };
     }
 
@@ -88,9 +83,9 @@ class TaskListPage extends BasePage {
     }
 
     getList = () => {
-        const { type, overdue, time, selectPerson, pageIndex } = this.state;
+        const { type, time, selectPerson, pageIndex } = this.state;
         let senderId = selectPerson ? selectPerson.id : '';
-        WorkService.workList(type, overdue, time, senderId, pageIndex).then(dataInfo => {
+        WorkService.workUnSendList(type, time, senderId, pageIndex).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -130,50 +125,41 @@ class TaskListPage extends BasePage {
 
     _renderItem = ({ item, index }) => {
         return (
-            <TouchableWithoutFeedback onPress={() => {
-                const { type } = this.state;
-                if (type === 'fuwu') {
-                    this.props.navigation.navigate('service', { id: item.id });
-                } else {
-                    switch (item.statusName) {
-                        case '待派单': {
-                            this.props.navigation.navigate('paidan', { id: item.id });
-                            break;
-                        }
-                        case '待接单': {
-                            this.props.navigation.navigate('jiedan', { id: item.id });
-                            break;
-                        }
-                        case '已暂停':
-                        case '待开工': {
-                            this.props.navigation.navigate('kaigong', { id: item.id });
-                            break;
-                        }
-                        case '待完成': {
-                            this.props.navigation.navigate('wancheng', { id: item.id });
-                            break;
-                        }
-                        case '待检验': {
-                            this.props.navigation.navigate('jianyan', { id: item.id });
-                            break;
-                        }
-                        // case '待回访': {//回访在服务单里面操作
-                        //     this.props.navigation.navigate('huifang', { id: item.id });
-                        //     break;
-                        // }
-                        case '待协助':
-                            {
-                                this.props.navigation.navigate('assist', { id: item.id });
-                                break;
-                            }
-                        case '待审核': {
-                            this.props.navigation.navigate('approve', { id: item.id });
-                            break;
-                        }
-                        default:
-                            break;
+            <TouchableWithoutFeedback onPress={() => { 
+                switch (item.statusName) {
+                    case '待派单': {
+                        this.props.navigation.navigate('paidan', { id: item.id });
+                        break;
                     }
-                }
+                    case '待接单': {
+                        this.props.navigation.navigate('jiedan', { id: item.id });
+                        break;
+                    }
+                    case '已暂停':
+                    case '待开工': {
+                        this.props.navigation.navigate('kaigong', { id: item.id });
+                        break;
+                    }
+                    case '待完成': {
+                        this.props.navigation.navigate('wancheng', { id: item.id });
+                        break;
+                    }
+                    case '待检验': {
+                        this.props.navigation.navigate('jianyan', { id: item.id });
+                        break;
+                    }
+                    case '待协助':
+                        {
+                            this.props.navigation.navigate('assist', { id: item.id });
+                            break;
+                        }
+                    case '待审核': {
+                        this.props.navigation.navigate('approve', { id: item.id });
+                        break;
+                    }
+                    default:
+                        break;
+                } 
             }}>
                 <Flex direction='column' align={'start'}
                     style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
@@ -191,26 +177,22 @@ class TaskListPage extends BasePage {
                                 <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 15, height: 15 }} /></Flex>
                             </TouchableWithoutFeedback>
                         </Flex>
-
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>所属区域：{item.repairArea}，是否有偿：{item.isPaid}</Text>
                         </Flex>
-
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>紧急程度：{item.emergencyLevel}，重要程度：{item.importance}</Text>
                         </Flex>
-
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>维修专业：{item.repairMajor}，积分：{item.score}</Text>
                         </Flex>
-
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>是否允许抢单：{item.isQD == 1 ? '是' : '否'}，单据来源：{item.sourceType}</Text>
-                        </Flex> 
+                        </Flex>
                         <Text numberOfLines={2}
                             style={{
                                 lineHeight: 20,
@@ -219,12 +201,11 @@ class TaskListPage extends BasePage {
                                 paddingBottom: 10,
                                 color: '#666'
                             }}
-                        >{item.repairContent || item.contents}</Text> 
+                        >{item.repairContent || item.contents}</Text>
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>{item.billDate}</Text>
                         </Flex>
-
                     </Flex>
                 </Flex>
             </TouchableWithoutFeedback>
@@ -247,27 +228,16 @@ class TaskListPage extends BasePage {
     }
 
     render() {
-        const { dataInfo, overdue, hiddenHeader, type, selectPerson } = this.state;
+        const { dataInfo, type, selectPerson } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
-                {
-                    hiddenHeader ? null :
-                        (
-                            type === '6' ?
-                                <ListJianYanHeader overdue={overdue}
-                                    onChange={(overdue) => this.setState({ overdue }, () => {
-                                        this.onRefresh();
-                                    })} /> :
-                                <ListHeader overdue={overdue} onChange={(overdue) => this.setState({ overdue }, () => {
-                                    this.onRefresh();
-                                })} />
-                        )
-                }
-
+                <ListHeader type={type} onChange={(type) => this.setState({ type }, () => {
+                    this.onRefresh();
+                })} />
                 <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
                     <MyPopover onChange={this.timeChange}
                         titles={['全部', '今日', '本周', '本月', '上月', '本年']}
-                        visible={true} /> 
+                        visible={true} />
                     <TouchableWithoutFeedback
                         onPress={() => this.props.navigation.navigate('selectRolePerson', {
                             moduleId: 'Repair',
@@ -368,4 +338,4 @@ const mapStateToProps = ({ buildingReducer }) => {
         selectBuilding: buildingReducer.selectBuilding,
     };
 };
-export default connect(mapStateToProps)(TaskListPage);
+export default connect(mapStateToProps)(TaskUnSendListPage);

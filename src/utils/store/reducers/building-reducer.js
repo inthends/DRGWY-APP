@@ -3,7 +3,7 @@ import { ACTIONS } from '../action-types/action-types';
 const initialState = {
   selectDrawerType: '',
   selectBuilding: null,
-  selectTask: null,
+  selectTask: null
 };
 
 const buildingReducer = (state = initialState, action) => {
@@ -18,4 +18,5 @@ const buildingReducer = (state = initialState, action) => {
       return state;
   }
 };
+
 export default buildingReducer;

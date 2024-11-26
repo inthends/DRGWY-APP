@@ -2,17 +2,15 @@
 import React  from 'react'; 
 import { StyleSheet, Text, TouchableOpacity, View, Animated, Easing } from 'react-native';
 import BasePage from '../base/base';
-import { Icon } from '@ant-design/react-native';
-//import QRCodeScanner from 'react-native-qrcode-scanner';
+import { Icon } from '@ant-design/react-native'; 
 import common from '../../utils/common';
-import NavigatorService from './navigator-service';
-//import { Flex } from '@ant-design/react-native';
+import NavigatorService from './navigator-service'; 
 import Macro from '../../utils/macro';
 import { RNCamera } from 'react-native-camera';
 import UDToast from '../../utils/UDToast';
 
-//export default class ScanScreen extends Component {
-export default class ScanScreen extends BasePage {
+//export default class WFTScanScreen extends Component {
+export default class WFTScanScreen extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
             title: '上门收费',

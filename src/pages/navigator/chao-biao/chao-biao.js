@@ -111,7 +111,7 @@ class ChaoBiaoPage extends BasePage {
             this.setState({
                 scan: true,
                 nowRead: '',
-                current,
+                current
             });
         });
 
@@ -126,14 +126,13 @@ class ChaoBiaoPage extends BasePage {
 
 
     scan = () => {
-        this.props.navigation.push('scanForWork', {
+        this.props.navigation.push('scanonly', {
             data: {
                 callBack: this.callBack,
                 needBack: '1'
             }
         });
         // this.callBack();
-
 
     };
 
@@ -253,17 +252,14 @@ class ChaoBiaoPage extends BasePage {
                                                         borderWidth: 0,
                                                     }} onPress={() => this.setState({ scan: false })}>
                                                     取消
-                                                </Button>
-
-                                            </Flex>
-
+                                                </Button> 
+                                            </Flex> 
                                         </WingBlank>
                                     </Flex>
                                 </Flex>
                             </WingBlank>
                         </Flex>
                     </View>
-
                 )}
 
 
