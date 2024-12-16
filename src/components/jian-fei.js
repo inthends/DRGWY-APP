@@ -20,7 +20,7 @@ export default class JianFei extends BasePage {
     }
 
     componentDidMount() {
-        api.getData('/api/MobileMethod/GetDataItemTreeJson', { code: 'ReductionType' }).then(res => {
+        api.getData('/api/MobileMethod/MGetDataItemTreeJson', { code: 'ReductionType' }).then(res => {
             if (res.length > 0) {
                 this.setState({
                     types: [...res.map(item => item.title)],

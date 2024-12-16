@@ -8,6 +8,7 @@ import LoadImage from '../../../components/load-image';
 import CommonView from '../../../components/CommonView';
 import { connect } from 'react-redux';
 import XunJianService from './xunjian-service';
+import a from '@ant-design/react-native/lib/modal/alert';
 // import memberReducer from '../../../utils/store/reducers/member-reducer'; 
 // import xunJianReducer from '../../../utils/store/reducers/xunjian-reducer';
 // import ImagePicker from 'react-native-image-picker';
@@ -52,10 +53,8 @@ class XunJianPage extends BasePage {
         this.setState({ activeSections });
     };
 
-    callBack = (pointId) => {
-
-        if (this.props.hasNetwork) {
-
+    callBack = (pointId) => {  
+        if (this.props.hasNetwork) { 
             //判断巡检点位状态
             XunJianService.checkPollingState(pointId).then(res => {
                 if (res == null) {
@@ -120,21 +119,10 @@ class XunJianPage extends BasePage {
         //         });
         //     },
         // )
-
-
-        //test 需要注释掉
-        // let person = this.state.person || {};
-        // this.props.navigation.navigate('xunjianBeforeStart', {
-        //     'data': {
-        //         person,
-        //         pointId: 'f94af7b8-0d7c-40e0-be3c-5183f3390bd0'
-        //     }
-        // });
-
+  
         this.props.navigation.push('scanonly', {
             data: {
-                callBack: this.callBack,
-                needBack: '1'
+                callBack: this.callBack
             }
         });
 

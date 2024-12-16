@@ -246,7 +246,7 @@ export default class GdzcDetailPage extends BasePage {
                 //                             if (indexType == 1) {
                 //                                 data1 = [ 
                 // /*
-                // allName: "中交/中交世通资产管理(北京)有限公司/资产经营部"
+                // allName: ""
                 // assetsId: "08d8ba78-1d35-4bee-a3b5-755e85eea651"
                 // createDate: null
                 // createUserId: null

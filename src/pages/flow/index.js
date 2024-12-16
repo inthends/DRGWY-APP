@@ -395,7 +395,7 @@ class ApprovePage extends BasePage {
 
                 //传递参数
                 this.props.navigation.push(url, {
-                  data: item.id,
+                  id: item.id,
                   isCompleted: taskType == 3 ? true : false,
                   refresh: this.onRefresh
                 });

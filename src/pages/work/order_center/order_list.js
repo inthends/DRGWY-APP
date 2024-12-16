@@ -78,12 +78,12 @@ export default class OrderlistPage extends BasePage {
             });
         }
     };
+    
     //传入status  待查阅0，待回复1，已回复2，已关闭-1
     _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.props.navigation.navigate('orderDetail', { data: item });
-
+                this.props.navigation.navigate('orderDetail', { data: item }); 
             }}>
                 <Flex direction='column' align={'start'}
                     style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>

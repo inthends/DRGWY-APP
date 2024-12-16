@@ -141,8 +141,7 @@ export default class SelectAddressPage extends BasePage {
         this.setState({
             parent,
             refreshing: true
-        }); 
-        //alert(params.roleId);
+        });  
         WorkService.getPStructs(params).then(items => {
             this.setState({ items, refreshing: false });
         }).catch(err => this.setState({ refreshing: false }));

@@ -472,7 +472,7 @@ export default class CompleteDetailPage extends BasePage {
                                     <Button onPress={this.back} type={'primary'}
                                         activeStyle={{ backgroundColor: Macro.work_blue }}
                                         style={{
-                                            width: 130,
+                                            width: 110,
                                             backgroundColor: Macro.work_blue,
                                             height: 35
                                         }}>确认</Button>
@@ -483,7 +483,7 @@ export default class CompleteDetailPage extends BasePage {
                                         activeStyle={{ backgroundColor: Macro.work_blue }}
                                         style={{
                                             marginLeft: 30,
-                                            width: 130,
+                                            width: 110,
                                             backgroundColor: '#666',
                                             borderWidth: 0,
                                             height: 35

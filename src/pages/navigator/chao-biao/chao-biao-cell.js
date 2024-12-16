@@ -19,11 +19,8 @@ class ChaoBiaoCell extends BasePage {
 
 
     render() {
-        const { modal, item } = this.props;
-
-
-        return (
-
+        const { modal, item } = this.props;  
+        return ( 
             <WingBlank size={'lg'}>
                 <Flex direction='column' align={'start'}
                     style={[styles.card, modal ? {} : styles.blue]}>

@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Animated, Easing } from 'react-native';
-import BasePage from '../base/base';
+import BasePage from '../../base/base';
 import { Icon } from '@ant-design/react-native';
-import common from '../../utils/common';
-import NavigatorService from './navigator-service';
-import Macro from '../../utils/macro';
+import common from '../../../utils/common';
+import NavigatorService from '../navigator-service';
+import Macro from '../../../utils/macro';
 import { RNCamera } from 'react-native-camera';
-import UDToast from '../../utils/UDToast';
+import UDToast from '../../../utils/UDToast';
 
 //南京银行扫码
 export default class NJScanScreen extends BasePage {

@@ -391,7 +391,7 @@ export default class StartDetailPage extends BasePage {
                     <Flex justify={'center'}>
                         <Button onPress={this.click} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                width: 130,
+                                width: 110,
                                 backgroundColor: Macro.work_blue,
                                 marginTop: 20,
                                 height: 40
@@ -403,7 +403,7 @@ export default class StartDetailPage extends BasePage {
                         })}
                             type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_red }} style={{
-                                width: 130,
+                                width: 110,
                                 backgroundColor: Macro.work_red,
                                 marginLeft: 30,
                                 marginTop: 20,
@@ -437,7 +437,7 @@ export default class StartDetailPage extends BasePage {
                                     <Button onPress={this.back} type={'primary'}
                                         activeStyle={{ backgroundColor: Macro.work_blue }}
                                         style={{
-                                            width: 130,
+                                            width: 110,
                                             backgroundColor: Macro.work_blue,
                                             height: 35
                                         }}>确认</Button>
@@ -448,7 +448,7 @@ export default class StartDetailPage extends BasePage {
                                         activeStyle={{ backgroundColor: Macro.work_blue }}
                                         style={{
                                             marginLeft: 30,
-                                            width: 130,
+                                            width: 110,
                                             backgroundColor: '#666',
                                             borderWidth: 0,
                                             height: 35

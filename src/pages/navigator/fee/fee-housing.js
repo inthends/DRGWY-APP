@@ -9,21 +9,21 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback
 } from 'react-native';
-import BasePage from '../base/base';
+import BasePage from '../../base/base';
 import {
     Flex, Icon
     //Button,  List, WhiteSpace 
 } from '@ant-design/react-native';
 
-import Macro from '../../utils/macro';
+import Macro from '../../../utils/macro';
 //import ScreenUtil from '../../utils/screen-util';
 import { connect } from 'react-redux';
 //import ListHeader from '../../components/list-header';
 //import common from '../../utils/common';
-import LoadImage from '../../components/load-image';
-import NavigatorService from './navigator-service';
-import NoDataView from '../../components/no-data-view';
-import CommonView from '../../components/CommonView';
+import LoadImage from '../../../components/load-image';
+import NavigatorService from '../navigator-service';
+import NoDataView from '../../../components/no-data-view';
+import CommonView from '../../../components/CommonView';
 
 
 class FeeHousePage extends BasePage {

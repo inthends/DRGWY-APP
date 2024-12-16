@@ -237,7 +237,7 @@ class ChaoBiaoPage extends BasePage {
                                             <Flex style={{ marginBottom: 15 }}>
                                                 <Button type={'primary'} style={{
                                                     backgroundColor: Macro.work_blue,
-                                                    width: 130,
+                                                    width: 110,
                                                     height: 44,
                                                     borderWidth: 0,
                                                 }} onPress={this.tanchuangSubmit}>
@@ -247,7 +247,7 @@ class ChaoBiaoPage extends BasePage {
                                                     style={{
                                                         marginLeft: 50,
                                                         backgroundColor: '#CCCCCC',
-                                                        width: 130,
+                                                        width: 110,
                                                         height: 44,
                                                         borderWidth: 0,
                                                     }} onPress={() => this.setState({ scan: false })}>
@@ -294,7 +294,7 @@ class ChaoBiaoPage extends BasePage {
                                 <Flex style={{ marginTop: 15, marginBottom: 0 }}>
                                     <Button onPress={this.submit} type={'primary'}
                                         activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                            width: 130,
+                                            width: 110,
                                             backgroundColor: Macro.work_blue,
                                             height: 44,
                                         }}>确认提交</Button>
@@ -302,7 +302,7 @@ class ChaoBiaoPage extends BasePage {
                                     <Button onPress={() => this.setState({ showSubmit: false })} type={'primary'}
                                         activeStyle={{ backgroundColor: Macro.work_blue }} style={{
                                             marginLeft: 30,
-                                            width: 130,
+                                            width: 110,
                                             backgroundColor: '#666',
                                             borderWidth: 0,
                                             height: 44,

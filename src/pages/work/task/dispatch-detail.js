@@ -24,6 +24,7 @@ import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 // import MyPopover from '../../../components/my-popover';
 
+
 export default class DispatchDetailPage extends BasePage {
 
     static navigationOptions = ({ navigation }) => {
@@ -247,9 +248,6 @@ export default class DispatchDetailPage extends BasePage {
         let personNames = assisPersons.map(item => item.name);
         let mystrNames = personNames.join('，');
 
-        // if (repairmajor)
-        //     alert('积分：' + repairmajor.score);
-
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView style={{ marginTop: this.state.KeyboardShown ? -200 : 0, height: '100%' }}>
@@ -348,7 +346,7 @@ export default class DispatchDetailPage extends BasePage {
                     </Flex>
 
                     <TouchableWithoutFeedback
-                        onPress={() => this.props.navigation.navigate('selectRolePerson',
+                        onPress={() => this.props.navigation.navigate('selectReceivePerson',
                             {
                                 moduleId: 'Repair',
                                 enCode: 'receive',
@@ -400,7 +398,7 @@ export default class DispatchDetailPage extends BasePage {
                     <Flex justify={'center'}>
                         <Button onPress={() => this.click()} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                width: 130,
+                                width: 110,
                                 backgroundColor: Macro.work_blue,
                                 marginTop: 20,
                                 height: 40
@@ -413,7 +411,7 @@ export default class DispatchDetailPage extends BasePage {
                             })
                         }} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_red }} style={{
-                                width: 130,
+                                width: 110,
                                 backgroundColor: Macro.work_red,
                                 marginTop: 20,
                                 marginLeft: 50,
@@ -446,7 +444,7 @@ export default class DispatchDetailPage extends BasePage {
                                     <Button onPress={() => this.refuse()} type={'primary'}
                                         activeStyle={{ backgroundColor: Macro.work_blue }}
                                         style={{
-                                            width: 130,
+                                            width: 110,
                                             backgroundColor: Macro.work_blue,
                                             height: 35
                                         }}>确认</Button>
@@ -457,7 +455,7 @@ export default class DispatchDetailPage extends BasePage {
                                         activeStyle={{ backgroundColor: Macro.work_blue }}
                                         style={{
                                             marginLeft: 30,
-                                            width: 130,
+                                            width: 110,
                                             backgroundColor: '#666',
                                             borderWidth: 0,
                                             height: 35

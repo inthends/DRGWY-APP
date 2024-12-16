@@ -5,12 +5,12 @@ import Macro from '../../utils/macro';
 import WorkService from './work-service';
 import NoDataView from '../../components/no-data-view';
 import { Flex, Icon } from '@ant-design/react-native';
-
+import ListHeader from '../../components/list-news-header';
 
 class NewsList extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
-            title: '未读消息',
+            title: '消息列表',
             headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -25,8 +25,9 @@ class NewsList extends BasePage {
         // this.selectBuilding = {
         //     key: null,
         // };
-        this.state = {  
+        this.state = {
             pageIndex: 1,
+            status: 0,
             dataInfo: {
                 data: [],
             },
@@ -48,7 +49,7 @@ class NewsList extends BasePage {
     }
 
     getList = (showLoading = true) => {
-        WorkService.unreadList(this.state.pageIndex, showLoading).then(dataInfo => {
+        WorkService.getNewsList(this.state.status, this.state.pageIndex, showLoading).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -83,10 +84,10 @@ class NewsList extends BasePage {
             }, () => {
                 this.getList();
             });
-        } 
+        }
     };
 
-    _renderItem = ({ item }) => {
+    _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback key={item.id}
                 onPress={() => {
@@ -105,13 +106,11 @@ class NewsList extends BasePage {
                     //             break;
                     //         }
                     // }
-                    //根据url跳转
-                    // this.props.navigation.navigate(appUrlName, { data: linkId }); 
                     this.props.navigation.navigate(appUrlName, { id: linkId });
                 }}>
 
                 <Flex direction='column' align={'start'}
-                    style={[styles.card, styles.blue]}>
+                    style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
                     <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.title}</Text>
                         {/* <Text style={item.isRead === 0 ? styles.unread : styles.read}>{item.isRead ? '已读' : '未读'}</Text> */}
@@ -126,7 +125,7 @@ class NewsList extends BasePage {
                             }}
                         >
                             <Text style={{
-                                lineHeight:20,
+                                lineHeight: 20,
                                 color: '#666',
                                 fontSize: 15
                             }}>{item.contents}</Text>
@@ -138,26 +137,28 @@ class NewsList extends BasePage {
     };
 
     render() {
-        const { dataInfo } = this.state;
+        const { dataInfo, status } = this.state;
         return (
-            <View style={styles.content}>
+            <View style={styles.content}> 
+                <ListHeader status={status}
+                    onChange={(status) => this.setState({ status }, () => {
+                        this.onRefresh();
+                    })} /> 
                 <FlatList
                     data={dataInfo.data}
                     // ListHeaderComponent={}
                     renderItem={this._renderItem}
                     style={styles.list}
-                    keyExtractor={(item) => item.id + 'cell'}
-
+                    keyExtractor={(item) => item.id + 'cell'} 
                     //必须
                     onEndReachedThreshold={0.1}
                     refreshing={this.state.refreshing}
                     onRefresh={this.onRefresh}//下拉刷新
                     onEndReached={this.loadMore}//底部往下拉翻页
-                    onMomentumScrollBegin={() => this.canLoadMore = true}
-
+                    onMomentumScrollBegin={() => this.canLoadMore = true} 
                     ListEmptyComponent={<NoDataView />}
                 />
-                 <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
+                <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
 
             </View>
         );
@@ -178,12 +179,18 @@ const styles = StyleSheet.create({
         borderLeftColor: Macro.work_blue,
         borderLeftWidth: 5
     },
+
+    orange: {
+        borderLeftColor: Macro.work_orange,
+        borderLeftWidth: 5,
+    },
+    
     title: {
         color: '#404145',
         fontSize: 16
     },
     unread: {
-        color: 'red', 
+        color: 'red',
         fontSize: 16
     },
     read: {

@@ -21,6 +21,7 @@ import ShowTextWithRight from '../components/show-text-with-right';
 import CompanyDetail from '../components/company-detail';
 import ScreenUtil from '../../../utils/screen-util';
 
+//废弃
 export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
     return {

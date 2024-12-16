@@ -55,8 +55,7 @@ export default class VisitPage extends BasePage {
         });
     };
 
-    callBack = (id) => {
-        alert(id);
+    callBack = (id) => { 
         //详情
         WorkService.getVisitEntity(id).then(res => {
             this.setState({
@@ -64,6 +63,14 @@ export default class VisitPage extends BasePage {
             });
         });
     };
+
+    //放行
+    ok = () => {
+        const { data } = this.state;
+        WorkService.updateVisitEntity(data.id).then(res => {
+            this.props.navigation.goBack();
+        });
+    }
 
     render() {
         const { data } = this.state;
@@ -76,10 +83,12 @@ export default class VisitPage extends BasePage {
                             <Text style={styles.left}>访客称呼：</Text>
                             <Text style={styles.right}>{data.name}</Text>
                         </Flex>
+
                         <Flex justify='start' style={styles.single}>
                             <Text style={styles.left}>手机号码：</Text>
                             <Text style={styles.right}>{data.mobile}</Text>
                         </Flex>
+
                         <Flex justify='start' style={styles.single}>
                             <Text style={styles.left}>来访事由：</Text>
                             <Text style={styles.right}>{data.billType}</Text>
@@ -105,11 +114,6 @@ export default class VisitPage extends BasePage {
                             <Text style={styles.right}>{data.statusName}</Text>
                         </Flex>
 
-                        {/* <Flex justify='between' style={styles.single}>
-                            <Text style={styles.left}>事项说明：</Text> 
-                            <Text>{data.remark || ''}</Text>
-                        </Flex> */}
-
                         <Text style={[styles.desc]}>{data.remark || ''}</Text>
 
                     </Flex>
@@ -121,7 +125,7 @@ export default class VisitPage extends BasePage {
                         type={'primary'}
                         activeStyle={{ backgroundColor: Macro.work_blue }}
                         style={{
-                            width: 130,
+                            width: 110,
                             marginBottom: 10,
                             marginRight: 20,
                             backgroundColor: Macro.work_blue,
@@ -129,11 +133,12 @@ export default class VisitPage extends BasePage {
                         }}>扫一扫</Button>
 
                     <Button
-                        onPress={() => this.props.navigation.goBack()}
+                        onPress={this.ok}
+                        disabled={data ? false : true}
                         type={'primary'}
                         activeStyle={{ backgroundColor: Macro.work_blue }}
                         style={{
-                            width: 130,
+                            width: 110,
                             marginBottom: 10,
                             backgroundColor: Macro.work_blue,
                             height: 40
@@ -146,12 +151,7 @@ export default class VisitPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-    // name: {
-    //     fontSize: 16,
-    //     color: '#404145',
-    //     fontWeight: '600',
-    //     paddingBottom: 6
-    // },
+
     right: {
         fontSize: 16,
         color: '#38393d'
@@ -177,6 +177,4 @@ const styles = StyleSheet.create({
         marginRight: 15,
         paddingTop: 15
     }
-});
-
-//export default VisitPage;
+}); 

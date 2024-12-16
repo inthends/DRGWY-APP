@@ -51,7 +51,7 @@ class WeiXiuRatePage extends BasePage {
     };
   }
 
-  componentDidMount(): void {
+  componentDidMount() {
     NavigatorService.GetDataItemTreeJsonRepairMajor().then((res) => {
       const titles = (res || []).map((item) => item.title);
       this.setState({

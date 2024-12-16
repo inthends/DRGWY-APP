@@ -337,12 +337,12 @@ const styles = StyleSheet.create({
     }
 });
 
-const mapStateToProps = ({ memberReducer, xunJianReducer }) => {
-
+const mapStateToProps = ({ memberReducer }) => { 
     return {
         hasNetwork: memberReducer.hasNetwork
     };
 };
+
 const mapDispatchToProps = (dispatch) => {
     return {
         saveXunJianAction(data) {
@@ -350,4 +350,5 @@ const mapDispatchToProps = (dispatch) => {
         }
     };
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(StartXunJianPage);

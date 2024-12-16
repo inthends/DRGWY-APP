@@ -71,8 +71,7 @@ export default {
       isShow: isShow
     });
   },
-
-  //检查单
+ 
   checkList(
     pageIndex,
     billStatus,
@@ -506,14 +505,14 @@ export default {
     return api.getData('/api/MobileMethod/MGetReceiveFeeItems');
   },
 
-  // 维修完成率
+  //维修完成率
   GetDataItemTreeJsonRepairMajor() {
     return api.getData('/api/MobileMethod/MGetDataItemTreeJson', {
       code: 'RepairMajor',
     });
   },
 
-  // 投诉完成率下拉接口
+  //投诉完成率下拉接口
   GetDataItemTreeJsonComplainType() {
     return api.getData('/api/MobileMethod/MGetDataItemTreeJson', {
       code: 'ComplainType',

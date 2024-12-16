@@ -6,7 +6,9 @@ import Macro from '../../utils/macro';
 import ManualAction from '../../utils/store/actions/manual-action';
 import MineService from './mine-service';
 import { connect } from 'react-redux';
-import { savehasNetwork, saveXunJian } from '../../utils/store/actions/actions';
+import {
+    savehasNetwork, saveXunJian
+} from '../../utils/store/actions/actions';
 import XunJianService from '../navigator/xunjian/xunjian-service';
 import UDToast from '../../utils/UDToast';
 import WorkService from '../work/work-service';
@@ -28,12 +30,12 @@ class SettingPage extends BasePage {
 
     constructor(props) {
         super(props);
-        this.state = {
-            index: 0,
-            data: ['报修', '报事', '巡场'],
-            value: '',
-            //checked: false,
-        };
+        //this.state = {
+        //index: 0,
+        //data: ['报修', '报事', '巡场'],
+        //value: '',
+        //checked: false,
+        //};
     }
 
     logout = () => {
@@ -72,6 +74,11 @@ class SettingPage extends BasePage {
     }
 
     update() {
+        if (!this.props.hasNetwork) {
+            UDToast.showError('网络不可用');
+            return;
+        }
+        const { xunJianAction } = this.props;
         //数据量大，只能同步自己的巡检任务
         this.loading = UDToast.showLoading('正在同步中...');
         XunJianService.xunjianData(this.props.user.userId, false).then(resp => {
@@ -81,7 +88,6 @@ class SettingPage extends BasePage {
                     ...item,
                     items: res
                 })))).then(rea => {
-
                     XunJianService.xunjianPointTasks().then(r => {
                         UDToast.hiddenLoading(this.loading);
                         const tasks = {
@@ -90,9 +96,15 @@ class SettingPage extends BasePage {
                             scanLists: r || {}//巡检任务和内容明细
                         };
                         this.props.saveXunjian(tasks);//存放离线巡检数据
-                        //alert('同步巡检数据'+ tasks.length);
-                        UDToast.showInfo('同步完成');
 
+                        //清除原来的巡检数据，防止旧数据干扰
+                        for (let taskId in xunJianAction) {
+                            if (xunJianAction.hasOwnProperty(taskId)) {
+                                Reflect.deleteProperty(xunJianAction, taskId);
+                            }
+                        }
+
+                        UDToast.showInfo('同步完成');
                     }).catch(err => {
                         UDToast.hiddenLoading(this.loading);
                     });
@@ -119,34 +131,6 @@ class SettingPage extends BasePage {
         });
     }
 
-    uploadImages(imageObjs) {
-        return new Promise((resolve, reject) => {
-            if (imageObjs.length === 0) {
-                return resolve();
-            } else {
-                return Promise.all(imageObjs.map(item => {
-                    //等数据中的所有接口都执行resolve()成功状态后，执行then()方法。
-                    const { id, images } = item;
-                    const formData = new FormData();//如果需要上传多张图片，需要遍历数组，把图片的路径数组放入formData中
-                    for (let index = 0; index < images.length; index++) {
-                        let img = images[index];
-                        let file = { uri: img.icon.fileUri, type: 'multipart/form-data', name: 'picture' + index + '.png' };//这里的key(uri和type和name)不能改变
-                        formData.append('Files', file);//这里的files就是后台需要的key
-                    }
-                    formData.append('keyvalue', id);
-                    axios.defaults.headers['Content-Type'] = 'multipart/form-data';
-                    axios.defaults.headers['Authorization'] = 'Bearer ' + ManualAction.getTokenBYStore();
-                    //return axios.post('/api/MobileMethod/MUploadPollingTask', formData);
-                    axios.post('/api/MobileMethod/MUploadMultiPollingTask', formData).then(res => {
-                        if (!!res) {
-                            resolve(res);//必须返回resolve()
-                        }
-                    });
-                }));
-            }
-        });
-    }
-
     uploading() {
         const { xunJianAction } = this.props;
         let xunJians = [];
@@ -167,49 +151,90 @@ class SettingPage extends BasePage {
             }
         }
 
-        if (xunJians.length > 0) { 
-            //alert('上传巡检数据'+ xunJians.length);
+        if (xunJians.length > 0) {
+
             this.loading = UDToast.showLoading('正在上传中...');
-            Promise.all(xunJians.map(item => {
-                //等数据中的所有接口都执行resolve()成功状态后，执行then()方法。
-                const { keyvalue, userId, userName, inspectData } = item;
-                let arrStr = JSON.stringify(inspectData);
-                XunJianService.xunjianExecute(keyvalue, userId, userName, arrStr, false); 
-            })).then(res => {
+            //需要先上传巡检图片，因为要创建工单，会将图片复制到服务单目录
+            this.uploadImages(imageObjs).then(res => {
 
-                //巡检不关联工单
-                // this.uploadWork(works).then(res => { 
-                //     this.uploadImages(imageObjs).then(res => { 
-                //         UDToast.hiddenLoading(this.loading);
-                //         UDToast.showSuccess('上传成功'); 
-                //     }).catch(reas => {
-                //         UDToast.hiddenLoading(this.loading);
-                //         UDToast.showError('上传图片数据失败');
-                //     });
-                // }).catch(err => { 
-                //     UDToast.hiddenLoading(this.loading);
-                //     UDToast.showError('上传工单数据失败'); 
-                // });
+                // UDToast.hiddenLoading(this.loading);
+                // UDToast.showSuccess('上传成功');
+ 
+                // this.loading = UDToast.showLoading('正在上传中...');
 
-                //上传巡检图片
-                this.uploadImages(imageObjs).then(res => {
+                Promise.all(xunJians.map(item => {
+                    //等数据中的所有接口都执行resolve()成功状态后，执行then()方法。
+                    const { keyvalue, userId, userName, inspectData } = item;
+                    let arrStr = JSON.stringify(inspectData);
+                    XunJianService.xunjianExecute(keyvalue, userId, userName, arrStr, false);
+                })).then(res => {
+
+                    //巡检关联工单
+                    // this.uploadWork(works).then(res => { 
+                    //     this.uploadImages(imageObjs).then(res => { 
+                    //         UDToast.hiddenLoading(this.loading);
+                    //         UDToast.showSuccess('上传成功'); 
+                    //     }).catch(reas => {
+                    //         UDToast.hiddenLoading(this.loading);
+                    //         UDToast.showError('上传图片数据失败');
+                    //     });
+                    // }).catch(err => { 
+                    //     UDToast.hiddenLoading(this.loading);
+                    //     UDToast.showError('上传工单数据失败'); 
+                    // });
+
+                    //清除原来的巡检数据，防止旧数据干扰
+                    for (let taskId in xunJianAction) {
+                        if (xunJianAction.hasOwnProperty(taskId)) {
+                            Reflect.deleteProperty(xunJianAction, taskId);
+                        }
+                    }
+
                     UDToast.hiddenLoading(this.loading);
                     UDToast.showSuccess('上传成功');
 
-                }).catch(reas => {
+                }).catch(err => {
                     UDToast.hiddenLoading(this.loading);
-                    UDToast.showError('上传图片失败');
+                    UDToast.showError('上传巡检数据失败：' + err);
                 });
 
-            }).catch(res => {
+            }).catch(myerr => {
                 UDToast.hiddenLoading(this.loading);
-                UDToast.showError('上传巡检数据失败');
+                UDToast.showError('上传图片失败：' + myerr);
             });
 
-            
         } else {
             UDToast.showError('没有数据需要上传');
         }
+    }
+
+    uploadImages(imageObjs) {
+        return new Promise((resolve, reject) => {
+            if (imageObjs.length === 0) {
+                return resolve();
+            } else {
+                return Promise.all(imageObjs.map(item => {
+                    //等数据中的所有接口都执行resolve()成功状态后，执行then()方法。
+                    const { id, images } = item;
+                    const formData = new FormData();//如果需要上传多张图片，需要遍历数组，把图片的路径数组放入formData中
+                    for (let index = 0; index < images.length; index++) {
+                        let img = images[index];
+                        //let file = { uri: img.icon.fileUri, type: 'multipart/form-data', name: 'picture' + index + '.png' };//这里的key(uri和type和name)不能改变
+                        let file = { uri: img.fileUri, type: 'multipart/form-data', name: 'picture' + index + '.png' };//这里的key(uri和type和name)不能改变
+                        formData.append('Files', file);//这里的files就是后台需要的key
+                    }
+                    formData.append('keyvalue', id);
+                    axios.defaults.headers['Content-Type'] = 'multipart/form-data';
+                    axios.defaults.headers['Authorization'] = 'Bearer ' + ManualAction.getTokenBYStore();
+                    //return axios.post('/api/MobileMethod/MUploadPollingTask', formData);
+                    return axios.post('/api/MobileMethod/MUploadMultiPollingTask', formData).then(res => {
+                        if (!!res) {
+                            resolve(res);//必须返回resolve()
+                        }
+                    });
+                }));
+            }
+        });
     }
 
     render() {
@@ -228,12 +253,15 @@ class SettingPage extends BasePage {
                     <List.Item extra={<Switch
                         color='#447FEA'
                         checked={this.props.hasNetwork}
-                        onChange={checked => this.props.savehasNetwork(checked)} />}>
+                        onChange={checked =>
+                            this.props.savehasNetwork(checked)
+                        } />}>
                         <Flex style={{ height: 40 }}>
                             <Text style={{ color: '#666', fontSize: 16 }}>网络可用</Text>
                         </Flex>
                     </List.Item>
                 </List>
+
                 {
                     !common.isIOS() && <List renderHeader={<View style={{ height: 10 }} />}>
                         <TouchableWithoutFeedback onPress={() => this.changePrint()}>
@@ -273,7 +301,7 @@ class SettingPage extends BasePage {
                         </Flex>
                     </TouchableWithoutFeedback>
                 </List>
-            </View>
+            </View >
         );
     }
 }
@@ -293,8 +321,8 @@ const mapStateToProps = ({ memberReducer, xunJianReducer }) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        savehasNetwork(user) {
-            dispatch(savehasNetwork(user));
+        savehasNetwork(checked) {
+            dispatch(savehasNetwork(checked));
         },
         saveXunjian(data) {
             dispatch(saveXunJian(data));

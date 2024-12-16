@@ -7,16 +7,16 @@ import {
     TouchableWithoutFeedback,
     ScrollView
 } from 'react-native';
-import BasePage from '../base/base';
+import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
-import Macro from '../../utils/macro';
-import ScreenUtil from '../../utils/screen-util';
+import Macro from '../../../utils/macro';
+import ScreenUtil from '../../../utils/screen-util';
 // import { connect } from 'react-redux';
 // import ListHeader from '../../components/list-header';
-import common from '../../utils/common';
+import common from '../../../utils/common';
 //import LoadImage from '../../components/load-image';
-import NavigatorService from './navigator-service';
-import CommonView from '../../components/CommonView';
+import NavigatorService from '../navigator-service';
+import CommonView from '../../../components/CommonView';
 //import WorkService from '../work/work-service';
 
 

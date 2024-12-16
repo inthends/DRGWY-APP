@@ -1,11 +1,13 @@
 import {ACTIONS} from '../action-types/action-types';
 
 const initialState = {
+    //待巡检任务
     xunJianData: {
         allData:{},
         lists:[],
         scanLists:[]
     },
+    //实际巡检数据
     xunJianAction:{
     }
 };

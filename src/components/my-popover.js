@@ -44,7 +44,7 @@ export default class MyPopover extends Component {
     render() {
         const { titles, index } = this.state;
         return (
-            <View style={[styles.container, this.props.style]}>
+            <View style={[styles.container, this.props.style]}> 
                 <TouchableWithoutFeedback ref={ref => this.touchable = ref} onPress={() => this.showPopover()}>
                     <Flex style={{ height: 40 }}>
                         {!this.props.hiddenImage && (

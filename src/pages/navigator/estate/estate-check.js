@@ -20,7 +20,7 @@ import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 import { DrawerType } from '../../../utils/store/action-types/action-types';
 import { saveSelectDrawerType } from '../../../utils/store/actions/actions';
-import MyPopoverRight from '../../../components/my-popover-right';
+import MyPopoverRole from '../../../components/my-popover-role';
 import WorkService from '../../work/work-service';
 
 class EstateCheckPage extends BasePage {
@@ -282,6 +282,7 @@ class EstateCheckPage extends BasePage {
                         type={'primary'}
                         activeStyle={{ backgroundColor: Macro.work_blue }} style={{
                             width: 220,
+                            marginTop:10,
                             marginBottom: 10,
                             backgroundColor: Macro.work_blue,
                             height: 40
@@ -296,7 +297,7 @@ class EstateCheckPage extends BasePage {
                                 <CommonView style={{ height: 50, width: 220 }}>
                                     <Flex style={[styles.every]} justify='between'>
                                         <Text style={styles.left}>检查组：</Text>
-                                        <MyPopoverRight
+                                        <MyPopoverRole
                                             onChange={(item) => {
                                                 this.setState({ checkRole: item.name, checkRoleId: item.id });
                                             }}
@@ -308,8 +309,7 @@ class EstateCheckPage extends BasePage {
                                 <Flex style={{ marginTop: 10 }}>
                                     <Button
                                         type={'primary'}
-                                        onPress={() => { 
-                                            //alert('this.state.checkRole:'+ this.state.checkRole); 
+                                        onPress={() => {   
                                             if (this.state.checkRole == '') {
                                                 return;
                                             }
@@ -319,7 +319,7 @@ class EstateCheckPage extends BasePage {
                                         }}
                                         activeStyle={{ backgroundColor: Macro.work_blue }}
                                         style={{
-                                            width: 130,
+                                            width: 110,
                                             backgroundColor: Macro.work_blue,
                                             height: 35
                                         }}>确认</Button>

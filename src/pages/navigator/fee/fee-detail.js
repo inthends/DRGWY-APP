@@ -10,21 +10,21 @@ import {
     DeviceEventEmitter,
     View
 } from 'react-native';
-import BasePage from '../base/base';
+import BasePage from '../../base/base';
 import { Flex, Icon, Checkbox, Modal, DatePickerView } from '@ant-design/react-native';
-import Macro from '../../utils/macro';
-import ScreenUtil from '../../utils/screen-util';
+import Macro from '../../../utils/macro';
+import ScreenUtil from '../../../utils/screen-util';
 import { connect } from 'react-redux';
-import common from '../../utils/common';
-import LoadImage from '../../components/load-image';
-import TwoChange from '../../components/two-change';
-import NavigatorService from './navigator-service';
-import MyPopover from '../../components/my-popover';
-import UDToast from '../../utils/UDToast';
-import CommonView from '../../components/CommonView';
-import ActionPopover from '../../components/action-popover';
-import JianFei from '../../components/jian-fei';
-import ChaiFei from '../../components/chai-fei';
+import common from '../../../utils/common';
+import LoadImage from '../../../components/load-image';
+import TwoChange from '../../../components/two-change';
+import NavigatorService from '../navigator-service';
+import MyPopover from '../../../components/my-popover';
+import UDToast from '../../../utils/UDToast';
+import CommonView from '../../../components/CommonView';
+import ActionPopover from '../../../components/action-popover';
+import JianFei from '../../../components/jian-fei';
+import ChaiFei from '../../../components/chai-fei';
 // import QRCode from 'react-native-qrcode-svg';
 // import ListHeader from '../../components/list-header';
 // import { upgrade } from 'rn-app-upgrade';
@@ -576,10 +576,12 @@ class FeeDetailPage extends BasePage {
             //if (this.state.isLKL || this.state.isYse) {
             //支持蓝牙打印
             NavigatorService.cashPayPrint(ids).then(res => {
-                NativeModules.LHNToast.printTicket({
-                    ...res,
-                    username: res.userName,
-                });
+                if (res) {
+                    NativeModules.LHNToast.printTicket({
+                        ...res,
+                        username: res.userName,
+                    });
+                }
             });
             //}
             this.onRefresh();//刷新数据
@@ -866,9 +868,9 @@ class FeeDetailPage extends BasePage {
                                             }}>惠</Text>
                                         </Flex> : <Text style={{ fontSize: 15, color: '#666' }}>{item.feeName}</Text>
                                     }
-                                    <Flex>
+                                    {/* <Flex> */}
                                         <Text style={{ fontSize: 15, paddingRight: 10, color: 'red' }}>{item.amount}</Text>
-                                    </Flex>
+                                    {/* </Flex> */}
                                 </Flex>
                                 {item.beginDate ?
                                     <Text style={{
@@ -883,21 +885,19 @@ class FeeDetailPage extends BasePage {
                         <>
                             <Flex align={'start'} direction={'column'} style={{ marginLeft: 3, flex: 1 }}>
                                 <Flex justify={'between'}
-                                    style={{ paddingLeft: 5, paddingTop: 10, paddingBottom: 5, width: '100%' }}>
+                                    style={{ paddingLeft: 5, paddingTop: 10, paddingBottom: 8, width: '100%' }}>
                                     <Text style={{ fontSize: 15, width: '80%', color: 'green' }}>{item.allName}</Text>
                                 </Flex>
                                 <Flex justify={'between'}
                                     style={{
                                         paddingLeft: 5,
                                         paddingBottom: 5,
-                                        width: '100%',
-                                        paddingTop: 8,
-                                        paddingBottom: 8
+                                        width: '100%'
                                     }}>
                                     <Text style={{ fontSize: 15 }}>{item.billCode}</Text>
-                                    <Flex>
+                                    {/* <Flex> */}
                                         <Text style={{ fontSize: 15, paddingRight: 8, color: 'red' }}>{item.amount}</Text>
-                                    </Flex>
+                                    {/* </Flex> */}
                                 </Flex>
                                 <Text style={{
                                     paddingLeft: 4,

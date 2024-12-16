@@ -1,15 +1,17 @@
+//兴业银行扫码
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Animated, Easing } from 'react-native';
-import BasePage from '../base/base';
+import BasePage from '../../base/base';
 import { Icon } from '@ant-design/react-native';
-import common from '../../utils/common';
-import NavigatorService from './navigator-service';
-import Macro from '../../utils/macro';
+import common from '../../../utils/common';
+import NavigatorService from '../navigator-service';
+import Macro from '../../../utils/macro';
 import { RNCamera } from 'react-native-camera';
-import UDToast from '../../utils/UDToast';
-//嘉联扫码 
-export default class JLScanScreen extends BasePage {
+import UDToast from '../../../utils/UDToast';
 
+//export default class CIBScanScreen extends Component {
+//2023-07-06 modify
+export default class CIBScanScreen extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
             title: '上门收费',
@@ -45,7 +47,7 @@ export default class JLScanScreen extends BasePage {
             {
                 toValue: -200,
                 duration: 1500,
-                easing: Easing.linear,
+                easing: Easing.linear
             },
         ).start(() => this.startAnimation());
     };
@@ -54,40 +56,61 @@ export default class JLScanScreen extends BasePage {
     onBarCodeRead = (result) => {
         if (this.state.result) {
             return;
-        } 
+        }
         this.setState({
             time: 30,
             result
         }, () => {
             let out_trade_no = common.getValueFromProps(this.props, 'out_trade_no');
-            NavigatorService.jlScanPay(result.data, out_trade_no).then(resp => {
-                if (resp === 'need_query') {
-                    this.needQuery(out_trade_no);
-                } else {
-                    //callBack(out_trade_no);
-                    this.props.navigation.goBack();
-                }
-            }).catch(() => {
-                this.setState({
-                    result: null,
-                    count: null
+            let isDigital = common.getValueFromProps(this.props, 'isDigital');//是否是数字货币
+            if (isDigital) {
+                //扫数字货币付款码
+                NavigatorService.bcmMisScanPay(result.data, out_trade_no).then(resp => {
+                    if (resp === 'need_query') {
+                        this.needQueryMis(out_trade_no);
+                    } else {
+                        //callBack(out_trade_no);
+                        this.props.navigation.goBack();
+                    }
+                }).catch(() => {
+                    this.setState({
+                        result: null,
+                        count: null
+                    });
                 });
-            });
-            // this.props.navigation.navigate('feeDetail', {
-            //     data: {
-            //         b:tbout_trade_no,
-            //         a:e.data,
-            //     }
-            // })
-            // }).catch(() => {
-            //     this.setState({
-            //         result: null,
-            //         count: null,
-            //     });
+
+            } else {
+                //扫人民币付款码
+                NavigatorService.cibScanPay(result.data, out_trade_no).then(resp => {
+                    if (resp === 'need_query') {
+                        this.needQuery(out_trade_no);
+                    } else {
+                        //callBack(out_trade_no);
+                        this.props.navigation.goBack();
+                    }
+                }).catch(() => {
+                    this.setState({
+                        result: null,
+                        count: null
+                    });
+                });
+                // this.props.navigation.navigate('feeDetail', {
+                //     data: {
+                //         b:tbout_trade_no,
+                //         a:e.data,
+                //     }
+                // })
+                // }).catch(() => {
+                //     this.setState({
+                //         result: null,
+                //         count: null,
+                //     });
+            }
         });
     };
 
-    needQuery(out_trade_no) {
+    //查询数字人民币扫码结果
+    needQueryMis(out_trade_no) {
         //let callBack = common.getValueFromProps(this.props, 'callBack');
         let count = this.state.count || 10;
         if (count === 10) {
@@ -97,7 +120,37 @@ export default class JLScanScreen extends BasePage {
             count: count - 1,
         }, () => {
             if (count > 0) {
-                NavigatorService.jlScanPayQuery(out_trade_no).then(query => {
+                NavigatorService.bcmMisScanPayQuery(out_trade_no).then(query => {
+                    if (query === 'SUCCESS') {
+                        UDToast.hiddenLoading(this.showLoadingNumber);
+                        this.props.navigation.goBack();
+                    } else {
+                        setTimeout(() => {
+                            this.needQueryMis(out_trade_no);
+                        }, 5000);
+                    }
+                }).catch(res => {
+                    UDToast.hiddenLoading(this.showLoadingNumber);
+                    this.setState({
+                        result: null,
+                        count: null,
+                    });
+                });
+            }
+        });
+    }
+
+    needQuery(out_trade_no) {
+        //let callBack = common.getValueFromProps(this.props, 'callBack');
+        let count = this.state.count || 7;
+        if (count === 7) {
+            this.showLoadingNumber = UDToast.showLoading('正在查询支付结果，请稍后...');
+        }
+        this.setState({
+            count: count - 1,
+        }, () => {
+            if (count > 0) {
+                NavigatorService.cibScanPayQuery(out_trade_no).then(query => {
                     if (query === 'SUCCESS') {
                         UDToast.hiddenLoading(this.showLoadingNumber);
                         //callBack(res.out_trade_no);
@@ -115,13 +168,14 @@ export default class JLScanScreen extends BasePage {
                     });
                 });
             }
-            // else {
-            //     NavigatorService.wftScanPayReserve(res.out_trade_no);
-            //     setTimeout(() => {
-            //         UDToast.hiddenLoading(this.showLoadingNumber);
-            //         this.props.navigation.goBack();
-            //     }, 1000);
-            // }
+            else {
+                //6次查询完成，接口仍未返回成功标识（既查询接口返回的trade_state不是SUCCESS）,则调用撤销接口
+                NavigatorService.cibScanPayReserve(res.out_trade_no);
+                setTimeout(() => {
+                    UDToast.hiddenLoading(this.showLoadingNumber);
+                    this.props.navigation.goBack();
+                }, 1000);
+            }
         });
     }
 
@@ -188,6 +242,3 @@ const styles = StyleSheet.create({
         backgroundColor: Macro.work_blue
     }
 });
-
-
-

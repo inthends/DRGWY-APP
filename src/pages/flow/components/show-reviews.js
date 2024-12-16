@@ -101,9 +101,7 @@ const mapStateToProps = ({ memberReducer }) => {
     user: {
       ...memberReducer.user,
       id: memberReducer.user.userId
-    },
-    //hasNetwork: memberReducer.hasNetwork,
-    //xunJianData: xunJianReducer.xunJianData
+    }
   };
 };
 

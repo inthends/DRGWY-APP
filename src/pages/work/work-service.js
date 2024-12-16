@@ -1,8 +1,7 @@
 import api from '../../utils/api';
 
 export default {
-
-    //检查单详情
+ 
     checkDetail(keyvalue) {
         return api.getData('/api/MobileMethod/MGetCheckEntity', { keyvalue });
     },
@@ -45,6 +44,7 @@ export default {
         dutyUserName,
         repairMajorId,
         repairMajor,
+        checkType,
         checkMemo,
         rectification,
         operateType) {
@@ -60,6 +60,7 @@ export default {
             dutyUserName,
             repairMajorId,
             repairMajor,
+            checkType,
             checkMemo,
             rectification,
             operateType
@@ -375,9 +376,8 @@ export default {
     //     return api.postData(url, { repairMajor, time });
     // },
 
-    getCommonItems(code) {
-        let url = '/api/MobileMethod/GetDataItemTreeJson';
-        return api.getData(url, { code });
+    getCommonItems(code) { 
+        return api.getData('/api/MobileMethod/MGetDataItemTreeJson', { code });
     },
 
     //获取人员
@@ -411,9 +411,14 @@ export default {
     unreadCount() {
         return api.getData('/api/MobileMethod/MGetUnReadNewsCount', {}, false);
     },
-    unreadList(pageIndex, showLoading) {
-        return api.postData('/api/MobileMethod/MGetNewsPageList', { pageIndex, pageSize: 10 }, showLoading);
+    // unreadList(pageIndex, showLoading) {
+    //     return api.postData('/api/MobileMethod/MGetNewsPageList', { pageIndex, pageSize: 10 }, showLoading);
+    // },
+ 
+    getNewsList(status, pageIndex, showLoading) {
+        return api.postData('/api/MobileMethod/MGetNewsPageList', {status, pageIndex, pageSize: 10 }, showLoading);
     },
+
     readNews(newsId) {
         return api.postData('/api/MobileMethod/MReadNews', { newsId });
     },
@@ -471,8 +476,28 @@ export default {
 
 
     //访客登记详情
-    getVisitEntity(keyvalue) {
+    getVisitEntity(keyvalue) { 
         return api.getData('/api/MobileMethod/MGetVisitEntity', { keyvalue });
     },
 
+    updateVisitEntity(keyvalue) { 
+        return api.postData('/api/MobileMethod/MUpdateVisitEntity', { keyvalue }, true, true); 
+    },
+
+    //获取客户信息
+    getCustomerInfo(keyvalue) {
+        return api.getData('/api/MobileMethod/MGetCustomerInfo', { keyvalue });
+    },
+
+    //欠费明细
+    alertFeeList(
+        pageIndex,
+        billId
+    ) {
+        return api.postData('/api/MobileMethod/MGetFeeAlertPageList', {
+            pageIndex,
+            pageSize: 10,
+            billId
+        });
+    },
 };

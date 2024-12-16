@@ -61,8 +61,7 @@ class App extends Component<Props> {
     JPush.addNotificationListener(this.notificationListener);
     //本地通知回调
     this.localNotificationListener = (result) => {
-      // console.log('localNotificationListener:' + JSON.stringify(result));
-      // alert(1)
+      // console.log('localNotificationListener:' + JSON.stringify(result)); 
     };
     JPush.addLocalNotificationListener(this.localNotificationListener);
     //自定义消息回调
@@ -84,6 +83,7 @@ class App extends Component<Props> {
     // JPush.getRegistrationID(res => {
     //     alert(JSON.stringify(res));
     // });
+    
     JPush.setLoggerEnable(true);
   }
 

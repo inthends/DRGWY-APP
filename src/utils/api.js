@@ -63,8 +63,7 @@ export default {
     },
     fail(showError, error, reject) {
         if (error) {
-            let errorStr = JSON.stringify(error);
-            //alert(errorStr); 
+            let errorStr = JSON.stringify(error); 
             if (errorStr.includes('401')) {
                 ManualAction.saveTokenByStore(null);
                 UDToast.showError('用户信息过期');

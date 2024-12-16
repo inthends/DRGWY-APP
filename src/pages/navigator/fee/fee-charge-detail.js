@@ -6,13 +6,13 @@ import {
     TouchableOpacity,
     ScrollView, NativeModules,
 } from 'react-native';
-import BasePage from '../base/base';
+import BasePage from '../../base/base';
 import { Flex, Icon, WhiteSpace } from '@ant-design/react-native';
-import Macro from '../../utils/macro';
+import Macro from '../../../utils/macro';
 import { connect } from 'react-redux';
-import common from '../../utils/common';
-import NavigatorService from './navigator-service';
-import CommonView from '../../components/CommonView';
+import common from '../../../utils/common';
+import NavigatorService from '../navigator-service';
+import CommonView from '../../../components/CommonView';
 
 class FeeChargeDetail extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -85,17 +85,18 @@ class FeeChargeDetail extends BasePage {
                             paddingTop: 10,
                             fontSize: 15,
                             color: 'green'
-                        }}>{data.allName} {data.createUserName}</Text>
+                        }}>{data.allName}</Text>
                         <Text style={{
                             paddingLeft: 15,
                             paddingTop: 10,
                             fontSize: 15,
-                        }}>单号：{data.billCode}</Text>
-                        <Text style={{
+                            color: '#2c2c2c'
+                        }}>单号：{data.billCode}，收款人：{data.createUserName}</Text>
+                        {/* <Text style={{
                             paddingLeft: 15,
                             paddingTop: 10,
                             fontSize: 15,
-                        }}>日期：{data.billDate}</Text>
+                        }}>日期：{data.billDate}</Text> */}
 
                         {this.state.items.map((item, index) => (
                             <Flex key={index} style={styles.item}>
@@ -107,14 +108,14 @@ class FeeChargeDetail extends BasePage {
                                 >
                                     <Flex justify={'between'}
                                         style={{
-                                            paddingTop: 3,
+                                            //paddingTop: 3,
                                             paddingLeft: 5,
                                             width: '100%'
                                         }}>
                                         <Text style={{ fontSize: 15 }}>{item.feeName}</Text>
-                                        <Flex>
-                                            <Text style={{ fontSize: 15, color: 'red' }}>{item.amount}</Text>
-                                        </Flex>
+                                        {/* <Flex> */}
+                                            <Text style={{ fontSize: 15 }}>{item.amount}</Text>
+                                        {/* </Flex> */}
                                     </Flex>
 
                                     {item.beginDate ?
@@ -126,7 +127,13 @@ class FeeChargeDetail extends BasePage {
                                 </Flex>
                             </Flex>
                         ))}
-                        <Flex justify='end'>
+                        <Flex justify='between'> 
+                            <Text style={{
+                                paddingLeft: 15,
+                                paddingTop: 10,
+                                fontSize: 15,
+                                color: '#2c2c2c' 
+                            }}>日期：{data.billDate}</Text> 
                             <Text style={{
                                 fontSize: 15,
                                 paddingTop: 5,

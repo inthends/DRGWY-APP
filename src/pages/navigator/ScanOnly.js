@@ -38,10 +38,9 @@ export default class ScanOnly extends BasePage {
 
     componentDidMount() {
         this.startAnimation();
-        
         //test
         // setTimeout(() => {
-        //     this.onBarCodeRead({ data: 'ea680082-44ad-4f6b-ba82-da433c0da40c' })
+        //     this.onBarCodeRead({ data: 'f94af7b8-0d7c-40e0-be3c-5183f3390bd0' })
         // }, 1000);
     }
 
@@ -59,14 +58,13 @@ export default class ScanOnly extends BasePage {
 
     //识别二维码
     onBarCodeRead = (result) => {
-        const { data } = result;
+        const { data } = result; 
         let callBack = common.getValueFromProps(this.props).callBack;
         let needBack = common.getValueFromProps(this.props).needBack;
-        
         if (callBack && !!data) {
             callBack(data);
         }
-
+        
         if (needBack) {
             this.props.navigation.goBack();
         }

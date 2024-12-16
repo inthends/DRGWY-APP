@@ -73,7 +73,8 @@ class SelectRolePersonMulti extends BasePage {
         let enCode = navigation.state.params.enCode;
         let exceptUserId = navigation.state.params.exceptUserId;
         let url = '/api/MobileMethod/MGetRoleList'; //获取角色
-        let url2 = '/api/MobileMethod/MGetUsersByRoleId';//获取角色人员 
+        // let url2 = '/api/MobileMethod/MGetUsersByRoleId';//获取角色人员
+        let url2 = '/api/MobileMethod/MGetReceiveUsersByRoleId';//获取角色人员 
         api.getData(url, this.state.selectBuilding ? {
             moduleId,
             enCode,
@@ -152,6 +153,7 @@ class SelectRolePersonMulti extends BasePage {
                                                     <Flex>
                                                         <Text style={styles.desc}>{i.name}</Text>
                                                         {i.postName ? <Text>（{i.postName}）</Text> : null}
+                                                         <Text> (工单 : {i.counts})</Text>
                                                     </Flex>
                                                     <Flex style={{ paddingRight: 21 }}>
                                                         <Checkbox

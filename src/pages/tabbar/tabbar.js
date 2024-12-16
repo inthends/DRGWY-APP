@@ -27,13 +27,13 @@ import SettingPage from '../mine/setting';
 import ModifyPsdPage from '../mine/modify-psd';
 
 //统计
-import FeeHousePage from '../navigator/fee-housing';
-import AssetsPage from '../navigator/assets';
-import FeeBuildingsPage from '../navigator/fee-buildings';
-import FeeRoomsPage from '../navigator/fee-rooms';
-import FeeParkingsPage from '../navigator/fee-parkings';
-import FeeDetailPage from '../navigator/fee-detail';
-import FeeAddPage from '../navigator/fee-add';
+import FeeHousePage from '../navigator/fee/fee-housing';
+import AssetsPage from '../navigator/assets/assets';
+import FeeBuildingsPage from '../navigator/fee/fee-buildings';
+import FeeRoomsPage from '../navigator/fee/fee-rooms';
+import FeeParkingsPage from '../navigator/fee/fee-parkings';
+import FeeDetailPage from '../navigator/fee/fee-detail';
+import FeeAddPage from '../navigator/fee/fee-add';
 import CollectionRatePage from '../navigator/analyse/collection-rate';
 import ZiJinLiuPage from '../navigator/analyse/zijinliu';
 import QianFeiZhangLingPage from '../navigator/analyse/qian-fei-zhang-ling';
@@ -47,14 +47,11 @@ import EweixiuDetailPage from '../navigator/estate/estate-weixiu-detail';
 import EstateWeixiuPage from '../navigator/estate/estate-weixiu';
 //import EstateTousuPage from '../navigator/estate/estate-tousu';
 
-
-
 //工作台
 
 //现场检查
 import SelectAllPerson from '../work/select-all-person';
 import SelectRolePersonMulti from '../work/select-role-person-multi';
-
 import EstateCheckPage from '../navigator/estate/estate-check';
 import EcheckDetailPage from '../navigator/estate/estate-check-detail';
 import EcheckAddPage from '../navigator/estate/estate-check-add';
@@ -68,22 +65,21 @@ import XunJianDetailPage from '../navigator/xunjian/xunjian-detail';
 import StartXunJianPage from '../navigator/xunjian/start-xunjian';
 
 //固定资产
-import GdzcPandianPage from '../navigator/gdzc/gdzc_pandian';
-import GdzcDetailPage from '../navigator/gdzc/gdzc_detail';
-import AddRepairPage from '../navigator/gdzc/add-repair';
+import GdzcPandianPage from '../navigator/assets/gdzc_pandian';
+import GdzcDetailPage from '../navigator/assets/gdzc_detail';
+import AddRepairPage from '../navigator/assets/add-repair';
 
 import OrderlistPage from '../work/order_center/order_list';
 import OrderDetailPage from '../work/order_center/order_detail';
-import XunJianPointDetailPage from '../navigator/xunjian/xunjian-point-detail';
-import XunjianBeforeStart from '../navigator/xunjian/xunjian-before-start';
-// import YiQingPage from '../building/yiqing/yiqing';
-// import YiQingInfoPage from '../building/yiqing/yiqing-info';
-import ChaoBiaoPage from '../navigator/chao-biao/chao-biao';
+
 import NewsList from '../work/news-list';
-import FeeChargeDetail from '../navigator/fee-charge-detail';
+import FeeChargeDetail from '../navigator/fee/fee-charge-detail';
 
 import SelectAddressPage from '../work/select-address';
-import SelectRolePerson from '../work/select-role-person';
+import SelectRolePerson from '../work/select-role-person'; 
+import SelectReceivePerson from '../work/select-receive-person';
+
+
 import SelectRolePersonInspect from '../work/select-role-person-inspect';
 import SelectAreaPage from '../work/select-area';
 
@@ -124,7 +120,6 @@ import ContactDetail from '../mine/contact/contact-detail';
 //import Jixiao from '../mine/jixiao'; 
 import Score from '../mine/score-list';
 
-  
 // import LouPan from '../navigator/house-infomation/lou-pan';
 // import LouDong from '../navigator/house-infomation/lou-dong';
 // import LouCeng from '../navigator/house-infomation/lou-ceng';
@@ -132,13 +127,19 @@ import Score from '../mine/score-list';
 // import LouDetail from '../navigator/house-infomation/lou-detail';
 import SheBeiList from '../navigator/she-bei/list';
 import ShebeiDetail from '../navigator/she-bei/detail';
-import WFTScanScreen from '../navigator/wftscanner';
-import JLScanScreen from '../navigator/jlscanner';
-import BCMScanScreen from '../navigator/bcmscanner';
-import CIBScanScreen from '../navigator/cibscanner';
-import LKLScanScreen from '../navigator/lklscanner';
-import NJScanScreen from '../navigator/njscanner';
-import CCBScanScreen from '../navigator/ccbscanner';
+import WFTScanScreen from '../navigator/fee/wftscanner';
+import JLScanScreen from '../navigator/fee/jlscanner';
+import BCMScanScreen from '../navigator/fee/bcmscanner';
+import CIBScanScreen from '../navigator/fee/cibscanner';
+import LKLScanScreen from '../navigator/fee/lklscanner';
+import NJScanScreen from '../navigator/fee/njscanner';
+import CCBScanScreen from '../navigator/fee/ccbscanner';
+import XunJianPointDetailPage from '../navigator/xunjian/xunjian-point-detail';
+import XunjianBeforeStart from '../navigator/xunjian/xunjian-before-start';
+// import YiQingPage from '../building/yiqing/yiqing';
+// import YiQingInfoPage from '../building/yiqing/yiqing-info';
+import ChaoBiaoPage from '../navigator/chao-biao/chao-biao';
+import FeeAlertPage from '../navigator/fee/fee-alert';
 
 //流程审批
 import ApprovePage from '../flow';
@@ -155,9 +156,7 @@ import wuyetui from '../flow/wuye-tui';
 import zulinplan from '../flow/zulin-plan';
 import caigou from '../flow/caigou';
 import baoxiao from '../flow/baoxiao';
-
 import assistance from '../flow/assistance';
-
 import matter from '../flow/matter';
 import task from '../flow/task';
 import admincontract from '../flow/admin-contract';
@@ -167,7 +166,8 @@ import inquiry from '../flow/inquiry';
 import budget from '../flow/budget';
 import question from '../flow/question';
 import goodsout from '../flow/goodsout';
-import merchants from '../flow/merchants';  
+import merchants from '../flow/merchants';
+
 
 const BuildingNavigator = createStackNavigator(
   {
@@ -217,7 +217,7 @@ const navigatorNavigator = createStackNavigator({
       title: '统计'
     })
   },
- 
+
   //报表
   collection: CollectionRatePage,
   zijinliu: ZiJinLiuPage,
@@ -251,7 +251,7 @@ const WorkNavigator = createStackNavigator({
       headerBackTitle: null
     })
   },
- 
+
   visit: VisitPage,//访客登记 
   addWork: AddWorkPage,
   selectAddress: SelectAddressPage,
@@ -321,8 +321,7 @@ const WorkNavigator = createStackNavigator({
   checkAdd: EcheckAddPage,
   addTaskWork: AddWorkPage,
   addRepair: AddRepairPage,
- 
-  
+
   serverDeskView: EfuwuDetailPage,//服务单页面点击关联单据，只能查看
   weixiuD: EweixiuDetailPage, //服务单页面点击关联单据，跳转到维修单，只能查看
 
@@ -330,6 +329,9 @@ const WorkNavigator = createStackNavigator({
   orderlist: OrderlistPage,
   orderDetail: OrderDetailPage,
   selectRolePerson: SelectRolePerson,
+
+  selectReceivePerson: SelectReceivePerson,
+
   selectRolePersonInspect: SelectRolePersonInspect,
   feeRooms: FeeRoomsPage, //房间
   feeParkings: FeeParkingsPage, //车位
@@ -337,7 +339,8 @@ const WorkNavigator = createStackNavigator({
   feeHouse: FeeHousePage,
   charge: FeeChargeDetail,
   feeDetail: FeeDetailPage,
-  feeAdd: FeeAddPage
+  feeAdd: FeeAddPage,
+  feealert: FeeAlertPage
 });
 
 WorkNavigator.navigationOptions = ({ navigation }) => ({
@@ -504,7 +507,7 @@ const tabbar = createBottomTabNavigator(
       return {
         tabBarIcon: ({ focused }) => {
           const { routeName } = navigation.state;
-          let name; 
+          let name;
           switch (routeName) {
 
             case 'Building':

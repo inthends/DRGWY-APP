@@ -9,14 +9,14 @@ import {
     TouchableWithoutFeedback,
     Keyboard
 } from 'react-native';
-import BasePage from '../base/base';
+import BasePage from '../../base/base';
 import { Flex, Icon, Button, SearchBar } from '@ant-design/react-native';
-import Macro from '../../utils/macro';
-import ScreenUtil from '../../utils/screen-util';
+import Macro from '../../../utils/macro';
+import ScreenUtil from '../../../utils/screen-util';
 import { connect } from 'react-redux'; 
-import NavigatorService from './navigator-service';
-import NoDataView from '../../components/no-data-view';
-import CommonView from '../../components/CommonView'; 
+import NavigatorService from '../navigator-service';
+import NoDataView from '../../../components/no-data-view';
+import CommonView from '../../../components/CommonView'; 
 let screen_width = ScreenUtil.deviceWidth();
 
 class AssetsPage extends BasePage {

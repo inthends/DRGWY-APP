@@ -19,6 +19,7 @@ import ShowReviews from '../components/show-reviews';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
 import moment from 'moment';
+import numeral from 'numeral';
 
 export default class DetailPage extends BasePage {
 
@@ -38,7 +39,7 @@ export default class DetailPage extends BasePage {
 
   constructor(props) {
     super(props);
-    const id = common.getValueFromProps(props);
+    let id = common.getValueFromProps(props, 'id');
     this.state = {
       id,
       detail: {},
@@ -189,7 +190,7 @@ export default class DetailPage extends BasePage {
                   </Flex>
                   <Button
                     style={{
-                      width: 130,
+                      width: 110,
                       marginTop: 10,
                       backgroundColor: Macro.work_blue
                     }}

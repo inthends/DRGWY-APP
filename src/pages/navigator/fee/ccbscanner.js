@@ -1,15 +1,15 @@
-//拉卡拉聚合扫码
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Animated, Easing } from 'react-native';
-import BasePage from '../base/base';
+import BasePage from '../../base/base';
 import { Icon } from '@ant-design/react-native';
-import common from '../../utils/common';
-import NavigatorService from './navigator-service';
-import Macro from '../../utils/macro';
+import common from '../../../utils/common';
+import NavigatorService from '../navigator-service';
+import Macro from '../../../utils/macro';
 import { RNCamera } from 'react-native-camera';
-import UDToast from '../../utils/UDToast';
+import UDToast from '../../../utils/UDToast';
 
-export default class LKLScanScreen extends BasePage {
+//建设银行银行扫码
+export default class CCBScanScreen extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
             title: '上门收费',
@@ -45,7 +45,7 @@ export default class LKLScanScreen extends BasePage {
             {
                 toValue: -200,
                 duration: 1500,
-                easing: Easing.linear,
+                easing: Easing.linear
             },
         ).start(() => this.startAnimation());
     };
@@ -61,7 +61,7 @@ export default class LKLScanScreen extends BasePage {
         }, () => {
             let out_trade_no = common.getValueFromProps(this.props, 'out_trade_no');
             //扫付款码
-            NavigatorService.lklScanPay(result.data, out_trade_no).then(resp => {
+            NavigatorService.ccbScanPay(result.data, out_trade_no).then(resp => {
                 if (resp === 'need_query') {
                     this.needQuery(out_trade_no);
                 } else {
@@ -84,21 +84,21 @@ export default class LKLScanScreen extends BasePage {
             //     this.setState({
             //         result: null,
             //         count: null,
-            //     }); 
+            //     });
         });
     };
-
+ 
     needQuery(out_trade_no) {
         //let callBack = common.getValueFromProps(this.props, 'callBack');
-        let count = this.state.count || 10;//改为9次轮询
+        let count = this.state.count || 10;
         if (count === 10) {
             this.showLoadingNumber = UDToast.showLoading('正在查询支付结果，请稍后...');
         }
         this.setState({
-            count: count - 1,
+            count: count - 1
         }, () => {
             if (count > 0) {
-                NavigatorService.lklScanPayQuery(out_trade_no).then(query => {
+                NavigatorService.ccbScanPayQuery(out_trade_no).then(query => {
                     if (query === 'SUCCESS') {
                         UDToast.hiddenLoading(this.showLoadingNumber);
                         //callBack(res.out_trade_no);
@@ -112,13 +112,13 @@ export default class LKLScanScreen extends BasePage {
                     UDToast.hiddenLoading(this.showLoadingNumber);
                     this.setState({
                         result: null,
-                        count: null,
+                        count: null
                     });
                 });
             }
             else {
-                //9次查询完成，接口仍未返回成功标识（既查询接口返回的trade_state不是SUCCESS）,则调用撤销接口
-                NavigatorService.lklScanPayReserve(res.out_trade_no);
+                //9次查询完成，接口仍未返回成功标识（既查询接口返回的trade_state不是SUCCESS，则调用撤销接口
+                NavigatorService.ccbScanPayReserve(res.out_trade_no);
                 setTimeout(() => {
                     UDToast.hiddenLoading(this.showLoadingNumber);
                     this.props.navigation.goBack();
@@ -150,7 +150,6 @@ export default class LKLScanScreen extends BasePage {
                     </View>
                 </RNCamera>
             </View>
-
         );
     }
 }

@@ -8,7 +8,7 @@ import CommonView from '../../../components/CommonView';
 import XunJianService from './xunjian-service';
 import common from '../../../utils/common';
 import { connect } from 'react-redux';
-// import UDToast from '../../../utils/UDToast';
+//import UDToast from '../../../utils/UDToast';
 
 class XunjianBeforeStart extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -40,27 +40,35 @@ class XunjianBeforeStart extends BasePage {
     // }
 
     onRefresh = () => {
-        const { pointId } = this.state;//点位
+        const { pointId } = this.state;//点位 
         if (this.props.hasNetwork) {
             //this.initUI();
             XunJianService.xunjianPointTasks(pointId).then(items => {
                 if (items.length == 0) {
                     //UDToast.showError('当前点位没有任务');
                     //该点位没有待完成的巡检任务，跳转到上一个页面
-                    this.props.navigation.goBack(); 
+                    this.props.navigation.goBack();
                 }
                 this.setState({ items });
             });
         }
-        else { 
+        else {
+
             //const items = this.props.xunJianData.scanLists.filter(item => item.pointId === pointId);
             const { xunJianData, xunJianAction } = this.props;
-            //过滤已经完成的，任务id存在巡检结果里面的数据属于完成的
-            const items = xunJianData.scanLists.filter(item =>
-                item.pointId === pointId && !xunJianAction.hasOwnProperty(item.id)
-            );
-            this.setState({ items });
-            //alert('离线巡检数据'+ items.length);
+            //过滤已经完成的，任务id存在巡检结果里面的数据属于完成的 
+            if (Object.keys(xunJianAction).length === 0) {//{}
+                const items = xunJianData.scanLists.filter(item =>
+                    item.pointId === pointId
+                );
+                this.setState({ items });
+            } else {
+                const items = xunJianData.scanLists.filter(item =>
+                    item.pointId === pointId && !xunJianAction.hasOwnProperty(item.id)
+                );
+                this.setState({ items });
+            }
+
         }
     };
 
@@ -143,7 +151,7 @@ const styles = StyleSheet.create({
     },
     top: {
         paddingTop: 10,
-        color:  Macro.work_blue,//'#74BAF1',
+        color: Macro.work_blue,//'#74BAF1',
         fontSize: 16,
         paddingBottom: 10,
         paddingLeft: 20,

@@ -39,7 +39,7 @@ export default class DetailPage extends BasePage {
 
   constructor(props) {
     super(props);
-    const id = common.getValueFromProps(props);
+    let id = common.getValueFromProps(props, 'id');
     this.state = {
       id,
       detail: {},
@@ -73,10 +73,8 @@ export default class DetailPage extends BasePage {
   };
 
   //回复
-  reply = () => {
-
-    const { id, messageId, memo } = this.state;
-
+  reply = () => { 
+    const { id, messageId, memo } = this.state; 
     if (!memo) {
       UDToast.showError('请输入回复内容');
       return;
@@ -216,7 +214,7 @@ export default class DetailPage extends BasePage {
                   </Flex>
                   <Button
                     style={{
-                      width: 130,
+                      width: 110,
                       marginTop: 10,
                       backgroundColor: Macro.work_blue
                     }}

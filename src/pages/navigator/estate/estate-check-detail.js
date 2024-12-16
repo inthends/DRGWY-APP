@@ -173,13 +173,20 @@ export default class EcheckDetailPage extends BasePage {
                     <Text style={styles.left}>{detail.billCode}</Text>
                     <Text style={styles.right}>{detail.statusName}</Text>
                 </Flex>
+                
                 <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                     <Text style={styles.left}>检查人：{detail.checkUserName} {detail.postName}</Text>
                     <Text style={styles.right}>{detail.billDate}</Text>
                 </Flex>
+
                 <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                    <Text style={styles.left}>检查组：{detail.checkRole}</Text>
+                    <Text style={styles.left}>检查组：{detail.checkRole}</Text> 
                 </Flex>
+
+                <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                    <Text style={styles.left}>检查类型：{detail.checkType}</Text> 
+                </Flex>
+ 
                 <Text style={[styles.every, ScreenUtil.borderBottom()]}>{detail.memo}</Text>
 
                 <FlatList

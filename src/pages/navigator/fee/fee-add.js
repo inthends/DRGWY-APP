@@ -8,16 +8,16 @@ import {
     TextInput,
     View
 } from 'react-native';
-import BasePage from '../base/base';
+import BasePage from '../../base/base';
 import { Flex, Icon, List, DatePicker, Button } from '@ant-design/react-native';
-import ScreenUtil from '../../utils/screen-util';
+import ScreenUtil from '../../../utils/screen-util';
 import { connect } from 'react-redux';
-import common from '../../utils/common';
-import NavigatorService from './navigator-service';
-import UDToast from '../../utils/UDToast';
-import CommonView from '../../components/CommonView';
-import MyPopover from '../../components/my-popover';
-import Macro from '../../utils/macro';
+import common from '../../../utils/common';
+import NavigatorService from '../navigator-service';
+import UDToast from '../../../utils/UDToast';
+import CommonView from '../../../components/CommonView';
+import MyPopover from '../../../components/my-popover';
+import Macro from '../../../utils/macro';
 const Item = List.Item;
 
 class FeeAddPage extends BasePage {

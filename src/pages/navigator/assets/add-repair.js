@@ -245,8 +245,7 @@ class AddRepairPage extends BasePage {
         } else {
             const { taskId } = this.state;
             const { xunJianAction } = this.props;
-            const data = xunJianAction[taskId];
-            //console.log(this.props, xunJianAction, taskId, data)
+            const data = xunJianAction[taskId]; 
             if (!data) {
                 UDToast.showSuccess('数据异常，请关闭app重新进入');
             } else {

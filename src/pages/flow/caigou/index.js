@@ -37,7 +37,7 @@ export default class DetailPage extends BasePage {
 
   constructor(props) {
     super(props);
-    const id = common.getValueFromProps(props);
+    let id = common.getValueFromProps(props, 'id');
     this.state = {
       id,
       detail: {},

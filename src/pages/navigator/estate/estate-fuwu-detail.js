@@ -23,6 +23,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import Star from '../../../components/star';
 import moment from 'moment';
 
+
 //仅查看
 export default class EfuwuDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {

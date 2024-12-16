@@ -229,6 +229,7 @@ const styles = StyleSheet.create({
     },
 
     unenable: {
+        width: 108,
         fontSize: 16,
         color: '#404145',
         backgroundColor: '#eeeeee',
