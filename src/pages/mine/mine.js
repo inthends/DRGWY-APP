@@ -30,7 +30,6 @@ export default class MinePage extends BasePage {
         MineService.getUserInfo().then((user) => {
           this.setState({ user });
         });
-
         MineService.getRepairScore().then((score) => {
           this.setState({ score });
         });
@@ -227,5 +226,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#3E3E3E',
     paddingLeft: 15
-  },
+  }
 });

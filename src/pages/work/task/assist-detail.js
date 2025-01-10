@@ -94,7 +94,7 @@ export default class AssistDetailPage extends BasePage {
             if (detail.status == 0) {
                 UDToast.showError('该工单暂停，继续维修后再加入');
                 return;
-            } 
+            }
 
             if (detail.status == 2) {
                 UDToast.showError('接单人还没有接单不允许加入');
@@ -179,14 +179,15 @@ export default class AssistDetailPage extends BasePage {
                                     if (detail.sourceType === '服务总台') {
                                         this.props.navigation.navigate('service', { id: detail.relationId });
                                     }
-                                    else if (detail.sourceType === '维修单') {
+                                    else //if (detail.sourceType === '维修单') 
+                                    {
                                         //检验不通过关联的旧的维修单
                                         this.props.navigation.navigate('weixiuView', { id: detail.relationId });
                                     }
-                                    else {
-                                        //检查单
-                                        this.props.navigation.navigate('checkDetail', { id: detail.relationId });
-                                    }
+                                    // else {
+                                    //     //检查单
+                                    //     this.props.navigation.navigate('checkDetail', { id: detail.relationId });
+                                    // }
                                 }}
                                 style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>

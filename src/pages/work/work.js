@@ -15,8 +15,7 @@ import Macro from '../../utils/macro';
 import CommonView from '../../components/CommonView';
 import JPush from 'jpush-react-native';
 
-export default class WorkPage extends BasePage {
-
+export default class WorkPage extends BasePage { 
     static navigationOptions = options => {
         const { navigation } = options;
         const params = navigation.state.params;

@@ -8,9 +8,9 @@ import {
     TouchableOpacity,
     StyleSheet,
     ScrollView
-} from 'react-native'; 
-import Macro from '../../utils/macro'; 
-import { connect } from 'react-redux'; 
+} from 'react-native';
+import Macro from '../../utils/macro';
+import { connect } from 'react-redux';
 import api from '../../utils/api';
 class SelectAllPerson extends BasePage {
 
@@ -52,9 +52,9 @@ class SelectAllPerson extends BasePage {
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
         const nextSelectBuilding = nextProps.selectBuilding;
-        
-        if (!(selectBuilding 
-            && nextSelectBuilding 
+
+        if (!(selectBuilding
+            && nextSelectBuilding
             && selectBuilding.key === nextSelectBuilding.key)) {
             this.setState({
                 selectBuilding: nextProps.selectBuilding
@@ -66,8 +66,8 @@ class SelectAllPerson extends BasePage {
         }
     }
 
-  
-    initData() {  
+
+    initData() {
         let url = '/api/MobileMethod/MGetDepartmentList';
         let url2 = '/api/MobileMethod/MGetAllUserList';
 
@@ -77,7 +77,9 @@ class SelectAllPerson extends BasePage {
                     ...item,
                     children: ress[index]
                 }));
-                this.setState({ data });
+                //过滤空的数据
+                let mydata = data.filter(item => item.children.length > 0);
+                this.setState({ data: mydata });
             });
         });
     }
@@ -87,7 +89,7 @@ class SelectAllPerson extends BasePage {
         navigation.state.params.onSelect({ selectItem });
         navigation.goBack();
     };
- 
+
     //2024-03-21 改为通讯录样式
     render() {
         const { data } = this.state;
@@ -139,12 +141,12 @@ const styles = StyleSheet.create({
         // height: ScreenUtil.contentHeight(),
         // height: ScreenUtil.contentHeightWithNoTabbar(),
     },
- 
+
     desc: {
         fontSize: 16,
         color: '#666',//color: '#999', 
         width: 100
-    }, 
+    },
     aa: {
         width: '100%',
         paddingTop: 15,
@@ -155,7 +157,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: ' rgb(244,244,244)'
     }
-}); 
+});
 
 const mapStateToProps = ({ buildingReducer }) => {
     return {

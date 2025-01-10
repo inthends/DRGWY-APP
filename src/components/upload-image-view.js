@@ -84,8 +84,7 @@ export default class UploadImageView extends Component {
                                         defaultImg={require('../static/images/add_pic.png')}
                                         img={url}
                                         top={15}
-                                        delete={() => this.delete(url)} />
-
+                                        delete={() => this.delete(url)} /> 
                                 </View>
                             </TouchableWithoutFeedback>
                         );

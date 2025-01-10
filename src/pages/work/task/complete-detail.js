@@ -166,7 +166,7 @@ export default class CompleteDetailPage extends BasePage {
                 this.props.navigation.goBack();
             });
         });
- 
+
     };
 
     communicateClick = (i) => {
@@ -260,7 +260,7 @@ export default class CompleteDetailPage extends BasePage {
                         <Text style={styles.left}>转单人：{detail.createUserName}，{detail.createDate}</Text>
                     </Flex>
 
-                    
+
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                             <Text style={styles.left}>关联单：</Text>
@@ -269,14 +269,15 @@ export default class CompleteDetailPage extends BasePage {
                                     if (detail.sourceType === '服务总台') {
                                         this.props.navigation.navigate('service', { id: detail.relationId });
                                     }
-                                    else if (detail.sourceType === '维修单') {
+                                    else //if (detail.sourceType === '维修单')
+                                    {
                                         //检验不通过关联的旧的维修单
                                         this.props.navigation.navigate('weixiuView', { id: detail.relationId });
                                     }
-                                    else {
-                                        //检查单
-                                        this.props.navigation.navigate('checkDetail', { id: detail.relationId });
-                                    }
+                                    // else {
+                                    //     //检查单
+                                    //     this.props.navigation.navigate('checkDetail', { id: detail.relationId });
+                                    // }
                                 }}
                                 style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>

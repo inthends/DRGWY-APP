@@ -39,9 +39,11 @@ class SelectRolePersonInspect extends BasePage {
             data: [],
             activeSections: []
         };
+
         this.onChange = activeSections => {
             this.setState({ activeSections });
         };
+
     }
 
     componentDidMount() {
@@ -73,13 +75,14 @@ class SelectRolePersonInspect extends BasePage {
         api.getData(url, { organizeId: organizeId }).then(res => {
             Promise.all(
                 res.map(item => api.getData(url2, { roleId: item.roleId }))).
-                then(ress => {
-
+                then(ress => { 
                     let data = res.map((item, index) => ({
                         ...item,
                         children: ress[index]
                     }));
-                    this.setState({ data });
+                    //过滤空的数据
+                    let mydata = data.filter(item => item.children.length > 0);
+                    this.setState({ data: mydata });
                 });
         });
     }
@@ -121,11 +124,12 @@ class SelectRolePersonInspect extends BasePage {
                                         ))}
                                     </List>
                                 </Accordion.Panel>
-                            ))}
+                            )
+                            )}
                         </Accordion>
                     </View>
-                </ScrollView>
-            </View>
+                </ScrollView >
+            </View >
         );
     }
 }

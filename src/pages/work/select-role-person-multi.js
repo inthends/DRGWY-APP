@@ -81,12 +81,14 @@ class SelectRolePersonMulti extends BasePage {
             organizeId: this.state.selectBuilding.key
         } : {}).then(res => {
             Promise.all(
-                res.map(item => api.getData(url2, { enCode: enCode,  roleId: item.roleId, exceptUserId }))).then(ress => {
+                res.map(item => api.getData(url2, { enCode: enCode, roleId: item.roleId, exceptUserId }))).then(ress => {
                     let data = res.map((item, index) => ({
                         ...item,
                         children: ress[index]
                     }));
-                    this.setState({ data });
+                    //过滤空的数据
+                    let mydata = data.filter(item => item.children.length > 0);
+                    this.setState({ data: mydata });
                 });
         });
     }
@@ -113,7 +115,6 @@ class SelectRolePersonMulti extends BasePage {
                         const index = selectItems.findIndex(item => item.id === it.id);
                         selectItems.splice(index, 1);
                     }
-
                 }
                 return it;
             });
@@ -153,7 +154,7 @@ class SelectRolePersonMulti extends BasePage {
                                                     <Flex>
                                                         <Text style={styles.desc}>{i.name}</Text>
                                                         {i.postName ? <Text>（{i.postName}）</Text> : null}
-                                                         <Text> (工单 : {i.counts})</Text>
+                                                        <Text> (工单 : {i.counts})</Text>
                                                     </Flex>
                                                     <Flex style={{ paddingRight: 21 }}>
                                                         <Checkbox

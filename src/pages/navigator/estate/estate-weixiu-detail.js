@@ -48,8 +48,7 @@ export default class EweixiuDetailPage extends BasePage {
             detail: {},
             communicates: [],
             lookImageIndex: 0,
-            visible: false,
-
+            visible: false, 
             //费用明细
             pageIndex: 1,
             refreshing: false,
@@ -256,14 +255,15 @@ export default class EweixiuDetailPage extends BasePage {
                                 if (detail.sourceType === '服务总台') {
                                     this.props.navigation.navigate('serverDeskView', { id: detail.relationId });
                                 }
-                                else if (detail.sourceType === '维修单') {
+                                else //if (detail.sourceType === '维修单') 
+                                {
                                     //检验不通过关联的旧的维修单
                                     this.props.navigation.navigate('weixiuView', { id: detail.relationId });
                                 }
-                                else {
-                                    //检查单
-                                    this.props.navigation.navigate('checkDetail', { id: detail.relationId });
-                                }
+                                // else {
+                                //     //检查单
+                                //     this.props.navigation.navigate('checkDetail', { id: detail.relationId });
+                                // }
                             }}
                                 style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
@@ -284,7 +284,7 @@ export default class EweixiuDetailPage extends BasePage {
 
                     {detail.appScore != null ?
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                            <Text style={styles.left}>修正积分：{detail.appScore}</Text>
+                            <Text style={styles.left}>修正个人积分：{detail.appScore}</Text>
                         </Flex> : null}
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>

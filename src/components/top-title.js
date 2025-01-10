@@ -51,8 +51,7 @@ export default class TopTitle extends Component {
                     {titles.map((item, index) => {
                         let bgcolor = index === this.state.index ? '#ffffff' : '#e6e6e6'
                         return (
-                            <TouchableWithoutFeedback key={item} onPress={() => this.tap(index)}>
-
+                            <TouchableWithoutFeedback key={item} onPress={() => this.tap(index)}> 
                                 <View
                                     backgroundColor={bgcolor}
                                     marginTop={10}
@@ -69,10 +68,8 @@ export default class TopTitle extends Component {
                                     <Text style={{ ...[index === this.state.index ? styles.title_select : styles.title], textAlign: 'center', lineHeight: 26, height: 26 }}>
                                         {item}
                                     </Text>
-                                </View>
-
-                            </TouchableWithoutFeedback>
-
+                                </View> 
+                            </TouchableWithoutFeedback>  
                         );
                     })}
                 </Flex>

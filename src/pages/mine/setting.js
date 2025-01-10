@@ -88,6 +88,7 @@ class SettingPage extends BasePage {
                     ...item,
                     items: res
                 })))).then(rea => {
+
                     XunJianService.xunjianPointTasks().then(r => {
                         UDToast.hiddenLoading(this.loading);
                         const tasks = {
@@ -103,7 +104,6 @@ class SettingPage extends BasePage {
                                 Reflect.deleteProperty(xunJianAction, taskId);
                             }
                         }
-
                         UDToast.showInfo('同步完成');
                     }).catch(err => {
                         UDToast.hiddenLoading(this.loading);

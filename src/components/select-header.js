@@ -41,8 +41,7 @@ export default class SelectHeader extends Component {
                                             {item.title}
                                         </Text>
                                     </View>
-                                </TouchableWithoutFeedback>
-
+                                </TouchableWithoutFeedback> 
                             );
                         })}
                     </Flex>

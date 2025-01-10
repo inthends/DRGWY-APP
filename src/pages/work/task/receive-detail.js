@@ -177,14 +177,15 @@ export default class ReceiveDetailPage extends BasePage {
                                     if (detail.sourceType === '服务总台') {
                                         this.props.navigation.navigate('service', { id: detail.relationId });
                                     }
-                                    else if (detail.sourceType === '维修单') {
+                                    else //if (detail.sourceType === '维修单') 
+                                    {
                                         //检验不通过关联的旧的维修单
                                         this.props.navigation.navigate('weixiuView', { id: detail.relationId });
                                     }
-                                    else {
-                                        //检查单
-                                        this.props.navigation.navigate('checkDetail', { id: detail.relationId });
-                                    }
+                                    // else {
+                                    //     //检查单
+                                    //     this.props.navigation.navigate('checkDetail', { id: detail.relationId });
+                                    // }
                                 }}
                                 style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
@@ -192,7 +193,7 @@ export default class ReceiveDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>协助人：{detail.assistName}</Text>
                     </Flex>
-  
+
                     <Flex justify={'center'}>
                         <Button onPress={() => this.click('接单')} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
@@ -233,8 +234,8 @@ const styles = StyleSheet.create({
         color: '#404145'
     },
     desc: {
-        lineHeight:20,
-        fontSize: 15, 
+        lineHeight: 20,
+        fontSize: 15,
         padding: 15
     },
     word: {

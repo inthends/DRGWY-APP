@@ -51,14 +51,11 @@ export default class ScrollTitle extends Component {
                         <Flex>
                             {titles.map((item, index) => {
                                 return (
-                                    <TouchableWithoutFeedback key={item} onPress={() => this.tap(index)}>
-
+                                    <TouchableWithoutFeedback key={item} onPress={() => this.tap(index)}> 
                                         <Text style={[index === this.state.index ? styles.title_select : styles.title]}>
                                             {item}
-                                        </Text>
-
-                                    </TouchableWithoutFeedback>
-
+                                        </Text> 
+                                    </TouchableWithoutFeedback> 
                                 );
                             })}
                         </Flex>

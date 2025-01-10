@@ -239,14 +239,15 @@ export default class ApproveDetailPage extends BasePage {
                                     if (detail.sourceType === '服务总台') {
                                         this.props.navigation.navigate('service', { id: detail.relationId });
                                     }
-                                    else if (detail.sourceType === '维修单') {
+                                    else //if (detail.sourceType === '维修单')
+                                    {
                                         //检验不通过关联的旧的维修单
                                         this.props.navigation.navigate('weixiuView', { id: detail.relationId });
                                     }
-                                    else {
-                                        //检查单
-                                        this.props.navigation.navigate('checkDetail', { id: detail.relationId });
-                                    }
+                                    // else {
+                                    //     //检查单
+                                    //     this.props.navigation.navigate('checkDetail', { id: detail.relationId });
+                                    // }
                                 }}
                                 style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
@@ -338,14 +339,14 @@ export default class ApproveDetailPage extends BasePage {
                     </Flex>
 
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]}>
-                        <Text style={styles.left}>修正积分：</Text>
+                        <Text style={styles.left}>修正个人积分：</Text>
                         <TextInput
                             keyboardType={'decimal-pad'}
                             value={this.state.appScore}
                             style={{ fontSize: 14, color: 'red' }}
                             readOnly={!isModifyRepairScore || verifyResult == 0}
                             onChangeText={appScore => this.setState({ appScore })}
-                            placeholder='请输入修正积分' />
+                            placeholder='请输入修正个人积分' />
                     </Flex>
 
                     <View style={{
@@ -361,7 +362,7 @@ export default class ApproveDetailPage extends BasePage {
                             maxLength={500}
                         />
                     </View>
- 
+
                     <Flex justify={'center'}>
                         <Button onPress={() => this.click()} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
@@ -381,7 +382,7 @@ export default class ApproveDetailPage extends BasePage {
                 {/* 
                 {
                     this.state.showClose && (
-                        //修正积分
+                        //修正个人积分
                         <View style={styles.mengceng}>
                             <Flex direction={'column'} justify={'center'} align={'center'}
                                 style={{

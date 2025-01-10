@@ -53,8 +53,8 @@ class XunJianPage extends BasePage {
         this.setState({ activeSections });
     };
 
-    callBack = (pointId) => {  
-        if (this.props.hasNetwork) { 
+    callBack = (pointId) => {
+        if (this.props.hasNetwork) {
             //判断巡检点位状态
             XunJianService.checkPollingState(pointId).then(res => {
                 if (res == null) {
@@ -82,7 +82,7 @@ class XunJianPage extends BasePage {
                 });
             });
 
-        } else { 
+        } else {
             //离线巡检，不判断点位状态
             this.setState({
                 pointId
@@ -119,7 +119,7 @@ class XunJianPage extends BasePage {
         //         });
         //     },
         // )
-  
+
         this.props.navigation.push('scanonly', {
             data: {
                 callBack: this.callBack
@@ -173,8 +173,7 @@ class XunJianPage extends BasePage {
                         items: all[index]
                     };
                 });
-                this.setState({ items: [...items] }, () => {
-                });
+                this.setState({ items: [...items] }, () => { });
             });
         });
     }

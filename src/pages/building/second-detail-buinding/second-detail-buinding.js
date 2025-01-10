@@ -239,7 +239,7 @@ class SecondDetailBuildingPage extends BasePage {
         else if (index === 1) {
             content =
                 <Flex direction={'column'} align={'start'} style={{ marginBottom: 15 }} >
-                    {contracts.map((item, index) => (
+                    {contracts.map((item) => (
                         <Flex key={item.id}
                             direction='column' align='start'
                             style={{ backgroundColor: 'white', borderRadius: 4, padding: 15, marginBottom: 5 }}>

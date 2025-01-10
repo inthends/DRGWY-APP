@@ -197,16 +197,12 @@ class FeeDetailPage extends BasePage {
             switch (title) {
                 //app 不支持刷卡
                 case '扫码': {
-
                     NavigatorService.createOrder(ids, isML, mlType, mlScale, 1).then(res => {
                         if (!res.posType) {
                             UDToast.showError(res);
                             return;
                         }
-
                         let posType = res.posType;
-
-
                         switch (posType) {
                             // case '银盛':
                             //     {
@@ -810,7 +806,7 @@ class FeeDetailPage extends BasePage {
                             />
                             <Flex align={'start'} direction={'column'} style={{ marginLeft: 3, flex: 1 }}>
                                 <Flex justify={'between'}
-                                    style={{ paddingLeft: 10, paddingTop: 3, paddingBottom: 3, width: '100%' }}>
+                                    style={{ paddingLeft: 5, paddingTop: 3, paddingBottom: 3, width: '100%' }}>
                                     <Text style={{ fontSize: 15, width: '80%', color: 'green' }}>{item.allName}</Text>
                                     <ActionPopover
                                         textStyle={{ fontSize: 14 }}
@@ -854,7 +850,7 @@ class FeeDetailPage extends BasePage {
                                 </Flex>
                                 <Flex justify={'between'}
                                     style={{
-                                        paddingLeft: 9,
+                                        paddingLeft: 5,
                                         paddingBottom: 3,
                                         width: '100%'
                                     }}>
@@ -866,15 +862,18 @@ class FeeDetailPage extends BasePage {
                                                 fontSize: 8,
                                                 paddingBottom: 16
                                             }}>惠</Text>
-                                        </Flex> : <Text style={{ fontSize: 15, color: '#666' }}>{item.feeName}</Text>
+                                        </Flex> :
+                                        <Flex>
+                                            <Text style={{ fontSize: 15, color: '#666' }}>{item.feeName}</Text>
+                                        </Flex>
                                     }
-                                    {/* <Flex> */}
-                                        <Text style={{ fontSize: 15, paddingRight: 10, color: 'red' }}>{item.amount}</Text>
-                                    {/* </Flex> */}
+                                    <Flex>
+                                        <Text style={{ fontFamily: "", paddingRight: 10, fontSize: 15, color: 'red' }}>{item.amount}</Text>
+                                    </Flex>
                                 </Flex>
                                 {item.beginDate ?
                                     <Text style={{
-                                        paddingLeft: 10,
+                                        paddingLeft: 5,
                                         paddingTop: 7,
                                         color: '#666'
                                     }}>{item.beginDate + '至' + item.endDate}</Text> : null
@@ -896,7 +895,7 @@ class FeeDetailPage extends BasePage {
                                     }}>
                                     <Text style={{ fontSize: 15 }}>{item.billCode}</Text>
                                     {/* <Flex> */}
-                                        <Text style={{ fontSize: 15, paddingRight: 8, color: 'red' }}>{item.amount}</Text>
+                                    <Text style={{ fontSize: 15, paddingRight: 8, color: 'red' }}>{item.amount}</Text>
                                     {/* </Flex> */}
                                 </Flex>
                                 <Text style={{
@@ -1114,7 +1113,7 @@ const styles = StyleSheet.create({
         borderColor: '#eee',
         borderStyle: 'solid',
         paddingLeft: 10,
-        paddingRight: 10,
+        paddingRight: 5,//10,
         //paddingTop: 10,
         paddingBottom: 10,
         marginTop: 10,

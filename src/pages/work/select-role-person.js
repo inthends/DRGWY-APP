@@ -79,13 +79,14 @@ class SelectRolePerson extends BasePage {
         api.getData(url, this.state.selectBuilding ? { moduleId: moduleId, enCode: enCode, organizeId: this.state.selectBuilding.key } : {}).then(res => {
             Promise.all(
                 res.map(item => api.getData(url2, { enCode: enCode, roleId: item.roleId }))).
-                then(ress => {
-
+                then(ress => { 
                     let data = res.map((item, index) => ({
                         ...item,
                         children: ress[index]
                     }));
-                    this.setState({ data });
+                    //过滤空的数据
+                    let mydata = data.filter(item => item.children.length > 0);
+                    this.setState({ data: mydata });
                 });
         });
     }

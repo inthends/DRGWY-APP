@@ -84,7 +84,9 @@ class SelectReceivePerson extends BasePage {
                         ...item,
                         children: ress[index]
                     }));
-                    this.setState({ data });
+                    //过滤空的数据
+                    let mydata = data.filter(item => item.children.length > 0);
+                    this.setState({ data: mydata });
                 });
         });
     }

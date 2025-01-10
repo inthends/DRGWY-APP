@@ -149,13 +149,13 @@ export default class StartDetailPage extends BasePage {
 
     click = () => {
         const { id, isUpload, images, value, isMustStartFile, selectPersons } = this.state;
-        
+
         WorkService.checkStartWork(id).then(res => {
             if (res == true) {
                 UDToast.showError('维修人员有开工没有完成的维修单，不允许再开工新的维修单');
                 return;
             }
- 
+
             //判断协助人是否都已经加入，如果没有加入，则弹出提示
             WorkService.checkAssistUser(id).then(res => {
                 if (res.flag == false) {
@@ -183,7 +183,7 @@ export default class StartDetailPage extends BasePage {
                     });
                 }
             });
-            
+
         });
 
     };
@@ -301,14 +301,15 @@ export default class StartDetailPage extends BasePage {
                                     if (detail.sourceType === '服务总台') {
                                         this.props.navigation.navigate('service', { id: detail.relationId });
                                     }
-                                    else if (detail.sourceType === '维修单') {
+                                    else //if (detail.sourceType === '维修单') 
+                                    {
                                         //检验不通过关联的旧的维修单
                                         this.props.navigation.navigate('weixiuView', { id: detail.relationId });
                                     }
-                                    else {
-                                        //检查单
-                                        this.props.navigation.navigate('checkDetail', { id: detail.relationId });
-                                    }
+                                    // else {
+                                    //     //检查单
+                                    //     this.props.navigation.navigate('checkDetail', { id: detail.relationId });
+                                    // }
                                 }}
                                 style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
