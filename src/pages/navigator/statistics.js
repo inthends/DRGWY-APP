@@ -1,4 +1,3 @@
-//统计
 import React from 'react';
 import {
   Text,
@@ -14,9 +13,14 @@ import CommonView from '../../components/CommonView';
 import ScreenUtil from '../../utils/screen-util';
 import Macro from '../../utils/macro';
 import MyPopover from '../../components/my-popover';
-import NavigatorService from './navigator-service';
+import service from './statistics-service';
+import { saveSelectDrawerType } from '../../utils/store/actions/actions';
+import { DrawerType } from '../../utils/store/action-types/action-types';
+import { connect } from 'react-redux';
 
-export default class NavigatorPage extends BasePage {
+//export default class StatisticsPage extends BasePage {
+
+class StatisticsPage extends BasePage {
 
   static navigationOptions = ({ navigation }) => {
     return {
@@ -25,7 +29,12 @@ export default class NavigatorPage extends BasePage {
       headerTitleStyle: {
         flex: 1,
         textAlign: 'center'
-      }
+      },
+      // headerRight: (
+      //   <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
+      //     <Icon name="bars" style={{ marginRight: 15 }} color="black" />
+      //   </TouchableWithoutFeedback>
+      // )
     };
   };
 
@@ -37,7 +46,8 @@ export default class NavigatorPage extends BasePage {
       serverdata: {},
       workdata: {},
       servertime: '全部',
-      worktime: '全部'
+      worktime: '全部',
+      //selectBuilding: this.props.selectBuilding || {}
     };
   }
 
@@ -45,13 +55,14 @@ export default class NavigatorPage extends BasePage {
     this.setState({
       servertime
     }, () => {
-      NavigatorService.serverStatistics(this.state.servertime, this.state.showLoading).
-      then(serverdata => {
-        this.setState({
-          serverdata,
-          showLoading: false
+
+      service.serverStatistics(this.state.servertime, this.state.showLoading).
+        then(serverdata => {
+          this.setState({
+            serverdata,
+            showLoading: false
+          });
         });
-      });
     });
   };
 
@@ -60,45 +71,71 @@ export default class NavigatorPage extends BasePage {
     this.setState({
       worktime
     }, () => {
-      NavigatorService.workStatistics(this.state.worktime, this.state.showLoading).
+      service.workStatistics(this.state.worktime, this.state.showLoading).
+        then(workdata => {
+          this.setState({
+            workdata,
+            showLoading: false
+          });
+        });
+    });
+  };
+
+  onRefresh = () => {
+    //刷新
+    service.serverStatistics(this.state.servertime, this.state.showLoading).
+      then(serverdata => {
+        this.setState({
+          serverdata,
+          showLoading: false
+        });
+      });
+
+      service.workStatistics(this.state.worktime, this.state.showLoading).
       then(workdata => {
         this.setState({
           workdata,
           showLoading: false
         });
       });
-    });
   };
 
+
   componentDidMount() {
+  
     this.viewDidAppear = this.props.navigation.addListener(
       'didFocus',
       (obj) => {
-        //刷新
-        NavigatorService.serverStatistics(this.state.servertime, this.state.showLoading).
-          then(serverdata => {
-            this.setState({
-              serverdata,
-              showLoading: false
-            });
-          });
-
-        NavigatorService.workStatistics(this.state.worktime, this.state.showLoading).
-          then(workdata => {
-            this.setState({
-              workdata,
-              showLoading: false
-            });
-          });
+        this.props.saveSelectDrawerType(DrawerType.building);
+        this.onRefresh();
       }
     );
+ 
   }
 
-  componentWillUnmount() {
-    this.viewDidAppear.remove();
-  }
+  // componentWillUnmount() {
+  //   this.viewDidAppear.remove();
+  // }
 
-  render() { 
+
+  // componentWillReceiveProps(nextProps, nextContext) {
+  //   const selectBuilding = this.state.selectBuilding;
+  //   const nextSelectBuilding = nextProps.selectBuilding;
+  //   if (
+  //     !(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)
+  //   ) {
+  //     this.setState(
+  //       {
+  //         selectBuilding: nextSelectBuilding
+  //       },
+  //       () => {
+  //         this.onRefresh();
+  //       }
+  //     );
+  //   }
+  // }
+
+  render() {
     const { serverdata, workdata } = this.state;
     return (
       <CommonView style={{ flex: 1 }}>
@@ -183,6 +220,7 @@ export default class NavigatorPage extends BasePage {
                   <Text style={styles.bottom}>已回访</Text>
                 </Flex>
               </TouchableWithoutFeedback>
+
               <TouchableWithoutFeedback onPress={() => {
                 if (serverdata.visitunsatisfied == 0) {
                   return;
@@ -222,13 +260,13 @@ export default class NavigatorPage extends BasePage {
             </Flex>
           </Flex>
 
-          <Flex direction={'column'} align={'start'} style={styles.cell}> 
+          <Flex direction={'column'} align={'start'} style={styles.cell}>
             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
               <Text style={styles.title}>工单</Text>
               <MyPopover onChange={this.worktimeChange}
                 titles={['全部', '今日', '本周', '本月', '上月', '本年']}
                 visible={true} />
-            </Flex> 
+            </Flex>
             <Flex>
               <TouchableWithoutFeedback onPress={() => {
                 if (workdata.totalwork == 0) {
@@ -253,7 +291,7 @@ export default class NavigatorPage extends BasePage {
                 }
                 this.props.navigation.push('weixiulist', {
                   'data': {
-                    type: 'unfinish', 
+                    type: 'unfinish',
                     title: '待完成列表'
                   }
                 })
@@ -291,7 +329,7 @@ export default class NavigatorPage extends BasePage {
                 }
                 this.props.navigation.push('weixiulist', {
                   'data': {
-                    type: 'check', 
+                    type: 'check',
                     title: '已检验列表'
                   }
                 })
@@ -522,7 +560,7 @@ const styles = StyleSheet.create({
     //add new 
     marginRight: 15,
     marginBottom: 20
-  }, 
+  },
   title: {
     color: '#000000',
     fontSize: 16,
@@ -563,3 +601,20 @@ const styles = StyleSheet.create({
   //   height: 0.5
   // }
 });
+
+const mapStateToProps = ({ buildingReducer }) => {
+  return {
+    selectBuilding: buildingReducer.selectBuilding || {}
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    saveSelectDrawerType: (item) => {
+      dispatch(saveSelectDrawerType(item));
+    }
+  };
+};
+
+export default connect(mapStateToProps,mapDispatchToProps)(StatisticsPage);
+

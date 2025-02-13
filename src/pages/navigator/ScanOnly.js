@@ -8,8 +8,7 @@ import {
     Easing
 } from 'react-native';
 // import QRCodeScanner from 'react-native-qrcode-scanner';
-import common from '../../utils/common';
-// import NavigatorService from './navigator-service';
+import common from '../../utils/common'; 
 import { Icon } from '@ant-design/react-native';
 import { RNCamera } from 'react-native-camera';
 import Macro from '../../utils/macro';
@@ -40,7 +39,7 @@ export default class ScanOnly extends BasePage {
         this.startAnimation();
         //test
         // setTimeout(() => {
-        //     this.onBarCodeRead({ data: 'f94af7b8-0d7c-40e0-be3c-5183f3390bd0' })
+        //     this.onBarCodeRead({ data: 'GQ-YY-02018' })
         // }, 1000);
     }
 

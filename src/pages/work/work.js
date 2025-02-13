@@ -34,8 +34,7 @@ export default class WorkPage extends BasePage {
                                 style={{ width: 22, height: 18 }} />
                             <Text style={styles.button}>拍一拍</Text>
                         </Flex>
-                    </TouchableWithoutFeedback>
-
+                    </TouchableWithoutFeedback> 
                     {/* <TouchableWithoutFeedback onPress={() => {
                         // navigation.push('scanonly', {
                         //     data: {

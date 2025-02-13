@@ -3,8 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import BasePage from '../../pages/base/base';
 import Macro from '../../utils/macro';
 import { Flex } from '@ant-design/react-native';
-import { Icon } from '@ant-design/react-native';
-//import NavigatorService from '../../pages/navigator/navigator-service';
+import { Icon } from '@ant-design/react-native'; 
 import numeral from 'numeral';
 
 export default class BuildingHeader extends BasePage {
@@ -50,7 +49,7 @@ export default class BuildingHeader extends BasePage {
                     </Flex>
 
                     <Flex justify='end' style={{ flex: 1 }}>
-                        <TouchableOpacity onPress={() => this.props.navigation.openDrawer()}>
+                        <TouchableOpacity onPress={() => this.props.navigation.openDrawer('organize')}>
                             <Icon name='bars' color="white" />
                         </TouchableOpacity>
                     </Flex>

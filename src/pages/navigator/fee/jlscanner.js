@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View, Animated, Easing } from 'reac
 import BasePage from '../../base/base';
 import { Icon } from '@ant-design/react-native';
 import common from '../../../utils/common';
-import NavigatorService from '../navigator-service';
+import service from '../statistics-service';
 import Macro from '../../../utils/macro';
 import { RNCamera } from 'react-native-camera';
 import UDToast from '../../../utils/UDToast';
@@ -60,7 +60,7 @@ export default class JLScanScreen extends BasePage {
             result
         }, () => {
             let out_trade_no = common.getValueFromProps(this.props, 'out_trade_no');
-            NavigatorService.jlScanPay(result.data, out_trade_no).then(resp => {
+            service.jlScanPay(result.data, out_trade_no).then(resp => {
                 if (resp === 'need_query') {
                     this.needQuery(out_trade_no);
                 } else {
@@ -97,7 +97,7 @@ export default class JLScanScreen extends BasePage {
             count: count - 1,
         }, () => {
             if (count > 0) {
-                NavigatorService.jlScanPayQuery(out_trade_no).then(query => {
+                service.jlScanPayQuery(out_trade_no).then(query => {
                     if (query === 'SUCCESS') {
                         UDToast.hiddenLoading(this.showLoadingNumber);
                         //callBack(res.out_trade_no);
@@ -116,7 +116,7 @@ export default class JLScanScreen extends BasePage {
                 });
             }
             // else {
-            //     NavigatorService.wftScanPayReserve(res.out_trade_no);
+            //     service.wftScanPayReserve(res.out_trade_no);
             //     setTimeout(() => {
             //         UDToast.hiddenLoading(this.showLoadingNumber);
             //         this.props.navigation.goBack();

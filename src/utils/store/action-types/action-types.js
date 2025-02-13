@@ -3,9 +3,7 @@ export const ACTIONS = {
   url: 'url',
   token: 'token',
   selectDrawerType: 'selectDrawerType',
-  selectBuilding: 'selectBuilding',
-  selectTask: 'selectTask',
-  //selectDepartment: 'selectDepartment',
+  selectBuilding: 'selectBuilding', 
   nameAndPsd: 'nameAndPsd',
   user: 'user',
   xunJianData: 'xunJianData',
@@ -15,8 +13,10 @@ export const ACTIONS = {
   gdzcAction: 'gdzcAction'
 };
 
-export const DrawerType = {
-  building: 'building',//机构管理处，查询楼盘使用
+//管理树类型
+export const DrawerType = { 
+  organize:'organize',//机构，查询项目页面使用
+  building: 'building',//项目，查询服务单页面使用
   task: 'task',//流程页面使用，选择单据分类
   //department: 'department'//机构管理处和部门，选择人员页面头部右侧树使用
 };

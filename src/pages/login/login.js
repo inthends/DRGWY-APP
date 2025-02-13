@@ -24,8 +24,7 @@ import JPush from 'jpush-react-native';
 // import { addDownListener, upgrade, checkUpdate } from 'rn-app-upgrade';
 import common from '../../utils/common';
 // import UDToast from '../../utils/UDToast';
-// import api from '../../utils/api';
-// import NavigatorService from '../navigator/navigator-service';
+// import api from '../../utils/api'; 
 
 class LoginPage extends BasePage {
   constructor(props) {

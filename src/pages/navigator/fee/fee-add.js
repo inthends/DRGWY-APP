@@ -13,7 +13,7 @@ import { Flex, Icon, List, DatePicker, Button } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import { connect } from 'react-redux';
 import common from '../../../utils/common';
-import NavigatorService from '../navigator-service';
+import service from '../statistics-service';
 import UDToast from '../../../utils/UDToast';
 import CommonView from '../../../components/CommonView';
 import MyPopover from '../../../components/my-popover';
@@ -103,7 +103,7 @@ class FeeAddPage extends BasePage {
             beginDate: fee.beginDate == null ? null : fee.beginDate.yearMonthDay(),
             endDate: fee.endDate == null ? null : fee.endDate.yearMonthDay()
         };
-        NavigatorService.saveFee(data.billSource, data.linkId, [fee]).then(res => {
+        service.saveFee(data.billSource, data.linkId, [fee]).then(res => {
             UDToast.showInfo('保存成功');
             setTimeout(() => {
                 this.props.navigation.goBack();
@@ -112,7 +112,7 @@ class FeeAddPage extends BasePage {
     };
 
     componentDidMount() {
-        NavigatorService.getFeeItemTreeJson(this.state.data.id).then(resp => {
+        service.getFeeItemTreeJson(this.state.data.id).then(resp => {
             const res = resp.filter(item => item.children.length > 0);
             if (res.length === 0) {
                 UDToast.showError('暂无可加费项目');
@@ -146,7 +146,7 @@ class FeeAddPage extends BasePage {
     };
 
     click = (item) => {
-        NavigatorService.getFeeItemDetail(this.state.data.id, item.key).then(res => {
+        service.getFeeItemDetail(this.state.data.id, item.key).then(res => {
             this.setState({
                 small: item,
                 fee: {

@@ -42,6 +42,7 @@ class XunjianBeforeStart extends BasePage {
     onRefresh = () => {
         const { pointId } = this.state;//点位 
         if (this.props.hasNetwork) {
+            
             //this.initUI();
             XunJianService.xunjianPointTasks(pointId).then(items => {
                 if (items.length == 0) {

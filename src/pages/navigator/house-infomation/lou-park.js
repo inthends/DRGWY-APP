@@ -12,7 +12,7 @@ import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util'; 
 import common from '../../../utils/common';
-import NavigatorService from '../navigator-service';
+import service from '../navigator-service';
 import CommonView from '../../../components/CommonView';
 
 export default class LouPark extends BasePage {
@@ -45,9 +45,9 @@ export default class LouPark extends BasePage {
             (obj) => {
                 const { building } = this.state;
                 //获取楼层和房间
-                // NavigatorService.getFloors(building.id).then(floors => {
+                // service.getFloors(building.id).then(floors => {
                 //     const promises = floors.map(item => {
-                //         return NavigatorService.getRooms(item.id).then(rooms => {
+                //         return service.getRooms(item.id).then(rooms => {
                 //             return {
                 //                 ...item,
                 //                 rooms,
@@ -60,7 +60,7 @@ export default class LouPark extends BasePage {
                 // });
 
                 //车位
-                NavigatorService.getParkings(building.id).then(parkings => {
+                service.getParkings(building.id).then(parkings => {
                     this.setState({ parkings });
                 });
             },

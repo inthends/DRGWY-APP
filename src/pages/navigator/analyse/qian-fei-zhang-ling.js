@@ -17,18 +17,20 @@ import ScreenUtil from '../../../utils/screen-util';
 import common from '../../../utils/common';
 import Echarts from 'native-echarts';
 import DashLine from '../../../components/dash-line';
-import NavigatorService from '../navigator-service';
+import service from '../statistics-service';
 import MyPopover from '../../../components/my-popover';
 import CommonView from '../../../components/CommonView';
 import { Table, Row, Rows } from 'react-native-table-component';
+import { saveSelectBuilding, saveSelectDrawerType } from '../../../utils/store/actions/actions';
+import { DrawerType } from '../../../utils/store/action-types/action-types';
 
 class QianFeiZhangLingPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
     return {
       tabBarVisible: false,
       title: '欠费账龄',
-      headerForceInset:this.headerForceInset,
-            headerLeft: (
+      headerForceInset: this.headerForceInset,
+      headerLeft: (
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="left" style={{ width: 30, marginLeft: 15 }} />
         </TouchableOpacity>
@@ -43,27 +45,34 @@ class QianFeiZhangLingPage extends BasePage {
 
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       ym: common.getYM('2020-01'),
       time: common.getCurrentYearAndMonth(),
-      //selectBuilding: this.props.selectBuilding || {}//选择的机构
-      selectBuilding: {}//默认为空，防止别的报表选择了机构，带到当前报表
+      selectBuilding: this.props.selectBuilding || {}//选择的机构 
       // statistics: [],
     };
   }
 
-  componentDidMount()  {
-    NavigatorService.GetReceiveFeeItems().then((res) => {
-      const titles = (res || []).map((item) => item.title);
-      this.setState({
-        titles: ['全部', ...titles],
-      });
-    });
-    this.getStatustics();
+
+  componentDidMount() {
+    this.viewDidAppear = this.props.navigation.addListener(
+      'didFocus',
+      (obj) => {
+        this.props.saveBuilding({});//加载页面清除别的页面选中的数据
+        this.props.saveSelectDrawerType(DrawerType.building);
+
+        service.GetReceiveFeeItems().then((res) => {
+          const titles = (res || []).map((item) => item.title);
+          this.setState({
+            titles: ['全部', ...titles],
+          });
+        });
+        this.getStatustics();
+      }
+    );
   }
 
-  // componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
-  componentWillReceiveProps(nextProps: Readonly<P>): void {
+  componentWillReceiveProps(nextProps) {
     const selectBuilding = this.state.selectBuilding;
     const nextSelectBuilding = nextProps.selectBuilding;
     if (
@@ -75,20 +84,24 @@ class QianFeiZhangLingPage extends BasePage {
     ) {
       this.setState(
         {
-          selectBuilding: nextProps.selectBuilding,
-          estateId: nextProps.selectBuilding.key,
+          selectBuilding: nextSelectBuilding,
+          //estateId: nextProps.selectBuilding.key,
           index: 0,
         },
         () => {
           this.getStatustics();//initData(); 
-        },
+        }
       );
     }
   }
 
+  componentWillUnmount() {
+    this.viewDidAppear.remove();
+  }
+
   //废弃
   // initData = () => {
-  //   NavigatorService.getFeeStatistics(
+  //   service.getFeeStatistics(
   //     1,
   //     this.state.selectBuilding.key,
   //     100000,
@@ -100,11 +113,15 @@ class QianFeiZhangLingPage extends BasePage {
   // };
 
   getStatustics = () => {
-    const { estateId, type, time } = this.state;
+    const { selectBuilding, type, time } = this.state;
     let startTime = common.getMonthFirstDay(time);
     let endTime = common.getMonthLastDay(time);
-    NavigatorService.collectionRate(3,
-      estateId,
+    let organizeId;
+    if (selectBuilding) {
+      organizeId = selectBuilding.key;
+    }
+    service.collectionRate(3,
+      organizeId,
       type,
       startTime,
       endTime
@@ -161,7 +178,7 @@ class QianFeiZhangLingPage extends BasePage {
       yName,
       tableData = [],
       tableHead = [],
-    } = this.state.res || {}; 
+    } = this.state.res || {};
     // option =
     // {
     //       "xAxis": {
@@ -246,13 +263,13 @@ class QianFeiZhangLingPage extends BasePage {
                 onChange={this.typeChange}
                 titles={titles}
                 visible={true}
-              /> 
+              />
               <MyPopover onChange={this.timeChange} titles={ym} visible={true} />
             </Flex>
           </Flex>
           <DashLine
             style={{ marginTop: -10, marginLeft: 15, marginRight: 15 }}
-          /> 
+          />
           <Text style={styles.xx}>{xName}</Text>
           <Text style={styles.xx}>{yName}</Text>
           <Echarts option={option || {}} height={300} />
@@ -269,7 +286,7 @@ class QianFeiZhangLingPage extends BasePage {
   }
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
   left: {
     width: ScreenUtil.deviceWidth() / 3.0 - 15,
     borderStyle: 'solid',
@@ -285,8 +302,8 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     height: 30
   },
- 
- 
+
+
   xx: {
     color: '#404145',
     fontSize: 14,
@@ -311,4 +328,17 @@ const mapStateToProps = ({ buildingReducer }) => {
     selectBuilding: buildingReducer.selectBuilding,
   };
 };
-export default connect(mapStateToProps)(QianFeiZhangLingPage);
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    saveBuilding: (item) => {
+      dispatch(saveSelectBuilding(item));
+    },
+    saveSelectDrawerType: (item) => {
+      dispatch(saveSelectDrawerType(item));
+    }
+  };
+};
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(QianFeiZhangLingPage);

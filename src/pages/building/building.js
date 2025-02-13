@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Text,
   View,
   StyleSheet,
   FlatList,
@@ -25,9 +24,11 @@ import {
 import UDToast from '../../utils/UDToast';
 import common from '../../utils/common';
 import api from '../../utils/api';
-// import NavigatorService from '../navigator/navigator-service';
 // import XunJianService from '../navigator/xunjian/xunjian-service';
 // import HomePage from '../home/home';
+
+import {saveSelectBuilding, saveSelectDrawerType } from '../../utils/store/actions/actions';
+import { DrawerType } from '../../utils/store/action-types/action-types';
 
 class BuildingPage extends BasePage {
   constructor(props) {
@@ -35,8 +36,8 @@ class BuildingPage extends BasePage {
     this.selectBuilding = {
       key: null
     };
-    this.state = { 
-      pageIndex: 1, 
+    this.state = {
+      pageIndex: 1,
       dataInfo: {
         data: []
       },
@@ -121,6 +122,23 @@ class BuildingPage extends BasePage {
       //     });
       // });
     }
+
+
+    this.viewDidAppear = this.props.navigation.addListener(
+      'didFocus',//加载当前页面时候调用一次
+      (obj) => { 
+        this.props.saveBuilding({});//加载页面清除别的页面选中的数据
+        this.props.saveSelectDrawerType(DrawerType.organize);
+      }
+    );
+
+    // this.viewDidDisappear = this.props.navigation.addListener(
+    //   'didBlur',//离开当前页面调用一次
+    //   (obj) => {
+    //     this.props.saveSelectDrawerType(DrawerType.organize);
+    //   }
+    // );
+
   }
 
   initUI() {
@@ -130,6 +148,7 @@ class BuildingPage extends BasePage {
     });
 
     this.onRefresh();
+
     // this.viewDidAppear = this.props.navigation.addListener(
     //     'didFocus',
     //     (obj) => {
@@ -141,9 +160,10 @@ class BuildingPage extends BasePage {
     // );
   }
 
-  // componentWillUnmount(): void {
-  //     // this.viewDidAppear.remove();
-  // }
+  componentWillUnmount() {
+    this.viewDidAppear.remove();
+  }
+
 
   getInitData = () => {
     BuildingService.getStatisticsTotal(this.selectBuilding.key).then((res) => {
@@ -177,9 +197,9 @@ class BuildingPage extends BasePage {
   };
 
   //打开机构
-  openDrawer = () => {
-    this.drawer && this.drawer.openDrawer();
-  };
+  // openDrawer = (type) => { 
+  //   this.drawer && this.drawer.openDrawer(type);
+  // };
 
   onRefresh = () => {
     this.getInitData();
@@ -210,7 +230,7 @@ class BuildingPage extends BasePage {
     }
   };
 
-  componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
+  componentWillReceiveProps(nextProps) {
     if (
       !(
         this.selectBuilding &&
@@ -232,7 +252,7 @@ class BuildingPage extends BasePage {
             <BuildingHeader
               title={this.selectBuilding.title}
               statistics={statistics}
-              openDrawer={this.openDrawer}
+              //openDrawer={this.openDrawer}
               {...this.props}
             />
             <FlatList
@@ -246,16 +266,16 @@ class BuildingPage extends BasePage {
                 />
               )}
               style={styles.list}
-              keyExtractor={(item) => item.id} 
+              keyExtractor={(item) => item.id}
               //必须
               onEndReachedThreshold={0.1}
               refreshing={this.state.refreshing}
               onRefresh={this.onRefresh}//下拉刷新
               onEndReached={this.loadMore}//底部往下拉翻页
-              onMomentumScrollBegin={() => this.canLoadMore = true} 
+              onMomentumScrollBegin={() => this.canLoadMore = true}
               ListEmptyComponent={<NoDataView />}
             />
-             {/* <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text> */}
+            {/* <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text> */}
           </View>
         </CommonView>
       </View>
@@ -284,7 +304,7 @@ const mapStateToProps = ({ buildingReducer, memberReducer }) => {
     selectBuilding: buildingReducer.selectBuilding || {},
     user: {
       ...user,
-      id: user.userId,
+      id: user.userId
     }
   };
 };
@@ -297,6 +317,12 @@ const mapDispatchToProps = (dispatch) => {
     saveXunjian(data) {
       dispatch(saveXunJian(data));
     },
+    saveBuilding: (item) => {
+      dispatch(saveSelectBuilding(item));
+    },
+    saveSelectDrawerType: (item) => {
+      dispatch(saveSelectDrawerType(item));
+    }
   };
 };
 

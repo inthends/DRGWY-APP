@@ -1,34 +1,36 @@
-import React  from 'react';
-import { 
-  StyleSheet, 
-  ScrollView, 
-  TouchableWithoutFeedback, 
+import React from 'react';
+import {
+  StyleSheet,
+  ScrollView,
+  TouchableWithoutFeedback,
   TouchableOpacity,
 } from 'react-native';
 
 import BasePage from '../../base/base';
 // import BuildingHeader from '../../../components/building/building-header';
 // import BuildingCell from '../../../components/building/build-cell';
-import { 
+import {
   Flex,
-  Icon, 
-} from '@ant-design/react-native'; 
-import { connect } from 'react-redux'; 
-import ScreenUtil from '../../../utils/screen-util'; 
-import Echarts from 'native-echarts'; 
+  Icon,
+} from '@ant-design/react-native';
+import { connect } from 'react-redux';
+import ScreenUtil from '../../../utils/screen-util';
+import Echarts from 'native-echarts';
 import DashLine from '../../../components/dash-line';
-import NavigatorService from '../navigator-service'; 
+import service from '../statistics-service';
 import { Row, Rows, Table } from 'react-native-table-component';
 import MyPopover from '../../../components/my-popover';
 import CommonView from '../../../components/CommonView';
+import { saveSelectBuilding, saveSelectDrawerType } from '../../../utils/store/actions/actions';
+import { DrawerType } from '../../../utils/store/action-types/action-types';
 
 class HuiFangRatePage extends BasePage {
   static navigationOptions = ({ navigation }) => {
     return {
       tabBarVisible: false,
       title: '回访满意度',
-      headerForceInset:this.headerForceInset,
-            headerLeft: (
+      headerForceInset: this.headerForceInset,
+      headerLeft: (
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="left" style={{ width: 30, marginLeft: 15 }} />
         </TouchableOpacity>
@@ -37,15 +39,15 @@ class HuiFangRatePage extends BasePage {
         <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
           <Icon name="bars" style={{ marginRight: 15 }} color="black" />
         </TouchableWithoutFeedback>
-      ),
+      )
     };
   };
 
   constructor(props) {
     super(props);
-    this.state = { 
-      //selectBuilding: this.props.selectBuilding || {},
-      selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
+    this.state = {
+      selectBuilding: this.props.selectBuilding || {},
+      //selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
       //statistics: [],
       titles: [],
       res: {
@@ -56,13 +58,21 @@ class HuiFangRatePage extends BasePage {
   }
 
   componentDidMount() {
-    this.setState({
-      titles: ['全部', '报修', '投诉'],
-    });
-    this.getStatustics();
+    this.viewDidAppear = this.props.navigation.addListener(
+      'didFocus',
+      (obj) => {
+        this.props.saveBuilding({});//加载页面清除别的页面选中的数据
+        this.props.saveSelectDrawerType(DrawerType.building);
+
+        this.setState({
+          titles: ['全部', '报修', '投诉'],
+        });
+        this.getStatustics();
+      }
+    );
   }
 
-  componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
+  componentWillReceiveProps(nextProps): void {
     const selectBuilding = this.state.selectBuilding;
     const nextSelectBuilding = nextProps.selectBuilding;
     if (
@@ -74,8 +84,8 @@ class HuiFangRatePage extends BasePage {
     ) {
       this.setState(
         {
-          selectBuilding: nextProps.selectBuilding,
-          estateId: nextProps.selectBuilding.key,
+          selectBuilding: nextSelectBuilding,
+          //estateId: nextProps.selectBuilding.key,
           index: 0,
         },
         () => {
@@ -85,8 +95,12 @@ class HuiFangRatePage extends BasePage {
     }
   }
 
+  componentWillUnmount() {
+    this.viewDidAppear.remove();
+  }
+
   // initData = () => {
-  //   NavigatorService.getFeeStatistics(
+  //   service.getFeeStatistics(
   //     1,
   //     this.state.selectBuilding.key,
   //     100000,
@@ -98,8 +112,12 @@ class HuiFangRatePage extends BasePage {
   // };
 
   getStatustics = () => {
-    const { estateId, type } = this.state;
-    NavigatorService.collectionRate(6, estateId, type,'','').then((res) => {
+    const { selectBuilding, type } = this.state;
+    let organizeId;
+    if (selectBuilding) {
+      organizeId = selectBuilding.key;
+    }
+    service.collectionRate(6, organizeId, type, '', '').then((res) => {
       this.setState({ res });
     });
   };
@@ -136,8 +154,8 @@ class HuiFangRatePage extends BasePage {
   };
 
   render() {
-    const { titles = [] } = this.state; 
-    let { option, tableData, tableHead } = this.state.res; 
+    const { titles = [] } = this.state;
+    let { option, tableData, tableHead } = this.state.res;
 
     // option = {
     //   xAxis: {
@@ -207,7 +225,7 @@ class HuiFangRatePage extends BasePage {
   }
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
   left: {
     width: ScreenUtil.deviceWidth() / 3.0 - 15,
     borderStyle: 'solid',
@@ -241,4 +259,17 @@ const mapStateToProps = ({ buildingReducer }) => {
     selectBuilding: buildingReducer.selectBuilding,
   };
 };
-export default connect(mapStateToProps)(HuiFangRatePage);
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    saveBuilding: (item) => {
+      dispatch(saveSelectBuilding(item));
+    },
+    saveSelectDrawerType: (item) => {
+      dispatch(saveSelectDrawerType(item));
+    }
+  };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(HuiFangRatePage);

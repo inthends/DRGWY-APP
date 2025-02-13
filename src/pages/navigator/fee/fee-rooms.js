@@ -15,7 +15,7 @@ import ScreenUtil from '../../../utils/screen-util';
 // import ListHeader from '../../components/list-header';
 import common from '../../../utils/common';
 //import LoadImage from '../../components/load-image';
-import NavigatorService from '../navigator-service';
+import service from '../statistics-service';
 import CommonView from '../../../components/CommonView';
 //import WorkService from '../work/work-service';
 
@@ -51,9 +51,9 @@ export default class FeeRoomsPage extends BasePage {
             (obj) => {
                 const { building } = this.state;
                 //获取房间
-                NavigatorService.getFloors(building.id).then(floors => {
+                service.getFloors(building.id).then(floors => {
                     const promises = floors.map(item => {
-                        return NavigatorService.getRooms(item.id).then(rooms => {
+                        return service.getRooms(item.id).then(rooms => {
                             return {
                                 ...item,
                                 rooms

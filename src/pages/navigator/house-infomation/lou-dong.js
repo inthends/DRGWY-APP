@@ -13,7 +13,7 @@ import ScreenUtil from '../../../utils/screen-util';
 // import { connect } from 'react-redux';
 // import ListHeader from '../../../components/list-header';
 import common from '../../../utils/common';
-import NavigatorService from '../navigator-service';
+import service from '../navigator-service';
 // import LoadImage from '../../../components/load-image';
 import CommonView from '../../../components/CommonView';
  
@@ -42,7 +42,7 @@ export default class LouDong extends BasePage {
     }
 
     componentDidMount() {
-        NavigatorService.getBuildings(this.state.housing.id).then(items => {
+        service.getBuildings(this.state.housing.id).then(items => {
             this.setState({ items });
         });
     }

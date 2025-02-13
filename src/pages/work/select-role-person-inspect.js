@@ -23,12 +23,7 @@ class SelectRolePersonInspect extends BasePage {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
-            ),
-            // headerRight: (
-            //     <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
-            //         <Icon name='bars' style={{ marginRight: 15 }} color="black" />
-            //     </TouchableWithoutFeedback>
-            // )
+            ) 
         };
     };
 

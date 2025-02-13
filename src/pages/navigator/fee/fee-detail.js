@@ -18,7 +18,7 @@ import { connect } from 'react-redux';
 import common from '../../../utils/common';
 import LoadImage from '../../../components/load-image';
 import TwoChange from '../../../components/two-change';
-import NavigatorService from '../navigator-service';
+import service from '../statistics-service';
 import MyPopover from '../../../components/my-popover';
 import UDToast from '../../../utils/UDToast';
 import CommonView from '../../../components/CommonView';
@@ -130,7 +130,7 @@ class FeeDetailPage extends BasePage {
 
     componentDidMount() {
         //获取参数，根据是否兴生活缴费来加载按钮
-        NavigatorService.getSettingInfo(this.state.room.organizeId).then((res) => {
+        service.getSettingInfo(this.state.room.organizeId).then((res) => {
             this.setState({ isCIBLife: res });
         });
 
@@ -148,9 +148,7 @@ class FeeDetailPage extends BasePage {
                 }
                 // if (obj.state.params) {
                 //     let address = obj.state.params.data;
-                //     NavigatorService.wftScanPay(address.a,address.b).then(res => {
-                //         alert(JSON.stringify(res));
-                //
+                //     service.wftScanPay(address.a,address.b).then(res => { 
                 //         this.setState({
                 //             res: JSON.stringify(res),
                 //         });
@@ -179,7 +177,7 @@ class FeeDetailPage extends BasePage {
     }
 
     callBack = (out_trade_no) => {
-        NavigatorService.printInfo(out_trade_no).then(res => {
+        service.printInfo(out_trade_no).then(res => {
             NativeModules.LHNToast.printTicket({
                 ...res,
                 username: res.userName
@@ -197,7 +195,7 @@ class FeeDetailPage extends BasePage {
             switch (title) {
                 //app 不支持刷卡
                 case '扫码': {
-                    NavigatorService.createOrder(ids, isML, mlType, mlScale, 1).then(res => {
+                    service.createOrder(ids, isML, mlType, mlScale, 1).then(res => {
                         if (!res.posType) {
                             UDToast.showError(res);
                             return;
@@ -327,7 +325,7 @@ class FeeDetailPage extends BasePage {
                 }
 
                 case '收款码': {
-                    NavigatorService.createOrder(ids, isML, mlType, mlScale, 2).then(res => {
+                    service.createOrder(ids, isML, mlType, mlScale, 2).then(res => {
                         if (!res.posType) {
                             UDToast.showError(res);
                             return;
@@ -368,7 +366,7 @@ class FeeDetailPage extends BasePage {
                             case "拉卡拉聚合":
                                 {
                                     //拉卡拉聚合收银台支付
-                                    NavigatorService.lklallqrcodePay(res.out_trade_no).then(code => {
+                                    service.lklallqrcodePay(res.out_trade_no).then(code => {
                                         this.setState({
                                             visible: true,
                                             cancel: false,
@@ -384,7 +382,7 @@ class FeeDetailPage extends BasePage {
 
                             case "威富通":
                                 {
-                                    NavigatorService.qrcodePay(res.out_trade_no, isDigital).then(code => {
+                                    service.qrcodePay(res.out_trade_no, isDigital).then(code => {
                                         this.setState({
                                             visible: true,
                                             cancel: false,
@@ -400,7 +398,7 @@ class FeeDetailPage extends BasePage {
 
                             case "嘉联":
                                 {
-                                    NavigatorService.jlqrcodePay(res.out_trade_no).then(code => {
+                                    service.jlqrcodePay(res.out_trade_no).then(code => {
                                         this.setState({
                                             visible: true,
                                             cancel: false,
@@ -418,7 +416,7 @@ class FeeDetailPage extends BasePage {
 
                             case "交通银行":
                                 {
-                                    NavigatorService.bcmCodePay(res.out_trade_no, isDigital).then(code => {
+                                    service.bcmCodePay(res.out_trade_no, isDigital).then(code => {
                                         this.setState({
                                             visible: true,
                                             cancel: false,
@@ -434,7 +432,7 @@ class FeeDetailPage extends BasePage {
 
                             case "兴业银行":
                                 {
-                                    NavigatorService.cibCodePay(res.out_trade_no, isDigital).then(code => {
+                                    service.cibCodePay(res.out_trade_no, isDigital).then(code => {
                                         this.setState({
                                             visible: true,
                                             cancel: false,
@@ -450,7 +448,7 @@ class FeeDetailPage extends BasePage {
 
                             case "兴生活H5":
                                 {
-                                    NavigatorService.cibH5CodePay(res.out_trade_no, isDigital).then(code => {
+                                    service.cibH5CodePay(res.out_trade_no, isDigital).then(code => {
                                         this.setState({
                                             visible: true,
                                             cancel: false,
@@ -478,7 +476,7 @@ class FeeDetailPage extends BasePage {
                                     //     },
                                     // );
                                     //生成收款码接口 2024年4月17日
-                                    NavigatorService.njCodePay(res.out_trade_no).then(code => {
+                                    service.njCodePay(res.out_trade_no).then(code => {
                                         this.setState({
                                             visible: true,
                                             cancel: false,
@@ -494,7 +492,7 @@ class FeeDetailPage extends BasePage {
 
                             case "建设银行":
                                 {
-                                    NavigatorService.ccbCodePay(res.out_trade_no).then(code => {
+                                    service.ccbCodePay(res.out_trade_no).then(code => {
                                         this.setState({
                                             visible: true,
                                             cancel: false,
@@ -553,7 +551,7 @@ class FeeDetailPage extends BasePage {
         } else {
             let ids = JSON.stringify((items.map(item => item.id)));
             const { room } = this.state;
-            NavigatorService.qrcodePayCIB(room.id, ids).then((code) => {
+            service.qrcodePayCIB(room.id, ids).then((code) => {
                 this.setState(
                     {
                         visible: true,
@@ -568,10 +566,10 @@ class FeeDetailPage extends BasePage {
     }
 
     cashPay = (ids, isML, mlType, mlScale) => {
-        NavigatorService.cashPay(ids, isML, mlType, mlScale).then(res => {
+        service.cashPay(ids, isML, mlType, mlScale).then(res => {
             //if (this.state.isLKL || this.state.isYse) {
             //支持蓝牙打印
-            NavigatorService.cashPayPrint(ids).then(res => {
+            service.cashPayPrint(ids).then(res => {
                 if (res) {
                     NativeModules.LHNToast.printTicket({
                         ...res,
@@ -587,7 +585,7 @@ class FeeDetailPage extends BasePage {
     //刷新数据
     onRefresh = () => {
         const { pageIndex, type, room, isShow } = this.state;
-        NavigatorService.getBillList(type, room.id, isShow, pageIndex, 1000).then(dataInfo => {
+        service.getBillList(type, room.id, isShow, pageIndex, 1000).then(dataInfo => {
             //重置选择框状态值
             this.setState({
                 dataInfo: dataInfo,
@@ -638,7 +636,7 @@ class FeeDetailPage extends BasePage {
                 //let price = items.filter(item => item.select === true).reduce((a, b) => a + b.amount, 0).toFixed(2);
                 //从后台计算抹零总金额 neo 2020年7月1日23:00:52
                 let ids = JSON.stringify((items.map(item => item.id)));
-                NavigatorService.CalFee(isML, mlType, mlScale, ids).then(res => {
+                service.CalFee(isML, mlType, mlScale, ids).then(res => {
                     this.setState({ price: res.lastAmount, mlAmount: res.mlAmount });
                 });
             } else {
@@ -664,7 +662,7 @@ class FeeDetailPage extends BasePage {
         const items = data.filter(item => item.select === true);
         if (items.length != 0) {
             let ids = JSON.stringify((items.map(item => item.id)));
-            NavigatorService.CalFee(isML, mlType, mlScale, ids).then(res => {
+            service.CalFee(isML, mlType, mlScale, ids).then(res => {
                 this.setState({ price: res.lastAmount, mlAmount: res.mlAmount });
             });
         } else {
@@ -679,7 +677,7 @@ class FeeDetailPage extends BasePage {
             //let price = items.filter(item => item.select === true).reduce((a, b) => a + b.amount, 0).toFixed(2);//javascript浮点运算的一个bug
             //从后台计算抹零总金额 neo 2020年7月1日23:00:52
             let ids = JSON.stringify((items.map(item => item.id)));
-            NavigatorService.CalFee(isML, mlType, mlScale, ids).then(res => {
+            service.CalFee(isML, mlType, mlScale, ids).then(res => {
                 this.setState({ price: res.lastAmount, mlAmount: res.mlAmount });
             });
         } else {
@@ -703,7 +701,7 @@ class FeeDetailPage extends BasePage {
     //通用订单状态查询
     getOrderStatus = (out_trade_no) => {
         clearTimeout(this.timeOut);
-        NavigatorService.orderStatus(out_trade_no).then(res => {
+        service.orderStatus(out_trade_no).then(res => {
             if (res) {
                 if (this.state.needPrint) {
                     this.func = this.printInfo;
@@ -724,7 +722,7 @@ class FeeDetailPage extends BasePage {
     //嘉联查询订单状态
     // getJLOrderStatus = (out_trade_no) => {
     //     clearTimeout(this.timeOut);
-    //     NavigatorService.orderStatus(out_trade_no).then(res => {
+    //     service.orderStatus(out_trade_no).then(res => {
     //         if (res) {
     //             // if (this.state.needPrint) {
     //             //     this.func = this.printInfo;
@@ -743,7 +741,7 @@ class FeeDetailPage extends BasePage {
     // };
 
     printInfo = (out_trade_no) => {
-        NavigatorService.printInfo(out_trade_no).then(res => {
+        service.printInfo(out_trade_no).then(res => {
             NativeModules.LHNToast.printTicket({
                 ...res,
                 username: res.userName,
@@ -765,7 +763,7 @@ class FeeDetailPage extends BasePage {
                 {
                     text: '确定',
                     onPress: () => {
-                        NavigatorService.invalidBillForm(item.id).then(res => {
+                        service.invalidBillForm(item.id).then(res => {
                             this.onRefresh();
                         });
                     },
@@ -821,7 +819,7 @@ class FeeDetailPage extends BasePage {
                                                 });
                                             } else {
                                                 //需要验证权限
-                                                NavigatorService.checkBillFee(item.id).then(res => {
+                                                service.checkBillFee(item.id).then(res => {
                                                     if (res == 0) {
                                                         //拆费 
                                                         this.setState({
@@ -872,11 +870,13 @@ class FeeDetailPage extends BasePage {
                                     </Flex>
                                 </Flex>
                                 {item.beginDate ?
-                                    <Text style={{
-                                        paddingLeft: 5,
-                                        paddingTop: 7,
-                                        color: '#666'
-                                    }}>{item.beginDate + '至' + item.endDate}</Text> : null
+                                    <Flex>
+                                        <Text style={{
+                                            paddingLeft: 5,
+                                            paddingTop: 7,
+                                            color: '#666'
+                                        }}>{item.beginDate + '至' + item.endDate}</Text>
+                                    </Flex> : null
                                 }
                             </Flex>
                         </>

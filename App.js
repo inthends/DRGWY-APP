@@ -17,7 +17,7 @@ import { persistor } from './src/utils/store/store';
 import JPush from 'jpush-react-native';
 import { Alert, DeviceEventEmitter } from 'react-native';
 // import UDAlert from './src/utils/UDAlert';
-// import NavigatorService from './src/pages/navigator/navigator-service';
+// import service from './src/pages/navigator/navigator-service';
 
 type Props = {};
 

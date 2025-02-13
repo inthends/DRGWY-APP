@@ -1,32 +1,34 @@
-import React  from 'react';
-import { 
-  StyleSheet, 
-  ScrollView, 
-  TouchableWithoutFeedback, 
+import React from 'react';
+import {
+  StyleSheet,
+  ScrollView,
+  TouchableWithoutFeedback,
   TouchableOpacity,
 } from 'react-native';
 
-import BasePage from '../../base/base'; 
-import { 
+import BasePage from '../../base/base';
+import {
   Flex,
   Icon
-} from '@ant-design/react-native'; 
-import { connect } from 'react-redux'; 
-import ScreenUtil from '../../../utils/screen-util'; 
-import Echarts from 'native-echarts'; 
+} from '@ant-design/react-native';
+import { connect } from 'react-redux';
+import ScreenUtil from '../../../utils/screen-util';
+import Echarts from 'native-echarts';
 import DashLine from '../../../components/dash-line';
-import NavigatorService from '../navigator-service'; 
+import service from '../statistics-service';
 import MyPopover from '../../../components/my-popover';
 import CommonView from '../../../components/CommonView';
-import { Table,  Rows } from 'react-native-table-component';
+import { Table, Rows } from 'react-native-table-component';
+import { saveSelectBuilding, saveSelectDrawerType } from '../../../utils/store/actions/actions';
+import { DrawerType } from '../../../utils/store/action-types/action-types';
 
 class ZiJinLiuPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
     return {
       tabBarVisible: false,
       title: '资金流',
-      headerForceInset:this.headerForceInset,
-            headerLeft: (
+      headerForceInset: this.headerForceInset,
+      headerLeft: (
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="left" style={{ width: 30, marginLeft: 15 }} />
         </TouchableOpacity>
@@ -41,9 +43,8 @@ class ZiJinLiuPage extends BasePage {
 
   constructor(props) {
     super(props);
-    this.state = { 
-      //selectBuilding: this.props.selectBuilding || {},
-      selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
+    this.state = {
+      selectBuilding: this.props.selectBuilding || {},
       //statistics: [],
       res: {
         option: null,
@@ -51,17 +52,25 @@ class ZiJinLiuPage extends BasePage {
     };
   }
 
-  componentDidMount(): void {
-    NavigatorService.GetReceiveFeeItems().then((res) => {
-      const titles = (res || []).map((item) => item.title);
-      this.setState({
-        titles: ['全部', ...titles],
-      });
-    });
-    this.getStatustics();
+  componentDidMount() {
+    this.viewDidAppear = this.props.navigation.addListener(
+      'didFocus',
+      (obj) => {
+        this.props.saveBuilding({});//加载页面清除别的页面选中的数据
+        this.props.saveSelectDrawerType(DrawerType.building);
+
+        service.GetReceiveFeeItems().then((res) => {
+          const titles = (res || []).map((item) => item.title);
+          this.setState({
+            titles: ['全部', ...titles],
+          });
+        });
+        this.getStatustics();
+      }
+    );
   }
 
-  componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
+  componentWillReceiveProps(nextProps): void {
     const selectBuilding = this.state.selectBuilding;
     const nextSelectBuilding = nextProps.selectBuilding;
     if (
@@ -73,8 +82,8 @@ class ZiJinLiuPage extends BasePage {
     ) {
       this.setState(
         {
-          selectBuilding: nextProps.selectBuilding,
-          estateId: nextProps.selectBuilding.key,
+          selectBuilding: nextSelectBuilding,
+          //estateId: nextProps.selectBuilding.key,
           index: 0,
         },
         () => {
@@ -84,8 +93,13 @@ class ZiJinLiuPage extends BasePage {
     }
   }
 
+  componentWillUnmount() {
+    this.viewDidAppear.remove();
+  }
+
+
   // initData = () => {
-  //   NavigatorService.getFeeStatistics(
+  //   service.getFeeStatistics(
   //     1,
   //     this.state.selectBuilding.key,
   //     100000,
@@ -97,8 +111,12 @@ class ZiJinLiuPage extends BasePage {
   // };
 
   getStatustics = () => {
-    const { estateId, type } = this.state;
-    NavigatorService.collectionRate(2, estateId, type,'','').then((res) => {
+    const { selectBuilding, type } = this.state;
+    let organizeId;
+    if (selectBuilding) {
+      organizeId = selectBuilding.key;
+    }
+    service.collectionRate(2, organizeId, type, '', '').then((res) => {
       this.setState({ res });
     });
   };
@@ -135,8 +153,8 @@ class ZiJinLiuPage extends BasePage {
   };
 
   render() {
-    const {  titles = [] } = this.state;
-    let { option,  tableData = [] } = this.state.res; 
+    const { titles = [] } = this.state;
+    let { option, tableData = [] } = this.state.res;
     // option = { xAxis:
     //     { type: 'category',
     //       name: 'x',
@@ -197,9 +215,9 @@ class ZiJinLiuPage extends BasePage {
   }
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
   left: {
-    width: ScreenUtil.deviceWidth() / 3.0 - 15, 
+    width: ScreenUtil.deviceWidth() / 3.0 - 15,
     borderStyle: 'solid',
     borderWidth: 1,
     borderColor: '#ccc',
@@ -213,8 +231,8 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     height: 30,
   },
- 
-  
+
+
   name: {
     color: '#666',
     fontSize: 14,
@@ -233,4 +251,17 @@ const mapStateToProps = ({ buildingReducer }) => {
     selectBuilding: buildingReducer.selectBuilding,
   };
 };
-export default connect(mapStateToProps)(ZiJinLiuPage);
+
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    saveBuilding: (item) => {
+      dispatch(saveSelectBuilding(item));
+    },
+    saveSelectDrawerType: (item) => {
+      dispatch(saveSelectDrawerType(item));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ZiJinLiuPage);

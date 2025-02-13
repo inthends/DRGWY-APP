@@ -11,14 +11,16 @@ import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
-import { connect } from 'react-redux';
 import common from '../../../utils/common';
 import LoadImage from '../../../components/load-image';
 import ScrollTitle from '../../../components/scroll-title';
 import MyPopover from '../../../components/my-popover';
-import NavigatorService from '../navigator-service';
+import service from '../statistics-service';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
+import { connect } from 'react-redux';
+import { saveSelectBuilding, saveSelectDrawerType } from '../../../utils/store/actions/actions';
+import { DrawerType } from '../../../utils/store/action-types/action-types';
 
 //统计页面服务单列表，仅查看
 class EstateFuwuPage extends BasePage {
@@ -45,7 +47,7 @@ class EstateFuwuPage extends BasePage {
     constructor(props) {
         super(props);
         this.selectBuilding = {
-            key: null,
+            key: null
         };
         //列表类型
         const type = common.getValueFromProps(this.props).type;
@@ -59,14 +61,16 @@ class EstateFuwuPage extends BasePage {
             billType: '全部',
             billStatus: -1,
             time: '全部',
-            selectBuilding: this.props.selectBuilding
+            selectBuilding: this.props.selectBuilding || {}
         };
     }
 
     componentDidMount() {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
-            (obj) => {
+            (obj) => { 
+                this.props.saveBuilding({});//加载页面清除别的页面选中的数据
+                this.props.saveSelectDrawerType(DrawerType.building);
                 this.onRefresh();
             }
         );
@@ -75,14 +79,21 @@ class EstateFuwuPage extends BasePage {
     componentWillUnmount() {
         this.viewDidAppear.remove();
     }
-
-    componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
+ 
+    componentWillReceiveProps(nextProps) {
         const selectBuilding = this.state.selectBuilding;
         const nextSelectBuilding = nextProps.selectBuilding;
-        if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
-            this.setState({ selectBuilding: nextProps.selectBuilding }, () => {
-                this.onRefresh();
-            });
+        if (
+            !(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)
+        ) {
+            this.setState(
+                {
+                    selectBuilding: nextSelectBuilding
+                },
+                () => {
+                    this.onRefresh();
+                }
+            );
         }
     }
 
@@ -90,11 +101,11 @@ class EstateFuwuPage extends BasePage {
         const { type, billStatus, selectBuilding, billType, time } = this.state;
         let organizeId;
         if (selectBuilding) {
-            treeType = selectBuilding.type;
+            //treeType = selectBuilding.type;
             organizeId = selectBuilding.key;
         }
 
-        NavigatorService.serviceList(
+        service.serviceList(
             this.state.pageIndex,
             type,
             billStatus,
@@ -345,9 +356,22 @@ const styles = StyleSheet.create({
         borderLeftWidth: 5
     }
 });
+
 const mapStateToProps = ({ buildingReducer }) => {
     return {
-        selectBuilding: buildingReducer.selectBuilding,
+        selectBuilding: buildingReducer.selectBuilding || {}
     };
 };
-export default connect(mapStateToProps)(EstateFuwuPage);
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        saveBuilding: (item) => { 
+            dispatch(saveSelectBuilding(item));
+        },
+        saveSelectDrawerType: (item) => {
+            dispatch(saveSelectDrawerType(item));
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EstateFuwuPage);

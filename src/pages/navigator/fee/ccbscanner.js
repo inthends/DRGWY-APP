@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View, Animated, Easing } from 'reac
 import BasePage from '../../base/base';
 import { Icon } from '@ant-design/react-native';
 import common from '../../../utils/common';
-import NavigatorService from '../navigator-service';
+import service from '../statistics-service';
 import Macro from '../../../utils/macro';
 import { RNCamera } from 'react-native-camera';
 import UDToast from '../../../utils/UDToast';
@@ -61,7 +61,7 @@ export default class CCBScanScreen extends BasePage {
         }, () => {
             let out_trade_no = common.getValueFromProps(this.props, 'out_trade_no');
             //扫付款码
-            NavigatorService.ccbScanPay(result.data, out_trade_no).then(resp => {
+            service.ccbScanPay(result.data, out_trade_no).then(resp => {
                 if (resp === 'need_query') {
                     this.needQuery(out_trade_no);
                 } else {
@@ -98,7 +98,7 @@ export default class CCBScanScreen extends BasePage {
             count: count - 1
         }, () => {
             if (count > 0) {
-                NavigatorService.ccbScanPayQuery(out_trade_no).then(query => {
+                service.ccbScanPayQuery(out_trade_no).then(query => {
                     if (query === 'SUCCESS') {
                         UDToast.hiddenLoading(this.showLoadingNumber);
                         //callBack(res.out_trade_no);
@@ -118,7 +118,7 @@ export default class CCBScanScreen extends BasePage {
             }
             else {
                 //9次查询完成，接口仍未返回成功标识（既查询接口返回的trade_state不是SUCCESS，则调用撤销接口
-                NavigatorService.ccbScanPayReserve(res.out_trade_no);
+                service.ccbScanPayReserve(res.out_trade_no);
                 setTimeout(() => {
                     UDToast.hiddenLoading(this.showLoadingNumber);
                     this.props.navigation.goBack();

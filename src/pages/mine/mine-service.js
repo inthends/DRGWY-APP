@@ -26,8 +26,7 @@ export default {
     getRepairScore() {
         return api.getData('/api/MobileMethod/MGetRepairScore');
     },
- 
-    //工单积分统计
+  
     getRepairScoreList(pageIndex) {
         let url = '/api/MobileMethod/MGetRepairScorePageList';
         return api.postData(url, {pageIndex, pageSize: 10 });

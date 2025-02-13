@@ -19,7 +19,7 @@ import ScreenUtil from '../../../utils/screen-util';
 // import ListHeader from '../../components/list-header';
 import common from '../../../utils/common';
 //import LoadImage from '../../components/load-image';
-import NavigatorService from '../navigator-service';
+import service from '../statistics-service';
 import CommonView from '../../../components/CommonView';
 //import WorkService from '../work/work-service';
 
@@ -52,7 +52,7 @@ export default class FeeParkingsPage extends BasePage {
             (obj) => {
                 const { building } = this.state;
                 //车位
-                NavigatorService.getParkings(building.id).then(parkings => {
+                service.getParkings(building.id).then(parkings => {
                     this.setState({ parkings });
                 });
             },

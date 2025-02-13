@@ -16,10 +16,14 @@ import common from '../../../utils/common';
 import LoadImage from '../../../components/load-image';
 import ScrollTitle from '../../../components/scroll-title';
 import MyPopover from '../../../components/my-popover';
-import NavigatorService from '../navigator-service';
+import service from '../statistics-service';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
+import { saveSelectBuilding, saveSelectDrawerType } from '../../../utils/store/actions/actions';
+import { DrawerType } from '../../../utils/store/action-types/action-types';
 
+
+//工单列表，统计页面仅查看
 class EstateWeixiuPage extends BasePage {
 
     static navigationOptions = ({ navigation }) => {
@@ -38,7 +42,7 @@ class EstateWeixiuPage extends BasePage {
                 <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
                     <Icon name='bars' style={{ marginRight: 15 }} color="black" />
                 </TouchableWithoutFeedback>
-            ),
+            )
         };
     };
 
@@ -58,7 +62,7 @@ class EstateWeixiuPage extends BasePage {
             refreshing: false,
             billStatus: '',
             time: '全部',
-            selectBuilding: this.props.selectBuilding,
+            selectBuilding: this.props.selectBuilding || {},
             repairArea: ''
         };
     }
@@ -66,7 +70,9 @@ class EstateWeixiuPage extends BasePage {
     componentDidMount() {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
-            (obj) => {
+            (obj) => { 
+                this.props.saveBuilding({});//加载页面清除别的页面选中的数据
+                this.props.saveSelectDrawerType(DrawerType.building);
                 this.onRefresh();
             }
         );
@@ -90,11 +96,11 @@ class EstateWeixiuPage extends BasePage {
         const { type, billStatus, selectBuilding, time, repairArea } = this.state;
         let organizeId;
         if (selectBuilding) {
-            treeType = selectBuilding.type;
+            //treeType = selectBuilding.type;
             organizeId = selectBuilding.key;
         }
 
-        NavigatorService.weixiuList(
+        service.weixiuList(
             this.state.pageIndex,
             type,
             billStatus,
@@ -153,7 +159,7 @@ class EstateWeixiuPage extends BasePage {
                     <Flex align={'start'} direction={'column'}>
                         <Flex justify='between'
                             style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
-                            <Text  style={{ lineHeight: 20 }}>{item.address} {item.contactName}</Text>
+                            <Text style={{ lineHeight: 20 }}>{item.address} {item.contactName}</Text>
                             <TouchableWithoutFeedback onPress={() => common.call(item.contactLink)}>
                                 <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
                                     style={{ width: 16, height: 16 }} /></Flex>
@@ -349,10 +355,22 @@ const styles = StyleSheet.create({
         borderLeftWidth: 5
     }
 });
+
 const mapStateToProps = ({ buildingReducer }) => {
     return {
         selectBuilding: buildingReducer.selectBuilding,
     };
 };
 
-export default connect(mapStateToProps)(EstateWeixiuPage);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        saveBuilding: (item) => {
+            dispatch(saveSelectBuilding(item));
+        },
+        saveSelectDrawerType: (item) => {
+            dispatch(saveSelectDrawerType(item));
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EstateWeixiuPage);

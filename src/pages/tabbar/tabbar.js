@@ -11,7 +11,7 @@ import Macro from '../../utils/macro';
 import BuildingPage from '../building/building';
 import WorkPage from '../work/work';
 import MinePage from '../mine/mine';
-import NavigatorPage from '../navigator/navigator';
+import StatisticsPage from '../navigator/statistics';
 import HomePage from '../home/home';
 import SecondDetailBuildingPage from '../building/second-detail-buinding/second-detail-buinding';
 import ManagerBuildingPage from '../../pages/building/manager-building/manager-building';
@@ -177,7 +177,7 @@ const BuildingNavigator = createStackNavigator(
         title: '项目',
         headerBackTitle: null,
         header: null
-      }),
+      })
     },
     SecondDetail: SecondDetailBuildingPage,
     DetailBuilding: DetailBuildingPage,
@@ -197,7 +197,7 @@ const BuildingNavigator = createStackNavigator(
       const { navigation } = options;
       DeviceEventEmitter.emit('currentNavigation', navigation);
       return {
-        options,
+        options
       };
     }
   }
@@ -207,9 +207,9 @@ BuildingNavigator.navigationOptions = ({ navigation }) => ({
   tabBarVisible: navigation.state.index === 0
 });
 
-const navigatorNavigator = createStackNavigator({
-  Navigator: {
-    screen: NavigatorPage,
+const StatisticsNavigator = createStackNavigator({
+  Statistics: {
+    screen: StatisticsPage,
   },
   FeeStatistic: {
     screen: FeeStatisticPage,
@@ -229,17 +229,16 @@ const navigatorNavigator = createStackNavigator({
   // louDong: LouDong,
   // louCeng: LouCeng,
   // louPark: LouPark,
-  // louDetail: LouDetail, 
-
+  // louDetail: LouDetail,  
   fuwulist: EstateFuwuPage,
   weixiulist: EstateWeixiuPage,
-  //e_tousu: EstateTousuPage,
+  // e_tousu: EstateTousuPage,
   serverDeskView: EfuwuDetailPage,//服务单页面点击关联单据，只能查看
   weixiuD: EweixiuDetailPage, //服务单页面点击关联单据，跳转到维修单，只能查看
   tousuD: EtousuDetailPage, //投诉单详情，只能查看
 });
 
-navigatorNavigator.navigationOptions = ({ navigation }) => ({
+StatisticsNavigator.navigationOptions = ({ navigation }) => ({
   tabBarVisible: navigation.state.index === 0,
 });
 
@@ -267,8 +266,7 @@ const WorkNavigator = createStackNavigator({
   paidan: DispatchDetailPage,
   huifang: VisitDetailPage,
   approve: ApproveDetailPage,
-  rob: RobDetailPage,
-
+  rob: RobDetailPage, 
   //scanonly: ScanOnly,
   //scandemo: ScanSS,
   task: TaskListPage,
@@ -347,8 +345,8 @@ WorkNavigator.navigationOptions = ({ navigation }) => ({
   tabBarVisible: navigation.state.index === 0,
 });
 
-const ShenPiNavigator = createStackNavigator({
-  Shenpi: {
+const FlowNavigator = createStackNavigator({
+  Flow: {
     screen: ApprovePage,//跳转到审批中心
     navigationOptions: () => ({
       title: '审批',
@@ -382,7 +380,7 @@ const ShenPiNavigator = createStackNavigator({
   webPage
 });
 
-ShenPiNavigator.navigationOptions = ({ navigation }) => ({
+FlowNavigator.navigationOptions = ({ navigation }) => ({
   tabBarVisible: navigation.state.index === 0,
 });
 
@@ -391,7 +389,7 @@ const MineNavigator = createStackNavigator({
     screen: MinePage,
     navigationOptions: () => ({
       headerBackTitle: null,
-      header: null,
+      header: null
     }),
   },
   Person: PersonInfoPage,
@@ -424,15 +422,15 @@ const tabbar = createBottomTabNavigator(
         headerBackTitle: null
       })
     },
-    Shenpi: {
-      screen: ShenPiNavigator,
+    Flow: {
+      screen: FlowNavigator,
       navigationOptions: () => ({
         title: '审批',
         headerBackTitle: null
       })
     },
-    Navigator: {
-      screen: navigatorNavigator,
+    Statistics: {
+      screen: StatisticsNavigator,
       navigationOptions: () => ({
         title: '统计',
         headerBackTitle: null
@@ -508,24 +506,19 @@ const tabbar = createBottomTabNavigator(
         tabBarIcon: ({ focused }) => {
           const { routeName } = navigation.state;
           let name;
-          switch (routeName) {
-
+          switch (routeName) { 
             case 'Building':
               name = 'bank';
-              break;
-
+              break; 
             case 'Work':
               name = 'desktop';
-              break;
-
-            case 'Shenpi':
+              break; 
+            case 'Flow':
               name = 'form';
-              break;
-
-            case 'Navigator':
+              break; 
+            case 'Statistics':
               name = 'bar-chart';//统计
-              break;
-
+              break; 
             case 'Mine':
               name = 'user';
               break;
@@ -546,6 +539,8 @@ const tabbar = createBottomTabNavigator(
 );
 
 const { width } = Dimensions.get('window');
+
+//创建左侧机构项目树
 const Drawer = createDrawerNavigator(
   {
     TabBar: {
@@ -561,11 +556,11 @@ const Drawer = createDrawerNavigator(
     drawerLockMode: 'locked-closed',
     useNativeAnimations: true,
     overlayColor: '#000000b3',
-    contentComponent: (props) => {
+
+    contentComponent: (props) => { 
       return <ManagerBuildingPage {...props} />;
     }
   }
 );
-
 export default createAppContainer(Drawer);
 

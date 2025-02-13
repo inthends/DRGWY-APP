@@ -13,8 +13,9 @@ import Macro from '../../utils/macro';
 import BasePage from '../base/base';
 import Service from './service';
 import NoDataView from '../../components/no-data-view';
-import { saveSelectDrawerType } from '../../utils/store/actions/actions';
+import {saveSelectBuilding, saveSelectDrawerType } from '../../utils/store/actions/actions';
 import { DrawerType } from '../../utils/store/action-types/action-types';
+
 
 class ApprovePage extends BasePage {
 
@@ -40,7 +41,7 @@ class ApprovePage extends BasePage {
       //isCompleted: false,
       taskType: 1,//页签类型
       activeSections: [],
-      selectTask: this.props.selectTask || {},
+      selectBuilding: this.props.selectBuilding || {},
       refreshing: false,
       dataInfo: {
         data: [],
@@ -57,30 +58,30 @@ class ApprovePage extends BasePage {
   }
 
   componentDidMount() {
-    this.onRefresh();
     this.viewDidAppear = this.props.navigation.addListener(
       'didFocus',
-      (obj) => {
+      (obj) => { 
+        this.props.saveBuilding({});//加载页面清除别的页面选中的数据
         this.props.saveSelectDrawerType(DrawerType.task);
-      },
-    );
-    this.viewDidDisappear = this.props.navigation.addListener(
-      'didBlur',
-      (obj) => {
-        this.props.saveSelectDrawerType(DrawerType.building);
+        this.onRefresh();
       },
     );
   }
 
-  componentWillReceiveProps(nextProps, nextContext) {
-    const selectTask = this.state.selectTask;
-    const nextSelectTask = nextProps.selectTask;
+
+  componentWillUnmount() {
+    this.viewDidAppear.remove();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const selectBuilding = this.state.selectBuilding;
+    const nextSelectTask = nextProps.selectBuilding;
     if (
-      !(selectTask && nextSelectTask && selectTask.key === nextSelectTask.key)
+      !(selectBuilding && nextSelectTask && selectBuilding.key === nextSelectTask.key)
     ) {
       this.setState(
         {
-          selectTask: nextSelectTask,
+          selectBuilding: nextSelectTask
         },
         () => {
           this.onRefresh();
@@ -103,21 +104,21 @@ class ApprovePage extends BasePage {
   };
 
   getCounts = () => {
-    const { selectTask = {} } = this.props;
+    const { selectBuilding = {} } = this.props;
     Service.getCounts({
-      code: selectTask.value || ''
+      code: selectBuilding.value || ''
     }).then((res) => {
       this.setState({ todo: res.todo, read: res.read, done: res.done });
     });
   };
 
   getList = () => {
-    const { selectTask = {} } = this.props;
+    const { selectBuilding = {} } = this.props;
     Service.getFlowTask({
       taskType: this.state.taskType,
       pageIndex: this.state.pageIndex,
       pageSize: 10,
-      code: selectTask.value || ''
+      code: selectBuilding.value || ''
     }).then((dataInfo) => {
       //分页有问题
       // if (dataInfo.pageIndex > 1) {
@@ -150,7 +151,7 @@ class ApprovePage extends BasePage {
 
   loadMore = () => {
     const { data, total, pageIndex } = this.state.dataInfo;
-    if (this.canLoadMore && data.length < total) { 
+    if (this.canLoadMore && data.length < total) {
       this.canLoadMore = false;
       this.setState(
         {
@@ -161,7 +162,7 @@ class ApprovePage extends BasePage {
           this.getList();
         }
       );
-    } 
+    }
   };
 
   render() {
@@ -451,7 +452,7 @@ class ApprovePage extends BasePage {
           onMomentumScrollBegin={() => this.canLoadMore = true}
           ListEmptyComponent={<NoDataView />}
         />
-         <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
+        <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
 
       </View>
     );
@@ -483,14 +484,13 @@ const styles = StyleSheet.create({
 
   note: {
     borderRadius: 4,
-    // backgroundColor:'yellow',
+    //backgroundColor:'yellow',
     paddingVertical: 4,
     paddingHorizontal: 8,
     borderColor: 'white',
     borderWidth: 1,
     borderStyle: 'solid',
     overflow: 'hidden',
-
     //add new
     color: '#404145',
     fontSize: 16
@@ -499,12 +499,15 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = ({ buildingReducer }) => {
   return {
-    selectTask: buildingReducer.selectTask || {},
+    selectBuilding: buildingReducer.selectBuilding || {}
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
   return {
+    saveBuilding: (item) => {
+      dispatch(saveSelectBuilding(item));
+    },
     saveSelectDrawerType: (item) => {
       dispatch(saveSelectDrawerType(item));
     }

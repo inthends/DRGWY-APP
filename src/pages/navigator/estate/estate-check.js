@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 //import common from '../../../utils/common';
 import ScrollTitle from '../../../components/scroll-title';
 import MyPopover from '../../../components/my-popover';
-import NavigatorService from '../navigator-service';
+import service from '../statistics-service';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 import { DrawerType } from '../../../utils/store/action-types/action-types';
@@ -83,7 +83,7 @@ class EstateCheckPage extends BasePage {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
-                this.props.saveSelectDrawerType(DrawerType.department);
+                this.props.saveSelectDrawerType(DrawerType.organize);
                 this.onRefresh();
             }
         );
@@ -91,7 +91,7 @@ class EstateCheckPage extends BasePage {
         this.viewDidDisappear = this.props.navigation.addListener(
             'didBlur',
             (obj) => {
-                this.props.saveSelectDrawerType(DrawerType.building);
+                this.props.saveSelectDrawerType(DrawerType.organize);
             }
         );
     }
@@ -119,7 +119,7 @@ class EstateCheckPage extends BasePage {
         }
         // let startTime = common.getMonthFirstDay(time);
         // let endTime = common.getMonthLastDay(time);
-        NavigatorService.checkList(
+        service.checkList(
             this.state.pageIndex,
             billStatus,
             billType,
@@ -282,7 +282,7 @@ class EstateCheckPage extends BasePage {
                         type={'primary'}
                         activeStyle={{ backgroundColor: Macro.work_blue }} style={{
                             width: 220,
-                            marginTop:10,
+                            marginTop: 10,
                             marginBottom: 10,
                             backgroundColor: Macro.work_blue,
                             height: 40
@@ -309,7 +309,7 @@ class EstateCheckPage extends BasePage {
                                 <Flex style={{ marginTop: 10 }}>
                                     <Button
                                         type={'primary'}
-                                        onPress={() => {   
+                                        onPress={() => {
                                             if (this.state.checkRole == '') {
                                                 return;
                                             }
@@ -414,7 +414,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = ({ buildingReducer }) => {
     return {
-        selectBuilding: buildingReducer.selectBuilding
+        selectBuilding: buildingReducer.selectBuilding || {}
     };
 };
 
@@ -423,7 +423,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         saveSelectDrawerType: (item) => {
             dispatch(saveSelectDrawerType(item));
-        },
+        }
     };
 };
 

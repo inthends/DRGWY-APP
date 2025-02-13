@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View, Animated, Easing } from 'reac
 import BasePage from '../../base/base';
 import { Icon } from '@ant-design/react-native';
 import common from '../../../utils/common';
-import NavigatorService from '../navigator-service';
+import service from '../statistics-service';
 import Macro from '../../../utils/macro';
 import { RNCamera } from 'react-native-camera';
 import UDToast from '../../../utils/UDToast';
@@ -65,7 +65,7 @@ export default class CIBScanScreen extends BasePage {
             let isDigital = common.getValueFromProps(this.props, 'isDigital');//是否是数字货币
             if (isDigital) {
                 //扫数字货币付款码
-                NavigatorService.bcmMisScanPay(result.data, out_trade_no).then(resp => {
+                service.bcmMisScanPay(result.data, out_trade_no).then(resp => {
                     if (resp === 'need_query') {
                         this.needQueryMis(out_trade_no);
                     } else {
@@ -81,7 +81,7 @@ export default class CIBScanScreen extends BasePage {
 
             } else {
                 //扫人民币付款码
-                NavigatorService.cibScanPay(result.data, out_trade_no).then(resp => {
+                service.cibScanPay(result.data, out_trade_no).then(resp => {
                     if (resp === 'need_query') {
                         this.needQuery(out_trade_no);
                     } else {
@@ -120,7 +120,7 @@ export default class CIBScanScreen extends BasePage {
             count: count - 1,
         }, () => {
             if (count > 0) {
-                NavigatorService.bcmMisScanPayQuery(out_trade_no).then(query => {
+                service.bcmMisScanPayQuery(out_trade_no).then(query => {
                     if (query === 'SUCCESS') {
                         UDToast.hiddenLoading(this.showLoadingNumber);
                         this.props.navigation.goBack();
@@ -150,7 +150,7 @@ export default class CIBScanScreen extends BasePage {
             count: count - 1,
         }, () => {
             if (count > 0) {
-                NavigatorService.cibScanPayQuery(out_trade_no).then(query => {
+                service.cibScanPayQuery(out_trade_no).then(query => {
                     if (query === 'SUCCESS') {
                         UDToast.hiddenLoading(this.showLoadingNumber);
                         //callBack(res.out_trade_no);
@@ -170,7 +170,7 @@ export default class CIBScanScreen extends BasePage {
             }
             else {
                 //6次查询完成，接口仍未返回成功标识（既查询接口返回的trade_state不是SUCCESS）,则调用撤销接口
-                NavigatorService.cibScanPayReserve(res.out_trade_no);
+                service.cibScanPayReserve(res.out_trade_no);
                 setTimeout(() => {
                     UDToast.hiddenLoading(this.showLoadingNumber);
                     this.props.navigation.goBack();

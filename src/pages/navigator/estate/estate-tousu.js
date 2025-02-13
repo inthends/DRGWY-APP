@@ -17,10 +17,11 @@ import common from '../../../utils/common';
 import LoadImage from '../../../components/load-image';
 import ScrollTitle from '../../../components/scroll-title';
 import MyPopover from '../../../components/my-popover';
-import NavigatorService from '../navigator-service';
+import service from '../navigator-service';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
-
+import {saveSelectBuilding, saveSelectDrawerType } from '../../../utils/store/actions/actions';
+import { DrawerType } from '../../../utils/store/action-types/action-types';
 
 class EstateTousuPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -37,7 +38,7 @@ class EstateTousuPage extends BasePage {
                 <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
                     <Icon name='bars' style={{ marginRight: 15 }} color="black" />
                 </TouchableWithoutFeedback>
-            ),
+            )
         };
     };
 
@@ -58,14 +59,16 @@ class EstateTousuPage extends BasePage {
             //canLoadMore: true,
             //time: common.getCurrentYearAndMonth(),
             time: '全部',
-            selectBuilding: this.props.selectBuilding
+            selectBuilding: this.props.selectBuilding || {}
         };
     }
 
     componentDidMount() {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
-            (obj) => {
+            (obj) => { 
+                this.props.saveBuilding({});//加载页面清除别的页面选中的数据
+                this.props.saveSelectDrawerType(DrawerType.building);
                 this.onRefresh();
             }
         );
@@ -75,7 +78,7 @@ class EstateTousuPage extends BasePage {
         this.viewDidAppear.remove();
     }
 
-    componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
+    componentWillReceiveProps(nextProps, nextContext) {
         const selectBuilding = this.state.selectBuilding;
         const nextSelectBuilding = nextProps.selectBuilding;
 
@@ -100,7 +103,7 @@ class EstateTousuPage extends BasePage {
         // let startTime = common.getMonthFirstDay(time);
         // let endTime = common.getMonthLastDay(time);
 
-        NavigatorService.tousuList(this.state.pageIndex, billStatus, treeType, organizeId, '', time).
+        service.tousuList(this.state.pageIndex, billStatus, treeType, organizeId, '', time).
             then(dataInfo => {
                 if (dataInfo.pageIndex > 1) {
                     dataInfo = {
@@ -163,7 +166,7 @@ class EstateTousuPage extends BasePage {
                             </TouchableWithoutFeedback>
                         </Flex>
                         <Text style={{
-                            lineHeight:20,
+                            lineHeight: 20,
                             paddingLeft: 20,
                             paddingRight: 20,
                             paddingBottom: 40,
@@ -252,7 +255,7 @@ class EstateTousuPage extends BasePage {
                         // ListHeaderComponent={}
                         renderItem={this._renderItem}
                         style={styles.list}
-                        keyExtractor={(item, index) => item.id}    
+                        keyExtractor={(item, index) => item.id}
                         //必须
                         onEndReachedThreshold={0.1}
                         refreshing={this.state.refreshing}
@@ -319,15 +322,15 @@ const styles = StyleSheet.create({
         shadowColor: '#00000033',
         shadowOffset: { h: 10, w: 10 },
         shadowRadius: 5,
-        shadowOpacity: 0.8,
+        shadowOpacity: 0.8
     },
     blue: {
         borderLeftColor: Macro.work_blue,
-        borderLeftWidth: 5,
+        borderLeftWidth: 5
     },
     orange: {
         borderLeftColor: Macro.work_orange,
-        borderLeftWidth: 5,
+        borderLeftWidth: 5
     },
 
 });
@@ -336,4 +339,16 @@ const mapStateToProps = ({ buildingReducer }) => {
         selectBuilding: buildingReducer.selectBuilding,
     };
 };
-export default connect(mapStateToProps)(EstateTousuPage);
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        saveBuilding: (item) => {
+            dispatch(saveSelectBuilding(item));
+        },
+        saveSelectDrawerType: (item) => {
+            dispatch(saveSelectDrawerType(item));
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EstateTousuPage);

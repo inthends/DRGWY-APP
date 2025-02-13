@@ -7,11 +7,10 @@ import {
     ScrollView, NativeModules,
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Flex, Icon, WhiteSpace } from '@ant-design/react-native';
-import Macro from '../../../utils/macro';
+import { Flex, Icon  } from '@ant-design/react-native'; 
 import { connect } from 'react-redux';
 import common from '../../../utils/common';
-import NavigatorService from '../navigator-service';
+import service from '../statistics-service';
 import CommonView from '../../../components/CommonView';
 
 class FeeChargeDetail extends BasePage {
@@ -54,7 +53,7 @@ class FeeChargeDetail extends BasePage {
     print = () => {
         const { data } = this.state;
         //补打
-        NavigatorService.rePrintInfo(data.billId).then(res => {
+        service.rePrintInfo(data.billId).then(res => {
             NativeModules.LHNToast.printTicket({
                 ...res,
                 username: res.userName
@@ -64,7 +63,7 @@ class FeeChargeDetail extends BasePage {
 
     componentDidMount() {
         const { data } = this.state;
-        NavigatorService.billDetailList(data.billId).then(res => {
+        service.billDetailList(data.billId).then(res => {
             this.setState({
                 items: res,
             });

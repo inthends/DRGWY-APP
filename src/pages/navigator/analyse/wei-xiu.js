@@ -15,18 +15,20 @@ import { connect } from 'react-redux';
 import ScreenUtil from '../../../utils/screen-util';
 import Echarts from 'native-echarts';
 import DashLine from '../../../components/dash-line';
-import NavigatorService from '../navigator-service';
+import service from '../statistics-service';
 import { Rows, Row, Table } from 'react-native-table-component';
 import MyPopover from '../../../components/my-popover';
 import CommonView from '../../../components/CommonView';
+import { saveSelectBuilding, saveSelectDrawerType } from '../../../utils/store/actions/actions';
+import { DrawerType } from '../../../utils/store/action-types/action-types';
 
 class WeiXiuRatePage extends BasePage {
   static navigationOptions = ({ navigation }) => {
     return {
       tabBarVisible: false,
       title: '维修工单完成率',
-      headerForceInset:this.headerForceInset,
-            headerLeft: (
+      headerForceInset: this.headerForceInset,
+      headerLeft: (
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="left" style={{ width: 30, marginLeft: 15 }} />
         </TouchableOpacity>
@@ -41,9 +43,8 @@ class WeiXiuRatePage extends BasePage {
 
   constructor(props) {
     super(props);
-    this.state = { 
-      //selectBuilding: this.props.selectBuilding || {},
-      selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
+    this.state = {
+      selectBuilding: this.props.selectBuilding || {},
       //statistics: [],
       res: {
         tableData: []
@@ -51,17 +52,27 @@ class WeiXiuRatePage extends BasePage {
     };
   }
 
+
+
   componentDidMount() {
-    NavigatorService.GetDataItemTreeJsonRepairMajor().then((res) => {
-      const titles = (res || []).map((item) => item.title);
-      this.setState({
-        titles: ['全部', ...titles]
-      });
-    });
-    this.getStatustics();
+    this.viewDidAppear = this.props.navigation.addListener(
+      'didFocus',
+      (obj) => {
+        this.props.saveBuilding({});//加载页面清除别的页面选中的数据
+        this.props.saveSelectDrawerType(DrawerType.building);
+
+        service.GetDataItemTreeJsonRepairMajor().then((res) => {
+          const titles = (res || []).map((item) => item.title);
+          this.setState({
+            titles: ['全部', ...titles]
+          });
+        });
+        this.getStatustics();
+      }
+    );
   }
 
-  componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
+  componentWillReceiveProps(nextProps): void {
     const selectBuilding = this.state.selectBuilding;
     const nextSelectBuilding = nextProps.selectBuilding;
     if (
@@ -73,8 +84,8 @@ class WeiXiuRatePage extends BasePage {
     ) {
       this.setState(
         {
-          selectBuilding: nextProps.selectBuilding,
-          estateId: nextProps.selectBuilding.key,
+          selectBuilding: nextSelectBuilding,
+          //estateId: nextProps.selectBuilding.key,
           index: 0
         },
         () => {
@@ -84,8 +95,13 @@ class WeiXiuRatePage extends BasePage {
     }
   }
 
+  componentWillUnmount() {
+    this.viewDidAppear.remove();
+  }
+
+
   // initDataa = () => {
-  //   NavigatorService.getFeeStatistics(
+  //   service.getFeeStatistics(
   //     1,
   //     this.state.selectBuilding.key,
   //     100000,
@@ -98,7 +114,7 @@ class WeiXiuRatePage extends BasePage {
 
   getStatustics = () => {
     const { estateId, type } = this.state;
-    NavigatorService.collectionRate(4, estateId, type,'','').then((res) => {
+    service.collectionRate(4, estateId, type, '', '').then((res) => {
       this.setState({ res });
     });
   };
@@ -177,9 +193,9 @@ class WeiXiuRatePage extends BasePage {
   }
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
   left: {
-    width: ScreenUtil.deviceWidth() / 3.0 - 15, 
+    width: ScreenUtil.deviceWidth() / 3.0 - 15,
     borderStyle: 'solid',
     borderWidth: 1,
     borderColor: '#ccc',
@@ -204,4 +220,16 @@ const mapStateToProps = ({ buildingReducer }) => {
     selectBuilding: buildingReducer.selectBuilding,
   };
 };
-export default connect(mapStateToProps)(WeiXiuRatePage);
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    saveBuilding: (item) => {
+      dispatch(saveSelectBuilding(item));
+    },
+    saveSelectDrawerType: (item) => {
+      dispatch(saveSelectDrawerType(item));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(WeiXiuRatePage);

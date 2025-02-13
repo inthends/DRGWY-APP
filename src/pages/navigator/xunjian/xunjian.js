@@ -57,6 +57,7 @@ class XunJianPage extends BasePage {
         if (this.props.hasNetwork) {
             //判断巡检点位状态
             XunJianService.checkPollingState(pointId).then(res => {
+  
                 if (res == null) {
                     UDToast.showError('点位不存在');
                     return;
@@ -69,6 +70,7 @@ class XunJianPage extends BasePage {
                     UDToast.showError('点位为历史状态，无法巡检');
                     return;
                 }
+
                 this.setState({
                     pointId
                 }, () => {
@@ -95,8 +97,7 @@ class XunJianPage extends BasePage {
                     }
                 });
             });
-        }
-
+        } 
     };
 
     start = () => {

@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View, Animated, Easing } from 'reac
 import BasePage from '../../base/base';
 import { Icon } from '@ant-design/react-native'; 
 import common from '../../../utils/common';
-import NavigatorService from '../navigator-service'; 
+import service from '../statistics-service'; 
 import Macro from '../../../utils/macro';
 import { RNCamera } from 'react-native-camera';
 import UDToast from '../../../utils/UDToast';
@@ -25,8 +25,8 @@ export default class WFTScanScreen extends BasePage {
 
     // onSuccess = (e) => {
     //     let ids = common.getValueFromProps(this.props);
-    //     NavigatorService.createOrder(ids).then(res=>{
-    //         NavigatorService.wftScanPay(e.data, res.out_trade_no).then(res => {
+    //     service.createOrder(ids).then(res=>{
+    //         service.wftScanPay(e.data, res.out_trade_no).then(res => {
     //             this.props.navigation.goBack();
     //         }).catch(()=>{
     //             this.scanner.reactivate();
@@ -85,8 +85,8 @@ export default class WFTScanScreen extends BasePage {
             //let mlScale = common.getValueFromProps(this.props, 'mlScale');
             let out_trade_no = common.getValueFromProps(this.props, 'out_trade_no');
             let callBack = common.getValueFromProps(this.props, 'callBack');
-            //NavigatorService.createOrder(ids, isML, mlType, mlScale).then(res => {
-            NavigatorService.wftScanPay(result.data, out_trade_no).then(resp => {
+            //service.createOrder(ids, isML, mlType, mlScale).then(res => {
+            service.wftScanPay(result.data, out_trade_no).then(resp => {
                 if (resp === 'need_query') {
                     this.needQuery(out_trade_no);
                 }
@@ -128,7 +128,7 @@ export default class WFTScanScreen extends BasePage {
             count: count - 1,
         }, () => {
             if (count > 0) {
-                NavigatorService.wftScanPayQuery(out_trade_no).then(query => {
+                service.wftScanPayQuery(out_trade_no).then(query => {
                     if (query === 'SUCCESS') {
                         UDToast.hiddenLoading(this.showLoadingNumber);
                         callBack(out_trade_no);
@@ -148,7 +148,7 @@ export default class WFTScanScreen extends BasePage {
             }
              else {
                 //支付不成功，冲正
-                NavigatorService.wftScanPayReserve(out_trade_no);
+                service.wftScanPayReserve(out_trade_no);
                 setTimeout(() => {
                     UDToast.hiddenLoading(this.showLoadingNumber);
                     this.props.navigation.goBack();

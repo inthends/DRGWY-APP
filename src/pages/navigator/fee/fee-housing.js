@@ -21,7 +21,7 @@ import { connect } from 'react-redux';
 //import ListHeader from '../../components/list-header';
 //import common from '../../utils/common';
 import LoadImage from '../../../components/load-image';
-import NavigatorService from '../navigator-service';
+import service from '../statistics-service';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 
@@ -63,7 +63,7 @@ class FeeHousePage extends BasePage {
 
 
     getList = () => {
-        NavigatorService.getFeeStatistics(this.state.pageIndex,
+        service.getFeeStatistics(this.state.pageIndex,
             this.state.selectBuilding ? this.state.selectBuilding.key : '').then(dataInfo => {
                 if (dataInfo.pageIndex > 1) {
                     dataInfo = {

@@ -12,8 +12,7 @@ export default {
   workStatistics(time, showLoading) {
     return api.postData('/api/MobileMethod/MGetWorkStatistics', { time }, showLoading);
   },
-
-
+ 
   getFeeStatistics(pageIndex, organizeId, pageSize = 10) {
     return api.postData('/api/MobileMethod/MGetFeeStatistics', {
       pageIndex,
