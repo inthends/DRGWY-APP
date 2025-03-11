@@ -12,7 +12,7 @@ export default {
   workStatistics(time, showLoading) {
     return api.postData('/api/MobileMethod/MGetWorkStatistics', { time }, showLoading);
   },
- 
+
   getFeeStatistics(pageIndex, organizeId, pageSize = 10) {
     return api.postData('/api/MobileMethod/MGetFeeStatistics', {
       pageIndex,
@@ -70,7 +70,7 @@ export default {
       isShow: isShow
     });
   },
- 
+
   checkList(
     pageIndex,
     billStatus,
@@ -248,8 +248,12 @@ export default {
 
 
   //南京银行生成收款码
-  njCodePay(tbout_trade_no) {
-    return api.postData('/api/MobileMethod/NJPay', { tbout_trade_no });
+  njCodePay(tbout_trade_no,isDigital) {
+    return api.postData('/api/MobileMethod/NJPay',
+      {
+        tbout_trade_no,
+        isDigital 
+      });
   },
 
   //南京银行人民币扫码

@@ -6,21 +6,22 @@ import {
     TouchableOpacity,
     StyleSheet,
     Keyboard,
-    Alert
+    Alert,
+    ScrollView
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Icon, Flex, TextareaItem, Button } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
-import LoadImage from '../../../components/load-image';
+// import LoadImage from '../../../components/load-image';
 import LoadImageDelete from '../../../components/load-image-del';
 import SelectImage from '../../../utils/select-image';
 import common from '../../../utils/common';
-import UDRecord from '../../../utils/UDRecord';
-import api from '../../../utils/api';
-import UDPlayer from '../../../utils/UDPlayer';
+// import UDRecord from '../../../utils/UDRecord';
+// import api from '../../../utils/api';
+// import UDPlayer from '../../../utils/UDPlayer';
 import UDToast from '../../../utils/UDToast';
 import GdzcService from './gdzc-service';
-import { AudioRecorder, AudioUtils } from 'react-native-audio';
+// import { AudioRecorder, AudioUtils } from 'react-native-audio';
 import CommonView from '../../../components/CommonView';
 import { connect } from 'react-redux';
 import { saveXunJianAction } from '../../../utils/store/actions/actions';
@@ -48,10 +49,10 @@ class AddRepairPage extends BasePage {
             data: ['报修', '报事', '巡场'],
             images: [''],
             //image: '',
-            recording: false,
+            //recording: false,
             id: common.getGuid(),
-            fileUrl: null,
-            playing: false,
+            //fileUrl: null,
+            //playing: false,
             taskId,
             KeyboardShown: false,
             canSelectAddress: false, //!address,
@@ -75,7 +76,7 @@ class AddRepairPage extends BasePage {
         );
 
         //获取附件是否必填验证 
-        GdzcService.getSetting('isMustServicedeskFile').then(res => { 
+        GdzcService.getSetting('isMustServicedeskFile').then(res => {
             this.setState({ isMustServicedeskFile: res });
         });
     }
@@ -106,65 +107,65 @@ class AddRepairPage extends BasePage {
         }
     }
 
-    startRecord = () => {
-        AudioRecorder.requestAuthorization().then((isAuthorised) => {
-            if (!isAuthorised) {
-                this.setState({ isAuthorised: false });
-            } else {
-                this.setState({ isAuthorised: true });
-            }
-            if (!isAuthorised) {
-                UDToast.showError('录音功能未授权');
-            } else {
-                if (!this.state.recording) {
-                    let audioPath = AudioUtils.DocumentDirectoryPath + '/test.aac';
-                    AudioRecorder.prepareRecordingAtPath(audioPath, {
-                        SampleRate: 22050,
-                        Channels: 1,
-                        AudioQuality: 'Low',
-                        AudioEncoding: 'aac',
-                    });
+    // startRecord = () => {
+    //     AudioRecorder.requestAuthorization().then((isAuthorised) => {
+    //         if (!isAuthorised) {
+    //             this.setState({ isAuthorised: false });
+    //         } else {
+    //             this.setState({ isAuthorised: true });
+    //         }
+    //         if (!isAuthorised) {
+    //             UDToast.showError('录音功能未授权');
+    //         } else {
+    //             if (!this.state.recording) {
+    //                 let audioPath = AudioUtils.DocumentDirectoryPath + '/test.aac';
+    //                 AudioRecorder.prepareRecordingAtPath(audioPath, {
+    //                     SampleRate: 22050,
+    //                     Channels: 1,
+    //                     AudioQuality: 'Low',
+    //                     AudioEncoding: 'aac',
+    //                 });
 
-                    AudioRecorder.onProgress = (data) => {
-                        // this.setState({currentTime: Math.floor(data.currentTime)});
-                    };
+    //                 AudioRecorder.onProgress = (data) => {
+    //                     // this.setState({currentTime: Math.floor(data.currentTime)});
+    //                 };
 
-                    AudioRecorder.onFinished = (data) => {
-                        // Android callback comes in the form of a promise instead. 
-                        // if (common.isIOS()) {
-                        //     resolve(data.audioFileURL);
-                        // } 
-                        api.uploadFile(data.audioFileURL,
-                            this.state.id,
-                            '',
-                            '/api/MobileMethod/MUploadServiceDesk', false).then(url => {
-                                this.setState({ fileUrl: url });
-                            }).catch(error => {
-                            });
-                    };
-                    this.recordId = UDToast.showLoading('正在录音中...');
-                    this.setState({ recording: true }, () => {
-                        UDRecord.startRecord();
-                    });
-                }
-            }
-        });
-    };
+    //                 AudioRecorder.onFinished = (data) => {
+    //                     // Android callback comes in the form of a promise instead. 
+    //                     // if (common.isIOS()) {
+    //                     //     resolve(data.audioFileURL);
+    //                     // } 
+    //                     api.uploadFile(data.audioFileURL,
+    //                         this.state.id,
+    //                         '',
+    //                         '/api/MobileMethod/MUploadServiceDesk', false).then(url => {
+    //                             this.setState({ fileUrl: url });
+    //                         }).catch(error => {
+    //                         });
+    //                 };
+    //                 this.recordId = UDToast.showLoading('正在录音中...');
+    //                 this.setState({ recording: true }, () => {
+    //                     UDRecord.startRecord();
+    //                 });
+    //             }
+    //         }
+    //     });
+    // };
 
-    stopRecord = () => {
-        if (this.state.isAuthorised && this.state.recording) {
-            setTimeout(() => {
-                UDToast.hiddenLoading(this.recordId);
-                this.setState({ recording: false }, () => {
-                    UDRecord.stopRecord();
-                });
-            }, 1000);
-        }
-    };
+    // stopRecord = () => {
+    //     if (this.state.isAuthorised && this.state.recording) {
+    //         setTimeout(() => {
+    //             UDToast.hiddenLoading(this.recordId);
+    //             this.setState({ recording: false }, () => {
+    //                 UDRecord.stopRecord();
+    //             });
+    //         }, 1000);
+    //     }
+    // };
 
-    play = () => {
-        UDPlayer.play(this.state.fileUrl);
-    };
+    // play = () => {
+    //     UDPlayer.play(this.state.fileUrl);
+    // };
 
     selectImages = () => {
         SelectImage.select(this.state.id, '', '/api/MobileMethod/MUploadServiceDesk').then(url => {
@@ -199,9 +200,7 @@ class AddRepairPage extends BasePage {
     }
 
     submit = () => {
-
         const { id, data, index, address, value, taskId, isMustServicedeskFile, images } = this.state;
-
         if (address == null || address.allName == null) {
             const title = '请选择' + data[index] + '地址';
             UDToast.showError(title);
@@ -209,7 +208,7 @@ class AddRepairPage extends BasePage {
         }
 
         if (isMustServicedeskFile == true && images.length == 1) {
-            UDToast.showError('请上传附件');
+            UDToast.showError('请上传图片');
             return;
         }
 
@@ -221,7 +220,7 @@ class AddRepairPage extends BasePage {
         const params = {
             id,
             keyvalue: id,
-            source: '员工APP',
+            //source: '员工APP',
             billType: data[index],
             roomId: address.id,
             address: address.allName,
@@ -245,7 +244,7 @@ class AddRepairPage extends BasePage {
         } else {
             const { taskId } = this.state;
             const { xunJianAction } = this.props;
-            const data = xunJianAction[taskId]; 
+            const data = xunJianAction[taskId];
             if (!data) {
                 UDToast.showSuccess('数据异常，请关闭app重新进入');
             } else {
@@ -267,9 +266,9 @@ class AddRepairPage extends BasePage {
     // }
 
     render() {
-        const { data, index, images, fileUrl, address, canSelectAddress } = this.state;
-        const title = data[index];
-        const title2 = '输入' + title + '内容';
+        const { data, index, images, address, canSelectAddress } = this.state;
+        // const title = data[index];
+        // const title2 = '输入' + title + '内容';
         const width = (ScreenUtil.deviceWidth() - 5 * 20) / 4.0;
         const height = (ScreenUtil.deviceWidth() - 5 * 20) / 4.0;
         return (
@@ -277,7 +276,7 @@ class AddRepairPage extends BasePage {
                 <TouchableWithoutFeedback onPress={() => {
                     Keyboard.dismiss();
                 }}>
-                    <View style={{ marginTop: this.state.KeyboardShown ? -100 : 0, height: '100%' }}>
+                    <View style={{ height: '100%' }}>
                         <Flex direction='column'>
                             <Flex justify='between' style={styles.header}>
                                 {data.map((item, i) => (
@@ -286,9 +285,9 @@ class AddRepairPage extends BasePage {
                                             marginLeft: 5,
                                             marginRight: 5,
                                             backgroundColor: '#0325FD',
-                                            height: 30,
+                                            height: 40,
                                             width: (ScreenUtil.deviceWidth() / 3.0 - 20),
-                                            borderRadius: 4,
+                                            borderRadius: 4
                                         }, index === i && { backgroundColor: '#E67942' }]}>
                                             <Text style={{ color: 'white', fontSize: 14 }}>{item}</Text>
                                         </Flex>
@@ -309,83 +308,81 @@ class AddRepairPage extends BasePage {
                                         paddingBottom: 15,
                                         marginLeft: 15,
                                         marginRight: 15,
-                                        width: ScreenUtil.deviceWidth() - 30,
+                                        width: ScreenUtil.deviceWidth() - 30
                                     }, ScreenUtil.borderBottom()]}>
                                         <Text style={[address && address.allName ? { color: '#404145', fontSize: 16 } : {
                                             color: '#999',
                                             fontSize: 16,
-                                        }]}>{address && address.allName ? address.allName : `请选择${title}地址`}</Text>
-                                        {/* <LoadImage style={{ width: 6, height: 11 }}
-                                            defaultImg={require('../../../static/images/address/right.png')} /> */}
+                                        }]}>{address && address.allName ? address.allName : '请选择地址'}</Text>
                                     </Flex>
                                 </TouchableWithoutFeedback>
                             </Flex>
 
-                            <View style={{ marginLeft: -15 }}>
-                                <TextareaItem
-                                    rows={9}
-                                    placeholder={title2}
-                                    autoHeight
-                                    style={{ paddingTop: 15, width: ScreenUtil.deviceWidth() - 30 }}
-                                    onChange={value => this.setState({ value })}
-                                    value={this.state.value}
-                                    maxLength={500}
-                                />
-                            </View>
-                            <Flex align={'start'} justify={'start'} style={{
-                                paddingTop: 15,
-                                paddingBottom: 15,
-                                width: ScreenUtil.deviceWidth() - 30,
-                            }}>
-                                <TouchableOpacity onPressIn={() => this.startRecord()} onPressOut={() => this.stopRecord()}>
-                                    <LoadImage style={{ width: 20, height: 20 }}
-                                        defaultImg={require('../../../static/images/icon_copy.png')} />
-                                </TouchableOpacity>
-                                {fileUrl && fileUrl.length > 0 ?
-                                    <TouchableOpacity onPress={() => this.play()}>
-                                        <LoadImage style={{ width: 20, height: 20, marginLeft: 10 }}
-                                            defaultImg={require('../../../static/images/icon_s.png')} />
-                                    </TouchableOpacity>
-                                    : null}
-                            </Flex>
+                            <TextareaItem
+                                rows={12}
+                                placeholder='请输入内容'
+                                style={[{
+                                    color: '#404145',
+                                    fontSize: 16,
+                                    paddingTop: 15,
+                                    width: ScreenUtil.deviceWidth() - 30,
+                                    height: ScreenUtil.deviceHeight() - 570
+                                }, ScreenUtil.borderBottom()]}
+                                onChange={value => this.setState({ value })}
+                                value={this.state.value}
+                                maxLength={500}
+                            />
 
-                            <Flex justify={'start'} align={'start'} style={{ width: ScreenUtil.deviceWidth() }}>
-                                <Flex wrap={'wrap'}>
-                                    {images.map((url, index) => {
-                                        return (
-                                            <TouchableWithoutFeedback key={index} onPress={() => {
-                                                if (index === images.length - 1 && url.length === 0) {
-                                                    this.selectImages();
-                                                }
-                                            }}>
-                                                <View style={{
-                                                    paddingLeft: 15,
-                                                    paddingRight: 5,
-                                                    paddingBottom: 10,
-                                                    paddingTop: 10
+                            <ScrollView style={{ maxHeight: 100 }}>
+                                <Flex justify={'start'} align={'start'}
+                                    style={{ width: ScreenUtil.deviceWidth() }}>
+                                    <Flex wrap={'wrap'}>
+                                        {images.map((url, index) => {
+                                            return (
+                                                <TouchableWithoutFeedback key={index} onPress={() => {
+                                                    if (index === images.length - 1 && url.length === 0) {
+                                                        this.selectImages();
+                                                    }
                                                 }}>
-                                                    <LoadImageDelete style={{ width: width, height: height }}
-                                                        defaultImg={require('../../../static/images/add_pic.png')}
-                                                        img={url}
-                                                        top={13}
-                                                        delete={() => this.delete(url)}
-                                                    />
-                                                </View>
-                                            </TouchableWithoutFeedback>
-                                        );
-                                    })}
+                                                    <View style={{
+                                                        paddingLeft: 15,
+                                                        paddingRight: 5,
+                                                        paddingBottom: 10,
+                                                        paddingTop: 10
+                                                    }}>
+                                                        <LoadImageDelete style={{ width: width, height: height }}
+                                                            defaultImg={require('../../../static/images/add_pic.png')}
+                                                            img={url}
+                                                            top={15}
+                                                            delete={() => this.delete(url)}
+                                                        />
+                                                    </View>
+                                                </TouchableWithoutFeedback>
+                                            );
+                                        })}
+                                    </Flex>
                                 </Flex>
-                            </Flex>
+                            </ScrollView>
+
                         </Flex>
+
                         <Flex justify={'center'} align={'start'} style={{
-                            height: 80,
+                            height: 60,
                             backgroundColor: '#eee',
-                            width: 220,
-                            marginTop: 20,
+                            width: '100%',
                             flex: 1,
-                            paddingTop: 40,
+                            paddingTop: 8,
+                            paddingBottom: 10,
+                            marginTop: ScreenUtil.deviceHeight() - 140,
+                            position: 'absolute'
                         }}>
-                            <Button style={{ width: '90%', backgroundColor: Macro.work_blue }} type="primary" onPress={() => this.submit()}>确定</Button>
+                            <Button
+                                style={{
+                                    width: 220,
+                                    backgroundColor: Macro.work_blue
+                                }}
+                                type="primary"
+                                onPress={() => this.submit()}>确定</Button>
                         </Flex>
                     </View>
                 </TouchableWithoutFeedback>
@@ -411,8 +408,8 @@ const mapDispatchToProps = (dispatch) => {
 
 const styles = StyleSheet.create({
     header: {
-        paddingTop: 15,
-        paddingBottom: 15,
+        paddingTop: 10,
+        paddingBottom: 10,
         paddingLeft: 15,
         paddingRight: 15,
         backgroundColor: '#F3F4F2'

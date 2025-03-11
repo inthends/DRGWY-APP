@@ -29,6 +29,9 @@ import com.facebook.soloader.SoLoader;
 
 import java.util.Arrays;
 import java.util.List;
+ 
+
+import com.RNFetchBlob.RNFetchBlobPackage;  
 
 
 public class MainApplication extends Application implements ReactApplication {
@@ -58,7 +61,9 @@ public class MainApplication extends Application implements ReactApplication {
                     new AsyncStoragePackage(),
                     new RNGestureHandlerPackage(),
                     new ReanimatedPackage(),
-                    new CustomLHNToastPackage()
+                    new CustomLHNToastPackage(),
+
+                    new RNFetchBlobPackage()       
             );
         }
 

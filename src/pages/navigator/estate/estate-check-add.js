@@ -11,7 +11,8 @@ import {
     TextInput,
     Modal,
     Keyboard,
-    Alert
+    Alert,
+    Platform
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Button, Flex, Icon } from '@ant-design/react-native';
@@ -30,6 +31,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import MyPopoverRole from '../../../components/my-popover-role';
 import ActionPopover from '../../../components/action-popover';
 import MyPopoverRight from '../../../components/my-popover-right';
+import RNFetchBlob from 'rn-fetch-blob'; 
 
 class EcheckAddPage extends BasePage {
 
@@ -437,6 +439,56 @@ class EcheckAddPage extends BasePage {
         });
     };
 
+savePhoto = (uri) => { 
+        try {
+            if (Platform.OS == 'android') { //远程文件需要先下载 
+                // 下载网络图片到本地
+                // const response = await RNFetchBlob.config({
+                //     fileCache: true,
+                //     appendExt: 'png', // 可以根据需要更改文件扩展名
+                // }).fetch('GET', uri);
+                // const imagePath = response.path();
+                // // 将本地图片保存到相册
+                // const result = await CameraRoll.saveToCameraRoll(imagePath);
+                // if (result) {
+                //     UDToast.showInfo('已保存到相册'); 
+                // } else {
+                //     UDToast.showInfo('保存失败');
+                // }
+
+                //上面方法一样可以
+
+                RNFetchBlob.config({
+                    // 接收类型，这里是必须的，否则Android会报错
+                    fileCache: true,
+                    appendExt: 'png' // 给文件添加扩展名，Android需要这个来识别文件类型
+                })
+                    .fetch('GET', uri) // 使用GET请求下载图片
+                    .then((res) => {
+                        // 下载完成后的操作，例如保存到本地文件系统
+                        // return RNFetchBlob.fs.writeFile(path, res.data, 'base64'); // 将数据写入文件系统
+                        CameraRoll.saveToCameraRoll(res.data);
+                    })
+                    // .then(() => {
+                    //     //console.log('Image saved to docs://image.png'); // 或者使用你的路径
+                    //     // 在这里你可以做其他事情，比如显示一个提示或者加载图片等 
+                    // })
+                    .catch((err) => { 
+                    });
+
+            }
+            else {
+                //ios
+                let promise = CameraRoll.saveToCameraRoll(uri);
+                promise.then(function (result) { 
+                }).catch(function (err) { 
+                });
+            }
+
+        } catch (error) { 
+        }
+    }
+
     render() {
         const { detail, dataInfo, address, checkTypes,
             selectPerson, repairmajor, roles, checkRoleId,
@@ -494,8 +546,7 @@ class EcheckAddPage extends BasePage {
                                 <LoadImage style={{ width: 6, height: 12 }} defaultImg={require('../../../static/images/address/right.png')} />
                             </Flex>
                         </TouchableWithoutFeedback>
-                    </Flex>
-
+                    </Flex> 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <TextInput
                             maxLength={500}
@@ -714,7 +765,10 @@ class EcheckAddPage extends BasePage {
 
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
-                        imageUrls={this.state.images} />
+                        imageUrls={this.state.images} 
+                        menuContext={{ "saveToLocal": "保存到相册", "cancel": "取消" }}
+                        onSave={(url) => this.savePhoto(url)}
+                        />
                 </Modal>
 
             </CommonView>

@@ -45,6 +45,6 @@ export default {
     
     //获取必填项
     getSetting(type) {
-        return api.getData('/api/MobileMethod/GetSetting', { type });
+        return api.getData('/api/SysSetting/GetSetting', { type });
     }
 };

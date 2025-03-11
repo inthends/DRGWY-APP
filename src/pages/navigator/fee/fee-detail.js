@@ -476,7 +476,7 @@ class FeeDetailPage extends BasePage {
                                     //     },
                                     // );
                                     //生成收款码接口 2024年4月17日
-                                    service.njCodePay(res.out_trade_no).then(code => {
+                                    service.njCodePay(res.out_trade_no, isDigital).then(code => {
                                         this.setState({
                                             visible: true,
                                             cancel: false,

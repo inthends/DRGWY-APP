@@ -116,7 +116,7 @@ class AssetsPage extends BasePage {
 
     callBack = (pointId) => {
         this.setState({
-            pointId,
+            pointId
         }, () => {
             this.props.navigation.navigate('gdzcPandian', {
                 data: {
@@ -127,6 +127,14 @@ class AssetsPage extends BasePage {
     };
 
     start = () => {
+
+        //test
+        // this.props.navigation.navigate('gdzcPandian', {
+        //     data: {
+        //         assetsId: '31e9ee06-8105-4fdd-8925-410226900f09'
+        //     }
+        // });
+
         this.props.navigation.push('scanonly', {
             data: {
                 callBack: this.callBack,

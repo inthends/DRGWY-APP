@@ -8,7 +8,6 @@ import LoadImage from '../../../components/load-image';
 import CommonView from '../../../components/CommonView';
 import { connect } from 'react-redux';
 import XunJianService from './xunjian-service';
-import a from '@ant-design/react-native/lib/modal/alert';
 // import memberReducer from '../../../utils/store/reducers/member-reducer'; 
 // import xunJianReducer from '../../../utils/store/reducers/xunjian-reducer';
 // import ImagePicker from 'react-native-image-picker';
@@ -57,7 +56,7 @@ class XunJianPage extends BasePage {
         if (this.props.hasNetwork) {
             //判断巡检点位状态
             XunJianService.checkPollingState(pointId).then(res => {
-  
+
                 if (res == null) {
                     UDToast.showError('点位不存在');
                     return;
@@ -97,7 +96,7 @@ class XunJianPage extends BasePage {
                     }
                 });
             });
-        } 
+        }
     };
 
     start = () => {

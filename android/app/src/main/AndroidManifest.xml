@@ -22,6 +22,9 @@
     <!--    android:networkSecurityConfig="@xml/network_security_config"-->
 
     <application
+
+            tools:replace="android:label"
+
             android:name=".MainApplication"
             android:label="${app_name}"
             android:icon="@mipmap/ic_launcher"

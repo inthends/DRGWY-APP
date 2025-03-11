@@ -11,11 +11,11 @@ import SelectImage from '../../../utils/select-image'
 import common from '../../../utils/common';
 //import gdzcReducer from '../../../utils/store/reducers/gdzc-reducer';
 import gdzcAction from '../../../utils/store/actions/actions'
-import { connect } from 'react-redux'; 
+import { connect } from 'react-redux';
 let screen_width = ScreenUtil.deviceWidth()
 
 class GdzcPandianPage extends BasePage {
-    static navigationOptions = ({ navigation }) => { 
+    static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
             title: '固定资产盘点',
@@ -24,7 +24,7 @@ class GdzcPandianPage extends BasePage {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
-            ),
+            )
         };
     };
 
@@ -35,7 +35,7 @@ class GdzcPandianPage extends BasePage {
             data: {},
             tfStr: '',
             images: [{ icon: '' }]
-        }; 
+        };
     }
 
     componentDidMount() {
@@ -51,7 +51,7 @@ class GdzcPandianPage extends BasePage {
     }
 
     selectImages = () => {
-        SelectImage.select(this.state.assetsId,'', '/api/MobileMethod/MUploadAssetsCheck', this.props.hasNetwork).then(res => {
+        SelectImage.select(this.state.assetsId, '', '/api/MobileMethod/MUploadAssetsCheck', this.props.hasNetwork).then(res => {
             let images = [...this.state.images];
             images.splice(images.length - 1, 0, { 'icon': res });
             if (images.length > 10) {
@@ -68,10 +68,9 @@ class GdzcPandianPage extends BasePage {
     };
 
     //异常
-    fail = () => {
-        //this.submit(0);
+    fail = () => { 
         const { data } = this.state;
-        var value = data.name + '，' + data.code + '，' + data.brand + '，' + data.modelNo;
+        var value = data.name + '，' + data.code + '，' + data.brand + '，' + (data.modelNo ? data.modelNo : '');
         var selectItem = { id: data.pStructId, allName: data.address };
         this.props.navigation.navigate('addRepair', { data: { address: selectItem, value: value } });//传参到维修单页面
     };
@@ -146,14 +145,17 @@ class GdzcPandianPage extends BasePage {
                         onChangeText={(txt) => {
                             this.setState({ tfStr: txt })
                         }}
-                        style={{ fontSize: 16, borderColor: '#eee', borderRadius: 5, borderWidth: 1, height: 40, width: screen_width - 30, marginVertical: 10 }} placeholder={'输入说明'} />
+                        style={{
+                            fontSize: 16, borderColor: '#eee', borderRadius: 5, borderWidth: 1,
+                            height: 40, width: screen_width - 30, marginVertical: 10
+                        }} placeholder='请输入' />
                 </Flex>
             </Flex>
         );
     }
 
-    render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
-        const {  images } = this.state;
+    render() {//: React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
+        const { images } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
                 <Text style={styles.title}>基本资料</Text>
@@ -197,7 +199,7 @@ class GdzcPandianPage extends BasePage {
                             </Flex>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={this.fail}>
-                            <Flex justify={'center'} style={[styles.ii]}>
+                            <Flex justify={'center'} style={[styles.ii, { backgroundColor: Macro.work_red }]}>
                                 <Text style={styles.word}>异常</Text>
                             </Flex>
                         </TouchableWithoutFeedback>
@@ -243,7 +245,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#E0E0E0',
         height: 1,
         marginVertical: 15
-    }, 
+    },
     word: {
         color: 'white',
         fontSize: 16,

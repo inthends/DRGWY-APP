@@ -7,6 +7,7 @@ import {
     StyleSheet,
     ScrollView,
     Modal,
+    Platform,
     Keyboard
 } from 'react-native';
 import BasePage from '../../base/base';
@@ -22,6 +23,7 @@ import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import RNFetchBlob from 'rn-fetch-blob'; 
 
 export default class StartDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -162,26 +164,25 @@ export default class StartDetailPage extends BasePage {
                     UDToast.showError(res.msg);
                     return;
                 }
-                else {
-                    // if (handle === '回复' && !(value&&value.length > 0)) {
-                    if (!(value && value.length > 0)) {
-                        UDToast.showError('请输入故障判断');
-                        return;
-                    }
-                    //const kgimages = images.filter(t => t.type === '开工');
-                    if (images.length == 0 && !isUpload && isMustStartFile == true) {
-                        UDToast.showError('请上传开工图片');
-                        return;
-                    }
 
-                    let personIds = selectPersons.map(item => item.id);
-                    let reinforceId = personIds && personIds.length > 0 ? JSON.stringify(personIds) : '';
-
-                    WorkService.startRepair(id, value, reinforceId).then(res => {
-                        UDToast.showInfo('操作成功');
-                        this.props.navigation.goBack();
-                    });
+                // if (handle === '回复' && !(value&&value.length > 0)) {
+                if (!(value && value.length > 0)) {
+                    UDToast.showError('请输入故障判断');
+                    return;
                 }
+                //const kgimages = images.filter(t => t.type === '开工');
+                if (images.length == 0 && !isUpload && isMustStartFile == true) {
+                    UDToast.showError('请上传开工图片');
+                    return;
+                }
+
+                let personIds = selectPersons.map(item => item.id);
+                let reinforceId = personIds && personIds.length > 0 ? JSON.stringify(personIds) : ''; 
+                WorkService.startRepair(id, value, reinforceId).then(res => {
+                    UDToast.showInfo('操作成功');
+                    this.props.navigation.goBack();
+                });
+
             });
 
         });
@@ -217,6 +218,56 @@ export default class StartDetailPage extends BasePage {
             visible: false
         });
     };
+
+    savePhoto = (uri) => { 
+        try {
+            if (Platform.OS == 'android') { //远程文件需要先下载 
+                // 下载网络图片到本地
+                // const response = await RNFetchBlob.config({
+                //     fileCache: true,
+                //     appendExt: 'png', // 可以根据需要更改文件扩展名
+                // }).fetch('GET', uri);
+                // const imagePath = response.path();
+                // // 将本地图片保存到相册
+                // const result = await CameraRoll.saveToCameraRoll(imagePath);
+                // if (result) {
+                //     UDToast.showInfo('已保存到相册'); 
+                // } else {
+                //     UDToast.showInfo('保存失败');
+                // }
+
+                //上面方法一样可以
+
+                RNFetchBlob.config({
+                    // 接收类型，这里是必须的，否则Android会报错
+                    fileCache: true,
+                    appendExt: 'png' // 给文件添加扩展名，Android需要这个来识别文件类型
+                })
+                    .fetch('GET', uri) // 使用GET请求下载图片
+                    .then((res) => {
+                        // 下载完成后的操作，例如保存到本地文件系统
+                        // return RNFetchBlob.fs.writeFile(path, res.data, 'base64'); // 将数据写入文件系统
+                        CameraRoll.saveToCameraRoll(res.data);
+                    })
+                    // .then(() => {
+                    //     //console.log('Image saved to docs://image.png'); // 或者使用你的路径
+                    //     // 在这里你可以做其他事情，比如显示一个提示或者加载图片等 
+                    // })
+                    .catch((err) => { 
+                    });
+
+            }
+            else {
+                //ios
+                let promise = CameraRoll.saveToCameraRoll(uri);
+                promise.then(function (result) { 
+                }).catch(function (err) { 
+                });
+            }
+
+        } catch (error) { 
+        }
+    }
 
     // lookImage = (lookImageIndex) => {
     //     this.setState({
@@ -465,7 +516,10 @@ export default class StartDetailPage extends BasePage {
                         index={this.state.lookImageIndex}
                         onCancel={this.cancel}
                         onClick={this.cancel}
-                        imageUrls={this.state.selectimages} />
+                        imageUrls={this.state.selectimages} 
+                        menuContext={{ "saveToLocal": "保存到相册", "cancel": "取消" }}
+                        onSave={(url) => this.savePhoto(url)}
+                        />
                 </Modal>
             </CommonView>
         );

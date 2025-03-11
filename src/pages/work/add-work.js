@@ -384,7 +384,7 @@ class AddWorkPage extends BasePage {
                                     fontSize: 16,
                                     paddingTop: 15,
                                     width: ScreenUtil.deviceWidth() - 30,
-                                    height: isAutoSend ? ScreenUtil.deviceHeight() - 420 : ScreenUtil.deviceHeight() - 370,
+                                    height: isAutoSend ? ScreenUtil.deviceHeight() - 620 : ScreenUtil.deviceHeight() - 570
                                 }, ScreenUtil.borderBottom()]}
                                 onChange={value => this.setState({ value })}
                                 value={this.state.value}
@@ -408,7 +408,7 @@ class AddWorkPage extends BasePage {
                                     : null}
                             </Flex> */}
 
-                            <ScrollView style={{ maxHeight: 100 }}>
+                            <ScrollView style={{ maxHeight: 100  }}>
                                 <Flex justify={'start'} align={'start'}
                                     style={{
                                         width: ScreenUtil.deviceWidth()
@@ -440,6 +440,7 @@ class AddWorkPage extends BasePage {
                                     </Flex>
                                 </Flex>
                             </ScrollView>
+                            
                         </Flex>
 
                         <Flex justify={'center'} align={'start'} style={{
@@ -462,6 +463,7 @@ class AddWorkPage extends BasePage {
                         </Flex>
 
                     </View>
+
                 </TouchableWithoutFeedback>
             </CommonView>
         );

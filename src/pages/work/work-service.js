@@ -32,6 +32,16 @@ export default {
         });
     },
 
+    approveCheck(
+        billId,
+        mainMemo) {
+        return api.postData('/api/MobileMethod/MApproveeCheck', {
+            billId,
+            mainMemo
+        });
+    },
+
+    
     addCheckDetail(
         billId,
         checkRole,
