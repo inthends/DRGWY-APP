@@ -23,7 +23,7 @@ import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import RNFetchBlob from 'rn-fetch-blob'; 
+import RNFetchBlob from 'rn-fetch-blob';
 
 export default class StartDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -56,7 +56,8 @@ export default class StartDetailPage extends BasePage {
             showClose: false,
             KeyboardShown: false,
             selectPersons: [],
-            isMustStartFile: false
+            isMustStartFile: false,
+            isMustJudgement: false
         };
         this.keyboardDidShowListener = null;
         this.keyboardDidHideListener = null;
@@ -66,6 +67,11 @@ export default class StartDetailPage extends BasePage {
         this.getData();
         WorkService.getSetting('isMustStartFile').then(res => {
             this.setState({ isMustStartFile: res });
+        });
+
+        //故障判断是否必填
+        WorkService.getSetting('isMustJudgement').then(res => {
+            this.setState({ isMustJudgement: res });
         });
     }
 
@@ -150,7 +156,7 @@ export default class StartDetailPage extends BasePage {
     };
 
     click = () => {
-        const { id, isUpload, images, value, isMustStartFile, selectPersons } = this.state;
+        const { id, isUpload, images, value, isMustStartFile, isMustJudgement, selectPersons } = this.state;
 
         WorkService.checkStartWork(id).then(res => {
             if (res == true) {
@@ -166,10 +172,11 @@ export default class StartDetailPage extends BasePage {
                 }
 
                 // if (handle === '回复' && !(value&&value.length > 0)) {
-                if (!(value && value.length > 0)) {
+                if (!(value && value.length > 0)  && isMustStartFile == true ) {
                     UDToast.showError('请输入故障判断');
                     return;
                 }
+ 
                 //const kgimages = images.filter(t => t.type === '开工');
                 if (images.length == 0 && !isUpload && isMustStartFile == true) {
                     UDToast.showError('请上传开工图片');
@@ -177,7 +184,7 @@ export default class StartDetailPage extends BasePage {
                 }
 
                 let personIds = selectPersons.map(item => item.id);
-                let reinforceId = personIds && personIds.length > 0 ? JSON.stringify(personIds) : ''; 
+                let reinforceId = personIds && personIds.length > 0 ? JSON.stringify(personIds) : '';
                 WorkService.startRepair(id, value, reinforceId).then(res => {
                     UDToast.showInfo('操作成功');
                     this.props.navigation.goBack();
@@ -219,7 +226,7 @@ export default class StartDetailPage extends BasePage {
         });
     };
 
-    savePhoto = (uri) => { 
+    savePhoto = (uri) => {
         try {
             if (Platform.OS == 'android') { //远程文件需要先下载 
                 // 下载网络图片到本地
@@ -253,19 +260,19 @@ export default class StartDetailPage extends BasePage {
                     //     //console.log('Image saved to docs://image.png'); // 或者使用你的路径
                     //     // 在这里你可以做其他事情，比如显示一个提示或者加载图片等 
                     // })
-                    .catch((err) => { 
+                    .catch((err) => {
                     });
 
             }
             else {
                 //ios
                 let promise = CameraRoll.saveToCameraRoll(uri);
-                promise.then(function (result) { 
-                }).catch(function (err) { 
+                promise.then(function (result) {
+                }).catch(function (err) {
                 });
             }
 
-        } catch (error) { 
+        } catch (error) {
         }
     }
 
@@ -516,10 +523,10 @@ export default class StartDetailPage extends BasePage {
                         index={this.state.lookImageIndex}
                         onCancel={this.cancel}
                         onClick={this.cancel}
-                        imageUrls={this.state.selectimages} 
+                        imageUrls={this.state.selectimages}
                         menuContext={{ "saveToLocal": "保存到相册", "cancel": "取消" }}
                         onSave={(url) => this.savePhoto(url)}
-                        />
+                    />
                 </Modal>
             </CommonView>
         );

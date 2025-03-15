@@ -1,25 +1,25 @@
-import React  from 'react';
+import React from 'react';
 import {
     View,
     Text,
     StyleSheet,
     TouchableOpacity,
-    TouchableWithoutFeedback, 
+    TouchableWithoutFeedback,
     Keyboard
 
 } from 'react-native';
 import BasePage from '../../base/base';
-import {  Flex, Icon,  SearchBar } from '@ant-design/react-native';
+import { Flex, Icon, SearchBar } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
-import ScreenUtil from '../../../utils/screen-util';
+// import ScreenUtil from '../../../utils/screen-util';
 import { connect } from 'react-redux';
-import common from '../../../utils/common'; 
+import common from '../../../utils/common';
 import CommonView from '../../../components/CommonView';
 import api from '../../../utils/api';
 
 
 class SheBeiList extends BasePage {
-    static navigationOptions = ({ navigation }) => { 
+    static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
             title: '设备资料',
@@ -40,11 +40,11 @@ class SheBeiList extends BasePage {
     constructor(props) {
         super(props);
         this.selectBuilding = {
-            key: null,
+            key: null
         };
 
-        this.state = { 
-            pageIndex: 1, 
+        this.state = {
+            pageIndex: 1,
             dataInfo: {
                 data: [],
             },
@@ -59,15 +59,13 @@ class SheBeiList extends BasePage {
 
     }
 
-    componentDidMount() {
-
+    componentDidMount() { 
         this.onRefresh();
     }
-
-
+ 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
-        const nextSelectBuilding = nextProps.selectBuilding; 
+        const nextSelectBuilding = nextProps.selectBuilding;
 
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
             this.setState({ selectBuilding: nextProps.selectBuilding }, () => {
@@ -75,8 +73,7 @@ class SheBeiList extends BasePage {
             });
         }
     }
-
-
+ 
     getList = () => {
         const { text } = this.state;//没有分页
         let params = { keyword: text };
@@ -86,9 +83,8 @@ class SheBeiList extends BasePage {
                 organizeId: this.state.selectBuilding.key
             }
         }
-
         api.getData('/api/MobileMethod/MGetDeviceList', params).then(res => {
-            this.setState({ data: res  });
+            this.setState({ data: res });
         })
 
     };
@@ -97,13 +93,13 @@ class SheBeiList extends BasePage {
         this.setState({
             refreshing: true,
             pageIndex: 1
-        }, () => { 
+        }, () => {
             this.getList();
         });
     };
 
     loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo; 
+        const { data, total, pageIndex } = this.state.dataInfo;
         // if (!this.state.canLoadMore) {
         //     return;
         // }
@@ -136,21 +132,24 @@ class SheBeiList extends BasePage {
         Keyboard.dismiss();
         this.onRefresh();
     };
- 
+
     render() {
         const { data = [] } = this.state;
-        return ( 
+        return (
             <View style={{ flex: 1 }}>
                 <CommonView style={{ flex: 1 }}> 
-                    <SearchBar cancelText='搜索'
-                        showCancelButton={true} onCancel={this.search}
-                        value={this.state.text} onChange={text => this.setState({ text })}
-                        onSubmit={this.search} /> 
+                    <SearchBar
+                        placeholder="请输入"
+                        showCancelButton
+                        value={this.state.text}
+                        onChange={text => { this.setState({ text }); this.search(); }}
+                        onCancel={() => { this.setState({ text: '' }); this.search(); }}
+                    />
                     {
                         data.map((item, index) => {
                             return this._renderItem({ item, index })
                         })
-                    } 
+                    }
                 </CommonView>
             </View>
 
@@ -159,7 +158,7 @@ class SheBeiList extends BasePage {
 }
 
 const styles = StyleSheet.create({
-   
+
     list: {
         backgroundColor: Macro.color_white,
         margin: 15,
@@ -169,9 +168,9 @@ const styles = StyleSheet.create({
         // textAlign: 'left',
         color: '#404145',
         fontSize: 16,
-        paddingBottom: 10, 
+        paddingBottom: 10,
         marginLeft: 20,
-        marginRight: 20,  
+        marginRight: 20,
     },
     title2: {
         paddingTop: 15,

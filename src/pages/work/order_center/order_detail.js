@@ -55,8 +55,7 @@ export default class OrderDetailPage extends BasePage {
     modifyDate: "2023-04-15 06:51:14"
     modifyUserId: "bed2b997-3c4b-42e6-8fb3-a9ae144dc3f4"
     modifyUserName: "kj"
-    otherId: null
-    
+    otherId: null 
     billCode, billDate, createUserName, status, allName 
     */
     getOrderDetail = () => {

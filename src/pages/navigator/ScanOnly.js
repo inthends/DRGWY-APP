@@ -39,7 +39,7 @@ export default class ScanOnly extends BasePage {
         this.startAnimation();
         //test
         // setTimeout(() => {
-        //     this.onBarCodeRead({ data: 'GQ-YY-02018' })
+        //     this.onBarCodeRead({ data: 'f94af7b8-0d7c-40e0-be3c-5183f3390bd0' })
         // }, 1000);
     }
 

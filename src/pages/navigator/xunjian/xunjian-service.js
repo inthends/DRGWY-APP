@@ -72,5 +72,4 @@ export default {
     deletePollingFile(url) {
         return api.getData('/api/MobileMethod/MDeletePollingFile', { url });
     }
-
 };

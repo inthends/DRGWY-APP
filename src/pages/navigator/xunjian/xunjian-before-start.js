@@ -8,7 +8,7 @@ import CommonView from '../../../components/CommonView';
 import XunJianService from './xunjian-service';
 import common from '../../../utils/common';
 import { connect } from 'react-redux';
-//import UDToast from '../../../utils/UDToast';
+import UDToast from '../../../utils/UDToast';
 
 class XunjianBeforeStart extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -42,11 +42,10 @@ class XunjianBeforeStart extends BasePage {
     onRefresh = () => {
         const { pointId } = this.state;//点位 
         if (this.props.hasNetwork) {
-            
             //this.initUI();
             XunJianService.xunjianPointTasks(pointId).then(items => {
                 if (items.length == 0) {
-                    //UDToast.showError('当前点位没有任务');
+                    UDToast.showError('当前点位没有任务');
                     //该点位没有待完成的巡检任务，跳转到上一个页面
                     this.props.navigation.goBack();
                 }
@@ -54,7 +53,6 @@ class XunjianBeforeStart extends BasePage {
             });
         }
         else {
-
             //const items = this.props.xunJianData.scanLists.filter(item => item.pointId === pointId);
             const { xunJianData, xunJianAction } = this.props;
             //过滤已经完成的，任务id存在巡检结果里面的数据属于完成的 
@@ -69,7 +67,6 @@ class XunjianBeforeStart extends BasePage {
                 );
                 this.setState({ items });
             }
-
         }
     };
 
@@ -98,17 +95,28 @@ class XunjianBeforeStart extends BasePage {
                     <Flex direction={'column'} style={{ padding: 15, paddingTop: 30 }}>
                         {items.map(item => (
                             <TouchableWithoutFeedback key={item.id}
-                                onPress={() => this.props.navigation.push('startxunjian', {
-                                    data: {
-                                        id: item.id,
-                                        person,
-                                        pointId,
-                                        item
+                                onPress={() => {
+
+                                    if (item.status == 0) {
+                                        this.props.navigation.push('startxunjian', {
+                                            data: {
+                                                id: item.id,
+                                                person,
+                                                pointId,
+                                                item
+                                            }
+                                        });
                                     }
-                                })}>
-                                <Flex direction='column' align={'start'}
-                                    style={[styles.card, { borderLeftColor: Macro.work_blue, borderLeftWidth: 5 }]}>
-                                    <Text style={styles.title}>{item.pName}</Text>
+                                    else {
+                                        //查看
+                                        this.props.navigation.push('xunjianDetail', { id: item.id });
+                                    }
+                                }}>
+                                <Flex direction='column' align={'start'} style={[styles.card, { borderLeftColor: Macro.work_blue, borderLeftWidth: 5 }]}>
+                                    <Flex justify='between' style={{ width: '100%' }}>
+                                        <Text style={styles.title}>{item.pName}</Text>
+                                        <Text style={styles.title}>{item.statusName}</Text>
+                                    </Flex>
                                     <Flex style={styles.line} />
                                     <Flex>
                                         <Flex style={{ width: '100%' }}>
@@ -120,7 +128,7 @@ class XunjianBeforeStart extends BasePage {
                         ))}
                     </Flex>
                 </ScrollView>
-            </CommonView>
+            </CommonView >
         );
     }
 }

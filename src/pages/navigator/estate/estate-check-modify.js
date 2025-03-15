@@ -31,9 +31,9 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import MyPopoverRole from '../../../components/my-popover-role';
 import ActionPopover from '../../../components/action-popover';
 import MyPopoverRight from '../../../components/my-popover-right';
-import RNFetchBlob from 'rn-fetch-blob'; 
+import RNFetchBlob from 'rn-fetch-blob';
 
-class EcheckAddPage extends BasePage {
+class EcheckModifyPage extends BasePage {
 
     static navigationOptions = ({ navigation }) => {
         return {
@@ -49,11 +49,7 @@ class EcheckAddPage extends BasePage {
 
     constructor(props) {
         super(props);
-        const {
-            id,
-            checkRole,
-            checkRoleId
-        } = common.getValueFromProps(this.props) || {};
+        const { id, checkRole, checkRoleId } = common.getValueFromProps(this.props) || {};
         this.state = {
             id,
             detailId: '',
@@ -126,8 +122,9 @@ class EcheckAddPage extends BasePage {
             'didFocus',
             (obj) => {
                 if (obj.state.params) {
-                    const { address } = obj.state.params.data || {};
-                    this.setState({ address });
+                    const { address } = obj.state.params.data;// || {};
+                    if (address)
+                        this.setState({ address });
                 }
 
                 if (obj.state.params.repairmajor) {
@@ -164,8 +161,17 @@ class EcheckAddPage extends BasePage {
     getData = () => {
         const { id } = this.state;
         WorkService.checkDetail(id).then(detail => {
+            var address = null;
+            if (detail.unitId != '') {
+                //存在明细
+                address = { id: detail.unitId, allName: detail.allName, organizeId: detail.organizeId };
+            }
+
             this.setState({
-                detail
+                detail,
+                checkRole: detail.checkRole,//检查的角色
+                checkRoleId: detail.checkRoleId,
+                address
                 // detail: {
                 //     ...item.data,
                 //     statusName: item.statusName
@@ -261,13 +267,16 @@ class EcheckAddPage extends BasePage {
                             if (title === '删除') {
                                 this.deleteDetail(item.id);
                             } else if (title === '修改') {
-                                let myimages = [...this.state.images];
-                                myimages.splice(myimages.length - 1, 0);
+                                let thisImages = item.images.map(item => item.url);
+                                //获取附件
+                                //let myimages = [...this.state.images];
+                                //thisImages.splice(thisImages.length - 1, 0);
+                                thisImages.push('');//保留一个默认添加的按钮
                                 this.setState({
                                     showAdd: true,
                                     operateType: 'modify',
                                     id: item.mainId,
-                                    images: myimages,
+                                    images: thisImages,
                                     detailId: item.id,
                                     address: { id: item.unitId, allName: item.allName, organizeId: item.organizeId },//设置默认值
                                     selectPerson: { id: item.dutyUserId, name: item.dutyUserName },
@@ -301,8 +310,7 @@ class EcheckAddPage extends BasePage {
                     }}>整改要求：{item.rectification}</Text>
 
                 </Flex>
-                <ListImages images={item.images}
-                    lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, item.images)} />
+                <ListImages images={item.images} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, item.images)} />
             </Flex>
         );
     };
@@ -329,7 +337,7 @@ class EcheckAddPage extends BasePage {
         });
     };
 
-    addDetail = () => {
+    saveAll = () => {
         const { id, detailId, checkRole, checkRoleId, memo, address, selectPerson, checkMemo,
             rectification, operateType, checkType, repairmajor, isAutoSend } = this.state;
 
@@ -358,14 +366,13 @@ class EcheckAddPage extends BasePage {
             return;
         }
 
-
         if (checkMemo == '') {
             UDToast.showError('请输入检查情况');
             return;
         }
 
         //保存数据
-        WorkService.addCheckDetail(
+        WorkService.saveCheckAll(
             id,
             checkRole,
             checkRoleId,
@@ -392,14 +399,13 @@ class EcheckAddPage extends BasePage {
         });
     };
 
-
     //上传图片
     selectImages = () => {
         SelectImage.select(this.state.detailId, '', '/api/MobileMethod/MUploadCheckFile').then(url => {
             let images = [...this.state.images];
             images.splice(images.length - 1, 0, url);
             if (images.length > 10) {
-                //最多五张
+                //最多10张
                 images = images.filter((item, index) => index !== images.length - 1);
             }
             this.setState({ images });
@@ -439,7 +445,7 @@ class EcheckAddPage extends BasePage {
         });
     };
 
-savePhoto = (uri) => { 
+    savePhoto = (uri) => {
         try {
             if (Platform.OS == 'android') { //远程文件需要先下载 
                 // 下载网络图片到本地
@@ -473,19 +479,19 @@ savePhoto = (uri) => {
                     //     //console.log('Image saved to docs://image.png'); // 或者使用你的路径
                     //     // 在这里你可以做其他事情，比如显示一个提示或者加载图片等 
                     // })
-                    .catch((err) => { 
+                    .catch((err) => {
                     });
 
             }
             else {
                 //ios
                 let promise = CameraRoll.saveToCameraRoll(uri);
-                promise.then(function (result) { 
-                }).catch(function (err) { 
+                promise.then(function (result) {
+                }).catch(function (err) {
                 });
             }
 
-        } catch (error) { 
+        } catch (error) {
         }
     }
 
@@ -532,7 +538,7 @@ savePhoto = (uri) => {
                         <TouchableWithoutFeedback
                             onPress={() => this.props.navigation.navigate('selectArea', {
                                 title: '选择检查区域',
-                                parentName: 'checkAdd',
+                                parentName: 'checkModify',
                                 roleId: this.state.checkRoleId
                             })}>
                             <Flex
@@ -541,12 +547,12 @@ savePhoto = (uri) => {
                             //     paddingBottom: 5
                             // }}
                             >
-                                <Text style={[address && address.allName ? { fontSize: 16, paddingRight: 10 } :
-                                    { fontSize: 16, color: '#999', paddingRight: 10 }]}>{address && address.allName ? address.allName : `请选择检查区域`}</Text>
+                                <Text style={[address ? { fontSize: 16, paddingRight: 10 } :
+                                    { fontSize: 16, color: '#999', paddingRight: 10 }]}>{address ? address.allName : `请选择检查区域`}</Text>
                                 <LoadImage style={{ width: 6, height: 12 }} defaultImg={require('../../../static/images/address/right.png')} />
                             </Flex>
                         </TouchableWithoutFeedback>
-                    </Flex> 
+                    </Flex>
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <TextInput
                             maxLength={500}
@@ -576,14 +582,14 @@ savePhoto = (uri) => {
                     <Flex justify={'center'}>
                         <Button onPress={this.save} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                width: 110,
+                                width: 115,
                                 backgroundColor: Macro.work_blue,
                                 height: 40
                             }}>保存</Button>
                     </Flex>
                     <Flex justify={'center'}>
                         <Button onPress={() => {
-                            if (address == null || address.id == null) {
+                            if (!address) {
                                 UDToast.showError('选择检查区域');
                                 return;
                             }
@@ -603,7 +609,7 @@ savePhoto = (uri) => {
                             type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }}
                             style={{
-                                width: 110,
+                                width: 115,
                                 marginLeft: 60,
                                 backgroundColor: Macro.work_blue,
                                 height: 40
@@ -621,10 +627,10 @@ savePhoto = (uri) => {
                                 <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
                                     <CommonView style={{ height: isAutoSend ? 380 : 350, width: 320 }}>
                                         <TouchableWithoutFeedback
-                                            onPress={() => this.props.navigation.navigate('selectAddress',
+                                            onPress={() => this.props.navigation.navigate('selectArea',
                                                 {
                                                     title: '选择位置',
-                                                    parentName: 'checkAdd',
+                                                    parentName: 'checkModify',
                                                     roleId: this.state.checkRoleId
                                                 })}>
                                             <Flex justify="between" style={[{
@@ -633,18 +639,24 @@ savePhoto = (uri) => {
                                                 marginLeft: 10,
                                                 marginRight: 10
                                             }, ScreenUtil.borderBottom()]}>
-                                                <Text style={[address && address.allName ? { color: '#404145' } :
-                                                    { color: '#999' }]}>{address && address.allName ? address.allName : `请选择位置`}</Text>
+                                                <Text style={[address ? { color: '#404145' } :
+                                                    { color: '#999' }]}>{address ? address.allName : `请选择位置`}</Text>
                                                 <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
                                             </Flex>
                                         </TouchableWithoutFeedback>
 
                                         <TouchableWithoutFeedback
-                                            onPress={() => this.props.navigation.navigate('selectRolePersonInspect',
-                                                {
-                                                    organizeId: address.organizeId,
-                                                    onSelect: this.onSelectPerson
-                                                })}>
+                                            onPress={() => {
+                                                if (!address) {
+                                                    UDToast.showError('选择检查区域');
+                                                    return;
+                                                } 
+                                                this.props.navigation.navigate('selectRolePersonInspect',
+                                                    {
+                                                        organizeId: address.organizeId,
+                                                        onSelect: this.onSelectPerson
+                                                    });
+                                            }}>
                                             <Flex justify='between' style={[{
                                                 paddingTop: 15,
                                                 paddingBottom: 15,
@@ -659,7 +671,8 @@ savePhoto = (uri) => {
 
                                         {isAutoSend ?
                                             <TouchableWithoutFeedback
-                                                onPress={() => this.props.navigation.navigate('selectRepairMajor', { parentName: 'checkAdd' })}>
+                                                onPress={() => this.props.navigation.navigate('selectRepairMajor',
+                                                    { parentName: 'checkModify' })}>
                                                 <Flex justify="between" style={[{
                                                     paddingTop: 15,
                                                     paddingBottom: 15,
@@ -735,7 +748,7 @@ savePhoto = (uri) => {
                                     </CommonView>
 
                                     <Flex style={{ marginTop: 10 }}>
-                                        <Button onPress={this.addDetail} type={'primary'}
+                                        <Button onPress={this.saveAll} type={'primary'}
                                             activeStyle={{ backgroundColor: Macro.work_blue }}
                                             style={{
                                                 width: 110,
@@ -762,13 +775,12 @@ savePhoto = (uri) => {
                     </View>
                 )}
 
-
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
-                        imageUrls={this.state.images} 
+                        imageUrls={this.state.images}
                         menuContext={{ "saveToLocal": "保存到相册", "cancel": "取消" }}
                         onSave={(url) => this.savePhoto(url)}
-                        />
+                    />
                 </Modal>
 
             </CommonView>
@@ -847,7 +859,6 @@ const styles = StyleSheet.create({
     }
 });
 
-
 const mapStateToProps = ({ memberReducer }) => {
     return {
         user: {
@@ -856,6 +867,4 @@ const mapStateToProps = ({ memberReducer }) => {
         }
     };
 };
-
-
-export default connect(mapStateToProps)(EcheckAddPage);
+export default connect(mapStateToProps)(EcheckModifyPage);

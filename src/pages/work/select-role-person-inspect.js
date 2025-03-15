@@ -1,17 +1,18 @@
 import React from 'react';
 import BasePage from '../base/base';
-import { List, Icon, Flex, Accordion } from '@ant-design/react-native';
 import {
     View,
     Text,
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    ScrollView
+    ScrollView,
+    Keyboard
 } from 'react-native';
 import Macro from '../../utils/macro';
 // import { connect } from 'react-redux';
 import api from '../../utils/api';
+import { List, Icon, Flex, Accordion, SearchBar } from '@ant-design/react-native';
 
 class SelectRolePersonInspect extends BasePage {
     //现场检查选择人员
@@ -23,13 +24,14 @@ class SelectRolePersonInspect extends BasePage {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
-            ) 
+            )
         };
     };
 
     constructor(props) {
         super(props);
         this.state = {
+            keyword: '',
             //selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
             data: [],
             activeSections: []
@@ -38,7 +40,6 @@ class SelectRolePersonInspect extends BasePage {
         this.onChange = activeSections => {
             this.setState({ activeSections });
         };
-
     }
 
     componentDidMount() {
@@ -62,15 +63,15 @@ class SelectRolePersonInspect extends BasePage {
     //     }
     // }
 
-    initData() {
+    initData = () => {
         const { navigation } = this.props;
-        const organizeId = navigation.state.params.organizeId;
+        const organizeId = navigation.state.params.organizeId; 
         let url = '/api/MobileMethod/MGetRoleListInspect'; //获取角色
         let url2 = '/api/MobileMethod/MGetUsersByRoleId';//获取角色人员 
-        api.getData(url, { organizeId: organizeId }).then(res => {
+        api.getData(url, { organizeId }).then(res => {
             Promise.all(
-                res.map(item => api.getData(url2, { roleId: item.roleId }))).
-                then(ress => { 
+                res.map(item => api.getData(url2, { roleId: item.roleId, keyword: this.state.keyword }))).
+                then(ress => {
                     let data = res.map((item, index) => ({
                         ...item,
                         children: ress[index]
@@ -88,10 +89,22 @@ class SelectRolePersonInspect extends BasePage {
         navigation.goBack();
     };
 
+    search = () => {
+        Keyboard.dismiss();
+        this.initData();
+    };
+
     render() {
         const { data } = this.state;
         return (
             <View style={{ flex: 1 }}>
+                <SearchBar
+                    placeholder="请输入"
+                    showCancelButton
+                    value={this.state.keyword}
+                    onChange={keyword => { this.setState({ keyword }); this.search(); }}
+                    onCancel={() => { this.setState({ keyword: '' }); this.search(); }}
+                />
                 <ScrollView style={{ flex: 1 }}>
                     <View style={styles.content}>
                         <Accordion

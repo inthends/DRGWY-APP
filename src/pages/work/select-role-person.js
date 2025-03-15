@@ -1,13 +1,14 @@
 import React from 'react';
 import BasePage from '../base/base';
-import { List, Icon, Flex, Accordion } from '@ant-design/react-native';
+import { List, Icon, Flex, Accordion, SearchBar } from '@ant-design/react-native';
 import {
     View,
     Text,
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    ScrollView
+    ScrollView,
+    Keyboard
 } from 'react-native';
 import Macro from '../../utils/macro';
 import { connect } from 'react-redux';
@@ -38,6 +39,7 @@ class SelectRolePerson extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
+            keyword: '',
             //selectBuilding: this.props.selectBuilding || {},
             selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
             data: [],
@@ -76,10 +78,13 @@ class SelectRolePerson extends BasePage {
         const enCode = navigation.state.params.enCode;
         let url = '/api/MobileMethod/MGetRoleList'; //获取角色
         let url2 = '/api/MobileMethod/MGetUsersByRoleId';//获取角色人员 
-        api.getData(url, this.state.selectBuilding ? { moduleId: moduleId, enCode: enCode, organizeId: this.state.selectBuilding.key } : {}).then(res => {
+        api.getData(url, this.state.selectBuilding ? {
+            moduleId,
+            enCode,
+            organizeId: this.state.selectBuilding.key
+        } : {}).then(res => {
             Promise.all(
-                res.map(item => api.getData(url2, { enCode: enCode, roleId: item.roleId }))).
-                then(ress => { 
+                res.map(item => api.getData(url2, { roleId: item.roleId, keyword: this.state.keyword }))).then(ress => {
                     let data = res.map((item, index) => ({
                         ...item,
                         children: ress[index]
@@ -97,10 +102,22 @@ class SelectRolePerson extends BasePage {
         navigation.goBack();
     };
 
+    search = () => {
+        Keyboard.dismiss();
+        this.initData();
+    };
+
     render() {
         const { data } = this.state;
         return (
             <View style={{ flex: 1 }}>
+                <SearchBar
+                    placeholder="请输入"
+                    showCancelButton
+                    value={this.state.keyword}
+                    onChange={keyword => { this.setState({ keyword }); this.search(); }}
+                    onCancel={() => { this.setState({ keyword: '' }); this.search(); }}
+                />
                 <ScrollView style={{ flex: 1 }}>
                     <View style={styles.content}>
                         <Accordion

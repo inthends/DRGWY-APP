@@ -1,9 +1,9 @@
-import React 
+import React
     from 'react';
 import {
     View,
     Text,
-    StyleSheet, 
+    StyleSheet,
     FlatList,
     TouchableOpacity,
     TouchableWithoutFeedback,
@@ -13,10 +13,10 @@ import BasePage from '../../base/base';
 import { Flex, Icon, Button, SearchBar } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
-import { connect } from 'react-redux'; 
+import { connect } from 'react-redux';
 import service from '../statistics-service';
 import NoDataView from '../../../components/no-data-view';
-import CommonView from '../../../components/CommonView'; 
+import CommonView from '../../../components/CommonView';
 let screen_width = ScreenUtil.deviceWidth();
 
 class AssetsPage extends BasePage {
@@ -48,8 +48,7 @@ class AssetsPage extends BasePage {
             },
             refreshing: false,
             selectBuilding: this.props.selectBuilding,
-            estateId: null,//机构id
-            //searchText: ''
+            estateId: null//机构id
         };
     }
 
@@ -170,12 +169,13 @@ class AssetsPage extends BasePage {
         return (
             <View style={{ flex: 1 }}>
                 <CommonView style={{ flex: 1 }}>
-                    <SearchBar cancelText='搜索'
-                        showCancelButton={true}
-                        onCancel={this.search}
+                    <SearchBar
+                        placeholder="请输入"
+                        showCancelButton
                         value={this.state.text}
-                        onChange={text => this.setState({ text })}
-                        onSubmit={this.search} />
+                        onChange={text => { this.setState({ text }); this.search(); }}
+                        onCancel={() => { this.setState({ text: '' }); this.search(); }}
+                    />
 
                     <View style={{ flex: 1 }}>
                         <FlatList
@@ -190,10 +190,10 @@ class AssetsPage extends BasePage {
                             refreshing={this.state.refreshing}
                             onRefresh={this.onRefresh}//下拉刷新
                             onEndReached={this.loadMore}//底部往下拉翻页
-                            onMomentumScrollBegin={() => this.canLoadMore = true} 
+                            onMomentumScrollBegin={() => this.canLoadMore = true}
                             ListEmptyComponent={<NoDataView />}
                         />
-                         <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
+                        <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
 
                     </View>
 
@@ -216,7 +216,7 @@ class AssetsPage extends BasePage {
                             style={{
                                 width: 180,
                                 marginBottom: 10,
-                                marginTop:10,
+                                marginTop: 10,
                                 backgroundColor: Macro.work_blue,
                                 height: 40
                             }}>开始盘点</Button>

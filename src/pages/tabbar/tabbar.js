@@ -54,7 +54,7 @@ import SelectAllPerson from '../work/select-all-person';
 import SelectRolePersonMulti from '../work/select-role-person-multi';
 import EstateCheckPage from '../navigator/estate/estate-check';
 import EcheckDetailPage from '../navigator/estate/estate-check-detail';
-import EcheckAddPage from '../navigator/estate/estate-check-add';
+import EcheckModifyPage from '../navigator/estate/estate-check-modify';
 
 import ScanOnly from '../navigator/scanonly';
 // import ScanSS from '../navigator/scan-ss';
@@ -316,7 +316,7 @@ const WorkNavigator = createStackNavigator({
   selectRolePersonMulti: SelectRolePersonMulti,
   check: EstateCheckPage,
   checkDetail: EcheckDetailPage,
-  checkAdd: EcheckAddPage,
+  checkModify: EcheckModifyPage,
   addTaskWork: AddWorkPage,
   addRepair: AddRepairPage,
 

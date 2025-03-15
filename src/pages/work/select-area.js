@@ -54,7 +54,7 @@ export default class SelectAreaPage extends BasePage {
         //获取加载层级
         WorkService.getSetting('loadAssetType').then(res => {
             this.setState({ loadAssetType: res });
-        });
+        }); 
         this.getData(myroleId);
     }
 

@@ -23,6 +23,7 @@ export default {
         });
     },
 
+    //保存检查主单
     saveCheck(
         billId,
         mainMemo) {
@@ -41,8 +42,8 @@ export default {
         });
     },
 
-    
-    addCheckDetail(
+    //保存检查和明细
+    saveCheckAll(
         billId,
         checkRole,
         checkRoleId,
@@ -58,7 +59,7 @@ export default {
         checkMemo,
         rectification,
         operateType) {
-        return api.postData('/api/MobileMethod/MAddCheckDetail', {
+        return api.postData('/api/MobileMethod/MSaveCheckAll', {
             billId,
             checkRole,
             checkRoleId,
@@ -446,6 +447,10 @@ export default {
     //获取必填项
     getSetting(type) {
         return api.getData('/api/SysSetting/GetSetting', { type });
+    },
+
+    deleteCheck(keyvalue) {
+        return api.postData('/api/MobileMethod/DeleteCheck', { keyvalue });
     },
 
     deleteCheckDetail(keyvalue) {

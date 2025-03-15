@@ -5,7 +5,8 @@ import {
     StyleSheet,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    FlatList
+    FlatList,
+    Alert
 } from 'react-native';
 import { Flex, Icon, Button } from '@ant-design/react-native';
 import BasePage from '../../base/base';
@@ -22,6 +23,7 @@ import { DrawerType } from '../../../utils/store/action-types/action-types';
 import { saveSelectDrawerType } from '../../../utils/store/actions/actions';
 import MyPopoverRole from '../../../components/my-popover-role';
 import WorkService from '../../work/work-service';
+import ActionPopover from '../../../components/action-popover';
 
 class EstateCheckPage extends BasePage {
 
@@ -164,16 +166,61 @@ class EstateCheckPage extends BasePage {
         }
     };
 
+    deleteDetail = (id) => {
+        Alert.alert(
+            '请确认',
+            '是否删除？',
+            [
+                {
+                    text: '取消',
+                    onPress: () => {
+                    },
+                    style: 'cancel',
+                },
+                {
+                    text: '确定',
+                    onPress: () => {
+                        WorkService.deleteCheck(id).then(res => {
+                            this.onRefresh();
+                        });
+                    },
+                },
+            ],
+            { cancelable: false }
+        );
+    };
+
+
     _renderItem = ({ item, index }) => {
         return (
-            <TouchableWithoutFeedback onPress={() => {
-                this.props.navigation.push('checkDetail', { id: item.billId });
-            }}>
+            <TouchableWithoutFeedback onPress={() => { this.props.navigation.push('checkDetail', { id: item.billId })}}>
                 <Flex direction='column' align={'start'}
                     style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
                     <Flex justify='between' style={{ width: '100%' }}>
-                        <Text style={styles.title}>{item.billCode}</Text>
-                        <Text style={styles.title2}>{item.statusName}</Text>
+                        <Text style={styles.title}>{item.billCode} {item.statusName}</Text>
+                        {/* <Text style={styles.title2}>{item.statusName}</Text> */}
+                        {item.statusName == '待评审' ?
+                            <ActionPopover
+                                textStyle={{ fontSize: 14 }}
+                                hiddenImage={true}
+                                titles={['修改', '删除']}
+                                visible={true}
+                                onChange={(title) => {
+                                    if (title === '删除') {
+                                        this.deleteDetail(item.billId);
+                                    } else if (title === '修改') {
+                                        this.props.navigation.push('checkModify', {
+                                            data: {
+                                                id: item.billId,
+                                                checkRole: this.state.checkRole,
+                                                checkRoleId: this.state.checkRoleId
+                                            }
+                                        })
+                                    }
+                                }}
+                            />
+                            : null}
+
                     </Flex>
                     <Flex style={styles.line} />
                     <Flex align={'start'} direction={'column'}>
@@ -272,7 +319,7 @@ class EstateCheckPage extends BasePage {
                 <Flex justify={'center'}>
                     <Button
                         onPress={() =>
-                            this.props.navigation.push('checkAdd', {
+                            this.props.navigation.push('checkModify', {
                                 data: {
                                     checkRole: checkRole,
                                     checkRoleId: checkRoleId

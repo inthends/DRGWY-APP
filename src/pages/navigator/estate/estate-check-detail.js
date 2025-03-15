@@ -21,6 +21,7 @@ import ListImages from '../../../components/list-images';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import NoDataView from '../../../components/no-data-view';
 import RNFetchBlob from 'rn-fetch-blob';
+import UDToast from '../../../utils/UDToast'; 
 
 export default class EcheckDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -288,9 +289,9 @@ export default class EcheckDetailPage extends BasePage {
                                 numberOfLines={2}>
                             </TextInput>
                         </Flex> : null
-                    }
-
+                    } 
                 </ScrollView>
+
                 {detail.statusName == '待评审' ?
                     <Flex justify={'center'}>
                         <Flex justify={'center'}>

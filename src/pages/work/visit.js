@@ -33,7 +33,7 @@ export default class VisitPage extends BasePage {
         // let id = common.getValueFromProps(this.props); 
         this.state = {
             //id,
-            data: {}
+            data: null
         };
     }
 
@@ -55,7 +55,7 @@ export default class VisitPage extends BasePage {
         });
     };
 
-    callBack = (id) => { 
+    callBack = (id) => {
         //详情
         WorkService.getVisitEntity(id).then(res => {
             this.setState({
@@ -67,6 +67,11 @@ export default class VisitPage extends BasePage {
     //放行
     ok = () => {
         const { data } = this.state;
+        if (!data) {
+            UDToast.showError('请扫码');
+            return;
+        }
+        
         WorkService.updateVisitEntity(data.id).then(res => {
             this.props.navigation.goBack();
         });

@@ -55,8 +55,7 @@ class XunJianPage extends BasePage {
     callBack = (pointId) => {
         if (this.props.hasNetwork) {
             //判断巡检点位状态
-            XunJianService.checkPollingState(pointId).then(res => {
-
+            XunJianService.checkPollingState(pointId).then(res => { 
                 if (res == null) {
                     UDToast.showError('点位不存在');
                     return;
