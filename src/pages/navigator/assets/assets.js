@@ -94,7 +94,7 @@ class AssetsPage extends BasePage {
     onRefresh = () => {
         this.setState({
             refreshing: true,
-            pageIndex: 1,
+            pageIndex: 1
         }, () => {
             this.getList();
         });
@@ -126,7 +126,6 @@ class AssetsPage extends BasePage {
     };
 
     start = () => {
-
         //test
         // this.props.navigation.navigate('gdzcPandian', {
         //     data: {

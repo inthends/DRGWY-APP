@@ -1,13 +1,14 @@
 import React from 'react';
 import BasePage from '../base/base';
-import { List, Icon, Flex, Accordion } from '@ant-design/react-native';
+import { List, Icon, Flex, Accordion, SearchBar } from '@ant-design/react-native';
 import {
     View,
     Text,
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    ScrollView
+    ScrollView,
+    Keyboard
 } from 'react-native';
 import Macro from '../../utils/macro';
 import { connect } from 'react-redux';
@@ -78,7 +79,11 @@ class SelectReceivePerson extends BasePage {
         let url2 = '/api/MobileMethod/MGetReceiveUsersByRoleId';//获取角色人员 
         api.getData(url, this.state.selectBuilding ? { moduleId: moduleId, enCode: enCode, organizeId: this.state.selectBuilding.key } : {}).then(res => {
             Promise.all(
-                res.map(item => api.getData(url2, { enCode: enCode, roleId: item.roleId }))).
+                res.map(item => api.getData(url2, {
+                    enCode: enCode,
+                    roleId: item.roleId,
+                    keyword: this.state.keyword
+                }))).
                 then(ress => {
                     let data = res.map((item, index) => ({
                         ...item,
@@ -97,10 +102,26 @@ class SelectReceivePerson extends BasePage {
         navigation.goBack();
     };
 
+    search = (keyword) => {
+        Keyboard.dismiss();
+        this.setState({
+            keyword//必须要设置值，再调用方法，否则数据没有更新
+        }, () => {
+            this.initData();
+        });
+    };
+
     render() {
         const { data } = this.state;
         return (
             <View style={{ flex: 1 }}>
+                <SearchBar
+                    placeholder="请输入"
+                    showCancelButton
+                    value={this.state.keyword}
+                    onChange={keyword => this.search(keyword)}
+                    onCancel={() => this.search('')}
+                />
                 <ScrollView style={{ flex: 1 }}>
                     <View style={styles.content}>
                         <Accordion

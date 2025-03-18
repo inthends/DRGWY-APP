@@ -55,7 +55,7 @@ class AddWorkPage extends BasePage {
             id: common.getGuid(),
             playing: false,
             taskId,
-            KeyboardShown: false,
+            //KeyboardShown: false,
             canSelectAddress: !address,
             address,
             value,
@@ -93,30 +93,30 @@ class AddWorkPage extends BasePage {
         });
     }
 
-    componentWillMount() {
-        this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
-            this.setState({
-                KeyboardShown: true
-            });
-        });
-        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-            this.setState({
-                KeyboardShown: false
-            });
-        });
-    }
+    // componentWillMount() {
+    //     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+    //         this.setState({
+    //             KeyboardShown: true
+    //         });
+    //     });
+    //     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+    //         this.setState({
+    //             KeyboardShown: false
+    //         });
+    //     });
+    // }
 
     componentWillUnmount() {
         this.viewDidAppear.remove();
-        UDToast.hiddenLoading(this.recordId);
+        //UDToast.hiddenLoading(this.recordId);
         //卸载键盘弹出事件监听
-        if (this.keyboardDidShowListener != null) {
-            this.keyboardDidShowListener.remove();
-        }
-        //卸载键盘隐藏事件监听
-        if (this.keyboardDidHideListener != null) {
-            this.keyboardDidHideListener.remove();
-        }
+        // if (this.keyboardDidShowListener != null) {
+        //     this.keyboardDidShowListener.remove();
+        // }
+        // //卸载键盘隐藏事件监听
+        // if (this.keyboardDidHideListener != null) {
+        //     this.keyboardDidHideListener.remove();
+        // }
     }
 
     // startRecord = () => {

@@ -40,7 +40,6 @@ class ContactDetail extends BasePage {
         const type = common.getValueFromProps(this.props, 'type');
         this.state = {
             type,
-            keyword: '',
             activeSections: [],
             //selectBuilding: this.props.selectBuilding || {},
             selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
@@ -81,21 +80,30 @@ class ContactDetail extends BasePage {
             url2 = '/api/MobileMethod/MGetVendorList';
         }
         api.getData(url, this.state.selectBuilding ? { organizeId: this.state.selectBuilding.key } : {}).then(res => {
-            Promise.all(res.map(item => api.getData(url2, { departmentId: item.departmentId, vendorTypeId: item.itemDetailId, keyword }))).then(ress => {
-                let data = res.map((item, index) => ({
-                    ...item,
-                    children: ress[index],
-                }));
-                //过滤空的数据
-                let mydata = data.filter(item => item.children.length > 0);
-                this.setState({ data: mydata });
-            });
+            Promise.all(res.map(item => api.getData(url2,
+                {
+                    departmentId: item.departmentId,
+                    vendorTypeId: item.itemDetailId,
+                    keyword: keyword
+                }))).then(ress => {
+                    let data = res.map((item, index) => ({
+                        ...item,
+                        children: ress[index],
+                    }));
+                    //过滤空的数据
+                    let mydata = data.filter(item => item.children.length > 0);
+                    this.setState({ data: mydata });
+                });
         });
     };
 
-    search = () => {
-        Keyboard.dismiss();
-        this.initData();
+    search = (keyword) => {
+        Keyboard.dismiss(); 
+        this.setState({
+            keyword//必须要设置值，再调用方法，否则数据没有更新
+        }, () => {
+            this.initData();
+        });
     };
 
     render() {
@@ -106,8 +114,8 @@ class ContactDetail extends BasePage {
                     placeholder="请输入"
                     showCancelButton
                     value={this.state.keyword}
-                    onChange={keyword => { this.setState({ keyword }); this.search(); }}
-                    onCancel={() => { this.setState({ keyword: '' }); this.search(); }}
+                    onChange={keyword => this.search(keyword)}
+                    onCancel={() => this.search('')}
                 />
 
                 <ScrollView style={{ flex: 1 }}>

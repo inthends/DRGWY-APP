@@ -46,7 +46,6 @@ class XunjianBeforeStart extends BasePage {
             XunJianService.xunjianPointTasks(pointId).then(items => {
                 if (items.length == 0) {
                     UDToast.showError('当前点位没有任务');
-                    //该点位没有待完成的巡检任务，跳转到上一个页面
                     this.props.navigation.goBack();
                 }
                 this.setState({ items });
@@ -87,7 +86,7 @@ class XunjianBeforeStart extends BasePage {
         this.viewDidAppear.remove();
     }
 
-    render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
+    render() {//: React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
         const { items, person, pointId } = this.state;
         return (
             <CommonView>
@@ -96,7 +95,6 @@ class XunjianBeforeStart extends BasePage {
                         {items.map(item => (
                             <TouchableWithoutFeedback key={item.id}
                                 onPress={() => {
-
                                     if (item.status == 0) {
                                         this.props.navigation.push('startxunjian', {
                                             data: {
@@ -115,7 +113,7 @@ class XunjianBeforeStart extends BasePage {
                                 <Flex direction='column' align={'start'} style={[styles.card, { borderLeftColor: Macro.work_blue, borderLeftWidth: 5 }]}>
                                     <Flex justify='between' style={{ width: '100%' }}>
                                         <Text style={styles.title}>{item.pName}</Text>
-                                        <Text style={styles.title}>{item.statusName}</Text>
+                                        <Text style={item.status == 0 ? styles.redtitle : styles.greentitle}>{item.statusName}</Text>
                                     </Flex>
                                     <Flex style={styles.line} />
                                     <Flex>
@@ -144,6 +142,27 @@ const mapStateToProps = ({ memberReducer, xunJianReducer }) => {
 export default connect(mapStateToProps)(XunjianBeforeStart);
 
 const styles = StyleSheet.create({
+
+    redtitle: {
+        paddingTop: 14,
+        textAlign: 'left',
+        color: 'red',
+        fontSize: 16,
+        paddingBottom: 12,
+        marginLeft: 20,
+        marginRight: 20
+    },
+
+    greentitle: {
+        paddingTop: 14,
+        textAlign: 'left',
+        color: 'green',
+        fontSize: 16,
+        paddingBottom: 12,
+        marginLeft: 20,
+        marginRight: 20
+    },
+
     title: {
         paddingTop: 14,
         textAlign: 'left',

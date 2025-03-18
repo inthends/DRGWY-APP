@@ -38,8 +38,7 @@ class SelectRolePerson extends BasePage {
 
     constructor(props) {
         super(props);
-        this.state = {
-            keyword: '',
+        this.state = { 
             //selectBuilding: this.props.selectBuilding || {},
             selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
             data: [],
@@ -101,10 +100,15 @@ class SelectRolePerson extends BasePage {
         navigation.state.params.onSelect({ selectItem });
         navigation.goBack();
     };
+ 
 
-    search = () => {
+    search = (keyword) => {
         Keyboard.dismiss();
-        this.initData();
+        this.setState({
+            keyword//必须要设置值，再调用方法，否则数据没有更新
+        }, () => {
+            this.initData();
+        });
     };
 
     render() {
@@ -115,8 +119,8 @@ class SelectRolePerson extends BasePage {
                     placeholder="请输入"
                     showCancelButton
                     value={this.state.keyword}
-                    onChange={keyword => { this.setState({ keyword }); this.search(); }}
-                    onCancel={() => { this.setState({ keyword: '' }); this.search(); }}
+                    onChange={keyword => this.search(keyword)}
+                    onCancel={() => this.search('')}
                 />
                 <ScrollView style={{ flex: 1 }}>
                     <View style={styles.content}>

@@ -69,7 +69,6 @@ export default class XunJianDetailPage extends BasePage {
 
         const { data } = this.props;
         const { list } = this.state;
-
         const selectImg = require('../../../static/images/select.png');
         const noselectImg = require('../../../static/images/no-select.png');
 

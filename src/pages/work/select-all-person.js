@@ -1,13 +1,14 @@
 import React from 'react';
 import BasePage from '../base/base';
-import { List, Icon, Flex, Accordion } from '@ant-design/react-native';
+import { List, Icon, Flex, Accordion, SearchBar } from '@ant-design/react-native';
 import {
     View,
     Text,
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    ScrollView
+    ScrollView,
+    Keyboard
 } from 'react-native';
 import Macro from '../../utils/macro';
 import { connect } from 'react-redux';
@@ -65,22 +66,25 @@ class SelectAllPerson extends BasePage {
             });
         }
     }
-
-
+ 
     initData() {
         let url = '/api/MobileMethod/MGetDepartmentList';
         let url2 = '/api/MobileMethod/MGetAllUserList';
-
         api.getData(url, this.state.selectBuilding ? { organizeId: this.state.selectBuilding.key } : {}).then(res => {
-            Promise.all(res.map(item => api.getData(url2, { departmentId: item.departmentId }))).then(ress => {
-                let data = res.map((item, index) => ({
-                    ...item,
-                    children: ress[index]
-                }));
-                //过滤空的数据
-                let mydata = data.filter(item => item.children.length > 0);
-                this.setState({ data: mydata });
-            });
+            Promise.all(res.map(item => api.getData(url2,
+                {
+                    departmentId: item.departmentId,
+                    keyword: this.state.keyword
+
+                }))).then(ress => {
+                    let data = res.map((item, index) => ({
+                        ...item,
+                        children: ress[index]
+                    }));
+                    //过滤空的数据
+                    let mydata = data.filter(item => item.children.length > 0);
+                    this.setState({ data: mydata });
+                });
         });
     }
 
@@ -90,11 +94,27 @@ class SelectAllPerson extends BasePage {
         navigation.goBack();
     };
 
+    search = (keyword) => {
+        Keyboard.dismiss();
+        this.setState({
+            keyword//必须要设置值，再调用方法，否则数据没有更新
+        }, () => {
+            this.initData();
+        });
+    };
+
     //2024-03-21 改为通讯录样式
     render() {
         const { data } = this.state;
         return (
             <View style={{ flex: 1 }}>
+                <SearchBar
+                    placeholder="请输入"
+                    showCancelButton
+                    value={this.state.keyword}
+                    onChange={keyword => this.search(keyword)}
+                    onCancel={() => this.search('')}
+                />
                 <ScrollView style={{ flex: 1 }}>
                     <View style={styles.content}>
                         <Accordion
@@ -128,7 +148,6 @@ class SelectAllPerson extends BasePage {
         );
     }
 }
-
 
 const styles = StyleSheet.create({
     all: {
