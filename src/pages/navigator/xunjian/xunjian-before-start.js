@@ -41,8 +41,7 @@ class XunjianBeforeStart extends BasePage {
 
     onRefresh = () => {
         const { pointId } = this.state;//点位 
-        if (this.props.hasNetwork) {
-            //this.initUI();
+        if (this.props.hasNetwork) { 
             XunJianService.xunjianPointTasks(pointId).then(items => {
                 if (items.length == 0) {
                     UDToast.showError('当前点位没有任务');
@@ -69,24 +68,23 @@ class XunjianBeforeStart extends BasePage {
         }
     };
 
+    //必须，刷新数据
     componentDidMount() {
-        //this.onRefresh(); 
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             () => {
-                // if (this.props.hasNetwork) {
-                //     this.initUI(false);
-                // }
                 this.onRefresh();
             }
         );
     }
 
+    //必须
     componentWillUnmount() {
         this.viewDidAppear.remove();
     }
 
     render() {//: React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
+
         const { items, person, pointId } = this.state;
         return (
             <CommonView>
@@ -110,8 +108,10 @@ class XunjianBeforeStart extends BasePage {
                                         this.props.navigation.push('xunjianDetail', { id: item.id });
                                     }
                                 }}>
-                                <Flex direction='column' align={'start'} style={[styles.card, { borderLeftColor: Macro.work_blue, borderLeftWidth: 5 }]}>
-                                    <Flex justify='between' style={{ width: '100%' }}>
+                                <Flex direction='column'
+                                    align='start'
+                                    style={[styles.card, { borderLeftColor: Macro.work_blue, borderLeftWidth: 5 }]}>
+                                    <Flex>
                                         <Text style={styles.title}>{item.pName}</Text>
                                         <Text style={item.status == 0 ? styles.redtitle : styles.greentitle}>{item.statusName}</Text>
                                     </Flex>

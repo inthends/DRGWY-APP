@@ -104,3 +104,12 @@ Excluded Architecture→ arm64
 Build Active Architecture Only→ 设置NO
 ————————————————                  
 原文链接：https://blog.csdn.net/weixin_53444763/article/details/126134535
+
+
+
+ios添加rn-fetch-blob运行报错‘RNFetchBlob.DocumentDir’
+https://www.cnblogs.com/xiana/p/11474538.html
+
+React Native - 使用CameraRoll将图片保存到本地相册
+https://blog.csdn.net/qq_37815596/article/details/89405787
+https://www.cnblogs.com/XYQ-208910/p/12170338.html

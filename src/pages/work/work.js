@@ -14,8 +14,14 @@ import WorkService from './work-service';
 import Macro from '../../utils/macro';
 import CommonView from '../../components/CommonView';
 import JPush from 'jpush-react-native';
+import { connect } from 'react-redux';
+import {saveSelectBuilding, saveSelectDrawerType } from '../../utils/store/actions/actions';
+import { DrawerType } from '../../utils/store/action-types/action-types';
 
-export default class WorkPage extends BasePage { 
+// export default class WorkPage extends BasePage {
+
+class WorkPage extends BasePage {
+
     static navigationOptions = options => {
         const { navigation } = options;
         const params = navigation.state.params;
@@ -34,7 +40,7 @@ export default class WorkPage extends BasePage {
                                 style={{ width: 22, height: 18 }} />
                             <Text style={styles.button}>拍一拍</Text>
                         </Flex>
-                    </TouchableWithoutFeedback> 
+                    </TouchableWithoutFeedback>
                     {/* <TouchableWithoutFeedback onPress={() => {
                         // navigation.push('scanonly', {
                         //     data: {
@@ -96,6 +102,10 @@ export default class WorkPage extends BasePage {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
+
+                this.props.saveBuilding({});//加载页面清除别的页面选中的数据
+                this.props.saveSelectDrawerType(DrawerType.building);
+
                 //刷新
                 WorkService.workData(this.state.showLoading).then(data => {
                     this.setState({
@@ -110,6 +120,7 @@ export default class WorkPage extends BasePage {
                         appBadge: news
                     });
                 });
+
             }
         );
     }
@@ -767,3 +778,21 @@ const styles = StyleSheet.create({
     }
 });
 
+const mapStateToProps = ({ buildingReducer }) => {
+    return {
+        selectBuilding: buildingReducer.selectBuilding || {}
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        saveBuilding: (item) => {
+            dispatch(saveSelectBuilding(item));
+        },
+        saveSelectDrawerType: (item) => {
+            dispatch(saveSelectDrawerType(item));
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(WorkPage);

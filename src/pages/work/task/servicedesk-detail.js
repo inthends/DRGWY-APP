@@ -12,10 +12,10 @@ import {
     FlatList,
     TextInput,
     Platform,
-    Alert
+    Alert, CameraRoll
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Icon, Flex, TextareaItem, Button } from '@ant-design/react-native';
+import { Icon, Flex, TextareaItem, Button, Modal as AntModal } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import common from '../../../utils/common';
@@ -30,9 +30,10 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import Star from '../../../components/star';
 import ActionPopover from '../../../components/action-popover';
 import moment from 'moment';
-import RNFetchBlob from 'rn-fetch-blob'; 
+import RNFetchBlob from 'rn-fetch-blob';
 
-export default class ServiceDeskDetailPage extends BasePage {
+
+export default class ServiceDeskDetailPage extends BasePage { 
 
     static navigationOptions = ({ navigation }) => {
         return {
@@ -388,7 +389,7 @@ export default class ServiceDeskDetailPage extends BasePage {
         });
     };
 
-    savePhoto = (uri) => { 
+    savePhoto = (uri) => {
         try {
             if (Platform.OS == 'android') { //远程文件需要先下载 
                 // 下载网络图片到本地
@@ -422,19 +423,19 @@ export default class ServiceDeskDetailPage extends BasePage {
                     //     //console.log('Image saved to docs://image.png'); // 或者使用你的路径
                     //     // 在这里你可以做其他事情，比如显示一个提示或者加载图片等 
                     // })
-                    .catch((err) => { 
+                    .catch((err) => {
                     });
 
             }
             else {
                 //ios
                 let promise = CameraRoll.saveToCameraRoll(uri);
-                promise.then(function (result) { 
-                }).catch(function (err) { 
+                promise.then(function (result) {
+                }).catch(function (err) {
                 });
             }
 
-        } catch (error) { 
+        } catch (error) {
         }
     }
 
@@ -498,22 +499,43 @@ export default class ServiceDeskDetailPage extends BasePage {
     doInvalid = (item) => {
         WorkService.checkBillFee(item.id).then((res) => {
             if (res == 0) {
-                Alert.alert(
+                // Alert.alert(
+                //     '请确认',
+                //     `您确定要作废${item.feeName}？`,
+                //     [{ text: '取消', tyle: 'cancel' },
+                //     {
+                //         text: '确定',
+                //         onPress: () => {
+                //             WorkService.invalidDetailForm(item.id).then(res => {
+                //                 UDToast.showInfo('作废成功');
+                //                 this.getList();
+                //             }).catch(err => {
+                //                 UDToast.showError(err);
+                //             });
+                //         }
+                //     }
+                //     ], { cancelable: false });
+
+                AntModal.alert(
                     '请确认',
                     `您确定要作废${item.feeName}？`,
-                    [{ text: '取消', tyle: 'cancel' },
-                    {
-                        text: '确定',
-                        onPress: () => {
-                            WorkService.invalidDetailForm(item.id).then(res => {
-                                UDToast.showInfo('作废成功');
-                                this.getList();
-                            }).catch(err => {
-                                UDToast.showError(err);
-                            });
+                    [
+                        {
+                            text: '取消', onPress: () => {
+                            }, style: 'cancel'
+                        },
+                        {
+                            text: '确定', onPress: () => {
+                                WorkService.invalidDetailForm(item.id).then(res => {
+                                    UDToast.showInfo('作废成功');
+                                    this.getList();
+                                }).catch(err => {
+                                    UDToast.showError(err);
+                                });
+                            }
                         }
-                    }
-                    ], { cancelable: false });
+                    ]
+                )
             }
             else {
                 if (res == 1) {
@@ -532,22 +554,26 @@ export default class ServiceDeskDetailPage extends BasePage {
 
     //推送账单
     send = (item) => {
-        Alert.alert(
+        AntModal.alert(
             '请确认',
             `您确定要推送${item.feeName}账单？`,
-            [{ text: '取消', tyle: 'cancel' },
-            {
-                text: '确定',
-                onPress: () => {
-                    WorkService.sendServiceDeskFee(item.id).then(res => {
-                        UDToast.showInfo('推送账单成功');
-                        this.getList();
-                    }).catch(err => {
-                        UDToast.showError(err);
-                    });
+            [
+                {
+                    text: '取消', onPress: () => {
+                    }, style: 'cancel'
+                },
+                {
+                    text: '确定', onPress: () => {
+                        WorkService.sendServiceDeskFee(item.id).then(res => {
+                            UDToast.showInfo('推送账单成功');
+                            this.getList();
+                        }).catch(err => {
+                            UDToast.showError(err);
+                        });
+                    }
                 }
-            }
-            ], { cancelable: false });
+            ]
+        )
     };
 
     //退款
@@ -556,21 +582,24 @@ export default class ServiceDeskDetailPage extends BasePage {
             UDToast.showError('非在线支付的费用，无法在线退款');
             return;
         }
-
-        Alert.alert(
+        AntModal.alert(
             '请确认',
             `您确定要退款${item.feeName}？`,
-            [{ text: '取消', tyle: 'cancel' },
-            {
-                text: '确定',
-                onPress: () => {
-                    WorkService.refundForm(item.receiveId, item.payId).then(res => {
-                        UDToast.showInfo('退款成功');
-                        this.getList();
-                    });
+            [
+                {
+                    text: '取消', onPress: () => {
+                    }, style: 'cancel'
+                },
+                {
+                    text: '确定', onPress: () => {
+                        WorkService.refundForm(item.receiveId, item.payId).then(res => {
+                            UDToast.showInfo('退款成功');
+                            this.getList();
+                        });
+                    }
                 }
-            }
-            ], { cancelable: false });
+            ]
+        )
     }
 
     _renderItem = ({ item, index }) => {
@@ -656,7 +685,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                     </Flex>
                     <Flex style={[styles.every3, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.address}</Text>
-                    </Flex> 
+                    </Flex>
                     <ListImages images={images} lookImage={this.lookImage} />
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>紧急程度：{detail.emergencyLevel}</Text>
@@ -748,18 +777,18 @@ export default class ServiceDeskDetailPage extends BasePage {
                                         value: ''
                                     })
                                 }}
-                                type={'primary'}
-                                activeStyle={{ backgroundColor: Macro.work_blue }}
-                                style={{
-                                    width: 120,
-                                    backgroundColor: Macro.work_blue,
-                                    marginTop: 10,
-                                    marginBottom: 10,
-                                    height: 40
-                                }}>回复</Button>
+                                    type={'primary'}
+                                    activeStyle={{ backgroundColor: Macro.work_blue }}
+                                    style={{
+                                        width: 120,
+                                        backgroundColor: Macro.work_blue,
+                                        marginTop: 10,
+                                        marginBottom: 10,
+                                        height: 40
+                                    }}>回复</Button>
                             </Flex> : null}
 
-                         <Flex justify={'center'}>
+                        <Flex justify={'center'}>
                             <Button onPress={() => {
                                 this.props.navigation.navigate('feeAdd', {
                                     data: {
@@ -1046,6 +1075,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                                                 onPress={() => this.props.navigation.navigate('selectRolePerson', {
                                                     moduleId: 'Repair',
                                                     enCode: 'dispatch',
+                                                    organizeId: detail.organizeId,
                                                     onSelect: this.onSelectPerson
                                                 })}>
                                                 <Flex justify='between' style={[{
@@ -1206,6 +1236,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                                                 onPress={() => this.props.navigation.navigate('selectRolePerson', {
                                                     moduleId: 'Repair',
                                                     enCode: 'dispatch',
+                                                    organizeId: detail.organizeId,
                                                     onSelect: this.onSelectPerson
                                                 })}>
                                                 <Flex justify='between' style={[{
@@ -1266,10 +1297,10 @@ export default class ServiceDeskDetailPage extends BasePage {
                     <ImageViewer index={this.state.lookImageIndex}
                         onCancel={this.cancel}
                         onClick={this.cancel}
-                        imageUrls={this.state.images} 
+                        imageUrls={this.state.images}
                         menuContext={{ "saveToLocal": "保存到相册", "cancel": "取消" }}
                         onSave={(url) => this.savePhoto(url)}
-                        />
+                    />
                 </Modal>
 
             </CommonView >
@@ -1383,4 +1414,4 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
         paddingRight: 15
     }
-});
+}); 

@@ -7,7 +7,7 @@ import {
     StyleSheet,
     ScrollView, 
     Platform,
-    Modal
+    Modal,CameraRoll
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Icon, Flex } from '@ant-design/react-native';

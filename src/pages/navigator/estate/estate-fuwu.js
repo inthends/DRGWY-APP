@@ -6,9 +6,10 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
     FlatList,
+    Keyboard
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Flex, Icon } from '@ant-design/react-native';
+import { Flex, Icon, SearchBar } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
 import common from '../../../utils/common';
@@ -24,7 +25,6 @@ import { DrawerType } from '../../../utils/store/action-types/action-types';
 
 //统计页面服务单列表，仅查看
 class EstateFuwuPage extends BasePage {
-
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
@@ -51,6 +51,10 @@ class EstateFuwuPage extends BasePage {
         };
         //列表类型
         const type = common.getValueFromProps(this.props).type;
+        const mytime = common.getValueFromProps(this.props).time;
+        let arr = ['全部', '今日', '本周', '本月', '上月', '本年'];
+        let index = arr.indexOf(mytime);
+
         this.state = {
             type,
             pageIndex: 1,
@@ -60,15 +64,17 @@ class EstateFuwuPage extends BasePage {
             refreshing: false,
             billType: '全部',
             billStatus: -1,
-            time: '全部',
-            selectBuilding: this.props.selectBuilding || {}
+            time: mytime,//'全部',
+            index,
+            selectBuilding: this.props.selectBuilding || {},
+            btnText: '搜索'
         };
     }
 
     componentDidMount() {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
-            (obj) => { 
+            (obj) => {
                 this.props.saveBuilding({});//加载页面清除别的页面选中的数据
                 this.props.saveSelectDrawerType(DrawerType.building);
                 this.onRefresh();
@@ -79,7 +85,7 @@ class EstateFuwuPage extends BasePage {
     componentWillUnmount() {
         this.viewDidAppear.remove();
     }
- 
+
     componentWillReceiveProps(nextProps) {
         const selectBuilding = this.state.selectBuilding;
         const nextSelectBuilding = nextProps.selectBuilding;
@@ -98,7 +104,12 @@ class EstateFuwuPage extends BasePage {
     }
 
     getList = () => {
-        const { type, billStatus, selectBuilding, billType, time } = this.state;
+        const { type,
+            billStatus,
+            selectBuilding,
+            billType, time,
+            keyword
+        } = this.state;
         let organizeId;
         if (selectBuilding) {
             //treeType = selectBuilding.type;
@@ -111,7 +122,8 @@ class EstateFuwuPage extends BasePage {
             billStatus,
             organizeId,
             billType,
-            time)
+            time,
+            keyword)
             .then(dataInfo => {
                 if (dataInfo.pageIndex > 1) {
                     dataInfo = {
@@ -146,6 +158,29 @@ class EstateFuwuPage extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
+            });
+        }
+    };
+
+
+    search = () => {
+        Keyboard.dismiss();
+        this.onRefresh();
+        this.setState({ btnText: '取消' });
+    };
+
+    clear = () => {
+        const { btnText } = this.state;
+        Keyboard.dismiss();
+        if (btnText == '搜索') {
+            this.onRefresh();
+            this.setState({ btnText: '取消' });
+        } else {
+            this.setState({
+                keyword: ''//必须要设置值，再调用方法，否则数据没有更新
+            }, () => {
+                this.onRefresh();
+                this.setState({ btnText: '搜索' });
             });
         }
     };
@@ -239,8 +274,8 @@ class EstateFuwuPage extends BasePage {
         }, () => {
             this.onRefresh();
         });
-
     };
+
     timeChange = (time) => {
         this.setState({
             time,
@@ -260,9 +295,18 @@ class EstateFuwuPage extends BasePage {
     };
 
     render() {
-        const { type, dataInfo } = this.state;
+        const { type, index, dataInfo, btnText } = this.state;
         return (
             <View style={{ flex: 1 }}>
+                <SearchBar
+                    placeholder="请输入"
+                    showCancelButton
+                    cancelText={btnText}
+                    value={this.state.keyword}
+                    onChange={keyword => this.setState({ keyword })}
+                    onSubmit={() => this.search()}
+                    onCancel={() => this.clear()}
+                />
                 <CommonView style={{ flex: 1 }}>
                     <ScrollTitle onChange={this.billType} titles={['全部', '报修', '投诉', '咨询', '建议']} />
                     <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
@@ -273,7 +317,9 @@ class EstateFuwuPage extends BasePage {
 
                         <MyPopover onChange={this.timeChange}
                             titles={['全部', '今日', '本周', '本月', '上月', '本年']}
-                            visible={true} />
+                            visible={true}
+                            index={index}
+                        />
                     </Flex>
                     <FlatList
                         data={dataInfo.data}
@@ -365,7 +411,7 @@ const mapStateToProps = ({ buildingReducer }) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        saveBuilding: (item) => { 
+        saveBuilding: (item) => {
             dispatch(saveSelectBuilding(item));
         },
         saveSelectDrawerType: (item) => {

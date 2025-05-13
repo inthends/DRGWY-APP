@@ -8,7 +8,7 @@ import {
     ScrollView,
     Modal,
     Platform,
-    Keyboard
+    Keyboard,CameraRoll
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Button, Icon, TextareaItem, Flex } from '@ant-design/react-native';
@@ -402,6 +402,7 @@ export default class DispatchDetailPage extends BasePage {
                             {
                                 moduleId: 'Repair',
                                 enCode: 'receive',
+                                organizeId: detail.organizeId,
                                 onSelect: this.onMySelect
                             })}>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
@@ -417,6 +418,7 @@ export default class DispatchDetailPage extends BasePage {
                         onPress={() => this.props.navigation.navigate('selectRolePersonMulti', {
                             moduleId: 'Repair',
                             enCode: 'receive',
+                            organizeId: detail.organizeId,
                             onSelect: this.onSelectAssisPerson,
                             exceptUserId: selectPerson ? selectPerson.id : null//要过滤掉的用户
                         })}>

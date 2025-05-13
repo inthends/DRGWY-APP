@@ -68,7 +68,6 @@ class ApprovePage extends BasePage {
     );
   }
 
-
   componentWillUnmount() {
     this.viewDidAppear.remove();
   }

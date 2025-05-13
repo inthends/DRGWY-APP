@@ -65,6 +65,7 @@ export default class ScanOnly extends BasePage {
         }
         
         if (needBack) {
+            //直接返回前一个页面
             this.props.navigation.goBack();
         }
     };

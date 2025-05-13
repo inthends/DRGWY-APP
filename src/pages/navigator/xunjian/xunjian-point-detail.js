@@ -2,7 +2,7 @@ import React from 'react';
 import BasePage from '../../base/base';
 import CommonView from '../../../components/CommonView';
 import { Flex, Icon } from '@ant-design/react-native';
-import { Modal, StyleSheet, Text,Platform, TouchableOpacity } from 'react-native';
+import { Modal, StyleSheet, Text,Platform, TouchableOpacity,CameraRoll } from 'react-native';
 //import Macro from '../../../utils/macro';
 //import ScreenUtil from '../../../utils/screen-util';
 //import LoadImage from '../../../components/load-image'; 
@@ -129,7 +129,7 @@ export default class XunJianPointDetailPage extends BasePage {
     }
 
 
-    render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
+    render(){//: React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
         const { items } = this.state;
         return (
             <CommonView>

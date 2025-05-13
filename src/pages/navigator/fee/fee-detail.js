@@ -299,7 +299,7 @@ class FeeDetailPage extends BasePage {
                                     //                 );
                                     //             }, 2000);
                                     //         },
-                                    //         needBack: '1'
+                                    //         needBack: true
                                     //     }
                                     // }); 
                                     //扫码接口
@@ -749,35 +749,26 @@ class FeeDetailPage extends BasePage {
         });
     };
 
-    delete = (item) => {
-        Alert.alert(
-            '请确认',
-            '是否作废？',
+    delete = (item) => { 
+        Modal.alert('请确认', '是否作废？',
             [
+                { text: '取消', onPress: () => { }, style: 'cancel' },
                 {
-                    text: '取消',
-                    onPress: () => {
-                    },
-                    style: 'cancel',
-                },
-                {
-                    text: '确定',
-                    onPress: () => {
+                    text: '确定', onPress: () => {
                         service.invalidBillForm(item.id).then(res => {
                             this.onRefresh();
-                        });
-                    },
-                },
-            ],
-            { cancelable: false }
-        );
+                        }); 
+                    }
+                }
+            ]
+        )
+
     };
 
     renderItem = (item) => {
         // const { dataInfo, type, room, price, mlAmount } = this.state;
         const { type } = this.state;
         let titles = [];
-
         if (item.billSource === '临时加费') {
             if (item.reductionAmount == 0 && item.offsetAmount == 0) {
                 titles = ['作废', '减免', '拆费'];

@@ -81,6 +81,8 @@ import SelectReceivePerson from '../work/select-receive-person';
 
 
 import SelectRolePersonInspect from '../work/select-role-person-inspect';
+import SelectRolePersonPolling from '../work/select-role-person-polling';
+
 import SelectAreaPage from '../work/select-area';
 
 import ServiceDeskDetailPage from '../work/task/servicedesk-detail';
@@ -117,6 +119,7 @@ import TousuDetailPage from '../work/task/tousu-detail';
 //我的
 import Contact from '../mine/contact/contact';
 import ContactDetail from '../mine/contact/contact-detail';
+import VendorDetail from '../mine/contact/vendor-detail';
 //import Jixiao from '../mine/jixiao'; 
 import Score from '../mine/score-list';
 
@@ -326,11 +329,13 @@ const WorkNavigator = createStackNavigator({
   //订单中心
   orderlist: OrderlistPage,
   orderDetail: OrderDetailPage,
-  selectRolePerson: SelectRolePerson,
-
-  selectReceivePerson: SelectReceivePerson,
-
+  selectRolePerson: SelectRolePerson, 
+  selectReceivePerson: SelectReceivePerson, 
   selectRolePersonInspect: SelectRolePersonInspect,
+  selectRolePersonPolling:SelectRolePersonPolling,
+
+
+
   feeRooms: FeeRoomsPage, //房间
   feeParkings: FeeParkingsPage, //车位
   feeBuildings: FeeBuildingsPage,
@@ -398,6 +403,7 @@ const MineNavigator = createStackNavigator({
   //newsList: NewsList,
   contact: Contact,
   contactDetail: ContactDetail,
+  vendorDetail: VendorDetail,
   //jixiao: Jixiao
   score: Score
 });

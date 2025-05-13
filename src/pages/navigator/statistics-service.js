@@ -95,7 +95,8 @@ export default {
     status,
     organizeId,
     billType,
-    time
+    time,
+    keyword
   ) {
     return api.postData('/api/MobileMethod/MGetServiceDeskPageListStatistics', {
       pageIndex,
@@ -104,7 +105,8 @@ export default {
       status,
       organizeId,
       billType,
-      time
+      time,
+      keyword
     });
   },
 
@@ -115,6 +117,7 @@ export default {
     organizeId,
     time,
     repairArea,
+    keyword
   ) {
     return api.postData('/api/MobileMethod/MGetRepairPageListStatistics', {
       pageIndex,
@@ -123,7 +126,8 @@ export default {
       status,
       organizeId,
       time,
-      repairArea
+      repairArea,
+      keyword
     });
   },
 

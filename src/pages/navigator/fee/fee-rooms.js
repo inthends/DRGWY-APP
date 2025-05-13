@@ -41,7 +41,6 @@ export default class FeeRoomsPage extends BasePage {
             building,
             floors: [],
         };
-
     }
 
 

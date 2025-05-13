@@ -9,7 +9,7 @@ import {
     Modal,
     TextInput,
     Platform,
-    Keyboard
+    Keyboard,CameraRoll
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Icon, Flex, Button, List, TextareaItem, DatePicker } from '@ant-design/react-native';

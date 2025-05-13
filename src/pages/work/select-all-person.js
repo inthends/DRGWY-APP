@@ -39,7 +39,8 @@ class SelectAllPerson extends BasePage {
             //selectBuilding: this.props.selectBuilding || {},
             selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
             data: [],
-            activeSections: []
+            activeSections: [],
+            btnText: '搜索'
         };
         this.onChange = activeSections => {
             this.setState({ activeSections });
@@ -66,7 +67,7 @@ class SelectAllPerson extends BasePage {
             });
         }
     }
- 
+
     initData() {
         let url = '/api/MobileMethod/MGetDepartmentList';
         let url2 = '/api/MobileMethod/MGetAllUserList';
@@ -94,26 +95,41 @@ class SelectAllPerson extends BasePage {
         navigation.goBack();
     };
 
-    search = (keyword) => {
+    search = () => {
         Keyboard.dismiss();
-        this.setState({
-            keyword//必须要设置值，再调用方法，否则数据没有更新
-        }, () => {
+        this.initData();
+        this.setState({ btnText: '取消' });
+    };
+
+    clear = () => {
+        const { btnText } = this.state;
+        Keyboard.dismiss();
+        if (btnText == '搜索') {
             this.initData();
-        });
+            this.setState({ btnText: '取消' });
+        } else {
+            this.setState({
+                keyword: ''//必须要设置值，再调用方法，否则数据没有更新
+            }, () => {
+                this.initData();
+                this.setState({ btnText: '搜索' });
+            });
+        }
     };
 
     //2024-03-21 改为通讯录样式
     render() {
-        const { data } = this.state;
+        const { data, btnText } = this.state;
         return (
             <View style={{ flex: 1 }}>
                 <SearchBar
                     placeholder="请输入"
                     showCancelButton
+                    cancelText={btnText}
                     value={this.state.keyword}
-                    onChange={keyword => this.search(keyword)}
-                    onCancel={() => this.search('')}
+                    onChange={keyword => this.setState({ keyword })}
+                    onSubmit={() => this.search()}
+                    onCancel={() => this.clear()}
                 />
                 <ScrollView style={{ flex: 1 }}>
                     <View style={styles.content}>

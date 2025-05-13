@@ -30,10 +30,10 @@ class SelectRolePersonInspect extends BasePage {
 
     constructor(props) {
         super(props);
-        this.state = { 
-            //selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
+        this.state = {
             data: [],
-            activeSections: []
+            activeSections: [],
+            btnText: '搜索'
         };
 
         this.onChange = activeSections => {
@@ -66,11 +66,13 @@ class SelectRolePersonInspect extends BasePage {
         const { navigation } = this.props;
         const organizeId = navigation.state.params.organizeId;
         let url = '/api/MobileMethod/MGetRoleListInspect'; //获取角色
-        let url2 = '/api/MobileMethod/MGetUsersByRoleId';//获取角色人员 
+        let url2 = '/api/MobileMethod/MGetWorkUsersByRoleId';//获取角色人员 
         api.getData(url, { organizeId }).then(res => {
             Promise.all(
-                res.map(item => api.getData(url2, { roleId: item.roleId, keyword: this.state.keyword }))).
-                then(ress => {
+                res.map(item => api.getData(url2, {
+                    roleId: item.roleId,
+                    keyword: this.state.keyword
+                }))).then(ress => {
                     let data = res.map((item, index) => ({
                         ...item,
                         children: ress[index]
@@ -88,25 +90,41 @@ class SelectRolePersonInspect extends BasePage {
         navigation.goBack();
     };
 
-    search = (keyword) => {
+
+    search = () => {
         Keyboard.dismiss();
-        this.setState({
-            keyword//必须要设置值，再调用方法，否则数据没有更新
-        }, () => {
+        this.initData();
+        this.setState({ btnText: '取消' });
+    };
+
+    clear = () => {
+        const { btnText } = this.state;
+        Keyboard.dismiss();
+        if (btnText == '搜索') {
             this.initData();
-        });
+            this.setState({ btnText: '取消' });
+        } else {
+            this.setState({
+                keyword: ''//必须要设置值，再调用方法，否则数据没有更新
+            }, () => {
+                this.initData();
+                this.setState({ btnText: '搜索' });
+            });
+        }
     };
 
     render() {
-        const { data } = this.state;
+        const { data, btnText } = this.state;
         return (
             <View style={{ flex: 1 }}>
                 <SearchBar
                     placeholder="请输入"
                     showCancelButton
+                    cancelText={btnText}
                     value={this.state.keyword}
-                    onChange={keyword => this.search(keyword)}
-                    onCancel={() => this.search('')}
+                    onChange={keyword => this.setState({ keyword })}
+                    onSubmit={() => this.search()}
+                    onCancel={() => this.clear()}
                 />
                 <ScrollView style={{ flex: 1 }}>
                     <View style={styles.content}>

@@ -7,8 +7,6 @@ import {
 } from 'react-native';
 
 import BasePage from '../../base/base';
-// import BuildingHeader from '../../../components/building/building-header';
-// import BuildingCell from '../../../components/building/build-cell';
 import {
   Flex,
   Icon,

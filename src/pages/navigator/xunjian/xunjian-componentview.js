@@ -15,7 +15,7 @@ export default class XunJianDetailViewPage extends BasePage {
         super(props);
     }
 
-    render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
+    render(){//: React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
 
         const { data } = this.props;
         // const selectImg = require('../../../static/images/select.png');

@@ -1,30 +1,28 @@
 import React from 'react';
-import BasePage from '../base/base';
-import { List, Icon, Flex, Accordion, SearchBar } from '@ant-design/react-native';
 import {
     View,
     Text,
     TouchableWithoutFeedback,
     TouchableOpacity,
     StyleSheet,
-    ScrollView,
-    Keyboard
+    Keyboard,
+    ScrollView
 } from 'react-native';
-import Macro from '../../utils/macro';
+import { List, Icon, Flex, Accordion, SearchBar } from '@ant-design/react-native';
+import LoadImage from '../../../components/load-image';
+import Macro from '../../../utils/macro';
+import common from '../../../utils/common';
+import BasePage from '../../base/base';
 import { connect } from 'react-redux';
-import api from '../../utils/api';
+import api from '../../../utils/api';
 
-class SelectReceivePerson extends BasePage {
-    //根据角色分组来选择人员
+class VendorDetail extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
-            title: '选择人员',
+            title: '通讯录',
             headerForceInset: this.headerForceInset,
             headerLeft: (
-                <TouchableOpacity onPress={() => {
-                    navigation.state.params.onSelect({});//没有选择，重置值
-                    navigation.goBack();
-                }}>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
             ),
@@ -38,11 +36,12 @@ class SelectReceivePerson extends BasePage {
 
     constructor(props) {
         super(props);
+        const type = common.getValueFromProps(this.props, 'type');
         this.state = {
-            //selectBuilding: this.props.selectBuilding || {},
+            type,
+            activeSections: [],
             selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
             data: [],
-            activeSections: [],
             btnText: '搜索'
         };
         this.onChange = activeSections => {
@@ -57,52 +56,35 @@ class SelectReceivePerson extends BasePage {
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
         const nextSelectBuilding = nextProps.selectBuilding;
-        //console.log('nextSelectBuilding:' + nextSelectBuilding);
-
-        if (!(selectBuilding
-            && nextSelectBuilding
-            && selectBuilding.key === nextSelectBuilding.key)) {
+        if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
             this.setState({
                 selectBuilding: nextProps.selectBuilding
-                // estateId: nextProps.selectBuilding.key,
-                //index: 0,
             }, () => {
                 this.initData();
             });
         }
     }
 
-    initData() {
-        const { navigation } = this.props;
-        const moduleId = navigation.state.params.moduleId;
-        const enCode = navigation.state.params.enCode;
-        const myorganizeId = navigation.state.params.organizeId;
-        let url = '/api/MobileMethod/MGetWorkRoleList'; //获取角色
-        let url2 = '/api/MobileMethod/MGetReceiveUsersByRoleId';//获取角色人员
-        let organizeId = this.state.selectBuilding && this.state.selectBuilding.key ? this.state.selectBuilding.key : myorganizeId;
-        api.getData(url, { moduleId: moduleId, enCode: enCode, organizeId }).then(res => {
-            Promise.all(
-                res.map(item => api.getData(url2, {
-                    enCode: enCode,
-                    roleId: item.roleId,
-                    keyword: this.state.keyword
-                }))).
-                then(ress => {
+    initData = () => {
+        const { keyword } = this.state;
+        //往来单位获取项目
+        let url = '/api/MobileMethod/MGetProjectByOrgId';
+        let url2 = '/api/MobileMethod/MGetVendorList';
+        api.getData(url, this.state.selectBuilding ? { organizeId: this.state.selectBuilding.key } : {}).then(res => {
+            Promise.all(res.map(item => api.getData(url2,
+                {
+                    projectId: item.id,
+                    keyword: keyword
+                }))).then(ress => {
                     let data = res.map((item, index) => ({
                         ...item,
-                        children: ress[index]
+                        children: ress[index],
                     }));
                     //过滤空的数据
                     let mydata = data.filter(item => item.children.length > 0);
                     this.setState({ data: mydata });
                 });
         });
-    }
-
-    click = (selectItem) => {
-        const { navigation } = this.props;
-        navigation.state.params.onSelect({ selectItem });
-        navigation.goBack();
     };
 
     search = () => {
@@ -144,25 +126,23 @@ class SelectReceivePerson extends BasePage {
                     <View style={styles.content}>
                         <Accordion
                             onChange={this.onChange}
-                            activeSections={this.state.activeSections}>
+                            activeSections={this.state.activeSections}
+                        >
                             {data.map(item => (
-                                <Accordion.Panel
-                                    key={item.roleId}
-                                    header={item.fullName}>
+                                <Accordion.Panel key={item.id} header={item.name}>
                                     <List>
                                         {item.children.map(i => (
-                                            <TouchableWithoutFeedback key={'Touch' + i.id} onPress={() => this.click(i)}>
-                                                <Flex justify={'start'} key={i.id} align={'start'} style={styles.aa} direction={'column'}>
-                                                    <Flex style={{ width: '100%' }} justify={'between'}>
-                                                        <Flex>
-                                                            <Text style={styles.desc}>{i.name}</Text>
-                                                            {i.postName ? <Text>（{i.postName}）</Text> : null}
-                                                            <Text> (工单 : {i.counts})</Text>
-                                                        </Flex>
-                                                        {/* <Flex><Text>{i.postName}</Text></Flex> */}
+                                            <Flex justify={'start'} key={i.id} align={'start'} style={styles.aa} direction={'column'}>
+                                                <Flex style={{ width: '100%' }} justify={'between'}>
+                                                    <Flex>
+                                                        <Text style={styles.item}>{i.name}</Text>
                                                     </Flex>
+                                                    {i.phoneNum ?
+                                                        <TouchableWithoutFeedback onPress={() => common.call(i.phoneNum)}>
+                                                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 18, height: 18 }} /></Flex>
+                                                        </TouchableWithoutFeedback> : null}
                                                 </Flex>
-                                            </TouchableWithoutFeedback>
+                                            </Flex>
                                         ))}
                                     </List>
                                 </Accordion.Panel>
@@ -177,36 +157,55 @@ class SelectReceivePerson extends BasePage {
 
 const styles = StyleSheet.create({
     all: {
-        backgroundColor: Macro.color_white
+        backgroundColor: Macro.color_white,
     },
     content: {
         backgroundColor: Macro.color_white,
-        // paddingLeft: 15,
-        paddingRight: 15
-        // height: ScreenUtil.contentHeight(),
+        paddingLeft: 15,
+        paddingRight: 20,
+        // height: ScreenUtil.contentHeight(), 
         // height: ScreenUtil.contentHeightWithNoTabbar(),
+    },
+    header: {
+        paddingTop: 30,
+        paddingBottom: 30,
+    },
+    name: {
+        fontSize: 20,
+        color: '#404145'
     },
     desc: {
         fontSize: 16,
-        color: '#666',//color: '#999',
-        //paddingTop: 5,
-        //width: 100
+        color: '#999',
+        paddingTop: 5,
+        width: 100,
+    },
+    desc2: {
+        fontSize: 16,
+        color: '#999',
+        paddingTop: 5,
+    },
+    item: {
+        fontSize: 16,
+        color: '#404145'
     },
     aa: {
         width: '100%',
         paddingTop: 15,
         paddingLeft: 15,
-        paddingRight: 5,
+        paddingRight: 15,
         paddingBottom: 10,
         borderStyle: 'solid',
         borderBottomWidth: 1,
         borderBottomColor: ' rgb(244,244,244)'
-    }
+    },
 });
 
 const mapStateToProps = ({ buildingReducer }) => {
     return {
-        selectBuilding: buildingReducer.selectBuilding,
+        selectBuilding: buildingReducer.selectBuilding
     };
 };
-export default connect(mapStateToProps)(SelectReceivePerson);
+
+export default connect(mapStateToProps)(VendorDetail);
+

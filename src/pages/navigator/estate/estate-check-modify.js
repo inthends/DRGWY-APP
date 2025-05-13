@@ -12,10 +12,10 @@ import {
     Modal,
     Keyboard,
     Alert,
-    Platform
+    Platform, CameraRoll
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Button, Flex, Icon } from '@ant-design/react-native';
+import { Button, Flex, Icon, Modal as AntModal } from '@ant-design/react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import common from '../../../utils/common';
 import WorkService from '../../work/work-service';
@@ -29,9 +29,9 @@ import UDToast from '../../../utils/UDToast';
 import ListImages from '../../../components/list-images';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import MyPopoverRole from '../../../components/my-popover-role';
-import ActionPopover from '../../../components/action-popover';
 import MyPopoverRight from '../../../components/my-popover-right';
 import RNFetchBlob from 'rn-fetch-blob';
+import ActionPopover from '../../../components/action-popover';
 
 class EcheckModifyPage extends BasePage {
 
@@ -231,28 +231,45 @@ class EcheckModifyPage extends BasePage {
     };
 
     deleteDetail = (id) => {
-        Alert.alert(
-            '请确认',
-            '是否删除？',
+        // Alert.alert(
+        //     '请确认',
+        //     '是否删除？',
+        //     [
+        //         {
+        //             text: '取消',
+        //             onPress: () => {
+        //             },
+        //             style: 'cancel',
+        //         },
+        //         {
+        //             text: '确定',
+        //             onPress: () => {
+        //                 WorkService.deleteCheckDetail(id).then(res => {
+        //                     this.onRefresh();
+        //                 });
+        //             },
+        //         },
+        //     ],
+        //     { cancelable: false }
+        // );
+
+        AntModal.alert('请确认', '是否删除？',
             [
                 {
-                    text: '取消',
-                    onPress: () => {
-                    },
-                    style: 'cancel',
+                    text: '取消', onPress: () => {
+                    }, style: 'cancel'
                 },
                 {
-                    text: '确定',
-                    onPress: () => {
+                    text: '确定', onPress: () => {
                         WorkService.deleteCheckDetail(id).then(res => {
                             this.onRefresh();
                         });
-                    },
-                },
-            ],
-            { cancelable: false }
-        );
+                    }
+                }
+            ]
+        )
     };
+
 
     _renderItem = ({ item, index }) => {
         return (
@@ -287,7 +304,6 @@ class EcheckModifyPage extends BasePage {
                         }}
                         titles={['修改', '删除']}
                         visible={true} />
-
                 </Flex>
                 <Flex style={styles.line} />
                 <Flex align={'start'} direction={'column'}>
@@ -311,7 +327,7 @@ class EcheckModifyPage extends BasePage {
 
                 </Flex>
                 <ListImages images={item.images} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, item.images)} />
-            </Flex>
+            </Flex >
         );
     };
 
@@ -650,7 +666,7 @@ class EcheckModifyPage extends BasePage {
                                                 if (!address) {
                                                     UDToast.showError('选择检查区域');
                                                     return;
-                                                } 
+                                                }
                                                 this.props.navigation.navigate('selectRolePersonInspect',
                                                     {
                                                         organizeId: address.organizeId,

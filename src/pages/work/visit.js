@@ -50,7 +50,7 @@ export default class VisitPage extends BasePage {
         this.props.navigation.push('scanonly', {
             data: {
                 callBack: this.callBack,
-                needBack: '1'
+                needBack:true
             }
         });
     };

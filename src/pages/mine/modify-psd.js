@@ -31,8 +31,7 @@ export default class ModifyPsdPage extends BasePage {
             isComplexPassword: false
         };
     }
-
-
+ 
     componentDidMount() {
         MineService.getSetting('isComplexPassword').then((res) => {
             this.setState({ isComplexPassword: res });
@@ -40,17 +39,14 @@ export default class ModifyPsdPage extends BasePage {
     }
 
     submit = () => {
-        
-        const { oldPassword, newPassword, confirmPassword, isComplexPassword } = this.state;
-
-        if (newPassword === confirmPassword) {
-
+        const { oldPassword, newPassword, confirmPassword, isComplexPassword } = this.state; 
+        if (newPassword === confirmPassword) { 
             if (newPassword != '' && isComplexPassword) {
                 //验证新密码
                 let reg = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,20}$/;
                 var isok = reg.test(newPassword);
                 if (!isok) {
-                    UDToast.showInfo('新密码不正确');
+                    UDToast.showInfo('新密码格式不正确');
                     return;
                 }
             }

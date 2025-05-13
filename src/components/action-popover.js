@@ -1,7 +1,7 @@
-import React, {Component } from 'react';
-import {View, Text, StyleSheet, TouchableWithoutFeedback,  ScrollView} from 'react-native';
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, TouchableWithoutFeedback, ScrollView } from 'react-native';
 //import LoadImage from './load-image';
-import {Flex} from '@ant-design/react-native';
+import { Flex } from '@ant-design/react-native';
 import Popover from 'react-native-popover-view';
 
 export default class ActionPopover extends Component {
@@ -13,29 +13,31 @@ export default class ActionPopover extends Component {
             titles: this.props.titles
         };
     }
- 
+
     showPopover = () => {
         this.setState({
             isVisible: true
         });
     };
+
     closePopover = () => {
-        this.setState({isVisible: false});
+        this.setState({ isVisible: false });
     };
+
     select = (index) => {
-        const {titles} = this.state;
-        this.setState({index, isVisible: false});
+        const { titles } = this.state;
+        this.setState({ index, isVisible: false });
         if (this.props.onChange) {
             this.props.onChange(titles[index], index);
         }
     };
 
     render() {
-        const {titles} = this.state;
+        const { titles } = this.state;
         return (
             <View style={[styles.container, this.props.style]}>
                 <TouchableWithoutFeedback ref={ref => this.touchable = ref} onPress={() => this.showPopover()}>
-                    <Flex style={{height: 40}}> 
+                    <Flex style={{ height: 40 }}>
                         <Text style={[{
                             paddingRight: 10,
                             color: '#1890ff',
@@ -49,9 +51,10 @@ export default class ActionPopover extends Component {
                     fromView={this.touchable}
                     placement={'auto'}
                     isVisible={this.state.isVisible}>
-                    <ScrollView style={{maxHeight: 400}}>
+                    <ScrollView style={{ maxHeight: 400 }}>
                         {titles.map((item, index) => (
-                            <TouchableWithoutFeedback key={item + index} onPress={() => this.select(index)}>
+                            <TouchableWithoutFeedback key={item + index}
+                                onPress={() => this.select(index)}>
                                 <Text style={[{
                                     padding: 15,
                                     color: 'red',

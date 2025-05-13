@@ -8,7 +8,7 @@ import {
     ScrollView,
     Modal,
     Platform,
-    Keyboard
+    Keyboard,CameraRoll
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Icon, Flex, Button, TextareaItem } from '@ant-design/react-native';
@@ -172,7 +172,7 @@ export default class StartDetailPage extends BasePage {
                 }
 
                 // if (handle === '回复' && !(value&&value.length > 0)) {
-                if (!(value && value.length > 0)  && isMustStartFile == true ) {
+                if (!(value && value.length > 0)  && isMustJudgement == true ) {
                     UDToast.showError('请输入故障判断');
                     return;
                 }

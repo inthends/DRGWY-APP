@@ -36,12 +36,13 @@ class SelectRolePersonMulti extends BasePage {
 
     constructor(props) {
         super(props);
-        this.state = { 
+        this.state = {
             //selectBuilding: this.props.selectBuilding || {},
             selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
             data: [],
             selectItems: [],
-            activeSections: []
+            activeSections: [],
+            btnText: '搜索'
         };
         this.onChange = activeSections => {
             this.setState({ activeSections });
@@ -72,14 +73,16 @@ class SelectRolePersonMulti extends BasePage {
         const { navigation } = this.props;
         let moduleId = navigation.state.params.moduleId;
         let enCode = navigation.state.params.enCode;
+        const myorganizeId = navigation.state.params.organizeId;
         let exceptUserId = navigation.state.params.exceptUserId;
-        let url = '/api/MobileMethod/MGetRoleList'; //获取角色
-        let url2 = '/api/MobileMethod/MGetReceiveUsersByRoleId';//获取角色人员 
-        api.getData(url, this.state.selectBuilding ? {
+        let url = '/api/MobileMethod/MGetWorkRoleList'; //获取角色
+        let url2 = '/api/MobileMethod/MGetReceiveUsersByRoleId';//获取角色人员
+        let organizeId = this.state.selectBuilding && this.state.selectBuilding.key ? this.state.selectBuilding.key : myorganizeId;
+        api.getData(url, {
             moduleId,
             enCode,
-            organizeId: this.state.selectBuilding.key
-        } : {}).then(res => {
+            organizeId
+        }).then(res => {
             Promise.all(
                 res.map(item => api.getData(url2, {
                     enCode: enCode,
@@ -131,31 +134,45 @@ class SelectRolePersonMulti extends BasePage {
 
     submit = () => {
         const { selectItems } = this.state;
-        const { navigation } = this.props; 
+        const { navigation } = this.props;
         navigation.state.params.onSelect({ selectItems });
         navigation.goBack();
     };
 
-
-    search = (keyword) => {
+    search = () => {
         Keyboard.dismiss();
-        this.setState({
-            keyword//必须要设置值，再调用方法，否则数据没有更新
-        }, () => {
+        this.initData();
+        this.setState({ btnText: '取消' });
+    };
+
+    clear = () => {
+        const { btnText } = this.state;
+        Keyboard.dismiss();
+        if (btnText == '搜索') {
             this.initData();
-        });
+            this.setState({ btnText: '取消' });
+        } else {
+            this.setState({
+                keyword: ''//必须要设置值，再调用方法，否则数据没有更新
+            }, () => {
+                this.initData();
+                this.setState({ btnText: '搜索' });
+            });
+        }
     };
 
     render() {
-        const { data } = this.state;
+        const { data,btnText } = this.state;
         return (
             <View style={{ flex: 1 }}>
                 <SearchBar
                     placeholder="请输入"
                     showCancelButton
+                    cancelText={btnText}
                     value={this.state.keyword}
-                    onChange={keyword => this.search(keyword)}
-                    onCancel={() => this.search('')}
+                    onChange={keyword => this.setState({ keyword })}
+                    onSubmit={() => this.search()}
+                    onCancel={() => this.clear()}
                 />
                 <ScrollView style={{ flex: 1 }}>
                     <View style={styles.content}>

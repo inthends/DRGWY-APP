@@ -54,15 +54,15 @@ class SheBeiList extends BasePage {
             billStatus: -1,
             //canLoadMore: true,
             time: common.getCurrentYearAndMonth(),
-            selectBuilding: this.props.selectBuilding
+            selectBuilding: this.props.selectBuilding,
+            btnText: '搜索' 
         };
-
     }
 
-    componentDidMount() { 
+    componentDidMount() {
         this.onRefresh();
     }
- 
+
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
         const nextSelectBuilding = nextProps.selectBuilding;
@@ -73,7 +73,7 @@ class SheBeiList extends BasePage {
             });
         }
     }
- 
+
     getList = () => {
         const { text } = this.state;//没有分页
         let params = { keyword: text };
@@ -127,24 +127,44 @@ class SheBeiList extends BasePage {
             </TouchableWithoutFeedback>
         );
     };
-
+ 
     search = () => {
         Keyboard.dismiss();
         this.onRefresh();
+        this.setState({ btnText: '取消' });
+    };
+
+    clear = () => {
+        const { btnText } = this.state;
+        Keyboard.dismiss();
+        if (btnText == '搜索') {
+            this.onRefresh();
+            this.setState({ btnText: '取消' });
+        } else {
+            this.setState({
+                keyword: ''//必须要设置值，再调用方法，否则数据没有更新
+            }, () => {
+                this.onRefresh();
+                this.setState({ btnText: '搜索' });
+            });
+        }
     };
 
     render() {
-        const { data = [] } = this.state;
+        const { data = [],btnText } = this.state;
         return (
             <View style={{ flex: 1 }}>
-                <CommonView style={{ flex: 1 }}> 
+                <CommonView style={{ flex: 1 }}>
                     <SearchBar
                         placeholder="请输入"
                         showCancelButton
-                        value={this.state.text}
-                        onChange={text => { this.setState({ text }); this.search(); }}
-                        onCancel={() => { this.setState({ text: '' }); this.search(); }}
+                        cancelText={btnText}
+                        value={this.state.keyword}
+                        onChange={keyword => this.setState({ keyword })}
+                        onSubmit={() => this.search()}
+                        onCancel={() => this.clear()}
                     />
+
                     {
                         data.map((item, index) => {
                             return this._renderItem({ item, index })

@@ -19,7 +19,7 @@ import api from '../../../utils/api';
 class ContactDetail extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
-            title: '通讯录',
+            title: '内部员工通讯录',
             headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -30,20 +30,20 @@ class ContactDetail extends BasePage {
                 <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
                     <Icon name='bars' style={{ marginRight: 15 }} color="black" />
                 </TouchableWithoutFeedback>
-            ),
-
+            )
         };
     };
 
     constructor(props) {
         super(props);
-        const type = common.getValueFromProps(this.props, 'type');
+        //const type = common.getValueFromProps(this.props, 'type');
         this.state = {
-            type,
+            //type,
             activeSections: [],
             //selectBuilding: this.props.selectBuilding || {},
             selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
-            data: []
+            data: [],
+            btnText: '搜索'
         };
         this.onChange = activeSections => {
             this.setState({ activeSections });
@@ -59,9 +59,9 @@ class ContactDetail extends BasePage {
         const nextSelectBuilding = nextProps.selectBuilding;
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
             this.setState({
-                selectBuilding: nextProps.selectBuilding,
-                estateId: nextProps.selectBuilding.key,
-                index: 0,
+                selectBuilding: nextProps.selectBuilding
+                //estateId: nextProps.selectBuilding.key,
+                //index: 0,
             }, () => {
                 this.initData();
             });
@@ -69,21 +69,13 @@ class ContactDetail extends BasePage {
     }
 
     initData = () => {
-        const { type, keyword } = this.state;
-        let url = '';
-        let url2 = '';
-        if (type === '1') {
-            url = '/api/MobileMethod/MGetDepartmentList';
-            url2 = '/api/MobileMethod/MGetWorkerList';
-        } else if (type === '2') {
-            url = '/api/MobileMethod/MGetVendorType';
-            url2 = '/api/MobileMethod/MGetVendorList';
-        }
+        const { keyword } = this.state;
+        let url = '/api/MobileMethod/MGetDepartmentList';
+        let url2 = '/api/MobileMethod/MGetWorkerList';
         api.getData(url, this.state.selectBuilding ? { organizeId: this.state.selectBuilding.key } : {}).then(res => {
             Promise.all(res.map(item => api.getData(url2,
                 {
                     departmentId: item.departmentId,
-                    vendorTypeId: item.itemDetailId,
                     keyword: keyword
                 }))).then(ress => {
                     let data = res.map((item, index) => ({
@@ -97,27 +89,41 @@ class ContactDetail extends BasePage {
         });
     };
 
-    search = (keyword) => {
-        Keyboard.dismiss(); 
-        this.setState({
-            keyword//必须要设置值，再调用方法，否则数据没有更新
-        }, () => {
+    search = () => {
+        Keyboard.dismiss();
+        this.initData();
+        this.setState({ btnText: '取消' });
+    };
+
+    clear = () => {
+        const { btnText } = this.state;
+        Keyboard.dismiss();
+        if (btnText == '搜索') {
             this.initData();
-        });
+            this.setState({ btnText: '取消' });
+        } else {
+            this.setState({
+                keyword: ''//必须要设置值，再调用方法，否则数据没有更新
+            }, () => {
+                this.initData();
+                this.setState({ btnText: '搜索' });
+            });
+        }
     };
 
     render() {
-        const { data, type } = this.state;
+        const { data, btnText } = this.state;
         return (
             <View style={{ flex: 1 }}>
                 <SearchBar
                     placeholder="请输入"
                     showCancelButton
+                    cancelText={btnText}
                     value={this.state.keyword}
-                    onChange={keyword => this.search(keyword)}
-                    onCancel={() => this.search('')}
+                    onChange={keyword => this.setState({ keyword })}
+                    onSubmit={() => this.search()}
+                    onCancel={() => this.clear()}
                 />
-
                 <ScrollView style={{ flex: 1 }}>
                     <View style={styles.content}>
                         <Accordion
@@ -125,11 +131,11 @@ class ContactDetail extends BasePage {
                             activeSections={this.state.activeSections}
                         >
                             {data.map(item => (
-                                <Accordion.Panel key={item.departmentId || item.itemId} header={item.fullName || item.itemName}>
+                                <Accordion.Panel key={item.departmentId} header={item.fullName}>
                                     <List>
                                         {item.children.map(i => (
                                             <Flex justify={'start'} key={i.id} align={'start'} style={styles.aa} direction={'column'}>
-                                                {
+                                                {/* {
                                                     type === '2' && (
                                                         <Flex>
                                                             <Text style={styles.item}>
@@ -137,10 +143,11 @@ class ContactDetail extends BasePage {
                                                             </Text>
                                                         </Flex>
                                                     )
-                                                }
+                                                } */}
                                                 <Flex style={{ width: '100%' }} justify={'between'}>
                                                     <Flex>
-                                                        <Text style={styles.desc}>{i.name || i.linkMan}</Text>
+                                                        {/* <Text style={styles.desc}>{i.name || i.linkMan}</Text> */}
+                                                        <Text style={styles.item}>{i.name || i.linkMan}</Text>
                                                         <Text style={styles.desc2}>{i.dutyName}</Text>
                                                     </Flex>
                                                     {i.phoneNum || i.linkPhone ?
@@ -153,7 +160,6 @@ class ContactDetail extends BasePage {
                                     </List>
                                 </Accordion.Panel>
                             ))}
-
                         </Accordion>
                     </View>
                 </ScrollView>
@@ -210,7 +216,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = ({ buildingReducer }) => {
     return {
-        selectBuilding: buildingReducer.selectBuilding,
+        selectBuilding: buildingReducer.selectBuilding
     };
 };
 

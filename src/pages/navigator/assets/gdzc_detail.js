@@ -1,7 +1,7 @@
 import React from 'react';
 import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
-import { StyleSheet, Text, TouchableOpacity, Modal, FlatList,Platform } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, Modal, FlatList,Platform,CameraRoll } from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';

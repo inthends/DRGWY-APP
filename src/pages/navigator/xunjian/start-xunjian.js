@@ -172,7 +172,8 @@ class StartXunJianPage extends BasePage {
             if (images.length > 1) {
                 let arrStr = JSON.stringify(newInspectData);
                 XunJianService.xunjianExecute(id, person.id, person.name, arrStr).then(res => {
-                    this.props.navigation.goBack();
+                    //this.props.navigation.goBack();
+                    this.props.navigation.navigate('xunjianBeforeStart');
                 });
             }
             else {
@@ -196,7 +197,8 @@ class StartXunJianPage extends BasePage {
                 }
             });
             UDToast.showSuccess('已保存，稍后可在我的-设置中上传巡检数据');
-            this.props.navigation.goBack();
+            //this.props.navigation.goBack();
+            this.props.navigation.navigate('xunjianBeforeStart');
         }
     }
 

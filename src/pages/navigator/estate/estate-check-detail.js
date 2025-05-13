@@ -8,7 +8,8 @@ import {
     FlatList,
     TextInput,
     Platform,
-    Modal
+    Modal,
+    CameraRoll
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Button, Flex, Icon } from '@ant-design/react-native';
@@ -152,7 +153,8 @@ export default class EcheckDetailPage extends BasePage {
 
     savePhoto = (uri) => {
         try {
-            if (Platform.OS == 'android') { //远程文件需要先下载 
+            if (Platform.OS == 'android') { //远程文件需要先下载
+
                 // 下载网络图片到本地
                 // const response = await RNFetchBlob.config({
                 //     fileCache: true,

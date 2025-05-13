@@ -38,11 +38,12 @@ class SelectRolePerson extends BasePage {
 
     constructor(props) {
         super(props);
-        this.state = { 
+        this.state = {
             //selectBuilding: this.props.selectBuilding || {},
             selectBuilding: {},//默认为空，防止别的报表选择了机构，带到当前报表
             data: [],
-            activeSections: []
+            activeSections: [],
+            btnText: '搜索'
         };
         this.onChange = activeSections => {
             this.setState({ activeSections });
@@ -56,34 +57,39 @@ class SelectRolePerson extends BasePage {
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
         const selectBuilding = this.state.selectBuilding;
         const nextSelectBuilding = nextProps.selectBuilding;
-        //console.log('nextSelectBuilding:' + nextSelectBuilding);
-
+        //console.log('nextSelectBuilding:' + nextSelectBuilding); 
         if (!(selectBuilding
             && nextSelectBuilding
             && selectBuilding.key === nextSelectBuilding.key)) {
             this.setState({
                 selectBuilding: nextProps.selectBuilding
                 // estateId: nextProps.selectBuilding.key,
-                //index: 0,
+                // index: 0,
             }, () => {
                 this.initData();
             });
         }
     }
 
+
     initData() {
         const { navigation } = this.props;
         const moduleId = navigation.state.params.moduleId;
         const enCode = navigation.state.params.enCode;
-        let url = '/api/MobileMethod/MGetRoleList'; //获取角色
-        let url2 = '/api/MobileMethod/MGetUsersByRoleId';//获取角色人员 
-        api.getData(url, this.state.selectBuilding ? {
+        const myorganizeId = navigation.state.params.organizeId;
+        let url = '/api/MobileMethod/MGetWorkRoleList'; //获取角色
+        let url2 = '/api/MobileMethod/MGetWorkUsersByRoleId';//获取角色人员 
+        let organizeId = this.state.selectBuilding && this.state.selectBuilding.key ? this.state.selectBuilding.key : myorganizeId;
+        api.getData(url, {
             moduleId,
-            enCode,
-            organizeId: this.state.selectBuilding.key
-        } : {}).then(res => {
+            organizeId,
+            enCode
+        }).then(res => {
             Promise.all(
-                res.map(item => api.getData(url2, { roleId: item.roleId, keyword: this.state.keyword }))).then(ress => {
+                res.map(item => api.getData(url2, {
+                    roleId: item.roleId,
+                    keyword: this.state.keyword
+                }))).then(ress => {
                     let data = res.map((item, index) => ({
                         ...item,
                         children: ress[index]
@@ -100,27 +106,43 @@ class SelectRolePerson extends BasePage {
         navigation.state.params.onSelect({ selectItem });
         navigation.goBack();
     };
- 
 
-    search = (keyword) => {
+
+
+    search = () => {
         Keyboard.dismiss();
-        this.setState({
-            keyword//必须要设置值，再调用方法，否则数据没有更新
-        }, () => {
+        this.initData();
+        this.setState({ btnText: '取消' });
+    };
+
+    clear = () => {
+        const { btnText } = this.state;
+        Keyboard.dismiss();
+        if (btnText == '搜索') {
             this.initData();
-        });
+            this.setState({ btnText: '取消' });
+        } else {
+            this.setState({
+                keyword: ''//必须要设置值，再调用方法，否则数据没有更新
+            }, () => {
+                this.initData();
+                this.setState({ btnText: '搜索' });
+            });
+        }
     };
 
     render() {
-        const { data } = this.state;
+        const { data,btnText } = this.state;
         return (
             <View style={{ flex: 1 }}>
                 <SearchBar
                     placeholder="请输入"
                     showCancelButton
+                    cancelText={btnText}
                     value={this.state.keyword}
-                    onChange={keyword => this.search(keyword)}
-                    onCancel={() => this.search('')}
+                    onChange={keyword => this.setState({ keyword })}
+                    onSubmit={() => this.search()}
+                    onCancel={() => this.clear()}
                 />
                 <ScrollView style={{ flex: 1 }}>
                     <View style={styles.content}>
@@ -187,7 +209,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = ({ buildingReducer }) => {
     return {
-        selectBuilding: buildingReducer.selectBuilding,
+        selectBuilding: buildingReducer.selectBuilding
     };
 };
+
 export default connect(mapStateToProps)(SelectRolePerson);

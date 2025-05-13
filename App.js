@@ -50,7 +50,7 @@ class App extends Component<Props> {
             text: '立即查看',
             onPress: () => {
               this.navigation.navigate('newsList', {
-                data: result,
+                data: result
               });
             },
           },

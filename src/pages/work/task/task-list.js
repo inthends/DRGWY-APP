@@ -67,6 +67,8 @@ class TaskListPage extends BasePage {
         );
     }
 
+    
+
     //必须
     componentWillUnmount() {
         this.viewDidAppear.remove();

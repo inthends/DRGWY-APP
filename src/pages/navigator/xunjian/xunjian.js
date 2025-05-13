@@ -8,6 +8,7 @@ import LoadImage from '../../../components/load-image';
 import CommonView from '../../../components/CommonView';
 import { connect } from 'react-redux';
 import XunJianService from './xunjian-service';
+import UDToast from '../../../utils/UDToast';
 // import memberReducer from '../../../utils/store/reducers/member-reducer'; 
 // import xunJianReducer from '../../../utils/store/reducers/xunjian-reducer';
 // import ImagePicker from 'react-native-image-picker';
@@ -55,7 +56,7 @@ class XunJianPage extends BasePage {
     callBack = (pointId) => {
         if (this.props.hasNetwork) {
             //判断巡检点位状态
-            XunJianService.checkPollingState(pointId).then(res => { 
+            XunJianService.checkPollingState(pointId).then(res => {
                 if (res == null) {
                     UDToast.showError('点位不存在');
                     return;
@@ -118,12 +119,14 @@ class XunJianPage extends BasePage {
         //         });
         //     },
         // )
-
+ 
+        //点击手机返回按钮会跳转到扫码页面，需要改为跳转到当前页面 
         this.props.navigation.push('scanonly', {
             data: {
-                callBack: this.callBack
+                callBack: this.callBack,
+                needBack: true//需要返回当前页面
             }
-        });
+        }); 
 
     };
 
@@ -257,7 +260,6 @@ class XunJianPage extends BasePage {
                         </TouchableWithoutFeedback>
                     </Flex>
                 </Flex>
-
                 <Flex style={styles.line} />
                 {/*<Text style={styles.location}>当前位置：xxxx</Text>*/}
                 {/* <TouchableWithoutFeedback onPress={() => this.props.navigation.push('selectXunjian', {
@@ -271,11 +273,10 @@ class XunJianPage extends BasePage {
                         <LoadImage style={{ width: 6, height: 12 }} defaultImg={require('../../../static/images/address/right.png')} />
                     </Flex>
                 </TouchableWithoutFeedback> */}
+
                 <TouchableWithoutFeedback
-                    onPress={() => this.props.navigation.navigate('selectRolePerson',
+                    onPress={() => this.props.navigation.navigate('selectRolePersonPolling',
                         {
-                            moduleId: 'PollingTask',
-                            enCode: '',
                             onSelect: this.onSelectPerson
                         })}>
                     <Flex justify='between' style={[{

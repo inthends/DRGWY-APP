@@ -11,7 +11,7 @@ export default class MyPopover extends Component {
         super(props);
         this.state = {
             isVisible: false,
-            index: 0,
+            index: this.props.index ? this.props.index : 0, //0,
             titles: this.props.titles
         };
     }
@@ -30,9 +30,11 @@ export default class MyPopover extends Component {
             isVisible: true,
         });
     };
+
     closePopover = () => {
         this.setState({ isVisible: false });
     };
+
     select = (index) => {
         const { titles } = this.state;
         this.setState({ index, isVisible: false });
@@ -42,15 +44,17 @@ export default class MyPopover extends Component {
     };
 
     render() {
+
         const { titles, index } = this.state;
+
         return (
-            <View style={[styles.container, this.props.style]}> 
+            <View style={[styles.container, this.props.style]}>
                 <TouchableWithoutFeedback ref={ref => this.touchable = ref} onPress={() => this.showPopover()}>
                     <Flex style={{ height: 40 }}>
                         {!this.props.hiddenImage && (
                             <Flex>
-                                <LoadImage style={{width: 15, height: 8}}
-                                           defaultImg={this.state.isVisible ? UpImage : DownImage}/>
+                                <LoadImage style={{ width: 15, height: 8 }}
+                                    defaultImg={this.state.isVisible ? UpImage : DownImage} />
                             </Flex>
                         )}
                         <Text style={[{

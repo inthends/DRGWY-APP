@@ -20,7 +20,7 @@ import {
 import CommonView from '../../../components/CommonView';
 import { DrawerType } from '../../../utils/store/action-types/action-types';
 
-
+//机构、项目、流程分类树
 const SectionHeader = (props) => {
   return (
     <Flex
@@ -175,10 +175,8 @@ class ManagerBuildingPage extends BasePage {
             allData: data
           });
         });
-      }
-
-      this.selectDrawerType = nextProps.selectDrawerType;
-
+      } 
+      this.selectDrawerType = nextProps.selectDrawerType; 
     }
 
     //废弃，影响较大

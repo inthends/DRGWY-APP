@@ -6,9 +6,9 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
     FlatList,
-    Alert
+    //Alert
 } from 'react-native';
-import { Flex, Icon, Button } from '@ant-design/react-native';
+import { Flex, Icon, Button, Modal } from '@ant-design/react-native';
 import BasePage from '../../base/base';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
@@ -70,6 +70,7 @@ class EstateCheckPage extends BasePage {
         };
     }
 
+
     componentDidMount() {
 
         //加载有现场检查权限的角色
@@ -102,7 +103,8 @@ class EstateCheckPage extends BasePage {
         this.viewDidAppear.remove();
     }
 
-    componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
+    // componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
+    componentWillReceiveProps(nextProps, nextContext) {
         const selectBuilding = this.state.selectBuilding;
         const nextSelectBuilding = nextProps.selectBuilding;
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
@@ -167,62 +169,97 @@ class EstateCheckPage extends BasePage {
     };
 
     deleteDetail = (id) => {
-        Alert.alert(
-            '请确认',
-            '是否删除？',
+        // Alert.alert(//ios下删除弹出确认框会卡死 
+        //     '请确认',
+        //     '是否删除？',
+        //     [
+        //         {
+        //             text: '取消',
+        //             onPress: () => {
+        //             },
+        //             style: 'cancel',
+        //         },
+        //         {
+        //             text: '确定',
+        //             onPress: () => {
+        //                 WorkService.deleteCheck(id).then(res => {
+        //                     this.onRefresh();
+        //                 });
+        //             },
+        //         },
+        //     ],
+        //     { cancelable: false }
+        // ); 
+
+        Modal.alert('请确认', '是否删除？',
             [
                 {
-                    text: '取消',
-                    onPress: () => {
-                    },
-                    style: 'cancel',
+                    text: '取消', onPress: () => { 
+                    }, style: 'cancel'
                 },
                 {
-                    text: '确定',
-                    onPress: () => {
+                    text: '确定', onPress: () => {
                         WorkService.deleteCheck(id).then(res => {
                             this.onRefresh();
                         });
-                    },
-                },
-            ],
-            { cancelable: false }
-        );
+                    }
+                }
+            ]
+        )
     };
 
 
+    modifyData = (id) => {
+        this.props.navigation.push('checkModify', {
+            data: {
+                id: id,
+                checkRole: this.state.checkRole,
+                checkRoleId: this.state.checkRoleId
+            }
+        })
+    }
+
+
     _renderItem = ({ item, index }) => {
+
         return (
-            <TouchableWithoutFeedback onPress={() => { this.props.navigation.push('checkDetail', { id: item.billId })}}>
+            <TouchableWithoutFeedback onPress={() => { this.props.navigation.push('checkDetail', { id: item.billId }) }}>
                 <Flex direction='column' align={'start'}
                     style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
                     <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.billCode} {item.statusName}</Text>
-                        {/* <Text style={styles.title2}>{item.statusName}</Text> */}
-                        {item.statusName == '待评审' ?
-                            <ActionPopover
-                                textStyle={{ fontSize: 14 }}
-                                hiddenImage={true}
-                                titles={['修改', '删除']}
-                                visible={true}
-                                onChange={(title) => {
-                                    if (title === '删除') {
-                                        this.deleteDetail(item.billId);
-                                    } else if (title === '修改') {
-                                        this.props.navigation.push('checkModify', {
-                                            data: {
-                                                id: item.billId,
-                                                checkRole: this.state.checkRole,
-                                                checkRoleId: this.state.checkRoleId
-                                            }
-                                        })
-                                    }
-                                }}
-                            />
-                            : null}
+                        {
+                            item.statusName == '待评审' ?
+                                <ActionPopover
+                                    textStyle={{ fontSize: 14 }}
+                                    hiddenImage={true}
+                                    titles={['修改', '删除']}
+                                    visible={true}
+                                    onChange={(title) => {
+                                        if (title === '删除') {
+                                            this.deleteDetail(item.billId);
+                                        } else if (title === '修改') {
+                                            this.modifyData(item.billId);
+                                        }
+                                    }}
+                                />
+
+                                // <Flex style={styles.container}>
+                                //     <TouchableOpacity onPress={() => this.modifyData(item.billId)}>
+                                //         <Text style={{ color: Macro.work_blue, paddingRight: 15 }}>修改</Text>
+                                //     </TouchableOpacity> 
+                                //     <TouchableOpacity onPress={() => this.deleteDetail(item.billId)}>
+                                //         <Text style={{ color: Macro.work_blue, paddingRight: 15 }}>删除</Text>
+                                //     </TouchableOpacity>
+                                // </Flex>
+
+                                : null
+                        }
 
                     </Flex>
+
                     <Flex style={styles.line} />
+
                     <Flex align={'start'} direction={'column'}>
                         <Text style={{
                             paddingLeft: 20,
@@ -239,6 +276,7 @@ class EstateCheckPage extends BasePage {
                     </Flex>
                 </Flex>
             </TouchableWithoutFeedback>
+
         );
     };
 
@@ -382,6 +420,12 @@ class EstateCheckPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
+
+    // container: {
+    //     alignItems: 'center',
+    //     justifyContent: 'center'
+    // },
+
     every: {
         //fontSize: 16,
         color: '#666',

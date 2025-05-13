@@ -3,8 +3,7 @@ import React//, {Fragment}
 import {
     Text, View, StyleSheet, FlatList, TouchableOpacity 
 } from 'react-native';
-import BasePage from '../../base/base';
-//import BuildingHeader from '../../../components/building/building-header';
+import BasePage from '../../base/base'; 
 import Macro from '../../../utils/macro';
 import BuildingsService from './buildings-service';
 import ScreenUtil from '../../../utils/screen-util';

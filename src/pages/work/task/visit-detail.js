@@ -10,7 +10,7 @@ import {
     Modal,
     FlatList,
     Platform,
-    Keyboard
+    Keyboard,CameraRoll
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Icon, Flex, TextareaItem, Button } from '@ant-design/react-native';

@@ -19,8 +19,7 @@ import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 let screen_width = ScreenUtil.deviceWidth();
 
-class AssetsPage extends BasePage {
-
+class AssetsPage extends BasePage { 
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
@@ -57,12 +56,12 @@ class AssetsPage extends BasePage {
     }
 
     getList = () => {
-        const { estateId, text } = this.state;
+        const { estateId, keyword } = this.state;
         // const queryJson = {
         //     keyword: text,
         //     estateId: estateId
         // };
-        service.gdzcList(this.state.pageIndex, estateId, text, this.state.refreshing).then(dataInfo => {
+        service.gdzcList(this.state.pageIndex, estateId, keyword, this.state.refreshing).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -136,7 +135,7 @@ class AssetsPage extends BasePage {
         this.props.navigation.push('scanonly', {
             data: {
                 callBack: this.callBack,
-                //needBack: '1'
+                //needBack: true
             }
         });
     };
@@ -157,9 +156,27 @@ class AssetsPage extends BasePage {
         );
     };
 
+
     search = () => {
         Keyboard.dismiss();
         this.onRefresh();
+        this.setState({ btnText: '取消' });
+    };
+
+    clear = () => {
+        const { btnText } = this.state;
+        Keyboard.dismiss();
+        if (btnText == '搜索') {
+            this.onRefresh();
+            this.setState({ btnText: '取消' });
+        } else {
+            this.setState({
+                keyword: ''//必须要设置值，再调用方法，否则数据没有更新
+            }, () => {
+                this.onRefresh();
+                this.setState({ btnText: '搜索' });
+            });
+        }
     };
 
     render() {
@@ -171,9 +188,11 @@ class AssetsPage extends BasePage {
                     <SearchBar
                         placeholder="请输入"
                         showCancelButton
-                        value={this.state.text}
-                        onChange={text => { this.setState({ text }); this.search(); }}
-                        onCancel={() => { this.setState({ text: '' }); this.search(); }}
+                        cancelText={btnText}
+                        value={this.state.keyword}
+                        onChange={keyword => this.setState({ keyword })}
+                        onSubmit={() => this.search()}
+                        onCancel={() => this.clear()}
                     />
 
                     <View style={{ flex: 1 }}>

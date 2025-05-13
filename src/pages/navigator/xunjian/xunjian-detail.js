@@ -110,7 +110,7 @@ export default class XunJianDetailPage extends BasePage {
         }
     }
 
-    render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
+    render(){//: React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
         const { data, images } = this.state;
         return (
             <CommonView>

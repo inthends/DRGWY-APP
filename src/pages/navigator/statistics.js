@@ -55,7 +55,6 @@ class StatisticsPage extends BasePage {
     this.setState({
       servertime
     }, () => {
-
       service.serverStatistics(this.state.servertime, this.state.showLoading).
         then(serverdata => {
           this.setState({
@@ -65,7 +64,6 @@ class StatisticsPage extends BasePage {
         });
     });
   };
-
 
   worktimeChange = (worktime) => {
     this.setState({
@@ -91,7 +89,7 @@ class StatisticsPage extends BasePage {
         });
       });
 
-      service.workStatistics(this.state.worktime, this.state.showLoading).
+    service.workStatistics(this.state.worktime, this.state.showLoading).
       then(workdata => {
         this.setState({
           workdata,
@@ -102,7 +100,6 @@ class StatisticsPage extends BasePage {
 
 
   componentDidMount() {
-  
     this.viewDidAppear = this.props.navigation.addListener(
       'didFocus',
       (obj) => {
@@ -110,13 +107,12 @@ class StatisticsPage extends BasePage {
         this.onRefresh();
       }
     );
- 
+
   }
 
   // componentWillUnmount() {
   //   this.viewDidAppear.remove();
-  // }
-
+  // } 
 
   // componentWillReceiveProps(nextProps, nextContext) {
   //   const selectBuilding = this.state.selectBuilding;
@@ -157,7 +153,8 @@ class StatisticsPage extends BasePage {
                 this.props.navigation.push('fuwulist', {
                   'data': {
                     type: 'all',
-                    title: '服务单列表'
+                    title: '服务单列表',
+                    time: this.state.servertime
                   }
                 })
               }}>
@@ -173,7 +170,8 @@ class StatisticsPage extends BasePage {
                 this.props.navigation.push('fuwulist', {
                   'data': {
                     type: 'unfinish',
-                    title: '待闭单列表'
+                    title: '待闭单列表',
+                    time: this.state.servertime
                   }
                 })
               }}>
@@ -189,7 +187,8 @@ class StatisticsPage extends BasePage {
                 this.props.navigation.push('fuwulist', {
                   'data': {
                     type: 'finish',
-                    title: '已闭单列表'
+                    title: '已闭单列表',
+                    time: this.state.servertime
                   }
                 })
               }}>
@@ -211,7 +210,8 @@ class StatisticsPage extends BasePage {
                 this.props.navigation.push('fuwulist', {
                   'data': {
                     type: 'visit',
-                    title: '已回访列表'
+                    title: '已回访列表',
+                    time: this.state.servertime
                   }
                 })
               }}>
@@ -228,7 +228,8 @@ class StatisticsPage extends BasePage {
                 this.props.navigation.push('fuwulist', {
                   'data': {
                     type: 'unsatisfied',
-                    title: '不满意列表'
+                    title: '不满意列表',
+                    time: this.state.servertime
                   }
                 })
               }}>
@@ -244,7 +245,8 @@ class StatisticsPage extends BasePage {
                 this.props.navigation.push('fuwulist', {
                   'data': {
                     type: 'satisfied',
-                    title: '满意列表'
+                    title: '满意列表',
+                    time: this.state.servertime
                   }
                 })
               }}>
@@ -276,7 +278,8 @@ class StatisticsPage extends BasePage {
                   'data': {
                     type: 'all',
                     //hiddenHeader: false,
-                    title: '工单列表'
+                    title: '工单列表',
+                    time: this.state.worktime
                   }
                 })
               }}>
@@ -292,7 +295,8 @@ class StatisticsPage extends BasePage {
                 this.props.navigation.push('weixiulist', {
                   'data': {
                     type: 'unfinish',
-                    title: '待完成列表'
+                    title: '待完成列表',
+                    time: this.state.worktime
                   }
                 })
               }}>
@@ -308,7 +312,8 @@ class StatisticsPage extends BasePage {
                 this.props.navigation.push('weixiulist', {
                   'data': {
                     type: 'finish',
-                    title: '已完成列表'
+                    title: '已完成列表',
+                    time: this.state.worktime
                   }
                 })
               }}>
@@ -330,7 +335,8 @@ class StatisticsPage extends BasePage {
                 this.props.navigation.push('weixiulist', {
                   'data': {
                     type: 'check',
-                    title: '已检验列表'
+                    title: '已检验列表',
+                    time: this.state.worktime
                   }
                 })
               }}>
@@ -347,7 +353,8 @@ class StatisticsPage extends BasePage {
                 this.props.navigation.push('weixiulist', {
                   'data': {
                     type: 'unqualified',
-                    title: '不合格列表'
+                    title: '不合格列表',
+                    time: this.state.worktime
                   }
                 })
               }}>
@@ -363,7 +370,8 @@ class StatisticsPage extends BasePage {
                 this.props.navigation.push('weixiulist', {
                   'data': {
                     type: 'qualified',
-                    title: '合格列表'
+                    title: '合格列表',
+                    time: this.state.worktime
                   }
                 })
               }}>
@@ -616,5 +624,5 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps,mapDispatchToProps)(StatisticsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(StatisticsPage);
 

@@ -11,8 +11,7 @@ import common from '../../../utils/common';
 import XunJianService from './xunjian-service';
 
 //废弃，改为角色分组显示
-class SelectXunJianPerson extends BasePage {
-    
+class SelectXunJianPerson extends BasePage { 
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
@@ -73,7 +72,7 @@ class SelectXunJianPerson extends BasePage {
     }
 
 
-    render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
+    render(){//: React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
 
         const { persons } = this.state;
         return (
@@ -100,8 +99,7 @@ const mapStateToProps = ({ buildingReducer }) => {
 };
 
 export default connect(mapStateToProps)(SelectXunJianPerson);
-
-
+ 
 const styles = StyleSheet.create({
     hang: {
         paddingTop: 20,

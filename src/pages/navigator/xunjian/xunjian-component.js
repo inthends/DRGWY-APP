@@ -197,8 +197,7 @@ export default class XunJianDetailPage extends BasePage {
     }
 }
 
-const styles = StyleSheet.create({
-
+const styles = StyleSheet.create({ 
     moreText: {
         lineHeight: 20,
         fontSize: 14
