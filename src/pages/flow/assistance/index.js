@@ -17,6 +17,7 @@ import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
 import AddReview from '../components/add-review';
 import ShowReviews from '../components/show-reviews';
+import ShowLine from '../components/show-line';
 
 export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
@@ -110,23 +111,27 @@ export default class DetailPage extends BasePage {
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
         <ScrollView style={{ flex: 1, padding: 10 }}>
           <ShowTitle title="基础信息" />
-
           <Flex style={styles.card} direction="column" align="start">
             <ShowText word="标题" title={detail.title} />
+            <ShowLine />
             <ShowText word="单号" title={detail.billCode} />
+            <ShowLine />
             <ShowText word="紧急程度" title={detail.emergencyLevel} />
+            <ShowLine />
             <ShowTextWithRight
               word="发起人"
               title={detail.createUserName}
               right={detail.date}
             />
+            <ShowLine />
             <ShowText word="发起人电话" title={detail.createUserTel} />
+            <ShowLine />
             <ShowText word="发起人部门" title={detail.departmentName} />
-
+            <ShowLine />
             <ShowText
               word="关联单据"
               title={detail.businessCode}
-              onClick={() => { 
+              onClick={() => {
                 // service.getRepairEntity(detail.businessId)
                 //   .then((repairData) => {
                 //     this.setState({ repairData }, () => { this.detailRef.showModal(); });
@@ -134,11 +139,11 @@ export default class DetailPage extends BasePage {
                 this.props.navigation.navigate('weixiuView', { id: detail.businessId });
               }}
             />
+            <ShowLine />
             <Text>
               {detail.contents}
             </Text>
-          </Flex>
-
+          </Flex> 
           <ShowFiles files={detail.files} onPress={
             (fileStr) => {
               this.props.navigation.navigate('webPage', {

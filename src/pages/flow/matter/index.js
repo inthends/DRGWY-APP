@@ -17,6 +17,7 @@ import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
 import AddReview from '../components/add-review';
 import ShowReviews from '../components/show-reviews';
+import ShowLine from '../components/show-line';
 
 export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
@@ -109,17 +110,21 @@ export default class DetailPage extends BasePage {
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
         <ScrollView style={{ flex: 1, padding: 10 }}>
           <ShowTitle title="基础信息" />
-          
           <Flex style={styles.card} direction="column" align="start">
             <ShowText word="单号" title={detail.billCode} />
+            <ShowLine />
             <ShowText word="机构" title={detail.organizeName} />
+            <ShowLine />
             <ShowText word="部门" title={detail.departmentName} />
+            <ShowLine />
             <ShowTextWithRight
               word="申报人"
               title={detail.applyUser}
               right={detail.date}
             />
+            <ShowLine />
             <ShowText word="事项类别" title={detail.matterType} />
+            <ShowLine />
             {/* <ShowText word="事项说明" title={detail.memo} /> */}
             <Text>
               {detail.memo}{"\n"}

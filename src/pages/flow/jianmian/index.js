@@ -5,7 +5,6 @@ import {
   TouchableWithoutFeedback, TouchableOpacity, Keyboard
 } from 'react-native';
 import { Flex, Icon, Modal, Button, TextareaItem } from '@ant-design/react-native';
-
 import BasePage from '../../base/base';
 import CommonView from '../../../components/CommonView';
 import ShowTitle from '../components/show-title';
@@ -73,8 +72,8 @@ export default class DetailPage extends BasePage {
   };
 
   //回复
-  reply = () => { 
-    const { id, messageId, memo } = this.state; 
+  reply = () => {
+    const { id, messageId, memo } = this.state;
     if (!memo) {
       UDToast.showError('请输入回复内容');
       return;
@@ -111,19 +110,21 @@ export default class DetailPage extends BasePage {
             direction="column"
             align="start">
             <ShowText word="减免单号" title={detail.billCode} />
+            <ShowLine />
             <ShowTextWithRight
               word="经办人"
               title={detail.createUserName}
               right={detail.billDate}
             />
+            <ShowLine />
             <ShowText word="折扣金额" title={detail.reductionSumAmount} />
+            <ShowLine />
             {/* <ShowText word="折扣说明" title={ detail.memo} />  */}
             <Text>
               {detail.memo}{"\n"}
               {/* 重要，追加一个换行，可以防止内容最后一行显示不全 */}
             </Text>
-          </Flex>
-
+          </Flex> 
           <ShowTitle title="明细" />
           <Flex style={styles.card} direction="column" align="start">
             {list.map((item, index) => (
@@ -266,7 +267,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     marginBottom: 15
   },
- 
+
   txt: {
     fontSize: 14,
     paddingBottom: 10

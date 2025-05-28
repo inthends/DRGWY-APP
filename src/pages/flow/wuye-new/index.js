@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Flex, Icon, Modal, Button, TextareaItem } from '@ant-design/react-native';
-import { View,Text, StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
 import BasePage from '../../base/base';
 import CommonView from '../../../components/CommonView';
 import ShowTitle from '../components/show-title';
@@ -19,6 +19,7 @@ import AddReview from '../components/add-review';
 import ShowReviews from '../components/show-reviews';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
+import ShowLine from '../components/show-line';
 
 export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
@@ -94,21 +95,30 @@ export default class DetailPage extends BasePage {
   };
 
   render() {
-    const { detail = {}, records = [], customer = {}, reviews = [] } = this.state;
+    const { item = {},//咨询信息
+      detail = {}, records = [], customer = {}, reviews = [] } = this.state;
     const { prices = [], fees: list = [] } = detail;
     return (
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
         <ScrollView style={{ flex: 1, padding: 10 }}>
           <ShowTitle title="基础信息" />
           <Flex style={styles.card} direction="column" align="start">
-            <ShowText word="项目" title={detail.organizeName} />
             <ShowText word="合同号" title={detail.no} />
+            <ShowLine />
             <ShowText word="合同期限" title={detail.date} />
+            <ShowLine />
             <ShowText word="付款方式" title={detail.payType} />
+            <ShowLine />
             <ShowText word="客户名称" title={detail.customer} />
+            <ShowLine />
+            <ShowText word="签约面积" title={detail.signArea} />
+            <ShowLine />
             <ShowText word="合同金额" title={detail.totalAmount} />
-            <ShowText word="合同面积" title={detail.totalArea} />
+            <ShowLine />
+            <ShowText word="所属项目" title={detail.organizeName} />
+            <ShowLine />
             <ShowText word="合同房产" title={detail.houseName} />
+            <ShowLine />
             <Text>
               {detail.memo}{"\n"}
             </Text>
@@ -118,11 +128,10 @@ export default class DetailPage extends BasePage {
           <ShowFiles files={detail.files || []} onPress={
             (fileStr) => {
               this.props.navigation.navigate('webPage', {
-                data: fileStr,
+                data: fileStr
               });
             }
           } />
-
 
           <ShowReviews reviews={reviews}
             onAddClick={() => this.setState({

@@ -326,6 +326,11 @@ class ApprovePage extends BasePage {
                     break;
                   }
 
+                   case '1015': {
+                    url = 'wuyechange';//物业合同变更
+                    break;
+                  }
+
                   case '1020': {
                     url = 'zulinplan';//规划单审批
                     break;

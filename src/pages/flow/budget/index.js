@@ -19,6 +19,7 @@ import AddReview from '../components/add-review';
 import ShowReviews from '../components/show-reviews';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
+import ShowLine from '../components/show-line';
 
 export default class DetailPage extends BasePage {
 
@@ -104,6 +105,7 @@ export default class DetailPage extends BasePage {
           <ShowTitle title="基础信息" />
           <Flex style={styles.card} direction="column" align="start">
             <ShowText word="合同名称" title={detail.contractName} />
+             <ShowLine />
             <ShowText word="合同编号" title={detail.no} />
             <ShowText word="所属项目" title={detail.organizeName} />
             <ShowText word="合同类别" title={detail.contractType} />

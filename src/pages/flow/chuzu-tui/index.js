@@ -1,7 +1,7 @@
- 
+
 import React from 'react';
 import { Flex, Icon, Modal, Button, TextareaItem } from '@ant-design/react-native';
-import { View,Text, StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
 import BasePage from '../../base/base';
 import CommonView from '../../../components/CommonView';
 import ShowTitle from '../components/show-title';
@@ -18,7 +18,7 @@ import UDToast from '../../../utils/UDToast';
 import AddReview from '../components/add-review';
 import ShowReviews from '../components/show-reviews';
 import Macro from '../../../utils/macro';
-import ScreenUtil from '../../../utils/screen-util';
+import ScreenUtil from '../../../utils/screen-util'; 
 
 export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
@@ -100,6 +100,7 @@ export default class DetailPage extends BasePage {
       detail = {},
       records = [],
       hetong = {},
+      customer = {},
       reviews = []
     } = this.state;
     const { receiveList = [], payList = [] } = detail;
@@ -109,8 +110,6 @@ export default class DetailPage extends BasePage {
         <ScrollView style={{ flex: 1, padding: 10 }}>
           <ShowTitle title="基础信息" />
           <Flex style={styles.card} direction="column" align="start">
-            <ShowText word="项目" title={detail.organizeName} />
-            <ShowLine />
             <ShowText
               word="合同号"
               title={detail.no}
@@ -127,16 +126,36 @@ export default class DetailPage extends BasePage {
             //   });
             // }}
             />
-             <ShowLine />
+            <ShowLine />
             <ShowText word="租期" title={detail.date} />
             <ShowLine />
-            <ShowText word="客户名称" title={detail.customer} />
+            {/* <ShowText word="客户名称" title={detail.customer} /> */}
+            <ShowText
+              word="客户名称"
+              title={detail.customer}
+              onClick={() => {
+                service.getCustomerEntity(detail.customerId)
+                  .then((customer) => {
+                    this.setState(
+                      {
+                        customer
+                      },
+                      () => {
+                        this.companyDetailRef.showModal();
+                      },
+                    );
+                  });
+              }}
+            />
+            <ShowLine />
+            <ShowText word="签约面积" title={detail.signArea} />
             <ShowLine />
             <ShowText word="合同金额" title={detail.totalAmount} />
             <ShowLine />
-            <ShowText word="租赁面积" title={detail.totalArea} />
+            {/* <ShowText word="租赁面积" title={detail.totalArea} /> */}
+            <ShowText word="所属项目" title={detail.organizeName} />
             <ShowLine />
-            <ShowText word="租赁房产" title={detail.houseName} /> 
+            <ShowText word="租赁房产" title={detail.houseName} />
             <ShowLine />
             <ShowText
               word="退租类型"
@@ -146,6 +165,7 @@ export default class DetailPage extends BasePage {
               pointColor={Macro.work_blue}
               onClick={() => { }}
             />
+            <ShowLine />
             <ShowText
               word="退租日期"
               title={detail.withdrawalDate}
@@ -154,6 +174,7 @@ export default class DetailPage extends BasePage {
               pointColor={Macro.work_blue}
               onClick={() => { }}
             />
+            <ShowLine />
             <ShowText
               word="经办人"
               title={detail.createUserName}
@@ -162,7 +183,7 @@ export default class DetailPage extends BasePage {
               pointColor={Macro.work_blue}
               onClick={() => { }}
             />
-
+            <ShowLine />
             <ShowText
               word="退租说明"
               title={(detail.memo || '').trim()}
@@ -172,13 +193,12 @@ export default class DetailPage extends BasePage {
               onClick={() => { }}
             />
           </Flex>
-
           <ShowMingXi title="合同未收" list={receiveList} />
           <ShowMingXi title="合同未退" list={payList} />
           <ShowFiles files={detail.files || []} onPress={
             (fileStr) => {
               this.props.navigation.navigate('webPage', {
-                data: fileStr,
+                data: fileStr
               });
             }
           } />
@@ -208,7 +228,7 @@ export default class DetailPage extends BasePage {
           hetong={hetong}
           ref={(ref) => (this.hetongDetailRef = ref)}
         />
-        
+
         <Modal
           //弹出回复页面
           transparent
@@ -288,6 +308,12 @@ export default class DetailPage extends BasePage {
             />
           </Flex>
         </Modal>
+
+        <CompanyDetail
+          customer={customer}
+          ref={(ref) => (this.companyDetailRef = ref)}
+        />
+
       </CommonView>
     );
   }

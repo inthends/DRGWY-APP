@@ -19,6 +19,7 @@ import AddReview from '../components/add-review';
 import ShowReviews from '../components/show-reviews';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
+import ShowLine from '../components/show-line';
 
 export default class DetailPage extends BasePage {
 
@@ -58,7 +59,7 @@ export default class DetailPage extends BasePage {
         detail
       });
     });
-    
+
     service.getApproveLog(id).then((records) => {
       this.setState({
         records
@@ -105,11 +106,17 @@ export default class DetailPage extends BasePage {
           <ShowTitle title="基础信息" />
           <Flex style={styles.card} direction="column" align="start">
             <ShowText word="合同名称" title={detail.contractName} />
+            <ShowLine />
             <ShowText word="合同编号" title={detail.no} />
+            <ShowLine />
             <ShowText word="所属项目" title={detail.organizeName} />
+            <ShowLine />
             <ShowText word="合同类别" title={detail.contractType} />
+            <ShowLine />
             <ShowText word="合同金额" title={detail.totalAmount} />
+            <ShowLine />
             <ShowText word="租期" title={detail.date} />
+            <ShowLine />
             <ShowText word="签约人" title={detail.signer} />
             <ShowText
               word="签约对象"
@@ -127,8 +134,10 @@ export default class DetailPage extends BasePage {
                     );
                   });
               }}
-            /> 
+            />
+            <ShowLine />
             <ShowText word="第三方" title={detail.thirdName} />
+            <ShowLine />
             {detail.cancelDate != '' ?
               <>
                 <ShowText word="解约日期" title={detail.cancelDate} />
@@ -140,16 +149,14 @@ export default class DetailPage extends BasePage {
             </Text>
           </Flex>
           <ShowPrices prices={prices} />
-          <ShowMingXi list={list} />
-
+          <ShowMingXi list={list} /> 
           <ShowFiles files={detail.files || []} onPress={
             (fileStr) => {
               this.props.navigation.navigate('webPage', {
                 data: fileStr,
               });
             }
-          } />
-
+          } /> 
           <ShowReviews reviews={reviews}
             onAddClick={() => this.setState({
               addVisible: true
@@ -215,7 +222,7 @@ export default class DetailPage extends BasePage {
                   </Flex>
                   <Button
                     style={{
-                      width:130,
+                      width: 130,
                       marginTop: 10,
                       backgroundColor: Macro.work_blue
                     }}

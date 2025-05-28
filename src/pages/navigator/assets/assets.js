@@ -1,5 +1,4 @@
-import React
-    from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -41,6 +40,7 @@ class AssetsPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
+            btnText:'搜索',
             pageIndex: 1,
             dataInfo: {
                 data: [],
@@ -77,7 +77,7 @@ class AssetsPage extends BasePage {
         }).catch(err => this.setState({ refreshing: false }));
     };
 
-    componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
+    componentWillReceiveProps(nextProps , nextContext ) {
         const selectBuilding = this.state.selectBuilding;
         const nextSelectBuilding = nextProps.selectBuilding;
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
@@ -155,8 +155,7 @@ class AssetsPage extends BasePage {
             </TouchableWithoutFeedback>
         );
     };
-
-
+ 
     search = () => {
         Keyboard.dismiss();
         this.onRefresh();
@@ -180,7 +179,7 @@ class AssetsPage extends BasePage {
     };
 
     render() {
-        const { dataInfo } = this.state;
+        const { dataInfo,btnText } = this.state;
         //const { selectBuilding } = this.props; 
         return (
             <View style={{ flex: 1 }}>
@@ -201,8 +200,7 @@ class AssetsPage extends BasePage {
                             // ListHeaderComponent={}
                             renderItem={this._renderItem}
                             keyExtractor={(item, index) => item.id}
-                            // ItemSeparatorComponent={() => <View style={{ backgroundColor: '#eee', height: 1 }} />}
-
+                            // ItemSeparatorComponent={() => <View style={{ backgroundColor: '#eee', height: 1 }} />} 
                             //必须
                             onEndReachedThreshold={0.1}
                             refreshing={this.state.refreshing}
@@ -212,7 +210,6 @@ class AssetsPage extends BasePage {
                             ListEmptyComponent={<NoDataView />}
                         />
                         <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
-
                     </View>
 
                     {/* <TouchableWithoutFeedback onPress={this.start}>
@@ -238,9 +235,7 @@ class AssetsPage extends BasePage {
                                 backgroundColor: Macro.work_blue,
                                 height: 40
                             }}>开始盘点</Button>
-                    </Flex>
-
-
+                    </Flex> 
                 </CommonView>
             </View>
         );

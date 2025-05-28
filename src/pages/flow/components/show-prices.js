@@ -5,8 +5,7 @@ import ShowLine from './show-line';
 import ShowText from './show-text-small';
 import ShowTitle from './show-title';
 
-const ShowPrices = ({ prices = [] }) => {
-  
+const ShowPrices = ({ prices = [] }) => { 
   if (prices.length === 0) {
     return <></>;
   }

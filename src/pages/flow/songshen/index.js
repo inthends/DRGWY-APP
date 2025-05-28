@@ -20,6 +20,7 @@ import AddReview from '../components/add-review';
 import ShowReviews from '../components/show-reviews';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
+import ShowLine from '../components/show-line';
 
 export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
@@ -123,18 +124,22 @@ export default class DetailPage extends BasePage {
         <ScrollView style={{ flex: 1, padding: 10 }}>
           <ShowTitle title="基础信息" />
           <Flex style={styles.card} direction="column" align="start">
-            <ShowText word="送审项目" title={detail.organizeName} />
+            <ShowText word="所属项目" title={detail.organizeName} />
+            <ShowLine />
             <ShowText word="送审单号" title={detail.billCode} />
+            <ShowLine />
             <ShowTextWithRight
               word="发起人"
               title={detail.createUserName}
               right={detail.billDate}
             />
+            <ShowLine />
             <Text>
               {detail.memo}{"\n"}
             </Text>
           </Flex>
           <ShowTitle title="送审金额" />
+          <ShowLine />
           <Flex style={styles.card} direction="column" align="start">
             <Text style={[styles.txt, { color: Macro.work_blue }]}>
               {detail.groupTotal}
@@ -143,7 +148,6 @@ export default class DetailPage extends BasePage {
               {detail.receiveDetail}
             </Text>
           </Flex>
-
           <ShowMingXiLook
             title="收款明细"
             list={billList}

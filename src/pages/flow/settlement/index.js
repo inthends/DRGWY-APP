@@ -12,7 +12,7 @@ import ShowMingXi from '../components/show-mingxi-settlement';
 import ShowActions from '../components/show-actions';
 import common from '../../../utils/common';
 import ShowRecord from '../components/show-record';
-import ShowFiles from '../components/show-files'; 
+import ShowFiles from '../components/show-files';
 import UDToast from '../../../utils/UDToast';
 import AddReview from '../components/add-review';
 import ShowReviews from '../components/show-reviews';
@@ -20,6 +20,7 @@ import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
 import moment from 'moment';
 import numeral from 'numeral';
+import ShowLine from '../components/show-line';
 
 export default class DetailPage extends BasePage {
 
@@ -105,11 +106,17 @@ export default class DetailPage extends BasePage {
           <ShowTitle title="基础信息" />
           <Flex style={styles.card} direction="column" align="start">
             <ShowText word="所属机构" title={detail.orgName} />
+            <ShowLine />
             <ShowText word="所属部门" title={detail.departmentName} />
+            <ShowLine />
             <ShowText word="单据日期" title={moment(detail.billDate).format('YYYY-MM-DD')} />
+            <ShowLine />
             <ShowText word="决算年月" title={moment(detail.budgetMonth).format('YYYY-MM')} />
+            <ShowLine />
             <ShowText word="决算科目类型" title={detail.budgetSubjectType} />
+            <ShowLine />
             <ShowText word="金额" title={numeral(detail.amount).format('0,0.00')} />
+            <ShowLine />
             <Text>
               {detail.memo}{"\n"}
             </Text>

@@ -2,8 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import BasePage from '../../pages/base/base';
 import Macro from '../../utils/macro';
-import { Flex } from '@ant-design/react-native';
-import { Icon } from '@ant-design/react-native'; 
+import {  Icon, Flex } from '@ant-design/react-native';
 import numeral from 'numeral';
 
 export default class BuildingHeader extends BasePage {
@@ -42,6 +41,8 @@ export default class BuildingHeader extends BasePage {
                         </TouchableOpacity>
                     </Flex>
                 </Flex> */}
+
+               
 
                 <Flex direction="row" justify='between' style={styles.top}>
                     <Flex justify='start' style={{ flex: 4 }}>
@@ -91,21 +92,21 @@ const styles = StyleSheet.create({
         height: 150,
         backgroundColor: Macro.color_sky_dark
     },
-    top: { 
+    top: {
         flex: 2,
         backgroundColor: Macro.color_sky_dark,
         paddingLeft: 15,
         paddingRight: 15,
         fontSize: 14
     },
- 
+
     bottom: {
         flex: 2,
         backgroundColor: Macro.color_sky_dark,
         fontSize: 14,
         marginBottom: 8
     },
-    
+
     text: {
         color: Macro.color_white,
         fontSize: 16
@@ -115,14 +116,14 @@ const styles = StyleSheet.create({
     //     width: '100%'
     // },
     big: {
-        fontSize: 25,  
-        paddingLeft: 10 
+        fontSize: 25,
+        paddingLeft: 10
     },
     item: {
         alignItems: 'center'
     },
     topText: {
-        color:  '#74BAF1',
+        color: '#74BAF1',
         fontSize: 16
     },
     bottomText: {

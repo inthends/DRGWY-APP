@@ -10,7 +10,7 @@ import {
 import LoadImage from '../load-image';
 import ScreenUtil from '../../utils/screen-util';
 import numeral from 'numeral';
-
+//楼栋
 export default class BuildingCell extends BasePage {
     constructor(props) {
         super(props);

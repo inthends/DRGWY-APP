@@ -7,7 +7,7 @@ import {
     ScrollView,
     FlatList,
     Platform,
-    Modal,CameraRoll
+    Modal, CameraRoll
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Icon, Flex } from '@ant-design/react-native';
@@ -21,9 +21,9 @@ import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import moment from 'moment';
-import RNFetchBlob from 'rn-fetch-blob'; 
+import RNFetchBlob from 'rn-fetch-blob';
 
-//仅查看
+//统计里面，仅查看
 export default class EweixiuDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
@@ -50,7 +50,7 @@ export default class EweixiuDetailPage extends BasePage {
             detail: {},
             communicates: [],
             lookImageIndex: 0,
-            visible: false, 
+            visible: false,
             //费用明细
             pageIndex: 1,
             refreshing: false,
@@ -132,7 +132,7 @@ export default class EweixiuDetailPage extends BasePage {
         });
     };
 
-    savePhoto = (uri) => { 
+    savePhoto = (uri) => {
         try {
             if (Platform.OS == 'android') { //远程文件需要先下载 
                 // 下载网络图片到本地
@@ -166,19 +166,19 @@ export default class EweixiuDetailPage extends BasePage {
                     //     //console.log('Image saved to docs://image.png'); // 或者使用你的路径
                     //     // 在这里你可以做其他事情，比如显示一个提示或者加载图片等 
                     // })
-                    .catch((err) => { 
+                    .catch((err) => {
                     });
 
             }
             else {
                 //ios
                 let promise = CameraRoll.saveToCameraRoll(uri);
-                promise.then(function (result) { 
-                }).catch(function (err) { 
+                promise.then(function (result) {
+                }).catch(function (err) {
                 });
             }
 
-        } catch (error) { 
+        } catch (error) {
         }
     }
 
@@ -317,7 +317,7 @@ export default class EweixiuDetailPage extends BasePage {
                                 //     this.props.navigation.navigate('checkDetail', { id: detail.relationId });
                                 // }
                             }}
-                                style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
+                           style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>}
 
@@ -333,11 +333,19 @@ export default class EweixiuDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>维修专业：{detail.repairMajor}，积分：{detail.score}</Text>
                     </Flex>
-
+ 
                     {detail.appScore != null ?
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                             <Text style={styles.left}>修正个人积分：{detail.appScore}</Text>
                         </Flex> : null}
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>接单人：{detail.receiverName}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>接单时间：{detail.receiverDate}</Text>
+                    </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>协助人：{detail.assistName}</Text>
@@ -383,6 +391,7 @@ export default class EweixiuDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>费用明细</Text>
                     </Flex>
+                    
                     <FlatList
                         data={dataInfo.data}
                         renderItem={this._renderItem}
@@ -403,10 +412,10 @@ export default class EweixiuDetailPage extends BasePage {
 
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
-                        imageUrls={this.state.selectimages} 
+                        imageUrls={this.state.selectimages}
                         menuContext={{ "saveToLocal": "保存到相册", "cancel": "取消" }}
                         onSave={(url) => this.savePhoto(url)}
-                        />
+                    />
                 </Modal>
             </CommonView>
         );

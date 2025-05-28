@@ -33,7 +33,7 @@ import moment from 'moment';
 import RNFetchBlob from 'rn-fetch-blob';
 
 
-export default class ServiceDeskDetailPage extends BasePage { 
+export default class ServiceDeskDetailPage extends BasePage {
 
     static navigationOptions = ({ navigation }) => {
         return {
@@ -141,6 +141,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                 detail: {
                     ...item.data,
                     isRefuse: item.isRefuse,
+                    linkList: item.linkList,
                     //businessId: item.businessId,
                     statusName: item.statusName
                 },
@@ -693,6 +694,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.right}>重要程度：{detail.importance}</Text>
                     </Flex>
+
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>报单人：{detail.contactName} </Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactPhone)}>
@@ -700,9 +702,29 @@ export default class ServiceDeskDetailPage extends BasePage {
                                 style={{ width: 18, height: 18 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
+
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>报单时间：{detail.createDate}</Text>
                     </Flex>
+ 
+                    {detail.linkList && detail.linkList.map(item => (
+                        <TouchableWithoutFeedback key={item.id}>
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
+                                <Text style={styles.left}>关联单：</Text>
+                                <Text onPress={() => {
+                                    if (detail.businessType === 'Repair') {
+                                        this.props.navigation.navigate('weixiuD', { id: item.id });
+                                    }
+                                    else {
+                                        this.props.navigation.navigate('tousuD', { id: item.id });
+                                    }
+                                }} style={[styles.right, { color: Macro.work_blue }]}>{item.billCode}</Text>
+                            </Flex>
+
+                        </TouchableWithoutFeedback>
+                    ))}
+ 
+
                     {detail.returnVisitDate ?
                         <>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
@@ -753,9 +775,11 @@ export default class ServiceDeskDetailPage extends BasePage {
                             />
                         </View>
                         : <Text style={styles.desc}>{detail.contents}</Text>}
+
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>费用明细</Text>
                     </Flex>
+
                     <FlatList
                         data={dataInfo.data}
                         renderItem={this._renderItem}
@@ -812,7 +836,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                     </Flex>
 
                     <Flex justify={'center'}>
-                        {detail.status === 1 && !detail.isRefuse ?
+                        {detail.status === 1 && !detail.isRefuse ?//驳回的单子，不需要转单
                             <>
                                 {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'torepair')) ?
                                     <Flex justify={'center'}>
@@ -842,7 +866,6 @@ export default class ServiceDeskDetailPage extends BasePage {
                                                 showComplaint: true,
                                                 convertMemo: ''
                                             })
-
                                         } type={'primary'}
                                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
                                                 width: 120,
@@ -878,7 +901,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                             : null
                         }
 
-                        {detail.isRefuse ?
+                        {detail.isRefuse ?//驳回后续派
                             <>
                                 {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'continue')) ?
                                     <Flex justify={'center'}>

@@ -4,8 +4,8 @@ import { Text, StyleSheet } from 'react-native';
 import Macro from '../../../utils/macro';
 import screenUtil from '../../../utils/screen-util';
 
-const ShowText = ({ 
-  fixedWidth = 65,
+const ShowText = ({
+  //fixedWidth = 65,
   word = '',
   title = '',
   onClick,
@@ -20,7 +20,10 @@ const ShowText = ({
       align="start"
       style={{ width: screenUtil.deviceWidth() - (showInModal ? 140 : 120) }}
     >
-      <Flex style={{ width: fixedWidth }} justify="between">
+      <Flex 
+      //style={{ width: fixedWidth }}
+      //justify="between"
+      >
         {words.map((item, index) => (
           <Text
             key={`${item}${index}`}
@@ -51,7 +54,7 @@ const ShowText = ({
 const styles = StyleSheet.create({
   txt: {
     fontSize: 15,
-    color:'#404145', //'#666',
+    color: '#404145', //'#666',
     paddingBottom: 10
   }
 });

@@ -33,7 +33,7 @@ export default class VisitPage extends BasePage {
         // let id = common.getValueFromProps(this.props); 
         this.state = {
             //id,
-            data: null
+            data: {}
         };
     }
 
@@ -50,7 +50,7 @@ export default class VisitPage extends BasePage {
         this.props.navigation.push('scanonly', {
             data: {
                 callBack: this.callBack,
-                needBack:true
+                needBack: true
             }
         });
     };
@@ -71,7 +71,7 @@ export default class VisitPage extends BasePage {
             UDToast.showError('请扫码');
             return;
         }
-        
+
         WorkService.updateVisitEntity(data.id).then(res => {
             this.props.navigation.goBack();
         });
@@ -80,33 +80,34 @@ export default class VisitPage extends BasePage {
     render() {
         const { data } = this.state;
         return (
+
             <CommonView style={{ flex: 1 }}>
                 <View style={{ flex: 1 }}>
                     <Flex direction='column' align='start'
                         style={{ marginBottom: 20, backgroundColor: 'white', borderRadius: 4 }}>
                         <Flex justify='start' style={styles.single}>
                             <Text style={styles.left}>访客称呼：</Text>
-                            <Text style={styles.right}>{data.name}</Text>
+                            <Text style={styles.right}>{data.name || ''}</Text>
                         </Flex>
 
                         <Flex justify='start' style={styles.single}>
                             <Text style={styles.left}>手机号码：</Text>
-                            <Text style={styles.right}>{data.mobile}</Text>
+                            <Text style={styles.right}>{data.mobile || ''}</Text>
                         </Flex>
 
                         <Flex justify='start' style={styles.single}>
                             <Text style={styles.left}>来访事由：</Text>
-                            <Text style={styles.right}>{data.billType}</Text>
+                            <Text style={styles.right}>{data.billType || ''}</Text>
                         </Flex>
 
                         <Flex justify='start' style={styles.single}>
                             <Text style={styles.left}>到访地址：</Text>
-                            <Text style={styles.right}>{data.allName}</Text>
+                            <Text style={styles.right}>{data.allName || ''}</Text>
                         </Flex>
 
                         <Flex justify='start' style={styles.single}>
                             <Text style={styles.left}>有效期至：</Text>
-                            <Text style={styles.right}>{data.endTime}</Text>
+                            <Text style={styles.right}>{data.endTime || ''}</Text>
                         </Flex>
 
                         <Flex justify='start' style={styles.single}>

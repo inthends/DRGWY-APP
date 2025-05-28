@@ -1,9 +1,9 @@
 import React//, {Fragment} 
     from 'react';
 import {
-    Text, View, StyleSheet, FlatList, TouchableOpacity 
+    Text, View, StyleSheet, FlatList, TouchableOpacity
 } from 'react-native';
-import BasePage from '../../base/base'; 
+import BasePage from '../../base/base';
 import Macro from '../../../utils/macro';
 import BuildingsService from './buildings-service';
 import ScreenUtil from '../../../utils/screen-util';
@@ -58,9 +58,10 @@ class BuildingsPage extends BasePage {
     };
 
     _renderItem = ({ item }) => {
-        if (item.type == 2)
+        if (item.type == 2) { 
             //楼栋详情
-            return <BuildingCell nextRouteName='DetailBuilding' {...this.props} item={item} />;
+            return <BuildingCell nextRouteName='DetailBuilding' {...this.props} item={item} />; 
+        }
         else
             //车库详情
             return <BuildingCell nextRouteName='DetailParking' {...this.props} item={item} />;
@@ -79,8 +80,8 @@ class BuildingsPage extends BasePage {
                         renderItem={this._renderItem}
                         style={styles.list}
                         keyExtractor={(item) => item.id}
-                        ListEmptyComponent={<NoDataView />} 
-                    /> 
+                        ListEmptyComponent={<NoDataView />}
+                    />
                 </View>
             </CommonView>
         );

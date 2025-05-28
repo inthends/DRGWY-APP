@@ -52,7 +52,6 @@ export default class ListUnSendHeader extends Component {
                                         </Text>
                                     </View>
                                 </TouchableWithoutFeedback>
-
                             );
                         })}
                     </Flex>

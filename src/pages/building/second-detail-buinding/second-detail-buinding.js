@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import {
     Text,
     StyleSheet,
@@ -359,7 +359,14 @@ class SecondDetailBuildingPage extends BasePage {
                                 <Flex direction='column' align='start'
                                     style={{ paddingTop: 15, width: (ScreenUtil.deviceWidth() - 10) / 3.0 }}>
                                     <Text style={{ color: '#a8a7ab' }}>手机号码</Text>
-                                    <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.phoneNum}</Text>
+
+                                    {/* <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.phoneNum}</Text> */}
+
+                                    {item.phoneNum ?
+                                        <TouchableWithoutFeedback onPress={() => common.call(item.phoneNum)}>
+                                            <Text style={{ paddingTop: 10, color: Macro.work_blue, cursor: 'pointer' }}>{item.phoneNum}</Text>
+                                        </TouchableWithoutFeedback> : null}
+
                                 </Flex>
                             </Flex>
                             <Flex>
@@ -563,13 +570,13 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#b1b1b1'
     },
- 
+
     //add new
     text3: {
         fontSize: 16,
         color: '#404145'
     },
-   
+
 });
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {

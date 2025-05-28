@@ -16,6 +16,7 @@ import AddReview from '../components/add-review';
 import ShowReviews from '../components/show-reviews';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
+import ShowLine from '../components/show-line';
 
 export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
@@ -106,11 +107,17 @@ export default class DetailPage extends BasePage {
           <ShowTitle title="基础信息" />
           <Flex style={styles.card} direction="column" align="start">
             <ShowText word="采购单号" title={detail.billCode} />
+             <ShowLine />
             <ShowText word="机构" title={detail.organizeName} />
+             <ShowLine />
             <ShowText word="仓库" title={detail.warehouseName} />
+             <ShowLine />
             <ShowText word="发起人" title={detail.createUserName} />
+             <ShowLine />
             <ShowText word="采购类型" title={detail.purchaseType} />
+             <ShowLine />
             <ShowText word="采购金额" title={detail.totalAmount} /> 
+             <ShowLine />
             <Text>
               {detail.memo}{"\n"} 
             </Text>

@@ -9,7 +9,7 @@ const ShowTextWithRight = ({
   title = '',
   right = '',
   rightDistance = 0,
-  fixedWidth = 60,
+  //fixedWidth = 60,
   wordColor,
   titleColor,
   rightColor,
@@ -29,7 +29,7 @@ const ShowTextWithRight = ({
         wordColor={wordColor}
         titleColor={titleColor}
         rightColor={rightColor}
-        fixedWidth={fixedWidth}
+        //fixedWidth={fixedWidth}
         word={word}
         title={title}
         onClick={onClick}

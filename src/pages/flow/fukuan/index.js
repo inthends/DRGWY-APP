@@ -1,7 +1,7 @@
- 
+
 import React from 'react';
 import { Flex, Icon, Modal, Button, TextareaItem } from '@ant-design/react-native';
-import { View,Text, StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
 import BasePage from '../../base/base';
 import CommonView from '../../../components/CommonView';
 import ShowTitle from '../components/show-title';
@@ -17,6 +17,7 @@ import AddReview from '../components/add-review';
 import ShowReviews from '../components/show-reviews';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
+import ShowLine from '../components/show-line';
 
 export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
@@ -60,7 +61,7 @@ export default class DetailPage extends BasePage {
         records
       });
     });
-    
+
     //评审记录
     service.getReviews(id).then(res => {
       this.setState({
@@ -104,14 +105,19 @@ export default class DetailPage extends BasePage {
           <ShowTitle title="基础信息" />
           <Flex style={styles.card} direction="column" align="start">
             <ShowText word="付款单号" title={detail.billCode} />
+            <ShowLine />
             <ShowText word="付款对象" title={detail.customerName} />
-            <ShowText word="相关房产" title={detail.allName} />
+            <ShowLine />
+            <ShowText word="房产" title={detail.allName} />
+            <ShowLine />
             <ShowTextWithRight
               word="经办人"
               title={detail.createUserName}
               right={detail.billDate}
             />
+            <ShowLine />
             <ShowText word="付款金额" title={detail.payAmount} />
+            <ShowLine />
             <Text>
               {detail.memo}{"\n"}
             </Text>
@@ -217,7 +223,7 @@ export default class DetailPage extends BasePage {
               }}
             />
           </Flex>
-        </Modal> 
+        </Modal>
       </CommonView>
     );
   }

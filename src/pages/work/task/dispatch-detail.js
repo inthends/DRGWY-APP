@@ -8,7 +8,7 @@ import {
     ScrollView,
     Modal,
     Platform,
-    Keyboard,CameraRoll
+    Keyboard, CameraRoll
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Button, Icon, TextareaItem, Flex } from '@ant-design/react-native';
@@ -24,7 +24,7 @@ import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 // import MyPopover from '../../../components/my-popover';
-import RNFetchBlob from 'rn-fetch-blob'; 
+import RNFetchBlob from 'rn-fetch-blob';
 
 export default class DispatchDetailPage extends BasePage {
 
@@ -53,7 +53,7 @@ export default class DispatchDetailPage extends BasePage {
             lookImageIndex: 0,
             visible: false,
             selectPerson: null,
-            assisPersons: [],
+            assisPersons: [],//协助人
             repairmajor: null,
             emergencyLevel: null,
             importance: null,
@@ -72,8 +72,20 @@ export default class DispatchDetailPage extends BasePage {
     }
 
     onSelectAssisPerson = ({ selectItems }) => {
+        //要过滤已经选择了的人员
+        const { assisPersons } = this.state;
+        //去除原队列已存在数据  
+        for (var i = 0; i < assisPersons.length; i++) {
+            for (var j = 0; j < selectItems.length; j++) {
+                if (selectItems[j].id == assisPersons[i].id) {
+                    selectItems.splice(j, 1);//移除
+                    j = j - 1;
+                }
+            }
+        }
+        let list = [...assisPersons, ...selectItems];//合并数组
         this.setState({
-            assisPersons: selectItems
+            assisPersons: list
         })
     }
 
@@ -236,7 +248,7 @@ export default class DispatchDetailPage extends BasePage {
         });
     };
 
-    savePhoto = (uri) => { 
+    savePhoto = (uri) => {
         try {
             if (Platform.OS == 'android') { //远程文件需要先下载 
                 // 下载网络图片到本地
@@ -270,19 +282,19 @@ export default class DispatchDetailPage extends BasePage {
                     //     //console.log('Image saved to docs://image.png'); // 或者使用你的路径
                     //     // 在这里你可以做其他事情，比如显示一个提示或者加载图片等 
                     // })
-                    .catch((err) => { 
+                    .catch((err) => {
                     });
 
             }
             else {
                 //ios
                 let promise = CameraRoll.saveToCameraRoll(uri);
-                promise.then(function (result) { 
-                }).catch(function (err) { 
+                promise.then(function (result) {
+                }).catch(function (err) {
                 });
             }
 
-        } catch (error) { 
+        } catch (error) {
         }
     }
 
@@ -522,10 +534,10 @@ export default class DispatchDetailPage extends BasePage {
 
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
-                        imageUrls={this.state.images} 
+                        imageUrls={this.state.images}
                         menuContext={{ "saveToLocal": "保存到相册", "cancel": "取消" }}
                         onSave={(url) => this.savePhoto(url)}
-                        />
+                    />
                 </Modal>
 
 

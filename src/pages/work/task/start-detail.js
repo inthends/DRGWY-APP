@@ -8,7 +8,7 @@ import {
     ScrollView,
     Modal,
     Platform,
-    Keyboard,CameraRoll
+    Keyboard, CameraRoll
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Icon, Flex, Button, TextareaItem } from '@ant-design/react-native';
@@ -172,11 +172,11 @@ export default class StartDetailPage extends BasePage {
                 }
 
                 // if (handle === '回复' && !(value&&value.length > 0)) {
-                if (!(value && value.length > 0)  && isMustJudgement == true ) {
+                if (!(value && value.length > 0) && isMustJudgement == true) {
                     UDToast.showError('请输入故障判断');
                     return;
                 }
- 
+
                 //const kgimages = images.filter(t => t.type === '开工');
                 if (images.length == 0 && !isUpload && isMustStartFile == true) {
                     UDToast.showError('请上传开工图片');
@@ -301,8 +301,20 @@ export default class StartDetailPage extends BasePage {
 
     //选择增援人
     onSelectPerson = ({ selectItems }) => {
+        //要过滤已经选择了的人员
+        const { selectPersons } = this.state;
+        //去除原队列已存在数据  
+        for (var i = 0; i < selectPersons.length; i++) {
+            for (var j = 0; j < selectItems.length; j++) {
+                if (selectItems[j].id == selectPersons[i].id) {
+                    selectItems.splice(j, 1);//移除
+                    j = j - 1;
+                }
+            }
+        }
+        let list = [...selectPersons, ...selectItems];//合并数组
         this.setState({
-            selectPersons: selectItems
+            selectPersons: list
         })
     }
 
@@ -409,6 +421,7 @@ export default class StartDetailPage extends BasePage {
                             <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
                         </Flex>
                     </TouchableWithoutFeedback>
+
                     <UploadImageView
                         style={{ marginTop: 10 }}
                         linkId={this.state.id}
@@ -450,7 +463,7 @@ export default class StartDetailPage extends BasePage {
                     <Flex justify={'center'}>
                         <Button onPress={this.click} type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }} style={{
-                                width: 110,
+                                width: 115,
                                 backgroundColor: Macro.work_blue,
                                 marginTop: 20,
                                 height: 40
@@ -462,7 +475,7 @@ export default class StartDetailPage extends BasePage {
                         })}
                             type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_red }} style={{
-                                width: 110,
+                                width: 115,
                                 backgroundColor: Macro.work_red,
                                 marginLeft: 30,
                                 marginTop: 20,

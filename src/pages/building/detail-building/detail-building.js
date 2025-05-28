@@ -7,9 +7,10 @@ import {
   ScrollView,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  Keyboard
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Flex, Icon } from '@ant-design/react-native';
+import { Flex, Icon, SearchBar } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import DetailBuildingService from './detail-building-service';
 import ScreenUtil from '../../../utils/screen-util';
@@ -18,6 +19,7 @@ import common from '../../../utils/common';
 import CommonView from '../../../components/CommonView';
 import numeral from 'numeral';
 
+//楼栋详情
 export default class DetailBuildingPage extends BasePage {
 
   // static navigationOptions = ({ navigation }) => { 
@@ -47,32 +49,15 @@ export default class DetailBuildingPage extends BasePage {
       data: [],
       item,
       status: [],
-      detail: {}
+      detail: {},
+      btnText: '搜索'
     };
   }
 
   componentDidMount() {
     let id = this.state.item.id;
-    //获取楼层
-    DetailBuildingService.getPStructs(id, 4).then((res) => {
-      const floors = res || [];
-      //循环楼层
-      const promises = floors.map((item) => {
-        //获取房产
-        return DetailBuildingService.getPStructs(item.id, 5).then((res) => {
-          const allRooms = res || [];
-          const rooms = common.convertArrayToSmallArray(allRooms);
-          return {
-            ...item,
-            rooms
-          };
-        });
-      });
-
-      Promise.all(promises).then((res) => {
-        this.setState({ data: res });
-      });
-
+    DetailBuildingService.getBuildingDetail(id).then((detail) => {
+      this.setState({ detail });
     });
 
     //获取资产状态
@@ -80,9 +65,7 @@ export default class DetailBuildingPage extends BasePage {
       this.setState({ status });
     });
 
-    DetailBuildingService.getBuildingDetail(id).then((detail) => {
-      this.setState({ detail });
-    });
+    this.searchData();
   }
 
   //点击
@@ -108,8 +91,55 @@ export default class DetailBuildingPage extends BasePage {
     this.setState({ data: data });
   };
 
+  search = () => {
+    Keyboard.dismiss();
+    this.searchData();
+    this.setState({ btnText: '取消' });
+  };
+
+  clear = () => {
+    const { btnText } = this.state;
+    Keyboard.dismiss();
+    if (btnText == '搜索') {
+      this.searchData();
+      this.setState({ btnText: '取消' });
+    } else {
+      this.setState({
+        keyword: ''//必须要设置值，再调用方法，否则数据没有更新
+      }, () => {
+        this.searchData();
+        this.setState({ btnText: '搜索' });
+      });
+    }
+  };
+
+  searchData = () => {
+    let id = this.state.item.id;
+    const { keyword } = this.state;
+    //获取楼层
+    DetailBuildingService.getPStructs(id, 4).then((res) => {
+      const floors = res || [];
+      //循环楼层
+      const promises = floors.map((item) => {
+        //获取房产
+        return DetailBuildingService.getSearchPStructs(item.id, keyword).then((res) => {
+          const allRooms = res || [];
+          const rooms = common.convertArrayToSmallArray(allRooms);
+          return {
+            ...item,
+            rooms
+          };
+        });
+      });
+      Promise.all(promises).then((res) => {
+        this.setState({ data: res });
+      });
+    });
+  };
+
+
   render() {
-    const { status, data, detail } = this.state;
+    const { status, data, detail, btnText } = this.state;
     return (
       <CommonView style={{ flex: 1 }}>
         <View>
@@ -288,6 +318,21 @@ export default class DetailBuildingPage extends BasePage {
                 ))}
               </Flex>
             </ScrollView>
+
+            <SearchBar
+              placeholder="搜索房号或客户"
+              showCancelButton
+              cancelText={btnText}
+              value={this.state.keyword}
+              onChange={keyword => {
+                this.setState({ keyword });
+                if (keyword)
+                  this.setState({ showCancelButton: true });
+              }}
+              onSubmit={() => this.search()}
+              onCancel={() => this.clear()}
+            />
+
             <ScrollView
               style={{
                 paddingBottom: 20
@@ -531,7 +576,7 @@ const styles = StyleSheet.create({
     //color: 'white',
     fontSize: 12,
     paddingTop: 5
-  }, 
+  },
   dash: {
     borderColor: '#5c665b',
     borderWidth: 1,

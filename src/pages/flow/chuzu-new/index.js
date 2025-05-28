@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Flex, Icon, Modal, Button, TextareaItem } from '@ant-design/react-native';
-import { View,Text, StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
 import BasePage from '../../base/base';
 import CommonView from '../../../components/CommonView';
 import ShowTitle from '../components/show-title';
@@ -25,7 +25,7 @@ export default class DetailPage extends BasePage {
     //是否完成
     var isCompleted = navigation.getParam('isCompleted');
     return {
-      title: isCompleted ? '合同详情' : '新建合同审批',
+      title: isCompleted ? '合同详情' : '合同审批',
       headerForceInset: this.headerForceInset,
       headerLeft: (
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -54,12 +54,12 @@ export default class DetailPage extends BasePage {
     const { id } = this.state;
     service.getFlowData(id).then((detail) => {
       this.setState({
-        detail,
+        detail
       });
     });
     service.getApproveLog(id).then((records) => {
       this.setState({
-        records,
+        records
       });
     });
     //评审记录
@@ -103,11 +103,10 @@ export default class DetailPage extends BasePage {
         <ScrollView style={{ flex: 1, padding: 10 }}>
           <ShowTitle title="基础信息" />
           <Flex style={styles.card} direction="column" align="start">
-            <ShowText word="项目" title={detail.organizeName} />
             <ShowText word="合同号" title={detail.no} />
+            <ShowLine />
             <ShowText word="租期" title={detail.date} />
-            <ShowText word="付款方式" title={detail.payType} />
-            <ShowText word="签约人" title={detail.signer} />
+            <ShowLine />
             <ShowText
               word="客户名称"
               title={detail.customer}
@@ -116,7 +115,7 @@ export default class DetailPage extends BasePage {
                   .then((customer) => {
                     this.setState(
                       {
-                        customer,
+                        customer
                       },
                       () => {
                         this.companyDetailRef.showModal();
@@ -125,9 +124,19 @@ export default class DetailPage extends BasePage {
                   });
               }}
             />
+            <ShowLine />
+            <ShowText word="签约面积" title={detail.signArea} />
+            <ShowLine />
             <ShowText word="合同金额" title={detail.totalAmount} />
-            <ShowText word="租赁面积" title={detail.totalArea} />
+            <ShowLine />
+            <ShowText word="所属项目" title={detail.organizeName} />
+            <ShowLine />
             <ShowText word="租赁房产" title={detail.houseName} />
+            <ShowLine />
+            <ShowText word="付款方式" title={detail.payType} />
+            <ShowLine />
+            <ShowText word="签约人" title={detail.signer} />
+            <ShowLine />
             <Text>
               {detail.memo}{"\n"}
             </Text>
@@ -161,7 +170,7 @@ export default class DetailPage extends BasePage {
             }}
           />
         </ScrollView>
-          
+
         <Modal
           //弹出回复页面
           transparent
@@ -217,7 +226,6 @@ export default class DetailPage extends BasePage {
           </Flex>
         </Modal>
 
-
         <Modal
           //弹出沟通页面
           transparent
@@ -241,7 +249,7 @@ export default class DetailPage extends BasePage {
             />
           </Flex>
         </Modal>
-        
+
         <CompanyDetail
           customer={customer}
           ref={(ref) => (this.companyDetailRef = ref)}
@@ -255,7 +263,7 @@ const styles = StyleSheet.create({
   txt: {
     fontSize: 14,
     paddingBottom: 10,
-  }, 
+  },
   text: {
     fontSize: 14
   },

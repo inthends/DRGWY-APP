@@ -344,8 +344,7 @@ export default {
         let url = '/api/MobileMethod/MGetUnFinishRepairPageList';
         return api.postData(url, { status, time, senderId, pageIndex, pageSize: 10 });
     },
-
-    //服务单列表
+ 
     servicedeskList(type, overdue, time, pageIndex) {
         let url = '/api/MobileMethod/MGetServiceDeskPageList';
         return api.postData(url, { type, overdue, time, pageIndex, pageSize: 10 });

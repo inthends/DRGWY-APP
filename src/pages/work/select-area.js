@@ -154,11 +154,13 @@ export default class SelectAreaPage extends BasePage {
                 roleId
             };
         } else {
+
             this.props.navigation.setParams({
                 title: '选择项目',
             });
             params = { keyvalue: 0, type: 1, roleId: roleId };
         }
+        
         this.setState({
             parent,
             refreshing: true

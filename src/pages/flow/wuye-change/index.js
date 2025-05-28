@@ -25,7 +25,7 @@ export default class DetailPage extends BasePage {
     //是否完成
     var isCompleted = navigation.getParam('isCompleted');
     return {
-      title: isCompleted ? '合同变更详情' : '合同变更审批',
+      title: isCompleted ? '物业合同变更详情' : '物业合同变更审批',
       headerForceInset: this.headerForceInset,
       headerLeft: (
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -102,7 +102,6 @@ export default class DetailPage extends BasePage {
       hetong = {},
       reviews = []
     } = this.state;
-
     const { prices = [] } = detail;
 
     return (
@@ -114,6 +113,7 @@ export default class DetailPage extends BasePage {
           {detail.operationType === '变更客户' && (
             <Flex style={styles.card} direction="column" align="start">
               <ShowText
+                //fixedWidth={80}
                 word="变更类型"
                 title={detail.operationType}
               />
@@ -135,7 +135,7 @@ export default class DetailPage extends BasePage {
                 }}
               />
               <ShowLine />
-              <ShowText word="租期" title={detail.date} />
+              <ShowText word="合同期间" title={detail.date} />
               <ShowLine />
               <ShowText
                 word="所属项目"
@@ -192,14 +192,14 @@ export default class DetailPage extends BasePage {
               <ShowLine />
               <ShowText word="合同号" title={detail.no} />
               <ShowLine />
-              <ShowText word="原租期" title={detail.oldDate} />
+              <ShowText word="原期间" title={detail.oldDate} />
               <ShowLine />
               <ShowText
-                word="新租期"
+                word="新期间"
                 title={detail.newDate}
-                // wordColor={Macro.work_blue}
-                // titleColor={Macro.work_blue}
-                // rightColor={Macro.work_blue}
+                wordColor={Macro.work_blue}
+                titleColor={Macro.work_blue}
+                rightColor={Macro.work_blue}
                 onClick={() => {
                   service.getContractEntity(detail.oldFormId).then((hetong) => {
                     this.setState(
@@ -260,7 +260,7 @@ export default class DetailPage extends BasePage {
                 title={detail.organizeName}
               />
               <ShowLine />
-              <ShowText word="原租期" title={detail.date} />
+              <ShowText word="原期间" title={detail.date} />
               <ShowLine />
               <ShowText
                 word="客户名称"
@@ -275,7 +275,7 @@ export default class DetailPage extends BasePage {
                         },
                         () => {
                           this.companyDetailRef.showModal();
-                        },
+                        }
                       );
                     });
                 }}
@@ -289,36 +289,36 @@ export default class DetailPage extends BasePage {
               />
               <ShowLine />
               <ShowText
-                word="原租赁面积"
+                word="原房产面积"
                 title={detail.oldTotalArea}
               />
               <ShowLine />
               <ShowText
-                word="新租赁面积"
+                word="新房产面积"
                 title={detail.newTotalArea}
-                wordColor={Macro.work_blue}
-                titleColor={Macro.work_blue}
+                // wordColor={Macro.work_blue}
+                // titleColor={Macro.work_blue}
                 onClick={() => {
                   service.getContractEntity(detail.oldFormId).then((hetong) => {
                     this.setState(
                       {
-                        hetong,
+                        hetong
                       },
                       () => {
                         this.hetongDetailRef.showModal();
-                      },
+                      }
                     );
                   });
                 }}
               />
               <ShowLine />
               <ShowText
-                word="原租赁房产"
+                word="原签约房产"
                 title={detail.oldHouseName}
               />
               <ShowLine />
               <ShowText
-                word="新租赁房产"
+                word="新签约房产"
                 title={detail.newHouseName}
                 // wordColor={Macro.work_blue}
                 // titleColor={Macro.work_blue}
@@ -326,7 +326,7 @@ export default class DetailPage extends BasePage {
                   service.getContractEntity(detail.oldFormId).then((hetong) => {
                     this.setState(
                       {
-                        hetong,
+                        hetong
                       },
                       () => {
                         this.hetongDetailRef.showModal();
@@ -348,7 +348,6 @@ export default class DetailPage extends BasePage {
               <ShowPrices prices={prices} />
             )
           }
-          {/* <ShowFiles files={detail.files || []} /> */}
           <ShowFiles files={detail.files || []} onPress={
             (fileStr) => {
               this.props.navigation.navigate('webPage', {

@@ -159,7 +159,7 @@ class EstateWeixiuPage extends BasePage {
     // };
 
     search = () => {
-        Keyboard.dismiss(); 
+        Keyboard.dismiss();
         this.onRefresh();
         this.setState({ btnText: '取消' });
     };
@@ -220,6 +220,12 @@ class EstateWeixiuPage extends BasePage {
                 billStatus = 1;
                 break;
             }
+
+            case '已驳回': {
+                billStatus = 9;
+                break;
+            }
+
             case '待接单': {
                 billStatus = 2;
                 break;
@@ -295,7 +301,7 @@ class EstateWeixiuPage extends BasePage {
 
 
     render() {
-        const { type, index, dataInfo,btnText } = this.state;
+        const { type, index, dataInfo, btnText } = this.state;
         return (
             <View style={{ flex: 1 }}>
                 <SearchBar

@@ -17,6 +17,7 @@ import AddReview from '../components/add-review';
 import ShowReviews from '../components/show-reviews';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
+import ShowLine from '../components/show-line';
 
 export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
@@ -36,7 +37,7 @@ export default class DetailPage extends BasePage {
 
   constructor(props) {
     super(props);
-    let id = common.getValueFromProps(props, 'id'); 
+    let id = common.getValueFromProps(props, 'id');
     this.state = {
       id,
       detail: {},
@@ -111,20 +112,30 @@ export default class DetailPage extends BasePage {
           <ShowTitle title="基础信息" />
           <Flex style={styles.card} direction="column" align="start">
             <ShowText word="报销单号" title={detail.billCode} />
+            <ShowLine />
             <ShowText word="机构" title={detail.organizeName} />
+            <ShowLine />
             <ShowText word="部门" title={detail.departmentName} />
+            <ShowLine />
             <ShowTextWithRight
               word="发起人"
               title={detail.createUserName}
               right={detail.date}
               rightColor={'#404145'}
             />
+            <ShowLine />
             <ShowText word="报销类型" title={detail.billType} />
+            <ShowLine />
             <ShowText word="报销金额" title={detail.totalAmount} />
-            <ShowText word="收款人" title={detail.accountName} /> 
-            <ShowText word="收款人开户行" title={detail.bank} /> 
+            <ShowLine />
+            <ShowText word="收款人" title={detail.accountName} />
+            <ShowLine />
+            <ShowText word="收款人开户行" title={detail.bank} />
+            <ShowLine />
             <ShowText word="收款人账号" title={detail.accountNo} />
-            <ShowText word="申请付款说明" title={detail.appPayMemo} /> 
+            <ShowLine />
+            <ShowText word="申请付款说明" title={detail.appPayMemo} />
+            <ShowLine />
             <Text>
               {detail.memo}{"\n"}
             </Text>

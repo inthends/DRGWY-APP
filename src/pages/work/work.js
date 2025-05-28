@@ -256,7 +256,6 @@ class WorkPage extends BasePage {
                                     </Flex>
                                 </TouchableWithoutFeedback>
                             </Flex>
-
                         </Flex>
 
                         <Flex direction='column' align={'start'}
@@ -268,8 +267,7 @@ class WorkPage extends BasePage {
                             <Flex>
                                 <Text style={styles.title}>服务单</Text>
                             </Flex>
-                            <Flex style={styles.line} />
-
+                            <Flex style={styles.line} /> 
                             <Flex>
                                 <TouchableWithoutFeedback onPress={() => {
                                     if (data.pendingreply == 0) {

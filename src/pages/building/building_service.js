@@ -1,13 +1,14 @@
 import api from '../../utils/api';
 // import common from '../../utils/common';
 export default {
-    getStatistics(pageIndex, organizeId, showLoading = true) {
+    getStatistics(pageIndex, organizeId, keyword, showLoading = true) {
+        
         return api.postData('/api/MobileMethod/MGetStatistics', {
             pageIndex,
             pageSize: 10,
             sidx: 'name',
             sord: 'asc',
-            organizeId,
+            organizeId
         }, showLoading);
     },
     getStatisticsTotal(organizeId) {

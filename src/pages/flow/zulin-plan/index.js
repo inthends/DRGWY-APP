@@ -18,6 +18,7 @@ import AddReview from '../components/add-review';
 import ShowReviews from '../components/show-reviews';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
+import ShowLine from '../components/show-line';
 
 export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
@@ -108,11 +109,16 @@ export default class DetailPage extends BasePage {
         <ScrollView style={{ flex: 1, padding: 10 }}>
           <ShowTitle title="基础信息" />
           <Flex style={styles.card} direction="column" align="start">
-            <ShowText word="项目" title={detail.organizeName} />
+            <ShowText word="所属项目" title={detail.organizeName} />
+            <ShowLine />
             <ShowText word="规划单号" title={detail.billCode} />
+            <ShowLine />
             <ShowText word="规划费项" title={detail.feeName} />
+            <ShowLine />
             <ShowText word="规划期限" title={detail.billDate} />
+            <ShowLine />
             <ShowText word="发起人" title={detail.createUserName} />
+            <ShowLine />
             <Text>
               {detail.memo}{"\n"}
             </Text>
@@ -124,8 +130,7 @@ export default class DetailPage extends BasePage {
                 data: fileStr
               });
             }
-          } />
-
+          } /> 
           <ShowReviews reviews={reviews}
             onAddClick={() => this.setState({
               addVisible: true

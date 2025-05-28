@@ -53,7 +53,6 @@ export default class WeixiuDetailPage extends BasePage {
             communicates: [],
             lookImageIndex: 0,
             visible: false,
-
             //费用明细
             pageIndex: 1,
             refreshing: false,
@@ -272,6 +271,7 @@ export default class WeixiuDetailPage extends BasePage {
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
+                    
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
@@ -401,6 +401,7 @@ export default class WeixiuDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>费用明细</Text>
                     </Flex>
+
                     <FlatList
                         data={dataInfo.data}
                         renderItem={this._renderItem}
@@ -512,6 +513,7 @@ const styles = StyleSheet.create({
     },
     desc: {
         lineHeight: 20,
-        padding: 15
+        padding: 15,
+        fontSize: 15
     }
 });

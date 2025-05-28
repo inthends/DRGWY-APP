@@ -16,8 +16,7 @@ import { connect } from 'react-redux';
 import common from '../../../utils/common';
 import CommonView from '../../../components/CommonView';
 import api from '../../../utils/api';
-
-
+ 
 class SheBeiList extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
@@ -63,7 +62,7 @@ class SheBeiList extends BasePage {
         this.onRefresh();
     }
 
-    componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
+    componentWillReceiveProps(nextProps, nextContext )  {
         const selectBuilding = this.state.selectBuilding;
         const nextSelectBuilding = nextProps.selectBuilding;
 
@@ -151,7 +150,7 @@ class SheBeiList extends BasePage {
     };
 
     render() {
-        const { data = [],btnText } = this.state;
+        const { data = [], btnText } = this.state;
         return (
             <View style={{ flex: 1 }}>
                 <CommonView style={{ flex: 1 }}>
@@ -202,9 +201,11 @@ const styles = StyleSheet.create({
     }
 
 });
+
 const mapStateToProps = ({ buildingReducer }) => {
     return {
-        selectBuilding: buildingReducer.selectBuilding,
+        selectBuilding: buildingReducer.selectBuilding
     };
 };
+
 export default connect(mapStateToProps)(SheBeiList);

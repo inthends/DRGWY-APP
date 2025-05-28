@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import BasePage from '../base/base';
 import BuildingHeader from '../../components/building/building-header';
-import BuildingCell from '../../components/building/build-cell';
+import BuildingCell from '../../components/building/build-cell'; 
 import Macro from '../../utils/macro';
 import BuildingService from './building_service';
 import { connect } from 'react-redux';
@@ -26,8 +26,7 @@ import common from '../../utils/common';
 import api from '../../utils/api';
 // import XunJianService from '../navigator/xunjian/xunjian-service';
 // import HomePage from '../home/home';
-
-import {saveSelectBuilding, saveSelectDrawerType } from '../../utils/store/actions/actions';
+import { saveSelectBuilding, saveSelectDrawerType } from '../../utils/store/actions/actions';
 import { DrawerType } from '../../utils/store/action-types/action-types';
 
 class BuildingPage extends BasePage {
@@ -42,7 +41,9 @@ class BuildingPage extends BasePage {
         data: []
       },
       statistics: {},
-      refreshing: true
+      refreshing: true,
+      btnText: '搜索',
+      keyword: ''
     };
 
     addDownListener((progress) => {
@@ -126,7 +127,7 @@ class BuildingPage extends BasePage {
 
     this.viewDidAppear = this.props.navigation.addListener(
       'didFocus',//加载当前页面时候调用一次
-      (obj) => { 
+      (obj) => {
         this.props.saveBuilding({});//加载页面清除别的页面选中的数据
         this.props.saveSelectDrawerType(DrawerType.organize);
       }
@@ -142,13 +143,11 @@ class BuildingPage extends BasePage {
   }
 
   initUI() {
-
     BuildingService.getUserInfo().then((res) => {
       this.props.saveUser(res);
     });
 
     this.onRefresh();
-
     // this.viewDidAppear = this.props.navigation.addListener(
     //     'didFocus',
     //     (obj) => {
@@ -165,7 +164,7 @@ class BuildingPage extends BasePage {
   }
 
 
-  getInitData = () => {
+  initData = () => {
     BuildingService.getStatisticsTotal(this.selectBuilding.key).then((res) => {
       if (res && res.length > 0) {
         this.setState({ statistics: res[0] });
@@ -202,7 +201,7 @@ class BuildingPage extends BasePage {
   // };
 
   onRefresh = () => {
-    this.getInitData();
+    this.initData();
     this.setState(
       {
         refreshing: true,
@@ -243,6 +242,30 @@ class BuildingPage extends BasePage {
     }
   }
 
+
+  // search = () => {
+  //   Keyboard.dismiss();
+  //   this.getList();
+  //   this.setState({ btnText: '取消' });
+  // };
+
+  // clear = () => {
+  //   const { btnText } = this.state;
+  //   Keyboard.dismiss();
+  //   if (btnText == '搜索') {
+  //     this.getList();
+  //     this.setState({ btnText: '取消' });
+  //   } else {
+  //     this.setState({
+  //       keyword: ''//必须要设置值，再调用方法，否则数据没有更新
+  //     }, () => {
+  //       this.getList();
+  //       this.setState({ btnText: '搜索' });
+  //     });
+  //   }
+  // };
+
+
   render() {
     const { statistics, dataInfo } = this.state;
     return (
@@ -255,6 +278,21 @@ class BuildingPage extends BasePage {
               //openDrawer={this.openDrawer}
               {...this.props}
             />
+
+            {/* <SearchBar
+              placeholder="搜索房号或客户"
+              showCancelButton
+              cancelText={btnText}
+              value={this.state.keyword}
+              onChange={keyword => {
+                this.setState({ keyword });
+                if (keyword)
+                  this.setState({ showCancelButton: true });
+              }}
+              onSubmit={() => this.search()}
+              onCancel={() => this.clear()}
+            /> */}
+
             <FlatList
               data={dataInfo.data}
               //ListHeaderComponent={}

@@ -154,8 +154,9 @@ import chuzuchange from '../flow/chuzu-change';
 import chuzutui from '../flow/chuzu-tui';
 import webPage from '../flow/components/web-page';
 import wuyenew from '../flow/wuye-new';
-import wuyexu from '../flow/wuye-xu';
 import wuyetui from '../flow/wuye-tui';
+import wuyechange from '../flow/wuye-change';
+
 import zulinplan from '../flow/zulin-plan';
 import caigou from '../flow/caigou';
 import baoxiao from '../flow/baoxiao';
@@ -182,9 +183,9 @@ const BuildingNavigator = createStackNavigator(
         header: null
       })
     },
-    SecondDetail: SecondDetailBuildingPage,
     DetailBuilding: DetailBuildingPage,
     DetailParking: DetailParkingPage,
+    SecondDetail: SecondDetailBuildingPage,
     Buildings: BuildingsPage,
     Home: HomePage,
     //yiqing: YiQingPage,
@@ -237,6 +238,7 @@ const StatisticsNavigator = createStackNavigator({
   weixiulist: EstateWeixiuPage,
   // e_tousu: EstateTousuPage,
   serverDeskView: EfuwuDetailPage,//服务单页面点击关联单据，只能查看
+
   weixiuD: EweixiuDetailPage, //服务单页面点击关联单据，跳转到维修单，只能查看
   tousuD: EtousuDetailPage, //投诉单详情，只能查看
 });
@@ -259,8 +261,10 @@ const WorkNavigator = createStackNavigator({
   selectAddress: SelectAddressPage,
   selectArea: SelectAreaPage,
   service: ServiceDeskDetailPage,
+  
   weixiuView: WeixiuDetailPage, //工作台里面，待回访点击跳转的维修单，只能查看
-  tousuView: TousuDetailPage, //工作台里面，待回访点击跳转的投诉单，只能查看 
+  tousuView: TousuDetailPage, //工作台里面，待回访点击跳转的投诉单，只能查看
+
   wancheng: CompleteDetailPage,
   assist: AssistDetailPage,
   jianyan: CheckDetailPage,
@@ -364,9 +368,9 @@ const FlowNavigator = createStackNavigator({
   chuzunew,
   chuzuchange,
   chuzutui,
-  wuyenew,
-  wuyexu,
+  wuyenew, 
   wuyetui,
+  wuyechange,
   zulinplan,
   caigou,
   baoxiao,

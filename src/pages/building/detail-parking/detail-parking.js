@@ -37,8 +37,7 @@ export default class DetailParkingPage extends BasePage {
   }
 
   componentDidMount() {
-    let id = this.state.item.id;
-
+    let id = this.state.item.id; 
     //获取车位
     DetailBuildingService.getPStructs(id, 9).then((res) => {
       this.setState({ data: res });
