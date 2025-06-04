@@ -630,7 +630,6 @@ export default class ServiceDeskDetailPage extends BasePage {
                             }}
                             titles={['推送', '作废']}
                             visible={true} /> :
-
                         (item.payStatus && item.payStatus == -1 ? null :
                             <ActionPopover
                                 textStyle={{ fontSize: 14 }}
@@ -644,21 +643,24 @@ export default class ServiceDeskDetailPage extends BasePage {
                 </Flex>
                 <Flex style={styles.line} />
                 <Flex align={'start'} direction={'column'}>
-                    <Flex justify='between'
-                        style={{ width: '100%', paddingTop: 5, paddingLeft: 15, paddingRight: 15 }}>
+                    <Flex justify='between' style={{ width: '100%', paddingTop: 5, paddingLeft: 15, paddingRight: 15 }}>
                         <Text style={{ lineHeight: 20 }}>应收金额：{item.amount}
                             ，减免金额：{item.reductionAmount}
                             ，已收金额：{item.receiveAmount}
                             ，未收金额：{item.lastAmount}</Text>
                     </Flex>
-                    <Flex justify='between'
-                        style={{ width: '100%', paddingTop: 5, paddingBottom: 5, paddingLeft: 15, paddingRight: 15 }}>
+                    
+                    <Flex justify='between' style={{ width: '100%', paddingTop: 5, paddingBottom: 5, paddingLeft: 15, paddingRight: 15 }}>
                         {item.beginDate ?
                             <Text>{moment(item.beginDate).format('YYYY-MM-DD') + '至' + moment(item.endDate).format('YYYY-MM-DD')}</Text> : null
                         }
+                    </Flex>
+
+                    <Flex justify='between' style={{ width: '100%', paddingTop: 5, paddingBottom: 5, paddingLeft: 15, paddingRight: 15 }}>
                         <Text>账单是否推送：{item.noticeId ? '是' : '否'} </Text>
                         <Text>是否退款：{item.payStatus && item.payStatus == -1 ? '是' : '否'}</Text>
                     </Flex>
+
                     {/* <Text style={{
                         paddingLeft: 15,
                         paddingRight: 15,
@@ -706,7 +708,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>报单时间：{detail.createDate}</Text>
                     </Flex>
- 
+
                     {detail.linkList && detail.linkList.map(item => (
                         <TouchableWithoutFeedback key={item.id}>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
@@ -720,10 +722,8 @@ export default class ServiceDeskDetailPage extends BasePage {
                                     }
                                 }} style={[styles.right, { color: Macro.work_blue }]}>{item.billCode}</Text>
                             </Flex>
-
                         </TouchableWithoutFeedback>
                     ))}
- 
 
                     {detail.returnVisitDate ?
                         <>

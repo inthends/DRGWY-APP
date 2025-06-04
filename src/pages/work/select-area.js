@@ -100,6 +100,7 @@ export default class SelectAreaPage extends BasePage {
             //包含房间和车位
             type = '5,6,9';
         }
+
         if (type.indexOf(item.type)) {
             const { parentName, roleId } = this.state;
             this.props.navigation.push('selectArea', {
@@ -144,6 +145,7 @@ export default class SelectAreaPage extends BasePage {
                     break;
                 }
             }
+ 
             if (type === -1) {
                 UDToast.showError('类型错误');
                 return;
@@ -153,6 +155,7 @@ export default class SelectAreaPage extends BasePage {
                 type,
                 roleId
             };
+
         } else {
 
             this.props.navigation.setParams({

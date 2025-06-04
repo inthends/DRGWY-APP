@@ -29,7 +29,7 @@ import api from '../../utils/api';
 import { saveSelectBuilding, saveSelectDrawerType } from '../../utils/store/actions/actions';
 import { DrawerType } from '../../utils/store/action-types/action-types';
 
-class BuildingPage extends BasePage {
+class ProjectPage extends BasePage {
   constructor(props) {
     super(props);
     this.selectBuilding = {
@@ -83,17 +83,22 @@ class BuildingPage extends BasePage {
                   ],
                   { cancelable: false }
                 );
-              } else {
-                this.initUI();
               }
+
+
+              // else {
+              //   this.initUI();
+              // }
+
             })
             .catch(() => {
-              this.initUI();
+              //this.initUI();
             });
         },
       );
-    } else {
-      this.initUI();
+    }
+      // else {
+      //  this.initUI();
       //废弃
       // NativeModules.LHNToast.getVersionCode((err, version) => {
       //     checkUpdate(common.appId(), version).then(IOSUpdateInfo => {
@@ -122,7 +127,7 @@ class BuildingPage extends BasePage {
       //         }
       //     });
       // });
-    }
+      //}
 
 
     this.viewDidAppear = this.props.navigation.addListener(
@@ -130,6 +135,7 @@ class BuildingPage extends BasePage {
       (obj) => {
         this.props.saveBuilding({});//加载页面清除别的页面选中的数据
         this.props.saveSelectDrawerType(DrawerType.organize);
+        this.initUI();
       }
     );
 
@@ -146,7 +152,6 @@ class BuildingPage extends BasePage {
     BuildingService.getUserInfo().then((res) => {
       this.props.saveUser(res);
     });
-
     this.onRefresh();
     // this.viewDidAppear = this.props.navigation.addListener(
     //     'didFocus',
@@ -162,8 +167,7 @@ class BuildingPage extends BasePage {
   componentWillUnmount() {
     this.viewDidAppear.remove();
   }
-
-
+ 
   initData = () => {
     BuildingService.getStatisticsTotal(this.selectBuilding.key).then((res) => {
       if (res && res.length > 0) {
@@ -364,4 +368,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(BuildingPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectPage);

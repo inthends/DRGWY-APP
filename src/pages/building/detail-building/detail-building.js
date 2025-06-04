@@ -1,4 +1,4 @@
-//楼栋详情
+ 
 import React from 'react';
 import {
   View,
@@ -18,8 +18,7 @@ import common from '../../../utils/common';
 // import BackTitleNavigationBar from '../../../components/back-title-navigation-bar';
 import CommonView from '../../../components/CommonView';
 import numeral from 'numeral';
-
-//楼栋详情
+ 
 export default class DetailBuildingPage extends BasePage {
 
   // static navigationOptions = ({ navigation }) => { 
@@ -153,7 +152,7 @@ export default class DetailBuildingPage extends BasePage {
               justify="between"
               style={{
                 paddingTop: 15,
-                paddingBottom: 10,
+                //paddingBottom: 10,
                 paddingLeft: 15,
                 paddingRight: 15
               }}
@@ -176,7 +175,7 @@ export default class DetailBuildingPage extends BasePage {
                   paddingRight: 15
                 }}
               >
-                <Text style={styles.leftText}>在租面积：</Text>
+                <Text style={styles.leftText}>在租面积</Text>
                 <Text style={styles.rightText}>{numeral(detail.rentareasum).format('0,0.00')}{Macro.meter_square} ({detail.rentarearate}%)</Text>
               </Flex>
               {/* <Flex
@@ -193,9 +192,8 @@ export default class DetailBuildingPage extends BasePage {
               <Flex
                 direction="row"
                 justify="between"
-                style={{ paddingBottom: 10, paddingLeft: 15, paddingRight: 15 }}
-              >
-                <Text style={styles.leftText}>可招商面积：</Text>
+                style={{ paddingBottom: 10, paddingLeft: 15, paddingRight: 15 }}>
+                <Text style={styles.leftText}>可招商面积</Text>
                 <Text style={styles.rightText}>
                   {numeral(detail.investmentareasum).format('0,0.00')}{Macro.meter_square} ({detail.investmentarearate}%)
                 </Text>
@@ -210,13 +208,21 @@ export default class DetailBuildingPage extends BasePage {
                   {detail.rentingaverprice}
                 </Text>
               </Flex> */}
-              <Flex
+
+
+              {/* <Flex
                 direction="row"
                 justify="between"
-                style={{ paddingBottom: 10, paddingLeft: 15, paddingRight: 15 }}>
-                <Text style={styles.leftText}>入住率：</Text>
+                style={{
+                  paddingBottom: 20, 
+                  paddingLeft: 15,
+                  paddingRight: 15
+                }}>
+                <Text style={styles.leftText}>{detail.buildingformat == '住宅' ? '入住率' : '入驻率'}</Text>
                 <Text style={styles.rightText}>{detail.completionRate}%</Text>
-              </Flex>
+              </Flex> */}
+              
+
               {/* <Flex direction="row" style={{ paddingTop: 30 }}>
                 <Flex direction="column" style={styles.div}>
                   <View
@@ -296,7 +302,9 @@ export default class DetailBuildingPage extends BasePage {
               </Flex> */}
 
               {/* 从后台获取状态 */}
-              <Flex direction="row" style={[{ paddingTop: 20 }, ScreenUtil.borderBottom()]}>
+              <Flex direction="row" style={[
+                //{ paddingTop: 20 },
+                ScreenUtil.borderBottom()]}>
                 {status.map((item, i) => (
                   <Flex
                     key={'flex' + item.id}
@@ -361,6 +369,8 @@ export default class DetailBuildingPage extends BasePage {
                       //   backgroundColor: '#eee',
                       //   borderRadius: 12
                       // }}
+
+                        align="start" direction="column"
                       >
                         <Text style={{ color: '#666' }}>
                           {item.name}
@@ -368,7 +378,7 @@ export default class DetailBuildingPage extends BasePage {
                       </Flex>
                       <Text
                         style={{
-                          paddingLeft: 10,
+                          //paddingLeft: 10,
                           color: '#404145'
                         }}>{numeral(item.area).format('0,0.00')}{Macro.meter_square}
                       </Text>
@@ -548,8 +558,9 @@ const styles = StyleSheet.create({
   },
   rightText: {
     fontSize: 14,
-    color: '#2b2d31',
-    fontWeight: '600'
+    color: '#7b7b7d'
+    //color: '#2b2d31',
+    //fontWeight: '600'
   },
   div: {
     width: ScreenUtil.deviceWidth() / 7.0,

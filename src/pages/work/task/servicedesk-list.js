@@ -22,7 +22,6 @@ import MyPopover from '../../../components/my-popover';
 
 //待完成服务单列表
 class ServicedeskListPage extends BasePage {
-
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,

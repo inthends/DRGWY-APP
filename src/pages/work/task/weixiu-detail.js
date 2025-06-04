@@ -7,8 +7,8 @@ import {
     StyleSheet,
     ScrollView,
     FlatList,
-    Platform, 
-    Modal,CameraRoll
+    Platform,
+    Modal, CameraRoll
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Icon, Flex } from '@ant-design/react-native';
@@ -53,7 +53,6 @@ export default class WeixiuDetailPage extends BasePage {
             communicates: [],
             lookImageIndex: 0,
             visible: false,
-            //费用明细
             pageIndex: 1,
             refreshing: false,
             dataInfo: {
@@ -127,7 +126,7 @@ export default class WeixiuDetailPage extends BasePage {
         });
     };
 
-    savePhoto = (uri) => { 
+    savePhoto = (uri) => {
         // savePhoto =async (uri) => { 
         try {
             if (Platform.OS == 'android') { //远程文件需要先下载 
@@ -168,7 +167,7 @@ export default class WeixiuDetailPage extends BasePage {
             else {
                 //ios
                 let promise = CameraRoll.saveToCameraRoll(uri);
-                promise.then(function (result) { 
+                promise.then(function (result) {
                 }).catch(function (err) {
                 });
             }
@@ -235,6 +234,36 @@ export default class WeixiuDetailPage extends BasePage {
                     <Text style={styles.title}>{item.feeName}</Text>
                     {item.status == 0 ? <Text style={styles.statusred}>未收</Text> : <Text style={styles.statusblue}>已收</Text>}
                 </Flex>
+
+                {item.status == 0 ?
+                    <ActionPopover
+                        textStyle={{ fontSize: 14 }}
+                        //hiddenImage={true}
+                        onChange={(title) => {
+                            if (title === '作废') {
+                                this.doInvalid(item);
+                            } else if (title === '推送') {
+                                if (item.noticeId) {
+                                    UDToast.showError('该费用已经推送');
+                                    return;
+                                }
+                                this.send(item);
+                            }
+                        }}
+                        titles={['推送', '作废']}
+                        visible={true} /> :
+
+                    (item.payStatus && item.payStatus == -1 ? null :
+                        <ActionPopover
+                            textStyle={{ fontSize: 14 }}
+                            //hiddenImage={true}
+                            onChange={() => {
+                                this.refund(item);
+                            }}
+                            titles={['退款']}
+                            visible={true} />)
+                }
+
                 <Flex style={styles.line} />
                 <Flex align={'start'} direction={'column'}>
                     <Flex justify='between'
@@ -249,7 +278,8 @@ export default class WeixiuDetailPage extends BasePage {
                         {item.beginDate ?
                             <Text>{moment(item.beginDate).format('YYYY-MM-DD') + '至' + moment(item.endDate).format('YYYY-MM-DD')}</Text> : null
                         }
-                        <Text>是否推送账单：{item.noticeId ? '是' : '否'} </Text>
+                        <Text>账单是否推送：{item.noticeId ? '是' : '否'} </Text>
+                        <Text>是否退款：{item.payStatus && item.payStatus == -1 ? '是' : '否'}</Text>
                     </Flex>
                 </Flex>
             </Flex>
@@ -271,7 +301,7 @@ export default class WeixiuDetailPage extends BasePage {
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
-                    
+
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>

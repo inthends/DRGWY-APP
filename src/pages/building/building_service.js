@@ -1,7 +1,7 @@
 import api from '../../utils/api';
 // import common from '../../utils/common';
 export default {
-    getStatistics(pageIndex, organizeId, keyword, showLoading = true) {
+    getStatistics(pageIndex, organizeId,  showLoading = true) {
         
         return api.postData('/api/MobileMethod/MGetStatistics', {
             pageIndex,

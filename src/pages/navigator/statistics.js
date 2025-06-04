@@ -107,7 +107,6 @@ class StatisticsPage extends BasePage {
         this.onRefresh();
       }
     );
-
   }
 
   // componentWillUnmount() {

@@ -237,6 +237,8 @@ export default class EfuwuDetailPage extends BasePage {
                     <Text style={styles.title}>{item.feeName}</Text>
                     {item.status == 0 ? <Text style={styles.statusred}>未收</Text> : <Text style={styles.statusblue}>已收</Text>}
                 </Flex>
+ 
+
                 <Flex style={styles.line} />
                 <Flex align={'start'} direction={'column'}>
                     <Flex justify='between'
@@ -251,7 +253,8 @@ export default class EfuwuDetailPage extends BasePage {
                         {item.beginDate ?
                             <Text>{moment(item.beginDate).format('YYYY-MM-DD') + '至' + moment(item.endDate).format('YYYY-MM-DD')}</Text> : null
                         }
-                        <Text>是否推送账单：{item.noticeId ? '是' : '否'} </Text>
+                        <Text>账单是否推送：{item.noticeId ? '是' : '否'} </Text>
+                        <Text>是否退款：{item.payStatus && item.payStatus == -1 ? '是' : '否'}</Text>
                     </Flex>
                 </Flex>
             </Flex>

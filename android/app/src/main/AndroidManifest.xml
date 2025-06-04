@@ -19,6 +19,7 @@
     <uses-permission android:name="android.permission.CLOUDPOS_MID_SYSTEMDEV" />
 
 
+
     <!--    android:networkSecurityConfig="@xml/network_security_config"-->
 
     <application

@@ -15,35 +15,34 @@ export default class BuildingCell extends BasePage {
     constructor(props) {
         super(props);
     }
-
     //louDetail shebeiDetail
     //<TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('feeDetail',{})}>
     //DetailBuilding
 
     render() {
         const { item } = this.props;
-        return ( 
+        return (
             //<TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('feeDetail',{})}>
             //<TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('louDetail',{})}> 
             <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate(this.props.nextRouteName, { data: item })}>
                 <View style={styles.content}>
-                    <Flex direction="row">  
+                    <Flex direction="row">
                         <Flex style={styles.left}>
                             <LoadImage img={item.mainpic} style={styles.image} />
-                        </Flex> 
+                        </Flex>
                         <Flex direction="column" justify="between" style={styles.right}>
                             <Flex justify="between" style={styles.item}>
-                                <Text style={styles.name}>{item.name}</Text> 
+                                <Text style={styles.name}>{item.name}</Text>
                                 <Text style={styles.area}>{item.code}</Text>
                             </Flex>
                             <Flex justify="between" style={[styles.item, { marginTop: 10 }]}>
-                                <Text style={styles.complete}>入住率 {item.checkrate}%</Text>
+                                <Text style={styles.complete}>{item.buildingformat == '住宅' ? '入住率' : '出租率'} {item.rentarearate}%</Text>
                                 <Text style={styles.number}>{numeral(item.areasum).format('0,0.00')}{Macro.meter_square}</Text>
                             </Flex>
-                            <Flex style={[styles.item, { marginTop: 15 }]}>
+                            <Flex style={[styles.item, { marginTop: 12 }]}>
                                 <Text style={styles.desc}>在租 {numeral(item.rentareasum).format('0,0.00')}{Macro.meter_square}</Text>
                                 <View style={styles.line} />
-                                <Text style={styles.desc}>可招商 {numeral(item.investmentareasum).format('0,0.00')}{Macro.meter_square}</Text>
+                                <Text style={[styles.desc, { marginRight: 10 }]}>可招商 {numeral(item.investmentareasum).format('0,0.00')}{Macro.meter_square}</Text>
                             </Flex>
                         </Flex>
                     </Flex>
@@ -111,8 +110,8 @@ const styles = StyleSheet.create({
     line: {
         width: 1,
         height: 15,
-        backgroundColor: '#bcbcbe', 
-        marginLeft: 20,
-        marginRight: 20
+        backgroundColor: '#bcbcbe',
+        marginLeft: 10,
+        marginRight: 10
     }
 });

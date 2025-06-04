@@ -8,7 +8,7 @@ import {
 } from 'react-navigation';
 import { Icon } from '@ant-design/react-native';
 import Macro from '../../utils/macro';
-import BuildingPage from '../building/building';
+import ProjectPage from '../building/project';
 import WorkPage from '../work/work';
 import MinePage from '../mine/mine';
 import StatisticsPage from '../navigator/statistics';
@@ -176,7 +176,7 @@ import merchants from '../flow/merchants';
 const BuildingNavigator = createStackNavigator(
   {
     Building: {
-      screen: BuildingPage,
+      screen: ProjectPage,
       navigationOptions: (navigation) => ({
         title: '项目',
         headerBackTitle: null,

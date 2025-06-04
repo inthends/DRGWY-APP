@@ -29,6 +29,7 @@ import CommonView from '../../components/CommonView';
 import { connect } from 'react-redux';
 import { saveXunJianAction } from '../../utils/store/actions/actions';
 import Macro from '../../utils/macro';
+import MyPopoverRight from '../../components/my-popover-right';
 
 class AddWorkPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -59,6 +60,8 @@ class AddWorkPage extends BasePage {
             canSelectAddress: !address,
             address,
             value,
+            emergencyLevel: '一般',
+            importance: '一般',
             isMustServicedeskFile: false,
             isAutoSend: false//是否自动派单
         };
@@ -214,7 +217,14 @@ class AddWorkPage extends BasePage {
     }
 
     submit = () => {
-        const { id, data, index, address, value, taskId, isMustServicedeskFile, images, isAutoSend, repairmajor } = this.state;
+        const { id, data, index,
+            address, value, taskId,
+            isMustServicedeskFile,
+            images, isAutoSend,
+            repairmajor,
+            emergencyLevel,
+            importance
+        } = this.state;
 
         if (address == null || address.allName == null) {
             const title = '请选择' + data[index] + '地址';
@@ -245,13 +255,15 @@ class AddWorkPage extends BasePage {
         this.canSubmit = false;//防止重复提交
         const params = {
             id,
-            keyvalue: id, 
+            keyvalue: id,
             billType: data[index],
             roomId: address.id,
             address: address.allName,
             contents: value,
             isAdd: true,
-            taskId: this.state.taskId,
+            taskId: taskId,
+            emergencyLevel: emergencyLevel,
+            importance: importance,
             repairMajorId: repairmajor ? repairmajor.id : null
             //repairMajor: repairmajor ? repairmajor.name : null
         };
@@ -352,8 +364,7 @@ class AddWorkPage extends BasePage {
                                             //`请选择${title}地址`
                                             '请选择地址'
                                             }</Text>
-                                        <LoadImage style={{ width: 6, height: 11 }}
-                                            defaultImg={require('../../static/images/address/right.png')} />
+                                        <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../static/images/address/right.png')} />
                                     </Flex>
                                 </TouchableWithoutFeedback>
                             </Flex>
@@ -374,12 +385,45 @@ class AddWorkPage extends BasePage {
                                     </Flex>
                                 </TouchableWithoutFeedback> : null}
 
+                            <Flex justify="between" style={[{
+                                paddingTop: 15,
+                                paddingBottom: 15,
+                                marginLeft: 10,
+                                marginRight: 10,
+                                width: ScreenUtil.deviceWidth() - 30
+                            }, ScreenUtil.borderBottom()]}>
+                                <Text style={{ fontSize: 16, color: '#999' }}>紧急程度</Text>
+                                <MyPopoverRight
+                                    onChange={(value) => {
+                                        this.setState({ emergencyLevel: value });
+                                    }}
+                                    titles={['一般', '紧急', '非常紧急']}
+                                    visible={true} />
+                            </Flex>
+
+                            <Flex justify="between" style={[{
+                                paddingTop: 15,
+                                paddingBottom: 15,
+                                marginLeft: 10,
+                                marginRight: 10,
+                                width: ScreenUtil.deviceWidth() - 30
+                            }, ScreenUtil.borderBottom()]}>
+                                <Text style={{ fontSize: 16, color: '#999' }}>重要程度</Text>
+                                <MyPopoverRight
+                                    onChange={(value) => {
+                                        this.setState({ importance: value });
+                                    }}
+                                    titles={['一般', '重要', '非常重要']}
+                                    visible={true} />
+                            </Flex>
+
                             <TextareaItem
                                 rows={12}
                                 //placeholder={title2}
                                 placeholder='请输入内容'
                                 //autoHeight
                                 style={[{
+                                    marginLeft: -16,
                                     color: '#404145',
                                     fontSize: 16,
                                     paddingTop: 15,
@@ -408,7 +452,7 @@ class AddWorkPage extends BasePage {
                                     : null}
                             </Flex> */}
 
-                            <ScrollView style={{ maxHeight: 100  }}>
+                            <ScrollView style={{ maxHeight: 100 }}>
                                 <Flex justify={'start'} align={'start'}
                                     style={{
                                         width: ScreenUtil.deviceWidth()
@@ -440,7 +484,6 @@ class AddWorkPage extends BasePage {
                                     </Flex>
                                 </Flex>
                             </ScrollView>
-                            
                         </Flex>
 
                         <Flex justify={'center'} align={'start'} style={{

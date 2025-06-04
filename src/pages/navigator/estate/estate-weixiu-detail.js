@@ -240,7 +240,7 @@ export default class EweixiuDetailPage extends BasePage {
                 <Flex justify='between' style={{ width: '100%' }}>
                     <Text style={styles.title}>{item.feeName}</Text>
                     {item.status == 0 ? <Text style={styles.statusred}>未收</Text> : <Text style={styles.statusblue}>已收</Text>}
-                </Flex>
+                </Flex> 
                 <Flex style={styles.line} />
                 <Flex align={'start'} direction={'column'}>
                     <Flex justify='between'
@@ -255,7 +255,8 @@ export default class EweixiuDetailPage extends BasePage {
                         {item.beginDate ?
                             <Text>{moment(item.beginDate).format('YYYY-MM-DD') + '至' + moment(item.endDate).format('YYYY-MM-DD')}</Text> : null
                         }
-                        <Text>是否推送账单：{item.noticeId ? '是' : '否'} </Text>
+                        <Text>账单是否推送：{item.noticeId ? '是' : '否'} </Text>
+                        <Text>是否退款：{item.payStatus && item.payStatus == -1 ? '是' : '否'}</Text>
                     </Flex>
                 </Flex>
             </Flex>
@@ -317,7 +318,7 @@ export default class EweixiuDetailPage extends BasePage {
                                 //     this.props.navigation.navigate('checkDetail', { id: detail.relationId });
                                 // }
                             }}
-                           style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
+                                style={[styles.right, { color: Macro.work_blue }]}>{detail.serviceDeskCode}</Text>
                         </Flex>
                     </TouchableWithoutFeedback>}
 
@@ -333,7 +334,7 @@ export default class EweixiuDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>维修专业：{detail.repairMajor}，积分：{detail.score}</Text>
                     </Flex>
- 
+
                     {detail.appScore != null ?
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                             <Text style={styles.left}>修正个人积分：{detail.appScore}</Text>
@@ -391,7 +392,7 @@ export default class EweixiuDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>费用明细</Text>
                     </Flex>
-                    
+
                     <FlatList
                         data={dataInfo.data}
                         renderItem={this._renderItem}

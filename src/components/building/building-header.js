@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import BasePage from '../../pages/base/base';
 import Macro from '../../utils/macro';
-import {  Icon, Flex } from '@ant-design/react-native';
+import { Icon, Flex } from '@ant-design/react-native';
 import numeral from 'numeral';
 
 export default class BuildingHeader extends BasePage {
@@ -42,14 +42,16 @@ export default class BuildingHeader extends BasePage {
                     </Flex>
                 </Flex> */}
 
-               
-
                 <Flex direction="row" justify='between' style={styles.top}>
-                    <Flex justify='start' style={{ flex: 4 }}>
-                        <Text style={[styles.text, styles.big]}>总面积 {numeral(statistics.areasum).format('0,0.00')}{Macro.meter_square}</Text>
+                    <Flex justify='start'
+                    //style={{ flex: 4 }}
+                    >
+                        <Text style={[styles.text, styles.big]}>总计费面积 {numeral(statistics.areasum).format('0,0.00')}{Macro.meter_square}</Text>
                     </Flex>
 
-                    <Flex justify='end' style={{ flex: 1 }}>
+                    <Flex justify='end'
+                    //style={{ flex: 1 }}
+                    >
                         <TouchableOpacity onPress={() => this.props.navigation.openDrawer('organize')}>
                             <Icon name='bars' color="white" />
                         </TouchableOpacity>
@@ -76,10 +78,11 @@ export default class BuildingHeader extends BasePage {
                         <Text size="small"
                             style={styles.bottomText}>{numeral(statistics.investmentareasum).format('0,0.00')}{Macro.meter_square}</Text>
                     </Flex.Item>
-                    <Flex.Item style={styles.item}>
+
+                    {/* <Flex.Item style={styles.item}>
                         <Text size="small" style={styles.topText}>入住率</Text>
                         <Text size="small" style={styles.bottomText}>{statistics.checkrate}%</Text>
-                    </Flex.Item>
+                    </Flex.Item> */}
                 </Flex>
             </View>
         );
@@ -89,7 +92,8 @@ export default class BuildingHeader extends BasePage {
 const styles = StyleSheet.create({
     content: {
         flexDirection: 'column',
-        height: 150,
+        // height: 150,
+        height: 130,
         backgroundColor: Macro.color_sky_dark
     },
     top: {
@@ -116,15 +120,18 @@ const styles = StyleSheet.create({
     //     width: '100%'
     // },
     big: {
-        fontSize: 25,
-        paddingLeft: 10
+        //fontSize: 25,
+        fontSize: 22,
+        //paddingLeft: 10
+        paddingLeft: 20
     },
     item: {
         alignItems: 'center'
     },
     topText: {
         color: '#74BAF1',
-        fontSize: 16
+        //fontSize: 16
+        fontSize: 18
     },
     bottomText: {
         color: Macro.color_white,

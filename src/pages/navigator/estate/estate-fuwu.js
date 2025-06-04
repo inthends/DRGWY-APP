@@ -201,8 +201,8 @@ class EstateFuwuPage extends BasePage {
                     <Flex align={'start'} direction={'column'}>
                         <Flex justify='between'
                             style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
-                            <Text style={{ lineHeight: 20 }}>{item.address} </Text>
-                            <Text>{item.statusName}</Text>
+                            <Text style={{ lineHeight: 20 }}>{item.address} {item.statusName}</Text>
+                            {/* <Text>{item.statusName}</Text> */}
                         </Flex>
                         <Text
                             // numberOfLines={3}
@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
 
     list: {
         backgroundColor: Macro.color_white,
-        margin: 15,
+        margin: 15
     },
     title: {
         paddingTop: 15,

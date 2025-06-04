@@ -113,8 +113,10 @@ class WorkPage extends BasePage {
                         showLoading: false
                     });
                 });
+
                 WorkService.unreadCount().then(news => {
                     this.props.navigation.setParams({ news });
+                    //设置苹果角标
                     JPush.setBadge({
                         badge: news,
                         appBadge: news
