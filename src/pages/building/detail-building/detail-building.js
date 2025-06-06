@@ -208,8 +208,7 @@ export default class DetailBuildingPage extends BasePage {
                   {detail.rentingaverprice}
                 </Text>
               </Flex> */}
-
-
+ 
               {/* <Flex
                 direction="row"
                 justify="between"
@@ -325,10 +324,9 @@ export default class DetailBuildingPage extends BasePage {
                   </Flex>
                 ))}
               </Flex>
-            </ScrollView>
-
+            </ScrollView> 
             <SearchBar
-              placeholder="搜索房号或客户"
+              placeholder="搜索房产名称、房号或客户名称"
               showCancelButton
               cancelText={btnText}
               value={this.state.keyword}
@@ -339,8 +337,7 @@ export default class DetailBuildingPage extends BasePage {
               }}
               onSubmit={() => this.search()}
               onCancel={() => this.clear()}
-            />
-
+            /> 
             <ScrollView
               style={{
                 paddingBottom: 20

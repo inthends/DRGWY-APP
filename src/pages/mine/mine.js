@@ -120,7 +120,7 @@ export default class MinePage extends BasePage {
                 <Flex>
                   <LoadImage
                     style={{ width: 18, height: 18 }}
-                    defaultImg={require('../../static/images/paiyipai.png')}
+                    defaultImg={require('../../static/images/person1.png')}
                   />
                   <Text style={styles.item}>通讯录</Text>
                 </Flex>

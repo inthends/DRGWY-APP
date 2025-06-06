@@ -111,7 +111,7 @@ export default class DetailPage extends BasePage {
         }}>
           <ShowTitle title="基础信息" />
           {detail.operationType === '变更客户' && (
-            <Flex style={styles.card} direction="column" align="start">
+            <Flex   direction="column" align="start">
               <ShowText
                 //fixedWidth={80}
                 word="变更类型"
@@ -187,7 +187,7 @@ export default class DetailPage extends BasePage {
           )}
 
           {detail.operationType === '变更租期' && (
-            <Flex style={styles.card} direction="column" align="start">
+            <Flex   direction="column" align="start">
               <ShowText word="变更类型" title={detail.operationType} />
               <ShowLine />
               <ShowText word="合同号" title={detail.no} />
@@ -250,7 +250,7 @@ export default class DetailPage extends BasePage {
           )}
 
           {detail.operationType === '变更房产' && (
-            <Flex style={styles.card} direction="column" align="start">
+            <Flex   direction="column" align="start">
               <ShowText word="变更类型" title="变更房产" />
               <ShowLine />
               <ShowText word="合同号" title={detail.no} />

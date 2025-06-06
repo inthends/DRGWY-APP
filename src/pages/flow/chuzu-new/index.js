@@ -19,6 +19,7 @@ import AddReview from '../components/add-review';
 import ShowReviews from '../components/show-reviews';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
+import ShowLine from '../components/show-line';
 
 export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
@@ -100,9 +101,16 @@ export default class DetailPage extends BasePage {
 
     return (
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
-        <ScrollView style={{ flex: 1, padding: 10 }}>
+        <ScrollView
+          style={{
+            flex: 1,
+            padding: 10
+          }}
+        >
           <ShowTitle title="基础信息" />
-          <Flex style={styles.card} direction="column" align="start">
+          <Flex
+            //style={styles.card}
+            direction="column" align="start">
             <ShowText word="合同号" title={detail.no} />
             <ShowLine />
             <ShowText word="租期" title={detail.date} />
@@ -119,7 +127,7 @@ export default class DetailPage extends BasePage {
                       },
                       () => {
                         this.companyDetailRef.showModal();
-                      },
+                      }
                     );
                   });
               }}
@@ -262,20 +270,20 @@ export default class DetailPage extends BasePage {
 const styles = StyleSheet.create({
   txt: {
     fontSize: 14,
-    paddingBottom: 10,
+    paddingBottom: 10
   },
   text: {
     fontSize: 14
   },
   card: {
-    marginTop: 5,
-    borderWidth: 1,
-    borderRadius: 4,
-    borderStyle: 'solid',
-    borderColor: '#eee',
-    paddingHorizontal: 10,
-    paddingTop: 15,
-    paddingBottom: 5,
-    marginBottom: 15
+    // marginTop: 5,
+    // borderWidth: 1,
+    // borderRadius: 4,
+    // borderStyle: 'solid',
+    // borderColor: '#eee',
+    // paddingHorizontal: 10,
+    // paddingTop: 15,
+    // paddingBottom: 5,
+    // marginBottom: 15
   }
 });

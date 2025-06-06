@@ -18,7 +18,8 @@ import UDToast from '../../../utils/UDToast';
 import AddReview from '../components/add-review';
 import ShowReviews from '../components/show-reviews';
 import Macro from '../../../utils/macro';
-import ScreenUtil from '../../../utils/screen-util'; 
+import ScreenUtil from '../../../utils/screen-util';
+import CompanyDetail from '../components/company-detail';
 
 export default class DetailPage extends BasePage {
   static navigationOptions = ({ navigation }) => {
@@ -109,7 +110,7 @@ export default class DetailPage extends BasePage {
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
         <ScrollView style={{ flex: 1, padding: 10 }}>
           <ShowTitle title="基础信息" />
-          <Flex style={styles.card} direction="column" align="start">
+          <Flex   direction="column" align="start">
             <ShowText
               word="合同号"
               title={detail.no}
@@ -222,8 +223,7 @@ export default class DetailPage extends BasePage {
             }}
           />
         </ScrollView>
-
-        {/* <CompanyDetail customer={customer} ref={(ref) => (this.companyDetailRef = ref)} /> */}
+ 
         <HeTongDetail
           hetong={hetong}
           ref={(ref) => (this.hetongDetailRef = ref)}

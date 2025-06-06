@@ -34,29 +34,28 @@ export default class Contact extends BasePage {
         return (
             <View style={{ flex: 1 }}>
                 <ScrollView>
-                    <View style={styles.content}> 
+                    <View style={styles.content}>
                         <TouchableWithoutFeedback onPress={() => this.props.navigation.push('contactDetail')}>
                             <Flex justify='between'
                                 style={[{
-                                    marginTop: 30,
+                                    marginTop: 20,
                                     paddingBottom: 20,
-                                    paddingLeft: 15,
-                                    paddingRight: 25,
+                                    // paddingLeft: 10,
+                                    // paddingRight: 10
                                 }, ScreenUtil.borderBottom()]}>
                                 <Flex>
                                     <Text style={styles.item}>内部员工</Text>
                                 </Flex>
-                                <LoadImage style={{ width: 8, height: 15 }}
-                                    defaultImg={require('../../../static/images/address/right.png')} />
+                                <LoadImage style={{ width: 8, height: 15 }} defaultImg={require('../../../static/images/address/right.png')} />
                             </Flex>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={() => this.props.navigation.push('vendorDetail')}>
                             <Flex justify='between'
                                 style={[{
-                                    marginTop: 30,
+                                    marginTop: 20,
                                     paddingBottom: 20,
-                                    paddingLeft: 15,
-                                    paddingRight: 25,
+                                    // paddingLeft: 10,
+                                    // paddingRight: 10
                                 }, ScreenUtil.borderBottom()]}>
                                 <Flex>
                                     <Text style={styles.item}>往来单位</Text>
@@ -72,23 +71,20 @@ export default class Contact extends BasePage {
 }
 
 const styles = StyleSheet.create({
-
     content: {
         backgroundColor: Macro.color_white,
         paddingLeft: 15,
         paddingRight: 20,
-        height: ScreenUtil.contentHeight(),
-        // height: ScreenUtil.contentHeightWithNoTabbar(),
+        height: ScreenUtil.contentHeight()
+        //height: ScreenUtil.contentHeightWithNoTabbar(),
     },
-
     name: {
         fontSize: 20,
-        color: '#404145',
+        color: '#404145'
 
     },
-
     item: {
         fontSize: 16,
         color: '#404145'
-    },
+    }
 });

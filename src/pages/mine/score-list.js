@@ -15,7 +15,6 @@ import MineService from './mine-service';
 
 //积分明细，按月统计
 export default class ScoreListPage extends BasePage  {
-
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,

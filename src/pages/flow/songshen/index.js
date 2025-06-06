@@ -123,7 +123,7 @@ export default class DetailPage extends BasePage {
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
         <ScrollView style={{ flex: 1, padding: 10 }}>
           <ShowTitle title="基础信息" />
-          <Flex style={styles.card} direction="column" align="start">
+          <Flex direction="column" align="start">
             <ShowText word="所属项目" title={detail.organizeName} />
             <ShowLine />
             <ShowText word="送审单号" title={detail.billCode} />
@@ -140,7 +140,7 @@ export default class DetailPage extends BasePage {
           </Flex>
           <ShowTitle title="送审金额" />
           <ShowLine />
-          <Flex style={styles.card} direction="column" align="start">
+          <Flex  direction="column" align="start">
             <Text style={[styles.txt, { color: Macro.work_blue }]}>
               {detail.groupTotal}
             </Text>

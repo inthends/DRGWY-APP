@@ -207,18 +207,15 @@ class SecondDetailBuildingPage extends BasePage {
                     </Flex>
 
                     <Flex justify='between' style={styles.single}>
+                        <Text style={styles.left}>计费面积</Text>
+                        <Text style={styles.right}>{room.billArea} {Macro.meter_square}</Text>
+                    </Flex>
+
+                    <Flex justify='between' style={styles.single}>
                         <Text style={styles.left}>建筑面积</Text>
                         <Text style={styles.right}>{room.area} {Macro.meter_square}</Text>
                     </Flex>
 
-                    <Flex justify='between' style={styles.single}>
-                        <Text style={styles.left}>土地面积</Text>
-                        <Text style={styles.right}>{room.coverArea} {Macro.meter_square}</Text>
-                    </Flex>
-                    <Flex justify='between' style={styles.single}>
-                        <Text style={styles.left}>计费面积</Text>
-                        <Text style={styles.right}>{room.billArea} {Macro.meter_square}</Text>
-                    </Flex>
                     <Flex justify='between' style={styles.single}>
                         <Text style={styles.left}>套内面积</Text>
                         <Text style={styles.right}>{room.insideArea} {Macro.meter_square}</Text>
@@ -227,6 +224,11 @@ class SecondDetailBuildingPage extends BasePage {
                     <Flex justify='between' style={styles.single}>
                         <Text style={styles.left}>产权面积</Text>
                         <Text style={styles.right}>{room.propertyArea} {Macro.meter_square}</Text>
+                    </Flex>
+
+                    <Flex justify='between' style={styles.single}>
+                        <Text style={styles.left}>土地面积</Text>
+                        <Text style={styles.right}>{room.coverArea} {Macro.meter_square}</Text>
                     </Flex>
 
                     <Flex justify='between' style={styles.single}>
@@ -283,8 +285,8 @@ class SecondDetailBuildingPage extends BasePage {
                                 </Flex>
                                 <Flex direction='column' align='start'
                                     style={{ paddingTop: 15, width: ScreenUtil.deviceWidth() / 3.0 }}>
-                                    <Text style={{ color: '#a8a7ab' }}>租赁数</Text>
-                                    <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.totalArea} {Macro.meter_square}</Text>
+                                    <Text style={{ color: '#a8a7ab' }}>面积</Text>
+                                    <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.signArea} {Macro.meter_square}</Text>
                                 </Flex>
                             </Flex>
                             <Flex>
@@ -300,6 +302,27 @@ class SecondDetailBuildingPage extends BasePage {
                                 </Flex>
                                 <Flex direction='column' align='start'
                                     style={{ paddingTop: 15, width: ScreenUtil.deviceWidth() / 3.0 }}>
+                                    <Text style={{ color: '#a8a7ab' }}>签约人</Text>
+                                    <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.signer}</Text>
+                                </Flex>
+                            </Flex>
+
+                            <Flex>
+
+                                <Flex direction='column' align='start'
+                                    style={{ paddingTop: 15, width: ScreenUtil.deviceWidth() / 3.0 }}>
+                                    <Text style={{ color: '#a8a7ab' }}>付款方式</Text>
+                                    <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.payType}</Text>
+                                </Flex>
+
+                                <Flex direction='column' align='start'
+                                    style={{ paddingTop: 15, width: ScreenUtil.deviceWidth() / 3.0 }}>
+                                    <Text style={{ color: '#a8a7ab' }}>交付日期</Text>
+                                    <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.payDate}</Text>
+                                </Flex>
+
+                                <Flex direction='column' align='start'
+                                    style={{ paddingTop: 15, width: ScreenUtil.deviceWidth() / 3.0 }}>
                                     <Text style={{ color: '#a8a7ab' }}>合同状态</Text>
                                     <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.status}</Text>
                                 </Flex>
@@ -311,6 +334,14 @@ class SecondDetailBuildingPage extends BasePage {
                                     <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.signboardName}</Text>
                                 </Flex>
                             </Flex>
+                            <Flex>
+                                <Flex direction='column' align='start'
+                                    style={{ paddingTop: 15 }}>
+                                    <Text style={{ color: '#a8a7ab' }}>用途</Text>
+                                    <Text style={{ paddingTop: 10, color: '#302d39' }}>{item.purpose}</Text>
+                                </Flex>
+                            </Flex>
+
                         </Flex>
                     ))
                     }

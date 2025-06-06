@@ -36,9 +36,9 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderColor: '#eee',
     paddingHorizontal: 10,
-    paddingTop: 15,
+    paddingTop: 10,
     paddingBottom: 5,
-    marginBottom: 15
+    marginBottom: 10
   }
 });
 

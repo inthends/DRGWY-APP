@@ -20,7 +20,7 @@ const ShowMingXiBaoXiao = ({ title = '明细', list = [], open = false }) => {
         click={() => setIsopen(!isOpen)}
       />
       {isOpen && (
-        <Flex style={styles.card} direction="column" align="start">
+        <Flex   direction="column" align="start">
           {list.map((item, index) => (
             <View key={index}
             //style={{ paddingBottom: 8 }} 

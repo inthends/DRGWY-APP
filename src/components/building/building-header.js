@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     // },
     big: {
         //fontSize: 25,
-        fontSize: 22,
+        fontSize: 20,
         //paddingLeft: 10
         paddingLeft: 20
     },

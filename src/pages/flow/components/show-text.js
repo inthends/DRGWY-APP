@@ -4,6 +4,7 @@ import { Text, StyleSheet } from 'react-native';
 import Macro from '../../../utils/macro';
 import screenUtil from '../../../utils/screen-util';
 
+
 const ShowText = ({
   //fixedWidth = 65,
   word = '',
@@ -23,6 +24,7 @@ const ShowText = ({
       <Flex 
       //style={{ width: fixedWidth }}
       //justify="between"
+      justify='between'
       >
         {words.map((item, index) => (
           <Text

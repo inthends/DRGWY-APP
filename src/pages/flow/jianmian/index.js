@@ -106,7 +106,7 @@ export default class DetailPage extends BasePage {
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
         <ScrollView style={{ flex: 1, padding: 10 }}>
           <ShowTitle title="基础信息" />
-          <Flex style={styles.card}
+          <Flex  
             direction="column"
             align="start">
             <ShowText word="减免单号" title={detail.billCode} />

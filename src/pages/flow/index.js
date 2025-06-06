@@ -13,7 +13,7 @@ import Macro from '../../utils/macro';
 import BasePage from '../base/base';
 import Service from './service';
 import NoDataView from '../../components/no-data-view';
-import {saveSelectBuilding, saveSelectDrawerType } from '../../utils/store/actions/actions';
+import { saveSelectBuilding, saveSelectDrawerType } from '../../utils/store/actions/actions';
 import { DrawerType } from '../../utils/store/action-types/action-types';
 
 
@@ -60,7 +60,7 @@ class ApprovePage extends BasePage {
   componentDidMount() {
     this.viewDidAppear = this.props.navigation.addListener(
       'didFocus',
-      (obj) => { 
+      (obj) => {
         this.props.saveBuilding({});//加载页面清除别的页面选中的数据
         this.props.saveSelectDrawerType(DrawerType.task);
         this.onRefresh();
@@ -164,6 +164,139 @@ class ApprovePage extends BasePage {
     }
   };
 
+  openUrl = (code, id) => {
+    let url = '';
+    switch (code) {
+      case '1006': {
+        url = 'songshen';//送审单
+        break;
+      }
+
+      case '1025': {
+        url = 'jianmian';//减免
+        break;
+      }
+
+      case '1026': {
+        url = 'fukuan';//付款单
+        break;
+      }
+
+      case '1002':
+      case '1005': {
+        url = 'chuzunew';//出租合同
+        break;
+      }
+
+      case '1004': {
+        url = 'chuzuchange';//合同变更
+        break;
+      }
+
+      case '1003': {
+        url = 'chuzutui';//合同退租
+        break;
+      }
+
+      //行政合同
+      case '1007':
+      case '1008':
+      case '1009': {
+        url = 'admincontract';
+        break;
+      }
+
+      case '1013':
+      case '1016': {
+        url = 'wuyenew';
+        break;
+      }
+
+      case '1014': {
+        url = 'wuyetui';
+        break;
+      }
+
+      case '1015': {
+        url = 'wuyechange';//物业合同变更
+        break;
+      }
+
+      case '1020': {
+        url = 'zulinplan';//规划单审批
+        break;
+      }
+
+      case '1011': {
+        url = 'caigou';//采购单
+        break;
+      }
+
+      case '1027': {
+        url = 'baoxiao';//报销单
+        break;
+      }
+
+      case '1035': {
+        url = 'matter';//事项申请
+        break;
+      }
+
+      case '1037': {
+        url = 'task';//任务单
+        break;
+      }
+
+      case '1039': {
+        url = 'budgetchange';
+        break;
+      }
+
+      case '1038': {
+        url = 'settlement';
+        break;
+      }
+
+      case '1036': {
+        url = 'inquiry';
+        break;
+      }
+
+      case '1033': {
+        url = 'budget';
+        break;
+      }
+
+      case '1032': {
+        url = 'question';
+        break;
+      }
+
+      case '1031': {
+        url = 'goodsout';
+        break;
+      }
+
+      case '1012': {
+        url = 'merchants';
+        break;
+      }
+
+      case '1010': {
+        url = 'assistance';//协办单
+        break;
+      }
+    }
+    const { taskType } = this.state;
+    //传递参数
+    this.props.navigation.push(url, {
+      id: id,
+      isCompleted: taskType == 3 ? true : false,
+      refresh: this.onRefresh
+    });
+
+  }
+
   render() {
     const { todo, read, done, taskType, dataInfo = {} } = this.state;
     return (
@@ -171,10 +304,11 @@ class ApprovePage extends BasePage {
         <Flex
           style={[
             {
-              paddingTop: 20,
-              paddingBottom: 20,
-              width: ScreenUtil.deviceWidth() - 30,
-              marginLeft: 15
+              width: ScreenUtil.deviceWidth() - 20,  
+              paddingTop: 10,
+              paddingBottom: 10,
+              marginLeft: 10,
+              marginLeft: 10,
             },
             ScreenUtil.borderBottom()
           ]}
@@ -272,144 +406,12 @@ class ApprovePage extends BasePage {
           data={dataInfo.data || []}
           renderItem={({ item }) => (
             <TouchableWithoutFeedback
-              onPress={() => {
-                let url = '';
-                switch (item.code) {
-
-                  case '1006': {
-                    url = 'songshen';//送审单
-                    break;
-                  }
-
-                  case '1025': {
-                    url = 'jianmian';//减免
-                    break;
-                  }
-
-                  case '1026': {
-                    url = 'fukuan';//付款单
-                    break;
-                  }
-
-                  case '1002':
-                  case '1005': {
-                    url = 'chuzunew';//出租合同
-                    break;
-                  }
-
-                  case '1004': {
-                    url = 'chuzuchange';//合同变更
-                    break;
-                  }
-
-                  case '1003': {
-                    url = 'chuzutui';//合同退租
-                    break;
-                  }
-
-                  //行政合同
-                  case '1007':
-                  case '1008':
-                  case '1009': {
-                    url = 'admincontract';
-                    break;
-                  }
-
-                  case '1013':
-                  case '1016': {
-                    url = 'wuyenew';
-                    break;
-                  }
-
-                  case '1014': {
-                    url = 'wuyetui';
-                    break;
-                  }
-
-                   case '1015': {
-                    url = 'wuyechange';//物业合同变更
-                    break;
-                  }
-
-                  case '1020': {
-                    url = 'zulinplan';//规划单审批
-                    break;
-                  }
-
-                  case '1011': {
-                    url = 'caigou';//采购单
-                    break;
-                  }
-
-                  case '1027': {
-                    url = 'baoxiao';//报销单
-                    break;
-                  }
-
-                  case '1035': {
-                    url = 'matter';//事项申请
-                    break;
-                  }
-
-                  case '1037': {
-                    url = 'task';//任务单
-                    break;
-                  }
-
-                  case '1039': {
-                    url = 'budgetchange';
-                    break;
-                  }
-
-                  case '1038': {
-                    url = 'settlement';
-                    break;
-                  }
-
-                  case '1036': {
-                    url = 'inquiry';
-                    break;
-                  }
-
-                  case '1033': {
-                    url = 'budget';
-                    break;
-                  }
-
-                  case '1032': {
-                    url = 'question';
-                    break;
-                  }
-
-                  case '1031': {
-                    url = 'goodsout';
-                    break;
-                  }
-
-                  case '1012': {
-                    url = 'merchants';
-                    break;
-                  }
-
-                  case '1010': {
-                    url = 'assistance';//协办单
-                    break;
-                  }
-
-                }
-
-                //传递参数
-                this.props.navigation.push(url, {
-                  id: item.id,
-                  isCompleted: taskType == 3 ? true : false,
-                  refresh: this.onRefresh
-                });
-              }}
+              onPress={() => { this.openUrl(item.code, item.id) }}
             >
               <View
                 style={[
                   ScreenUtil.border(),
-                  { marginHorizontal: 15, marginTop: 15 }
+                  { marginHorizontal: 10, marginTop: 10 }
                 ]}
               >
                 <Flex
@@ -429,7 +431,7 @@ class ApprovePage extends BasePage {
                 >
                   <Text
                     style={{
-                      height: 60
+                      height: 50
                     }}
                     numberOfLines={3}
                     ellipsizeMode='tail'
@@ -466,14 +468,14 @@ class ApprovePage extends BasePage {
 const styles = StyleSheet.create({
   list: {
     //height: ScreenUtil.contentHeightWithNoTabbar()
-    marginBottom: 15
+    marginBottom: 10
   },
 
   every: {
-    marginLeft: 15,
-    marginRight: 15,
-    paddingTop: 15,
-    paddingBottom: 15
+    marginLeft: 10,
+    marginRight: 10,
+    paddingTop: 10,
+    paddingBottom: 10
   },
 
   title: {

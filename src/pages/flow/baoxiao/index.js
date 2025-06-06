@@ -110,7 +110,7 @@ export default class DetailPage extends BasePage {
           flex: 1, padding: 10
         }}>
           <ShowTitle title="基础信息" />
-          <Flex style={styles.card} direction="column" align="start">
+          <Flex direction="column" align="start">
             <ShowText word="报销单号" title={detail.billCode} />
             <ShowLine />
             <ShowText word="机构" title={detail.organizeName} />

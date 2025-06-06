@@ -19,7 +19,7 @@ import api from '../../../utils/api';
 class ContactDetail extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
-            title: '内部员工通讯录',
+            title: '员工通讯录',
             headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -116,7 +116,7 @@ class ContactDetail extends BasePage {
         return (
             <View style={{ flex: 1 }}>
                 <SearchBar
-                    placeholder="请输入"
+                    placeholder="请输入姓名"
                     showCancelButton
                     cancelText={btnText}
                     value={this.state.keyword}
@@ -131,7 +131,9 @@ class ContactDetail extends BasePage {
                             activeSections={this.state.activeSections}
                         >
                             {data.map(item => (
-                                <Accordion.Panel key={item.departmentId} header={item.fullName}>
+                                <Accordion.Panel
+                                    key={item.departmentId}
+                                    header={item.fullName}>
                                     <List>
                                         {item.children.map(i => (
                                             <Flex justify={'start'} key={i.id} align={'start'} style={styles.aa} direction={'column'}>
@@ -144,7 +146,7 @@ class ContactDetail extends BasePage {
                                                         </Flex>
                                                     )
                                                 } */}
-                                                <Flex style={{ width: '100%' }} justify={'between'}>
+                                                <Flex style={{ width: '100%', fontSize: 14 }} justify={'between'}>
                                                     <Flex>
                                                         {/* <Text style={styles.desc}>{i.name || i.linkMan}</Text> */}
                                                         <Text style={styles.item}>{i.name || i.linkMan}</Text>
@@ -169,34 +171,38 @@ class ContactDetail extends BasePage {
 }
 
 const styles = StyleSheet.create({
-    all: {
-        backgroundColor: Macro.color_white,
-    },
+    // all: {
+    //     backgroundColor: Macro.color_white
+    // },
     content: {
         backgroundColor: Macro.color_white,
-        paddingLeft: 15,
-        paddingRight: 20,
+        // paddingLeft: 15,
+        // paddingRight: 20,
+
+        paddingLeft: 5,
+        paddingRight: 5,
+
         // height: ScreenUtil.contentHeight(), 
         // height: ScreenUtil.contentHeightWithNoTabbar(),
     },
-    header: {
-        paddingTop: 30,
-        paddingBottom: 30,
-    },
-    name: {
-        fontSize: 20,
-        color: '#404145'
-    },
-    desc: {
-        fontSize: 16,
-        color: '#999',
-        paddingTop: 5,
-        width: 100,
-    },
+    // header: {
+    //     paddingTop: 30,
+    //     paddingBottom: 30,
+    // },
+    // name: {
+    //     fontSize: 20,
+    //     color: '#404145'
+    // },
+    // desc: {
+    //     fontSize: 16,
+    //     color: '#999',
+    //     paddingTop: 5,
+    //     width: 100
+    // },
     desc2: {
         fontSize: 16,
         color: '#999',
-        paddingTop: 5,
+        paddingTop: 5
     },
     item: {
         fontSize: 16,
@@ -204,14 +210,20 @@ const styles = StyleSheet.create({
     },
     aa: {
         width: '100%',
-        paddingTop: 15,
+        // paddingTop: 15,
+        // paddingLeft: 15,
+        // paddingRight: 15,
+        // paddingBottom: 10,
+
+        paddingTop: 5,
+        paddingBottom: 5,
         paddingLeft: 15,
-        paddingRight: 15,
-        paddingBottom: 10,
+        paddingRight: 30,
+
         borderStyle: 'solid',
         borderBottomWidth: 1,
         borderBottomColor: ' rgb(244,244,244)'
-    },
+    }
 });
 
 const mapStateToProps = ({ buildingReducer }) => {
