@@ -108,7 +108,8 @@ export default class DetailPage extends BasePage {
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
         <ScrollView style={{ flex: 1, padding: 10 }}>
           <ShowTitle title="基础信息" />
-          <Flex  direction="column" align="start">
+          <ShowLine />
+          <Flex direction="column" align="start">
             <ShowText word="合同号" title={detail.no} />
             <ShowLine />
             <ShowText word="合同期限" title={detail.date} />
@@ -203,7 +204,7 @@ export default class DetailPage extends BasePage {
         <HeTongDetail
           hetong={hetong}
           ref={(ref) => (this.hetongDetailRef = ref)}
-        /> 
+        />
         <Modal
           //弹出回复页面
           transparent

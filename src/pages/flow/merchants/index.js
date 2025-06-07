@@ -102,6 +102,7 @@ export default class DetailPage extends BasePage {
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
         <ScrollView style={{ flex: 1, padding: 10 }}>
           <ShowTitle title="基础信息" />
+          <ShowLine />
           <Flex direction="column" align="start">
             <ShowText word="合同名称" title={detail.contractName} />
             <ShowText word="合同编号" title={detail.no} />

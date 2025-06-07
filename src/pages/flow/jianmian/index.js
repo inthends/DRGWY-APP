@@ -106,7 +106,8 @@ export default class DetailPage extends BasePage {
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
         <ScrollView style={{ flex: 1, padding: 10 }}>
           <ShowTitle title="基础信息" />
-          <Flex  
+          <ShowLine />
+          <Flex
             direction="column"
             align="start">
             <ShowText word="减免单号" title={detail.billCode} />
@@ -124,7 +125,7 @@ export default class DetailPage extends BasePage {
               {detail.memo}{"\n"}
               {/* 重要，追加一个换行，可以防止内容最后一行显示不全 */}
             </Text>
-          </Flex> 
+          </Flex>
           <ShowTitle title="明细" />
           <Flex style={styles.card} direction="column" align="start">
             {list.map((item, index) => (

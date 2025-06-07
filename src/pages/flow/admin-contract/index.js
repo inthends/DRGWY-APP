@@ -104,7 +104,8 @@ export default class DetailPage extends BasePage {
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
         <ScrollView style={{ flex: 1, padding: 10 }}>
           <ShowTitle title="基础信息" />
-          <Flex   direction="column" align="start">
+          <ShowLine />
+          <Flex direction="column" align="start">
             <ShowText word="合同名称" title={detail.contractName} />
             <ShowLine />
             <ShowText word="合同编号" title={detail.no} />
@@ -149,14 +150,14 @@ export default class DetailPage extends BasePage {
             </Text>
           </Flex>
           <ShowPrices prices={prices} />
-          <ShowMingXi list={list} /> 
+          <ShowMingXi list={list} />
           <ShowFiles files={detail.files || []} onPress={
             (fileStr) => {
               this.props.navigation.navigate('webPage', {
                 data: fileStr,
               });
             }
-          } /> 
+          } />
           <ShowReviews reviews={reviews}
             onAddClick={() => this.setState({
               addVisible: true

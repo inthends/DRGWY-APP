@@ -111,7 +111,8 @@ export default class DetailPage extends BasePage {
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
         <ScrollView style={{ flex: 1, padding: 10 }}>
           <ShowTitle title="基础信息" />
-          <Flex  direction="column" align="start">
+          <ShowLine />
+          <Flex direction="column" align="start">
             <ShowText word="标题" title={detail.title} />
             <ShowLine />
             <ShowText word="单号" title={detail.billCode} />
@@ -143,7 +144,7 @@ export default class DetailPage extends BasePage {
             <Text>
               {detail.contents}
             </Text>
-          </Flex> 
+          </Flex>
           <ShowFiles files={detail.files} onPress={
             (fileStr) => {
               this.props.navigation.navigate('webPage', {

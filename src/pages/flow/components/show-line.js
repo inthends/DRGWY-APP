@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#eee',
     marginBottom: 10,
     height: 1,
-    width: ScreenUtil.deviceWidth() - 54
+    width: ScreenUtil.deviceWidth() - 20
   },
 });
 

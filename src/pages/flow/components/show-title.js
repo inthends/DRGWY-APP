@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     color: '#666',
     fontSize: 16,
     fontWeight: 'bold'
-  },
+  }
 });
 
 export default ShowTitle;

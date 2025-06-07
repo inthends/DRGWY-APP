@@ -100,17 +100,24 @@ export default class DetailPage extends BasePage {
     const { prices = [], fees: list = [] } = detail;
 
     return (
-      <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
+      <CommonView style={{
+        flex: 1,
+        backgroundColor: '#fff',
+        paddingBottom: 10
+      }}>
         <ScrollView
           style={{
             flex: 1,
             padding: 10
-          }}
+          }} 
         >
           <ShowTitle title="基础信息" />
+          <ShowLine />
           <Flex
             //style={styles.card}
-            direction="column" align="start">
+            direction="column"
+            align="start"
+          >
             <ShowText word="合同号" title={detail.no} />
             <ShowLine />
             <ShowText word="租期" title={detail.date} />

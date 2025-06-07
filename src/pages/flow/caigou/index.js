@@ -105,21 +105,22 @@ export default class DetailPage extends BasePage {
       <CommonView style={{ flex: 1, backgroundColor: '#fff' }}>
         <ScrollView style={{ flex: 1, padding: 10 }}>
           <ShowTitle title="基础信息" />
-          <Flex  direction="column" align="start">
+          <ShowLine />
+          <Flex direction="column" align="start">
             <ShowText word="采购单号" title={detail.billCode} />
-             <ShowLine />
+            <ShowLine />
             <ShowText word="机构" title={detail.organizeName} />
-             <ShowLine />
+            <ShowLine />
             <ShowText word="仓库" title={detail.warehouseName} />
-             <ShowLine />
+            <ShowLine />
             <ShowText word="发起人" title={detail.createUserName} />
-             <ShowLine />
+            <ShowLine />
             <ShowText word="采购类型" title={detail.purchaseType} />
-             <ShowLine />
-            <ShowText word="采购金额" title={detail.totalAmount} /> 
-             <ShowLine />
+            <ShowLine />
+            <ShowText word="采购金额" title={detail.totalAmount} />
+            <ShowLine />
             <Text>
-              {detail.memo}{"\n"} 
+              {detail.memo}{"\n"}
             </Text>
           </Flex>
           <ShowMingXiCaiGou list={list} />
@@ -189,7 +190,7 @@ export default class DetailPage extends BasePage {
                   </Flex>
                   <Button
                     style={{
-                      width:130,
+                      width: 130,
                       marginTop: 10,
                       backgroundColor: Macro.work_blue
                     }}
@@ -229,14 +230,14 @@ export default class DetailPage extends BasePage {
   }
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
   txt: {
     fontSize: 14,
     paddingBottom: 10,
-  }, 
+  },
   text: {
     fontSize: 14
-  }, 
+  },
   card: {
     marginTop: 5,
     borderWidth: 1,
