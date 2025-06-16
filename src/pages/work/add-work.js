@@ -418,7 +418,7 @@ class AddWorkPage extends BasePage {
                             </Flex>
 
                             <TextareaItem
-                                rows={12}
+                                //rows={12}
                                 //placeholder={title2}
                                 placeholder='请输入内容'
                                 //autoHeight
@@ -428,7 +428,7 @@ class AddWorkPage extends BasePage {
                                     fontSize: 16,
                                     paddingTop: 15,
                                     width: ScreenUtil.deviceWidth() - 30,
-                                    height: isAutoSend ? ScreenUtil.deviceHeight() - 620 : ScreenUtil.deviceHeight() - 570
+                                    //height: isAutoSend ? ScreenUtil.deviceHeight() - 620 : ScreenUtil.deviceHeight() - 570
                                 }, ScreenUtil.borderBottom()]}
                                 onChange={value => this.setState({ value })}
                                 value={this.state.value}

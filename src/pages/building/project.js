@@ -41,9 +41,9 @@ class ProjectPage extends BasePage {
         data: []
       },
       statistics: {},
-      refreshing: true,
-      btnText: '搜索',
-      keyword: ''
+      refreshing: true
+      //btnText: '搜索',
+      //keyword: ''
     };
 
     addDownListener((progress) => {
@@ -60,7 +60,7 @@ class ProjectPage extends BasePage {
     if (!common.isAndroid() === false) {
       NativeModules.LHNToast.getVersionCode(
         (version, isYse, isLKL, brandName) => {
-          api.getData('/api/Mobile/GetVersion', { isYse, isLKL, brandName }, true)
+          api.getData('/api/Mobile/GetVersion', { isYse, isLKL, brandName }, false)
             .then((res) => {
               let netVersion = common.handlerVersionString(res.appVersionName);
               let localVersion = common.handlerVersionString(version);
@@ -84,8 +84,7 @@ class ProjectPage extends BasePage {
                   { cancelable: false }
                 );
               }
-
-
+ 
               // else {
               //   this.initUI();
               // }
@@ -158,9 +157,8 @@ class ProjectPage extends BasePage {
     //     (obj) => {
     //         if (obj.state.params) {
     //             let address = obj.state.params;
-    //
     //         }
-    //     },
+    //     }
     // );
   }
 
@@ -176,11 +174,10 @@ class ProjectPage extends BasePage {
     });
   };
 
-  getList = (showLoading = true) => {
+  getList = () => {
     BuildingService.getStatistics(
       this.state.pageIndex,
-      this.selectBuilding.key,
-      showLoading
+      this.selectBuilding.key
     ).then((dataInfo) => {
       if (dataInfo.pageIndex > 1) {
         dataInfo = {
@@ -204,8 +201,7 @@ class ProjectPage extends BasePage {
   //   this.drawer && this.drawer.openDrawer(type);
   // };
 
-  onRefresh = () => {
-    this.initData();
+  onRefresh = () => { 
     this.setState(
       {
         refreshing: true,
@@ -215,6 +211,7 @@ class ProjectPage extends BasePage {
         this.getList();
       }
     );
+     this.initData();
   };
 
   loadMore = () => {
@@ -244,8 +241,7 @@ class ProjectPage extends BasePage {
       this.selectBuilding = nextProps.selectBuilding;
       this.onRefresh();
     }
-  }
-
+  } 
 
   // search = () => {
   //   Keyboard.dismiss();
@@ -281,8 +277,7 @@ class ProjectPage extends BasePage {
               statistics={statistics}
               //openDrawer={this.openDrawer}
               {...this.props}
-            />
-
+            /> 
             {/* <SearchBar
               placeholder="搜索房号或客户"
               showCancelButton
@@ -295,8 +290,7 @@ class ProjectPage extends BasePage {
               }}
               onSubmit={() => this.search()}
               onCancel={() => this.clear()}
-            /> */}
-
+            /> */} 
             <FlatList
               data={dataInfo.data}
               //ListHeaderComponent={}

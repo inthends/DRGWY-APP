@@ -28,6 +28,7 @@ export default class BuildingHeader extends BasePage {
         const { statistics } = this.props;
         return (
             <View style={styles.content}>
+
                 {/* <Flex direction="row" justify='between' style={styles.top}>
                     <Flex style={{flex: 4}}>
                         <Text style={styles.title}>{title}</Text>
@@ -42,7 +43,9 @@ export default class BuildingHeader extends BasePage {
                     </Flex>
                 </Flex> */}
 
-                <Flex direction="row" justify='between' style={styles.top}>
+                <Flex direction="row"
+                    justify='between'
+                    style={styles.top}>
                     <Flex justify='start'
                     //style={{ flex: 4 }}
                     >
@@ -93,7 +96,7 @@ const styles = StyleSheet.create({
     content: {
         flexDirection: 'column',
         // height: 150,
-        height: 130,
+        height: 120,
         backgroundColor: Macro.color_sky_dark
     },
     top: {
@@ -121,7 +124,7 @@ const styles = StyleSheet.create({
     // },
     big: {
         //fontSize: 25,
-        fontSize: 20,
+        fontSize: 19,
         //paddingLeft: 10
         paddingLeft: 20
     },

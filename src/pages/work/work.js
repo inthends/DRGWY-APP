@@ -4,7 +4,8 @@ import {
     TouchableWithoutFeedback,
     StyleSheet,
     ScrollView,
-    RefreshControl
+    RefreshControl,
+    Platform
 } from 'react-native';
 import BasePage from '../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
@@ -15,7 +16,7 @@ import Macro from '../../utils/macro';
 import CommonView from '../../components/CommonView';
 import JPush from 'jpush-react-native';
 import { connect } from 'react-redux';
-import {saveSelectBuilding, saveSelectDrawerType } from '../../utils/store/actions/actions';
+import { saveSelectBuilding, saveSelectDrawerType } from '../../utils/store/actions/actions';
 import { DrawerType } from '../../utils/store/action-types/action-types';
 
 // export default class WorkPage extends BasePage {
@@ -89,6 +90,7 @@ class WorkPage extends BasePage {
             refreshing: false,
             data: {},
             news: '0',
+            isGrab: false,//是否启用抢单
             authList: []//模块权限
         };
     }
@@ -97,6 +99,11 @@ class WorkPage extends BasePage {
         //获取模块权限 
         WorkService.getModuleList().then(authList => {
             this.setState({ authList });
+        });
+
+        //获取系统参数
+        WorkService.getSetting('isGrab').then((res) => {
+            this.setState({ isGrab: res });
         });
 
         this.viewDidAppear = this.props.navigation.addListener(
@@ -116,11 +123,13 @@ class WorkPage extends BasePage {
 
                 WorkService.unreadCount().then(news => {
                     this.props.navigation.setParams({ news });
-                    //设置苹果角标
-                    JPush.setBadge({
-                        badge: news,
-                        appBadge: news
-                    });
+                    if (Platform.OS === "ios") {
+                        //设置苹果角标
+                        JPush.setBadge({
+                            badge: news,
+                            appBadge: news
+                        });
+                    }
                 });
 
             }
@@ -140,7 +149,7 @@ class WorkPage extends BasePage {
     };
 
     render() {
-        const { data, authList } = this.state;
+        const { data, authList, isGrab } = this.state;
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#efefef' }}>
                 <ScrollView refreshControl={
@@ -167,7 +176,6 @@ class WorkPage extends BasePage {
                                         </Flex>
                                         <Text style={styles.bottom}>上门收费</Text>
                                     </Flex>
-
                                 </TouchableWithoutFeedback>
 
                                 <TouchableWithoutFeedback
@@ -229,7 +237,6 @@ class WorkPage extends BasePage {
                                     </Flex>
                                 </TouchableWithoutFeedback>
 
-
                                 <TouchableWithoutFeedback
                                     onPress={() => this.props.navigation.push('shebeiList')}>
                                     <Flex direction='column' style={{ width: '33%' }}>
@@ -269,7 +276,7 @@ class WorkPage extends BasePage {
                             <Flex>
                                 <Text style={styles.title}>服务单</Text>
                             </Flex>
-                            <Flex style={styles.line} /> 
+                            <Flex style={styles.line} />
                             <Flex>
                                 <TouchableWithoutFeedback onPress={() => {
                                     if (data.pendingreply == 0) {
@@ -412,9 +419,7 @@ class WorkPage extends BasePage {
                                     </Flex>
                                 </TouchableWithoutFeedback>
                             </Flex>
-
                         </Flex>
-
 
                         <Flex direction='column' align={'start'}
                             style={[styles.card, {
@@ -424,12 +429,12 @@ class WorkPage extends BasePage {
                             }]}>
                             <Flex>
                                 <Text style={styles.title}>工单</Text>
-                                <TouchableWithoutFeedback onPress={() =>
-                                    this.props.navigation.push('taskqd')
-                                }>
-                                    <Text style={{ fontSize: 16, color: Macro.work_red, textAlign: 'right' }}>待抢工单({data.unqd})</Text>
-                                </TouchableWithoutFeedback>
-
+                                {isGrab == true ?
+                                    <TouchableWithoutFeedback onPress={() =>
+                                        this.props.navigation.push('taskqd')
+                                    }>
+                                        <Text style={{ fontSize: 16, color: Macro.work_red, textAlign: 'right' }}>待抢工单({data.unqd})</Text>
+                                    </TouchableWithoutFeedback> : null}
                             </Flex>
                             <Flex style={styles.line} />
 
