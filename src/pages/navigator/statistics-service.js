@@ -13,7 +13,7 @@ export default {
     return api.postData('/api/MobileMethod/MGetWorkStatistics', { time }, showLoading);
   },
 
-  getFeeStatistics(pageIndex, organizeId, pageSize = 10) {
+  getFeeStatistics(pageIndex, pageSize, organizeId) {
     return api.postData('/api/MobileMethod/MGetFeeStatistics', {
       pageIndex,
       pageSize,
@@ -58,7 +58,7 @@ export default {
   },
 
   //账单
-  getBillList(type, id, isShow, pageIndex, pageSize = 10) {
+  getBillList(type, id, isShow, pageIndex, pageSize) {
     let url = '/api/MobileMethod/MGetNotChargeBillList';
     if (type === '已收') {
       url = '/api/MobileMethod/MGetChargeBillList';
@@ -73,6 +73,7 @@ export default {
 
   checkList(
     pageIndex,
+    pageSize,
     billStatus,
     billType,
     organizeId,
@@ -80,7 +81,7 @@ export default {
   ) {
     return api.postData('/api/MobileMethod/MGetCheckPageList', {
       pageIndex,
-      pageSize: 10,
+      pageSize,
       billStatus,
       billType,
       organizeId,
@@ -91,6 +92,7 @@ export default {
   //服务单
   serviceList(
     pageIndex,
+    pageSize,
     type,
     status,
     organizeId,
@@ -100,7 +102,7 @@ export default {
   ) {
     return api.postData('/api/MobileMethod/MGetServiceDeskPageListStatistics', {
       pageIndex,
-      pageSize: 10,
+      pageSize,
       type,
       status,
       organizeId,
@@ -112,6 +114,7 @@ export default {
 
   weixiuList(
     pageIndex,
+    pageSize,
     type,
     status,
     organizeId,
@@ -121,7 +124,7 @@ export default {
   ) {
     return api.postData('/api/MobileMethod/MGetRepairPageListStatistics', {
       pageIndex,
-      pageSize: 10,
+      pageSize,
       type,
       status,
       organizeId,
@@ -252,11 +255,11 @@ export default {
 
 
   //南京银行生成收款码
-  njCodePay(tbout_trade_no,isDigital) {
+  njCodePay(tbout_trade_no, isDigital) {
     return api.postData('/api/MobileMethod/NJPay',
       {
         tbout_trade_no,
-        isDigital 
+        isDigital
       });
   },
 
@@ -526,9 +529,9 @@ export default {
     });
   },
   //固定资产列表
-  gdzcList(pageIndex, estateId, keyword, showLoading) {
+  gdzcList(pageIndex,pageSize, estateId, keyword, showLoading) {
     return api.postData('/api/MobileMethod/MGetAssetsListJson',
-      { pageIndex, pageSize: 10, estateId, keyword }, showLoading);
+      { pageIndex, pageSize, estateId, keyword }, showLoading);
   },
 
 };

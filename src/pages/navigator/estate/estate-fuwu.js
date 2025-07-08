@@ -58,6 +58,7 @@ class EstateFuwuPage extends BasePage {
         this.state = {
             type,
             pageIndex: 1,
+            pageSize: 10,
             dataInfo: {
                 data: [],
             },
@@ -108,7 +109,7 @@ class EstateFuwuPage extends BasePage {
             billStatus,
             selectBuilding,
             billType, time,
-            keyword
+            keyword,pageIndex,pageSize
         } = this.state;
         let organizeId;
         if (selectBuilding) {
@@ -117,7 +118,8 @@ class EstateFuwuPage extends BasePage {
         }
 
         service.serviceList(
-            this.state.pageIndex,
+            pageIndex,
+            pageSize,
             type,
             billStatus,
             organizeId,
@@ -158,6 +160,7 @@ class EstateFuwuPage extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
+                 this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };

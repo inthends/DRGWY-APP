@@ -23,8 +23,7 @@ import JPush from 'jpush-react-native';
 // import UDAlert from '../../utils/UDAlert';
 // import { addDownListener, upgrade, checkUpdate } from 'rn-app-upgrade';
 import common from '../../utils/common';
-// import UDToast from '../../utils/UDToast';
-// import api from '../../utils/api'; 
+// import UDToast from '../../utils/UDToast'; 
 
 class LoginPage extends BasePage {
   constructor(props) {

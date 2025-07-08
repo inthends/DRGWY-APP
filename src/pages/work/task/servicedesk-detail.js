@@ -76,6 +76,7 @@ export default class ServiceDeskDetailPage extends BasePage {
             btnList: [],//按钮权限
             //费用明细
             pageIndex: 1,
+            pageSize: 10,
             refreshing: false,
             dataInfo: {
                 data: []
@@ -465,8 +466,8 @@ export default class ServiceDeskDetailPage extends BasePage {
 
     //费用明细
     getList = () => {
-        const { id } = this.state;
-        WorkService.serverFeeList(this.state.pageIndex, id).then(dataInfo => {
+        const { id, pageIndex, pageSize } = this.state;
+        WorkService.serverFeeList(pageIndex, pageSize, id).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -492,6 +493,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                 // canLoadMore: false,
             }, () => {
                 this.getList();
+                this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };
@@ -649,7 +651,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                             ，已收金额：{item.receiveAmount}
                             ，未收金额：{item.lastAmount}</Text>
                     </Flex>
-                    
+
                     <Flex justify='between' style={{ width: '100%', paddingTop: 5, paddingBottom: 5, paddingLeft: 15, paddingRight: 15 }}>
                         {item.beginDate ?
                             <Text>{moment(item.beginDate).format('YYYY-MM-DD') + '至' + moment(item.endDate).format('YYYY-MM-DD')}</Text> : null

@@ -20,7 +20,7 @@ import MyPopover from '../../../components/my-popover';
 import service from '../navigator-service';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
-import {saveSelectBuilding, saveSelectDrawerType } from '../../../utils/store/actions/actions';
+import { saveSelectBuilding, saveSelectDrawerType } from '../../../utils/store/actions/actions';
 import { DrawerType } from '../../../utils/store/action-types/action-types';
 
 class EstateTousuPage extends BasePage {
@@ -50,6 +50,7 @@ class EstateTousuPage extends BasePage {
 
         this.state = {
             pageIndex: 1,
+            pageSize: 10,
             dataInfo: {
                 data: [],
             },
@@ -66,7 +67,7 @@ class EstateTousuPage extends BasePage {
     componentDidMount() {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
-            (obj) => { 
+            (obj) => {
                 this.props.saveBuilding({});//加载页面清除别的页面选中的数据
                 this.props.saveSelectDrawerType(DrawerType.building);
                 this.onRefresh();
@@ -93,7 +94,7 @@ class EstateTousuPage extends BasePage {
         /*
         pageIndex, billStatus, treeType, organizeId, billType, startTime, endTime
          */
-        const { billStatus, selectBuilding, time } = this.state;
+        const { billStatus, selectBuilding, time, pageIndex, pageSize } = this.state;
         let treeType;
         let organizeId;
         if (selectBuilding) {
@@ -103,7 +104,7 @@ class EstateTousuPage extends BasePage {
         // let startTime = common.getMonthFirstDay(time);
         // let endTime = common.getMonthLastDay(time);
 
-        service.tousuList(this.state.pageIndex, billStatus, treeType, organizeId, '', time).
+        service.tousuList(pageIndex, pageSize, billStatus, treeType, organizeId, '', time).
             then(dataInfo => {
                 if (dataInfo.pageIndex > 1) {
                     dataInfo = {
@@ -141,6 +142,7 @@ class EstateTousuPage extends BasePage {
                 //canLoadMore: false,
             }, () => {
                 this.getList();
+                this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };

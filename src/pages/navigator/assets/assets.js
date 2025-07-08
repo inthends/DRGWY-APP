@@ -18,7 +18,7 @@ import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 let screen_width = ScreenUtil.deviceWidth();
 
-class AssetsPage extends BasePage { 
+class AssetsPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
@@ -40,8 +40,9 @@ class AssetsPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            btnText:'搜索',
+            btnText: '搜索',
             pageIndex: 1,
+             pageSize: 10,
             dataInfo: {
                 data: [],
             },
@@ -61,7 +62,7 @@ class AssetsPage extends BasePage {
         //     keyword: text,
         //     estateId: estateId
         // };
-        service.gdzcList(this.state.pageIndex, estateId, keyword, this.state.refreshing).then(dataInfo => {
+        service.gdzcList(this.state.pageIndex,this.state.pageSize, estateId, keyword, this.state.refreshing).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -77,7 +78,7 @@ class AssetsPage extends BasePage {
         }).catch(err => this.setState({ refreshing: false }));
     };
 
-    componentWillReceiveProps(nextProps , nextContext ) {
+    componentWillReceiveProps(nextProps, nextContext) {
         const selectBuilding = this.state.selectBuilding;
         const nextSelectBuilding = nextProps.selectBuilding;
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
@@ -108,6 +109,7 @@ class AssetsPage extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
+                this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };
@@ -155,7 +157,7 @@ class AssetsPage extends BasePage {
             </TouchableWithoutFeedback>
         );
     };
- 
+
     search = () => {
         Keyboard.dismiss();
         this.onRefresh();
@@ -179,7 +181,7 @@ class AssetsPage extends BasePage {
     };
 
     render() {
-        const { dataInfo,btnText } = this.state;
+        const { dataInfo, btnText } = this.state;
         //const { selectBuilding } = this.props; 
         return (
             <View style={{ flex: 1 }}>
@@ -235,7 +237,7 @@ class AssetsPage extends BasePage {
                                 backgroundColor: Macro.work_blue,
                                 height: 40
                             }}>开始盘点</Button>
-                    </Flex> 
+                    </Flex>
                 </CommonView>
             </View>
         );

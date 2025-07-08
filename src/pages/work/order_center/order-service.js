@@ -2,9 +2,9 @@ import api from '../../../utils/api';
 
 export default {
     //工作台列表
-    getOrderDatas(type, pageIndex) {
+    getOrderDatas(type, pageIndex,pageSize) {
         let url = '/api/MobileMethod/MGetOrderPageListJson';
-        return api.postData(url, { status: type , pageIndex, pageSize: 100});
+        return api.postData(url, { status: type , pageIndex, pageSize });
     },
     getOrderDetail( orderId) {
         let url = '/api/MobileMethod/GetOrderEntity';

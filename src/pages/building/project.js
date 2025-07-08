@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import BasePage from '../base/base';
 import BuildingHeader from '../../components/building/building-header';
-import BuildingCell from '../../components/building/build-cell'; 
+import BuildingCell from '../../components/building/build-cell';
 import Macro from '../../utils/macro';
 import BuildingService from './building_service';
 import { connect } from 'react-redux';
@@ -37,6 +37,7 @@ class ProjectPage extends BasePage {
     };
     this.state = {
       pageIndex: 1,
+      pageSize: 10,
       dataInfo: {
         data: []
       },
@@ -84,7 +85,7 @@ class ProjectPage extends BasePage {
                   { cancelable: false }
                 );
               }
- 
+
               // else {
               //   this.initUI();
               // }
@@ -96,37 +97,37 @@ class ProjectPage extends BasePage {
         },
       );
     }
-      // else {
-      //  this.initUI();
-      //废弃
-      // NativeModules.LHNToast.getVersionCode((err, version) => {
-      //     checkUpdate(common.appId(), version).then(IOSUpdateInfo => {
-      //         if (IOSUpdateInfo.code === 1) {
-      //             Alert.alert(
-      //                 '发现有新版本',
-      //                 '是否更新？',
-      //                 [
-      //                     {
-      //                         text: '取消',
-      //                         onPress: () => console.log('Cancel Pressed'),
-      //                         style: 'cancel',
-      //                     },
-      //                     {
-      //                         text: '确定',
-      //                         onPress: () => {
-      //                             if (Linking.canOpenURL('https://itunes.apple.com/app/id' + common.appId())) {
-      //                                 Linking.openURL('https://itunes.apple.com/app/id' + common.appId());
-      //                             }
-      //                         },
-      //                     },
-      //                 ],
-      //                 {cancelable: false},
-      //             );
-      //
-      //         }
-      //     });
-      // });
-      //}
+    // else {
+    //  this.initUI();
+    //废弃
+    // NativeModules.LHNToast.getVersionCode((err, version) => {
+    //     checkUpdate(common.appId(), version).then(IOSUpdateInfo => {
+    //         if (IOSUpdateInfo.code === 1) {
+    //             Alert.alert(
+    //                 '发现有新版本',
+    //                 '是否更新？',
+    //                 [
+    //                     {
+    //                         text: '取消',
+    //                         onPress: () => console.log('Cancel Pressed'),
+    //                         style: 'cancel',
+    //                     },
+    //                     {
+    //                         text: '确定',
+    //                         onPress: () => {
+    //                             if (Linking.canOpenURL('https://itunes.apple.com/app/id' + common.appId())) {
+    //                                 Linking.openURL('https://itunes.apple.com/app/id' + common.appId());
+    //                             }
+    //                         },
+    //                     },
+    //                 ],
+    //                 {cancelable: false},
+    //             );
+    //
+    //         }
+    //     });
+    // });
+    //}
 
 
     this.viewDidAppear = this.props.navigation.addListener(
@@ -165,7 +166,7 @@ class ProjectPage extends BasePage {
   componentWillUnmount() {
     this.viewDidAppear.remove();
   }
- 
+
   initData = () => {
     BuildingService.getStatisticsTotal(this.selectBuilding.key).then((res) => {
       if (res && res.length > 0) {
@@ -177,6 +178,7 @@ class ProjectPage extends BasePage {
   getList = () => {
     BuildingService.getStatistics(
       this.state.pageIndex,
+      this.state.pageSize,
       this.selectBuilding.key
     ).then((dataInfo) => {
       if (dataInfo.pageIndex > 1) {
@@ -201,7 +203,7 @@ class ProjectPage extends BasePage {
   //   this.drawer && this.drawer.openDrawer(type);
   // };
 
-  onRefresh = () => { 
+  onRefresh = () => {
     this.setState(
       {
         refreshing: true,
@@ -211,7 +213,7 @@ class ProjectPage extends BasePage {
         this.getList();
       }
     );
-     this.initData();
+    this.initData();
   };
 
   loadMore = () => {
@@ -225,6 +227,7 @@ class ProjectPage extends BasePage {
         },
         () => {
           this.getList();
+          this.setState({ pageSize: (pageIndex + 1) * 10 });
         }
       );
     }
@@ -241,7 +244,7 @@ class ProjectPage extends BasePage {
       this.selectBuilding = nextProps.selectBuilding;
       this.onRefresh();
     }
-  } 
+  }
 
   // search = () => {
   //   Keyboard.dismiss();
@@ -277,7 +280,7 @@ class ProjectPage extends BasePage {
               statistics={statistics}
               //openDrawer={this.openDrawer}
               {...this.props}
-            /> 
+            />
             {/* <SearchBar
               placeholder="搜索房号或客户"
               showCancelButton
@@ -290,7 +293,7 @@ class ProjectPage extends BasePage {
               }}
               onSubmit={() => this.search()}
               onCancel={() => this.clear()}
-            /> */} 
+            /> */}
             <FlatList
               data={dataInfo.data}
               //ListHeaderComponent={}

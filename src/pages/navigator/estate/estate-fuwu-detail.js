@@ -52,6 +52,7 @@ export default class EfuwuDetailPage extends BasePage {
             visible: false,
             //费用明细
             pageIndex: 1,
+            pageSize: 10,
             refreshing: false,
             dataInfo: {
                 data: []
@@ -197,8 +198,8 @@ export default class EfuwuDetailPage extends BasePage {
 
     //费用明细
     getList = () => {
-        const { id } = this.state;
-        WorkService.serverFeeList(this.state.pageIndex, id).then(dataInfo => {
+        const { id, pageIndex, pageSize } = this.state;
+        WorkService.serverFeeList(pageIndex, pageSize, id).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -224,6 +225,7 @@ export default class EfuwuDetailPage extends BasePage {
                 // canLoadMore: false,
             }, () => {
                 this.getList();
+                this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };
@@ -237,7 +239,7 @@ export default class EfuwuDetailPage extends BasePage {
                     <Text style={styles.title}>{item.feeName}</Text>
                     {item.status == 0 ? <Text style={styles.statusred}>未收</Text> : <Text style={styles.statusblue}>已收</Text>}
                 </Flex>
- 
+
 
                 <Flex style={styles.line} />
                 <Flex align={'start'} direction={'column'}>

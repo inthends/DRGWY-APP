@@ -43,7 +43,7 @@ class SheBeiList extends BasePage {
         };
 
         this.state = {
-            pageIndex: 1,
+            pageIndex: 1, 
             dataInfo: {
                 data: [],
             },
@@ -110,6 +110,7 @@ class SheBeiList extends BasePage {
                 // canLoadMore: false,
             }, () => {
                 this.getList();
+                 this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };

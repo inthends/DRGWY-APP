@@ -46,6 +46,7 @@ class TaskDoneListPage extends BasePage {
         this.state = {
             type: type,
             pageIndex: 1,
+             pageSize: 10,
             dataInfo: {
                 data: []
             },
@@ -97,8 +98,8 @@ class TaskDoneListPage extends BasePage {
     }
 
     getList = () => {
-        const { type, repairMajor, time, pageIndex } = this.state;
-        WorkService.workDoneList(type, repairMajor, time, pageIndex).then(dataInfo => {
+        const { type, repairMajor, time, pageIndex ,pageSize} = this.state;
+        WorkService.workDoneList(type, repairMajor, time, pageIndex,pageSize).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -132,6 +133,7 @@ class TaskDoneListPage extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
+                 this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };

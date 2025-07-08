@@ -50,7 +50,7 @@ export default class LouDong extends BasePage {
     onRefresh = () => {
         this.setState({
             refreshing: true,
-            pageIndex: 1,
+            pageIndex: 1
         }, () => {
             this.getList();
         });

@@ -29,7 +29,7 @@ class TaskFinishListPage extends BasePage {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
-            ) 
+            )
         };
     };
 
@@ -37,22 +37,23 @@ class TaskFinishListPage extends BasePage {
         super(props);
         this.selectBuilding = {
             key: null
-        }; 
-        this.state = { 
+        };
+        this.state = {
             pageIndex: 1,
+             pageSize: 10,
             dataInfo: {
                 data: []
             },
             //hiddenHeader,
             refreshing: false,
-            visible: false, 
+            visible: false,
             time: '全部',
             status: '全部'
         };
     }
 
     componentDidMount() {
- 
+
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
@@ -76,8 +77,8 @@ class TaskFinishListPage extends BasePage {
     }
 
     getList = () => {
-        const { time, status, pageIndex } = this.state;
-        WorkService.workFinishList(time, status, pageIndex).then(dataInfo => {
+        const { time, status, pageIndex,pageSize } = this.state;
+        WorkService.workFinishList(time, status, pageIndex,pageSize).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -94,9 +95,10 @@ class TaskFinishListPage extends BasePage {
     };
 
     onRefresh = () => {
+        const { pageIndex } = this.state;
         this.setState({
             refreshing: true,
-            pageIndex: 1
+            pageIndex: pageIndex
         }, () => {
             this.getList();
         });
@@ -111,6 +113,7 @@ class TaskFinishListPage extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
+                 this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };
@@ -199,13 +202,13 @@ class TaskFinishListPage extends BasePage {
 
 
     render() {
-        const { dataInfo } = this.state;
+        const {pageIndex, dataInfo } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
                 <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
                     <MyPopover onChange={this.timeChange}
                         titles={['全部', '今日', '本周', '本月', '上月', '本年']}
-                        visible={true} /> 
+                        visible={true} />
                     <MyPopover onChange={this.statusChange}
                         titles={['全部', '待检验', '待回访', '待审核', '已审核']}
                         visible={true} />
@@ -223,9 +226,9 @@ class TaskFinishListPage extends BasePage {
                     onEndReached={this.loadMore}//底部往下拉翻页
                     onMomentumScrollBegin={() => this.canLoadMore = true}
                     ListEmptyComponent={<NoDataView />}
-                    //ListHeaderComponent={() => this._footer(dataInfo.data.length)}
+                //ListHeaderComponent={() => this._footer(dataInfo.data.length)}
                 />
-                <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
+                <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 {pageIndex} - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
             </CommonView>
         );
     }

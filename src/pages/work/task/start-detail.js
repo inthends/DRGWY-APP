@@ -157,7 +157,7 @@ export default class StartDetailPage extends BasePage {
 
     click = () => {
         const { id, isUpload, images, value, isMustStartFile, isMustJudgement, selectPersons } = this.state;
-
+        
         WorkService.checkStartWork(id).then(res => {
             if (res == true) {
                 UDToast.showError('维修人员有开工没有完成的维修单，不允许再开工新的维修单');
@@ -188,10 +188,8 @@ export default class StartDetailPage extends BasePage {
                 WorkService.startRepair(id, value, reinforceId).then(res => {
                     UDToast.showInfo('操作成功');
                     this.props.navigation.goBack();
-                });
-
-            });
-
+                }); 
+            }); 
         });
 
     };

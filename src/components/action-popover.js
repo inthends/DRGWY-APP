@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableWithoutFeedback, ScrollView } from 'react-native';
 //import LoadImage from './load-image';
 import { Flex } from '@ant-design/react-native';
-import Popover from 'react-native-popover-view';
+import Popover from 'react-native-popover-view'; 
 
 export default class ActionPopover extends Component {
     constructor(props) {

@@ -45,6 +45,7 @@ class ServicedeskListPage extends BasePage {
         const hiddenHeader = common.getValueFromProps(this.props).hiddenHeader;
         this.state = {
             pageIndex: 1,
+             pageSize: 10,
             type,
             dataInfo: {
                 data: []
@@ -80,8 +81,8 @@ class ServicedeskListPage extends BasePage {
     }
 
     getList = () => {
-        const { type, overdue, time, pageIndex } = this.state;
-        WorkService.servicedeskList(type, overdue, time, pageIndex).then(dataInfo => {
+        const { type, overdue, time, pageIndex ,pageSize} = this.state;
+        WorkService.servicedeskList(type, overdue, time, pageIndex,pageSize).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -116,6 +117,7 @@ class ServicedeskListPage extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
+                 this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };

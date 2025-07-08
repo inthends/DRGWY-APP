@@ -53,6 +53,7 @@ export default class EweixiuDetailPage extends BasePage {
             visible: false,
             //费用明细
             pageIndex: 1,
+            pageSize: 10,
             refreshing: false,
             dataInfo: {
                 data: []
@@ -201,8 +202,8 @@ export default class EweixiuDetailPage extends BasePage {
 
     //费用明细
     getList = () => {
-        const { detail } = this.state;
-        WorkService.serverFeeList(this.state.pageIndex, detail.relationId).then(dataInfo => {
+        const { detail,pageIndex,pageSize } = this.state;
+        WorkService.serverFeeList( pageIndex, pageSize,detail.relationId).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -228,6 +229,7 @@ export default class EweixiuDetailPage extends BasePage {
                 // canLoadMore: false,
             }, () => {
                 this.getList();
+                 this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };

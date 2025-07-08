@@ -58,6 +58,7 @@ class EstateWeixiuPage extends BasePage {
         this.state = {
             type,
             pageIndex: 1,
+            pageSize: 10,
             dataInfo: {
                 data: []
             },
@@ -97,7 +98,7 @@ class EstateWeixiuPage extends BasePage {
     }
 
     getList = () => {
-        const { type, billStatus, selectBuilding, time, repairArea, keyword } = this.state;
+        const { type, billStatus, selectBuilding, time, repairArea, keyword, pageIndex, pageSize } = this.state;
         let organizeId;
         if (selectBuilding) {
             //treeType = selectBuilding.type;
@@ -105,7 +106,8 @@ class EstateWeixiuPage extends BasePage {
         }
 
         service.weixiuList(
-            this.state.pageIndex,
+            pageIndex,
+            pageSize,
             type,
             billStatus,
             organizeId,
@@ -145,6 +147,7 @@ class EstateWeixiuPage extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
+                this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };

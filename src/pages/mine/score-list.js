@@ -3,18 +3,18 @@ import {
     Text,
     StyleSheet,
     FlatList,
-    TouchableOpacity, 
+    TouchableOpacity,
 } from 'react-native';
 import BasePage from '../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../utils/macro';
-import ScreenUtil from '../../utils/screen-util'; 
+import ScreenUtil from '../../utils/screen-util';
 import NoDataView from '../../components/no-data-view';
 import CommonView from '../../components/CommonView';
 import MineService from './mine-service';
 
 //积分明细，按月统计
-export default class ScoreListPage extends BasePage  {
+export default class ScoreListPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarVisible: false,
@@ -32,6 +32,7 @@ export default class ScoreListPage extends BasePage  {
         super(props);
         this.state = {
             pageIndex: 1,
+             pageSize: 10,
             dataInfo: {
                 data: []
             },
@@ -55,8 +56,8 @@ export default class ScoreListPage extends BasePage  {
 
 
     getList = () => {
-        const { pageIndex } = this.state;
-        MineService.getRepairScoreList(pageIndex).then(dataInfo => {
+        const { pageIndex,pageSize } = this.state;
+        MineService.getRepairScoreList(pageIndex,pageSize).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -90,6 +91,7 @@ export default class ScoreListPage extends BasePage  {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
+                this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };
@@ -103,9 +105,9 @@ export default class ScoreListPage extends BasePage  {
                     <Text style={styles.right}>合计：{item.totalscore}</Text>
                 </Flex>
                 <Flex style={styles.line} />
-                <Flex align={'start'} direction={'column'}> 
+                <Flex align={'start'} direction={'column'}>
                     <Flex justify='between'
-                        style={{ width: '100%', paddingBottom: 10, paddingTop:5, paddingLeft: 20, paddingRight: 20 }}>
+                        style={{ width: '100%', paddingBottom: 10, paddingTop: 5, paddingLeft: 20, paddingRight: 20 }}>
                         <Text>接单积分：{item.score}，协助增援积分：{item.pscore}</Text>
                     </Flex>
 
@@ -113,7 +115,7 @@ export default class ScoreListPage extends BasePage  {
             </Flex>
         );
     };
- 
+
     render() {
         const { dataInfo } = this.state;
         return (
@@ -187,5 +189,5 @@ const styles = StyleSheet.create({
         borderLeftColor: '#F7A51E',
         borderLeftWidth: 5
     }
- 
+
 }); 

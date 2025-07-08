@@ -47,8 +47,9 @@ class FeeHousePage extends BasePage {
 
     constructor(props) {
         super(props);
-        this.state = {  
-            pageIndex: 1, 
+        this.state = {
+            pageIndex: 1,
+            pageSize: 10,
             dataInfo: {
                 data: [],
             },
@@ -63,7 +64,9 @@ class FeeHousePage extends BasePage {
 
 
     getList = () => {
-        service.getFeeStatistics(this.state.pageIndex,
+        service.getFeeStatistics(
+            this.state.pageIndex,
+            this.state.pageSize,
             this.state.selectBuilding ? this.state.selectBuilding.key : '').then(dataInfo => {
                 if (dataInfo.pageIndex > 1) {
                     dataInfo = {
@@ -110,6 +113,7 @@ class FeeHousePage extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
+                this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };
@@ -148,7 +152,7 @@ class FeeHousePage extends BasePage {
     };
 
     render() {
-        const {   dataInfo } = this.state;
+        const { dataInfo } = this.state;
         //const { selectBuilding } = this.props; 
         return (
             <View style={{ flex: 1 }}>
@@ -159,16 +163,16 @@ class FeeHousePage extends BasePage {
                             // ListHeaderComponent={}
                             renderItem={this._renderItem}
                             keyExtractor={(item, index) => item.id}
-                            ItemSeparatorComponent={() => <View style={{ backgroundColor: '#eee', height: 1 }} />} 
+                            ItemSeparatorComponent={() => <View style={{ backgroundColor: '#eee', height: 1 }} />}
                             //必须
                             onEndReachedThreshold={0.1}
                             refreshing={this.state.refreshing}
                             onRefresh={this.onRefresh}//下拉刷新
                             onEndReached={this.loadMore}//底部往下拉翻页
-                            onMomentumScrollBegin={() => this.canLoadMore = true} 
+                            onMomentumScrollBegin={() => this.canLoadMore = true}
                             ListEmptyComponent={<NoDataView />}
                         />
-                         <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
+                        <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
 
                     </View>
                 </CommonView>

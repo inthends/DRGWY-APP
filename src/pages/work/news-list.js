@@ -27,6 +27,7 @@ class NewsList extends BasePage {
         // };
         this.state = {
             pageIndex: 1,
+             pageSize: 10,
             status: 0,
             dataInfo: {
                 data: [],
@@ -49,7 +50,7 @@ class NewsList extends BasePage {
     }
 
     getList = (showLoading = true) => {
-        WorkService.getNewsList(this.state.status, this.state.pageIndex, showLoading).then(dataInfo => {
+        WorkService.getNewsList(this.state.status, this.state.pageIndex,this.state.pageSize, showLoading).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -83,6 +84,7 @@ class NewsList extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
+                 this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };

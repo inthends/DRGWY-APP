@@ -45,6 +45,7 @@ class ServicedeskDoneListPage extends BasePage {
         this.state = {
             type: type,
             pageIndex: 1,
+             pageSize: 10,
             dataInfo: {
                 data: []
             },
@@ -95,8 +96,8 @@ class ServicedeskDoneListPage extends BasePage {
     }
 
     getList = () => {
-        const { type, time, pageIndex } = this.state;
-        WorkService.servicedeskDoneList(type, time, pageIndex).then(dataInfo => {
+        const { type, time, pageIndex,pageSize } = this.state;
+        WorkService.servicedeskDoneList(type, time, pageIndex,pageSize).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -130,6 +131,7 @@ class ServicedeskDoneListPage extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
+                 this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };

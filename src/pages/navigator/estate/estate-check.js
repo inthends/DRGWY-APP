@@ -55,6 +55,7 @@ class EstateCheckPage extends BasePage {
             showAdd: true,//默认弹出选择检查组界面
             selectBuilding: {},//默认为空，防止别地方选择了机构
             pageIndex: 1,
+            pageSize: 10,
             dataInfo: {
                 data: [],
             },
@@ -115,7 +116,7 @@ class EstateCheckPage extends BasePage {
     }
 
     getList = () => {
-        const { billStatus, selectBuilding, billType, time } = this.state;
+        const { billStatus, selectBuilding, billType, time, pageIndex, pageSize } = this.state;
         let organizeId;
         if (selectBuilding) {
             //treeType = selectBuilding.type;
@@ -124,7 +125,8 @@ class EstateCheckPage extends BasePage {
         // let startTime = common.getMonthFirstDay(time);
         // let endTime = common.getMonthLastDay(time);
         service.checkList(
-            this.state.pageIndex,
+            pageIndex,
+            pageSize,
             billStatus,
             billType,
             organizeId,
@@ -164,6 +166,7 @@ class EstateCheckPage extends BasePage {
                 // canLoadMore: false,
             }, () => {
                 this.getList();
+                this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };
@@ -189,12 +192,11 @@ class EstateCheckPage extends BasePage {
         //         },
         //     ],
         //     { cancelable: false }
-        // ); 
-
+        // );  
         Modal.alert('请确认', '是否删除？',
             [
                 {
-                    text: '取消', onPress: () => { 
+                    text: '取消', onPress: () => {
                     }, style: 'cancel'
                 },
                 {
@@ -208,6 +210,46 @@ class EstateCheckPage extends BasePage {
         )
     };
 
+    //闭单
+    closeDetail = (id) => {
+        WorkService.checkInspect(id).then(res => {
+            if (res == true) {
+                Modal.alert('请确认', '还有工单未完成，您确定闭单么？',
+                    [
+                        {
+                            text: '取消', onPress: () => {
+                            }, style: 'cancel'
+                        },
+                        {
+                            text: '确定', onPress: () => {
+                                WorkService.closeCheck(id).then(res => {
+                                    this.onRefresh();
+                                });
+                            }
+                        }
+                    ]
+                )
+
+            } else {
+                Modal.alert('请确认', '是否闭单？',
+                    [
+                        {
+                            text: '取消', onPress: () => {
+                            }, style: 'cancel'
+                        },
+                        {
+                            text: '确定', onPress: () => {
+                                WorkService.closeCheck(id).then(res => {
+                                    this.onRefresh();
+                                });
+                            }
+                        }
+                    ]
+                )
+            }
+        });
+    };
+
 
     modifyData = (id) => {
         this.props.navigation.push('checkModify', {
@@ -218,7 +260,6 @@ class EstateCheckPage extends BasePage {
             }
         })
     }
-
 
     _renderItem = ({ item, index }) => {
 
@@ -236,30 +277,22 @@ class EstateCheckPage extends BasePage {
                                     titles={['修改', '删除']}
                                     visible={true}
                                     onChange={(title) => {
-                                        if (title === '删除') {
-                                            this.deleteDetail(item.billId);
-                                        } else if (title === '修改') {
+                                        if (title === '修改') {
                                             this.modifyData(item.billId);
+                                        } else {
+                                            this.deleteDetail(item.billId);
                                         }
                                     }}
                                 />
+                                : (item.statusName == '待闭单' ?
+                                    <TouchableOpacity onPress={() => this.closeDetail(item.billId)}>
+                                        <Text style={{ color: Macro.work_blue, paddingRight: 15 }}>闭单</Text>
+                                    </TouchableOpacity>
+                                    : null)
 
-                                // <Flex style={styles.container}>
-                                //     <TouchableOpacity onPress={() => this.modifyData(item.billId)}>
-                                //         <Text style={{ color: Macro.work_blue, paddingRight: 15 }}>修改</Text>
-                                //     </TouchableOpacity> 
-                                //     <TouchableOpacity onPress={() => this.deleteDetail(item.billId)}>
-                                //         <Text style={{ color: Macro.work_blue, paddingRight: 15 }}>删除</Text>
-                                //     </TouchableOpacity>
-                                // </Flex>
-
-                                : null
                         }
-
                     </Flex>
-
                     <Flex style={styles.line} />
-
                     <Flex align={'start'} direction={'column'}>
                         <Text style={{
                             paddingLeft: 20,
@@ -307,7 +340,7 @@ class EstateCheckPage extends BasePage {
     timeChange = (time) => {
         this.setState({
             time,
-            pageIndex: 1,
+            pageIndex: 1
         }, () => {
             this.onRefresh();
         });
@@ -315,7 +348,7 @@ class EstateCheckPage extends BasePage {
     billType = (billType) => {
         this.setState({
             billType,
-            pageIndex: 1,
+            pageIndex: 1
         }, () => {
             this.onRefresh();
         });

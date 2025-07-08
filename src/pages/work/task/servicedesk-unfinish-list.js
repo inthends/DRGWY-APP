@@ -42,6 +42,7 @@ class ServicedeskUnFinishListPage extends BasePage {
         const type = common.getValueFromProps(this.props).type;
         this.state = {
             pageIndex: 1,
+             pageSize: 10,
             type,
             dataInfo: {
                 data: []
@@ -75,8 +76,8 @@ class ServicedeskUnFinishListPage extends BasePage {
     }
 
     getList = () => {
-        const { type, time, pageIndex } = this.state;
-        WorkService.servicedeskUnFinishList(type, time, pageIndex).then(dataInfo => {
+        const { type, time, pageIndex,pageSize } = this.state;
+        WorkService.servicedeskUnFinishList(type, time, pageIndex,pageSize).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -111,6 +112,7 @@ class ServicedeskUnFinishListPage extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
+                 this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };

@@ -31,7 +31,7 @@ class TaskListPage extends BasePage {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
-            ) 
+            )
         };
     };
 
@@ -45,6 +45,7 @@ class TaskListPage extends BasePage {
         const hiddenHeader = common.getValueFromProps(this.props).hiddenHeader;
         this.state = {
             pageIndex: 1,
+            pageSize: 10,
             type,
             dataInfo: {
                 data: [],
@@ -54,6 +55,8 @@ class TaskListPage extends BasePage {
             refreshing: true,
             time: '全部',
             selectPerson: null,
+            //selectedIndex: -1,
+            selectedId: ''
         };
     }
 
@@ -63,11 +66,12 @@ class TaskListPage extends BasePage {
             'didFocus',
             (obj) => {
                 this.onRefresh();
+                // if (this.state.selectedIndex != -1) {
+                //     this._flatList.scrollToIndex({ index: this.state.selectedIndex, viewPosition: 0 });
+                // }
             }
         );
     }
-
-    
 
     //必须
     componentWillUnmount() {
@@ -85,9 +89,9 @@ class TaskListPage extends BasePage {
     }
 
     getList = () => {
-        const { type, overdue, time, selectPerson, pageIndex } = this.state;
+        const { type, overdue, time, selectPerson, pageIndex, pageSize } = this.state;
         let senderId = selectPerson ? selectPerson.id : '';
-        WorkService.workList(type, overdue, time, senderId, pageIndex).then(dataInfo => {
+        WorkService.workList(type, overdue, time, senderId, pageIndex, pageSize).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -102,6 +106,14 @@ class TaskListPage extends BasePage {
             });
         }).catch(err => this.setState({ refreshing: false }));
     };
+
+    // 获取ref引用
+    //_getRef = (flatList) => { this._flatList = flatList; const reObj = this._flatList; return reObj; }
+
+    // 滚动到指定索引位置
+    // scrollToIndex = (index) => {
+    //     this.flatListRef.current?.scrollToIndex({ index: index, animated: false, viewPosition: 0.5 });
+    // };
 
     onRefresh = () => {
         this.setState({
@@ -118,9 +130,12 @@ class TaskListPage extends BasePage {
             this.canLoadMore = false;
             this.setState({
                 refreshing: true,
-                pageIndex: pageIndex + 1
+                pageIndex: pageIndex + 1,
             }, () => {
                 this.getList();
+                //重点 2025年7月8日
+                //必须要设置新的页码，因为查看返回的时候，数据多加载一页了，这时候要刷新从1到当前页的数据，否则选中的行无法获取到焦点
+                this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };
@@ -128,7 +143,24 @@ class TaskListPage extends BasePage {
     _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
+
+                // console.log('index',index); 
+                // console.log('index',item.rowIndex);
+
+                //选中了，点击取消
+                if (this.state.selectedId != '' && this.state.selectedId == item.id) {
+                    this.setState({
+                        selectedId: ''
+                    });
+                    return;
+                }
+
+                this.setState({
+                    selectedId: item.id
+                });
+
                 const { type } = this.state;
+
                 if (type === 'fuwu') {
                     this.props.navigation.navigate('service', { id: item.id });
                 } else {
@@ -173,7 +205,9 @@ class TaskListPage extends BasePage {
                 }
             }}>
                 <Flex direction='column' align={'start'}
-                    style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
+                    //style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}
+                    style={[styles.card, this.state.selectedId == item.id ? styles.orange : styles.blue]}
+                >
                     <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.billCode}</Text>
                         <Text style={styles.aaa}>{item.statusName}</Text>
@@ -207,7 +241,7 @@ class TaskListPage extends BasePage {
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>是否允许抢单：{item.isQD == 1 ? '是' : '否'}，单据来源：{item.sourceType}</Text>
-                        </Flex> 
+                        </Flex>
                         <Text numberOfLines={2}
                             style={{
                                 lineHeight: 20,
@@ -216,7 +250,7 @@ class TaskListPage extends BasePage {
                                 paddingBottom: 10,
                                 color: '#666'
                             }}
-                        >{item.repairContent || item.contents}</Text> 
+                        >{item.repairContent || item.contents}</Text>
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>{item.billDate}</Text>
@@ -264,7 +298,7 @@ class TaskListPage extends BasePage {
                 <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
                     <MyPopover onChange={this.timeChange}
                         titles={['全部', '今日', '本周', '本月', '上月', '本年']}
-                        visible={true} /> 
+                        visible={true} />
                     <TouchableWithoutFeedback
                         onPress={() => this.props.navigation.navigate('selectRolePerson', {
                             moduleId: 'Repair',
@@ -286,8 +320,15 @@ class TaskListPage extends BasePage {
                 </Flex>
 
                 <FlatList
+                    //ref={this._getRef}
+                    //getItemLayout={(param, index) => ({ length: 30, offset: 30 * index, index })}
+                    // onScroll={(e) => {
+                    //     if (e.nativeEvent.contentOffset.y < 0 && this.state.selectedIndex != -1) {
+                    //         this._flatList.scrollToIndex({ index: this.state.selectedIndex, viewPosition: 0 });
+                    //     }
+                    // }}
+                    onScrollToIndexFailed={() => { }}
                     data={dataInfo.data}
-                    // ListHeaderComponent={}
                     renderItem={this._renderItem}
                     style={styles.list}
                     keyExtractor={(item) => item.id}
@@ -298,6 +339,7 @@ class TaskListPage extends BasePage {
                     onEndReached={this.loadMore}//底部往下拉翻页
                     onMomentumScrollBegin={() => this.canLoadMore = true}
                     ListEmptyComponent={<NoDataView />}
+
                 />
                 <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
             </CommonView>

@@ -89,6 +89,7 @@ class FeeDetailPage extends BasePage {
         this.state = {
             room,
             pageIndex: 1,
+            pageSize: 100,
             dataInfo: {
                 data: [],
             },
@@ -584,8 +585,8 @@ class FeeDetailPage extends BasePage {
 
     //刷新数据
     onRefresh = () => {
-        const { pageIndex, type, room, isShow } = this.state;
-        service.getBillList(type, room.id, isShow, pageIndex, 1000).then(dataInfo => {
+        const { pageIndex, pageSize, type, room, isShow } = this.state;
+        service.getBillList(type, room.id, isShow, pageIndex, pageSize).then(dataInfo => {
             //重置选择框状态值
             this.setState({
                 dataInfo: dataInfo,
@@ -749,7 +750,7 @@ class FeeDetailPage extends BasePage {
         });
     };
 
-    delete = (item) => { 
+    delete = (item) => {
         Modal.alert('请确认', '是否作废？',
             [
                 { text: '取消', onPress: () => { }, style: 'cancel' },
@@ -757,7 +758,7 @@ class FeeDetailPage extends BasePage {
                     text: '确定', onPress: () => {
                         service.invalidBillForm(item.id).then(res => {
                             this.onRefresh();
-                        }); 
+                        });
                     }
                 }
             ]

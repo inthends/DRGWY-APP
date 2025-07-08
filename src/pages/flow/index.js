@@ -47,6 +47,7 @@ class ApprovePage extends BasePage {
         data: [],
       },
       pageIndex: 1,
+      pageSize: 10,
       todo: 0,
       read: 0,
       done: 0
@@ -116,9 +117,10 @@ class ApprovePage extends BasePage {
     Service.getFlowTask({
       taskType: this.state.taskType,
       pageIndex: this.state.pageIndex,
-      pageSize: 10,
+      pageSize: this.state.pageSize,
       code: selectBuilding.value || ''
     }).then((dataInfo) => {
+      
       //分页有问题
       // if (dataInfo.pageIndex > 1) {
       //   const { data: oldData = [] } = this.state.dataInfo || {};
@@ -159,6 +161,7 @@ class ApprovePage extends BasePage {
         },
         () => {
           this.getList();
+          this.setState({ pageSize: (pageIndex + 1) * 10 });
         }
       );
     }
@@ -304,7 +307,7 @@ class ApprovePage extends BasePage {
         <Flex
           style={[
             {
-              width: ScreenUtil.deviceWidth() - 20,  
+              width: ScreenUtil.deviceWidth() - 20,
               paddingTop: 10,
               paddingBottom: 10,
               marginLeft: 10,

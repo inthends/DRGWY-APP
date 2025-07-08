@@ -42,6 +42,7 @@ class LouPan extends BasePage {
         super(props);
         this.state = { 
             pageIndex: 1, 
+             pageSize: 10,
             dataInfo: {
                 data: [],
             },
@@ -55,7 +56,10 @@ class LouPan extends BasePage {
     }
 
     getList = () => {
-        service.getFeeStatistics(this.state.pageIndex, this.state.selectBuilding ? this.state.selectBuilding.key : '').
+        service.getFeeStatistics(
+            this.state.pageIndex,
+            this.state.pageSize,
+             this.state.selectBuilding ? this.state.selectBuilding.key : '').
             then(dataInfo => {
                 if (dataInfo.pageIndex > 1) {
                     dataInfo = {
@@ -99,6 +103,7 @@ class LouPan extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
+                 this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };

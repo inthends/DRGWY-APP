@@ -22,7 +22,7 @@ import ListImages from '../../../components/list-images';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import NoDataView from '../../../components/no-data-view';
 import RNFetchBlob from 'rn-fetch-blob';
-import UDToast from '../../../utils/UDToast'; 
+import UDToast from '../../../utils/UDToast';
 
 export default class EcheckDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -45,6 +45,7 @@ export default class EcheckDetailPage extends BasePage {
             memo: '',
             detail: {},
             pageIndex: 1,
+            pageSize: 10,
             dataInfo: {
                 data: [],
             },
@@ -88,8 +89,8 @@ export default class EcheckDetailPage extends BasePage {
 
     //检查明细
     getList = () => {
-        const { id } = this.state;
-        WorkService.checkDetailList(this.state.pageIndex, id).then(dataInfo => {
+        const { id, pageIndex, pageSize } = this.state;
+        WorkService.checkDetailList(pageIndex, pageSize, id).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -115,6 +116,7 @@ export default class EcheckDetailPage extends BasePage {
                 // canLoadMore: false,
             }, () => {
                 this.getList();
+                this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };
@@ -213,22 +215,34 @@ export default class EcheckDetailPage extends BasePage {
                 style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
                 <Flex justify='between' style={{ width: '100%' }}>
                     <Text style={styles.title}>{item.allName}</Text>
+                    <Text style={styles.title}>{item.statusName}</Text>
                 </Flex>
                 <Flex style={styles.line} />
                 <Flex align={'start'} direction={'column'}>
-                    <Flex justify='between'
-                        style={{ width: '100%', padding: 15, paddingLeft: 20, paddingRight: 20 }}>
-                        <Text>责任人：{item.dutyUserName} {item.postName}，维修专业：{item.repairMajor}</Text>
+                    <Flex style={{
+                        width: '100%',
+                        //padding: 15, 
+                        paddingTop: 15,
+                        paddingBottom: 10,
+                        paddingLeft: 10,
+                        paddingRight: 10
+                    }}>
+                        <Text>责任人：{item.dutyUserName}，{item.departmentName} {item.postName}，维修专业：{item.repairMajor}</Text>
+                    </Flex>
+                    <Flex style={{ paddingLeft: 10, paddingRight: 10, paddingBottom: 10, }}>
+                        <Text style={{ color: '#666' }}>关联单据：</Text>
+                        <Text onPress={() => this.props.navigation.navigate('weixiuView', { id: item.businessId })}
+                            style={[{ color: Macro.work_blue }]}>{item.repairCode}</Text>
                     </Flex>
                     <Text style={{
-                        paddingLeft: 20,
-                        paddingRight: 20,
+                        paddingLeft: 10,
+                        paddingRight: 10,
                         paddingBottom: 10,
                         color: '#666'
                     }}>检查情况：{item.memo}</Text>
                     <Text style={{
-                        paddingLeft: 20,
-                        paddingRight: 20,
+                        paddingLeft: 10,
+                        paddingRight: 10,
                         paddingBottom: 5,
                         color: '#666'
                     }}>整改要求：{item.rectification}</Text>
@@ -237,8 +251,6 @@ export default class EcheckDetailPage extends BasePage {
             </Flex>
         );
     };
-
-
 
     render() {
         const { detail, dataInfo } = this.state;
@@ -291,7 +303,7 @@ export default class EcheckDetailPage extends BasePage {
                                 numberOfLines={2}>
                             </TextInput>
                         </Flex> : null
-                    } 
+                    }
                 </ScrollView>
 
                 {detail.statusName == '待评审' ?
@@ -360,7 +372,6 @@ const styles = StyleSheet.create({
         shadowRadius: 5,
         shadowOpacity: 0.8
     },
-
     blue: {
         borderLeftColor: Macro.work_blue,
         borderLeftWidth: 5,
@@ -381,7 +392,7 @@ const styles = StyleSheet.create({
         color: '#404145',
         fontSize: 16,
         paddingBottom: 10,
-        marginLeft: 20,
-        marginRight: 20
+        marginLeft: 10,
+        marginRight: 10
     }
 });

@@ -37,6 +37,7 @@ export default class FeeAlertDetailPage extends BasePage {
             detail: {},
             //费用明细
             pageIndex: 1,
+             pageSize: 10,
             refreshing: false,
             dataInfo: {
                 data: []
@@ -70,8 +71,8 @@ export default class FeeAlertDetailPage extends BasePage {
 
     //欠费明细
     getList = () => {
-        const { id } = this.state;
-        WorkService.alertFeeList(this.state.pageIndex, id).then(dataInfo => {
+        const { id,pageIndex,pageSize } = this.state;
+        WorkService.alertFeeList( pageIndex,pageSize, id).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -96,6 +97,7 @@ export default class FeeAlertDetailPage extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
+                 this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };

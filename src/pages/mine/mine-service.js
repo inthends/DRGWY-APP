@@ -26,9 +26,9 @@ export default {
     getRepairScore() {
         return api.getData('/api/MobileMethod/MGetRepairScore');
     },
-  
-    getRepairScoreList(pageIndex) {
+
+    getRepairScoreList(pageIndex, pageSize) {
         let url = '/api/MobileMethod/MGetRepairScorePageList';
-        return api.postData(url, {pageIndex, pageSize: 10 });
+        return api.postData(url, { pageIndex, pageSize });
     },
 };

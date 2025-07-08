@@ -32,6 +32,7 @@ export default class OrderlistPage extends BasePage {
             ...(common.getValueFromProps(this.props)),
             dataInfo: {},
             pageIndex: 1,
+             pageSize: 10,
             refreshing: true
         };
     }
@@ -41,8 +42,8 @@ export default class OrderlistPage extends BasePage {
     }
 
     getList = () => {
-        const { type, pageIndex } = this.state;
-        OrderService.getOrderDatas(type, pageIndex).then(dataInfo => {
+        const { type, pageIndex ,pageSize} = this.state;
+        OrderService.getOrderDatas(type, pageIndex,pageSize).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -75,6 +76,7 @@ export default class OrderlistPage extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
+                 this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };

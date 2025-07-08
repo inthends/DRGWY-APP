@@ -42,6 +42,7 @@ class TaskUnSendListPage extends BasePage {
         const type = common.getValueFromProps(this.props).type;
         this.state = {
             pageIndex: 1,
+             pageSize: 10,
             type:-1,//待派单类型
             time: '全部',
             selectPerson: null,
@@ -78,9 +79,9 @@ class TaskUnSendListPage extends BasePage {
     }
 
     getList = () => {
-        const { type, time, selectPerson, pageIndex } = this.state;
+        const { type, time, selectPerson, pageIndex, pageSize} = this.state;
         let senderId = selectPerson ? selectPerson.id : '';
-        WorkService.workUnSendList(type, time, senderId, pageIndex).then(dataInfo => {
+        WorkService.workUnSendList(type, time, senderId, pageIndex,pageSize).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -114,6 +115,7 @@ class TaskUnSendListPage extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
+                 this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };

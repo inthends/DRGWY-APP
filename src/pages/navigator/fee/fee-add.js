@@ -43,6 +43,7 @@ class FeeAddPage extends BasePage {
         this.state = {
             data,
             pageIndex: 1,
+             pageSize: 10,
             dataInfo: {
                 data: [],
             },

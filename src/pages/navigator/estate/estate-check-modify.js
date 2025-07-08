@@ -56,6 +56,7 @@ class EcheckModifyPage extends BasePage {
             detail: {},
             showAdd: false,
             pageIndex: 1,
+            pageSize: 10,
             memo: '',
             address: null,
             repairmajor: null,
@@ -191,8 +192,8 @@ class EcheckModifyPage extends BasePage {
 
     //检查明细
     getList = () => {
-        const { id } = this.state;
-        WorkService.checkDetailList(this.state.pageIndex, id).then(dataInfo => {
+        const { id, pageIndex, pageSize } = this.state;
+        WorkService.checkDetailList(pageIndex, pageSize, id).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -218,6 +219,7 @@ class EcheckModifyPage extends BasePage {
                 // canLoadMore: false,
             }, () => {
                 this.getList();
+                this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };

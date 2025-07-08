@@ -1,7 +1,7 @@
 import React from 'react';
 import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
-import { StyleSheet, Text, TouchableOpacity, Modal, FlatList,Platform,CameraRoll } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, Modal, FlatList, Platform, CameraRoll } from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
@@ -10,7 +10,7 @@ import GdzcService from './gdzc-service';
 import common from '../../../utils/common';
 import ListImages from '../../../components/list-images';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import RNFetchBlob from 'rn-fetch-blob'; 
+import RNFetchBlob from 'rn-fetch-blob';
 let screen_width = ScreenUtil.deviceWidth()
 
 export default class GdzcDetailPage extends BasePage {
@@ -76,6 +76,7 @@ export default class GdzcDetailPage extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getInfo();
+                this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };
@@ -172,15 +173,15 @@ export default class GdzcDetailPage extends BasePage {
                     //     //console.log('Image saved to docs://image.png'); // 或者使用你的路径
                     //     // 在这里你可以做其他事情，比如显示一个提示或者加载图片等 
                     // })
-                    .catch((err) => { 
+                    .catch((err) => {
                     });
 
             }
             else {
                 //ios
                 let promise = CameraRoll.saveToCameraRoll(uri);
-                promise.then(function (result) { 
-                }).catch(function (err) { 
+                promise.then(function (result) {
+                }).catch(function (err) {
                 });
             }
 

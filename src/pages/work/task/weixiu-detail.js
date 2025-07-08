@@ -54,6 +54,7 @@ export default class WeixiuDetailPage extends BasePage {
             lookImageIndex: 0,
             visible: false,
             pageIndex: 1,
+            pageSize: 10,
             refreshing: false,
             dataInfo: {
                 data: []
@@ -194,8 +195,8 @@ export default class WeixiuDetailPage extends BasePage {
 
     //费用明细
     getList = () => {
-        const { detail } = this.state;
-        WorkService.serverFeeList(this.state.pageIndex, detail.relationId).then(dataInfo => {
+        const { detail, pageIndex, pageSize } = this.state;
+        WorkService.serverFeeList(pageIndex, pageSize, detail.relationId).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -221,6 +222,7 @@ export default class WeixiuDetailPage extends BasePage {
                 // canLoadMore: false,
             }, () => {
                 this.getList();
+                this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };

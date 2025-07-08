@@ -4,8 +4,7 @@ import { Flex } from '@ant-design/react-native';
 import ScreenUtil from '../utils/screen-util';
 import LoadImage from './load-image';
 
-export default class ListImages extends Component {
-
+export default class ListImages extends Component { 
     constructor(props) {
         super(props);
     }
@@ -19,7 +18,7 @@ export default class ListImages extends Component {
                         return (
                             <TouchableWithoutFeedback key={item.uid} onPress={() => this.props.lookImage && this.props.lookImage(index, item.uid)}>
                                 <View style={{
-                                    paddingLeft: 15,
+                                    paddingLeft: 10,
                                     //paddingRight: 5,
                                     paddingBottom: 10,
                                     paddingTop: 10,

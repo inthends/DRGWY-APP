@@ -1,7 +1,7 @@
 import api from '../../utils/api';
 
 export default {
- 
+
     checkDetail(keyvalue) {
         return api.getData('/api/MobileMethod/MGetCheckEntity', { keyvalue });
     },
@@ -14,11 +14,12 @@ export default {
     //检查单明细
     checkDetailList(
         pageIndex,
+        pageSize,
         billId
     ) {
         return api.postData('/api/MobileMethod/MGetCheckDetailPageList', {
             pageIndex,
-            pageSize: 10,
+            pageSize,
             billId
         });
     },
@@ -309,7 +310,7 @@ export default {
     },
 
     //待办工作台列表
-    workList(type, overdue, time, senderId, pageIndex) {
+    workList(type, overdue, time, senderId, pageIndex, pageSize) {
         let url = '/api/MobileMethod/MGetRepairPageList';
         if (type === '6') {
             //待检验的维修单
@@ -330,54 +331,54 @@ export default {
             //待协助列表
             url = '/api/MobileMethod/MGetAssistRepairPageList';
         }
-        return api.postData(url, { status: type, isOverdue: overdue, time, senderId, pageIndex, pageSize: 10 });
+        return api.postData(url, { status: type, isOverdue: overdue, time, senderId, pageIndex, pageSize });
     },
 
     //工作台待派单列表
-    workUnSendList(type, time, senderId, pageIndex) {
+    workUnSendList(type, time, senderId, pageIndex, pageSize) {
         let url = '/api/MobileMethod/MGetUnSendRepairPageList';
-        return api.postData(url, { type, time, senderId, pageIndex, pageSize: 10 });
+        return api.postData(url, { type, time, senderId, pageIndex, pageSize });
     },
 
     //工作台待完成列表
-    workUnFinishList(status, time, senderId, pageIndex) {
+    workUnFinishList(status, time, senderId, pageIndex, pageSize) {
         let url = '/api/MobileMethod/MGetUnFinishRepairPageList';
-        return api.postData(url, { status, time, senderId, pageIndex, pageSize: 10 });
+        return api.postData(url, { status, time, senderId, pageIndex, pageSize });
     },
- 
-    servicedeskList(type, overdue, time, pageIndex) {
+
+    servicedeskList(type, overdue, time, pageIndex,pageSize) {
         let url = '/api/MobileMethod/MGetServiceDeskPageList';
-        return api.postData(url, { type, overdue, time, pageIndex, pageSize: 10 });
+        return api.postData(url, { type, overdue, time, pageIndex, pageSize  });
     },
 
     //服务单待完成列表
-    servicedeskUnFinishList(type, time, pageIndex) {
+    servicedeskUnFinishList(type, time, pageIndex, pageSize) {
         let url = '/api/MobileMethod/MGetUnFinishServiceDeskPageList';
-        return api.postData(url, { type, time, pageIndex, pageSize: 10 });
+        return api.postData(url, { type, time, pageIndex, pageSize });
     },
 
     //工作台已完成服务单列表
-    servicedeskDoneList(type, time, pageIndex) {
+    servicedeskDoneList(type, time, pageIndex,pageSize) {
         let url = '/api/MobileMethod/MGetServiceDeskDonePageList';
-        return api.postData(url, { type, time, pageIndex, pageSize: 10 });
+        return api.postData(url, { type, time, pageIndex, pageSize  });
     },
 
     //工作台已处理工单事项列表
-    workDoneList(type, repairMajor, time, pageIndex) {
+    workDoneList(type, repairMajor, time, pageIndex, pageSize) {
         let url = '/api/MobileMethod/MGetRepairDonePageList';
-        return api.postData(url, { type, repairMajor, time, pageIndex, pageSize: 10 });
+        return api.postData(url, { type, repairMajor, time, pageIndex, pageSize });
     },
 
     //工作台已完成工单事项列表
-    workFinishList(time, status, pageIndex) {
+    workFinishList(time, status, pageIndex, pageSize) {
         let url = '/api/MobileMethod/MGetRepairFinishPageList';
-        return api.postData(url, { time, status, pageIndex, pageSize: 10 });
+        return api.postData(url, { time, status, pageIndex, pageSize });
     },
 
     //抢单列表
-    workQDList(todo, emergencyLevel, time, pageIndex) {
+    workQDList(todo, emergencyLevel, time, pageIndex, pageSize) {
         let url = '/api/MobileMethod/MGetQDPageList';
-        return api.postData(url, { todo, emergencyLevel, time, pageIndex, pageSize: 10 });
+        return api.postData(url, { todo, emergencyLevel, time, pageIndex, pageSize });
     },
 
     // //数量
@@ -386,7 +387,7 @@ export default {
     //     return api.postData(url, { repairMajor, time });
     // },
 
-    getCommonItems(code) { 
+    getCommonItems(code) {
         return api.getData('/api/MobileMethod/MGetDataItemTreeJson', { code });
     },
 
@@ -422,11 +423,11 @@ export default {
         return api.getData('/api/MobileMethod/MGetUnReadNewsCount', {}, false);
     },
     // unreadList(pageIndex, showLoading) {
-    //     return api.postData('/api/MobileMethod/MGetNewsPageList', { pageIndex, pageSize: 10 }, showLoading);
+    //     return api.postData('/api/MobileMethod/MGetNewsPageList', { pageIndex, pageSize }, showLoading);
     // },
- 
-    getNewsList(status, pageIndex, showLoading) {
-        return api.postData('/api/MobileMethod/MGetNewsPageList', {status, pageIndex, pageSize: 10 }, showLoading);
+
+    getNewsList(status, pageIndex, pageSize, showLoading) {
+        return api.postData('/api/MobileMethod/MGetNewsPageList', { status, pageIndex, pageSize }, showLoading);
     },
 
     readNews(newsId) {
@@ -452,6 +453,14 @@ export default {
         return api.postData('/api/MobileMethod/DeleteCheck', { keyvalue });
     },
 
+    closeCheck(keyvalue) {
+        return api.postData('/api/MobileMethod/CloseCheck', { keyvalue });
+    },
+
+    checkInspect(keyvalue) {
+        return api.getData('/api/MobileMethod/CheckInspect', { keyvalue });
+    },
+
     deleteCheckDetail(keyvalue) {
         return api.postData('/api/MobileMethod/DeleteCheckDetail', { keyvalue });
     },
@@ -459,11 +468,12 @@ export default {
     //服务单费用明细
     serverFeeList(
         pageIndex,
+        pageSize,
         billId
     ) {
         return api.postData('/api/MobileMethod/MGetServerFeePageList', {
             pageIndex,
-            pageSize: 10,
+            pageSize,
             billId
         });
     },
@@ -490,12 +500,12 @@ export default {
 
 
     //访客登记详情
-    getVisitEntity(keyvalue) { 
+    getVisitEntity(keyvalue) {
         return api.getData('/api/MobileMethod/MGetVisitEntity', { keyvalue });
     },
 
-    updateVisitEntity(keyvalue) { 
-        return api.postData('/api/MobileMethod/MUpdateVisitEntity', { keyvalue }, true, true); 
+    updateVisitEntity(keyvalue) {
+        return api.postData('/api/MobileMethod/MUpdateVisitEntity', { keyvalue }, true, true);
     },
 
     //获取客户信息
@@ -506,11 +516,12 @@ export default {
     //欠费明细
     alertFeeList(
         pageIndex,
+        pageSize,
         billId
     ) {
         return api.postData('/api/MobileMethod/MGetFeeAlertPageList', {
             pageIndex,
-            pageSize: 10,
+            pageSize,
             billId
         });
     },

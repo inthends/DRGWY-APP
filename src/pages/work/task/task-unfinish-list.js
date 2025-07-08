@@ -42,6 +42,7 @@ class TaskUnFinishListPage extends BasePage {
         const status = common.getValueFromProps(this.props).status; 
         this.state = {
             pageIndex: 1,
+             pageSize: 10,
             dataInfo: {
                 data: [],
             }, 
@@ -78,9 +79,9 @@ class TaskUnFinishListPage extends BasePage {
     }
 
     getList = () => {
-        const { status, time, selectPerson, pageIndex } = this.state;
+        const { status, time, selectPerson, pageIndex ,pageSize} = this.state;
         let senderId = selectPerson ? selectPerson.id : '';
-        WorkService.workUnFinishList(status, time, senderId, pageIndex).then(dataInfo => {
+        WorkService.workUnFinishList(status, time, senderId, pageIndex,pageSize).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -114,6 +115,7 @@ class TaskUnFinishListPage extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
+                 this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };

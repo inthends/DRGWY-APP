@@ -47,6 +47,7 @@ class TaskQDListPage extends BasePage {
 
         this.state = {
             pageIndex: 1,
+             pageSize: 10,
             dataInfo: {
                 data: []
             },
@@ -97,8 +98,8 @@ class TaskQDListPage extends BasePage {
     }
 
     getList = () => {
-        const { emergencyLevel, todo, time, pageIndex } = this.state;
-        WorkService.workQDList(todo, emergencyLevel, time, pageIndex).then(dataInfo => {
+        const { emergencyLevel, todo, time, pageIndex ,pageSize} = this.state;
+        WorkService.workQDList(todo, emergencyLevel, time, pageIndex,pageSize).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -132,6 +133,7 @@ class TaskQDListPage extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
+                 this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };
