@@ -40,9 +40,9 @@ class LouPan extends BasePage {
 
     constructor(props) {
         super(props);
-        this.state = { 
-            pageIndex: 1, 
-             pageSize: 10,
+        this.state = {
+            pageIndex: 1,
+            pageSize: 10,
             dataInfo: {
                 data: [],
             },
@@ -59,7 +59,7 @@ class LouPan extends BasePage {
         service.getFeeStatistics(
             this.state.pageIndex,
             this.state.pageSize,
-             this.state.selectBuilding ? this.state.selectBuilding.key : '').
+            this.state.selectBuilding ? this.state.selectBuilding.key : '').
             then(dataInfo => {
                 if (dataInfo.pageIndex > 1) {
                     dataInfo = {
@@ -103,14 +103,16 @@ class LouPan extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
-                 this.setState({ pageSize: (pageIndex + 1) * 10 });
+                this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };
 
     _renderItem = ({ item, index }) => {
         return (
-            <TouchableWithoutFeedback onPress={() => this.props.navigation.push('louDong', { data: item })}>
+            <TouchableWithoutFeedback onPress={() => {  
+                this.props.navigation.push('louDong', { data: item });
+                 }}>
                 <View style={styles.content}>
                     <Flex direction="row" style={styles.top}>
                         <Flex justify={'center'} style={styles.left}>
@@ -142,7 +144,7 @@ class LouPan extends BasePage {
     };
 
     render() {
-        const {   dataInfo } = this.state;
+        const { dataInfo } = this.state;
         //const { selectBuilding } = this.props; 
         return (
             <View style={{ flex: 1 }}>
@@ -152,9 +154,9 @@ class LouPan extends BasePage {
                             data={dataInfo.data}
                             // ListHeaderComponent={}
                             renderItem={this._renderItem}
-                            keyExtractor={(item, index) => item.id}   
+                            keyExtractor={(item, index) => item.id}
                             ItemSeparatorComponent={() => <View style={{ backgroundColor: '#eee', height: 1 }} />}
-                         
+
                             //必须
                             onEndReachedThreshold={0.1}
                             refreshing={this.state.refreshing}
@@ -164,7 +166,7 @@ class LouPan extends BasePage {
 
                             ListEmptyComponent={<NoDataView />}
                         />
-                         <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
+                        <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
 
                     </View>
                 </CommonView>

@@ -40,7 +40,7 @@ class TaskFinishListPage extends BasePage {
         };
         this.state = {
             pageIndex: 1,
-             pageSize: 10,
+            pageSize: 10,
             dataInfo: {
                 data: []
             },
@@ -48,7 +48,8 @@ class TaskFinishListPage extends BasePage {
             refreshing: false,
             visible: false,
             time: '全部',
-            status: '全部'
+            status: '全部',
+            selectedId: ''
         };
     }
 
@@ -77,8 +78,8 @@ class TaskFinishListPage extends BasePage {
     }
 
     getList = () => {
-        const { time, status, pageIndex,pageSize } = this.state;
-        WorkService.workFinishList(time, status, pageIndex,pageSize).then(dataInfo => {
+        const { time, status, pageIndex, pageSize } = this.state;
+        WorkService.workFinishList(time, status, pageIndex, pageSize).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -113,7 +114,7 @@ class TaskFinishListPage extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
-                 this.setState({ pageSize: (pageIndex + 1) * 10 });
+                this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };
@@ -148,11 +149,21 @@ class TaskFinishListPage extends BasePage {
     _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
+                //选中了，点击取消
+                if (this.state.selectedId != '' && this.state.selectedId == item.id) {
+                    this.setState({
+                        selectedId: ''
+                    });
+                    return;
+                }
+                this.setState({
+                    selectedId: item.id
+                });
                 //查看报修单
                 this.props.navigation.navigate('weixiuView', { id: item.id });
             }}>
                 <Flex direction='column' align={'start'}
-                    style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
+                    style={[styles.card, this.state.selectedId == item.id ? styles.orange : styles.blue]}>
                     <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.billCode}</Text>
                         <Text style={styles.aaa}>{item.statusName}</Text>
@@ -202,7 +213,7 @@ class TaskFinishListPage extends BasePage {
 
 
     render() {
-        const {pageIndex, dataInfo } = this.state;
+        const { pageIndex, dataInfo } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
                 <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>

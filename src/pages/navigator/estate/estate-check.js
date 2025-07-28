@@ -67,7 +67,8 @@ class EstateCheckPage extends BasePage {
             time: '全部',
             selectBuilding: this.props.selectBuilding,
             checkRole: '',//检查的角色
-            checkRoleId: ''
+            checkRoleId: '',
+            selectedId: ''
         };
     }
 
@@ -264,9 +265,23 @@ class EstateCheckPage extends BasePage {
     _renderItem = ({ item, index }) => {
 
         return (
-            <TouchableWithoutFeedback onPress={() => { this.props.navigation.push('checkDetail', { id: item.billId }) }}>
+            <TouchableWithoutFeedback onPress={() => {
+                //选中了，点击取消
+                if (this.state.selectedId != '' && this.state.selectedId == item.billId) {
+                    this.setState({
+                        selectedId: ''
+                    });
+                    return;
+                }
+                this.setState({
+                    selectedId: item.id
+                });
+                this.props.navigation.push('checkDetail', { id: item.billId });
+            }}>
                 <Flex direction='column' align={'start'}
-                    style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
+                    //style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}
+                    style={[styles.card, this.state.selectedId == item.billId ? styles.orange : styles.blue]}
+                >
                     <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.billCode} {item.statusName}</Text>
                         {

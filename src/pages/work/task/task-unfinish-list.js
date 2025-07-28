@@ -38,18 +38,19 @@ class TaskUnFinishListPage extends BasePage {
         super(props);
         this.selectBuilding = {
             key: null
-        }; 
-        const status = common.getValueFromProps(this.props).status; 
+        };
+        const status = common.getValueFromProps(this.props).status;
         this.state = {
             pageIndex: 1,
-             pageSize: 10,
+            pageSize: 10,
             dataInfo: {
                 data: [],
-            }, 
+            },
             status,
             refreshing: true,
             time: '全部',
-            selectPerson: null
+            selectPerson: null,
+            selectedId: ''
         };
     }
 
@@ -79,9 +80,9 @@ class TaskUnFinishListPage extends BasePage {
     }
 
     getList = () => {
-        const { status, time, selectPerson, pageIndex ,pageSize} = this.state;
+        const { status, time, selectPerson, pageIndex, pageSize } = this.state;
         let senderId = selectPerson ? selectPerson.id : '';
-        WorkService.workUnFinishList(status, time, senderId, pageIndex,pageSize).then(dataInfo => {
+        WorkService.workUnFinishList(status, time, senderId, pageIndex, pageSize).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -115,7 +116,7 @@ class TaskUnFinishListPage extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
-                 this.setState({ pageSize: (pageIndex + 1) * 10 });
+                this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };
@@ -123,6 +124,19 @@ class TaskUnFinishListPage extends BasePage {
     _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
+
+                //选中了，点击取消
+                if (this.state.selectedId != '' && this.state.selectedId == item.id) {
+                    this.setState({
+                        selectedId: ''
+                    });
+                    return;
+                }
+                this.setState({
+                    selectedId: item.id
+                });
+
+
                 const { type } = this.state;
                 if (type === 'fuwu') {
                     this.props.navigation.navigate('service', { id: item.id });
@@ -164,7 +178,7 @@ class TaskUnFinishListPage extends BasePage {
                 }
             }}>
                 <Flex direction='column' align={'start'}
-                    style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
+                    style={[styles.card, this.state.selectedId == item.id ? styles.orange : styles.blue]}>
                     <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.billCode}</Text>
                         <Text style={styles.aaa}>{item.statusName}</Text>
@@ -178,23 +192,23 @@ class TaskUnFinishListPage extends BasePage {
                                 onPress={() => common.call(item.contactLink || item.contactPhone)}>
                                 <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')} style={{ width: 15, height: 15 }} /></Flex>
                             </TouchableWithoutFeedback>
-                        </Flex> 
+                        </Flex>
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>所属区域：{item.repairArea}，是否有偿：{item.isPaid}</Text>
-                        </Flex> 
+                        </Flex>
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>紧急程度：{item.emergencyLevel}，重要程度：{item.importance}</Text>
-                        </Flex> 
+                        </Flex>
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>维修专业：{item.repairMajor}，积分：{item.score}</Text>
-                        </Flex> 
+                        </Flex>
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>是否允许抢单：{item.isQD == 1 ? '是' : '否'}，单据来源：{item.sourceType}</Text>
-                        </Flex> 
+                        </Flex>
                         <Text numberOfLines={2}
                             style={{
                                 lineHeight: 20,
@@ -203,7 +217,7 @@ class TaskUnFinishListPage extends BasePage {
                                 paddingBottom: 10,
                                 color: '#666'
                             }}
-                        >{item.repairContent || item.contents}</Text> 
+                        >{item.repairContent || item.contents}</Text>
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>{item.billDate}</Text>
@@ -233,10 +247,10 @@ class TaskUnFinishListPage extends BasePage {
     render() {
         const { dataInfo, status, selectPerson } = this.state;
         return (
-            <CommonView style={{ flex: 1 }}> 
+            <CommonView style={{ flex: 1 }}>
                 <ListUnFinishHeader status={status} onChange={(status) => this.setState({ status }, () => {
                     this.onRefresh();
-                })} /> 
+                })} />
                 <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
                     <MyPopover onChange={this.timeChange}
                         titles={['全部', '今日', '本周', '本月', '上月', '本年']}
@@ -282,7 +296,7 @@ class TaskUnFinishListPage extends BasePage {
     }
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
     list: {
         backgroundColor: Macro.color_white,
         //margin: 15
@@ -298,13 +312,13 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         marginLeft: 20,
         marginRight: 20
-    }, 
+    },
     line: {
         width: ScreenUtil.deviceWidth() - 30 - 15 * 2,
         marginLeft: 15,
         backgroundColor: '#eee',
         height: 1
-    }, 
+    },
     card: {
         borderTopWidth: 1,
         borderRightWidth: 1,

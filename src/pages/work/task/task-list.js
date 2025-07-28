@@ -142,11 +142,8 @@ class TaskListPage extends BasePage {
 
     _renderItem = ({ item, index }) => {
         return (
-            <TouchableWithoutFeedback onPress={() => {
-
-                // console.log('index',index); 
-                // console.log('index',item.rowIndex);
-
+            <TouchableWithoutFeedback onPress={() => { 
+                
                 //选中了，点击取消
                 if (this.state.selectedId != '' && this.state.selectedId == item.id) {
                     this.setState({
@@ -154,7 +151,6 @@ class TaskListPage extends BasePage {
                     });
                     return;
                 }
-
                 this.setState({
                     selectedId: item.id
                 });

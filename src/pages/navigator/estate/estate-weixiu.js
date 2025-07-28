@@ -68,7 +68,8 @@ class EstateWeixiuPage extends BasePage {
             index,
             selectBuilding: this.props.selectBuilding || {},
             repairArea: '',
-            btnText: '搜索'
+            btnText: '搜索',
+            selectedId:''
         };
     }
 
@@ -186,10 +187,20 @@ class EstateWeixiuPage extends BasePage {
     _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
+                //选中了，点击取消
+                if (this.state.selectedId != '' && this.state.selectedId == item.id) {
+                    this.setState({
+                        selectedId: ''
+                    });
+                    return;
+                }
+                this.setState({
+                    selectedId: item.id
+                });
                 this.props.navigation.navigate('weixiuD', { id: item.id });
             }}>
                 <Flex direction='column' align={'start'}
-                    style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
+                     style={[styles.card, this.state.selectedId == item.id ? styles.orange : styles.blue]}>
                     <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.billCode}</Text>
                         <Text style={styles.title2}>{item.statusName}</Text>

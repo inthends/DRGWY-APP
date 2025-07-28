@@ -42,14 +42,15 @@ class TaskUnSendListPage extends BasePage {
         const type = common.getValueFromProps(this.props).type;
         this.state = {
             pageIndex: 1,
-             pageSize: 10,
-            type:-1,//待派单类型
+            pageSize: 10,
+            type: -1,//待派单类型
             time: '全部',
             selectPerson: null,
             dataInfo: {
                 data: [],
             },
-            refreshing: true
+            refreshing: true,
+            selectedId:''
         };
     }
 
@@ -79,9 +80,9 @@ class TaskUnSendListPage extends BasePage {
     }
 
     getList = () => {
-        const { type, time, selectPerson, pageIndex, pageSize} = this.state;
+        const { type, time, selectPerson, pageIndex, pageSize } = this.state;
         let senderId = selectPerson ? selectPerson.id : '';
-        WorkService.workUnSendList(type, time, senderId, pageIndex,pageSize).then(dataInfo => {
+        WorkService.workUnSendList(type, time, senderId, pageIndex, pageSize).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -115,14 +116,26 @@ class TaskUnSendListPage extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
-                 this.setState({ pageSize: (pageIndex + 1) * 10 });
+                this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };
 
     _renderItem = ({ item, index }) => {
         return (
-            <TouchableWithoutFeedback onPress={() => { 
+            <TouchableWithoutFeedback onPress={() => {
+
+                //选中了，点击取消
+                if (this.state.selectedId != '' && this.state.selectedId == item.id) {
+                    this.setState({
+                        selectedId: ''
+                    });
+                    return;
+                }
+                this.setState({
+                    selectedId: item.id
+                });
+
                 switch (item.statusName) {
                     case '待派单': {
                         this.props.navigation.navigate('paidan', { id: item.id });
@@ -156,10 +169,11 @@ class TaskUnSendListPage extends BasePage {
                     }
                     default:
                         break;
-                } 
+                }
             }}>
                 <Flex direction='column' align={'start'}
-                    style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
+                    style={[styles.card, this.state.selectedId == item.id ? styles.orange : styles.blue]}
+                >
                     <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.billCode}</Text>
                         <Text style={styles.aaa}>{item.statusName}</Text>

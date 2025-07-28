@@ -27,12 +27,13 @@ class NewsList extends BasePage {
         // };
         this.state = {
             pageIndex: 1,
-             pageSize: 10,
+            pageSize: 10,
             status: 0,
             dataInfo: {
                 data: [],
             },
-            refreshing: true
+            refreshing: true,
+            selectedId: ''
         };
     }
 
@@ -50,7 +51,7 @@ class NewsList extends BasePage {
     }
 
     getList = (showLoading = true) => {
-        WorkService.getNewsList(this.state.status, this.state.pageIndex,this.state.pageSize, showLoading).then(dataInfo => {
+        WorkService.getNewsList(this.state.status, this.state.pageIndex, this.state.pageSize, showLoading).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -84,7 +85,7 @@ class NewsList extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
-                 this.setState({ pageSize: (pageIndex + 1) * 10 });
+                this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };
@@ -93,6 +94,16 @@ class NewsList extends BasePage {
         return (
             <TouchableWithoutFeedback key={item.id}
                 onPress={() => {
+                    //选中了，点击取消
+                    if (this.state.selectedId != '' && this.state.selectedId == item.id) {
+                        this.setState({
+                            selectedId: ''
+                        });
+                        return;
+                    }
+                    this.setState({
+                        selectedId: item.id
+                    });
                     WorkService.readNews(item.id);
                     const { appUrlName, linkId } = item;
                     // const d = {
@@ -112,7 +123,7 @@ class NewsList extends BasePage {
                 }}>
 
                 <Flex direction='column' align={'start'}
-                    style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
+                    style={[styles.card, this.state.selectedId == item.id ? styles.orange : styles.blue]}>
                     <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.title}</Text>
                         {/* <Text style={item.isRead === 0 ? styles.unread : styles.read}>{item.isRead ? '已读' : '未读'}</Text> */}
@@ -141,23 +152,23 @@ class NewsList extends BasePage {
     render() {
         const { dataInfo, status } = this.state;
         return (
-            <View style={styles.content}> 
+            <View style={styles.content}>
                 <ListHeader status={status}
                     onChange={(status) => this.setState({ status }, () => {
                         this.onRefresh();
-                    })} /> 
+                    })} />
                 <FlatList
                     data={dataInfo.data}
                     // ListHeaderComponent={}
                     renderItem={this._renderItem}
                     style={styles.list}
-                    keyExtractor={(item) => item.id + 'cell'} 
+                    keyExtractor={(item) => item.id + 'cell'}
                     //必须
                     onEndReachedThreshold={0.1}
                     refreshing={this.state.refreshing}
                     onRefresh={this.onRefresh}//下拉刷新
                     onEndReached={this.loadMore}//底部往下拉翻页
-                    onMomentumScrollBegin={() => this.canLoadMore = true} 
+                    onMomentumScrollBegin={() => this.canLoadMore = true}
                     ListEmptyComponent={<NoDataView />}
                 />
                 <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
@@ -186,7 +197,7 @@ const styles = StyleSheet.create({
         borderLeftColor: Macro.work_orange,
         borderLeftWidth: 5,
     },
-    
+
     title: {
         color: '#404145',
         fontSize: 16

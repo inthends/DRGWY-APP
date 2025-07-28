@@ -30,7 +30,7 @@ class ServicedeskUnFinishListPage extends BasePage {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
-            ) 
+            )
         };
     };
 
@@ -42,13 +42,14 @@ class ServicedeskUnFinishListPage extends BasePage {
         const type = common.getValueFromProps(this.props).type;
         this.state = {
             pageIndex: 1,
-             pageSize: 10,
+            pageSize: 10,
             type,
             dataInfo: {
                 data: []
             },
             refreshing: false,
             time: '全部',
+            selectedId: ''
         };
     }
 
@@ -76,8 +77,8 @@ class ServicedeskUnFinishListPage extends BasePage {
     }
 
     getList = () => {
-        const { type, time, pageIndex,pageSize } = this.state;
-        WorkService.servicedeskUnFinishList(type, time, pageIndex,pageSize).then(dataInfo => {
+        const { type, time, pageIndex, pageSize } = this.state;
+        WorkService.servicedeskUnFinishList(type, time, pageIndex, pageSize).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -112,7 +113,7 @@ class ServicedeskUnFinishListPage extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
-                 this.setState({ pageSize: (pageIndex + 1) * 10 });
+                this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };
@@ -120,10 +121,20 @@ class ServicedeskUnFinishListPage extends BasePage {
     _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
+                //选中了，点击取消
+                if (this.state.selectedId != '' && this.state.selectedId == item.id) {
+                    this.setState({
+                        selectedId: ''
+                    });
+                    return;
+                }
+                this.setState({
+                    selectedId: item.id
+                });
                 this.props.navigation.navigate('service', { id: item.id });
             }}>
                 <Flex direction='column' align={'start'}
-                    style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
+                    style={[styles.card, this.state.selectedId == item.id ? styles.orange : styles.blue]}>
                     <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.billCode}</Text>
                         <Text style={styles.aaa}>{item.statusName}</Text>

@@ -29,7 +29,7 @@ class ServicedeskDoneListPage extends BasePage {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
-            ) 
+            )
         };
     };
 
@@ -45,7 +45,7 @@ class ServicedeskDoneListPage extends BasePage {
         this.state = {
             type: type,
             pageIndex: 1,
-             pageSize: 10,
+            pageSize: 10,
             dataInfo: {
                 data: []
             },
@@ -53,6 +53,7 @@ class ServicedeskDoneListPage extends BasePage {
             visible: false,
             repairMajor: '全部',
             time: '全部',
+            selectedId: ''
             //repairMajors: []//维修专业
         };
     }
@@ -96,8 +97,8 @@ class ServicedeskDoneListPage extends BasePage {
     }
 
     getList = () => {
-        const { type, time, pageIndex,pageSize } = this.state;
-        WorkService.servicedeskDoneList(type, time, pageIndex,pageSize).then(dataInfo => {
+        const { type, time, pageIndex, pageSize } = this.state;
+        WorkService.servicedeskDoneList(type, time, pageIndex, pageSize).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -131,7 +132,7 @@ class ServicedeskDoneListPage extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
-                 this.setState({ pageSize: (pageIndex + 1) * 10 });
+                this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };
@@ -157,11 +158,21 @@ class ServicedeskDoneListPage extends BasePage {
     _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
+                //选中了，点击取消
+                if (this.state.selectedId != '' && this.state.selectedId == item.id) {
+                    this.setState({
+                        selectedId: ''
+                    });
+                    return;
+                }
+                this.setState({
+                    selectedId: item.id
+                });
                 //查看服务单
                 this.props.navigation.navigate('serverDeskView', { id: item.id });
             }}>
                 <Flex direction='column' align={'start'}
-                    style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
+                    style={[styles.card, this.state.selectedId == item.id ? styles.orange : styles.blue]}>
                     <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.billCode}</Text>
                         <Text style={styles.aaa}>{item.statusName}</Text>

@@ -31,7 +31,7 @@ class ServicedeskListPage extends BasePage {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
                 </TouchableOpacity>
-            ) 
+            )
         };
     };
 
@@ -45,7 +45,7 @@ class ServicedeskListPage extends BasePage {
         const hiddenHeader = common.getValueFromProps(this.props).hiddenHeader;
         this.state = {
             pageIndex: 1,
-             pageSize: 10,
+            pageSize: 10,
             type,
             dataInfo: {
                 data: []
@@ -54,6 +54,7 @@ class ServicedeskListPage extends BasePage {
             overdue: -1,
             hiddenHeader,
             time: '全部',
+            selectedId: ''
         };
     }
 
@@ -81,8 +82,8 @@ class ServicedeskListPage extends BasePage {
     }
 
     getList = () => {
-        const { type, overdue, time, pageIndex ,pageSize} = this.state;
-        WorkService.servicedeskList(type, overdue, time, pageIndex,pageSize).then(dataInfo => {
+        const { type, overdue, time, pageIndex, pageSize } = this.state;
+        WorkService.servicedeskList(type, overdue, time, pageIndex, pageSize).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -117,7 +118,7 @@ class ServicedeskListPage extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
-                 this.setState({ pageSize: (pageIndex + 1) * 10 });
+                this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };
@@ -125,6 +126,16 @@ class ServicedeskListPage extends BasePage {
     _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
+                //选中了，点击取消
+                if (this.state.selectedId != '' && this.state.selectedId == item.id) {
+                    this.setState({
+                        selectedId: ''
+                    });
+                    return;
+                }
+                this.setState({
+                    selectedId: item.id
+                });
                 switch (item.statusName) {
                     case '待处理': {
                         this.props.navigation.navigate('service', { id: item.id });
@@ -139,7 +150,7 @@ class ServicedeskListPage extends BasePage {
                 }
             }}>
                 <Flex direction='column' align={'start'}
-                    style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
+                    style={[styles.card, this.state.selectedId == item.id ? styles.orange : styles.blue]}>
                     <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.billCode}</Text>
                         <Text style={styles.aaa}>{item.statusName}</Text>
@@ -163,12 +174,12 @@ class ServicedeskListPage extends BasePage {
                             <Text>紧急程度：{item.emergencyLevel}，重要程度：{item.importance}</Text>
                         </Flex>
                         <Text style={{
-                                lineHeight: 20,
-                                paddingLeft: 20,
-                                paddingRight: 20,
-                                paddingBottom: 10,
-                                color: '#666'
-                            }}>{item.contents}</Text>
+                            lineHeight: 20,
+                            paddingLeft: 20,
+                            paddingRight: 20,
+                            paddingBottom: 10,
+                            color: '#666'
+                        }}>{item.contents}</Text>
                         <Flex justify='between'
                             style={{ width: '100%', paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <Text>{item.billDate}</Text>

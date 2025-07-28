@@ -32,8 +32,9 @@ export default class OrderlistPage extends BasePage {
             ...(common.getValueFromProps(this.props)),
             dataInfo: {},
             pageIndex: 1,
-             pageSize: 10,
-            refreshing: true
+            pageSize: 10,
+            refreshing: true,
+            selectedId:''
         };
     }
 
@@ -42,8 +43,8 @@ export default class OrderlistPage extends BasePage {
     }
 
     getList = () => {
-        const { type, pageIndex ,pageSize} = this.state;
-        OrderService.getOrderDatas(type, pageIndex,pageSize).then(dataInfo => {
+        const { type, pageIndex, pageSize } = this.state;
+        OrderService.getOrderDatas(type, pageIndex, pageSize).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -76,19 +77,29 @@ export default class OrderlistPage extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
-                 this.setState({ pageSize: (pageIndex + 1) * 10 });
+                this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };
-    
+
     //传入status  待查阅0，待回复1，已回复2，已关闭-1
     _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.props.navigation.navigate('orderDetail', { data: item }); 
+                //选中了，点击取消
+                if (this.state.selectedId != '' && this.state.selectedId == item.id) {
+                    this.setState({
+                        selectedId: ''
+                    });
+                    return;
+                }
+                this.setState({
+                    selectedId: item.id
+                });
+                this.props.navigation.navigate('orderDetail', { data: item });
             }}>
                 <Flex direction='column' align={'start'}
-                    style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
+                     style={[styles.card, this.state.selectedId == item.id ? styles.orange : styles.blue]}>
                     <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.type ?? ''}</Text>
                         <Text style={styles.aaa}>{item.createDate ?? ''}</Text>

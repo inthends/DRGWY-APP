@@ -110,7 +110,6 @@ export default class ScoreListPage extends BasePage {
                         style={{ width: '100%', paddingBottom: 10, paddingTop: 5, paddingLeft: 20, paddingRight: 20 }}>
                         <Text>接单积分：{item.score}，协助增援积分：{item.pscore}</Text>
                     </Flex>
-
                 </Flex>
             </Flex>
         );

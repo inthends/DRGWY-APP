@@ -68,7 +68,8 @@ class EstateFuwuPage extends BasePage {
             time: mytime,//'全部',
             index,
             selectBuilding: this.props.selectBuilding || {},
-            btnText: '搜索'
+            btnText: '搜索',
+            selectedId:''
         };
     }
 
@@ -109,7 +110,7 @@ class EstateFuwuPage extends BasePage {
             billStatus,
             selectBuilding,
             billType, time,
-            keyword,pageIndex,pageSize
+            keyword, pageIndex, pageSize
         } = this.state;
         let organizeId;
         if (selectBuilding) {
@@ -160,7 +161,7 @@ class EstateFuwuPage extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
-                 this.setState({ pageSize: (pageIndex + 1) * 10 });
+                this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };
@@ -191,11 +192,22 @@ class EstateFuwuPage extends BasePage {
     _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
+                //选中了，点击取消
+                if (this.state.selectedId != '' && this.state.selectedId == item.id) {
+                    this.setState({
+                        selectedId: ''
+                    });
+                    return;
+                }
+                this.setState({
+                    selectedId: item.id
+                });
+
                 //this.props.navigation.push('serverDeskView', { data: item.id, type: this.state.billType });
                 this.props.navigation.navigate('serverDeskView', { id: item.id });
             }}>
                 <Flex direction='column' align={'start'}
-                    style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
+                    style={[styles.card, this.state.selectedId == item.id ? styles.orange : styles.blue]}>
                     <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.billCode}</Text>
                         <Text style={styles.title2}>{item.billType}</Text>
@@ -340,7 +352,7 @@ class EstateFuwuPage extends BasePage {
                     />
                     <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
                 </CommonView>
-            </View> 
+            </View>
         );
     }
 }

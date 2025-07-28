@@ -47,7 +47,7 @@ class TaskQDListPage extends BasePage {
 
         this.state = {
             pageIndex: 1,
-             pageSize: 10,
+            pageSize: 10,
             dataInfo: {
                 data: []
             },
@@ -55,7 +55,8 @@ class TaskQDListPage extends BasePage {
             refreshing: false,
             visible: false,
             emergencyLevel: '全部',
-            time: '全部'
+            time: '全部',
+            selectedId:''
             //repairMajors: []//维修专业
         };
     }
@@ -98,8 +99,8 @@ class TaskQDListPage extends BasePage {
     }
 
     getList = () => {
-        const { emergencyLevel, todo, time, pageIndex ,pageSize} = this.state;
-        WorkService.workQDList(todo, emergencyLevel, time, pageIndex,pageSize).then(dataInfo => {
+        const { emergencyLevel, todo, time, pageIndex, pageSize } = this.state;
+        WorkService.workQDList(todo, emergencyLevel, time, pageIndex, pageSize).then(dataInfo => {
             if (dataInfo.pageIndex > 1) {
                 dataInfo = {
                     ...dataInfo,
@@ -133,7 +134,7 @@ class TaskQDListPage extends BasePage {
                 pageIndex: pageIndex + 1
             }, () => {
                 this.getList();
-                 this.setState({ pageSize: (pageIndex + 1) * 10 });
+                this.setState({ pageSize: (pageIndex + 1) * 10 });
             });
         }
     };
@@ -154,6 +155,18 @@ class TaskQDListPage extends BasePage {
     _renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
+
+                //选中了，点击取消
+                if (this.state.selectedId != '' && this.state.selectedId == item.id) {
+                    this.setState({
+                        selectedId: ''
+                    });
+                    return;
+                }
+                this.setState({
+                    selectedId: item.id
+                });
+
                 switch (item.statusName) {
                     case '待派单': {
                         //跳转抢单页面
@@ -189,7 +202,7 @@ class TaskQDListPage extends BasePage {
                 }
             }}>
                 <Flex direction='column' align={'start'}
-                    style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
+                     style={[styles.card, this.state.selectedId == item.id ? styles.orange : styles.blue]}>
                     <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.billCode}</Text>
                         <Text style={styles.aaa}>{item.statusName}</Text>
