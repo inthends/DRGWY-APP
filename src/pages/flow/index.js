@@ -16,8 +16,7 @@ import Service from './service';
 import NoDataView from '../../components/no-data-view';
 import { saveSelectBuilding, saveSelectDrawerType } from '../../utils/store/actions/actions';
 import { DrawerType } from '../../utils/store/action-types/action-types';
-import UDToast from '../../../utils/UDToast';
-import NoDataView from '../../../components/no-data-view';
+import UDToast from '../../utils/UDToast';
 
 
 class ApprovePage extends BasePage {
@@ -45,7 +44,7 @@ class ApprovePage extends BasePage {
       taskType: 1,//页签类型
       activeSections: [],
       selectBuilding: this.props.selectBuilding || {},
-     
+
       pageIndex: 1,
       pageSize: 10,
       total: 0,
@@ -107,6 +106,16 @@ class ApprovePage extends BasePage {
         this.loadData(true);
       }
     );
+  };
+
+  //加载更多
+  loadMore = () => {
+    const { pageIndex } = this.state;
+    this.setState({
+      pageIndex: pageIndex + 1
+    }, () => {
+      this.loadData();
+    });
   };
 
   getCounts = () => {
@@ -447,7 +456,7 @@ class ApprovePage extends BasePage {
           onEndReachedThreshold={0.1}
           refreshing={refreshing}
           onRefresh={this.onRefresh}//下拉刷新
-          onEndReached={this.loadData}//底部往下拉翻页
+          onEndReached={this.loadMore}//底部往下拉翻页
           //onMomentumScrollBegin={() => this.canLoadMore = true}
           ListFooterComponent={this.renderFooter}
           ListEmptyComponent={<NoDataView />}

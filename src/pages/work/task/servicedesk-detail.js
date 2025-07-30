@@ -32,8 +32,7 @@ import Star from '../../../components/star';
 import ActionPopover from '../../../components/action-popover';
 import moment from 'moment';
 import RNFetchBlob from 'rn-fetch-blob';
-import NoDataView from '../../../components/no-data-view';
-
+import NoDataView from '../../../components/no-data-view'; 
 
 export default class ServiceDeskDetailPage extends BasePage {
 
@@ -98,7 +97,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                     const { repairmajor } = obj.state.params.repairmajor || {};
                     this.setState({ repairmajor });
                 }
-                this.loadData();//刷新费用明细，必须
+                this.onRefresh();//刷新费用明细，必须
             }
         );
 
@@ -463,7 +462,7 @@ export default class ServiceDeskDetailPage extends BasePage {
             refreshing: true,
             pageIndex: 1
         }, () => {
-            this.loadData();
+            this.loadData(true);
         });
     };
 
@@ -800,7 +799,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                         onEndReachedThreshold={0.1}
                         refreshing={refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
-                        onEndReached={this.loadData}//底部往下拉翻页
+                        onEndReached={this.loadMore}//底部往下拉翻页
                         ListFooterComponent={this.renderFooter}
                         ListEmptyComponent={<NoDataView />}
                     //onMomentumScrollBegin={() => this.canLoadMore = true}

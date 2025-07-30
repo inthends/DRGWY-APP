@@ -18,6 +18,7 @@ import WorkService from '../work-service';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 import MyPopover from '../../../components/my-popover';
+import UDToast from '../../../utils/UDToast';
 
 //已经处理的单子，只能查看
 class ServicedeskDoneListPage extends BasePage {
@@ -44,13 +45,16 @@ class ServicedeskDoneListPage extends BasePage {
         // const overdue = common.getValueFromProps(this.props).overdue;
         //const hiddenHeader = common.getValueFromProps(this.props).hiddenHeader; 
         this.state = {
-            type: type,
+ 
             pageIndex: 1,
             pageSize: 10,
-            dataInfo: {
-                data: []
-            },
-            refreshing: false,
+            total: 0,
+            data: [],
+            refreshing: false,//刷新
+            loading: false,//加载完成 
+            hasMore: true,//更多
+
+            type: type,
             visible: false,
             repairMajor: '全部',
             time: '全部',
@@ -102,7 +106,7 @@ class ServicedeskDoneListPage extends BasePage {
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
         const { type, time, pageIndex, pageSize } = this.state;
-        WorkService.servicedeskDoneList(type, time, currentPage, pageSize).then(dataInfo => {
+        WorkService.servicedeskDoneList(type, time, currentPage, pageSize).then(res => {
             if (isRefreshing) {
                 this.setState({
                     data: res.data,
@@ -237,7 +241,7 @@ class ServicedeskDoneListPage extends BasePage {
                     onEndReachedThreshold={0.1}
                     refreshing={refreshing}
                     onRefresh={this.onRefresh}//下拉刷新
-                    onEndReached={this.loadData}//底部往下拉翻页
+                    onEndReached={this.loadMore}//底部往下拉翻页
                     //onMomentumScrollBegin={() => this.canLoadMore = true}
                     ListFooterComponent={this.renderFooter}
                     ListEmptyComponent={<NoDataView />}

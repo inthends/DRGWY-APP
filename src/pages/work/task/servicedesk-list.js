@@ -43,14 +43,10 @@ class ServicedeskListPage extends BasePage {
             key: null
         };
         const type = common.getValueFromProps(this.props).type;
-        //const overdue = common.getValueFromProps(this.props).overdue;
         const hiddenHeader = common.getValueFromProps(this.props).hiddenHeader;
         this.state = {
             pageIndex: 1,
             pageSize: 10,
-            // dataInfo: {
-            //     data: []
-            // },
             total: 0,
             data: [],
             refreshing: false,//刷新
@@ -68,7 +64,7 @@ class ServicedeskListPage extends BasePage {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
-                this.onRefresh();
+                this.loadData();
             }
         );
     }
@@ -93,9 +89,10 @@ class ServicedeskListPage extends BasePage {
         if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
-        const { type, overdue, time, pageIndex, pageSize } = this.state;
+        const { data, type, overdue, time, pageSize, pageIndex } = this.state;
         WorkService.servicedeskList(type, overdue, time, currentPage, pageSize).then(res => {
             if (isRefreshing) {
+                //刷新
                 this.setState({
                     data: res.data,
                     pageIndex: 2,
@@ -103,9 +100,20 @@ class ServicedeskListPage extends BasePage {
                 });
             }
             else {
+
+                //合并并去重
+                //const combinedUniqueArray = [...new Set([...data, ...res.data])];
+                //使用 reduce
+                const combinedUniqueArray = [...data, ...res.data].reduce((acc, current) => {
+                    if (!acc.some(item => item.id === current.id)) {
+                        acc.push(current);
+                    }
+                    return acc;
+                }, []);
+
                 this.setState({
-                    data: [...this.state.data, ...res.data],
-                    pageIndex: pageIndex + 1,
+                    data: combinedUniqueArray,
+                    pageIndex: pageIndex,
                     hasMore: pageIndex * pageSize < res.total ? true : false,
                     total: res.total
                 });
@@ -127,30 +135,25 @@ class ServicedeskListPage extends BasePage {
         ).finally(() => this.setState({ loading: false, refreshing: false }))
     };
 
+    //加载更多
+    loadMore = () => {
+        const { pageIndex } = this.state;
+        this.setState({
+            pageIndex: pageIndex + 1
+        }, () => {
+            this.loadData();
+        });
+    };
+
     //刷新
     onRefresh = () => {
         this.setState({
-            refreshing: true
-            //pageIndex: 1
+            refreshing: true,
+            pageIndex: 1
         }, () => {
             this.loadData(true);
         });
     };
-
-    //加载更多
-    // loadMore = () => {
-    //     const { data, total, pageIndex } = this.state.dataInfo;
-    //     if (this.canLoadMore && data.length < total) {
-    //         this.canLoadMore = false;
-    //         this.setState({
-    //             refreshing: true,
-    //             pageIndex: pageIndex + 1
-    //         }, () => {
-    //             this.getList();
-    //             //this.setState({ pageSize: (pageIndex + 1) * 10 });
-    //         });
-    //     }
-    // };
 
     _renderItem = ({ item }) => {
         return (
@@ -232,8 +235,8 @@ class ServicedeskListPage extends BasePage {
 
     renderFooter = () => {
         if (!this.state.hasMore && this.state.data.length > 0) {
-            return <Text>没有更多数据了</Text>;
-        } 
+            return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
+        }
         return this.state.loading ? <ActivityIndicator /> : null;
     };
 
@@ -271,7 +274,7 @@ class ServicedeskListPage extends BasePage {
                     onEndReachedThreshold={0.1}
                     refreshing={refreshing}//在等待加载新数据时将此属性设为 true，列表就会显示出一个正在加载的符号
                     onRefresh={this.onRefresh}//下拉刷新
-                    onEndReached={() => this.loadData()}//上拉加载更多数据
+                    onEndReached={this.loadMore}//上拉加载更多数据
                     ListFooterComponent={this.renderFooter}
                     ListEmptyComponent={<NoDataView />}
 

@@ -33,7 +33,7 @@ import MyPopoverRole from '../../../components/my-popover-role';
 import MyPopoverRight from '../../../components/my-popover-right';
 import RNFetchBlob from 'rn-fetch-blob';
 import ActionPopover from '../../../components/action-popover';
-import NoDataView from '../../../components/no-data-view';
+import NoDataView from '../../../components/no-data-view'; 
 
 class EcheckModifyPage extends BasePage {
 
@@ -193,7 +193,17 @@ class EcheckModifyPage extends BasePage {
             refreshing: true,
             pageIndex: 1
         }, () => {
-            this.getList();
+            this.loadData(true);
+        });
+    };
+
+       //加载更多
+    loadMore = () => {
+        const { pageIndex } = this.state;
+        this.setState({
+            pageIndex: pageIndex + 1
+        }, () => {
+            this.loadData();
         });
     };
 
@@ -522,7 +532,7 @@ class EcheckModifyPage extends BasePage {
     };
 
     render() {
-        const { detail, data, refreshing, address, checkTypes,
+        const { detail, data, refreshing,total, address, checkTypes,
             selectPerson, repairmajor, roles, checkRoleId,
             images, isAutoSend, showAdd } = this.state;
         return (
@@ -599,11 +609,12 @@ class EcheckModifyPage extends BasePage {
                         onEndReachedThreshold={0.1}
                         refreshing={refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
-                        onEndReached={this.loadData}//底部往下拉翻页
+                        onEndReached={this.loadMore}//底部往下拉翻页
                         ListFooterComponent={this.renderFooter}
                         ListEmptyComponent={<NoDataView />}
                     //onMomentumScrollBegin={() => this.canLoadMore = true}
                     />
+                     <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
                 </ScrollView>
 
                 <Flex justify={'center'}>

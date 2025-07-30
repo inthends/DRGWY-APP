@@ -23,7 +23,7 @@ import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 import { saveSelectBuilding, saveSelectDrawerType } from '../../../utils/store/actions/actions';
 import { DrawerType } from '../../../utils/store/action-types/action-types';
-
+import UDToast from '../../../utils/UDToast';
 
 //工单列表，统计页面仅查看
 class EstateWeixiuPage extends BasePage {
@@ -353,12 +353,12 @@ class EstateWeixiuPage extends BasePage {
                         onEndReachedThreshold={0.1}
                         refreshing={refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
-                        onEndReached={this.loadData}//底部往下拉翻页
+                        onEndReached={this.loadMore}//底部往下拉翻页
                         //onMomentumScrollBegin={() => this.canLoadMore = true}
                         ListFooterComponent={this.renderFooter}
                         ListEmptyComponent={<NoDataView />}
                     />
-                    <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
+                    <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
                 </CommonView>
             </View>
         );

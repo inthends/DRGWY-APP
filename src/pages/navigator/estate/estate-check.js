@@ -25,6 +25,7 @@ import { saveSelectDrawerType } from '../../../utils/store/actions/actions';
 import MyPopoverRole from '../../../components/my-popover-role';
 import WorkService from '../../work/work-service';
 import ActionPopover from '../../../components/action-popover';
+import UDToast from '../../../utils/UDToast';
 
 class EstateCheckPage extends BasePage {
 
@@ -94,7 +95,7 @@ class EstateCheckPage extends BasePage {
             'didFocus',
             (obj) => {
                 this.props.saveSelectDrawerType(DrawerType.organize);
-                this.loadData();
+                this.onRefresh();
             }
         );
 
@@ -116,7 +117,7 @@ class EstateCheckPage extends BasePage {
         const nextSelectBuilding = nextProps.selectBuilding;
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
             this.setState({ selectBuilding: nextProps.selectBuilding }, () => {
-                this.loadData();
+                this.onRefresh();
             });
         }
     }
@@ -165,6 +166,16 @@ class EstateCheckPage extends BasePage {
             pageIndex: 1
         }, () => {
             this.loadData(true);
+        });
+    };
+
+       //加载更多
+    loadMore = () => {
+        const { pageIndex } = this.state;
+        this.setState({
+            pageIndex: pageIndex + 1
+        }, () => {
+            this.loadData();
         });
     };
 
@@ -401,7 +412,7 @@ class EstateCheckPage extends BasePage {
                     onEndReachedThreshold={0.1}
                     refreshing={refreshing}
                     onRefresh={this.onRefresh}//下拉刷新
-                    onEndReached={this.loadData}//底部往下拉翻页
+                    onEndReached={this.loadMore}//底部往下拉翻页
                     //onMomentumScrollBegin={() => this.canLoadMore = true}
                     ListFooterComponent={this.renderFooter}
                     ListEmptyComponent={<NoDataView />}

@@ -23,6 +23,7 @@ import CommonView from '../../../components/CommonView';
 import { connect } from 'react-redux';
 import { saveSelectBuilding, saveSelectDrawerType } from '../../../utils/store/actions/actions';
 import { DrawerType } from '../../../utils/store/action-types/action-types';
+import UDToast from '../../../utils/UDToast';
 
 //统计页面服务单列表，仅查看
 class EstateFuwuPage extends BasePage {
@@ -160,6 +161,16 @@ class EstateFuwuPage extends BasePage {
             pageIndex: 1
         }, () => {
             this.loadData(true);
+        });
+    };
+
+       //加载更多
+    loadMore = () => {
+        const { pageIndex } = this.state;
+        this.setState({
+            pageIndex: pageIndex + 1
+        }, () => {
+            this.loadData();
         });
     };
 
@@ -351,7 +362,7 @@ class EstateFuwuPage extends BasePage {
                         onEndReachedThreshold={0.1}
                         refreshing={refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
-                        onEndReached={this.loadData}//底部往下拉翻页
+                        onEndReached={this.loadMore}//底部往下拉翻页
                         //onMomentumScrollBegin={() => this.canLoadMore = true}
                         ListFooterComponent={this.renderFooter}
                         ListEmptyComponent={<NoDataView />}

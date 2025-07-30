@@ -19,6 +19,7 @@ import WorkService from '../work-service';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 import MyPopover from '../../../components/my-popover';
+import UDToast from '../../../utils/UDToast';
 
 //待完成列表
 class TaskUnFinishListPage extends BasePage {
@@ -114,6 +115,16 @@ class TaskUnFinishListPage extends BasePage {
             pageIndex: 1
         }, () => {
             this.loadData(true);
+        });
+    };
+
+       //加载更多
+    loadMore = () => {
+        const { pageIndex } = this.state;
+        this.setState({
+            pageIndex: pageIndex + 1
+        }, () => {
+            this.loadData();
         });
     };
 
@@ -238,6 +249,14 @@ class TaskUnFinishListPage extends BasePage {
         })
     }
 
+    renderFooter = () => {
+        if (!this.state.hasMore && this.state.data.length > 0) {
+            return <Text>没有更多数据了</Text>;
+        }
+
+        return this.state.loading ? <ActivityIndicator /> : null;
+    };
+
     render() {
         const { data, refreshing, total, status, selectPerson } = this.state;
         return (
@@ -279,7 +298,7 @@ class TaskUnFinishListPage extends BasePage {
                     onEndReachedThreshold={0.1}
                     refreshing={refreshing}
                     onRefresh={this.onRefresh}//下拉刷新
-                    onEndReached={this.loadData}//底部往下拉翻页
+                    onEndReached={this.loadMore}//底部往下拉翻页
                     //onMomentumScrollBegin={() => this.canLoadMore = true}
                     ListFooterComponent={this.renderFooter}
                     ListEmptyComponent={<NoDataView />}

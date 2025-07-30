@@ -1,7 +1,10 @@
 import React from 'react';
 import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
-import { StyleSheet, Text, TouchableOpacity, Modal, FlatList, Platform, CameraRoll } from 'react-native';
+import {
+    StyleSheet, Text, TouchableOpacity, Modal, FlatList,
+    Platform, CameraRoll, ActivityIndicator
+} from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
@@ -11,11 +14,11 @@ import common from '../../../utils/common';
 import ListImages from '../../../components/list-images';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import RNFetchBlob from 'rn-fetch-blob';
+import UDToast from '../../../utils/UDToast'; 
 let screen_width = ScreenUtil.deviceWidth()
 
 export default class GdzcDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
-
         return {
             tabBarVisible: false,
             title: '固定资产详情',
@@ -34,17 +37,32 @@ export default class GdzcDetailPage extends BasePage {
             ...(common.getValueFromProps(this.props)),
             data: {},
             imageDatas: [],
-            datasList: [],
             titles: ['基本信息', '领用记录', '维修记录', '盘点记录'],
             indexType: 0,
             visible: false,
-            refreshing: false,
-            dataInfo: {
-                total: 0,
-                pageIndex: 0
-            }
+
+
+            pageIndex: 1,
+            pageSize: 10,
+            total: 0,
+            datasList: [],
+            refreshing: false,//刷新
+            loading: false,//加载完成 
+            hasMore: true,//更多 
         };
-        this.getInfo()
+    }
+
+    componentDidMount() {
+        this.viewDidAppear = this.props.navigation.addListener(
+            'didFocus',
+            (obj) => {
+                this.onRefresh();
+            }
+        );
+    }
+
+    componentWillUnmount() {
+        this.viewDidAppear.remove();
     }
 
     getImages = () => {
@@ -62,26 +80,26 @@ export default class GdzcDetailPage extends BasePage {
             refreshing: true,
             pageIndex: 1
         }, () => {
-            this.getInfo();
+            this.loadData(true);
         });
     };
 
+       //加载更多
     loadMore = () => {
-        const { total, pageIndex } = this.state.dataInfo;
-        const { datasList } = this.state;
-        if (this.canLoadMore && datasList.length < total) {
-            this.canLoadMore = false;
-            this.setState({
-                refreshing: true,
-                pageIndex: pageIndex + 1
-            }, () => {
-                this.getInfo();
-                this.setState({ pageSize: (pageIndex + 1) * 10 });
-            });
-        }
+        const { pageIndex } = this.state;
+        this.setState({
+            pageIndex: pageIndex + 1
+        }, () => {
+            this.loadData();
+        });
     };
 
-    getInfo = () => {
+
+    loadData = (isRefreshing = false) => {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+        const currentPage = isRefreshing ? 1 : this.state.pageIndex;
+        this.setState({ loading: true });
+
         const { indexType, pageIndex, id } = this.state;
         if (indexType === 0) {
             GdzcService.gdzcBaseInfo(id).then(res => {
@@ -95,34 +113,73 @@ export default class GdzcDetailPage extends BasePage {
 
         }
         else if (indexType === 1) {
-            GdzcService.gdzcAssetsUseInfo(pageIndex, id).then(res => {
-                this.setState({
-                    datasList: res.data,
-                    total: res.total,
-                    refreshing: false
-                }, () => {
-                })
-            }).catch(err => this.setState({ refreshing: false }));
+
+            GdzcService.gdzcAssetsUseInfo(currentPage, id).then(res => {
+                // this.setState({
+                //     datasList: res.data,
+                //     total: res.total,
+                //     refreshing: false
+                // }, () => {
+                // })
+
+                if (isRefreshing) {
+                    this.setState({
+                        datasList: res.data,
+                        pageIndex: 2,
+                        total: res.total
+                    });
+                }
+                else {
+                    this.setState({
+                        datasList: [...this.state.datasList, ...res.data],
+                        pageIndex: pageIndex + 1,
+                        hasMore: pageIndex * pageSize < res.total ? true : false,
+                        total: res.total
+                    });
+                }
+
+            }).catch(err => UDToast.showError(err)
+            ).finally(() => this.setState({ loading: false, refreshing: false }))
         }
         else if (indexType === 2) {
-            GdzcService.gdzcRepairList(pageIndex, id).then(res => {
-                this.setState({
-                    datasList: res.data,
-                    total: res.total,
-                    refreshing: false
-                }, () => {
-                })
-            }).catch(err => this.setState({ refreshing: false }));
+            GdzcService.gdzcRepairList(currentPage, id).then(res => {
+                if (isRefreshing) {
+                    this.setState({
+                        datasList: res.data,
+                        pageIndex: 2,
+                        total: res.total
+                    });
+                }
+                else {
+                    this.setState({
+                        datasList: [...this.state.datasList, ...res.data],
+                        pageIndex: pageIndex + 1,
+                        hasMore: pageIndex * pageSize < res.total ? true : false,
+                        total: res.total
+                    });
+                }
+            }).catch(err => UDToast.showError(err)
+            ).finally(() => this.setState({ loading: false, refreshing: false }))
         }
         else if (indexType === 3) {
-            GdzcService.gdzcAssetsCheckList(pageIndex, id).then(res => {
-                this.setState({
-                    datasList: res.data,
-                    total: res.total,
-                    refreshing: false
-                }, () => {
-                })
-            }).catch(err => this.setState({ refreshing: false }));
+            GdzcService.gdzcAssetsCheckList(currentPage, id).then(res => {
+                if (isRefreshing) {
+                    this.setState({
+                        datasList: res.datasList,
+                        pageIndex: 2,
+                        total: res.total
+                    });
+                }
+                else {
+                    this.setState({
+                        datasList: [...this.state.datasList, ...res.data],
+                        pageIndex: pageIndex + 1,
+                        hasMore: pageIndex * pageSize < res.total ? true : false,
+                        total: res.total
+                    });
+                }
+            }).catch(err => UDToast.showError(err)
+            ).finally(() => this.setState({ loading: false, refreshing: false }))
         }
     }
 
@@ -227,8 +284,15 @@ export default class GdzcDetailPage extends BasePage {
         </Flex>
     }
 
+    renderFooter = () => {
+        if (!this.state.hasMore && this.state.datasList.length > 0) {
+            return <Text>没有更多数据了</Text>;
+        }
+        return this.state.loading ? <ActivityIndicator /> : null;
+    };
+
     contentView = () => {
-        const { indexType, data, imageDatas, datasList } = this.state
+        const { indexType, data, imageDatas, datasList, total, refreshing } = this.state
         let images = imageDatas.map((item) => {
             return item.thumbUrl
         })
@@ -277,21 +341,24 @@ export default class GdzcDetailPage extends BasePage {
         }
         else {
             return (
-                <FlatList
-                    data={datasList}
-                    // ListHeaderComponent={}
-                    renderItem={this._renderItem}
-                    keyExtractor={(item) => item.id}
-                    // ItemSeparatorComponent={() => <View style={{ backgroundColor: '#eee', height: 1 }} />} 
-                    //必须
-                    onEndReachedThreshold={0.1}
-                    refreshing={this.state.refreshing}
-                    onRefresh={this.onRefresh}//下拉刷新
-                    onEndReached={this.loadMore}//底部往下拉翻页
-                    onMomentumScrollBegin={() => this.canLoadMore = true}
-
-                    ListEmptyComponent={<NoDataView />}
-                />
+                <>
+                    <FlatList
+                        data={datasList}
+                        // ListHeaderComponent={}
+                        renderItem={this._renderItem}
+                        keyExtractor={(item) => item.id}
+                        // ItemSeparatorComponent={() => <View style={{ backgroundColor: '#eee', height: 1 }} />} 
+                        //必须
+                        onEndReachedThreshold={0.1}
+                        refreshing={refreshing}
+                        onRefresh={this.onRefresh}//下拉刷新
+                        onEndReached={this.loadMore}//底部往下拉翻页
+                        //onMomentumScrollBegin={() => this.canLoadMore = true}
+                        ListFooterComponent={this.renderFooter}
+                        ListEmptyComponent={<NoDataView />}
+                    />
+                    <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {datasList.length}, 共 {total} 条</Text>
+                </>
 
                 //                 <ScrollView>
                 //                      <ScrollView onRefresh={this.onRefresh()} onScrollEndDrag={this.loadMore()}>

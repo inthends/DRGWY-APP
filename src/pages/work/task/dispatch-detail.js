@@ -113,6 +113,7 @@ export default class DispatchDetailPage extends BasePage {
             }
         );
         this.getData();
+        
     }
 
     //add new

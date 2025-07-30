@@ -19,6 +19,7 @@ import WorkService from '../work-service';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 import MyPopover from '../../../components/my-popover';
+import UDToast from '../../../utils/UDToast';
 
 //待完成服务单列表
 class ServicedeskUnFinishListPage extends BasePage {
@@ -110,6 +111,16 @@ class ServicedeskUnFinishListPage extends BasePage {
             pageIndex: 1
         }, () => {
             this.loadData(true);
+        });
+    };
+
+       //加载更多
+    loadMore = () => {
+        const { pageIndex } = this.state;
+        this.setState({
+            pageIndex: pageIndex + 1
+        }, () => {
+            this.loadData();
         });
     };
 
@@ -208,7 +219,7 @@ class ServicedeskUnFinishListPage extends BasePage {
                     onEndReachedThreshold={0.1}
                     refreshing={this.state.refreshing}//在等待加载新数据时将此属性设为 true，列表就会显示出一个正在加载的符号
                     onRefresh={this.onRefresh}//下拉刷新
-                    onEndReached={this.loadData}//底部往下拉翻页 
+                    onEndReached={this.loadMore}//底部往下拉翻页 
                     ListFooterComponent={this.renderFooter}
                     //onMomentumScrollBegin={() => this.canLoadMore = true}
                     //防止上拉加载更多onReached被触发两次，造成重复请求资源，性能浪费

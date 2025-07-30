@@ -176,29 +176,19 @@ class ProjectPage extends BasePage {
   };
 
   //加载数据
-  loadData = (isRefreshing = false) => { 
+  loadData = (isRefreshing = false) => {
+
     if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+
     const currentPage = isRefreshing ? 1 : this.state.pageIndex;
-    this.setState({ loading: true }); 
-    const { pageIndex, pageSize } = this.state; 
+
+    this.setState({ loading: true });
+    const { data, pageIndex, pageSize } = this.state;
     BuildingService.getStatistics(
       currentPage,
       pageSize,
       this.selectBuilding.key
-    ).then(res => { 
-      // if (dataInfo.pageIndex > 1) {
-      //   dataInfo = {
-      //     ...dataInfo,
-      //     data: [...this.state.dataInfo.data, ...dataInfo.data]
-      //   };
-      // }
-      // this.setState(
-      //   {
-      //     dataInfo: dataInfo,
-      //     refreshing: false,
-      //     pageIndex: dataInfo.pageIndex
-      //   },
-      //   () => { });
+    ).then(res => {
 
       if (isRefreshing) {
         this.setState({
@@ -207,9 +197,17 @@ class ProjectPage extends BasePage {
         });
       }
       else {
+
+        const combinedUniqueArray = [...data, ...res.data].reduce((acc, current) => {
+          if (!acc.some(item => item.id === current.id)) {
+            acc.push(current);
+          }
+          return acc;
+        }, []);
+
         this.setState({
-          data: [...this.state.data, ...res.data],
-          pageIndex: pageIndex + 1,
+          data: combinedUniqueArray,
+          pageIndex: pageIndex,
           hasMore: pageIndex * pageSize < res.total ? true : false
         });
       }
@@ -225,14 +223,24 @@ class ProjectPage extends BasePage {
   onRefresh = () => {
     this.setState(
       {
-        refreshing: true,
-        pageIndex: 1
+        refreshing: true
+        //pageIndex: 1
       },
       () => {
         this.loadData(true);
       }
     );
     this.initData();
+  };
+
+  //加载更多
+  loadMore = () => {
+    const { pageIndex } = this.state;
+    this.setState({
+      pageIndex: pageIndex + 1
+    }, () => {
+      this.loadData();
+    });
   };
 
   componentWillReceiveProps(nextProps) {
@@ -244,7 +252,7 @@ class ProjectPage extends BasePage {
       )
     ) {
       this.selectBuilding = nextProps.selectBuilding;
-      this.loadData();
+      this.onRefresh();
     }
   }
 
@@ -319,7 +327,7 @@ class ProjectPage extends BasePage {
               onEndReachedThreshold={0.1}
               refreshing={refreshing}
               onRefresh={this.onRefresh}//下拉刷新
-              onEndReached={this.loadData}//底部往下拉翻页
+              onEndReached={this.loadMore}//底部往下拉翻页
               //onMomentumScrollBegin={() => this.canLoadMore = true}
               ListFooterComponent={this.renderFooter}
               ListEmptyComponent={<NoDataView />}

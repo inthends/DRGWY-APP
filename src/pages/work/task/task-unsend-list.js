@@ -19,6 +19,7 @@ import ListHeader from '../../../components/list-unsend-header';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 import MyPopover from '../../../components/my-popover';
+import UDToast from '../../../utils/UDToast';
 
 //待派单列表
 class TaskUnSendListPage extends BasePage {
@@ -51,7 +52,7 @@ class TaskUnSendListPage extends BasePage {
             hasMore: true,//更多 
             type: -1,//待派单类型
             time: '全部',
-            selectPerson: null, 
+            selectPerson: null,
             selectedId: ''
         };
     }
@@ -113,6 +114,16 @@ class TaskUnSendListPage extends BasePage {
             pageIndex: 1
         }, () => {
             this.loadData(true);
+        });
+    };
+
+       //加载更多
+    loadMore = () => {
+        const { pageIndex } = this.state;
+        this.setState({
+            pageIndex: pageIndex + 1
+        }, () => {
+            this.loadData();
         });
     };
 
@@ -280,12 +291,12 @@ class TaskUnSendListPage extends BasePage {
                     onEndReachedThreshold={0.1}
                     refreshing={refreshing}
                     onRefresh={this.onRefresh}//下拉刷新
-                    onEndReached={this.loadData}//底部往下拉翻页
+                    onEndReached={this.loadMore}//底部往下拉翻页
                     //onMomentumScrollBegin={() => this.canLoadMore = true} 
                     ListFooterComponent={this.renderFooter}
                     ListEmptyComponent={<NoDataView />}
                 />
-                <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
+                <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
             </CommonView>
 
         );

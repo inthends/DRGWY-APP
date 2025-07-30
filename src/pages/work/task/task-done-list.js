@@ -18,6 +18,7 @@ import WorkService from '../work-service';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 import MyPopover from '../../../components/my-popover';
+import UDToast from '../../../utils/UDToast';
 
 //已经处理的单子，只能查看
 class TaskDoneListPage extends BasePage {
@@ -136,6 +137,16 @@ class TaskDoneListPage extends BasePage {
         });
     };
 
+       //加载更多
+    loadMore = () => {
+        const { pageIndex } = this.state;
+        this.setState({
+            pageIndex: pageIndex + 1
+        }, () => {
+            this.loadData();
+        });
+    };
+
 
     typeChange = (repairMajor) => {
         this.setState({
@@ -242,7 +253,7 @@ class TaskDoneListPage extends BasePage {
                         visible={true} />
                 </Flex>
                 <FlatList
-                    data={dataInfo.data}
+                    data={data}
                     // ListHeaderComponent={}
                     renderItem={this._renderItem}
                     style={styles.list}
@@ -251,7 +262,7 @@ class TaskDoneListPage extends BasePage {
                     onEndReachedThreshold={0.1}
                     refreshing={refreshing}
                     onRefresh={this.onRefresh}//下拉刷新
-                    onEndReached={this.loadData}//底部往下拉翻页
+                    onEndReached={this.loadMore}//底部往下拉翻页
                     //onMomentumScrollBegin={() => this.canLoadMore = true}
                     ListFooterComponent={this.renderFooter}
                     ListEmptyComponent={<NoDataView />}

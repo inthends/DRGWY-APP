@@ -25,7 +25,6 @@ import moment from 'moment';
 import RNFetchBlob from 'rn-fetch-blob';
 import NoDataView from '../../../components/no-data-view';
 import UDToast from '../../../utils/UDToast';
-import NoDataView from '../../../components/no-data-view';
 
 export default class WeixiuDetailPage extends BasePage {
 
@@ -225,6 +224,26 @@ export default class WeixiuDetailPage extends BasePage {
         ).finally(() => this.setState({ loading: false, refreshing: false }))
     };
 
+
+    //刷新
+    onRefresh = () => {
+        this.setState({
+            refreshing: true,
+            pageIndex: 1
+        }, () => {
+            this.loadData(true);
+        });
+    };
+
+    //加载更多
+    loadMore = () => {
+        const { pageIndex } = this.state;
+        this.setState({
+            pageIndex: pageIndex + 1
+        }, () => {
+            this.loadData();
+        });
+    };
 
     _renderItem = ({ item, index }) => {
         return (
@@ -451,11 +470,10 @@ export default class WeixiuDetailPage extends BasePage {
                         onEndReachedThreshold={0.1}
                         refreshing={refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
-                        onEndReached={this.loadData}//底部往下拉翻页
+                        onEndReached={this.loadMore}//底部往下拉翻页
                         ListFooterComponent={this.renderFooter}
                         ListEmptyComponent={<NoDataView />}
                     />
-
                     <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
 
                     {/* <Communicates communicateClick={this.communicateClick} communicates={communicates} /> */}

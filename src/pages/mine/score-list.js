@@ -13,6 +13,7 @@ import ScreenUtil from '../../utils/screen-util';
 import NoDataView from '../../components/no-data-view';
 import CommonView from '../../components/CommonView';
 import MineService from './mine-service';
+import UDToast from '../../utils/UDToast';
 
 //积分明细，按月统计
 export default class ScoreListPage extends BasePage {
@@ -46,7 +47,7 @@ export default class ScoreListPage extends BasePage {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
-                this.loadData();
+                this.onRefresh();
             }
         );
     }
@@ -90,6 +91,16 @@ export default class ScoreListPage extends BasePage {
         });
     };
 
+       //加载更多
+    loadMore = () => {
+        const { pageIndex } = this.state;
+        this.setState({
+            pageIndex: pageIndex + 1
+        }, () => {
+            this.loadData();
+        });
+    };
+
     _renderItem = ({ item, index }) => {
         return (
             <Flex direction='column' align={'start'}
@@ -129,7 +140,7 @@ export default class ScoreListPage extends BasePage {
                     onEndReachedThreshold={0.1}
                     refreshing={refreshing}
                     onRefresh={this.onRefresh}//下拉刷新
-                    onEndReached={this.loadData}//底部往下拉翻页
+                    onEndReached={this.loadMore}//底部往下拉翻页
                     //onMomentumScrollBegin={() => this.canLoadMore = true}
                     ListFooterComponent={this.renderFooter}
                     ListEmptyComponent={<NoDataView />}

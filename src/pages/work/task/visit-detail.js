@@ -29,7 +29,6 @@ import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import moment from 'moment';
 import RNFetchBlob from 'rn-fetch-blob';
-import UDToast from '../../../utils/UDToast';
 import NoDataView from '../../../components/no-data-view';
 
 export default class VisitDetailPage extends BasePage {
@@ -262,6 +261,16 @@ export default class VisitDetailPage extends BasePage {
         });
     };
 
+       //加载更多
+    loadMore = () => {
+        const { pageIndex } = this.state;
+        this.setState({
+            pageIndex: pageIndex + 1
+        }, () => {
+            this.loadData();
+        });
+    };
+
     //加载数据
     loadData = (isRefreshing = false) => {
         if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
@@ -272,14 +281,16 @@ export default class VisitDetailPage extends BasePage {
             if (isRefreshing) {
                 this.setState({
                     data: res.data,
-                    pageIndex: 2
+                    pageIndex: 2,
+                    total: res.total
                 });
             }
             else {
                 this.setState({
                     data: [...this.state.data, ...res.data],
                     pageIndex: pageIndex + 1,
-                    hasMore: pageIndex * pageSize < res.total ? true : false
+                    hasMore: pageIndex * pageSize < res.total ? true : false,
+                    total: res.total
                 });
             }
         }).catch(err => UDToast.showError(err)
@@ -326,7 +337,7 @@ export default class VisitDetailPage extends BasePage {
     };
 
     render() {
-        const { images, detail, communicates, data, refreshing } = this.state;
+        const { images, detail, communicates, data, refreshing, total } = this.state;
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView style={{ marginTop: this.state.KeyboardShown ? - 200 : 0, height: '100%' }}>
@@ -432,11 +443,12 @@ export default class VisitDetailPage extends BasePage {
                         onEndReachedThreshold={0.1}
                         refreshing={refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
-                        onEndReached={this.loadData}//底部往下拉翻页
+                        onEndReached={this.loadMore}//底部往下拉翻页
                         ListFooterComponent={this.renderFooter}
                         ListEmptyComponent={<NoDataView />}
                     //onMomentumScrollBegin={() => this.canLoadMore = true}
                     />
+                    <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
 
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
 

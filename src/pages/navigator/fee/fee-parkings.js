@@ -1,12 +1,8 @@
 //车位
 import React  from 'react';
-import {
-    //View,
+import { 
     Text,
-    StyleSheet,
-    //StatusBar,
-    //FlatList,
-    //Linking,
+    StyleSheet, 
     TouchableOpacity,
     TouchableWithoutFeedback,
     ScrollView,

@@ -75,7 +75,7 @@ class EstateTousuPage extends BasePage {
             (obj) => {
                 this.props.saveBuilding({});//加载页面清除别的页面选中的数据
                 this.props.saveSelectDrawerType(DrawerType.building);
-                this.loadData();
+                this.onRefresh();
             }
         );
     }
@@ -140,6 +140,16 @@ class EstateTousuPage extends BasePage {
             pageIndex: 1
         }, () => {
             this.loadData(true);
+        });
+    };
+
+       //加载更多
+    loadMore = () => {
+        const { pageIndex } = this.state;
+        this.setState({
+            pageIndex: pageIndex + 1
+        }, () => {
+            this.loadData();
         });
     };
 
@@ -275,7 +285,7 @@ class EstateTousuPage extends BasePage {
                         onEndReachedThreshold={0.1}
                         refreshing={refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
-                        onEndReached={this.loadData}//底部往下拉翻页
+                        onEndReached={this.loadMore}//底部往下拉翻页
                         //onMomentumScrollBegin={() => this.canLoadMore = true}
                         ListFooterComponent={this.renderFooter}
                         ListEmptyComponent={<NoDataView />}

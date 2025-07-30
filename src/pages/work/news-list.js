@@ -1,11 +1,16 @@
 import React from 'react';
-import { View, StyleSheet, FlatList, TouchableOpacity, TouchableWithoutFeedback, Text } from 'react-native';
+import {
+    View, StyleSheet, FlatList,
+    TouchableOpacity, TouchableWithoutFeedback, Text,
+    ActivityIndicator
+} from 'react-native';
 import BasePage from '../base/base';
 import Macro from '../../utils/macro';
 import WorkService from './work-service';
 import NoDataView from '../../components/no-data-view';
 import { Flex, Icon } from '@ant-design/react-native';
 import ListHeader from '../../components/list-news-header';
+import UDToast from '../../utils/UDToast';
 
 class NewsList extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -28,11 +33,12 @@ class NewsList extends BasePage {
         this.state = {
             pageIndex: 1,
             pageSize: 10,
-            status: 0,
-            dataInfo: {
-                data: [],
-            },
-            refreshing: true,
+            total: 0,
+            data: [],
+            refreshing: false,//刷新
+            loading: false,//加载完成 
+            hasMore: true,//更多
+
             selectedId: ''
         };
     }
@@ -50,21 +56,29 @@ class NewsList extends BasePage {
         this.viewDidAppear.remove();
     }
 
-    getList = (showLoading = true) => {
-        WorkService.getNewsList(this.state.status, this.state.pageIndex, this.state.pageSize, showLoading).then(dataInfo => {
-            if (dataInfo.pageIndex > 1) {
-                dataInfo = {
-                    ...dataInfo,
-                    data: [...this.state.dataInfo.data, ...dataInfo.data],
-                };
+    loadData = (isRefreshing = false) => {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+        const currentPage = isRefreshing ? 1 : this.state.pageIndex;
+        this.setState({ loading: true });
+        const { status, pageIndex, pageSize } = this.state;
+        WorkService.getNewsList(status, currentPage, pageSize).then(res => {
+            if (isRefreshing) {
+                this.setState({
+                    data: res.data,
+                    pageIndex: 2,
+                    total: res.total
+                });
             }
-            this.setState({
-                dataInfo: dataInfo,
-                refreshing: false,
-                pageIndex: dataInfo.pageIndex
-            }, () => {
-            });
-        }).catch(err => this.setState({ refreshing: false }));
+            else {
+                this.setState({
+                    data: [...this.state.data, ...res.data],
+                    pageIndex: pageIndex + 1,
+                    hasMore: pageIndex * pageSize < res.total ? true : false,
+                    total: res.total
+                });
+            }
+        }).catch(err => UDToast.showError(err)
+        ).finally(() => this.setState({ loading: false, refreshing: false }))
     };
 
     onRefresh = () => {
@@ -72,25 +86,18 @@ class NewsList extends BasePage {
             refreshing: true,
             pageIndex: 1
         }, () => {
-            this.getList();
+            this.loadData(true);
         });
     };
 
-    loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo;
-        if (this.canLoadMore && data.length < total) {
-            this.canLoadMore = false;
-            this.setState({
-                refreshing: true,
-                pageIndex: pageIndex + 1
-            }, () => {
-                this.getList();
-                this.setState({ pageSize: (pageIndex + 1) * 10 });
-            });
-        }
+    renderFooter = () => {
+        if (!this.state.hasMore && this.state.data.length > 0) {
+            return <Text>没有更多数据了</Text>;
+        } 
+        return this.state.loading ? <ActivityIndicator /> : null;
     };
 
-    _renderItem = ({ item, index }) => {
+    _renderItem = ({ item }) => {
         return (
             <TouchableWithoutFeedback key={item.id}
                 onPress={() => {
@@ -150,7 +157,7 @@ class NewsList extends BasePage {
     };
 
     render() {
-        const { dataInfo, status } = this.state;
+        const { data, refreshing, total, status } = this.state;
         return (
             <View style={styles.content}>
                 <ListHeader status={status}
@@ -158,20 +165,21 @@ class NewsList extends BasePage {
                         this.onRefresh();
                     })} />
                 <FlatList
-                    data={dataInfo.data}
+                    data={data}
                     // ListHeaderComponent={}
                     renderItem={this._renderItem}
                     style={styles.list}
                     keyExtractor={(item) => item.id + 'cell'}
                     //必须
                     onEndReachedThreshold={0.1}
-                    refreshing={this.state.refreshing}
+                    refreshing={refreshing}
                     onRefresh={this.onRefresh}//下拉刷新
                     onEndReached={this.loadMore}//底部往下拉翻页
-                    onMomentumScrollBegin={() => this.canLoadMore = true}
+                    //onMomentumScrollBegin={() => this.canLoadMore = true}
+                    ListFooterComponent={this.renderFooter}
                     ListEmptyComponent={<NoDataView />}
                 />
-                <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
+                <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
 
             </View>
         );

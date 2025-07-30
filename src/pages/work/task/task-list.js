@@ -20,6 +20,7 @@ import ListJianYanHeader from '../../../components/list-jianyan-header';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 import MyPopover from '../../../components/my-popover';
+import UDToast from '../../../utils/UDToast';
 
 //待完成列表
 class TaskListPage extends BasePage {
@@ -136,23 +137,16 @@ class TaskListPage extends BasePage {
         });
     };
 
-
-    // loadMore = () => {
-    //     const { data, total, pageIndex } = this.state.dataInfo;
-    //     if (this.canLoadMore && data.length < total) {
-    //         this.canLoadMore = false;
-    //         this.setState({
-    //             refreshing: true,
-    //             pageIndex: pageIndex + 1,
-    //         }, () => {
-    //             this.getList();
-    //             //重点 2025年7月8日
-    //             //必须要设置新的页码，因为查看返回的时候，数据多加载一页了，这时候要刷新从1到当前页的数据，否则选中的行无法获取到焦点
-    //             this.setState({ pageSize: (pageIndex + 1) * 10 });
-    //         });
-    //     }
-    // };
-
+       //加载更多
+    loadMore = () => {
+        const { pageIndex } = this.state;
+        this.setState({
+            pageIndex: pageIndex + 1
+        }, () => {
+            this.loadData();
+        });
+    };
+ 
     _renderItem = ({ item }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
@@ -353,7 +347,7 @@ class TaskListPage extends BasePage {
                     onEndReachedThreshold={0.1}
                     refreshing={refreshing}
                     onRefresh={this.onRefresh}//下拉刷新
-                    onEndReached={this.loadData}//底部往下拉翻页
+                    onEndReached={this.loadMore}//底部往下拉翻页
                     //onMomentumScrollBegin={() => this.canLoadMore = true}
                     ListFooterComponent={this.renderFooter}
                     ListEmptyComponent={<NoDataView />} 

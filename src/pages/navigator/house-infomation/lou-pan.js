@@ -19,6 +19,7 @@ import LoadImage from '../../../components/load-image';
 import service from '../navigator-service';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
+import UDToast from '../../../utils/UDToast';
 
 class LouPan extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -166,7 +167,7 @@ class LouPan extends BasePage {
                             onEndReachedThreshold={0.1}
                             refreshing={refreshing}
                             onRefresh={this.onRefresh}//下拉刷新
-                            onEndReached={this.loadData}//底部往下拉翻页
+                            onEndReached={this.loadMore}//底部往下拉翻页
                             //onMomentumScrollBegin={() => this.canLoadMore = true}
                             ListFooterComponent={this.renderFooter}
                             ListEmptyComponent={<NoDataView />}

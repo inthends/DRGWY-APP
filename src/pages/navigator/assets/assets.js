@@ -17,6 +17,8 @@ import { connect } from 'react-redux';
 import service from '../statistics-service';
 import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
+import UDToast from '../../../utils/UDToast';
+
 let screen_width = ScreenUtil.deviceWidth();
 
 class AssetsPage extends BasePage {
@@ -41,20 +43,23 @@ class AssetsPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            btnText: '搜索',
+
             pageIndex: 1,
             pageSize: 10,
-            dataInfo: {
-                data: [],
-            },
-            refreshing: false,
+            total: 0,
+            data: [],
+            refreshing: false,//刷新
+            loading: false,//加载完成 
+            hasMore: true,//更多
+
+            btnText: '搜索', 
             selectBuilding: this.props.selectBuilding,
             estateId: null//机构id
         };
     }
 
     componentDidMount() {
-        this.onRefresh();
+        this.loadData();
     }
 
     loadData = (isRefreshing = false) => {
@@ -94,7 +99,7 @@ class AssetsPage extends BasePage {
                 selectBuilding: nextProps.selectBuilding,
                 estateId: nextProps.selectBuilding.key
             }, () => {
-                this.loadData();
+                this.onRefresh();
             });
         }
     }
@@ -105,6 +110,16 @@ class AssetsPage extends BasePage {
             pageIndex: 1
         }, () => {
             this.loadData(true);
+        });
+    };
+
+       //加载更多
+    loadMore = () => {
+        const { pageIndex } = this.state;
+        this.setState({
+            pageIndex: pageIndex + 1
+        }, () => {
+            this.loadData();
         });
     };
 
@@ -179,7 +194,6 @@ class AssetsPage extends BasePage {
         if (!this.state.hasMore && this.state.data.length > 0) {
             return <Text>没有更多数据了</Text>;
         }
-
         return this.state.loading ? <ActivityIndicator /> : null;
     };
 
@@ -211,7 +225,7 @@ class AssetsPage extends BasePage {
                             onEndReachedThreshold={0.1}
                             refreshing={refreshing}
                             onRefresh={this.onRefresh}//下拉刷新
-                            onEndReached={this.loadData}//底部往下拉翻页
+                            onEndReached={this.loadMore}//底部往下拉翻页
                             //onMomentumScrollBegin={() => this.canLoadMore = true}
                             ListFooterComponent={this.renderFooter}
                             ListEmptyComponent={<NoDataView />}

@@ -157,7 +157,7 @@ export default class FeeAlertDetailPage extends BasePage {
                         onEndReachedThreshold={0.1}
                         refreshing={refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
-                        onEndReached={this.loadData}//底部往下拉翻页
+                        onEndReached={this.loadMore}//底部往下拉翻页
                         //onMomentumScrollBegin={() => this.canLoadMore = true}
                         ListFooterComponent={this.renderFooter}
                         ListEmptyComponent={<NoDataView />}
