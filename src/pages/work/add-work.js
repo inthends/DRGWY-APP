@@ -502,10 +502,8 @@ class AddWorkPage extends BasePage {
                                 }}
                                 type="primary"
                                 onPress={() => this.submit()}>确定</Button>
-                        </Flex>
-
-                    </View>
-
+                        </Flex> 
+                    </View> 
                 </TouchableWithoutFeedback>
             </CommonView>
         );

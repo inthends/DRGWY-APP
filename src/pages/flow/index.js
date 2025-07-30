@@ -4,7 +4,8 @@ import {
   Text,
   TouchableWithoutFeedback,
   StyleSheet,
-  FlatList
+  FlatList,
+  ActivityIndicator
 } from 'react-native';
 import { Flex, Icon } from '@ant-design/react-native';
 import { connect } from 'react-redux';
@@ -15,6 +16,8 @@ import Service from './service';
 import NoDataView from '../../components/no-data-view';
 import { saveSelectBuilding, saveSelectDrawerType } from '../../utils/store/actions/actions';
 import { DrawerType } from '../../utils/store/action-types/action-types';
+import UDToast from '../../../utils/UDToast';
+import NoDataView from '../../../components/no-data-view';
 
 
 class ApprovePage extends BasePage {
@@ -42,12 +45,15 @@ class ApprovePage extends BasePage {
       taskType: 1,//页签类型
       activeSections: [],
       selectBuilding: this.props.selectBuilding || {},
-      refreshing: false,
-      dataInfo: {
-        data: [],
-      },
+     
       pageIndex: 1,
       pageSize: 10,
+      total: 0,
+      data: [],
+      refreshing: false,//刷新
+      loading: false,//加载完成 
+      hasMore: true,//更多
+
       todo: 0,
       read: 0,
       done: 0
@@ -98,7 +104,7 @@ class ApprovePage extends BasePage {
         pageIndex: 1
       },
       () => {
-        this.getList();
+        this.loadData(true);
       }
     );
   };
@@ -112,59 +118,36 @@ class ApprovePage extends BasePage {
     });
   };
 
-  getList = () => {
+  //加载数据
+  loadData = (isRefreshing = false) => {
+    if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+    const currentPage = isRefreshing ? 1 : this.state.pageIndex;
+    this.setState({ loading: true });
+    const { taskType, pageIndex, pageSize } = this.state;
     const { selectBuilding = {} } = this.props;
     Service.getFlowTask({
-      taskType: this.state.taskType,
-      pageIndex: this.state.pageIndex,
-      pageSize: this.state.pageSize,
+      taskType: taskType,
+      pageIndex: currentPage,
+      pageSize: pageSize,
       code: selectBuilding.value || ''
-    }).then((dataInfo) => {
-      
-      //分页有问题
-      // if (dataInfo.pageIndex > 1) {
-      //   const { data: oldData = [] } = this.state.dataInfo || {};
-      //   const { data = [] } = dataInfo || {};
-      //   dataInfo = {
-      //     ...dataInfo,
-      //     data: [...oldData, ...data],
-      //   };
-      // }
-      // this.setState({
-      //   dataInfo,
-      //   refreshing: false,
-      // });
-
-      if (dataInfo.pageIndex > 1) {
-        dataInfo = {
-          ...dataInfo,
-          data: [...this.state.dataInfo.data, ...dataInfo.data]
-        };
-      }
-      this.setState(
-        {
-          dataInfo: dataInfo,
-          refreshing: false,
-          pageIndex: dataInfo.pageIndex
+    }).then(res => {
+      if (isRefreshing) {
+        this.setState({
+          data: res.data,
+          pageIndex: 2,
+          total: res.total
         });
-    }).catch(err => this.setState({ refreshing: false }));
-  };
-
-  loadMore = () => {
-    const { data, total, pageIndex } = this.state.dataInfo;
-    if (this.canLoadMore && data.length < total) {
-      this.canLoadMore = false;
-      this.setState(
-        {
-          refreshing: true,
-          pageIndex: pageIndex + 1
-        },
-        () => {
-          this.getList();
-          this.setState({ pageSize: (pageIndex + 1) * 10 });
-        }
-      );
-    }
+      }
+      else {
+        this.setState({
+          data: [...this.state.data, ...res.data],
+          pageIndex: pageIndex + 1,
+          hasMore: pageIndex * pageSize < res.total ? true : false,
+          total: res.total
+        });
+      }
+    }).catch(err => UDToast.showError(err)
+    ).finally(() => this.setState({ loading: false, refreshing: false }))
   };
 
   openUrl = (code, id) => {
@@ -297,11 +280,18 @@ class ApprovePage extends BasePage {
       isCompleted: taskType == 3 ? true : false,
       refresh: this.onRefresh
     });
-
   }
 
+  renderFooter = () => {
+    if (!this.state.hasMore && this.state.data.length > 0) {
+      return <Text>没有更多数据了</Text>;
+    }
+
+    return this.state.loading ? <ActivityIndicator /> : null;
+  };
+
   render() {
-    const { todo, read, done, taskType, dataInfo = {} } = this.state;
+    const { todo, read, done, taskType, data, refreshing, total } = this.state;
     return (
       <View style={{ flex: 1 }}>
         <Flex
@@ -406,7 +396,7 @@ class ApprovePage extends BasePage {
         </Flex>
 
         <FlatList
-          data={dataInfo.data || []}
+          data={data}
           renderItem={({ item }) => (
             <TouchableWithoutFeedback
               onPress={() => { this.openUrl(item.code, item.id) }}
@@ -455,14 +445,14 @@ class ApprovePage extends BasePage {
           keyExtractor={(item) => item.id}
           //必须
           onEndReachedThreshold={0.1}
-          refreshing={this.state.refreshing}
+          refreshing={refreshing}
           onRefresh={this.onRefresh}//下拉刷新
-          onEndReached={this.loadMore}//底部往下拉翻页
-          onMomentumScrollBegin={() => this.canLoadMore = true}
+          onEndReached={this.loadData}//底部往下拉翻页
+          //onMomentumScrollBegin={() => this.canLoadMore = true}
+          ListFooterComponent={this.renderFooter}
           ListEmptyComponent={<NoDataView />}
         />
-        <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
-
+        <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
       </View>
     );
   }

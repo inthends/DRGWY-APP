@@ -5,6 +5,7 @@ import {
     FlatList,
     TouchableOpacity,
     TouchableWithoutFeedback,
+    ActivityIndicator
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
@@ -39,18 +40,19 @@ class TaskUnSendListPage extends BasePage {
         this.selectBuilding = {
             key: null
         };
-        const type = common.getValueFromProps(this.props).type;
+        //const type = common.getValueFromProps(this.props).type;
         this.state = {
             pageIndex: 1,
             pageSize: 10,
+            total: 0,
+            data: [],
+            refreshing: false,//刷新
+            loading: false,//加载完成 
+            hasMore: true,//更多 
             type: -1,//待派单类型
             time: '全部',
-            selectPerson: null,
-            dataInfo: {
-                data: [],
-            },
-            refreshing: true,
-            selectedId:''
+            selectPerson: null, 
+            selectedId: ''
         };
     }
 
@@ -79,23 +81,30 @@ class TaskUnSendListPage extends BasePage {
         }
     }
 
-    getList = () => {
+    loadData = (isRefreshing = false) => {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+        const currentPage = isRefreshing ? 1 : this.state.pageIndex;
+        this.setState({ loading: true });
         const { type, time, selectPerson, pageIndex, pageSize } = this.state;
         let senderId = selectPerson ? selectPerson.id : '';
-        WorkService.workUnSendList(type, time, senderId, pageIndex, pageSize).then(dataInfo => {
-            if (dataInfo.pageIndex > 1) {
-                dataInfo = {
-                    ...dataInfo,
-                    data: [...this.state.dataInfo.data, ...dataInfo.data]
-                };
+        WorkService.workUnSendList(type, time, senderId, currentPage, pageSize).then(res => {
+            if (isRefreshing) {
+                this.setState({
+                    data: res.data,
+                    pageIndex: 2,
+                    total: res.total
+                });
             }
-            this.setState({
-                dataInfo: dataInfo,
-                pageIndex: dataInfo.pageIndex,
-                refreshing: false
-            }, () => {
-            });
-        }).catch(err => this.setState({ refreshing: false }));
+            else {
+                this.setState({
+                    data: [...this.state.data, ...res.data],
+                    pageIndex: pageIndex + 1,
+                    hasMore: pageIndex * pageSize < res.total ? true : false,
+                    total: res.total
+                });
+            }
+        }).catch(err => UDToast.showError(err)
+        ).finally(() => this.setState({ loading: false, refreshing: false }))
     };
 
     onRefresh = () => {
@@ -103,28 +112,13 @@ class TaskUnSendListPage extends BasePage {
             refreshing: true,
             pageIndex: 1
         }, () => {
-            this.getList();
+            this.loadData(true);
         });
     };
 
-    loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo;
-        if (this.canLoadMore && data.length < total) {
-            this.canLoadMore = false;
-            this.setState({
-                refreshing: true,
-                pageIndex: pageIndex + 1
-            }, () => {
-                this.getList();
-                this.setState({ pageSize: (pageIndex + 1) * 10 });
-            });
-        }
-    };
-
-    _renderItem = ({ item, index }) => {
+    _renderItem = ({ item }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-
                 //选中了，点击取消
                 if (this.state.selectedId != '' && this.state.selectedId == item.id) {
                     this.setState({
@@ -238,8 +232,15 @@ class TaskUnSendListPage extends BasePage {
         })
     }
 
+    renderFooter = () => {
+        if (!this.state.hasMore && this.state.data.length > 0) {
+            return <Text>没有更多数据了</Text>;
+        }
+        return this.state.loading ? <ActivityIndicator /> : null;
+    };
+
     render() {
-        const { dataInfo, type, selectPerson } = this.state;
+        const { data, total, refreshing, type, selectPerson } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
                 <ListHeader type={type} onChange={(type) => this.setState({ type }, () => {
@@ -270,17 +271,18 @@ class TaskUnSendListPage extends BasePage {
                 </Flex>
 
                 <FlatList
-                    data={dataInfo.data}
+                    data={data}
                     // ListHeaderComponent={}
                     renderItem={this._renderItem}
                     style={styles.list}
                     keyExtractor={(item) => item.id}
                     //必须
                     onEndReachedThreshold={0.1}
-                    refreshing={this.state.refreshing}
+                    refreshing={refreshing}
                     onRefresh={this.onRefresh}//下拉刷新
-                    onEndReached={this.loadMore}//底部往下拉翻页
-                    onMomentumScrollBegin={() => this.canLoadMore = true}
+                    onEndReached={this.loadData}//底部往下拉翻页
+                    //onMomentumScrollBegin={() => this.canLoadMore = true} 
+                    ListFooterComponent={this.renderFooter}
                     ListEmptyComponent={<NoDataView />}
                 />
                 <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>

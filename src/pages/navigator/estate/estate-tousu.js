@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
     FlatList,
+    ActivityIndicator
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
@@ -22,6 +23,7 @@ import NoDataView from '../../../components/no-data-view';
 import CommonView from '../../../components/CommonView';
 import { saveSelectBuilding, saveSelectDrawerType } from '../../../utils/store/actions/actions';
 import { DrawerType } from '../../../utils/store/action-types/action-types';
+import UDToast from '../../../utils/UDToast';
 
 class EstateTousuPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -51,10 +53,12 @@ class EstateTousuPage extends BasePage {
         this.state = {
             pageIndex: 1,
             pageSize: 10,
-            dataInfo: {
-                data: [],
-            },
-            refreshing: false,
+            total: 0,
+            data: [],
+            refreshing: false,//刷新
+            loading: false,//加载完成 
+            hasMore: true,//更多
+
             //ym: common.getYM('2020-01'),
             billStatus: -1,
             //canLoadMore: true,
@@ -71,7 +75,7 @@ class EstateTousuPage extends BasePage {
             (obj) => {
                 this.props.saveBuilding({});//加载页面清除别的页面选中的数据
                 this.props.saveSelectDrawerType(DrawerType.building);
-                this.onRefresh();
+                this.loadData();
             }
         );
     }
@@ -91,10 +95,13 @@ class EstateTousuPage extends BasePage {
         }
     }
 
-    getList = () => {
+    loadData = (isRefreshing = false) => {
         /*
         pageIndex, billStatus, treeType, organizeId, billType, startTime, endTime
          */
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+        const currentPage = isRefreshing ? 1 : this.state.pageIndex;
+        this.setState({ loading: true });
         const { billStatus, selectBuilding, time, pageIndex, pageSize } = this.state;
         let treeType;
         let organizeId;
@@ -105,22 +112,25 @@ class EstateTousuPage extends BasePage {
         // let startTime = common.getMonthFirstDay(time);
         // let endTime = common.getMonthLastDay(time);
 
-        service.tousuList(pageIndex, pageSize, billStatus, treeType, organizeId, '', time).
-            then(dataInfo => {
-                if (dataInfo.pageIndex > 1) {
-                    dataInfo = {
-                        ...dataInfo,
-                        data: [...this.state.dataInfo.data, ...dataInfo.data]
-                    };
+        service.tousuList(currentPage, pageSize, billStatus, treeType, organizeId, '', time).
+            then(res => {
+                if (isRefreshing) {
+                    this.setState({
+                        data: res.data,
+                        pageIndex: 2,
+                        total: res.total
+                    });
                 }
-                this.setState({
-                    dataInfo: dataInfo,
-                    pageIndex: dataInfo.pageIndex,
-                    refreshing: false
-                    //canLoadMore: true,
-                }, () => {
-                });
-            }).catch(err => this.setState({ refreshing: false }));
+                else {
+                    this.setState({
+                        data: [...this.state.data, ...res.data],
+                        pageIndex: pageIndex + 1,
+                        hasMore: pageIndex * pageSize < res.total ? true : false,
+                        total: res.total
+                    });
+                }
+            }).catch(err => UDToast.showError(err)
+            ).finally(() => this.setState({ loading: false, refreshing: false }))
     };
 
 
@@ -129,26 +139,11 @@ class EstateTousuPage extends BasePage {
             refreshing: true,
             pageIndex: 1
         }, () => {
-            this.getList();
+            this.loadData(true);
         });
     };
 
-    loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo;
-        if (this.canLoadMore && data.length < total) {
-            this.canLoadMore = false;
-            this.setState({
-                refreshing: true,
-                pageIndex: pageIndex + 1
-                //canLoadMore: false,
-            }, () => {
-                this.getList();
-                this.setState({ pageSize: (pageIndex + 1) * 10 });
-            });
-        }
-    };
-
-    _renderItem = ({ item, index }) => {
+    _renderItem = ({ item }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
                 //选中了，点击取消
@@ -223,7 +218,7 @@ class EstateTousuPage extends BasePage {
             billStatus,
             pageIndex: 1
         }, () => {
-            this.onRefresh();
+            this.loadData();
         });
 
     };
@@ -232,7 +227,7 @@ class EstateTousuPage extends BasePage {
             time,
             pageIndex: 1
         }, () => {
-            this.onRefresh();
+            this.loadData();
         });
 
     };
@@ -241,13 +236,20 @@ class EstateTousuPage extends BasePage {
             billType,
             pageIndex: 1
         }, () => {
-            this.onRefresh();
+            this.loadData();
         });
     };
 
+    renderFooter = () => {
+        if (!this.state.hasMore && this.state.data.length > 0) {
+            return <Text>没有更多数据了</Text>;
+        }
+
+        return this.state.loading ? <ActivityIndicator /> : null;
+    };
 
     render() {
-        const { dataInfo, ym } = this.state;
+        const { data, total, refreshing } = this.state;
         return (
             <View style={{ flex: 1 }}>
                 <CommonView style={{ flex: 1 }}>
@@ -264,21 +266,21 @@ class EstateTousuPage extends BasePage {
                     </Flex>
 
                     <FlatList
-                        data={dataInfo.data}
+                        data={data}
                         // ListHeaderComponent={}
                         renderItem={this._renderItem}
                         style={styles.list}
-                        keyExtractor={(item, index) => item.id}
+                        keyExtractor={(item) => item.id}
                         //必须
                         onEndReachedThreshold={0.1}
-                        refreshing={this.state.refreshing}
+                        refreshing={refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
-                        onEndReached={this.loadMore}//底部往下拉翻页
-                        onMomentumScrollBegin={() => this.canLoadMore = true}
-
+                        onEndReached={this.loadData}//底部往下拉翻页
+                        //onMomentumScrollBegin={() => this.canLoadMore = true}
+                        ListFooterComponent={this.renderFooter}
                         ListEmptyComponent={<NoDataView />}
                     />
-                    <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
+                    <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
                 </CommonView>
             </View>
 

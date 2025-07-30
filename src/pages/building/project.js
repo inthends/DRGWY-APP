@@ -4,7 +4,8 @@ import {
   StyleSheet,
   FlatList,
   NativeModules,
-  Alert
+  Alert,
+  ActivityIndicator
 } from 'react-native';
 import BasePage from '../base/base';
 import BuildingHeader from '../../components/building/building-header';
@@ -38,11 +39,11 @@ class ProjectPage extends BasePage {
     this.state = {
       pageIndex: 1,
       pageSize: 10,
-      dataInfo: {
-        data: []
-      },
-      statistics: {},
-      refreshing: true
+      data: [],
+      refreshing: false,//刷新
+      loading: false,//加载完成 
+      hasMore: true,//更多
+      statistics: {}
       //btnText: '搜索',
       //keyword: ''
     };
@@ -129,7 +130,6 @@ class ProjectPage extends BasePage {
     // });
     //}
 
-
     this.viewDidAppear = this.props.navigation.addListener(
       'didFocus',//加载当前页面时候调用一次
       (obj) => {
@@ -152,7 +152,7 @@ class ProjectPage extends BasePage {
     BuildingService.getUserInfo().then((res) => {
       this.props.saveUser(res);
     });
-    this.onRefresh();
+    this.loadData();
     // this.viewDidAppear = this.props.navigation.addListener(
     //     'didFocus',
     //     (obj) => {
@@ -175,27 +175,46 @@ class ProjectPage extends BasePage {
     });
   };
 
-  getList = () => {
+  //加载数据
+  loadData = (isRefreshing = false) => { 
+    if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+    const currentPage = isRefreshing ? 1 : this.state.pageIndex;
+    this.setState({ loading: true }); 
+    const { pageIndex, pageSize } = this.state; 
     BuildingService.getStatistics(
-      this.state.pageIndex,
-      this.state.pageSize,
+      currentPage,
+      pageSize,
       this.selectBuilding.key
-    ).then((dataInfo) => {
-      if (dataInfo.pageIndex > 1) {
-        dataInfo = {
-          ...dataInfo,
-          data: [...this.state.dataInfo.data, ...dataInfo.data]
-        };
+    ).then(res => { 
+      // if (dataInfo.pageIndex > 1) {
+      //   dataInfo = {
+      //     ...dataInfo,
+      //     data: [...this.state.dataInfo.data, ...dataInfo.data]
+      //   };
+      // }
+      // this.setState(
+      //   {
+      //     dataInfo: dataInfo,
+      //     refreshing: false,
+      //     pageIndex: dataInfo.pageIndex
+      //   },
+      //   () => { });
+
+      if (isRefreshing) {
+        this.setState({
+          data: res.data,
+          pageIndex: 2
+        });
       }
-      this.setState(
-        {
-          dataInfo: dataInfo,
-          refreshing: false,
-          pageIndex: dataInfo.pageIndex
-        },
-        () => { }
-      );
-    }).catch(err => this.setState({ refreshing: false }));
+      else {
+        this.setState({
+          data: [...this.state.data, ...res.data],
+          pageIndex: pageIndex + 1,
+          hasMore: pageIndex * pageSize < res.total ? true : false
+        });
+      }
+    }).catch(err => UDToast.showError(err)
+    ).finally(() => this.setState({ loading: false, refreshing: false }))
   };
 
   //打开机构
@@ -210,27 +229,10 @@ class ProjectPage extends BasePage {
         pageIndex: 1
       },
       () => {
-        this.getList();
+        this.loadData(true);
       }
     );
     this.initData();
-  };
-
-  loadMore = () => {
-    const { data, total, pageIndex } = this.state.dataInfo;
-    if (this.canLoadMore && data.length < total) {
-      this.canLoadMore = false;
-      this.setState(
-        {
-          refreshing: true,
-          pageIndex: pageIndex + 1
-        },
-        () => {
-          this.getList();
-          this.setState({ pageSize: (pageIndex + 1) * 10 });
-        }
-      );
-    }
   };
 
   componentWillReceiveProps(nextProps) {
@@ -242,7 +244,7 @@ class ProjectPage extends BasePage {
       )
     ) {
       this.selectBuilding = nextProps.selectBuilding;
-      this.onRefresh();
+      this.loadData();
     }
   }
 
@@ -268,9 +270,16 @@ class ProjectPage extends BasePage {
   //   }
   // };
 
+  renderFooter = () => {
+    if (!this.state.hasMore && this.state.data.length > 0) {
+      return <Text>没有更多数据了</Text>;
+    }
+    return this.state.loading ? <ActivityIndicator /> : null;
+  };
+
 
   render() {
-    const { statistics, dataInfo } = this.state;
+    const { statistics, data, refreshing } = this.state;
     return (
       <View style={styles.all}>
         <CommonView style={{ flex: 1 }}>
@@ -295,7 +304,7 @@ class ProjectPage extends BasePage {
               onCancel={() => this.clear()}
             /> */}
             <FlatList
-              data={dataInfo.data}
+              data={data}
               //ListHeaderComponent={}
               renderItem={({ item }) => (
                 <BuildingCell
@@ -308,10 +317,11 @@ class ProjectPage extends BasePage {
               keyExtractor={(item) => item.id}
               //必须
               onEndReachedThreshold={0.1}
-              refreshing={this.state.refreshing}
+              refreshing={refreshing}
               onRefresh={this.onRefresh}//下拉刷新
-              onEndReached={this.loadMore}//底部往下拉翻页
-              onMomentumScrollBegin={() => this.canLoadMore = true}
+              onEndReached={this.loadData}//底部往下拉翻页
+              //onMomentumScrollBegin={() => this.canLoadMore = true}
+              ListFooterComponent={this.renderFooter}
               ListEmptyComponent={<NoDataView />}
             />
             {/* <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text> */}

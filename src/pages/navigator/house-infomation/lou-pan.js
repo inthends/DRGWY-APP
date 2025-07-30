@@ -5,7 +5,8 @@ import {
     StyleSheet,
     FlatList,
     TouchableOpacity,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    ActivityIndicator
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
@@ -43,37 +44,46 @@ class LouPan extends BasePage {
         this.state = {
             pageIndex: 1,
             pageSize: 10,
-            dataInfo: {
-                data: [],
-            },
-            refreshing: false,
+            total: 0,
+            data: [],
+            refreshing: false,//刷新
+            loading: false,//加载完成 
+            hasMore: true,//更多
             selectBuilding: this.props.selectBuilding
         };
     }
 
     componentDidMount() {
-        this.onRefresh();
+        this.loadData();
     }
 
-    getList = () => {
+    loadData = (isRefreshing = false) => {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+        const currentPage = isRefreshing ? 1 : this.state.pageIndex;
+        this.setState({ loading: true });
+        const { pageIndex, pageSize } = this.state;
         service.getFeeStatistics(
-            this.state.pageIndex,
-            this.state.pageSize,
+            currentPage,
+            pageSize,
             this.state.selectBuilding ? this.state.selectBuilding.key : '').
-            then(dataInfo => {
-                if (dataInfo.pageIndex > 1) {
-                    dataInfo = {
-                        ...dataInfo,
-                        data: [...this.state.dataInfo.data, ...dataInfo.data]
-                    };
+            then(res => {
+                if (isRefreshing) {
+                    this.setState({
+                        data: res.data,
+                        pageIndex: 2,
+                        total: res.total
+                    });
                 }
-                this.setState({
-                    dataInfo: dataInfo,
-                    pageIndex: dataInfo.pageIndex,
-                    refreshing: false
-                }, () => {
-                });
-            }).catch(err => this.setState({ refreshing: false }));
+                else {
+                    this.setState({
+                        data: [...this.state.data, ...res.data],
+                        pageIndex: pageIndex + 1,
+                        hasMore: pageIndex * pageSize < res.total ? true : false,
+                        total: res.total
+                    });
+                }
+            }).catch(err => UDToast.showError(err)
+            ).finally(() => this.setState({ loading: false, refreshing: false }))
     };
 
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
@@ -81,7 +91,7 @@ class LouPan extends BasePage {
         const nextSelectBuilding = nextProps.selectBuilding;
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
             this.setState({ selectBuilding: nextProps.selectBuilding }, () => {
-                this.onRefresh();
+                this.loadData();
             });
         }
     }
@@ -91,28 +101,16 @@ class LouPan extends BasePage {
             refreshing: true,
             pageIndex: 1
         }, () => {
-            this.getList();
+            this.loadData(true);
         });
     };
-    loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo;
-        if (this.canLoadMore && data.length < total) {
-            this.canLoadMore = false;
-            this.setState({
-                refreshing: true,
-                pageIndex: pageIndex + 1
-            }, () => {
-                this.getList();
-                this.setState({ pageSize: (pageIndex + 1) * 10 });
-            });
-        }
-    };
 
-    _renderItem = ({ item, index }) => {
+
+    _renderItem = ({ item }) => {
         return (
-            <TouchableWithoutFeedback onPress={() => {  
+            <TouchableWithoutFeedback onPress={() => {
                 this.props.navigation.push('louDong', { data: item });
-                 }}>
+            }}>
                 <View style={styles.content}>
                     <Flex direction="row" style={styles.top}>
                         <Flex justify={'center'} style={styles.left}>
@@ -143,30 +141,37 @@ class LouPan extends BasePage {
         );
     };
 
+    renderFooter = () => {
+        if (!this.state.hasMore && this.state.data.length > 0) {
+            return <Text>没有更多数据了</Text>;
+        }
+
+        return this.state.loading ? <ActivityIndicator /> : null;
+    };
+
     render() {
-        const { dataInfo } = this.state;
+        const { data, total, refreshing } = this.state;
         //const { selectBuilding } = this.props; 
         return (
             <View style={{ flex: 1 }}>
                 <CommonView style={{ flex: 1 }}>
                     <View style={{ flex: 1 }}>
                         <FlatList
-                            data={dataInfo.data}
+                            data={data}
                             // ListHeaderComponent={}
                             renderItem={this._renderItem}
-                            keyExtractor={(item, index) => item.id}
+                            keyExtractor={(item) => item.id}
                             ItemSeparatorComponent={() => <View style={{ backgroundColor: '#eee', height: 1 }} />}
-
                             //必须
                             onEndReachedThreshold={0.1}
-                            refreshing={this.state.refreshing}
+                            refreshing={refreshing}
                             onRefresh={this.onRefresh}//下拉刷新
-                            onEndReached={this.loadMore}//底部往下拉翻页
-                            onMomentumScrollBegin={() => this.canLoadMore = true}
-
+                            onEndReached={this.loadData}//底部往下拉翻页
+                            //onMomentumScrollBegin={() => this.canLoadMore = true}
+                            ListFooterComponent={this.renderFooter}
                             ListEmptyComponent={<NoDataView />}
                         />
-                        <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
+                        <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
 
                     </View>
                 </CommonView>

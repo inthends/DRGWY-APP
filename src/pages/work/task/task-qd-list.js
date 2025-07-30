@@ -4,7 +4,8 @@ import {
     StyleSheet,
     FlatList,
     TouchableOpacity,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    ActivityIndicator
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Button, Flex, Icon } from '@ant-design/react-native';
@@ -48,15 +49,16 @@ class TaskQDListPage extends BasePage {
         this.state = {
             pageIndex: 1,
             pageSize: 10,
-            dataInfo: {
-                data: []
-            },
+            total: 0,
+            data: [],
+            refreshing: false,//刷新
+            loading: false,//加载完成 
+            hasMore: true,//更多
             todo: 0,
-            refreshing: false,
             visible: false,
             emergencyLevel: '全部',
             time: '全部',
-            selectedId:''
+            selectedId: ''
             //repairMajors: []//维修专业
         };
     }
@@ -98,22 +100,29 @@ class TaskQDListPage extends BasePage {
         }
     }
 
-    getList = () => {
+    loadData = (isRefreshing = false) => {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+        const currentPage = isRefreshing ? 1 : this.state.pageIndex;
+        this.setState({ loading: true });
         const { emergencyLevel, todo, time, pageIndex, pageSize } = this.state;
-        WorkService.workQDList(todo, emergencyLevel, time, pageIndex, pageSize).then(dataInfo => {
-            if (dataInfo.pageIndex > 1) {
-                dataInfo = {
-                    ...dataInfo,
-                    data: [...this.state.dataInfo.data, ...dataInfo.data],
-                };
+        WorkService.workQDList(todo, emergencyLevel, time, currentPage, pageSize).then(res => {
+            if (isRefreshing) {
+                this.setState({
+                    data: res.data,
+                    pageIndex: 2,
+                    total: res.total
+                });
             }
-            this.setState({
-                dataInfo: dataInfo,
-                pageIndex: dataInfo.pageIndex,
-                refreshing: false
-            }, () => {
-            });
-        }).catch(err => this.setState({ refreshing: false }));
+            else {
+                this.setState({
+                    data: [...this.state.data, ...res.data],
+                    pageIndex: pageIndex + 1,
+                    hasMore: pageIndex * pageSize < res.total ? true : false,
+                    total: res.total
+                });
+            }
+        }).catch(err => UDToast.showError(err)
+        ).finally(() => this.setState({ loading: false, refreshing: false }))
     };
 
     onRefresh = () => {
@@ -121,22 +130,8 @@ class TaskQDListPage extends BasePage {
             refreshing: true,
             pageIndex: 1
         }, () => {
-            this.getList();
+            this.loadData(true);
         });
-    };
-
-    loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo;
-        if (this.canLoadMore && data.length < total) {
-            this.canLoadMore = false;
-            this.setState({
-                refreshing: true,
-                pageIndex: pageIndex + 1
-            }, () => {
-                this.getList();
-                this.setState({ pageSize: (pageIndex + 1) * 10 });
-            });
-        }
     };
 
     //抢单
@@ -152,10 +147,9 @@ class TaskQDListPage extends BasePage {
         });
     };
 
-    _renderItem = ({ item, index }) => {
+    _renderItem = ({ item }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-
                 //选中了，点击取消
                 if (this.state.selectedId != '' && this.state.selectedId == item.id) {
                     this.setState({
@@ -202,7 +196,7 @@ class TaskQDListPage extends BasePage {
                 }
             }}>
                 <Flex direction='column' align={'start'}
-                     style={[styles.card, this.state.selectedId == item.id ? styles.orange : styles.blue]}>
+                    style={[styles.card, this.state.selectedId == item.id ? styles.orange : styles.blue]}>
                     <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.billCode}</Text>
                         <Text style={styles.aaa}>{item.statusName}</Text>
@@ -279,8 +273,15 @@ class TaskQDListPage extends BasePage {
         });
     };
 
+    renderFooter = () => {
+        if (!this.state.hasMore && this.state.data.length > 0) {
+            return <Text>没有更多数据了</Text>;
+        }
+        return this.state.loading ? <ActivityIndicator /> : null;
+    };
+
     render() {
-        const { dataInfo, todo } = this.state;
+        const { data, refreshing, total, todo } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
                 <ListQDHeader todo={todo}
@@ -297,20 +298,21 @@ class TaskQDListPage extends BasePage {
                         visible={true} />
                 </Flex>
                 <FlatList
-                    data={dataInfo.data}
+                    data={data}
                     // ListHeaderComponent={}
                     renderItem={this._renderItem}
                     style={styles.list}
                     keyExtractor={(item) => item.id}
                     //必须
                     onEndReachedThreshold={0.1}
-                    refreshing={this.state.refreshing}
+                    refreshing={refreshing}
                     onRefresh={this.onRefresh}//下拉刷新
-                    onEndReached={this.loadMore}//底部往下拉翻页
-                    onMomentumScrollBegin={() => this.canLoadMore = true}
+                    onEndReached={this.loadData}//底部往下拉翻页
+                    //onMomentumScrollBegin={() => this.canLoadMore = true}
+                    ListFooterComponent={this.renderFooter}
                     ListEmptyComponent={<NoDataView />}
                 />
-                <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
+                <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
             </CommonView>
         );
     }

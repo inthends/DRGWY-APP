@@ -12,7 +12,8 @@ import {
     FlatList,
     TextInput,
     Platform,
-    Alert, CameraRoll
+    Alert, CameraRoll,
+    ActivityIndicator
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Icon, Flex, TextareaItem, Button, Modal as AntModal } from '@ant-design/react-native';
@@ -31,6 +32,7 @@ import Star from '../../../components/star';
 import ActionPopover from '../../../components/action-popover';
 import moment from 'moment';
 import RNFetchBlob from 'rn-fetch-blob';
+import NoDataView from '../../../components/no-data-view';
 
 
 export default class ServiceDeskDetailPage extends BasePage {
@@ -77,10 +79,11 @@ export default class ServiceDeskDetailPage extends BasePage {
             //费用明细
             pageIndex: 1,
             pageSize: 10,
-            refreshing: false,
-            dataInfo: {
-                data: []
-            }
+            total: 0,
+            data: [],
+            refreshing: false,//刷新
+            loading: false,//加载完成 
+            hasMore: true,//更多
         };
 
         this.keyboardDidShowListener = null;
@@ -95,7 +98,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                     const { repairmajor } = obj.state.params.repairmajor || {};
                     this.setState({ repairmajor });
                 }
-                this.getList();//刷新费用明细，必须
+                this.loadData();//刷新费用明细，必须
             }
         );
 
@@ -200,7 +203,7 @@ export default class ServiceDeskDetailPage extends BasePage {
             });
         });
 
-        this.getList();
+        this.loadData();
 
     };
 
@@ -460,43 +463,36 @@ export default class ServiceDeskDetailPage extends BasePage {
             refreshing: true,
             pageIndex: 1
         }, () => {
-            this.getList();
+            this.loadData();
         });
     };
 
     //费用明细
-    getList = () => {
+    loadData = (isRefreshing = false) => {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+        const currentPage = isRefreshing ? 1 : this.state.pageIndex;
+        this.setState({ loading: true });
         const { id, pageIndex, pageSize } = this.state;
-        WorkService.serverFeeList(pageIndex, pageSize, id).then(dataInfo => {
-            if (dataInfo.pageIndex > 1) {
-                dataInfo = {
-                    ...dataInfo,
-                    data: [...this.state.dataInfo.data, ...dataInfo.data]
-                };
+        WorkService.serverFeeList(currentPage, pageSize, id).then(res => {
+            if (isRefreshing) {
+                this.setState({
+                    data: res.data,
+                    pageIndex: 2,
+                    total: res.total
+                });
             }
-            this.setState({
-                dataInfo: dataInfo,
-                pageIndex: dataInfo.pageIndex,
-                refreshing: false
-            }, () => {
-            });
-        }).catch(err => this.setState({ refreshing: false }));
+            else {
+                this.setState({
+                    data: [...this.state.data, ...res.data],
+                    pageIndex: pageIndex + 1,
+                    hasMore: pageIndex * pageSize < res.total ? true : false,
+                    total: res.total
+                });
+            }
+        }).catch(err => UDToast.showError(err)
+        ).finally(() => this.setState({ loading: false, refreshing: false }))
     };
 
-    loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo;
-        if (this.canLoadMore && data.length < total) {
-            this.canLoadMore = false;
-            this.setState({
-                refreshing: true,
-                pageIndex: pageIndex + 1
-                // canLoadMore: false,
-            }, () => {
-                this.getList();
-                this.setState({ pageSize: (pageIndex + 1) * 10 });
-            });
-        }
-    };
 
     //作废
     doInvalid = (item) => {
@@ -511,7 +507,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                 //         onPress: () => {
                 //             WorkService.invalidDetailForm(item.id).then(res => {
                 //                 UDToast.showInfo('作废成功');
-                //                 this.getList();
+                //                 this.loadData();
                 //             }).catch(err => {
                 //                 UDToast.showError(err);
                 //             });
@@ -531,7 +527,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                             text: '确定', onPress: () => {
                                 WorkService.invalidDetailForm(item.id).then(res => {
                                     UDToast.showInfo('作废成功');
-                                    this.getList();
+                                    this.loadData();
                                 }).catch(err => {
                                     UDToast.showError(err);
                                 });
@@ -569,7 +565,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                     text: '确定', onPress: () => {
                         WorkService.sendServiceDeskFee(item.id).then(res => {
                             UDToast.showInfo('推送账单成功');
-                            this.getList();
+                            this.loadData();
                         }).catch(err => {
                             UDToast.showError(err);
                         });
@@ -597,7 +593,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                     text: '确定', onPress: () => {
                         WorkService.refundForm(item.receiveId, item.payId).then(res => {
                             UDToast.showInfo('退款成功');
-                            this.getList();
+                            this.loadData();
                         });
                     }
                 }
@@ -674,8 +670,21 @@ export default class ServiceDeskDetailPage extends BasePage {
         );
     };
 
+    renderFooter = () => {
+        if (!this.state.hasMore && this.state.data.length > 0) {
+            return <Text>没有更多数据了</Text>;
+        }
+
+        return this.state.loading ? <ActivityIndicator /> : null;
+    };
+
+
     render() {
-        const { images, detail, communicates, operations, isQD, repairmajor, selectPerson, btnList, dataInfo } = this.state;
+        const { images, detail, communicates, operations, isQD, repairmajor, selectPerson, btnList,
+
+            data, refreshing
+
+        } = this.state;
         const selectImg = require('../../../static/images/select.png');
         const noselectImg = require('../../../static/images/no-select.png');
         return (
@@ -783,16 +792,18 @@ export default class ServiceDeskDetailPage extends BasePage {
                     </Flex>
 
                     <FlatList
-                        data={dataInfo.data}
+                        data={data}
                         renderItem={this._renderItem}
                         style={styles.list}
                         keyExtractor={(item) => 'flatList' + item.id}
                         //必须
                         onEndReachedThreshold={0.1}
-                        refreshing={this.state.refreshing}
+                        refreshing={refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
-                        onEndReached={this.loadMore}//底部往下拉翻页
-                        onMomentumScrollBegin={() => this.canLoadMore = true}
+                        onEndReached={this.loadData}//底部往下拉翻页
+                        ListFooterComponent={this.renderFooter}
+                        ListEmptyComponent={<NoDataView />}
+                    //onMomentumScrollBegin={() => this.canLoadMore = true}
                     />
                     <Flex justify={'center'}>
                         {btnList.some(item => (item.moduleId == 'Servicedesk' && item.enCode == 'reply')) ?

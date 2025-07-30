@@ -9,7 +9,8 @@ import {
     TextInput,
     Platform,
     Modal,
-    CameraRoll
+    CameraRoll,
+    ActivityIndicator
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Button, Flex, Icon } from '@ant-design/react-native';
@@ -41,14 +42,17 @@ export default class EcheckDetailPage extends BasePage {
         super(props);
         let id = common.getValueFromProps(this.props, 'id');
         this.state = {
+            pageIndex: 1,
+            pageSize: 10,
+            total: 0,
+            data: [],
+            refreshing: false,//刷新
+            loading: false,//加载完成 
+            hasMore: true,//更多
+
             id,
             memo: '',
             detail: {},
-            pageIndex: 1,
-            pageSize: 10,
-            dataInfo: {
-                data: [],
-            },
             lookImageIndex: 0,
             visible: false,
             refreshing: true
@@ -60,7 +64,7 @@ export default class EcheckDetailPage extends BasePage {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
-                this.onRefresh();
+                this.loadData();
             }
         );
     }
@@ -83,42 +87,34 @@ export default class EcheckDetailPage extends BasePage {
             refreshing: true,
             pageIndex: 1
         }, () => {
-            this.getList();
+            this.loadData(true);
         });
     };
 
     //检查明细
-    getList = () => {
+    loadData = (isRefreshing = false) => {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+        const currentPage = isRefreshing ? 1 : this.state.pageIndex;
+        this.setState({ loading: true });
         const { id, pageIndex, pageSize } = this.state;
-        WorkService.checkDetailList(pageIndex, pageSize, id).then(dataInfo => {
-            if (dataInfo.pageIndex > 1) {
-                dataInfo = {
-                    ...dataInfo,
-                    data: [...this.state.dataInfo.data, ...dataInfo.data]
-                };
+        WorkService.checkDetailList(currentPage, pageSize, id).then(res => {
+            if (isRefreshing) {
+                this.setState({
+                    data: res.data,
+                    pageIndex: 2,
+                    total: res.total
+                });
             }
-            this.setState({
-                dataInfo: dataInfo,
-                pageIndex: dataInfo.pageIndex,
-                refreshing: false
-            }, () => {
-            });
-        }).catch(err => this.setState({ refreshing: false }));
-    };
-
-    loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo;
-        if (this.canLoadMore && data.length < total) {
-            this.canLoadMore = false;
-            this.setState({
-                refreshing: true,
-                pageIndex: pageIndex + 1
-                // canLoadMore: false,
-            }, () => {
-                this.getList();
-                this.setState({ pageSize: (pageIndex + 1) * 10 });
-            });
-        }
+            else {
+                this.setState({
+                    data: [...this.state.data, ...res.data],
+                    pageIndex: pageIndex + 1,
+                    hasMore: pageIndex * pageSize < res.total ? true : false,
+                    total: res.total
+                });
+            }
+        }).catch(err => UDToast.showError(err)
+        ).finally(() => this.setState({ loading: false, refreshing: false }))
     };
 
 
@@ -252,8 +248,16 @@ export default class EcheckDetailPage extends BasePage {
         );
     };
 
+    renderFooter = () => {
+        if (!this.state.hasMore && this.state.data.length > 0) {
+            return <Text>没有更多数据了</Text>;
+        }
+
+        return this.state.loading ? <ActivityIndicator /> : null;
+    };
+
     render() {
-        const { detail, dataInfo } = this.state;
+        const { detail, data, refreshing, total } = this.state;
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
@@ -277,19 +281,20 @@ export default class EcheckDetailPage extends BasePage {
                     <Text style={[styles.every, ScreenUtil.borderBottom()]}>{detail.memo}</Text>
 
                     <FlatList
-                        data={dataInfo.data}
+                        data={data}
                         renderItem={this._renderItem}
                         style={styles.list}
                         keyExtractor={(item) => item.id}
                         //必须
                         onEndReachedThreshold={0.1}
-                        refreshing={this.state.refreshing}
+                        refreshing={refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
-                        onEndReached={this.loadMore}//底部往下拉翻页
-                        onMomentumScrollBegin={() => this.canLoadMore = true}
+                        onEndReached={this.loadData}//底部往下拉翻页
+                        //onMomentumScrollBegin={() => this.canLoadMore = true}
+                        ListFooterComponent={this.renderFooter}
                         ListEmptyComponent={<NoDataView />}
                     />
-                    <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
+                    <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
 
                     {detail.statusName == '待评审' ?
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>

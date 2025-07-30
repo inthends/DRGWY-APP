@@ -12,7 +12,8 @@ import {
     Modal,
     Keyboard,
     Alert,
-    Platform, CameraRoll
+    Platform, CameraRoll,
+    ActivityIndicator
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Button, Flex, Icon, Modal as AntModal } from '@ant-design/react-native';
@@ -32,6 +33,7 @@ import MyPopoverRole from '../../../components/my-popover-role';
 import MyPopoverRight from '../../../components/my-popover-right';
 import RNFetchBlob from 'rn-fetch-blob';
 import ActionPopover from '../../../components/action-popover';
+import NoDataView from '../../../components/no-data-view';
 
 class EcheckModifyPage extends BasePage {
 
@@ -51,12 +53,20 @@ class EcheckModifyPage extends BasePage {
         super(props);
         const { id, checkRole, checkRoleId } = common.getValueFromProps(this.props) || {};
         this.state = {
+
+            pageIndex: 1,
+            pageSize: 10,
+            total: 0,
+            data: [],
+            refreshing: false,//刷新
+            loading: false,//加载完成 
+            hasMore: true,//更多
+
+
             id,
             detailId: '',
             detail: {},
             showAdd: false,
-            pageIndex: 1,
-            pageSize: 10,
             memo: '',
             address: null,
             repairmajor: null,
@@ -67,10 +77,7 @@ class EcheckModifyPage extends BasePage {
             // images: [{ icon: '' }],
             images: [''],
             lookImageIndex: 0,
-            refreshing: false,
-            dataInfo: {
-                data: []
-            },
+
             checkTypes: [],
             checkType: '',
             roles: [],
@@ -191,38 +198,31 @@ class EcheckModifyPage extends BasePage {
     };
 
     //检查明细
-    getList = () => {
+    loadData = (isRefreshing = false) => {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+        const currentPage = isRefreshing ? 1 : this.state.pageIndex;
+        this.setState({ loading: true });
         const { id, pageIndex, pageSize } = this.state;
-        WorkService.checkDetailList(pageIndex, pageSize, id).then(dataInfo => {
-            if (dataInfo.pageIndex > 1) {
-                dataInfo = {
-                    ...dataInfo,
-                    data: [...this.state.dataInfo.data, ...dataInfo.data]
-                };
+        WorkService.checkDetailList(currentPage, pageSize, id).then(res => {
+            if (isRefreshing) {
+                this.setState({
+                    data: res.data,
+                    pageIndex: 2,
+                    total: res.total
+                });
             }
-            this.setState({
-                dataInfo: dataInfo,
-                pageIndex: dataInfo.pageIndex,
-                refreshing: false
-            }, () => {
-            });
-        }).catch(err => this.setState({ refreshing: false }));
+            else {
+                this.setState({
+                    data: [...this.state.data, ...res.data],
+                    pageIndex: pageIndex + 1,
+                    hasMore: pageIndex * pageSize < res.total ? true : false,
+                    total: res.total
+                });
+            }
+        }).catch(err => UDToast.showError(err)
+        ).finally(() => this.setState({ loading: false, refreshing: false }))
     };
 
-    loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo;
-        if (this.canLoadMore && data.length < total) {
-            this.canLoadMore = false;
-            this.setState({
-                refreshing: true,
-                pageIndex: pageIndex + 1
-                // canLoadMore: false,
-            }, () => {
-                this.getList();
-                this.setState({ pageSize: (pageIndex + 1) * 10 });
-            });
-        }
-    };
 
     lookImage = (lookImageIndex, files) => {
         this.setState({
@@ -513,8 +513,16 @@ class EcheckModifyPage extends BasePage {
         }
     }
 
+    renderFooter = () => {
+        if (!this.state.hasMore && this.state.data.length > 0) {
+            return <Text>没有更多数据了</Text>;
+        }
+
+        return this.state.loading ? <ActivityIndicator /> : null;
+    };
+
     render() {
-        const { detail, dataInfo, address, checkTypes,
+        const { detail, data, refreshing, address, checkTypes,
             selectPerson, repairmajor, roles, checkRoleId,
             images, isAutoSend, showAdd } = this.state;
         return (
@@ -583,16 +591,18 @@ class EcheckModifyPage extends BasePage {
                         </TextInput>
                     </Flex>
                     <FlatList
-                        data={dataInfo.data}
+                        data={data}
                         renderItem={this._renderItem}
                         style={styles.list}
                         keyExtractor={(item) => item.id}
                         //必须
                         onEndReachedThreshold={0.1}
-                        refreshing={this.state.refreshing}
+                        refreshing={refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
-                        onEndReached={this.loadMore}//底部往下拉翻页
-                        onMomentumScrollBegin={() => this.canLoadMore = true}
+                        onEndReached={this.loadData}//底部往下拉翻页
+                        ListFooterComponent={this.renderFooter}
+                        ListEmptyComponent={<NoDataView />}
+                    //onMomentumScrollBegin={() => this.canLoadMore = true}
                     />
                 </ScrollView>
 

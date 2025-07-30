@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
     FlatList,
-    Keyboard
+    Keyboard,
+    ActivityIndicator
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Flex, Icon, SearchBar } from '@ant-design/react-native';
@@ -56,20 +57,23 @@ class EstateFuwuPage extends BasePage {
         let index = arr.indexOf(mytime);
 
         this.state = {
-            type,
+
             pageIndex: 1,
             pageSize: 10,
-            dataInfo: {
-                data: [],
-            },
-            refreshing: false,
+            total: 0,
+            data: [],
+            refreshing: false,//刷新
+            loading: false,//加载完成 
+            hasMore: true,//更多
+
+            type,
             billType: '全部',
             billStatus: -1,
             time: mytime,//'全部',
             index,
             selectBuilding: this.props.selectBuilding || {},
             btnText: '搜索',
-            selectedId:''
+            selectedId: ''
         };
     }
 
@@ -105,7 +109,10 @@ class EstateFuwuPage extends BasePage {
         }
     }
 
-    getList = () => {
+    loadData = (isRefreshing = false) => {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+        const currentPage = isRefreshing ? 1 : this.state.pageIndex;
+        this.setState({ loading: true });
         const { type,
             billStatus,
             selectBuilding,
@@ -119,7 +126,7 @@ class EstateFuwuPage extends BasePage {
         }
 
         service.serviceList(
-            pageIndex,
+            currentPage,
             pageSize,
             type,
             billStatus,
@@ -127,20 +134,24 @@ class EstateFuwuPage extends BasePage {
             billType,
             time,
             keyword)
-            .then(dataInfo => {
-                if (dataInfo.pageIndex > 1) {
-                    dataInfo = {
-                        ...dataInfo,
-                        data: [...this.state.dataInfo.data, ...dataInfo.data],
-                    };
+            .then(res => {
+                if (isRefreshing) {
+                    this.setState({
+                        data: res.data,
+                        pageIndex: 2,
+                        total: res.total
+                    });
                 }
-                this.setState({
-                    dataInfo: dataInfo,
-                    pageIndex: dataInfo.pageIndex,
-                    refreshing: false
-                }, () => {
-                });
-            }).catch(err => this.setState({ refreshing: false }));
+                else {
+                    this.setState({
+                        data: [...this.state.data, ...res.data],
+                        pageIndex: pageIndex + 1,
+                        hasMore: pageIndex * pageSize < res.total ? true : false,
+                        total: res.total
+                    });
+                }
+            }).catch(err => UDToast.showError(err)
+            ).finally(() => this.setState({ loading: false, refreshing: false }))
     };
 
     onRefresh = () => {
@@ -148,22 +159,8 @@ class EstateFuwuPage extends BasePage {
             refreshing: true,
             pageIndex: 1
         }, () => {
-            this.getList();
+            this.loadData(true);
         });
-    };
-
-    loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo;
-        if (this.canLoadMore && data.length < total) {
-            this.canLoadMore = false;
-            this.setState({
-                refreshing: true,
-                pageIndex: pageIndex + 1
-            }, () => {
-                this.getList();
-                this.setState({ pageSize: (pageIndex + 1) * 10 });
-            });
-        }
     };
 
 
@@ -189,7 +186,7 @@ class EstateFuwuPage extends BasePage {
         }
     };
 
-    _renderItem = ({ item, index }) => {
+    _renderItem = ({ item }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
                 //选中了，点击取消
@@ -309,8 +306,16 @@ class EstateFuwuPage extends BasePage {
         });
     };
 
+    renderFooter = () => {
+        if (!this.state.hasMore && this.state.data.length > 0) {
+            return <Text>没有更多数据了</Text>;
+        }
+
+        return this.state.loading ? <ActivityIndicator /> : null;
+    };
+
     render() {
-        const { type, index, dataInfo, btnText } = this.state;
+        const { type, index, data, total, refreshing, btnText } = this.state;
         return (
             <View style={{ flex: 1 }}>
                 <SearchBar
@@ -337,20 +342,21 @@ class EstateFuwuPage extends BasePage {
                         />
                     </Flex>
                     <FlatList
-                        data={dataInfo.data}
+                        data={data}
                         // ListHeaderComponent={}
                         renderItem={this._renderItem}
                         style={styles.list}
-                        keyExtractor={(item, index) => item.id}
+                        keyExtractor={(item) => item.id}
                         //必须
                         onEndReachedThreshold={0.1}
-                        refreshing={this.state.refreshing}
+                        refreshing={refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
-                        onEndReached={this.loadMore}//底部往下拉翻页
-                        onMomentumScrollBegin={() => this.canLoadMore = true}
+                        onEndReached={this.loadData}//底部往下拉翻页
+                        //onMomentumScrollBegin={() => this.canLoadMore = true}
+                        ListFooterComponent={this.renderFooter}
                         ListEmptyComponent={<NoDataView />}
                     />
-                    <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
+                    <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
                 </CommonView>
             </View>
         );

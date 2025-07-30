@@ -6,7 +6,8 @@ import {
     FlatList,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    Keyboard
+    Keyboard,
+    ActivityIndicator
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Flex, Icon, Button, SearchBar } from '@ant-design/react-native';
@@ -42,7 +43,7 @@ class AssetsPage extends BasePage {
         this.state = {
             btnText: '搜索',
             pageIndex: 1,
-             pageSize: 10,
+            pageSize: 10,
             dataInfo: {
                 data: [],
             },
@@ -56,26 +57,33 @@ class AssetsPage extends BasePage {
         this.onRefresh();
     }
 
-    getList = () => {
-        const { estateId, keyword } = this.state;
+    loadData = (isRefreshing = false) => {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+        const currentPage = isRefreshing ? 1 : this.state.pageIndex;
+        this.setState({ loading: true });
+        const { estateId, keyword, pageSize } = this.state;
         // const queryJson = {
         //     keyword: text,
         //     estateId: estateId
         // };
-        service.gdzcList(this.state.pageIndex,this.state.pageSize, estateId, keyword, this.state.refreshing).then(dataInfo => {
-            if (dataInfo.pageIndex > 1) {
-                dataInfo = {
-                    ...dataInfo,
-                    data: [...this.state.dataInfo.data, ...dataInfo.data]
-                };
+        service.gdzcList(currentPage, pageSize, estateId, keyword).then(res => {
+            if (isRefreshing) {
+                this.setState({
+                    data: res.data,
+                    pageIndex: 2,
+                    total: res.total
+                });
             }
-            this.setState({
-                dataInfo: dataInfo,
-                pageIndex: dataInfo.pageIndex,
-                refreshing: false
-            }, () => {
-            });
-        }).catch(err => this.setState({ refreshing: false }));
+            else {
+                this.setState({
+                    data: [...this.state.data, ...res.data],
+                    pageIndex: pageIndex + 1,
+                    hasMore: pageIndex * pageSize < res.total ? true : false,
+                    total: res.total
+                });
+            }
+        }).catch(err => UDToast.showError(err)
+        ).finally(() => this.setState({ loading: false, refreshing: false }))
     };
 
     componentWillReceiveProps(nextProps, nextContext) {
@@ -84,9 +92,9 @@ class AssetsPage extends BasePage {
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
             this.setState({
                 selectBuilding: nextProps.selectBuilding,
-                estateId: nextProps.selectBuilding.key,
+                estateId: nextProps.selectBuilding.key
             }, () => {
-                this.onRefresh();
+                this.loadData();
             });
         }
     }
@@ -96,22 +104,8 @@ class AssetsPage extends BasePage {
             refreshing: true,
             pageIndex: 1
         }, () => {
-            this.getList();
+            this.loadData(true);
         });
-    };
-
-    loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo;
-        if (this.canLoadMore && data.length < total) {
-            this.canLoadMore = false;
-            this.setState({
-                refreshing: true,
-                pageIndex: pageIndex + 1
-            }, () => {
-                this.getList();
-                this.setState({ pageSize: (pageIndex + 1) * 10 });
-            });
-        }
     };
 
     callBack = (pointId) => {
@@ -180,8 +174,18 @@ class AssetsPage extends BasePage {
         }
     };
 
+
+    renderFooter = () => {
+        if (!this.state.hasMore && this.state.data.length > 0) {
+            return <Text>没有更多数据了</Text>;
+        }
+
+        return this.state.loading ? <ActivityIndicator /> : null;
+    };
+
+
     render() {
-        const { dataInfo, btnText } = this.state;
+        const { data, refreshing, total, btnText } = this.state;
         //const { selectBuilding } = this.props; 
         return (
             <View style={{ flex: 1 }}>
@@ -198,20 +202,21 @@ class AssetsPage extends BasePage {
 
                     <View style={{ flex: 1 }}>
                         <FlatList
-                            data={dataInfo.data}
+                            data={data}
                             // ListHeaderComponent={}
                             renderItem={this._renderItem}
-                            keyExtractor={(item, index) => item.id}
+                            keyExtractor={(item) => item.id}
                             // ItemSeparatorComponent={() => <View style={{ backgroundColor: '#eee', height: 1 }} />} 
                             //必须
                             onEndReachedThreshold={0.1}
-                            refreshing={this.state.refreshing}
+                            refreshing={refreshing}
                             onRefresh={this.onRefresh}//下拉刷新
-                            onEndReached={this.loadMore}//底部往下拉翻页
-                            onMomentumScrollBegin={() => this.canLoadMore = true}
+                            onEndReached={this.loadData}//底部往下拉翻页
+                            //onMomentumScrollBegin={() => this.canLoadMore = true}
+                            ListFooterComponent={this.renderFooter}
                             ListEmptyComponent={<NoDataView />}
                         />
-                        <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
+                        <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
                     </View>
 
                     {/* <TouchableWithoutFeedback onPress={this.start}>

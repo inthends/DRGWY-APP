@@ -1,16 +1,14 @@
 import React from 'react';
 import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
-import { StyleSheet, FlatList, Text, TouchableOpacity, TouchableWithoutFeedback, LoadImage, ScrollView } from 'react-native';
+import { StyleSheet, FlatList, Text, TouchableOpacity, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import CommonView from '../../../components/CommonView';
 import common from '../../../utils/common';
 import OrderService from './order-service';
 import NoDataView from '../../../components/no-data-view';
 import Macro from '../../../utils/macro';
-
 //let screen_width = ScreenUtil.deviceWidth()
-
 export default class OrderlistPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
 
@@ -32,7 +30,7 @@ export default class OrderlistPage extends BasePage {
             ...(common.getValueFromProps(this.props)),
             dataInfo: {},
             pageIndex: 1,
-             pageSize: 10,
+            pageSize: 10,
             refreshing: true
         };
     }
@@ -41,22 +39,29 @@ export default class OrderlistPage extends BasePage {
         this.onRefresh()
     }
 
-    getList = () => {
-        const { type, pageIndex,pageSize } = this.state;
-        OrderService.getOrderDatas(type, pageIndex,pageSize).then(dataInfo => {
-            if (dataInfo.pageIndex > 1) {
-                dataInfo = {
-                    ...dataInfo,
-                    data: [...this.state.dataInfo.data, ...dataInfo.data]
-                };
+    loadData = (isRefreshing = false) => {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+        const currentPage = isRefreshing ? 1 : this.state.pageIndex;
+        this.setState({ loading: true });
+        const { type, pageIndex, pageSize } = this.state;
+        OrderService.getOrderDatas(type, currentPage, pageSize).then(res => {
+            if (isRefreshing) {
+                this.setState({
+                    data: res.data,
+                    pageIndex: 2,
+                    total: res.total
+                });
             }
-            this.setState({
-                dataInfo: dataInfo,
-                pageIndex: dataInfo.pageIndex,
-                refreshing: false
-            }, () => {
-            });
-        }).catch(err => this.setState({ refreshing: false }));
+            else {
+                this.setState({
+                    data: [...this.state.data, ...res.data],
+                    pageIndex: pageIndex + 1,
+                    hasMore: pageIndex * pageSize < res.total ? true : false,
+                    total: res.total
+                });
+            }
+        }).catch(err => UDToast.showError(err)
+        ).finally(() => this.setState({ loading: false, refreshing: false }))
     };
 
     onRefresh = () => {
@@ -64,22 +69,10 @@ export default class OrderlistPage extends BasePage {
             refreshing: true,
             pageIndex: 1
         }, () => {
-            this.getList();
+            this.loadData(true);
         });
     };
-    loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo;
-        if (this.canLoadMore && data.length < total) {
-            this.canLoadMore = false;
-            this.setState({
-                refreshing: true,
-                pageIndex: pageIndex + 1
-            }, () => {
-                this.getList();
-                 this.setState({ pageSize: (pageIndex + 1) * 10 });
-            });
-        }
-    };
+
     //传入status  待查阅0，待回复1，已回复2，已关闭-1
     /*
 allName: "大象城/第01栋/第01层/1-102"
@@ -149,9 +142,16 @@ type: "预约看房"
         );
     };
 
+    renderFooter = () => {
+        if (!this.state.hasMore && this.state.data.length > 0) {
+            return <Text>没有更多数据了</Text>;
+        }
+
+        return this.state.loading ? <ActivityIndicator /> : null;
+    };
 
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
-        const { dataInfo, type } = this.state;
+        const { data, refreshing } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
                 <FlatList
@@ -162,14 +162,13 @@ type: "预约看房"
                     keyExtractor={(item, index) => item.id}
                     //必须
                     onEndReachedThreshold={0.1}
-                    refreshing={this.state.refreshing}
+                    refreshing={refreshing}
                     onRefresh={this.onRefresh}//下拉刷新
-                    onEndReached={this.loadMore}//底部往下拉翻页
-                    onMomentumScrollBegin={() => this.canLoadMore = true}
+                    onEndReached={this.loadData}//底部往下拉翻页
+                    //onMomentumScrollBegin={() => this.canLoadMore = true}
+                    ListFooterComponent={this.renderFooter}
                     ListEmptyComponent={<NoDataView />}
-                />
-
-
+                /> 
             </CommonView>
 
         );

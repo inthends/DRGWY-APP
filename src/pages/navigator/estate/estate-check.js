@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
     FlatList,
+    ActivityIndicator
     //Alert
 } from 'react-native';
 import { Flex, Icon, Button, Modal } from '@ant-design/react-native';
@@ -51,15 +52,19 @@ class EstateCheckPage extends BasePage {
             key: null
         };
         this.state = {
+
+            pageIndex: 1,
+            pageSize: 10,
+            total: 0,
+            data: [],
+            refreshing: false,//刷新
+            loading: false,//加载完成 
+            hasMore: true,//更多
+
             roles: [],
             showAdd: true,//默认弹出选择检查组界面
             selectBuilding: {},//默认为空，防止别地方选择了机构
-            pageIndex: 1,
-            pageSize: 10,
-            dataInfo: {
-                data: [],
-            },
-            refreshing: false,
+
             //ym: common.getYM('2020-01'),
             billType: '我的',
             billStatus: -1,
@@ -89,7 +94,7 @@ class EstateCheckPage extends BasePage {
             'didFocus',
             (obj) => {
                 this.props.saveSelectDrawerType(DrawerType.organize);
-                this.onRefresh();
+                this.loadData();
             }
         );
 
@@ -111,12 +116,15 @@ class EstateCheckPage extends BasePage {
         const nextSelectBuilding = nextProps.selectBuilding;
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
             this.setState({ selectBuilding: nextProps.selectBuilding }, () => {
-                this.onRefresh();
+                this.loadData();
             });
         }
     }
 
-    getList = () => {
+    loadData = (isRefreshing = false) => {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+        const currentPage = isRefreshing ? 1 : this.state.pageIndex;
+        this.setState({ loading: true });
         const { billStatus, selectBuilding, billType, time, pageIndex, pageSize } = this.state;
         let organizeId;
         if (selectBuilding) {
@@ -126,26 +134,29 @@ class EstateCheckPage extends BasePage {
         // let startTime = common.getMonthFirstDay(time);
         // let endTime = common.getMonthLastDay(time);
         service.checkList(
-            pageIndex,
+            currentPage,
             pageSize,
             billStatus,
             billType,
             organizeId,
-            time).then(dataInfo => {
-                if (dataInfo.pageIndex > 1) {
-                    dataInfo = {
-                        ...dataInfo,
-                        data: [...this.state.dataInfo.data, ...dataInfo.data]
-                    };
+            time).then(res => {
+                if (isRefreshing) {
+                    this.setState({
+                        data: res.data,
+                        pageIndex: 2,
+                        total: res.total
+                    });
                 }
-                this.setState({
-                    dataInfo: dataInfo,
-                    pageIndex: dataInfo.pageIndex,
-                    refreshing: false
-                    //canLoadMore: true,
-                }, () => {
-                });
-            }).catch(err => this.setState({ refreshing: false }));
+                else {
+                    this.setState({
+                        data: [...this.state.data, ...res.data],
+                        pageIndex: pageIndex + 1,
+                        hasMore: pageIndex * pageSize < res.total ? true : false,
+                        total: res.total
+                    });
+                }
+            }).catch(err => UDToast.showError(err)
+            ).finally(() => this.setState({ loading: false, refreshing: false }))
     };
 
     onRefresh = () => {
@@ -153,24 +164,10 @@ class EstateCheckPage extends BasePage {
             refreshing: true,
             pageIndex: 1
         }, () => {
-            this.getList();
+            this.loadData(true);
         });
     };
 
-    loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo;
-        if (this.canLoadMore && data.length < total) {
-            this.canLoadMore = false;
-            this.setState({
-                refreshing: true,
-                pageIndex: pageIndex + 1
-                // canLoadMore: false,
-            }, () => {
-                this.getList();
-                this.setState({ pageSize: (pageIndex + 1) * 10 });
-            });
-        }
-    };
 
     deleteDetail = (id) => {
         // Alert.alert(//ios下删除弹出确认框会卡死 
@@ -187,7 +184,7 @@ class EstateCheckPage extends BasePage {
         //             text: '确定',
         //             onPress: () => {
         //                 WorkService.deleteCheck(id).then(res => {
-        //                     this.onRefresh();
+        //                     this.loadData();
         //                 });
         //             },
         //         },
@@ -203,7 +200,7 @@ class EstateCheckPage extends BasePage {
                 {
                     text: '确定', onPress: () => {
                         WorkService.deleteCheck(id).then(res => {
-                            this.onRefresh();
+                            this.loadData();
                         });
                     }
                 }
@@ -224,7 +221,7 @@ class EstateCheckPage extends BasePage {
                         {
                             text: '确定', onPress: () => {
                                 WorkService.closeCheck(id).then(res => {
-                                    this.onRefresh();
+                                    this.loadData();
                                 });
                             }
                         }
@@ -241,7 +238,7 @@ class EstateCheckPage extends BasePage {
                         {
                             text: '确定', onPress: () => {
                                 WorkService.closeCheck(id).then(res => {
-                                    this.onRefresh();
+                                    this.loadData();
                                 });
                             }
                         }
@@ -348,7 +345,7 @@ class EstateCheckPage extends BasePage {
             billStatus,
             pageIndex: 1
         }, () => {
-            this.onRefresh();
+            this.loadData();
         });
 
     };
@@ -357,7 +354,7 @@ class EstateCheckPage extends BasePage {
             time,
             pageIndex: 1
         }, () => {
-            this.onRefresh();
+            this.loadData();
         });
     };
     billType = (billType) => {
@@ -365,12 +362,20 @@ class EstateCheckPage extends BasePage {
             billType,
             pageIndex: 1
         }, () => {
-            this.onRefresh();
+            this.loadData();
         });
     };
 
+    renderFooter = () => {
+        if (!this.state.hasMore && this.state.data.length > 0) {
+            return <Text>没有更多数据了</Text>;
+        }
+
+        return this.state.loading ? <ActivityIndicator /> : null;
+    };
+
     render() {
-        const { dataInfo, roles, checkRole, checkRoleId } = this.state;
+        const { data, refreshing, total, roles, checkRole, checkRoleId } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
                 <ScrollTitle onChange={this.billType} titles={['我的', '全部']} />
@@ -388,19 +393,20 @@ class EstateCheckPage extends BasePage {
                 </Flex>
 
                 <FlatList
-                    data={dataInfo.data}
+                    data={data}
                     renderItem={this._renderItem}
                     style={styles.list}
                     keyExtractor={(item) => item.billId}
                     //必须
                     onEndReachedThreshold={0.1}
-                    refreshing={this.state.refreshing}
+                    refreshing={refreshing}
                     onRefresh={this.onRefresh}//下拉刷新
-                    onEndReached={this.loadMore}//底部往下拉翻页
-                    onMomentumScrollBegin={() => this.canLoadMore = true}
+                    onEndReached={this.loadData}//底部往下拉翻页
+                    //onMomentumScrollBegin={() => this.canLoadMore = true}
+                    ListFooterComponent={this.renderFooter}
                     ListEmptyComponent={<NoDataView />}
                 />
-                <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
+                <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
 
                 <Flex justify={'center'}>
                     <Button
@@ -446,9 +452,8 @@ class EstateCheckPage extends BasePage {
                                             if (this.state.checkRole == '') {
                                                 return;
                                             }
-
                                             this.setState({ showAdd: false });
-                                            this.onRefresh();
+                                            this.loadData();
                                         }}
                                         activeStyle={{ backgroundColor: Macro.work_blue }}
                                         style={{

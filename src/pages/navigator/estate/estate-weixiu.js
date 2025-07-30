@@ -6,7 +6,8 @@ import {
     FlatList,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    Keyboard
+    Keyboard,
+    ActivityIndicator
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Flex, Icon, SearchBar } from '@ant-design/react-native';
@@ -56,20 +57,21 @@ class EstateWeixiuPage extends BasePage {
         let arr = ['全部', '今日', '本周', '本月', '上月', '本年'];
         let index = arr.indexOf(mytime);
         this.state = {
-            type,
             pageIndex: 1,
             pageSize: 10,
-            dataInfo: {
-                data: []
-            },
-            refreshing: false,
+            total: 0,
+            data: [],
+            refreshing: false,//刷新
+            loading: false,//加载完成 
+            hasMore: true,//更多
+            type,
             billStatus: '',
             time: mytime,//'全部',
             index,
             selectBuilding: this.props.selectBuilding || {},
             repairArea: '',
             btnText: '搜索',
-            selectedId:''
+            selectedId: ''
         };
     }
 
@@ -98,7 +100,11 @@ class EstateWeixiuPage extends BasePage {
         }
     }
 
-    getList = () => {
+    //加载数据
+    loadData = (isRefreshing = false) => {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+        const currentPage = isRefreshing ? 1 : this.state.pageIndex;
+        this.setState({ loading: true });
         const { type, billStatus, selectBuilding, time, repairArea, keyword, pageIndex, pageSize } = this.state;
         let organizeId;
         if (selectBuilding) {
@@ -107,27 +113,31 @@ class EstateWeixiuPage extends BasePage {
         }
 
         service.weixiuList(
-            pageIndex,
+            currentPage,
             pageSize,
             type,
             billStatus,
             organizeId,
             time,
             repairArea,
-            keyword).then(dataInfo => {
-                if (dataInfo.pageIndex > 1) {
-                    dataInfo = {
-                        ...dataInfo,
-                        data: [...this.state.dataInfo.data, ...dataInfo.data]
-                    };
+            keyword).then(res => {
+                if (isRefreshing) {
+                    this.setState({
+                        data: res.data,
+                        pageIndex: 2,
+                        total: res.total
+                    });
                 }
-                this.setState({
-                    dataInfo: dataInfo,
-                    pageIndex: dataInfo.pageIndex,
-                    refreshing: false
-                }, () => {
-                });
-            }).catch(err => this.setState({ refreshing: false }));
+                else {
+                    this.setState({
+                        data: [...this.state.data, ...res.data],
+                        pageIndex: pageIndex + 1,
+                        hasMore: pageIndex * pageSize < res.total ? true : false,
+                        total: res.total
+                    });
+                }
+            }).catch(err => UDToast.showError(err)
+            ).finally(() => this.setState({ loading: false, refreshing: false }))
     };
 
     onRefresh = () => {
@@ -135,22 +145,8 @@ class EstateWeixiuPage extends BasePage {
             refreshing: true,
             pageIndex: 1
         }, () => {
-            this.getList();
+            this.loadData(true);
         });
-    };
-
-    loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo;
-        if (this.canLoadMore && data.length < total) {
-            this.canLoadMore = false;
-            this.setState({
-                refreshing: true,
-                pageIndex: pageIndex + 1
-            }, () => {
-                this.getList();
-                this.setState({ pageSize: (pageIndex + 1) * 10 });
-            });
-        }
     };
 
     // search = (keyword) => {
@@ -200,7 +196,7 @@ class EstateWeixiuPage extends BasePage {
                 this.props.navigation.navigate('weixiuD', { id: item.id });
             }}>
                 <Flex direction='column' align={'start'}
-                     style={[styles.card, this.state.selectedId == item.id ? styles.orange : styles.blue]}>
+                    style={[styles.card, this.state.selectedId == item.id ? styles.orange : styles.blue]}>
                     <Flex justify='between' style={{ width: '100%' }}>
                         <Text style={styles.title}>{item.billCode}</Text>
                         <Text style={styles.title2}>{item.statusName}</Text>
@@ -313,9 +309,16 @@ class EstateWeixiuPage extends BasePage {
         });
     };
 
+    renderFooter = () => {
+        if (!this.state.hasMore && this.state.data.length > 0) {
+            return <Text>没有更多数据了</Text>;
+        }
+
+        return this.state.loading ? <ActivityIndicator /> : null;
+    };
 
     render() {
-        const { type, index, dataInfo, btnText } = this.state;
+        const { type, index, data, refreshing, btnText } = this.state;
         return (
             <View style={{ flex: 1 }}>
                 <SearchBar
@@ -330,12 +333,10 @@ class EstateWeixiuPage extends BasePage {
                 <CommonView style={{ flex: 1 }}>
                     <ScrollTitle onChange={this.areaChange} titles={['全部', '客户区域', '公共区域']} />
                     <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
-
                         {type == 'all' ?
                             <MyPopover onChange={this.statusChange} titles={['全部', '待派单', '待接单', '待开工',
                                 '待完成', '待回访', '待检验', '待审核', '已审核', '已暂停', '已作废']}
                                 visible={true} /> : null}
-
                         <MyPopover onChange={this.timeChange}
                             titles={['全部', '今日', '本周', '本月', '上月', '本年']}
                             visible={true}
@@ -343,17 +344,18 @@ class EstateWeixiuPage extends BasePage {
                     </Flex>
 
                     <FlatList
-                        data={dataInfo.data}
+                        data={data}
                         // ListHeaderComponent={}
                         renderItem={this._renderItem}
                         style={styles.list}
-                        keyExtractor={(item, index) => item.id}
+                        keyExtractor={(item) => item.id}
                         //必须
                         onEndReachedThreshold={0.1}
-                        refreshing={this.state.refreshing}
+                        refreshing={refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
-                        onEndReached={this.loadMore}//底部往下拉翻页
-                        onMomentumScrollBegin={() => this.canLoadMore = true}
+                        onEndReached={this.loadData}//底部往下拉翻页
+                        //onMomentumScrollBegin={() => this.canLoadMore = true}
+                        ListFooterComponent={this.renderFooter}
                         ListEmptyComponent={<NoDataView />}
                     />
                     <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>

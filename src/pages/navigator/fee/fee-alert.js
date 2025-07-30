@@ -4,7 +4,8 @@ import {
     TouchableOpacity,
     StyleSheet,
     ScrollView,
-    FlatList
+    FlatList,
+    ActivityIndicator
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
@@ -14,6 +15,8 @@ import WorkService from '../../work/work-service';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import moment from 'moment';
+import UDToast from '../../../utils/UDToast';
+import NoDataView from '../../../components/no-data-view';
 
 //仅查看
 export default class FeeAlertDetailPage extends BasePage {
@@ -37,11 +40,12 @@ export default class FeeAlertDetailPage extends BasePage {
             detail: {},
             //费用明细
             pageIndex: 1,
-             pageSize: 10,
-            refreshing: false,
-            dataInfo: {
-                data: []
-            }
+            pageSize: 10,
+            total: 0,
+            data: [],
+            refreshing: false,//刷新
+            loading: false,//加载完成 
+            hasMore: true,//更多
         };
     }
 
@@ -55,7 +59,7 @@ export default class FeeAlertDetailPage extends BasePage {
             this.setState({
                 detail
             });
-            this.getList();
+            this.loadData();
         });
     };
 
@@ -65,41 +69,34 @@ export default class FeeAlertDetailPage extends BasePage {
             refreshing: true,
             pageIndex: 1
         }, () => {
-            this.getList();
+            this.loadData(true);
         });
     };
 
     //欠费明细
-    getList = () => {
-        const { id,pageIndex,pageSize } = this.state;
-        WorkService.alertFeeList( pageIndex,pageSize, id).then(dataInfo => {
-            if (dataInfo.pageIndex > 1) {
-                dataInfo = {
-                    ...dataInfo,
-                    data: [...this.state.dataInfo.data, ...dataInfo.data]
-                };
+    loadData = (isRefreshing = false) => {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+        const currentPage = isRefreshing ? 1 : this.state.pageIndex;
+        this.setState({ loading: true });
+        const { id, pageIndex, pageSize } = this.state;
+        WorkService.alertFeeList(currentPage, pageSize, id).then(res => {
+            if (isRefreshing) {
+                this.setState({
+                    data: res.data,
+                    pageIndex: 2,
+                    total: res.total
+                });
             }
-            this.setState({
-                dataInfo: dataInfo,
-                pageIndex: dataInfo.pageIndex,
-                refreshing: false
-            }, () => {
-            });
-        }).catch(err => this.setState({ refreshing: false }));
-    };
-
-    loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo;
-        if (this.canLoadMore && data.length < total) {
-            this.canLoadMore = false;
-            this.setState({
-                refreshing: true,
-                pageIndex: pageIndex + 1
-            }, () => {
-                this.getList();
-                 this.setState({ pageSize: (pageIndex + 1) * 10 });
-            });
-        }
+            else {
+                this.setState({
+                    data: [...this.state.data, ...res.data],
+                    pageIndex: pageIndex + 1,
+                    hasMore: pageIndex * pageSize < res.total ? true : false,
+                    total: res.total
+                });
+            }
+        }).catch(err => UDToast.showError(err)
+        ).finally(() => this.setState({ loading: false, refreshing: false }))
     };
 
     _renderItem = ({ item, index }) => {
@@ -128,8 +125,16 @@ export default class FeeAlertDetailPage extends BasePage {
         );
     };
 
+    renderFooter = () => {
+        if (!this.state.hasMore && this.state.data.length > 0) {
+            return <Text>没有更多数据了</Text>;
+        }
+
+        return this.state.loading ? <ActivityIndicator /> : null;
+    };
+
     render() {
-        const { detail, dataInfo } = this.state;
+        const { detail, data, total, refreshing } = this.state;
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView>
@@ -144,18 +149,20 @@ export default class FeeAlertDetailPage extends BasePage {
                         <Text style={styles.fontSize}>费用明细</Text>
                     </Flex>
                     <FlatList
-                        data={dataInfo.data}
+                        data={data}
                         renderItem={this._renderItem}
                         style={styles.list}
                         keyExtractor={(item) => 'flatList' + item.id}
                         //必须
                         onEndReachedThreshold={0.1}
-                        refreshing={this.state.refreshing}
+                        refreshing={refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
-                        onEndReached={this.loadMore}//底部往下拉翻页
-                        onMomentumScrollBegin={() => this.canLoadMore = true}
+                        onEndReached={this.loadData}//底部往下拉翻页
+                        //onMomentumScrollBegin={() => this.canLoadMore = true}
+                        ListFooterComponent={this.renderFooter}
+                        ListEmptyComponent={<NoDataView />}
                     />
-
+                    <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
                 </ScrollView>
             </CommonView>
         );
@@ -211,8 +218,8 @@ const styles = StyleSheet.create({
         marginRight: 15
     },
 
-    statusred: { 
-        marginRight: 5, 
+    statusred: {
+        marginRight: 5,
         color: Macro.work_red
     },
 

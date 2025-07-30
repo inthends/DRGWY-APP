@@ -1,4 +1,4 @@
- 
+
 import React from 'react';
 import {
   View,
@@ -18,7 +18,7 @@ import common from '../../../utils/common';
 // import BackTitleNavigationBar from '../../../components/back-title-navigation-bar';
 import CommonView from '../../../components/CommonView';
 import numeral from 'numeral';
- 
+
 export default class DetailBuildingPage extends BasePage {
 
   // static navigationOptions = ({ navigation }) => { 
@@ -54,17 +54,19 @@ export default class DetailBuildingPage extends BasePage {
   }
 
   componentDidMount() {
-    let id = this.state.item.id;
-    DetailBuildingService.getBuildingDetail(id).then((detail) => {
-      this.setState({ detail });
-    });
 
     //获取资产状态
     DetailBuildingService.getPropertyStatus().then((status) => {
       this.setState({ status });
     });
 
-    this.searchData();
+    let id = this.state.item.id;
+    DetailBuildingService.getBuildingDetail(id).then((detail) => {
+      this.setState({ detail });
+      if (detail.id) {
+        this.searchData();
+      }
+    });
   }
 
   //点击
@@ -157,10 +159,9 @@ export default class DetailBuildingPage extends BasePage {
                 paddingRight: 15
               }}
             >
-              <Text style={styles.name}>{detail.name}</Text>
-              <Text style={styles.name}>
-                {/* {detail.rentareasum} / {detail.areasum} */}
-                {numeral(detail.areasum).format('0,0.00')}{Macro.meter_square}
+              <Text style={styles.name}>{detail.name ? detail.name : ''}</Text>
+              <Text style={styles.name}> 
+                {detail.areasum ? numeral(detail.areasum).format('0,0.00') : ''}{Macro.meter_square}
               </Text>
             </Flex>
 
@@ -176,7 +177,7 @@ export default class DetailBuildingPage extends BasePage {
                 }}
               >
                 <Text style={styles.leftText}>在租面积</Text>
-                <Text style={styles.rightText}>{numeral(detail.rentareasum).format('0,0.00')}{Macro.meter_square} ({detail.rentarearate}%)</Text>
+                <Text style={styles.rightText}>{detail.rentareasum ? numeral(detail.rentareasum).format('0,0.00') : ''}{Macro.meter_square} ({detail.rentarearate ? detail.rentarearate : ''}%)</Text>
               </Flex>
               {/* <Flex
                 direction="row"
@@ -195,7 +196,7 @@ export default class DetailBuildingPage extends BasePage {
                 style={{ paddingBottom: 10, paddingLeft: 15, paddingRight: 15 }}>
                 <Text style={styles.leftText}>可招商面积</Text>
                 <Text style={styles.rightText}>
-                  {numeral(detail.investmentareasum).format('0,0.00')}{Macro.meter_square} ({detail.investmentarearate}%)
+                  {detail.investmentareasum ? numeral(detail.investmentareasum).format('0,0.00') : ''}{Macro.meter_square} ({detail.investmentarearate ? detail.investmentarearate : ''}%)
                 </Text>
               </Flex>
               {/* <Flex
@@ -208,7 +209,7 @@ export default class DetailBuildingPage extends BasePage {
                   {detail.rentingaverprice}
                 </Text>
               </Flex> */}
- 
+
               {/* <Flex
                 direction="row"
                 justify="between"
@@ -220,7 +221,7 @@ export default class DetailBuildingPage extends BasePage {
                 <Text style={styles.leftText}>{detail.buildingformat == '住宅' ? '入住率' : '入驻率'}</Text>
                 <Text style={styles.rightText}>{detail.completionRate}%</Text>
               </Flex> */}
-              
+
 
               {/* <Flex direction="row" style={{ paddingTop: 30 }}>
                 <Flex direction="column" style={styles.div}>
@@ -324,7 +325,7 @@ export default class DetailBuildingPage extends BasePage {
                   </Flex>
                 ))}
               </Flex>
-            </ScrollView> 
+            </ScrollView>
             <SearchBar
               placeholder="搜索房产名称、房号或客户名称"
               showCancelButton
@@ -337,7 +338,7 @@ export default class DetailBuildingPage extends BasePage {
               }}
               onSubmit={() => this.search()}
               onCancel={() => this.clear()}
-            /> 
+            />
             <ScrollView
               style={{
                 paddingBottom: 20
@@ -358,14 +359,14 @@ export default class DetailBuildingPage extends BasePage {
                       }}
                     >
                       <Flex
-                      // justify="center"
-                      // style={{
-                      //   //width: 24,
-                      //   width: 30,
-                      //   height: 24,
-                      //   backgroundColor: '#eee',
-                      //   borderRadius: 12
-                      // }}
+                        // justify="center"
+                        // style={{
+                        //   //width: 24,
+                        //   width: 30,
+                        //   height: 24,
+                        //   backgroundColor: '#eee',
+                        //   borderRadius: 12
+                        // }}
 
                         align="start" direction="column"
                       >

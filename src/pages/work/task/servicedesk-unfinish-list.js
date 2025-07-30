@@ -4,7 +4,8 @@ import {
     StyleSheet,
     FlatList,
     TouchableOpacity,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    ActivityIndicator
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
@@ -43,11 +44,13 @@ class ServicedeskUnFinishListPage extends BasePage {
         this.state = {
             pageIndex: 1,
             pageSize: 10,
+            total: 0,
+            data: [],
+            refreshing: false,//刷新
+            loading: false,//加载完成 
+            hasMore: true,//更多
+
             type,
-            dataInfo: {
-                data: []
-            },
-            refreshing: false,
             time: '全部',
             selectedId: ''
         };
@@ -76,22 +79,29 @@ class ServicedeskUnFinishListPage extends BasePage {
         }
     }
 
-    getList = () => {
+    loadData = (isRefreshing = false) => {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+        const currentPage = isRefreshing ? 1 : this.state.pageIndex;
+        this.setState({ loading: true });
         const { type, time, pageIndex, pageSize } = this.state;
-        WorkService.servicedeskUnFinishList(type, time, pageIndex, pageSize).then(dataInfo => {
-            if (dataInfo.pageIndex > 1) {
-                dataInfo = {
-                    ...dataInfo,
-                    data: [...this.state.dataInfo.data, ...dataInfo.data]
-                };
+        WorkService.servicedeskUnFinishList(type, time, pageIndex, pageSize).then(res => {
+            if (isRefreshing) {
+                this.setState({
+                    data: res.data,
+                    pageIndex: 2,
+                    total: res.total
+                });
             }
-            this.setState({
-                dataInfo: dataInfo,
-                refreshing: false,
-                pageIndex: dataInfo.pageIndex
-            }, () => {
-            });
-        }).catch(err => this.setState({ refreshing: false }));
+            else {
+                this.setState({
+                    data: [...this.state.data, ...res.data],
+                    pageIndex: pageIndex + 1,
+                    hasMore: pageIndex * pageSize < res.total ? true : false,
+                    total: res.total
+                });
+            }
+        }).catch(err => UDToast.showError(err)
+        ).finally(() => this.setState({ loading: false, refreshing: false }))
     };
 
     onRefresh = () => {
@@ -99,26 +109,11 @@ class ServicedeskUnFinishListPage extends BasePage {
             refreshing: true,
             pageIndex: 1
         }, () => {
-            this.getList();
+            this.loadData(true);
         });
     };
 
-    //加载更多
-    loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo;
-        if (this.canLoadMore && data.length < total) {
-            this.canLoadMore = false;
-            this.setState({
-                refreshing: true,
-                pageIndex: pageIndex + 1
-            }, () => {
-                this.getList();
-                this.setState({ pageSize: (pageIndex + 1) * 10 });
-            });
-        }
-    };
-
-    _renderItem = ({ item, index }) => {
+    _renderItem = ({ item }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
                 //选中了，点击取消
@@ -185,8 +180,15 @@ class ServicedeskUnFinishListPage extends BasePage {
         });
     };
 
+    renderFooter = () => {
+        if (!this.state.hasMore && this.state.data.length > 0) {
+            return <Text>没有更多数据了</Text>;
+        } 
+        return this.state.loading ? <ActivityIndicator /> : null;
+    };
+
     render() {
-        const { dataInfo, type } = this.state;
+        const { data, total, refreshing, type } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
                 <ListHeader type={type} onChange={(type) => this.setState({ type }, () => {
@@ -198,7 +200,7 @@ class ServicedeskUnFinishListPage extends BasePage {
                         visible={true} />
                 </Flex>
                 <FlatList
-                    data={dataInfo.data}
+                    data={data}
                     renderItem={this._renderItem}
                     style={styles.list}
                     keyExtractor={(item) => item.id}
@@ -206,8 +208,9 @@ class ServicedeskUnFinishListPage extends BasePage {
                     onEndReachedThreshold={0.1}
                     refreshing={this.state.refreshing}//在等待加载新数据时将此属性设为 true，列表就会显示出一个正在加载的符号
                     onRefresh={this.onRefresh}//下拉刷新
-                    onEndReached={this.loadMore}//底部往下拉翻页
-                    onMomentumScrollBegin={() => this.canLoadMore = true}
+                    onEndReached={this.loadData}//底部往下拉翻页 
+                    ListFooterComponent={this.renderFooter}
+                    //onMomentumScrollBegin={() => this.canLoadMore = true}
                     //防止上拉加载更多onReached被触发两次，造成重复请求资源，性能浪费
                     //开始滑动，当第一次触发完毕之后，将这个flag设置为false，避免重复去执行我们需要做的action操作
                     //onMomentumScrollEnd={() => this.canLoadMore = true}//结束滑动
@@ -215,7 +218,7 @@ class ServicedeskUnFinishListPage extends BasePage {
                     //onScrollEndDrag={() => this.canLoadMore = true}//结束拖拽的时候 
                     ListEmptyComponent={<NoDataView />}
                 />
-                <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
+                <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
             </CommonView>
         );
     }

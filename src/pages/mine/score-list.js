@@ -4,6 +4,7 @@ import {
     StyleSheet,
     FlatList,
     TouchableOpacity,
+    ActivityIndicator
 } from 'react-native';
 import BasePage from '../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
@@ -32,12 +33,12 @@ export default class ScoreListPage extends BasePage {
         super(props);
         this.state = {
             pageIndex: 1,
-             pageSize: 10,
-            dataInfo: {
-                data: []
-            },
-            refreshing: false,
-            visible: false
+            pageSize: 10,
+            total: 0,
+            data: [],
+            refreshing: false,//刷新
+            loading: false,//加载完成 
+            hasMore: true//更多
         };
     }
 
@@ -45,7 +46,7 @@ export default class ScoreListPage extends BasePage {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
-                this.onRefresh();
+                this.loadData();
             }
         );
     }
@@ -55,22 +56,29 @@ export default class ScoreListPage extends BasePage {
     }
 
 
-    getList = () => {
-        const { pageIndex,pageSize } = this.state;
-        MineService.getRepairScoreList(pageIndex,pageSize).then(dataInfo => {
-            if (dataInfo.pageIndex > 1) {
-                dataInfo = {
-                    ...dataInfo,
-                    data: [...this.state.dataInfo.data, ...dataInfo.data],
-                };
+    loadData = (isRefreshing = false) => {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+        const currentPage = isRefreshing ? 1 : this.state.pageIndex;
+        this.setState({ loading: true });
+        const { pageIndex, pageSize } = this.state;
+        MineService.getRepairScoreList(currentPage, pageSize).then(res => {
+            if (isRefreshing) {
+                this.setState({
+                    data: res.data,
+                    pageIndex: 2,
+                    total: res.total
+                });
             }
-            this.setState({
-                dataInfo: dataInfo,
-                pageIndex: dataInfo.pageIndex,
-                refreshing: false
-            }, () => {
-            });
-        }).catch(err => this.setState({ refreshing: false }));
+            else {
+                this.setState({
+                    data: [...this.state.data, ...res.data],
+                    pageIndex: pageIndex + 1,
+                    hasMore: pageIndex * pageSize < res.total ? true : false,
+                    total: res.total
+                });
+            }
+        }).catch(err => UDToast.showError(err)
+        ).finally(() => this.setState({ loading: false, refreshing: false }))
     };
 
     onRefresh = () => {
@@ -78,22 +86,8 @@ export default class ScoreListPage extends BasePage {
             refreshing: true,
             pageIndex: 1
         }, () => {
-            this.getList();
+            this.loadData(true);
         });
-    };
-
-    loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo;
-        if (this.canLoadMore && data.length < total) {
-            this.canLoadMore = false;
-            this.setState({
-                refreshing: true,
-                pageIndex: pageIndex + 1
-            }, () => {
-                this.getList();
-                this.setState({ pageSize: (pageIndex + 1) * 10 });
-            });
-        }
     };
 
     _renderItem = ({ item, index }) => {
@@ -115,23 +109,32 @@ export default class ScoreListPage extends BasePage {
         );
     };
 
+    renderFooter = () => {
+        if (!this.state.hasMore && this.state.data.length > 0) {
+            return <Text>没有更多数据了</Text>;
+        }
+
+        return this.state.loading ? <ActivityIndicator /> : null;
+    };
+
     render() {
-        const { dataInfo } = this.state;
+        const { data, refreshing, total } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
                 <FlatList
-                    data={dataInfo.data}
+                    data={data}
                     renderItem={this._renderItem}
                     style={styles.list}
                     keyExtractor={(item) => item.date}
                     onEndReachedThreshold={0.1}
-                    refreshing={this.state.refreshing}
+                    refreshing={refreshing}
                     onRefresh={this.onRefresh}//下拉刷新
-                    onEndReached={this.loadMore}//底部往下拉翻页
-                    onMomentumScrollBegin={() => this.canLoadMore = true}
+                    onEndReached={this.loadData}//底部往下拉翻页
+                    //onMomentumScrollBegin={() => this.canLoadMore = true}
+                    ListFooterComponent={this.renderFooter}
                     ListEmptyComponent={<NoDataView />}
                 />
-                <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
+                <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
             </CommonView>
         );
     }

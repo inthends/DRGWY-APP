@@ -2,7 +2,8 @@ import React, {Component, Fragment} from 'react';
 import { Text,  StyleSheet, Animated, TouchableWithoutFeedback, ScrollView} from 'react-native';
 import { Flex } from '@ant-design/react-native';
 import ScreenUtil from '../utils/screen-util';
-const item_width = ScreenUtil.deviceWidth() / 5.0;
+// const item_width = ScreenUtil.deviceWidth() / 5.0;
+const item_width = ScreenUtil.deviceWidth() / 4.0;
 const single_width = 50;
 
 export default class ScrollTitle extends Component {

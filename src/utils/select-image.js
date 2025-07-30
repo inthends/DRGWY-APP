@@ -1,9 +1,10 @@
 import ImagePicker from 'react-native-image-picker';
 import UDToast from './UDToast';
 import api from './api';
-import { ImagePickerOptions } from 'react-native-image-picker/src/internal/types';
+//import { ImagePickerOptions } from 'react-native-image-picker/src/internal/types';
 
-const options: ImagePickerOptions = {
+// const options: ImagePickerOptions = {
+const options = {
     title: '请选择',
     cancelButtonTitle: '取消',
     takePhotoButtonTitle: '相机',
@@ -33,7 +34,7 @@ export default class SelectImage {
             options.chooseFromLibraryButtonTitle = '相册';//还原
         }
         return new Promise((resolve, reject) => {
-  
+
             ImagePicker.showImagePicker(options, (response) => {
                 if (response.didCancel) {
                     // UDToast.showError('已取消选择图片');

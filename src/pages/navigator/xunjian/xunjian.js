@@ -13,7 +13,6 @@ import UDToast from '../../../utils/UDToast';
 // import xunJianReducer from '../../../utils/store/reducers/xunjian-reducer';
 // import ImagePicker from 'react-native-image-picker';
 
-
 class XunJianPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
         return {
@@ -126,8 +125,7 @@ class XunJianPage extends BasePage {
                 callBack: this.callBack,
                 needBack: true//需要返回当前页面
             }
-        }); 
-
+        });
     };
 
     componentDidMount() {
@@ -166,6 +164,7 @@ class XunJianPage extends BasePage {
                 ...res
             });
         });
+        
         //获取巡检路线和任务
         XunJianService.xunjianIndexList(person.id).then(res => {
             Promise.all(res.data.map(item => XunJianService.xunjianIndexDetail(item.lineId))).then(all => {

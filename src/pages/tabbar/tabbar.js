@@ -330,15 +330,16 @@ const WorkNavigator = createStackNavigator({
   serverDeskView: EfuwuDetailPage,//服务单页面点击关联单据，只能查看
   weixiuD: EweixiuDetailPage, //服务单页面点击关联单据，跳转到维修单，只能查看
 
-  //订单中心
-  orderlist: OrderlistPage,
-  orderDetail: OrderDetailPage,
+  //订单中心，废弃
+  // orderlist: OrderlistPage,
+  // orderDetail: OrderDetailPage,
+
+
   selectRolePerson: SelectRolePerson, 
   selectReceivePerson: SelectReceivePerson, 
   selectRolePersonInspect: SelectRolePersonInspect,
   selectRolePersonPolling:SelectRolePersonPolling,
-
-
+ 
 
   feeRooms: FeeRoomsPage, //房间
   feeParkings: FeeParkingsPage, //车位

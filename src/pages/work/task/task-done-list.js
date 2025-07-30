@@ -5,6 +5,7 @@ import {
     FlatList,
     TouchableOpacity,
     TouchableWithoutFeedback,
+    ActivityIndicator
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
@@ -44,14 +45,17 @@ class TaskDoneListPage extends BasePage {
         // const overdue = common.getValueFromProps(this.props).overdue;
         //const hiddenHeader = common.getValueFromProps(this.props).hiddenHeader; 
         this.state = {
-            type: type,
+
             pageIndex: 1,
             pageSize: 10,
-            dataInfo: {
-                data: []
-            },
-            //hiddenHeader,
-            refreshing: false,
+            total: 0,
+            data: [],
+            refreshing: false,//刷新
+            loading: false,//加载完成 
+            hasMore: true,//更多
+
+            type: type,
+            //hiddenHeader, 
             visible: false,
             repairMajor: '全部',
             time: '全部',
@@ -98,22 +102,29 @@ class TaskDoneListPage extends BasePage {
         }
     }
 
-    getList = () => {
+    loadData = (isRefreshing = false) => {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+        const currentPage = isRefreshing ? 1 : this.state.pageIndex;
+        this.setState({ loading: true });
         const { type, repairMajor, time, pageIndex, pageSize } = this.state;
-        WorkService.workDoneList(type, repairMajor, time, pageIndex, pageSize).then(dataInfo => {
-            if (dataInfo.pageIndex > 1) {
-                dataInfo = {
-                    ...dataInfo,
-                    data: [...this.state.dataInfo.data, ...dataInfo.data],
-                };
+        WorkService.workDoneList(type, repairMajor, time, currentPage, pageSize).then(res => {
+            if (isRefreshing) {
+                this.setState({
+                    data: res.data,
+                    pageIndex: 2,
+                    total: res.total
+                });
             }
-            this.setState({
-                dataInfo: dataInfo,
-                pageIndex: dataInfo.pageIndex,
-                refreshing: false
-            }, () => {
-            });
-        }).catch(err => this.setState({ refreshing: false }));
+            else {
+                this.setState({
+                    data: [...this.state.data, ...res.data],
+                    pageIndex: pageIndex + 1,
+                    hasMore: pageIndex * pageSize < res.total ? true : false,
+                    total: res.total
+                });
+            }
+        }).catch(err => UDToast.showError(err)
+        ).finally(() => this.setState({ loading: false, refreshing: false }))
     };
 
     onRefresh = () => {
@@ -121,23 +132,10 @@ class TaskDoneListPage extends BasePage {
             refreshing: true,
             pageIndex: 1
         }, () => {
-            this.getList();
+            this.loadData(true);
         });
     };
 
-    loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo;
-        if (this.canLoadMore && data.length < total) {
-            this.canLoadMore = false;
-            this.setState({
-                refreshing: true,
-                pageIndex: pageIndex + 1
-            }, () => {
-                this.getList();
-                this.setState({ pageSize: (pageIndex + 1) * 10 });
-            });
-        }
-    };
 
     typeChange = (repairMajor) => {
         this.setState({
@@ -157,7 +155,7 @@ class TaskDoneListPage extends BasePage {
         });
     };
 
-    _renderItem = ({ item, index }) => {
+    _renderItem = ({ item }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
                 //选中了，点击取消
@@ -227,9 +225,15 @@ class TaskDoneListPage extends BasePage {
         );
     };
 
+    renderFooter = () => {
+        if (!this.state.hasMore && this.state.data.length > 0) {
+            return <Text>没有更多数据了</Text>;
+        }
+        return this.state.loading ? <ActivityIndicator /> : null;
+    };
 
     render() {
-        const { dataInfo } = this.state;
+        const { data, refreshing, total } = this.state;
         return (
             <CommonView style={{ flex: 1 }}>
                 <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
@@ -245,14 +249,15 @@ class TaskDoneListPage extends BasePage {
                     keyExtractor={(item) => item.id}
                     //必须
                     onEndReachedThreshold={0.1}
-                    refreshing={this.state.refreshing}
+                    refreshing={refreshing}
                     onRefresh={this.onRefresh}//下拉刷新
-                    onEndReached={this.loadMore}//底部往下拉翻页
-                    onMomentumScrollBegin={() => this.canLoadMore = true}
+                    onEndReached={this.loadData}//底部往下拉翻页
+                    //onMomentumScrollBegin={() => this.canLoadMore = true}
+                    ListFooterComponent={this.renderFooter}
                     ListEmptyComponent={<NoDataView />}
                 //ListHeaderComponent={() => this._footer(dataInfo.data.length)}
                 />
-                <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text>
+                <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
             </CommonView>
         );
     }

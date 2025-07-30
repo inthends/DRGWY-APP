@@ -10,7 +10,9 @@ import {
     Modal,
     FlatList,
     Platform,
-    Keyboard, CameraRoll
+    Keyboard,
+    CameraRoll,
+    ActivityIndicator
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Icon, Flex, TextareaItem, Button } from '@ant-design/react-native';
@@ -27,6 +29,8 @@ import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import moment from 'moment';
 import RNFetchBlob from 'rn-fetch-blob';
+import UDToast from '../../../utils/UDToast';
+import NoDataView from '../../../components/no-data-view';
 
 export default class VisitDetailPage extends BasePage {
 
@@ -60,10 +64,11 @@ export default class VisitDetailPage extends BasePage {
             //费用明细
             pageIndex: 1,
             pageSize: 10,
-            refreshing: false,
-            dataInfo: {
-                data: []
-            }
+            total: 0,
+            data: [],
+            refreshing: false,//刷新
+            loading: false,//加载完成 
+            hasMore: true,//更多
         };
 
         this.keyboardDidShowListener = null;
@@ -151,6 +156,8 @@ export default class VisitDetailPage extends BasePage {
                 images
             });
         });
+
+        this.loadData();
     };
 
     click = (handle) => {
@@ -251,42 +258,32 @@ export default class VisitDetailPage extends BasePage {
             refreshing: true,
             pageIndex: 1
         }, () => {
-            this.getList();
+            this.loadData(true);
         });
     };
 
-    //费用明细
-    getList = () => {
+    //加载数据
+    loadData = (isRefreshing = false) => {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+        const currentPage = isRefreshing ? 1 : this.state.pageIndex;
+        this.setState({ loading: true });
         const { detail, pageIndex, pageSize } = this.state;
-        WorkService.serverFeeList(pageIndex, pageSize, detail.relationId).then(dataInfo => {
-            if (dataInfo.pageIndex > 1) {
-                dataInfo = {
-                    ...dataInfo,
-                    data: [...this.state.dataInfo.data, ...dataInfo.data]
-                };
+        WorkService.serverFeeList(currentPage, pageSize, detail.relationId).then(res => {
+            if (isRefreshing) {
+                this.setState({
+                    data: res.data,
+                    pageIndex: 2
+                });
             }
-            this.setState({
-                dataInfo: dataInfo,
-                pageIndex: dataInfo.pageIndex,
-                refreshing: false
-            }, () => {
-            });
-        }).catch(err => this.setState({ refreshing: false }));
-    };
-
-    loadMore = () => {
-        const { data, total, pageIndex } = this.state.dataInfo;
-        if (this.canLoadMore && data.length < total) {
-            this.canLoadMore = false;
-            this.setState({
-                refreshing: true,
-                pageIndex: pageIndex + 1
-                // canLoadMore: false,
-            }, () => {
-                this.getList();
-                this.setState({ pageSize: (pageIndex + 1) * 10 });
-            });
-        }
+            else {
+                this.setState({
+                    data: [...this.state.data, ...res.data],
+                    pageIndex: pageIndex + 1,
+                    hasMore: pageIndex * pageSize < res.total ? true : false
+                });
+            }
+        }).catch(err => UDToast.showError(err)
+        ).finally(() => this.setState({ loading: false, refreshing: false }))
     };
 
     _renderItem = ({ item, index }) => {
@@ -320,9 +317,16 @@ export default class VisitDetailPage extends BasePage {
         );
     };
 
+    renderFooter = () => {
+        if (!this.state.hasMore && this.state.data.length > 0) {
+            return <Text>没有更多数据了</Text>;
+        }
+
+        return this.state.loading ? <ActivityIndicator /> : null;
+    };
 
     render() {
-        const { images, detail, communicates, dataInfo } = this.state;
+        const { images, detail, communicates, data, refreshing } = this.state;
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView style={{ marginTop: this.state.KeyboardShown ? - 200 : 0, height: '100%' }}>
@@ -420,18 +424,19 @@ export default class VisitDetailPage extends BasePage {
                         <Text style={styles.left}>费用明细</Text>
                     </Flex>
                     <FlatList
-                        data={dataInfo.data}
+                        data={data}
                         renderItem={this._renderItem}
                         style={styles.list}
                         keyExtractor={(item) => 'flatList' + item.id}
                         //必须
                         onEndReachedThreshold={0.1}
-                        refreshing={this.state.refreshing}
+                        refreshing={refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
-                        onEndReached={this.loadMore}//底部往下拉翻页
-                        onMomentumScrollBegin={() => this.canLoadMore = true}
+                        onEndReached={this.loadData}//底部往下拉翻页
+                        ListFooterComponent={this.renderFooter}
+                        ListEmptyComponent={<NoDataView />}
+                    //onMomentumScrollBegin={() => this.canLoadMore = true}
                     />
-
 
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
 
@@ -476,12 +481,12 @@ const styles = StyleSheet.create({
 
     blue: {
         borderLeftColor: Macro.work_blue,
-        borderLeftWidth: 5,
+        borderLeftWidth: 5
     },
 
     orange: {
         borderLeftColor: Macro.work_orange,
-        borderLeftWidth: 5,
+        borderLeftWidth: 5
     },
 
     title: {
