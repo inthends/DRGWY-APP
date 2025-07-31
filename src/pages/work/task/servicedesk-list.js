@@ -110,7 +110,6 @@ class ServicedeskListPage extends BasePage {
                     }
                     return acc;
                 }, []);
-
                 this.setState({
                     data: combinedUniqueArray,
                     pageIndex: pageIndex,

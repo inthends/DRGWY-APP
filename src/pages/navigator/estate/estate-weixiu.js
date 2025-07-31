@@ -81,7 +81,7 @@ class EstateWeixiuPage extends BasePage {
             (obj) => {
                 this.props.saveBuilding({});//加载页面清除别的页面选中的数据
                 this.props.saveSelectDrawerType(DrawerType.building);
-                this.onRefresh();
+                this.loadData();
             }
         );
     }
@@ -105,7 +105,7 @@ class EstateWeixiuPage extends BasePage {
         if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
-        const { type, billStatus, selectBuilding, time, repairArea, keyword, pageIndex, pageSize } = this.state;
+        const { data,type, billStatus, selectBuilding, time, repairArea, keyword, pageIndex, pageSize } = this.state;
         let organizeId;
         if (selectBuilding) {
             //treeType = selectBuilding.type;
@@ -129,12 +129,19 @@ class EstateWeixiuPage extends BasePage {
                     });
                 }
                 else {
-                    this.setState({
-                        data: [...this.state.data, ...res.data],
-                        pageIndex: pageIndex + 1,
-                        hasMore: pageIndex * pageSize < res.total ? true : false,
-                        total: res.total
-                    });
+                     //合并并去重 使用 reduce
+                const combinedUniqueArray = [...data, ...res.data].reduce((acc, current) => {
+                    if (!acc.some(item => item.id === current.id)) {
+                        acc.push(current);
+                    }
+                    return acc;
+                }, []);
+                this.setState({
+                    data: combinedUniqueArray,
+                    pageIndex: pageIndex,
+                    hasMore: pageIndex * pageSize < res.total ? true : false,
+                    total: res.total
+                });
                 }
             }).catch(err => UDToast.showError(err)
             ).finally(() => this.setState({ loading: false, refreshing: false }))
@@ -146,6 +153,16 @@ class EstateWeixiuPage extends BasePage {
             pageIndex: 1
         }, () => {
             this.loadData(true);
+        });
+    };
+
+        //加载更多
+    loadMore = () => {
+        const { pageIndex } = this.state;
+        this.setState({
+            pageIndex: pageIndex + 1
+        }, () => {
+            this.loadData();
         });
     };
 
@@ -311,14 +328,14 @@ class EstateWeixiuPage extends BasePage {
 
     renderFooter = () => {
         if (!this.state.hasMore && this.state.data.length > 0) {
-            return <Text>没有更多数据了</Text>;
+            return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
         }
 
         return this.state.loading ? <ActivityIndicator /> : null;
     };
 
     render() {
-        const { type, index, data, refreshing, btnText } = this.state;
+        const { type, index, data,total, refreshing, btnText } = this.state;
         return (
             <View style={{ flex: 1 }}>
                 <SearchBar

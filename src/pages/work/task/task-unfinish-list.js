@@ -63,7 +63,7 @@ class TaskUnFinishListPage extends BasePage {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
-                this.onRefresh();
+              this.loadData();
             }
         );
     }
@@ -87,7 +87,7 @@ class TaskUnFinishListPage extends BasePage {
         if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
-        const { status, time, selectPerson, pageIndex, pageSize } = this.state;
+        const {data, status, time, selectPerson, pageIndex, pageSize } = this.state;
         let senderId = selectPerson ? selectPerson.id : '';
         WorkService.workUnFinishList(status, time, senderId, currentPage, pageSize).then(res => {
             if (isRefreshing) {
@@ -98,9 +98,16 @@ class TaskUnFinishListPage extends BasePage {
                 });
             }
             else {
+                 //合并并去重 使用 reduce
+                const combinedUniqueArray = [...data, ...res.data].reduce((acc, current) => {
+                    if (!acc.some(item => item.id === current.id)) {
+                        acc.push(current);
+                    }
+                    return acc;
+                }, []);
                 this.setState({
-                    data: [...this.state.data, ...res.data],
-                    pageIndex: pageIndex + 1,
+                    data: combinedUniqueArray,
+                    pageIndex: pageIndex,
                     hasMore: pageIndex * pageSize < res.total ? true : false,
                     total: res.total
                 });
@@ -251,7 +258,7 @@ class TaskUnFinishListPage extends BasePage {
 
     renderFooter = () => {
         if (!this.state.hasMore && this.state.data.length > 0) {
-            return <Text>没有更多数据了</Text>;
+            return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
         }
 
         return this.state.loading ? <ActivityIndicator /> : null;

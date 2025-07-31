@@ -75,7 +75,7 @@ class EstateTousuPage extends BasePage {
             (obj) => {
                 this.props.saveBuilding({});//加载页面清除别的页面选中的数据
                 this.props.saveSelectDrawerType(DrawerType.building);
-                this.onRefresh();
+                this.loadData();
             }
         );
     }
@@ -102,7 +102,7 @@ class EstateTousuPage extends BasePage {
         if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
-        const { billStatus, selectBuilding, time, pageIndex, pageSize } = this.state;
+        const { data, selectBuilding, time, pageIndex, pageSize } = this.state;
         let treeType;
         let organizeId;
         if (selectBuilding) {
@@ -122,12 +122,19 @@ class EstateTousuPage extends BasePage {
                     });
                 }
                 else {
-                    this.setState({
-                        data: [...this.state.data, ...res.data],
-                        pageIndex: pageIndex + 1,
-                        hasMore: pageIndex * pageSize < res.total ? true : false,
-                        total: res.total
-                    });
+                      //合并并去重 使用 reduce
+                const combinedUniqueArray = [...data, ...res.data].reduce((acc, current) => {
+                    if (!acc.some(item => item.id === current.id)) {
+                        acc.push(current);
+                    }
+                    return acc;
+                }, []);
+                this.setState({
+                    data: combinedUniqueArray,
+                    pageIndex: pageIndex,
+                    hasMore: pageIndex * pageSize < res.total ? true : false,
+                    total: res.total
+                });
                 }
             }).catch(err => UDToast.showError(err)
             ).finally(() => this.setState({ loading: false, refreshing: false }))
@@ -252,7 +259,7 @@ class EstateTousuPage extends BasePage {
 
     renderFooter = () => {
         if (!this.state.hasMore && this.state.data.length > 0) {
-            return <Text>没有更多数据了</Text>;
+            return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
         }
 
         return this.state.loading ? <ActivityIndicator /> : null;

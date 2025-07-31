@@ -62,7 +62,7 @@ class LouPan extends BasePage {
         if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
-        const { pageIndex, pageSize } = this.state;
+        const { data,pageIndex, pageSize } = this.state;
         service.getFeeStatistics(
             currentPage,
             pageSize,
@@ -76,9 +76,16 @@ class LouPan extends BasePage {
                     });
                 }
                 else {
+                    //合并并去重 使用 reduce
+                    const combinedUniqueArray = [...data, ...res.data].reduce((acc, current) => {
+                        if (!acc.some(item => item.id === current.id)) {
+                            acc.push(current);
+                        }
+                        return acc;
+                    }, []);
                     this.setState({
-                        data: [...this.state.data, ...res.data],
-                        pageIndex: pageIndex + 1,
+                        data: combinedUniqueArray,
+                        pageIndex: pageIndex,
                         hasMore: pageIndex * pageSize < res.total ? true : false,
                         total: res.total
                     });
@@ -144,7 +151,7 @@ class LouPan extends BasePage {
 
     renderFooter = () => {
         if (!this.state.hasMore && this.state.data.length > 0) {
-            return <Text>没有更多数据了</Text>;
+            return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
         }
 
         return this.state.loading ? <ActivityIndicator /> : null;

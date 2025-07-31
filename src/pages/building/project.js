@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Text,
   View,
   StyleSheet,
   FlatList,
@@ -280,7 +281,7 @@ class ProjectPage extends BasePage {
 
   renderFooter = () => {
     if (!this.state.hasMore && this.state.data.length > 0) {
-      return <Text>没有更多数据了</Text>;
+      return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
     }
     return this.state.loading ? <ActivityIndicator /> : null;
   };

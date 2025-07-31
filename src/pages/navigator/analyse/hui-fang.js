@@ -60,8 +60,7 @@ class HuiFangRatePage extends BasePage {
       'didFocus',
       (obj) => {
         this.props.saveBuilding({});//加载页面清除别的页面选中的数据
-        this.props.saveSelectDrawerType(DrawerType.building);
-
+        this.props.saveSelectDrawerType(DrawerType.building); 
         this.setState({
           titles: ['全部', '报修', '投诉'],
         });

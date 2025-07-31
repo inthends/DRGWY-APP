@@ -69,7 +69,7 @@ class ApprovePage extends BasePage {
       (obj) => {
         this.props.saveBuilding({});//加载页面清除别的页面选中的数据
         this.props.saveSelectDrawerType(DrawerType.task);
-        this.onRefresh();
+        this.loadData();
       },
     );
   }
@@ -132,7 +132,7 @@ class ApprovePage extends BasePage {
     if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
     const currentPage = isRefreshing ? 1 : this.state.pageIndex;
     this.setState({ loading: true });
-    const { taskType, pageIndex, pageSize } = this.state;
+    const { data, taskType, pageIndex, pageSize } = this.state;
     const { selectBuilding = {} } = this.props;
     Service.getFlowTask({
       taskType: taskType,
@@ -148,9 +148,16 @@ class ApprovePage extends BasePage {
         });
       }
       else {
+        //合并并去重 使用 reduce
+        const combinedUniqueArray = [...data, ...res.data].reduce((acc, current) => {
+          if (!acc.some(item => item.id === current.id)) {
+            acc.push(current);
+          }
+          return acc;
+        }, []);
         this.setState({
-          data: [...this.state.data, ...res.data],
-          pageIndex: pageIndex + 1,
+          data: combinedUniqueArray,
+          pageIndex: pageIndex,
           hasMore: pageIndex * pageSize < res.total ? true : false,
           total: res.total
         });
@@ -293,7 +300,7 @@ class ApprovePage extends BasePage {
 
   renderFooter = () => {
     if (!this.state.hasMore && this.state.data.length > 0) {
-      return <Text>没有更多数据了</Text>;
+      return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
     }
 
     return this.state.loading ? <ActivityIndicator /> : null;

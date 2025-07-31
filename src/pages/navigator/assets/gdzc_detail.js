@@ -14,7 +14,7 @@ import common from '../../../utils/common';
 import ListImages from '../../../components/list-images';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import RNFetchBlob from 'rn-fetch-blob';
-import UDToast from '../../../utils/UDToast'; 
+import UDToast from '../../../utils/UDToast';
 let screen_width = ScreenUtil.deviceWidth()
 
 export default class GdzcDetailPage extends BasePage {
@@ -56,7 +56,7 @@ export default class GdzcDetailPage extends BasePage {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
-                this.onRefresh();
+                this.loadData();
             }
         );
     }
@@ -84,7 +84,7 @@ export default class GdzcDetailPage extends BasePage {
         });
     };
 
-       //加载更多
+    //加载更多
     loadMore = () => {
         const { pageIndex } = this.state;
         this.setState({
@@ -100,7 +100,7 @@ export default class GdzcDetailPage extends BasePage {
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
 
-        const { indexType, pageIndex, id } = this.state;
+        const { data, indexType, pageIndex, id } = this.state;
         if (indexType === 0) {
             GdzcService.gdzcBaseInfo(id).then(res => {
                 this.setState({
@@ -130,9 +130,16 @@ export default class GdzcDetailPage extends BasePage {
                     });
                 }
                 else {
+                    //合并并去重 使用 reduce
+                    const combinedUniqueArray = [...data, ...res.data].reduce((acc, current) => {
+                        if (!acc.some(item => item.id === current.id)) {
+                            acc.push(current);
+                        }
+                        return acc;
+                    }, []);
                     this.setState({
-                        datasList: [...this.state.datasList, ...res.data],
-                        pageIndex: pageIndex + 1,
+                        data: combinedUniqueArray,
+                        pageIndex: pageIndex,
                         hasMore: pageIndex * pageSize < res.total ? true : false,
                         total: res.total
                     });
@@ -151,9 +158,16 @@ export default class GdzcDetailPage extends BasePage {
                     });
                 }
                 else {
+                    //合并并去重 使用 reduce
+                    const combinedUniqueArray = [...data, ...res.data].reduce((acc, current) => {
+                        if (!acc.some(item => item.id === current.id)) {
+                            acc.push(current);
+                        }
+                        return acc;
+                    }, []);
                     this.setState({
-                        datasList: [...this.state.datasList, ...res.data],
-                        pageIndex: pageIndex + 1,
+                        data: combinedUniqueArray,
+                        pageIndex: pageIndex,
                         hasMore: pageIndex * pageSize < res.total ? true : false,
                         total: res.total
                     });
@@ -171,9 +185,16 @@ export default class GdzcDetailPage extends BasePage {
                     });
                 }
                 else {
+                    //合并并去重 使用 reduce
+                    const combinedUniqueArray = [...data, ...res.data].reduce((acc, current) => {
+                        if (!acc.some(item => item.id === current.id)) {
+                            acc.push(current);
+                        }
+                        return acc;
+                    }, []);
                     this.setState({
-                        datasList: [...this.state.datasList, ...res.data],
-                        pageIndex: pageIndex + 1,
+                        data: combinedUniqueArray,
+                        pageIndex: pageIndex,
                         hasMore: pageIndex * pageSize < res.total ? true : false,
                         total: res.total
                     });
@@ -286,7 +307,7 @@ export default class GdzcDetailPage extends BasePage {
 
     renderFooter = () => {
         if (!this.state.hasMore && this.state.datasList.length > 0) {
-            return <Text>没有更多数据了</Text>;
+            return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
         }
         return this.state.loading ? <ActivityIndicator /> : null;
     };

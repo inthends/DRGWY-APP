@@ -47,7 +47,7 @@ export default class ScoreListPage extends BasePage {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
-                this.onRefresh();
+                 this.loadData();
             }
         );
     }
@@ -61,7 +61,7 @@ export default class ScoreListPage extends BasePage {
         if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
-        const { pageIndex, pageSize } = this.state;
+        const {data, pageIndex, pageSize } = this.state;
         MineService.getRepairScoreList(currentPage, pageSize).then(res => {
             if (isRefreshing) {
                 this.setState({
@@ -71,9 +71,16 @@ export default class ScoreListPage extends BasePage {
                 });
             }
             else {
+                //合并并去重 使用 reduce
+                const combinedUniqueArray = [...data, ...res.data].reduce((acc, current) => {
+                    if (!acc.some(item => item.date === current.date)) {
+                        acc.push(current);
+                    }
+                    return acc;
+                }, []);
                 this.setState({
-                    data: [...this.state.data, ...res.data],
-                    pageIndex: pageIndex + 1,
+                    data: combinedUniqueArray,
+                    pageIndex: pageIndex,
                     hasMore: pageIndex * pageSize < res.total ? true : false,
                     total: res.total
                 });
@@ -122,7 +129,7 @@ export default class ScoreListPage extends BasePage {
 
     renderFooter = () => {
         if (!this.state.hasMore && this.state.data.length > 0) {
-            return <Text>没有更多数据了</Text>;
+            return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
         }
 
         return this.state.loading ? <ActivityIndicator /> : null;

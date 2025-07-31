@@ -59,8 +59,7 @@ class WeiXiuRatePage extends BasePage {
       'didFocus',
       (obj) => {
         this.props.saveBuilding({});//加载页面清除别的页面选中的数据
-        this.props.saveSelectDrawerType(DrawerType.building);
-
+        this.props.saveSelectDrawerType(DrawerType.building); 
         service.GetDataItemTreeJsonRepairMajor().then((res) => {
           const titles = (res || []).map((item) => item.title);
           this.setState({

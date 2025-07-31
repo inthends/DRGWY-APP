@@ -54,7 +54,6 @@ export default class DetailBuildingPage extends BasePage {
   }
 
   componentDidMount() {
-
     //获取资产状态
     DetailBuildingService.getPropertyStatus().then((status) => {
       this.setState({ status });
