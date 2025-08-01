@@ -1,8 +1,8 @@
 import React from 'react';
 import BasePage from '../../base/base';
-import CommonView from '../../../components/CommonView';
+//import CommonView from '../../../components/CommonView';
 import { Flex, Icon } from '@ant-design/react-native';
-import { Modal, StyleSheet, Text,Platform, TouchableOpacity,CameraRoll } from 'react-native';
+import { Modal, StyleSheet, Text, Platform, TouchableOpacity, CameraRoll,ScrollView } from 'react-native';
 //import Macro from '../../../utils/macro';
 //import ScreenUtil from '../../../utils/screen-util';
 //import LoadImage from '../../../components/load-image'; 
@@ -19,7 +19,7 @@ export default class XunJianPointDetailPage extends BasePage {
         return {
             tabBarVisible: false,
             title: '巡检点详情',
-            headerForceInset:this.headerForceInset,
+            headerForceInset: this.headerForceInset,
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='left' style={{ width: 30, marginLeft: 15 }} />
@@ -41,11 +41,11 @@ export default class XunJianPointDetailPage extends BasePage {
         };
     }
 
-    componentDidMount()  {
+    componentDidMount() {
         const { lineId, pointId } = this.state;
-        XunJianService.xunjianPointDetail(lineId, pointId).then(items => { 
+        XunJianService.xunjianPointDetail(lineId, pointId).then(items => {
             this.setState({
-                items,
+                items
             });
         });
     }
@@ -78,7 +78,7 @@ export default class XunJianPointDetailPage extends BasePage {
         });
     };
 
-    savePhoto = (uri) => { 
+    savePhoto = (uri) => {
         try {
             if (Platform.OS == 'android') { //远程文件需要先下载 
                 // 下载网络图片到本地
@@ -112,27 +112,28 @@ export default class XunJianPointDetailPage extends BasePage {
                     //     //console.log('Image saved to docs://image.png'); // 或者使用你的路径
                     //     // 在这里你可以做其他事情，比如显示一个提示或者加载图片等 
                     // })
-                    .catch((err) => { 
+                    .catch((err) => {
                     });
 
             }
             else {
                 //ios
                 let promise = CameraRoll.saveToCameraRoll(uri);
-                promise.then(function (result) { 
-                }).catch(function (err) { 
+                promise.then(function (result) {
+                }).catch(function (err) {
                 });
             }
 
-        } catch (error) { 
+        } catch (error) {
         }
     }
 
 
-    render(){//: React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
+    render() {//: React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
         const { items } = this.state;
         return (
-            <CommonView>
+            // <CommonView>
+            <ScrollView>
                 {items.map((item, index) => (
                     <Flex key={item.pointName + index} direction={'column'} align={'start'} style={styles.content}>
                         <Text style={styles.title}>{item.pointName}</Text>
@@ -142,12 +143,13 @@ export default class XunJianPointDetailPage extends BasePage {
                 ))}
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
-                        imageUrls={this.state.images} 
+                        imageUrls={this.state.images}
                         menuContext={{ "saveToLocal": "保存到相册", "cancel": "取消" }}
                         onSave={(url) => this.savePhoto(url)}
-                        />
+                    />
                 </Modal>
-            </CommonView>
+                {/* </CommonView> */}
+            </ScrollView>
         );
     }
 }

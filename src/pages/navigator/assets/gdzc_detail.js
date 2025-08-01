@@ -100,7 +100,7 @@ export default class GdzcDetailPage extends BasePage {
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
 
-        const { data, indexType, pageIndex, id } = this.state;
+        const { data, indexType, pageIndex, pageSize, id } = this.state;
         if (indexType === 0) {
             GdzcService.gdzcBaseInfo(id).then(res => {
                 this.setState({

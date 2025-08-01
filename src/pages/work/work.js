@@ -230,7 +230,7 @@ class WorkPage extends BasePage {
                                             <Icon
                                                 name="form"
                                                 size={22}
-                                                color={Macro.work_orange}
+                                                color={Macro.color_sky_dark}
                                             />
                                         </Flex>
                                         <Text style={styles.bottom}>访客登记</Text>

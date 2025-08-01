@@ -12,6 +12,7 @@ import ScreenUtil from '../../utils/screen-util';
 import CommonView from '../../components/CommonView';
 import WorkService from './work-service';
 import Macro from '../../utils/macro';
+import UDToast from '../../utils/UDToast';
 
 export default class VisitPage extends BasePage {
 
@@ -67,11 +68,10 @@ export default class VisitPage extends BasePage {
     //放行
     ok = () => {
         const { data } = this.state;
-        if (!data) {
+        if (!data.name) {
             UDToast.showError('请扫码');
             return;
         }
-
         WorkService.updateVisitEntity(data.id).then(res => {
             this.props.navigation.goBack();
         });

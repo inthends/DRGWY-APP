@@ -40,14 +40,14 @@ class XunjianBeforeStart extends BasePage {
     // }
 
     onRefresh = () => {
-        const { pointId } = this.state;//点位 
-        if (this.props.hasNetwork) { 
-            XunJianService.xunjianPointTasks(pointId).then(items => {
-                if (items.length == 0) {
-                    UDToast.showError('当前点位没有任务');
+        const { lineId, pointId } = this.state;//点位 
+        if (this.props.hasNetwork) {
+            XunJianService.xunjianPointTasks(lineId, pointId).then(res => {
+                if (res.flag == false) {
+                    UDToast.showError(res.data);
                     this.props.navigation.goBack();
                 }
-                this.setState({ items });
+                this.setState({ items: res.data });
             });
         }
         else {
@@ -142,7 +142,6 @@ const mapStateToProps = ({ memberReducer, xunJianReducer }) => {
 export default connect(mapStateToProps)(XunjianBeforeStart);
 
 const styles = StyleSheet.create({
-
     redtitle: {
         paddingTop: 14,
         textAlign: 'left',

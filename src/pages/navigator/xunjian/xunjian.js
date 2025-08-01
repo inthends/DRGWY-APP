@@ -1,14 +1,13 @@
 import React from 'react';
 import BasePage from '../../base/base';
-import { Flex, Accordion, List, Icon, WingBlank, Button } from '@ant-design/react-native';
+import { Flex, Accordion, List, Icon, Button } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
-import { StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, ScrollView } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, ScrollView, Alert } from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import LoadImage from '../../../components/load-image';
 import CommonView from '../../../components/CommonView';
 import { connect } from 'react-redux';
 import XunJianService from './xunjian-service';
-import UDToast from '../../../utils/UDToast';
 // import memberReducer from '../../../utils/store/reducers/member-reducer'; 
 // import xunJianReducer from '../../../utils/store/reducers/xunjian-reducer';
 // import ImagePicker from 'react-native-image-picker';
@@ -38,48 +37,61 @@ class XunJianPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            activeSections: [2, 0],
+            //activeSections: [2, 0],
+            activeSections: [],
             person: null,
             today: '',
             todo: '',
             missed: '',
             finish: '',
+            lineId: null,//线路id
             items: []
         };
     }
 
     onChange = activeSections => {
         this.setState({ activeSections });
+        if (activeSections) {
+            const { items } = this.state;
+            var item = items[activeSections];
+            if (item) {
+                this.setState({ lineId: item.lineId });
+            } else {
+                this.setState({ lineId: null });
+            }
+        }
     };
 
     callBack = (pointId) => {
         if (this.props.hasNetwork) {
-            //判断巡检点位状态
-            XunJianService.checkPollingState(pointId).then(res => {
-                if (res == null) {
-                    UDToast.showError('点位不存在');
-                    return;
-                }
-                if (res.state == '作废') {
-                    UDToast.showError('点位已经作废');
-                    return;
-                }
-                if (res.state == '历史') {
-                    UDToast.showError('点位为历史状态，无法巡检');
-                    return;
-                }
+            //判断巡检点位状态和点位的顺序
+            XunJianService.checkPollingState(pointId, this.state.lineId).then(res => {
+                if (res.flag == false) { 
+                    Alert.alert(
+                        '请确认',
+                        res.msg,
+                        [
+                            {
+                                text: '确定'
+                            }
+                        ],
+                        { cancelable: false }
+                    );
 
-                this.setState({
-                    pointId
-                }, () => {
-                    let person = this.state.person || {};
-                    this.props.navigation.navigate('xunjianBeforeStart', {
-                        data: {
-                            person,
-                            pointId
-                        }
+                } else {
+                    this.setState({
+                        pointId
+                    }, () => {
+                        let person = this.state.person || {};
+                        this.props.navigation.navigate('xunjianBeforeStart', {
+                            data: {
+                                person,
+                                pointId,
+                                lineId: this.state.lineId
+                            }
+                        });
                     });
-                });
+                }
             });
 
         } else {
@@ -91,7 +103,8 @@ class XunJianPage extends BasePage {
                 this.props.navigation.navigate('xunjianBeforeStart', {
                     data: {
                         person,
-                        pointId
+                        pointId,
+                        lineId: this.state.lineId
                     }
                 });
             });
@@ -99,6 +112,7 @@ class XunJianPage extends BasePage {
     };
 
     start = () => {
+
         //2023-10-06 由于不能放大，废弃
         // ImagePicker.launchCamera(
         //     {
@@ -118,7 +132,7 @@ class XunJianPage extends BasePage {
         //         });
         //     },
         // )
- 
+
         //点击手机返回按钮会跳转到扫码页面，需要改为跳转到当前页面 
         this.props.navigation.push('scanonly', {
             data: {
@@ -164,7 +178,7 @@ class XunJianPage extends BasePage {
                 ...res
             });
         });
-        
+
         //获取巡检路线和任务
         XunJianService.xunjianIndexList(person.id).then(res => {
             Promise.all(res.data.map(item => XunJianService.xunjianIndexDetail(item.lineId))).then(all => {
@@ -260,18 +274,6 @@ class XunJianPage extends BasePage {
                     </Flex>
                 </Flex>
                 <Flex style={styles.line} />
-                {/*<Text style={styles.location}>当前位置：xxxx</Text>*/}
-                {/* <TouchableWithoutFeedback onPress={() => this.props.navigation.push('selectXunjian', {
-                    data: {
-                        onSelect: this.onSelect,
-                        person
-                    }
-                })}>
-                    <Flex style={styles.person} align={'center'} justify={'center'}>
-                        <Text style={styles.personText}>{name}</Text>
-                        <LoadImage style={{ width: 6, height: 12 }} defaultImg={require('../../../static/images/address/right.png')} />
-                    </Flex>
-                </TouchableWithoutFeedback> */}
 
                 <TouchableWithoutFeedback
                     onPress={() => this.props.navigation.navigate('selectRolePersonPolling',
@@ -279,17 +281,17 @@ class XunJianPage extends BasePage {
                             onSelect: this.onSelectPerson
                         })}>
                     <Flex justify='between' style={[{
-                        paddingTop: 13,
-                        paddingBottom: 13,
-                        marginLeft: 14,
-                        marginRight: 14
+                        paddingTop: 10,
+                        paddingBottom: 10,
+                        marginLeft: 20,
+                        marginRight: 20
                     }, ScreenUtil.borderBottom()]}>
-                        <Text style={[person ? { fontSize: 16, color: '#404145' } :
-                            { color: '#999' }]}>{name ? name : "请选择巡检人"}</Text>
+                        {/* <Text style={[person ? { fontSize: 16, color: '#404145' } :
+                            { color: '#999' }]}>{name ? name : "请选择巡检人"}</Text> */}
+                        <Text style={{ color: 'black', fontSize: 16 }}>{name}</Text>
                         <LoadImage style={{ width: 6, height: 11 }} defaultImg={require('../../../static/images/address/right.png')} />
                     </Flex>
                 </TouchableWithoutFeedback>
-
 
                 <ScrollView style={{ height: ScreenUtil.contentHeight() - 180 }}>
                     <Accordion
@@ -300,19 +302,31 @@ class XunJianPage extends BasePage {
                         }}
                         activeSections={this.state.activeSections}>
                         {items.map(item => (
-                            <Accordion.Panel key={item.lineId} header={item.name}>
+                            <Accordion.Panel
+                                key={item.lineId}
+                                header={item.name}
+                            >
                                 <List>
-                                    {item.items.map((it, index) => (
-                                        <TouchableWithoutFeedback key={it.name + index}
-                                            onPress={() => this.props.navigation.push('xunjianPointDetail', {
-                                                data: {
-                                                    lineId: item.lineId,
-                                                    pointId: it.id
-                                                }
-                                            })}>
-                                            <WingBlank>
-                                                <List.Item>{it.name}</List.Item>
-                                            </WingBlank>
+                                    {item.items.map(it => (
+                                        <TouchableWithoutFeedback key={it.sort + it.name}
+                                            onPress={() => {
+                                                this.props.navigation.push('xunjianPointDetail', {
+                                                    data: {
+                                                        lineId: item.lineId,
+                                                        pointId: it.id
+                                                    }
+                                                });
+                                            }}
+                                        >
+                                            {/* <WingBlank>  
+                                            <List.Item >{it.sort + ' ' + it.name}</List.Item>
+                                            </WingBlank> */}
+                                            <List.Item>
+                                                <Text style={styles.itemtext}>
+                                                    {it.sort + ' ' + it.name}
+                                                </Text>
+                                            </List.Item>
+
                                         </TouchableWithoutFeedback>
                                     ))}
                                 </List>
@@ -322,7 +336,9 @@ class XunJianPage extends BasePage {
                 </ScrollView>
 
                 <Flex justify={'center'}>
-                    <Button onPress={this.start} type={'primary'}
+                    <Button
+                        disabled={!this.state.lineId}
+                        onPress={this.start} type={'primary'}
                         activeStyle={{ backgroundColor: Macro.work_blue }} style={{
                             width: 220,
                             backgroundColor: Macro.work_blue,
@@ -331,21 +347,25 @@ class XunJianPage extends BasePage {
                             height: 40
                         }}>开始巡检</Button>
                 </Flex>
-            </CommonView>
+            </CommonView >
         );
     }
 }
 
 const styles = StyleSheet.create({
-    title: {
-        paddingTop: 14,
-        textAlign: 'left',
-        color: '#3E3E3E',
-        fontSize: 16,
-        paddingBottom: 12,
-        marginLeft: 20,
-        marginRight: 20
+    itemtext: {
+        fontSize: 15,
+        color: '#666'
     },
+    // title: {
+    //     paddingTop: 14,
+    //     textAlign: 'left',
+    //     color: '#3E3E3E',
+    //     fontSize: 16,
+    //     paddingBottom: 12,
+    //     marginLeft: 20,
+    //     marginRight: 20
+    // },
     line: {
         width: ScreenUtil.deviceWidth() - 30,
         backgroundColor: '#E0E0E0',
@@ -361,6 +381,7 @@ const styles = StyleSheet.create({
     bottom: {
         //color: '#999999',
         fontSize: 16,
+        color: 'black',
         paddingBottom: 15
     },
     card: {
@@ -372,23 +393,23 @@ const styles = StyleSheet.create({
         // shadowRadius: 5,
         // shadowOpacity: 0.8,
     },
-    location: {
-        paddingTop: 15,
-        paddingBottom: 10,
-        textAlign: 'center',
-        width: '100%'
-    },
-    person: {
-        paddingTop: 15,
-        marginRight: 15,
-        paddingBottom: 15
-    },
-    personText: {
-        color: '#666',
-        fontSize: 16,
-        width: ScreenUtil.deviceWidth() - 40,
-        textAlign: 'center'
-    },
+    // location: {
+    //     paddingTop: 15,
+    //     paddingBottom: 10,
+    //     textAlign: 'center',
+    //     width: '100%'
+    // },
+    // person: {
+    //     paddingTop: 15,
+    //     marginRight: 15,
+    //     paddingBottom: 15
+    // },
+    // personText: {
+    //     color: '#666',
+    //     fontSize: 16,
+    //     width: ScreenUtil.deviceWidth() - 40,
+    //     textAlign: 'center'
+    // },
     // ii: {
     //     marginTop:10,
     //     paddingTop: 10,
@@ -400,10 +421,10 @@ const styles = StyleSheet.create({
     //     borderRadius: 6,
     //     marginBottom: 20
     // },
-    word: {
-        color: 'white',
-        fontSize: 16
-    }
+    // word: {
+    //     color: 'white',
+    //     fontSize: 16
+    // }
 });
 
 const mapStateToProps = ({ memberReducer, xunJianReducer }) => {
@@ -416,5 +437,6 @@ const mapStateToProps = ({ memberReducer, xunJianReducer }) => {
         xunJianData: xunJianReducer.xunJianData
     };
 };
+
 export default connect(mapStateToProps)(XunJianPage);
 

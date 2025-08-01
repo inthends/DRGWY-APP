@@ -66,7 +66,7 @@ class AssetsPage extends BasePage {
         if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
-        const {data, estateId, keyword, pageSize } = this.state;
+        const {data, estateId, keyword,pageIndex, pageSize } = this.state;
         // const queryJson = {
         //     keyword: text,
         //     estateId: estateId
@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
         width: (ScreenUtil.deviceWidth() - 15 * 2 - 20 * 2) / 3.0,
         backgroundColor: '#999',
         borderRadius: 6,
-        marginBottom: 20,
+        marginBottom: 20
     },
     word: {
         color: 'white',

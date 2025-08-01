@@ -87,9 +87,8 @@ class SettingPage extends BasePage {
                 Promise.all(items.map(item => XunJianService.xunjianIndexDetail(item.lineId).then(res => ({
                     ...item,
                     items: res
-                })))).then(rea => {
-
-                    XunJianService.xunjianPointTasks().then(r => {
+                })))).then(rea => { 
+                    XunJianService.xunjianPointTasks(item.lineId, rea.pointId).then(r => {
                         UDToast.hiddenLoading(this.loading);
                         const tasks = {
                             allData: resp || {},//巡检任务数量统计
@@ -97,7 +96,6 @@ class SettingPage extends BasePage {
                             scanLists: r || {}//巡检任务和内容明细
                         };
                         this.props.saveXunjian(tasks);//存放离线巡检数据
-
                         //清除原来的巡检数据，防止旧数据干扰
                         for (let taskId in xunJianAction) {
                             if (xunJianAction.hasOwnProperty(taskId)) {
@@ -159,7 +157,7 @@ class SettingPage extends BasePage {
 
                 // UDToast.hiddenLoading(this.loading);
                 // UDToast.showSuccess('上传成功');
- 
+
                 // this.loading = UDToast.showLoading('正在上传中...');
 
                 Promise.all(xunJians.map(item => {
