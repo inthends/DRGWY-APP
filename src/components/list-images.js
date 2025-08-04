@@ -16,7 +16,8 @@ export default class ListImages extends Component {
                 <Flex wrap={'wrap'}>
                     {this.props.images && this.props.images.map((item, index) => {
                         return (
-                            <TouchableWithoutFeedback key={item.uid} onPress={() => this.props.lookImage && this.props.lookImage(index, item.uid)}>
+                            <TouchableWithoutFeedback key={item.id} 
+                            onPress={() => this.props.lookImage && this.props.lookImage(index, item.uid)}>
                                 <View style={{
                                     paddingLeft: 10,
                                     //paddingRight: 5,
@@ -25,7 +26,7 @@ export default class ListImages extends Component {
                                 }}>
                                     <LoadImage style={{
                                         width: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
-                                        height: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
+                                        height: (ScreenUtil.deviceHeight() - 15) / 4.0 - 20,
                                         borderRadius: 5,
                                     }} img={item.thumbUrl} />
 

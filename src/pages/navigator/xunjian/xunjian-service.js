@@ -8,10 +8,10 @@ export default {
     xunjianData(userId, showLoading = true) {
         return api.postData('/api/MobileMethod/MGetPollingStatistics', { userId }, showLoading);
     },
- 
+
     //判断巡检点位状态
-    checkPollingState(pointId,lineId) {
-        return api.getData('/api/MobileMethod/MCheckPollingState', { pointId,lineId });
+    checkPollingState(pointId, lineId) {
+        return api.getData('/api/MobileMethod/MCheckPollingState', { pointId, lineId });
     },
 
     xunjianTaskList(status, userId) {
@@ -59,8 +59,8 @@ export default {
     },
 
     //获取巡检任务
-    xunjianPointTasks(lineId,pointId, showLoading = true) {
-        return api.getData('/api/MobileMethod/MGetPollingPointTasks', {lineId, pointId }, showLoading);
+    xunjianPointTasks(lineId, pointId, showLoading = true) {
+        return api.getData('/api/MobileMethod/MGetPollingPointTasks', { lineId, pointId }, showLoading);
     },
 
     //离线巡检时候缓存数据，废弃，跟上面共用一个方法

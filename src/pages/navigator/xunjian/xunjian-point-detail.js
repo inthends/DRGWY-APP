@@ -1,8 +1,8 @@
 import React from 'react';
 import BasePage from '../../base/base';
-//import CommonView from '../../../components/CommonView';
+import CommonView from '../../../components/CommonView';
 import { Flex, Icon } from '@ant-design/react-native';
-import { Modal, StyleSheet, Text, Platform, TouchableOpacity, CameraRoll,ScrollView } from 'react-native';
+import { Modal, StyleSheet, Text, Platform, TouchableOpacity, CameraRoll, } from 'react-native';
 //import Macro from '../../../utils/macro';
 //import ScreenUtil from '../../../utils/screen-util';
 //import LoadImage from '../../../components/load-image'; 
@@ -12,7 +12,7 @@ import ListImages from '../../../components/list-images';
 import common from '../../../utils/common';
 import XunJianService from './xunjian-service';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import RNFetchBlob from 'rn-fetch-blob'; 
+import RNFetchBlob from 'rn-fetch-blob';
 
 export default class XunJianPointDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -50,8 +50,7 @@ export default class XunJianPointDetailPage extends BasePage {
         });
     }
 
-    lookImage = (lookImageIndex, image) => {
-
+    lookImage = (lookImageIndex, image) => { 
         let items = this.state.items.map(item => {
             let images = item.fileList;
             if (images.length <= lookImageIndex) {
@@ -123,7 +122,6 @@ export default class XunJianPointDetailPage extends BasePage {
                 }).catch(function (err) {
                 });
             }
-
         } catch (error) {
         }
     }
@@ -132,15 +130,18 @@ export default class XunJianPointDetailPage extends BasePage {
     render() {//: React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
         const { items } = this.state;
         return (
-            // <CommonView>
-            <ScrollView>
+            <CommonView style={{ flex: 1, paddingBottom: 20 }}>
                 {items.map((item, index) => (
-                    <Flex key={item.pointName + index} direction={'column'} align={'start'} style={styles.content}>
+                    <Flex key={item.pointName + index}
+                        direction={'column'}
+                        align={'start'}
+                        style={styles.content}>
                         <Text style={styles.title}>{item.pointName}</Text>
                         <XunJianComponent data={item} />
                         <ListImages images={item.fileList} lookImage={this.lookImage} />
                     </Flex>
                 ))}
+
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                         imageUrls={this.state.images}
@@ -148,8 +149,7 @@ export default class XunJianPointDetailPage extends BasePage {
                         onSave={(url) => this.savePhoto(url)}
                     />
                 </Modal>
-                {/* </CommonView> */}
-            </ScrollView>
+            </CommonView>
         );
     }
 }
@@ -165,5 +165,5 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         paddingTop: 10,
         paddingBottom: 10
-    },
+    }
 });

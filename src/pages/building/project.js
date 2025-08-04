@@ -1,12 +1,10 @@
 import React from 'react';
-import {
-  Text,
+import { 
   View,
   StyleSheet,
   FlatList,
   NativeModules,
-  Alert,
-  ActivityIndicator
+  Alert
 } from 'react-native';
 import BasePage from '../base/base';
 import BuildingHeader from '../../components/building/building-header';
@@ -279,12 +277,12 @@ class ProjectPage extends BasePage {
   //   }
   // };
 
-  renderFooter = () => {
-    if (!this.state.hasMore && this.state.data.length > 0) {
-      return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
-    }
-    return this.state.loading ? <ActivityIndicator /> : null;
-  };
+  // renderFooter = () => {
+  //   if (!this.state.hasMore && this.state.data.length > 0) {
+  //     return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
+  //   }
+  //   return this.state.loading ? <ActivityIndicator /> : null;
+  // };
 
 
   render() {
@@ -330,7 +328,7 @@ class ProjectPage extends BasePage {
               onRefresh={this.onRefresh}//下拉刷新
               onEndReached={this.loadMore}//底部往下拉翻页
               //onMomentumScrollBegin={() => this.canLoadMore = true}
-              ListFooterComponent={this.renderFooter}
+              //ListFooterComponent={this.renderFooter}
               ListEmptyComponent={<NoDataView />}
             />
             {/* <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text> */}

@@ -776,7 +776,7 @@ class EcheckModifyPage extends BasePage {
                                                                     <LoadImageDelete
                                                                         style={{
                                                                             width: (ScreenUtil.deviceWidth() - 15) / 5.0 - 20,
-                                                                            height: (ScreenUtil.deviceWidth() - 15) / 5.0 - 20,
+                                                                            height: (ScreenUtil.devideviceHeighteWidth() - 15) / 5.0 - 20,
                                                                             borderRadius: 5
                                                                         }}
                                                                         defaultImg={require('../../../static/images/add_pic.png')}

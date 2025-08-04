@@ -11,6 +11,7 @@ import XunJianService from './xunjian-service';
 // import memberReducer from '../../../utils/store/reducers/member-reducer'; 
 // import xunJianReducer from '../../../utils/store/reducers/xunjian-reducer';
 // import ImagePicker from 'react-native-image-picker';
+// import UDToast from '../../../utils/UDToast';
 
 class XunJianPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -64,9 +65,9 @@ class XunJianPage extends BasePage {
 
     callBack = (pointId) => {
         if (this.props.hasNetwork) {
-            //判断巡检点位状态和点位的顺序
+            //判断巡检点位状态和点位的顺序 
             XunJianService.checkPollingState(pointId, this.state.lineId).then(res => {
-                if (res.flag == false) { 
+                if (res.flag == false) {
                     Alert.alert(
                         '请确认',
                         res.msg,
@@ -132,6 +133,9 @@ class XunJianPage extends BasePage {
         //         });
         //     },
         // )
+
+        //    UDToast.showError(this.state.lineId);
+        //      return;
 
         //点击手机返回按钮会跳转到扫码页面，需要改为跳转到当前页面 
         this.props.navigation.push('scanonly', {
@@ -293,7 +297,7 @@ class XunJianPage extends BasePage {
                     </Flex>
                 </TouchableWithoutFeedback>
 
-                <ScrollView style={{ height: ScreenUtil.contentHeight() - 180 }}>
+                <ScrollView style={{ height: ScreenUtil.contentHeight() - 155 }}>
                     <Accordion
                         onChange={this.onChange}
                         style={{
@@ -322,7 +326,7 @@ class XunJianPage extends BasePage {
                                             <List.Item >{it.sort + ' ' + it.name}</List.Item>
                                             </WingBlank> */}
                                             <List.Item>
-                                                <Text style={styles.itemtext}>
+                                                <Text style={it.counts == 0 ? styles.itemtextfinish : styles.itemtext}>
                                                     {it.sort + ' ' + it.name}
                                                 </Text>
                                             </List.Item>
@@ -357,6 +361,12 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: '#666'
     },
+
+    itemtextfinish: {
+        fontSize: 15,
+        color: '#10881aff'
+    },
+
     // title: {
     //     paddingTop: 14,
     //     textAlign: 'left',

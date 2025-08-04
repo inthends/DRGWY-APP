@@ -2,13 +2,13 @@ import React from 'react';
 import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, Alert } from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import CommonView from '../../../components/CommonView';
 import XunJianService from './xunjian-service';
 import common from '../../../utils/common';
 import { connect } from 'react-redux';
-import UDToast from '../../../utils/UDToast';
+//import UDToast from '../../../utils/UDToast';
 
 class XunjianBeforeStart extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -44,10 +44,23 @@ class XunjianBeforeStart extends BasePage {
         if (this.props.hasNetwork) {
             XunJianService.xunjianPointTasks(lineId, pointId).then(res => {
                 if (res.flag == false) {
-                    UDToast.showError(res.data);
-                    this.props.navigation.goBack();
+                    //UDToast.showError(res.data);
+                    Alert.alert(
+                        '请确认',
+                        res.data,
+                        [
+                            {
+                                text: '确定',
+                                onPress: () => {
+                                    this.props.navigation.goBack(); 
+                                }
+                            }
+                        ],
+                        { cancelable: false }
+                    ); 
+                } else {
+                    this.setState({ items: res.data });
                 }
-                this.setState({ items: res.data });
             });
         }
         else {

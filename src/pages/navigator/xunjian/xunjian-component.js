@@ -72,8 +72,7 @@ export default class XunJianDetailPage extends BasePage {
         const selectImg = require('../../../static/images/select.png');
         const noselectImg = require('../../../static/images/no-select.png');
 
-        return (
-            // <ScrollView>
+        return ( 
             <ScrollView style={{ marginTop: this.state.KeyboardShown ? -200 : 0, height: '100%' }}>
                 <Flex direction={'column'} align={'start'}>
                     <Flex style={{ width: ScreenUtil.deviceWidth() - 30 }} justify={'between'}>
