@@ -6,8 +6,7 @@ import {
     StyleSheet,
     FlatList,
     TouchableOpacity,
-    TouchableWithoutFeedback,
-    ActivityIndicator
+    TouchableWithoutFeedback
 } from 'react-native';
 import BasePage from '../../base/base';
 import {
@@ -40,7 +39,7 @@ class FeeHousePage extends BasePage {
                 <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
                     <Icon name='bars' style={{ marginRight: 15 }} color="black" />
                 </TouchableWithoutFeedback>
-            ),
+            )
         };
     };
 
@@ -53,8 +52,8 @@ class FeeHousePage extends BasePage {
             data: [],
             refreshing: false,//刷新
             loading: false,//加载完成 
-            hasMore: true,//更多
-            selectBuilding: this.props.selectBuilding,
+            hasMore: true,//默认有数据，需要加载更多
+            selectBuilding: this.props.selectBuilding
         };
     }
 
@@ -64,7 +63,10 @@ class FeeHousePage extends BasePage {
 
 
     loadData = (isRefreshing = false) => {
-        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore))  { 
+            this.setState({ loading: false, refreshing: false });
+            return;
+        }
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
         const {data, pageIndex, pageSize } = this.state;
@@ -103,7 +105,7 @@ class FeeHousePage extends BasePage {
         const nextSelectBuilding = nextProps.selectBuilding;
         if (!(selectBuilding && nextSelectBuilding && selectBuilding.key === nextSelectBuilding.key)) {
             this.setState({ selectBuilding: nextProps.selectBuilding }, () => {
-                this.loadData();
+                this.onRefresh();
             });
         }
     }
@@ -160,13 +162,12 @@ class FeeHousePage extends BasePage {
         );
     };
 
-    renderFooter = () => {
-        if (!this.state.hasMore && this.state.data.length > 0) {
-            return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
-        }
-
-        return this.state.loading ? <ActivityIndicator /> : null;
-    };
+    // renderFooter = () => {
+    //     if (!this.state.hasMore && this.state.data.length > 0) {
+    //         return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
+    //     } 
+    //     return this.state.loading ? <ActivityIndicator /> : null;
+    // };
 
     render() {
         const { data, refreshing, total } = this.state;
@@ -187,7 +188,7 @@ class FeeHousePage extends BasePage {
                             onRefresh={this.onRefresh}//下拉刷新
                             onEndReached={this.loadMore}//底部往下拉翻页
                             //onMomentumScrollBegin={() => this.canLoadMore = true}
-                            ListFooterComponent={this.renderFooter}
+                            //ListFooterComponent={this.renderFooter}
                             ListEmptyComponent={<NoDataView />}
                         />
                         <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>

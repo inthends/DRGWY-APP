@@ -26,7 +26,7 @@ export default class ListImages extends Component {
                                 }}>
                                     <LoadImage style={{
                                         width: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
-                                        height: (ScreenUtil.deviceHeight() - 15) / 4.0 - 20,
+                                        height: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
                                         borderRadius: 5,
                                     }} img={item.thumbUrl} />
 

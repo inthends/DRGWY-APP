@@ -200,10 +200,13 @@ export default class WeixiuDetailPage extends BasePage {
 
     //费用明细
     loadData = (isRefreshing = false) => {
-        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) {
+            this.setState({ loading: false, refreshing: false });
+            return;
+        }
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
-        const {data, detail, pageIndex, pageSize } = this.state;
+        const { data, detail, pageIndex, pageSize } = this.state;
         WorkService.serverFeeList(currentPage, pageSize, detail.relationId).then(res => {
             if (isRefreshing) {
                 this.setState({
@@ -212,7 +215,7 @@ export default class WeixiuDetailPage extends BasePage {
                     total: res.total
                 });
             }
-            else { 
+            else {
                 //合并并去重 使用 reduce
                 const combinedUniqueArray = [...data, ...res.data].reduce((acc, current) => {
                     if (!acc.some(item => item.id === current.id)) {

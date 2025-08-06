@@ -70,7 +70,7 @@ export default class OperationRecords extends Component {
                         {/*            }}>*/}
                         {/*                <Image style={{*/}
                         {/*                    width: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,*/}
-                        {/*                    height: (ScreenUtil.deviceHeight() - 15) / 4.0 - 20,*/}
+                        {/*                    height: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,*/}
                         {/*                }} source={{uri: item.icon}}/>*/}
                         {/*            </View>*/}
                         {/*        );*/}

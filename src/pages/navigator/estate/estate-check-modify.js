@@ -209,7 +209,10 @@ class EcheckModifyPage extends BasePage {
 
     //检查明细
     loadData = (isRefreshing = false) => {
-        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore))  {
+            this.setState({ loading: false, refreshing: false });
+            return;
+        }
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
         const { data,id, pageIndex, pageSize } = this.state;
@@ -776,7 +779,7 @@ class EcheckModifyPage extends BasePage {
                                                                     <LoadImageDelete
                                                                         style={{
                                                                             width: (ScreenUtil.deviceWidth() - 15) / 5.0 - 20,
-                                                                            height: (ScreenUtil.devideviceHeighteWidth() - 15) / 5.0 - 20,
+                                                                            height: (ScreenUtil.deviceWidth() - 15) / 5.0 - 20,
                                                                             borderRadius: 5
                                                                         }}
                                                                         defaultImg={require('../../../static/images/add_pic.png')}

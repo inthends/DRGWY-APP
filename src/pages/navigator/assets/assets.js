@@ -52,7 +52,7 @@ class AssetsPage extends BasePage {
             loading: false,//加载完成 
             hasMore: true,//更多
 
-            btnText: '搜索', 
+            btnText: '搜索',
             selectBuilding: this.props.selectBuilding,
             estateId: null//机构id
         };
@@ -63,10 +63,13 @@ class AssetsPage extends BasePage {
     }
 
     loadData = (isRefreshing = false) => {
-        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) {
+            this.setState({ loading: false, refreshing: false });
+            return;
+        }
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
-        const {data, estateId, keyword,pageIndex, pageSize } = this.state;
+        const { data, estateId, keyword, pageIndex, pageSize } = this.state;
         // const queryJson = {
         //     keyword: text,
         //     estateId: estateId
@@ -80,7 +83,7 @@ class AssetsPage extends BasePage {
                 });
             }
             else {
-                  //合并并去重 使用 reduce
+                //合并并去重 使用 reduce
                 const combinedUniqueArray = [...data, ...res.data].reduce((acc, current) => {
                     if (!acc.some(item => item.id === current.id)) {
                         acc.push(current);
@@ -120,7 +123,7 @@ class AssetsPage extends BasePage {
         });
     };
 
-       //加载更多
+    //加载更多
     loadMore = () => {
         const { pageIndex } = this.state;
         this.setState({

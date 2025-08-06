@@ -6,7 +6,7 @@ export default {
             villageId,
             pageIndex: 1,
             index:1,
-            pageSize: 100000,
+            pageSize: 1000,
             sidx: 'name'
         });
     }

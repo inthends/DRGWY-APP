@@ -10,9 +10,9 @@ export default {
     },
 
     //判断巡检点位状态
-    checkPollingState(pointId, lineId) {
-        return api.getData('/api/MobileMethod/MCheckPollingState', { pointId, lineId });
-    },
+    // checkPollingState(pointId, lineId) {
+    //     return api.getData('/api/MobileMethod/MCheckPollingState', { pointId, lineId });
+    // },
 
     xunjianTaskList(status, userId) {
         return api.postData('/api/MobileMethod/MGetPollingTaskPageList', {

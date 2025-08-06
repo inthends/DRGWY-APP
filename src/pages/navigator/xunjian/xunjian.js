@@ -31,7 +31,7 @@ class XunJianPage extends BasePage {
         this.setState({
             person
         }, () => {
-            this.initUI();
+            this.loadData();
         });
     };
 
@@ -66,33 +66,47 @@ class XunJianPage extends BasePage {
     callBack = (pointId) => {
         if (this.props.hasNetwork) {
             //判断巡检点位状态和点位的顺序 
-            XunJianService.checkPollingState(pointId, this.state.lineId).then(res => {
-                if (res.flag == false) {
-                    Alert.alert(
-                        '请确认',
-                        res.msg,
-                        [
-                            {
-                                text: '确定'
-                            }
-                        ],
-                        { cancelable: false }
-                    );
+            // XunJianService.checkPollingState(pointId, this.state.lineId).then(res => {
+            //     if (res.flag == false) {
+            //         Alert.alert(
+            //             '请确认',
+            //             res.msg,
+            //             [
+            //                 {
+            //                     text: '确定'
+            //                 }
+            //             ],
+            //             { cancelable: false }
+            //         ); 
+            //     } else {
+            //         this.setState({
+            //             pointId
+            //         }, () => {
+            //             let person = this.state.person || {};
+            //             this.props.navigation.navigate('xunjianBeforeStart', {
+            //                 data: {
+            //                     person,
+            //                     pointId,
+            //                     lineId: this.state.lineId
+            //                 }
+            //             });
+            //         });
+            //     }
+            // });
 
-                } else {
-                    this.setState({
-                        pointId
-                    }, () => {
-                        let person = this.state.person || {};
-                        this.props.navigation.navigate('xunjianBeforeStart', {
-                            data: {
-                                person,
-                                pointId,
-                                lineId: this.state.lineId
-                            }
-                        });
-                    });
-                }
+
+            //会弹出多次提示，只能放到 xunjianBeforeStart页面里去判断
+            this.setState({
+                pointId
+            }, () => {
+                let person = this.state.person || {};
+                this.props.navigation.navigate('xunjianBeforeStart', {
+                    data: {
+                        person,
+                        pointId,
+                        lineId: this.state.lineId
+                    }
+                });
             });
 
         } else {
@@ -147,18 +161,19 @@ class XunJianPage extends BasePage {
     };
 
     componentDidMount() {
-        this.initUI();
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             () => {
-                if (this.props.hasNetwork) {
-                    let person = this.state.person || this.props.user;
-                    XunJianService.xunjianData(person.id, false).then(res => {
-                        this.setState({
-                            ...res
-                        });
-                    });
-                }
+                // if (this.props.hasNetwork) {
+                //     let person = this.state.person || this.props.user; 
+                //     XunJianService.xunjianData(person.id, false).then(res => {
+                //         this.setState({
+                //             ...res
+                //         });
+                //     });
+                // }
+
+                this.loadData();
             }
         );
     }
@@ -167,7 +182,7 @@ class XunJianPage extends BasePage {
         this.viewDidAppear.remove();
     }
 
-    initUI() {
+    loadData() {
         if (this.props.hasNetwork) {
             this.hasNetwork();
         } else {
@@ -297,7 +312,7 @@ class XunJianPage extends BasePage {
                     </Flex>
                 </TouchableWithoutFeedback>
 
-                <ScrollView style={{ height: ScreenUtil.contentHeight() - 155 }}>
+                <ScrollView style={{ height: ScreenUtil.contentHeight() - 160 }}>
                     <Accordion
                         onChange={this.onChange}
                         style={{
@@ -347,7 +362,7 @@ class XunJianPage extends BasePage {
                             width: 220,
                             backgroundColor: Macro.work_blue,
                             marginTop: 10,
-                            marginBottom: 10,
+                            marginBottom: 15,
                             height: 40
                         }}>开始巡检</Button>
                 </Flex>

@@ -99,7 +99,10 @@ class EstateTousuPage extends BasePage {
         /*
         pageIndex, billStatus, treeType, organizeId, billType, startTime, endTime
          */
-        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore))  {
+            this.setState({ loading: false, refreshing: false });
+            return;
+        }
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
         const { data, selectBuilding, time, pageIndex, pageSize } = this.state;

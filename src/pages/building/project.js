@@ -1,5 +1,5 @@
 import React from 'react';
-import { 
+import {
   View,
   StyleSheet,
   FlatList,
@@ -49,16 +49,16 @@ class ProjectPage extends BasePage {
 
     addDownListener((progress) => {
       if (100 - progress <= 0.0001) {
-        UDToast.hiddenLoading(this.loading);
+        UDToast.hiddenLoading(this.downloading);
         return;
       }
-      this.loading = UDToast.showLoading('正在下载，已完成：' + progress + '%');
+      this.downloading = UDToast.showLoading('正在下载，已完成：' + progress + '%');
     });
   }
 
   componentDidMount() {
     //安卓更新
-    if (!common.isAndroid() === false) {
+    if (common.isAndroid() === true) {
       NativeModules.LHNToast.getVersionCode(
         (version, isYse, isLKL, brandName) => {
           api.getData('/api/Mobile/GetVersion', { isYse, isLKL, brandName }, false)
@@ -72,7 +72,7 @@ class ProjectPage extends BasePage {
                   [
                     {
                       text: '取消',
-                      onPress: () => this.initUI(),
+                      //onPress: () => this.initUI(),
                       style: 'cancel'
                     },
                     {
@@ -84,8 +84,7 @@ class ProjectPage extends BasePage {
                   ],
                   { cancelable: false }
                 );
-              }
-
+              } 
               // else {
               //   this.initUI();
               // }
@@ -148,9 +147,11 @@ class ProjectPage extends BasePage {
   }
 
   initUI() {
+    //用户信息
     BuildingService.getUserInfo().then((res) => {
       this.props.saveUser(res);
     });
+    this.loadTotal();
     this.loadData();
     // this.viewDidAppear = this.props.navigation.addListener(
     //     'didFocus',
@@ -166,7 +167,7 @@ class ProjectPage extends BasePage {
     this.viewDidAppear.remove();
   }
 
-  initData = () => {
+  loadTotal = () => {
     BuildingService.getStatisticsTotal(this.selectBuilding.key).then((res) => {
       if (res && res.length > 0) {
         this.setState({ statistics: res[0] });
@@ -176,11 +177,13 @@ class ProjectPage extends BasePage {
 
   //加载数据
   loadData = (isRefreshing = false) => {
-
-    if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+    //加载中，且不是刷新，没有更多
+    if (this.state.loading || (!isRefreshing && !this.state.hasMore)) {
+      this.setState({ loading: false, refreshing: false });
+      return;
+    }
 
     const currentPage = isRefreshing ? 1 : this.state.pageIndex;
-
     this.setState({ loading: true });
     const { data, pageIndex, pageSize } = this.state;
     BuildingService.getStatistics(
@@ -229,7 +232,7 @@ class ProjectPage extends BasePage {
         this.loadData(true);
       }
     );
-    this.initData();
+    this.loadTotal();
   };
 
   //加载更多
@@ -251,7 +254,7 @@ class ProjectPage extends BasePage {
       )
     ) {
       this.selectBuilding = nextProps.selectBuilding;
-      this.onRefresh();
+      this.onRefresh();//刷新
     }
   }
 

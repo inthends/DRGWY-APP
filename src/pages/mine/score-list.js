@@ -47,7 +47,7 @@ export default class ScoreListPage extends BasePage {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
-                 this.loadData();
+                this.loadData();
             }
         );
     }
@@ -58,10 +58,13 @@ export default class ScoreListPage extends BasePage {
 
 
     loadData = (isRefreshing = false) => {
-        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) {
+            this.setState({ loading: false, refreshing: false });
+            return;
+        }
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
-        const {data, pageIndex, pageSize } = this.state;
+        const { data, pageIndex, pageSize } = this.state;
         MineService.getRepairScoreList(currentPage, pageSize).then(res => {
             if (isRefreshing) {
                 this.setState({
@@ -98,7 +101,7 @@ export default class ScoreListPage extends BasePage {
         });
     };
 
-       //加载更多
+    //加载更多
     loadMore = () => {
         const { pageIndex } = this.state;
         this.setState({

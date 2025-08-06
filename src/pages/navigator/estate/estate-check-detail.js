@@ -103,7 +103,10 @@ export default class EcheckDetailPage extends BasePage {
 
     //检查明细
     loadData = (isRefreshing = false) => {
-        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) return;
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore))  {
+            this.setState({ loading: false, refreshing: false });
+            return;
+        }
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
         const { data,id, pageIndex, pageSize } = this.state;

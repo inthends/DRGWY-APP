@@ -38,7 +38,7 @@ export default class FeeBuildingsPage extends BasePage {
         let housing = common.getValueFromProps(this.props);
         this.state = {
             housing,
-            items: [],
+            items: []
         };
     }
 
@@ -67,8 +67,7 @@ export default class FeeBuildingsPage extends BasePage {
                                 }}> 
                                 {/* <Flex style={[styles.item, item.color === 2 ? '' : styles.orange]} justify={'center'}>
                                     <Text style={[styles.title, item.color === 2 ? '' : styles.orange]}>{item.name}</Text>
-                                </Flex> */}
-
+                                </Flex> */} 
                                 {/* 费用状态，1,2,3
                                 没有未收款的 显示灰色1
                                 未收款最小账单日小于当前日期的显示橙色2

@@ -241,7 +241,7 @@ class StartXunJianPage extends BasePage {
                                         }}>
                                             <LoadImageDelete style={{
                                                 width: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
-                                                height: (ScreenUtil.deviceHeight() - 15) / 4.0 - 20,
+                                                height: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
                                                 borderRadius: 5
                                             }}
                                                 defaultImg={require('../../../static/images/add_pic.png')}
@@ -286,7 +286,7 @@ class StartXunJianPage extends BasePage {
                                     }}>
                                         <LoadImageDelete style={{
                                             width: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
-                                            height: (ScreenUtil.deviceHeight() - 15) / 4.0 - 20,
+                                            height: (ScreenUtil.deviceWidth() - 15) / 4.0 - 20,
                                             borderRadius: 5
                                         }}
                                             defaultImg={require('../../../static/images/add_pic.png')}
