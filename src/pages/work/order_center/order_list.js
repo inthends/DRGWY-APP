@@ -139,7 +139,7 @@ export default class OrderlistPage extends BasePage {
                     style={styles.list}
                     keyExtractor={(item, index) => item.id}
                     //必须
-                    onEndReachedThreshold={0.1}
+                    onEndReachedThreshold={0.2}
                     refreshing={this.state.refreshing}
                     onRefresh={this.onRefresh}//下拉刷新
                     onEndReached={this.loadMore}//底部往下拉翻页

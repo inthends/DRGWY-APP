@@ -110,6 +110,7 @@ class ApprovePage extends BasePage {
 
   //加载更多
   loadMore = () => {
+    if (this.state.loading) return;//防止快速滚动，产生抖动，多次调用
     const { pageIndex } = this.state;
     this.setState({
       pageIndex: pageIndex + 1
@@ -463,7 +464,7 @@ class ApprovePage extends BasePage {
           style={styles.list}
           keyExtractor={(item) => item.id}
           //必须
-          onEndReachedThreshold={0.1}
+          onEndReachedThreshold={0.2}
           refreshing={refreshing}
           onRefresh={this.onRefresh}//下拉刷新
           onEndReached={this.loadMore}//底部往下拉翻页

@@ -174,7 +174,7 @@ class LouPan extends BasePage {
                             keyExtractor={(item) => item.id}
                             ItemSeparatorComponent={() => <View style={{ backgroundColor: '#eee', height: 1 }} />}
                             //必须
-                            onEndReachedThreshold={0.1}
+                            onEndReachedThreshold={0.2}
                             refreshing={refreshing}
                             onRefresh={this.onRefresh}//下拉刷新
                             onEndReached={this.loadMore}//底部往下拉翻页

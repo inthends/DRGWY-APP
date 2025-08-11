@@ -111,13 +111,13 @@ class EstateFuwuPage extends BasePage {
     }
 
     loadData = (isRefreshing = false) => {
-        if (this.state.loading || (!isRefreshing && !this.state.hasMore))  {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) {
             this.setState({ loading: false, refreshing: false });
             return;
         }
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
-        const {data, type,
+        const { data, type,
             billStatus,
             selectBuilding,
             billType, time,
@@ -176,6 +176,7 @@ class EstateFuwuPage extends BasePage {
 
     //加载更多
     loadMore = () => {
+        if (this.state.loading) return;//防止快速滚动，产生抖动，多次调用
         const { pageIndex } = this.state;
         this.setState({
             pageIndex: pageIndex + 1
@@ -362,6 +363,7 @@ class EstateFuwuPage extends BasePage {
                             index={index}
                         />
                     </Flex>
+
                     <FlatList
                         data={data}
                         // ListHeaderComponent={}
@@ -369,7 +371,7 @@ class EstateFuwuPage extends BasePage {
                         style={styles.list}
                         keyExtractor={(item) => item.id}
                         //必须
-                        onEndReachedThreshold={0.1}
+                        onEndReachedThreshold={0.2}
                         refreshing={refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
                         onEndReached={this.loadMore}//底部往下拉翻页

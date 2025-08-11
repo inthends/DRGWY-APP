@@ -42,7 +42,6 @@ export default class BuildingHeader extends BasePage {
                         </TouchableOpacity>
                     </Flex>
                 </Flex> */}
-
                 <Flex direction="row"
                     justify='between'
                     style={styles.top}>
@@ -51,7 +50,6 @@ export default class BuildingHeader extends BasePage {
                     >
                         <Text style={[styles.text, styles.big]}>总计费面积 {numeral(statistics.areasum).format('0,0.00')}{Macro.meter_square}</Text>
                     </Flex>
-
                     <Flex justify='end'
                     //style={{ flex: 1 }}
                     >
@@ -60,7 +58,6 @@ export default class BuildingHeader extends BasePage {
                         </TouchableOpacity>
                     </Flex>
                 </Flex>
-
                 {/* <Flex direction="column" style={styles.middle}>
                     <Flex justify="between" style={styles.area}>
                         <Text style={styles.text}>总面积</Text> 
@@ -70,7 +67,6 @@ export default class BuildingHeader extends BasePage {
                         <Text style={[styles.text, styles.big]}>{numeral(statistics.areasum).format('0,0.00')}</Text>
                     </Flex>
                 </Flex> */}
-
                 <Flex style={styles.bottom}>
                     <Flex.Item style={styles.item}>
                         <Text size="small" style={styles.topText}>在租 {statistics.rentarearate}%</Text>
@@ -78,10 +74,8 @@ export default class BuildingHeader extends BasePage {
                     </Flex.Item>
                     <Flex.Item style={styles.item}>
                         <Text size="small" style={styles.topText}>可招商 {statistics.investmentarearate}%</Text>
-                        <Text size="small"
-                            style={styles.bottomText}>{numeral(statistics.investmentareasum).format('0,0.00')}{Macro.meter_square}</Text>
+                        <Text size="small" style={styles.bottomText}>{numeral(statistics.investmentareasum).format('0,0.00')}{Macro.meter_square}</Text>
                     </Flex.Item>
-
                     {/* <Flex.Item style={styles.item}>
                         <Text size="small" style={styles.topText}>入住率</Text>
                         <Text size="small" style={styles.bottomText}>{statistics.checkrate}%</Text>
