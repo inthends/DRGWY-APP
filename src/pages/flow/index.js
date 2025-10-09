@@ -5,7 +5,7 @@ import {
   TouchableWithoutFeedback,
   StyleSheet,
   FlatList,
-  ActivityIndicator
+  //ActivityIndicator
 } from 'react-native';
 import { Flex, Icon } from '@ant-design/react-native';
 import { connect } from 'react-redux';
@@ -69,6 +69,7 @@ class ApprovePage extends BasePage {
       (obj) => {
         this.props.saveBuilding({});//加载页面清除别的页面选中的数据
         this.props.saveSelectDrawerType(DrawerType.task);
+        this.getCounts();
         this.loadData();
       },
     );
@@ -136,7 +137,7 @@ class ApprovePage extends BasePage {
     }
     const currentPage = isRefreshing ? 1 : this.state.pageIndex;
     this.setState({ loading: true });
-    const { data, taskType, pageIndex, pageSize } = this.state;
+    const { data, taskType, pageSize } = this.state;
     const { selectBuilding = {} } = this.props;
     Service.getFlowTask({
       taskType: taskType,
@@ -161,8 +162,8 @@ class ApprovePage extends BasePage {
         }, []);
         this.setState({
           data: combinedUniqueArray,
-          pageIndex: pageIndex,
-          hasMore: pageIndex * pageSize < res.total ? true : false,
+          pageIndex: currentPage,
+          hasMore: currentPage * pageSize < res.total ? true : false,
           total: res.total
         });
       }
@@ -302,13 +303,12 @@ class ApprovePage extends BasePage {
     });
   }
 
-  renderFooter = () => {
-    if (!this.state.hasMore && this.state.data.length > 0) {
-      return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
-    }
-
-    return this.state.loading ? <ActivityIndicator /> : null;
-  };
+  // renderFooter = () => {
+  //   if (!this.state.hasMore && this.state.data.length > 0) {
+  //     return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
+  //   }
+  //   return this.state.loading ? <ActivityIndicator /> : null;
+  // };
 
   render() {
     const { todo, read, done, taskType, data, refreshing, total } = this.state;
@@ -389,7 +389,7 @@ class ApprovePage extends BasePage {
             onPress={() =>
               this.setState(
                 {
-                  taskType: 3,
+                  taskType: 3
                 },
                 () => {
                   this.onRefresh();
@@ -468,8 +468,7 @@ class ApprovePage extends BasePage {
           refreshing={refreshing}
           onRefresh={this.onRefresh}//下拉刷新
           onEndReached={this.loadMore}//底部往下拉翻页
-          //onMomentumScrollBegin={() => this.canLoadMore = true}
-          ListFooterComponent={this.renderFooter}
+          //onMomentumScrollBegin={() => this.canLoadMore = true} 
           ListEmptyComponent={<NoDataView />}
         />
         <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>

@@ -12,8 +12,7 @@ import {
     Modal,
     Keyboard,
     Alert,
-    Platform, CameraRoll,
-    ActivityIndicator
+    Platform, CameraRoll
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Button, Flex, Icon, Modal as AntModal } from '@ant-design/react-native';
@@ -33,7 +32,6 @@ import MyPopoverRole from '../../../components/my-popover-role';
 import MyPopoverRight from '../../../components/my-popover-right';
 import RNFetchBlob from 'rn-fetch-blob';
 import ActionPopover from '../../../components/action-popover';
-import NoDataView from '../../../components/no-data-view'; 
 
 class EcheckModifyPage extends BasePage {
 
@@ -62,8 +60,8 @@ class EcheckModifyPage extends BasePage {
             loading: false,//加载完成 
             hasMore: true,//更多
 
-
             id,
+            isSystem: false,//是否是系统内置的检查类型
             detailId: '',
             detail: {},
             showAdd: false,
@@ -197,7 +195,7 @@ class EcheckModifyPage extends BasePage {
         });
     };
 
-       //加载更多
+    //加载更多
     loadMore = () => {
         if (this.state.loading) return;//防止快速滚动，产生抖动，多次调用
         const { pageIndex } = this.state;
@@ -210,13 +208,13 @@ class EcheckModifyPage extends BasePage {
 
     //检查明细
     loadData = (isRefreshing = false) => {
-        if (this.state.loading || (!isRefreshing && !this.state.hasMore))  {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) {
             this.setState({ loading: false, refreshing: false });
             return;
         }
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
-        const { data,id, pageIndex, pageSize } = this.state;
+        const { data, id, pageSize } = this.state;
         WorkService.checkDetailList(currentPage, pageSize, id).then(res => {
             if (isRefreshing) {
                 this.setState({
@@ -235,8 +233,8 @@ class EcheckModifyPage extends BasePage {
                 }, []);
                 this.setState({
                     data: combinedUniqueArray,
-                    pageIndex: pageIndex,
-                    hasMore: pageIndex * pageSize < res.total ? true : false,
+                    pageIndex: currentPage,
+                    hasMore: currentPage * pageSize < res.total ? true : false,
                     total: res.total
                 });
             }
@@ -361,8 +359,8 @@ class EcheckModifyPage extends BasePage {
     }
 
     save = () => {
-        const { id, memo, dataInfo } = this.state;
-        if (dataInfo.data.length == 0) {
+        const { id, memo, data } = this.state;
+        if (data.length == 0) {
             UDToast.showError('请添加明细');
             return;
         }
@@ -534,16 +532,8 @@ class EcheckModifyPage extends BasePage {
         }
     }
 
-    renderFooter = () => {
-        if (!this.state.hasMore && this.state.data.length > 0) {
-            return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
-        }
-
-        return this.state.loading ? <ActivityIndicator /> : null;
-    };
-
     render() {
-        const { detail, data, refreshing,total, address, checkTypes,
+        const { detail, data, refreshing, total, address, checkTypes,
             selectPerson, repairmajor, roles, checkRoleId,
             images, isAutoSend, showAdd } = this.state;
         return (
@@ -574,7 +564,14 @@ class EcheckModifyPage extends BasePage {
                         <Text style={styles.left}>检查类型：</Text>
                         <MyPopoverRight
                             onChange={(value) => {
-                                this.setState({ checkType: value });
+                                WorkService.getCheckType(value).then(res => {
+                                    this.setState({
+                                        checkType: value,
+                                        isSystem: res
+                                    })
+                                })
+
+                                //this.setState({ checkType: value });
                             }}
                             titles={checkTypes}
                             visible={true} />
@@ -611,6 +608,7 @@ class EcheckModifyPage extends BasePage {
                             numberOfLines={3}>
                         </TextInput>
                     </Flex>
+
                     <FlatList
                         data={data}
                         renderItem={this._renderItem}
@@ -620,12 +618,13 @@ class EcheckModifyPage extends BasePage {
                         onEndReachedThreshold={0.2}
                         refreshing={refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
-                        onEndReached={this.loadMore}//底部往下拉翻页
-                        ListFooterComponent={this.renderFooter}
-                        ListEmptyComponent={<NoDataView />}
-                    //onMomentumScrollBegin={() => this.canLoadMore = true}
+                        onEndReached={this.loadMore}//底部往下拉翻页 
+                        ListEmptyComponent={
+                            <Flex justify={'center'}>
+                                <Text style={{ fontSize: 14, color: '#666', paddingTop: 24, paddingBottom: 15 }}>暂无数据</Text>
+                            </Flex>}
                     />
-                     <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
+                    <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
                 </ScrollView>
 
                 <Flex justify={'center'}>
@@ -643,6 +642,8 @@ class EcheckModifyPage extends BasePage {
                                 UDToast.showError('选择检查区域');
                                 return;
                             }
+
+                            //客户要求，如果检查类型是系统内置，则默认负责人为当前操作人员，可修改
                             let mydetailId = this.guid();
                             this.setState({
                                 showAdd: true,
@@ -655,6 +656,16 @@ class EcheckModifyPage extends BasePage {
                                 rectification: '',
                                 operateType: 'add'
                             });
+
+                            const { isSystem } = this.state;
+                            if (isSystem == true) {
+                                const { user } = this.props;
+                                if (user.id != 'System') {
+                                    this.setState({ selectPerson: { id: user.id, name: user.showName } });
+                                }
+                            } else {
+                                this.setState({ selectPerson: null });
+                            }
                         }}
                             type={'primary'}
                             activeStyle={{ backgroundColor: Macro.work_blue }}

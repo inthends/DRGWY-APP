@@ -8,7 +8,7 @@ import {
     ScrollView,
     Modal,
     Platform,
-    Keyboard,CameraRoll
+    Keyboard, CameraRoll
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Button, Icon, Flex, TextareaItem } from '@ant-design/react-native';
@@ -23,7 +23,7 @@ import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import UploadImageView from '../../../components/upload-image-view';
-import RNFetchBlob from 'rn-fetch-blob'; 
+import RNFetchBlob from 'rn-fetch-blob';
 
 export default class CheckDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -218,19 +218,19 @@ export default class CheckDetailPage extends BasePage {
                     //     //console.log('Image saved to docs://image.png'); // 或者使用你的路径
                     //     // 在这里你可以做其他事情，比如显示一个提示或者加载图片等 
                     // })
-                    .catch((err) => { 
+                    .catch((err) => {
                     });
 
             }
             else {
                 //ios
                 let promise = CameraRoll.saveToCameraRoll(uri);
-                promise.then(function (result) { 
-                }).catch(function (err) { 
+                promise.then(function (result) {
+                }).catch(function (err) {
                 });
             }
 
-        } catch (error) { 
+        } catch (error) {
         }
     }
 
@@ -284,13 +284,18 @@ export default class CheckDetailPage extends BasePage {
                     <Text style={styles.desc}>{detail.repairContent}</Text>
                     {/* <DashLine /> */}
                     <ListImages images={preimages} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, preimages)} />
-
+  
+ 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>紧急程度：{detail.emergencyLevel}</Text>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.right}>重要程度：{detail.importance}</Text>
+                        <Text style={styles.left}>重要程度：{detail.importance}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>预约维修时间：{detail.reservationTime}</Text>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
@@ -303,7 +308,7 @@ export default class CheckDetailPage extends BasePage {
 
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every]}>
-                            <Text style={styles.left}>关联单：</Text>
+                            <Text style={styles.left}>关联单据：</Text>
                             <Text
                                 onPress={() => {
                                     if (detail.sourceType === '服务总台') {

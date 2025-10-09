@@ -34,7 +34,7 @@ export default class XunJianPointDetailPage extends BasePage {
         let pointId = common.getValueFromProps(this.props).pointId;
         this.state = {
             lineId,
-            pointId,
+            pointId,//点位表id
             items: [],
             visible: false,
             images: []

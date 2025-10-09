@@ -1,14 +1,15 @@
 import React from 'react';
 import {
+    View,
     Text,
     StyleSheet,
     FlatList,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    ActivityIndicator
+    Keyboard
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Flex, Icon } from '@ant-design/react-native';
+import { Flex, Icon, SearchBar } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
 import { connect } from 'react-redux';
@@ -54,15 +55,16 @@ class TaskFinishListPage extends BasePage {
             visible: false,
             time: '全部',
             status: '全部',
-            selectedId: ''
+            selectedId: '',
+            btnText: '搜索',
         };
     }
 
-    componentDidMount() { 
+    componentDidMount() {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
-                 this.loadData();
+                this.loadData();
             }
         );
     }
@@ -82,14 +84,14 @@ class TaskFinishListPage extends BasePage {
     }
 
     loadData = (isRefreshing = false) => {
-        if (this.state.loading || (!isRefreshing && !this.state.hasMore))  {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) {
             this.setState({ loading: false, refreshing: false });
             return;
         }
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
-        const { data,time, status, pageIndex, pageSize } = this.state;
-        WorkService.workFinishList(time, status, currentPage, pageSize).then(res => {
+        const { data, time, status, pageSize, keyword } = this.state;
+        WorkService.workFinishList(time, status, currentPage, pageSize, keyword).then(res => {
             if (isRefreshing) {
                 this.setState({
                     data: res.data,
@@ -107,8 +109,8 @@ class TaskFinishListPage extends BasePage {
                 }, []);
                 this.setState({
                     data: combinedUniqueArray,
-                    pageIndex: pageIndex,
-                    hasMore: pageIndex * pageSize < res.total ? true : false,
+                    pageIndex: currentPage,
+                    hasMore: currentPage * pageSize < res.total ? true : false,
                     total: res.total
                 });
             }
@@ -126,7 +128,7 @@ class TaskFinishListPage extends BasePage {
         });
     };
 
-       //加载更多
+    //加载更多
     loadMore = () => {
         if (this.state.loading) return;//防止快速滚动，产生抖动，多次调用
         const { pageIndex } = this.state;
@@ -229,44 +231,68 @@ class TaskFinishListPage extends BasePage {
         );
     };
 
-    renderFooter = () => {
-        if (!this.state.hasMore && this.state.data.length > 0) {
-            return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
-        }
 
-        return this.state.loading ? <ActivityIndicator /> : null;
+    search = () => {
+        Keyboard.dismiss();
+        this.onRefresh();
+        this.setState({ btnText: '取消' });
+    };
+
+    clear = () => {
+        const { btnText } = this.state;
+        Keyboard.dismiss();
+        if (btnText == '搜索') {
+            this.onRefresh();
+            this.setState({ btnText: '取消' });
+        } else {
+            this.setState({
+                keyword: ''//必须要设置值，再调用方法，否则数据没有更新
+            }, () => {
+                this.onRefresh();
+                this.setState({ btnText: '搜索' });
+            });
+        }
     };
 
     render() {
-        const { data, refreshing, total } = this.state;
+        const { data, refreshing, total, btnText } = this.state;
         return (
-            <CommonView style={{ flex: 1 }}>
-                <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
-                    <MyPopover onChange={this.timeChange}
-                        titles={['全部', '今日', '本周', '本月', '上月', '本年']}
-                        visible={true} />
-                    <MyPopover onChange={this.statusChange}
-                        titles={['全部', '待检验', '待回访', '待审核', '已审核']}
-                        visible={true} />
-                </Flex>
-                <FlatList
-                    data={data}
-                    // ListHeaderComponent={}
-                    renderItem={this._renderItem}
-                    style={styles.list}
-                    keyExtractor={(item) => item.id}
-                    //必须
-                    onEndReachedThreshold={0.2}
-                    refreshing={refreshing}
-                    onRefresh={this.onRefresh}//下拉刷新
-                    onEndReached={this.loadMore}//底部往下拉翻页
-                    //onMomentumScrollBegin={() => this.canLoadMore = true}
-                    ListFooterComponent={this.renderFooter}
-                    ListEmptyComponent={<NoDataView />}
-                //ListHeaderComponent={() => this._footer(dataInfo.data.length)}
+            <View style={{ flex: 1 }}>
+                <SearchBar
+                    placeholder="请输入"
+                    showCancelButton
+                    cancelText={btnText}
+                    value={this.state.keyword}
+                    onChange={keyword => this.setState({ keyword })}
+                    onSubmit={() => this.search()}
+                    onCancel={() => this.clear()}
                 />
-                <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
-            </CommonView>
+                <CommonView style={{ flex: 1 }}>
+                    <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
+                        <MyPopover onChange={this.timeChange}
+                            titles={['全部', '今日', '本周', '本月', '上月', '本年']}
+                            visible={true} />
+                        <MyPopover onChange={this.statusChange}
+                            titles={['全部', '待检验', '待回访', '待审核', '已审核']}
+                            visible={true} />
+                    </Flex>
+                    <FlatList
+                        data={data}
+                        // ListHeaderComponent={}
+                        renderItem={this._renderItem}
+                        style={styles.list}
+                        keyExtractor={(item) => item.id}
+                        //必须
+                        onEndReachedThreshold={0.2}
+                        refreshing={refreshing}
+                        onRefresh={this.onRefresh}//下拉刷新
+                        onEndReached={this.loadMore}//底部往下拉翻页
+                        //onMomentumScrollBegin={() => this.canLoadMore = true} 
+                        ListEmptyComponent={<NoDataView />}
+                    />
+                    <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
+                </CommonView>
+            </View>
         );
     }
 }

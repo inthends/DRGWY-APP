@@ -5,8 +5,7 @@ import {
     StyleSheet,
     FlatList,
     TouchableOpacity,
-    TouchableWithoutFeedback,
-    ActivityIndicator
+    TouchableWithoutFeedback 
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
@@ -65,7 +64,7 @@ class LouPan extends BasePage {
         }
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
-        const { data,pageIndex, pageSize } = this.state;
+        const { data, pageSize } = this.state;
         service.getFeeStatistics(
             currentPage,
             pageSize,
@@ -88,8 +87,8 @@ class LouPan extends BasePage {
                     }, []);
                     this.setState({
                         data: combinedUniqueArray,
-                        pageIndex: pageIndex,
-                        hasMore: pageIndex * pageSize < res.total ? true : false,
+                        pageIndex: currentPage,
+                        hasMore: currentPage * pageSize < res.total ? true : false,
                         total: res.total
                     });
                 }
@@ -152,13 +151,7 @@ class LouPan extends BasePage {
         );
     };
 
-    renderFooter = () => {
-        if (!this.state.hasMore && this.state.data.length > 0) {
-            return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
-        }
-
-        return this.state.loading ? <ActivityIndicator /> : null;
-    };
+ 
 
     render() {
         const { data, total, refreshing } = this.state;
@@ -177,9 +170,7 @@ class LouPan extends BasePage {
                             onEndReachedThreshold={0.2}
                             refreshing={refreshing}
                             onRefresh={this.onRefresh}//下拉刷新
-                            onEndReached={this.loadMore}//底部往下拉翻页
-                            //onMomentumScrollBegin={() => this.canLoadMore = true}
-                            ListFooterComponent={this.renderFooter}
+                            onEndReached={this.loadMore}//底部往下拉翻页 
                             ListEmptyComponent={<NoDataView />}
                         />
                         <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>

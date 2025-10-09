@@ -6,8 +6,7 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
     FlatList,
-    Keyboard,
-    ActivityIndicator
+    Keyboard
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Flex, Icon, SearchBar } from '@ant-design/react-native';
@@ -57,8 +56,7 @@ class EstateFuwuPage extends BasePage {
         let arr = ['全部', '今日', '本周', '本月', '上月', '本年'];
         let index = arr.indexOf(mytime);
 
-        this.state = {
-
+        this.state = { 
             pageIndex: 1,
             pageSize: 10,
             total: 0,
@@ -121,11 +119,12 @@ class EstateFuwuPage extends BasePage {
             billStatus,
             selectBuilding,
             billType, time,
-            keyword, pageIndex, pageSize
+            keyword, 
+            pageSize
         } = this.state;
+        
         let organizeId;
-        if (selectBuilding) {
-            //treeType = selectBuilding.type;
+        if (selectBuilding) { 
             organizeId = selectBuilding.key;
         }
 
@@ -156,8 +155,8 @@ class EstateFuwuPage extends BasePage {
                     }, []);
                     this.setState({
                         data: combinedUniqueArray,
-                        pageIndex: pageIndex,
-                        hasMore: pageIndex * pageSize < res.total ? true : false,
+                        pageIndex: currentPage,
+                        hasMore: currentPage * pageSize < res.total ? true : false,
                         total: res.total
                     });
                 }
@@ -184,8 +183,7 @@ class EstateFuwuPage extends BasePage {
             this.loadData();
         });
     };
-
-
+ 
     search = () => {
         Keyboard.dismiss();
         this.onRefresh();
@@ -328,14 +326,6 @@ class EstateFuwuPage extends BasePage {
         });
     };
 
-    renderFooter = () => {
-        if (!this.state.hasMore && this.state.data.length > 0) {
-            return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
-        }
-
-        return this.state.loading ? <ActivityIndicator /> : null;
-    };
-
     render() {
         const { type, index, data, total, refreshing, btnText } = this.state;
         return (
@@ -374,9 +364,7 @@ class EstateFuwuPage extends BasePage {
                         onEndReachedThreshold={0.2}
                         refreshing={refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
-                        onEndReached={this.loadMore}//底部往下拉翻页
-                        //onMomentumScrollBegin={() => this.canLoadMore = true}
-                        ListFooterComponent={this.renderFooter}
+                        onEndReached={this.loadMore}//底部往下拉翻页 
                         ListEmptyComponent={<NoDataView />}
                     />
                     <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>

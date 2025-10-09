@@ -11,8 +11,7 @@ import {
     FlatList,
     Platform,
     Keyboard,
-    CameraRoll,
-    ActivityIndicator
+    CameraRoll
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Icon, Flex, TextareaItem, Button } from '@ant-design/react-native';
@@ -29,7 +28,6 @@ import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import moment from 'moment';
 import RNFetchBlob from 'rn-fetch-blob';
-import NoDataView from '../../../components/no-data-view';
 
 export default class VisitDetailPage extends BasePage {
 
@@ -274,13 +272,13 @@ export default class VisitDetailPage extends BasePage {
 
     //加载数据
     loadData = (isRefreshing = false) => {
-        if (this.state.loading || (!isRefreshing && !this.state.hasMore))  {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) {
             this.setState({ loading: false, refreshing: false });
             return;
         }
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
-        const {data, detail, pageIndex, pageSize } = this.state;
+        const { data, detail, pageSize } = this.state;
         WorkService.serverFeeList(currentPage, pageSize, detail.relationId).then(res => {
             if (isRefreshing) {
                 this.setState({
@@ -299,8 +297,8 @@ export default class VisitDetailPage extends BasePage {
                 }, []);
                 this.setState({
                     data: combinedUniqueArray,
-                    pageIndex: pageIndex,
-                    hasMore: pageIndex * pageSize < res.total ? true : false,
+                    pageIndex: currentPage,
+                    hasMore: currentPage * pageSize < res.total ? true : false,
                     total: res.total
                 });
             }
@@ -319,32 +317,25 @@ export default class VisitDetailPage extends BasePage {
                 </Flex>
                 <Flex style={styles.line} />
                 <Flex align={'start'} direction={'column'}>
-                    <Flex justify='between'
-                        style={{ width: '100%', paddingTop: 5, paddingLeft: 15, paddingRight: 15 }}>
+                    <Flex justify='between' style={{ width: '100%', paddingTop: 5, paddingLeft: 10 }}>
                         <Text style={{ lineHeight: 20 }}>应收金额：{item.amount}
                             ，减免金额：{item.reductionAmount}
                             ，已收金额：{item.receiveAmount}
                             ，未收金额：{item.lastAmount}</Text>
                     </Flex>
                     <Flex justify='between'
-                        style={{ width: '100%', paddingTop: 5, paddingBottom: 5, paddingLeft: 15, paddingRight: 15 }}>
+                        style={{ width: '100%', paddingTop: 5, paddingBottom: 5, paddingLeft: 10 }}>
                         {item.beginDate ?
-                            <Text>{moment(item.beginDate).format('YYYY-MM-DD') + '至' + moment(item.endDate).format('YYYY-MM-DD')}</Text> : null
+                            <Text>计费期间：{moment(item.beginDate).format('YYYY-MM-DD') + '至' + moment(item.endDate).format('YYYY-MM-DD')}</Text> : null
                         }
-                        <Text>账单是否推送：{item.noticeId ? '是' : '否'} </Text>
-                        <Text>是否退款：{item.payStatus && item.payStatus == -1 ? '是' : '否'}</Text>
                     </Flex>
+                    <Flex justify='between' style={{ width: '100%', paddingBottom: 5, paddingLeft: 10 }}>
+                        <Text>账单是否推送：{item.noticeId ? '是' : '否'}，是否退款：{item.payStatus && item.payStatus == -1 ? '是' : '否'}</Text>
+                    </Flex>
+
                 </Flex>
             </Flex>
         );
-    };
-
-    renderFooter = () => {
-        if (!this.state.hasMore && this.state.data.length > 0) {
-            return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
-        }
-
-        return this.state.loading ? <ActivityIndicator /> : null;
     };
 
     render() {
@@ -370,11 +361,15 @@ export default class VisitDetailPage extends BasePage {
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.right}>重要程度：{detail.importance}</Text>
+                        <Text style={styles.left}>重要程度：{detail.importance}</Text>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>报单人：{detail.contactName} </Text>
+                        <Text style={styles.left}>申请人：{detail.contactName} </Text>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>申请人电话：{detail.contactPhone}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactPhone)}>
                             <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
                                 style={{ width: 18, height: 18 }} /></Flex>
@@ -382,7 +377,11 @@ export default class VisitDetailPage extends BasePage {
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>报单时间：{detail.createDate}</Text>
+                        <Text style={styles.left}>申请时间：{detail.createDate}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>预约维修时间：{detail.reservationTime}</Text>
                     </Flex>
 
                     {/* <TouchableWithoutFeedback>
@@ -403,7 +402,7 @@ export default class VisitDetailPage extends BasePage {
                     {detail.linkList && detail.linkList.map(item => (
                         <TouchableWithoutFeedback key={item.id}>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
-                                <Text style={styles.left}>关联单：</Text>
+                                <Text style={styles.left}>关联单据：</Text>
                                 <Text onPress={() => {
                                     if (detail.businessType === 'Repair') {
                                         this.props.navigation.navigate('weixiuD', { id: item.id });
@@ -454,10 +453,11 @@ export default class VisitDetailPage extends BasePage {
                         onEndReachedThreshold={0.2}
                         refreshing={refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
-                        onEndReached={this.loadMore}//底部往下拉翻页
-                        ListFooterComponent={this.renderFooter}
-                        ListEmptyComponent={<NoDataView />}
-                    //onMomentumScrollBegin={() => this.canLoadMore = true}
+                        onEndReached={this.loadMore}//底部往下拉翻页 
+                        ListEmptyComponent={
+                            <Flex justify={'center'}>
+                                <Text style={{ fontSize: 14, color: '#666', paddingTop: 24, paddingBottom: 15 }}>暂无数据</Text>
+                            </Flex>}
                     />
                     <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
 
@@ -523,15 +523,15 @@ const styles = StyleSheet.create({
 
     statusred: {
         paddingTop: 10,
-        marginRight: 15,
-        paddingBottom: 5,
+        paddingRight: 10,
+        paddingBottom: 10,
         color: Macro.work_red
     },
 
     statusblue: {
         paddingTop: 10,
-        marginRight: 15,
-        paddingBottom: 5,
+        paddingRight: 10,
+        paddingBottom: 10,
         color: Macro.work_blue
     },
 

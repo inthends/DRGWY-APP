@@ -1,7 +1,7 @@
 import React from 'react';
 import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
-import { StyleSheet, FlatList, Text, TouchableOpacity, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
+import { StyleSheet, FlatList, Text, TouchableOpacity, TouchableWithoutFeedback  } from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import CommonView from '../../../components/CommonView';
 import common from '../../../utils/common';
@@ -46,7 +46,7 @@ export default class OrderlistPage extends BasePage {
         }
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
-        const {data, type, pageIndex, pageSize } = this.state;
+        const {data, type,   pageSize } = this.state;
         OrderService.getOrderDatas(type, currentPage, pageSize).then(res => {
             if (isRefreshing) {
                 this.setState({
@@ -65,8 +65,8 @@ export default class OrderlistPage extends BasePage {
                 }, []);
                 this.setState({
                     data: combinedUniqueArray,
-                    pageIndex: pageIndex,
-                    hasMore: pageIndex * pageSize < res.total ? true : false,
+                    pageIndex: currentPage,
+                    hasMore: currentPage * pageSize < res.total ? true : false,
                     total: res.total
                 });
             }
@@ -163,13 +163,7 @@ type: "预约看房"
         );
     };
 
-    renderFooter = () => {
-        if (!this.state.hasMore && this.state.data.length > 0) {
-            return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
-        }
-
-        return this.state.loading ? <ActivityIndicator /> : null;
-    };
+ 
 
     render(): React.ReactElement<any> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
         const { data, refreshing } = this.state;
@@ -185,9 +179,7 @@ type: "预约看房"
                     onEndReachedThreshold={0.2}
                     refreshing={refreshing}
                     onRefresh={this.onRefresh}//下拉刷新
-                    onEndReached={this.loadMore}//底部往下拉翻页
-                    //onMomentumScrollBegin={() => this.canLoadMore = true}
-                    ListFooterComponent={this.renderFooter}
+                    onEndReached={this.loadMore}//底部往下拉翻页 
                     ListEmptyComponent={<NoDataView />}
                 /> 
             </CommonView>

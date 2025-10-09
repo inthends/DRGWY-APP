@@ -24,13 +24,14 @@ export default class ChaiFei extends BasePage {
             secondAmount: null,
             secondBeginDate: null,
             secondEndDate: null,
-            memo: null,
+            memo: null
             //a: this.props.item.beginDate
         };
     }
 
     in = () => {
-        let { firstAmount, firstEndDate, secondAmount, secondBeginDate, memo } = this.state;
+        let { firstAmount, firstEndDate, secondAmount,
+            secondBeginDate, memo } = this.state;
         const { item } = this.props;
         if (!firstAmount) {
             UDToast.showError('请输入金额');
@@ -79,9 +80,9 @@ export default class ChaiFei extends BasePage {
                                     至
                                 </Text>
                                 <DatePicker
-                                    style={{ 
-                                        width: 108
-                                     }}
+                                    style={{
+                                        width: 120
+                                    }}
                                     date={this.state.firstEndDate ? this.state.firstEndDate.format('YYYY-MM-DD') : ''}
                                     mode="date"
                                     placeholder="请选择日期"
@@ -102,23 +103,53 @@ export default class ChaiFei extends BasePage {
                                     }}
                                     onDateChange={(value) => {
                                         if (value) {
-                                            let a = moment(item.beginDate);
-                                            let b = moment(item.endDate);
-                                            let iDays = b.diff(a, 'days') + 1;
-                                            let firstEndDate = moment(value);
-                                            this.setState({ firstEndDate: firstEndDate }); 
-                                            let firstDays = firstEndDate.diff(a, 'days') + 1;
-                                            let firstamount = (item.amount / iDays * firstDays).toFixed(2);
-                                            this.setState({ firstAmount: firstamount, secondAmount: (item.amount - Number(firstamount)).toFixed(2) });
-                                            if (firstEndDate < b) {
-                                                let tempday = moment(firstEndDate.format('YYYY-MM-DD'));//重新赋值，防止传址引用
-                                                tempday = tempday.add(1, 'days');
-                                                this.setState({ secondBeginDate: tempday });
-                                            } else {
-                                                this.setState({ secondBeginDate: firstEndDate });
-                                            }
+
+                                            // let a = moment(item.beginDate);
+                                            // let b = moment(item.endDate);
+                                            // let iDays = b.diff(a, 'days') + 1;
+                                            // let firstEndDate = moment(value);
+                                            // this.setState({ firstEndDate: firstEndDate });
+                                            // let firstDays = firstEndDate.diff(a, 'days') + 1;
+                                            // let firstamount = (item.amount / iDays * firstDays).toFixed(2);
+                                            // this.setState({ firstAmount: firstamount, secondAmount: (item.amount - Number(firstamount)).toFixed(2) }); 
+                                            // if (firstEndDate < b) {
+                                            //     let tempday = moment(firstEndDate.format('YYYY-MM-DD'));//重新赋值，防止传址引用
+                                            //     tempday = tempday.add(1, 'days');
+                                            //     this.setState({ secondBeginDate: tempday });
+                                            // } else {
+                                            //     this.setState({ secondBeginDate: firstEndDate });
+                                            // }
+
+                                            let splitData = {
+                                                id: item.id,
+                                                type: 2,
+                                                data: value
+                                            };
+                                            api.postData('/api/BillingMain/CalSplit', splitData).then(res => {
+                                                this.setState({
+                                                    firstAmount: res.firstAmount,
+                                                    secondAmount: res.secondAmount
+                                                });
+
+                                                let firstEndDate = moment(value);
+                                                let endDate = moment(item.endDate);
+                                                if (firstEndDate < endDate) {
+                                                    let tempday = moment(firstEndDate.format('YYYY-MM-DD'));//重新赋值，防止传址引用
+                                                    tempday = tempday.add(1, 'days');
+                                                    this.setState({ secondBeginDate: tempday });
+                                                } else {
+                                                    this.setState({ secondBeginDate: firstEndDate });
+                                                }
+                                            });
+
+
                                         } else {
-                                            this.setState({ firstEndDate: null, firstAmount: null, secondBeginDate: null, secondAmount: null });
+                                            this.setState({
+                                                firstEndDate: null,
+                                                firstAmount: null,
+                                                secondBeginDate: null,
+                                                secondAmount: null
+                                            });
                                         }
                                     }}
                                 />
@@ -133,29 +164,58 @@ export default class ChaiFei extends BasePage {
                                 keyboardType={'decimal-pad'}
                                 onChangeText={value => {
                                     if (!isNaN(value) && value >= 0 && value <= item.amount) {
-                                        this.setState({ firstAmount: value, secondAmount: (item.amount - value).toFixed(2) });
-                                        //修改金额的时候，改变日期 
-                                        let a = moment(item.beginDate);
-                                        let b = moment(item.endDate);
-                                        let iDays = b.diff(a, 'days');
-                                        let firstdays = Math.ceil(iDays * Number(value) / item.amount);
-                                        let firstEndDate = a.add(firstdays, 'days');
-                                        this.setState({ firstEndDate: firstEndDate });
-                                        //console.log('firstEndDate1,firstEndDate:' + firstEndDate.format('YYYY-MM-DD'));
-                                        if (firstEndDate < b) {
-                                            let tempday = moment(firstEndDate.format('YYYY-MM-DD'));//重新赋值，防止传址引用
-                                            tempday = tempday.add(1, 'days');
-                                            this.setState({ secondBeginDate: tempday });
-                                            //console.log('firstEndDate2,firstEndDate.:' + firstEndDate.format('YYYY-MM-DD'));
-                                        } else {
-                                            this.setState({ secondBeginDate: firstEndDate });
-                                        }
-                                    } else {
-                                        this.setState({ firstEndDate: null, firstAmount: null, secondBeginDate: null, secondAmount: null });
-                                    }
-                                }} style={styles.input}
-                                placeholder='请输入金额' />
 
+                                        //this.setState({ firstAmount: value, secondAmount: (item.amount - value).toFixed(2) });
+
+                                        let splitData = {
+                                            id: item.id,
+                                            type: 1,
+                                            data: value
+                                        };
+                                        api.postData('/api/BillingMain/CalSplit', splitData).then(res => {
+
+                                            this.setState({
+                                                secondAmount: res.secondAmount
+                                            });
+
+                                            if (item.beginDate && item.endDate) {
+                                                //修改金额的时候，改变日期 
+                                                let beginDate = moment(item.beginDate);
+                                                let endDate = moment(item.endDate);
+                                                let iDays = endDate.diff(beginDate, 'days');
+                                                let firstdays = Math.ceil(iDays * Number(value) / item.amount);
+                                                let firstEndDate = beginDate.add(firstdays, 'days');
+
+                                                if (firstEndDate < endDate) {
+                                                    let mydate = moment(firstEndDate.format('YYYY-MM-DD'));//重新赋值，防止传址引用
+                                                    mydate = mydate.add(1, 'days');
+                                                    this.setState({
+                                                        firstEndDate: firstEndDate,
+                                                        secondBeginDate: mydate
+                                                    });
+                                                } else {
+
+                                                    //如果日期为截至日期，则需要往前减少一天，否则第二笔费用日期会跟第一笔重叠
+                                                    let newFirstEndDate = moment(firstEndDate).add(-1, 'days');
+                                                    this.setState({
+                                                        firstEndDate: newFirstEndDate,
+                                                        secondBeginDate: firstEndDate
+                                                    });
+                                                }
+                                            }
+                                        });
+
+                                    } else {
+                                        this.setState({
+                                            firstEndDate: null,
+                                            firstAmount: null,
+                                            secondBeginDate: null,
+                                            secondAmount: null
+                                        });
+                                    }
+                                }}
+                                style={styles.input}
+                                placeholder='请输入金额' />
                         </Flex>
                         <WhiteSpace size={'lg'} />
                         <Flex align={'start'} style={{ width: '100%' }}>
@@ -180,7 +240,7 @@ export default class ChaiFei extends BasePage {
                         <WhiteSpace size={'lg'} />
                         <Flex align={'center'} style={{ width: '100%' }}>
                             <Text style={styles.text}>金额</Text>
-                            <Text style={styles.input}>{this.state.secondAmount}</Text>
+                            <Text style={styles.amount2}>{this.state.secondAmount}</Text>
                         </Flex>
 
                         <WhiteSpace size={'lg'} />
@@ -223,13 +283,20 @@ const styles = StyleSheet.create({
         fontSize: 16,
         marginLeft: 10
     },
+
+    amount2: {
+        fontSize: 16,
+        marginLeft: 10,
+        color: '#404145'
+    },
+ 
     state: {
         fontSize: 16,
         paddingLeft: 10,
     },
 
     unenable: {
-        width: 108,
+        width: 120,
         fontSize: 16,
         color: '#404145',
         backgroundColor: '#eeeeee',
@@ -250,9 +317,9 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#eeeeee',
         borderStyle: 'solid'
-    }, 
+    },
     secondDate: {
-        width: 110, 
+        width: 120,
         fontSize: 16,
         color: '#404145',
         backgroundColor: '#eeeeee',

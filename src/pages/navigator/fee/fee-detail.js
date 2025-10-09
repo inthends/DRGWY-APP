@@ -75,7 +75,7 @@ class FeeDetailPage extends BasePage {
     };
     handleVisibleChange = (action) => {
         this.setState({
-            action,
+            action
         });
     };
 
@@ -648,7 +648,7 @@ class FeeDetailPage extends BasePage {
 
     //全选
     checkAll = () => {
-        const { isML, mlType, mlScale, type } = this.state;
+        const { isML, mlType, mlScale } = this.state;
         let data = this.state.dataInfo.data;
         data = data.map(it => {
             it.select = it.select !== true;

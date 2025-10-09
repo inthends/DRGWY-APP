@@ -7,8 +7,7 @@ import {
     ScrollView,
     FlatList,
     Platform,
-    Modal, CameraRoll,
-    ActivityIndicator
+    Modal, CameraRoll
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
@@ -26,7 +25,6 @@ import Star from '../../../components/star';
 import moment from 'moment';
 import RNFetchBlob from 'rn-fetch-blob';
 import UDToast from '../../../utils/UDToast';
-import NoDataView from '../../../components/no-data-view';
 
 //仅查看
 export default class EfuwuDetailPage extends BasePage {
@@ -46,7 +44,6 @@ export default class EfuwuDetailPage extends BasePage {
         super(props);
         let id = common.getValueFromProps(this.props, 'id');
         this.state = {
-
             pageIndex: 1,
             pageSize: 10,
             total: 0,
@@ -202,7 +199,7 @@ export default class EfuwuDetailPage extends BasePage {
         });
     };
 
-       //加载更多
+    //加载更多
     loadMore = () => {
         if (this.state.loading) return;//防止快速滚动，产生抖动，多次调用
         const { pageIndex } = this.state;
@@ -215,13 +212,13 @@ export default class EfuwuDetailPage extends BasePage {
 
     //费用明细
     loadData = (isRefreshing = false) => {
-        if (this.state.loading || (!isRefreshing && !this.state.hasMore))  {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) {
             this.setState({ loading: false, refreshing: false });
             return;
         }
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
-        const {data, id, pageIndex, pageSize } = this.state;
+        const { data, id, pageSize } = this.state;
         WorkService.serverFeeList(currentPage, pageSize, id).then(res => {
             if (isRefreshing) {
                 this.setState({
@@ -240,8 +237,8 @@ export default class EfuwuDetailPage extends BasePage {
                 }, []);
                 this.setState({
                     data: combinedUniqueArray,
-                    pageIndex: pageIndex,
-                    hasMore: pageIndex * pageSize < res.total ? true : false,
+                    pageIndex: currentPage,
+                    hasMore: currentPage * pageSize < res.total ? true : false,
                     total: res.total
                 });
             }
@@ -259,36 +256,25 @@ export default class EfuwuDetailPage extends BasePage {
                     <Text style={styles.title}>{item.feeName}</Text>
                     {item.status == 0 ? <Text style={styles.statusred}>未收</Text> : <Text style={styles.statusblue}>已收</Text>}
                 </Flex>
-
-
                 <Flex style={styles.line} />
                 <Flex align={'start'} direction={'column'}>
-                    <Flex justify='between'
-                        style={{ width: '100%', paddingTop: 5, paddingLeft: 15, paddingRight: 15 }}>
+                    <Flex justify='between' style={{ width: '100%', paddingTop: 5, paddingLeft: 10 }}>
                         <Text style={{ lineHeight: 20 }}>应收金额：{item.amount}
                             ，减免金额：{item.reductionAmount}
                             ，已收金额：{item.receiveAmount}
                             ，未收金额：{item.lastAmount}</Text>
                     </Flex>
-                    <Flex justify='between'
-                        style={{ width: '100%', paddingTop: 5, paddingBottom: 5, paddingLeft: 15, paddingRight: 15 }}>
+                    <Flex justify='between' style={{ width: '100%', paddingTop: 5, paddingBottom: 5, paddingLeft: 10 }}>
                         {item.beginDate ?
-                            <Text>{moment(item.beginDate).format('YYYY-MM-DD') + '至' + moment(item.endDate).format('YYYY-MM-DD')}</Text> : null
+                            <Text>计费期间：{moment(item.beginDate).format('YYYY-MM-DD') + ' 至 ' + moment(item.endDate).format('YYYY-MM-DD')}</Text> : null
                         }
-                        <Text>账单是否推送：{item.noticeId ? '是' : '否'} </Text>
-                        <Text>是否退款：{item.payStatus && item.payStatus == -1 ? '是' : '否'}</Text>
+                    </Flex>
+                    <Flex justify='between' style={{ width: '100%', paddingBottom: 5, paddingLeft: 10 }}>
+                        <Text>账单是否推送：{item.noticeId ? '是' : '否'}，是否退款：{item.payStatus && item.payStatus == -1 ? '是' : '否'}</Text>
                     </Flex>
                 </Flex>
             </Flex>
         );
-    };
-
-    renderFooter = () => {
-        if (!this.state.hasMore && this.state.data.length > 0) {
-            return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
-        }
-
-        return this.state.loading ? <ActivityIndicator /> : null;
     };
 
     render() {
@@ -313,21 +299,32 @@ export default class EfuwuDetailPage extends BasePage {
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.right}>重要程度：{detail.importance}</Text>
+                        <Text style={styles.left}>重要程度：{detail.importance}</Text>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>报单人：{detail.contactName}</Text>
-                        <TouchableWithoutFeedback onPress={() => common.call(detail.contactPhone)}>
+                        <Text style={styles.left}>申请人：{detail.contactName}</Text>
+                        {/* <TouchableWithoutFeedback onPress={() => common.call(detail.contactPhone)}>
                             <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
                                 style={{ width: 16, height: 16 }} /></Flex>
+                        </TouchableWithoutFeedback> */}
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>申请人电话：{detail.contactPhone}</Text>
+                        <TouchableWithoutFeedback onPress={() => common.call(detail.contactPhone)}>
+                            <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
+                                style={{ width: 18, height: 18 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.left}>报单时间：{detail.createDate}</Text>
+                        <Text style={styles.left}>申请时间：{detail.createDate}</Text>
                     </Flex>
 
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>预约维修时间：{detail.reservationTime}</Text>
+                    </Flex>
 
                     {detail.returnVisitDate ?
                         <>
@@ -338,9 +335,15 @@ export default class EfuwuDetailPage extends BasePage {
                                 <Text style={styles.left}>回访人：{detail.returnVisiterName}</Text>
                             </Flex>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                                <Text style={styles.right}>回访方式：{detail.returnVisitMode}</Text>
+                                <Text style={styles.left}>回访方式：{detail.returnVisitMode}</Text>
                             </Flex>
+
+                            <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
+                                <Text style={styles.left}>客户评价</Text>
+                            </Flex>
+
                             <Star star={detail.custEvaluate} />
+
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                                 <Text style={styles.left}>回访结果：{detail.returnVisitResult}</Text>
                             </Flex>
@@ -357,7 +360,7 @@ export default class EfuwuDetailPage extends BasePage {
                                 <Text style={styles.left}>检验人：{detail.testerName}</Text>
                             </Flex>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                                <Text style={styles.right}>检验结果：{detail.testResult == 1 ? '合格' : '不合格'}</Text>
+                                <Text style={styles.left}>检验结果：{detail.testResult == 1 ? '合格' : '不合格'}</Text>
                             </Flex>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                                 <Text style={styles.left}>检验说明：{detail.testRemark}</Text>
@@ -386,7 +389,6 @@ export default class EfuwuDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>费用明细</Text>
                     </Flex>
-
                     <FlatList
                         data={data}
                         renderItem={this._renderItem}
@@ -396,10 +398,12 @@ export default class EfuwuDetailPage extends BasePage {
                         onEndReachedThreshold={0.2}
                         refreshing={refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
-                        onEndReached={this.loadMore}//底部往下拉翻页
-                        ListFooterComponent={this.renderFooter}
-                        ListEmptyComponent={<NoDataView />}
-                    //onMomentumScrollBegin={() => this.canLoadMore = true}
+                        onEndReached={this.loadMore}//底部往下拉翻页 
+                        // ListEmptyComponent={<NoDataView />}
+                        ListEmptyComponent={
+                            <Flex justify={'center'}>
+                                <Text style={{ fontSize: 14, color: '#666', paddingTop: 24, paddingBottom: 15 }}>暂无数据</Text>
+                            </Flex>}
                     />
                     <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
 
@@ -468,15 +472,15 @@ const styles = StyleSheet.create({
 
     statusred: {
         paddingTop: 10,
-        marginRight: 15,
-        paddingBottom: 5,
+        paddingRight: 10,
+        paddingBottom: 10,
         color: Macro.work_red
     },
 
     statusblue: {
         paddingTop: 10,
-        marginRight: 15,
-        paddingBottom: 5,
+        paddingRight: 10,
+        paddingBottom: 10,
         color: Macro.work_blue
     },
 
@@ -500,10 +504,12 @@ const styles = StyleSheet.create({
         paddingBottom: 10
     },
     left: {
-        fontSize: 16
+        fontSize: 16,
+        color: '#404145'
     },
     right: {
-        fontSize: 16
+        fontSize: 16,
+        color: '#404145'
     },
     desc: {
         lineHeight: 20,

@@ -1,14 +1,13 @@
 import React from 'react';
 import BasePage from '../../base/base';
 import { Flex, Icon, TextareaItem } from '@ant-design/react-native';
-import { StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View, FlatList  } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View, FlatList } from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import CommonView from '../../../components/CommonView';
 import common from '../../../utils/common';
 import OrderService from './order-service';
 import Macro from '../../../utils/macro';
-import DashLine from '../../../components/dash-line';
-import NoDataView from '../../../components/no-data-view';
+import DashLine from '../../../components/dash-line'; 
 import LoadImage from '../../../components/load-image';
 
 let screen_width = ScreenUtil.deviceWidth()
@@ -121,7 +120,7 @@ export default class OrderDetailPage extends BasePage {
         this.getOrderDetail()
         this.getOrderCommunicates()
     }
-    
+
     contentView = () => {
         const { billCode, billDate, createUserName, status, allName, phoneNum } = this.state;
         let data1 = [
@@ -129,7 +128,7 @@ export default class OrderDetailPage extends BasePage {
             { key: '订单时间', value: billDate },
             { key: '提 交 人', value: createUserName }
         ];
-        
+
         return (
             <Flex marginHorizontal={15} width={screen_width - 30}>
                 <Flex direction={'column'} align={'start'} marginTop={10}>
@@ -204,7 +203,7 @@ export default class OrderDetailPage extends BasePage {
                             <TextareaItem
                                 rows={4}
                                 placeholder='请输入'
-                                style={{  paddingTop: 10,  width: ScreenUtil.deviceWidth() - 32  }}
+                                style={{ paddingTop: 10, width: ScreenUtil.deviceWidth() - 32 }}
                                 onChange={inputMsg => this.setState({ inputMsg })}
                                 value={this.state.inputMsg}
                                 maxLength={500}
@@ -258,7 +257,10 @@ export default class OrderDetailPage extends BasePage {
                         // refreshing={this.state.refreshing}
                         // onRefresh={() => this.onRefresh()}
                         onEndReachedThreshold={0}
-                        ListEmptyComponent={<NoDataView />}
+                        ListEmptyComponent={
+                            <Flex justify={'center'}>
+                                <Text style={{ fontSize: 14, color: '#666', paddingTop: 24, paddingBottom: 15 }}>暂无数据</Text>
+                            </Flex>}
                     />
                 </View>}
             </CommonView>
@@ -268,7 +270,7 @@ export default class OrderDetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-   
+
     content: {
         backgroundColor: Macro.color_white,
         flex: 1
@@ -282,7 +284,7 @@ const styles = StyleSheet.create({
         // textAlign: 'left',
         color: '#404145',
         fontSize: 16,
-        paddingBottom: 10, 
+        paddingBottom: 10,
         marginLeft: 20,
         marginRight: 20
     },
@@ -291,7 +293,7 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         backgroundColor: '#eee',
         height: 1
-    },  
+    },
     ii: {
         paddingTop: 10,
         paddingBottom: 10,

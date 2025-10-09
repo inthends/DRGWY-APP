@@ -8,7 +8,8 @@ import {
     ScrollView,
     FlatList,
     Platform,
-    Modal, CameraRoll, ActivityIndicator
+    Modal,
+    CameraRoll
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Icon, Flex } from '@ant-design/react-native';
@@ -23,8 +24,8 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import Macro from '../../../utils/macro';
 import moment from 'moment';
 import RNFetchBlob from 'rn-fetch-blob';
-import NoDataView from '../../../components/no-data-view';
 import UDToast from '../../../utils/UDToast';
+import ActionPopover from '../../../components/action-popover';
 
 export default class WeixiuDetailPage extends BasePage {
 
@@ -206,7 +207,7 @@ export default class WeixiuDetailPage extends BasePage {
         }
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
-        const { data, detail, pageIndex, pageSize } = this.state;
+        const { data, detail, pageSize } = this.state;
         WorkService.serverFeeList(currentPage, pageSize, detail.relationId).then(res => {
             if (isRefreshing) {
                 this.setState({
@@ -225,8 +226,8 @@ export default class WeixiuDetailPage extends BasePage {
                 }, []);
                 this.setState({
                     data: combinedUniqueArray,
-                    pageIndex: pageIndex,
-                    hasMore: pageIndex * pageSize < res.total ? true : false,
+                    pageIndex: currentPage,
+                    hasMore: currentPage * pageSize < res.total ? true : false,
                     total: res.total
                 });
             }
@@ -256,6 +257,113 @@ export default class WeixiuDetailPage extends BasePage {
         });
     };
 
+    //作废
+    doInvalid = (item) => {
+        WorkService.checkBillFee(item.id).then((res) => {
+            if (res == 0) {
+                // Alert.alert(
+                //     '请确认',
+                //     `您确定要作废${item.feeName}？`,
+                //     [{ text: '取消', tyle: 'cancel' },
+                //     {
+                //         text: '确定',
+                //         onPress: () => {
+                //             WorkService.invalidDetailForm(item.id).then(res => {
+                //                 UDToast.showInfo('作废成功');
+                //                 this.loadData();
+                //             }).catch(err => {
+                //                 UDToast.showError(err);
+                //             });
+                //         }
+                //     }
+                //     ], { cancelable: false });
+
+                AntModal.alert(
+                    '请确认',
+                    `您确定要作废${item.feeName}？`,
+                    [
+                        {
+                            text: '取消', onPress: () => {
+                            }, style: 'cancel'
+                        },
+                        {
+                            text: '确定', onPress: () => {
+                                WorkService.invalidDetailForm(item.id).then(res => {
+                                    UDToast.showInfo('作废成功');
+                                    this.loadData();
+                                }).catch(err => {
+                                    UDToast.showError(err);
+                                });
+                            }
+                        }
+                    ]
+                )
+            }
+            else {
+                if (res == 1) {
+                    UDToast.showError('该费用已经生成了通知单，不允许作废');
+                } else if (res == 2) {
+                    UDToast.showError('该费用已经生成了减免单，不允许作废');
+                } else if (res == 3) {
+                    UDToast.showError('该费用已经生成了冲抵单，不允许作废');
+                }
+                else {
+                    UDToast.showError('该费用已经生成了优惠单，不允许作废');
+                }
+            }
+        });
+    }
+
+    //推送账单
+    send = (item) => {
+        AntModal.alert(
+            '请确认',
+            `您确定要推送${item.feeName}账单？`,
+            [
+                {
+                    text: '取消', onPress: () => {
+                    }, style: 'cancel'
+                },
+                {
+                    text: '确定', onPress: () => {
+                        WorkService.sendServiceDeskFee(item.id).then(res => {
+                            UDToast.showInfo('推送账单成功');
+                            this.loadData();
+                        }).catch(err => {
+                            UDToast.showError(err);
+                        });
+                    }
+                }
+            ]
+        )
+    };
+
+    //退款
+    refund = (item) => {
+        if (!item.payId) {
+            UDToast.showError('非在线支付的费用，无法在线退款');
+            return;
+        }
+        AntModal.alert(
+            '请确认',
+            `您确定要退款${item.feeName}？`,
+            [
+                {
+                    text: '取消', onPress: () => {
+                    }, style: 'cancel'
+                },
+                {
+                    text: '确定', onPress: () => {
+                        WorkService.refundForm(item.receiveId, item.payId).then(res => {
+                            UDToast.showInfo('退款成功');
+                            this.loadData();
+                        });
+                    }
+                }
+            ]
+        )
+    }
+
     _renderItem = ({ item, index }) => {
         return (
             <Flex
@@ -263,66 +371,58 @@ export default class WeixiuDetailPage extends BasePage {
                 style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
                 <Flex justify='between' style={{ width: '100%' }}>
                     <Text style={styles.title}>{item.feeName}</Text>
-                    {item.status == 0 ? <Text style={styles.statusred}>未收</Text> : <Text style={styles.statusblue}>已收</Text>}
+                    <Flex>
+                        {item.status == 0 ? <Text style={styles.statusred}>未收</Text> : <Text style={styles.statusblue}>已收</Text>}
+                        {item.status == 0 ?
+                            <ActionPopover
+                                textStyle={{ fontSize: 14 }}
+                                //hiddenImage={true}
+                                onChange={(title) => {
+                                    if (title === '作废') {
+                                        this.doInvalid(item);
+                                    } else if (title === '推送') {
+                                        if (item.noticeId) {
+                                            UDToast.showError('该费用已经推送');
+                                            return;
+                                        }
+                                        this.send(item);
+                                    }
+                                }}
+                                titles={['推送', '作废']}
+                                visible={true} /> :
+
+                            (item.payStatus && item.payStatus == -1 ? null :
+                                <ActionPopover
+                                    textStyle={{ fontSize: 14 }}
+                                    //hiddenImage={true}
+                                    onChange={() => {
+                                        this.refund(item);
+                                    }}
+                                    titles={['退款']}
+                                    visible={true} />)
+                        }
+                    </Flex>
                 </Flex>
-
-                {item.status == 0 ?
-                    <ActionPopover
-                        textStyle={{ fontSize: 14 }}
-                        //hiddenImage={true}
-                        onChange={(title) => {
-                            if (title === '作废') {
-                                this.doInvalid(item);
-                            } else if (title === '推送') {
-                                if (item.noticeId) {
-                                    UDToast.showError('该费用已经推送');
-                                    return;
-                                }
-                                this.send(item);
-                            }
-                        }}
-                        titles={['推送', '作废']}
-                        visible={true} /> :
-
-                    (item.payStatus && item.payStatus == -1 ? null :
-                        <ActionPopover
-                            textStyle={{ fontSize: 14 }}
-                            //hiddenImage={true}
-                            onChange={() => {
-                                this.refund(item);
-                            }}
-                            titles={['退款']}
-                            visible={true} />)
-                }
 
                 <Flex style={styles.line} />
                 <Flex align={'start'} direction={'column'}>
-                    <Flex justify='between'
-                        style={{ width: '100%', paddingTop: 5, paddingLeft: 15, paddingRight: 15 }}>
+                    <Flex justify='between' style={{ width: '100%', paddingTop: 5, paddingLeft: 10 }}>
                         <Text style={{ lineHeight: 20 }}>应收金额：{item.amount}
                             ，减免金额：{item.reductionAmount}
                             ，已收金额：{item.receiveAmount}
                             ，未收金额：{item.lastAmount}</Text>
                     </Flex>
-                    <Flex justify='between'
-                        style={{ width: '100%', paddingTop: 5, paddingBottom: 5, paddingLeft: 15, paddingRight: 15 }}>
+                    <Flex justify='between' style={{ width: '100%', paddingTop: 5, paddingBottom: 5, paddingLeft: 10 }}>
                         {item.beginDate ?
-                            <Text>{moment(item.beginDate).format('YYYY-MM-DD') + '至' + moment(item.endDate).format('YYYY-MM-DD')}</Text> : null
+                            <Text>计费期间：{moment(item.beginDate).format('YYYY-MM-DD') + '至' + moment(item.endDate).format('YYYY-MM-DD')}</Text> : null
                         }
-                        <Text>账单是否推送：{item.noticeId ? '是' : '否'} </Text>
-                        <Text>是否退款：{item.payStatus && item.payStatus == -1 ? '是' : '否'}</Text>
+                    </Flex>
+                    <Flex justify='between' style={{ width: '100%', paddingBottom: 5, paddingLeft: 10 }}>
+                        <Text>账单是否推送：{item.noticeId ? '是' : '否'}，是否退款：{item.payStatus && item.payStatus == -1 ? '是' : '否'}</Text>
                     </Flex>
                 </Flex>
             </Flex>
         );
-    };
-
-    renderFooter = () => {
-        if (!this.state.hasMore && this.state.data.length > 0) {
-            return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
-        }
-
-        return this.state.loading ? <ActivityIndicator /> : null;
     };
 
     render() {
@@ -364,7 +464,11 @@ export default class WeixiuDetailPage extends BasePage {
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.right}>重要程度：{detail.importance}</Text>
+                        <Text style={styles.left}>重要程度：{detail.importance}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>预约维修时间：{detail.reservationTime}</Text>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
@@ -377,7 +481,7 @@ export default class WeixiuDetailPage extends BasePage {
 
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
-                            <Text style={styles.left}>关联单：</Text>
+                            <Text style={styles.left}>关联单据：</Text>
                             <Text
                                 onPress={() => {
                                     if (detail.sourceType === '服务总台') {
@@ -459,7 +563,7 @@ export default class WeixiuDetailPage extends BasePage {
                                 <Text style={styles.left}>检验人：{detail.testerName}</Text>
                             </Flex>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                                <Text style={styles.right}>检验结果：{detail.testResult == 1 ? '合格' : '不合格'}</Text>
+                                <Text style={styles.left}>检验结果：{detail.testResult == 1 ? '合格' : '不合格'}</Text>
                             </Flex>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                                 <Text style={styles.left}>检验说明：{detail.testRemark}</Text>
@@ -481,9 +585,11 @@ export default class WeixiuDetailPage extends BasePage {
                         onEndReachedThreshold={0.2}
                         refreshing={refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
-                        onEndReached={this.loadMore}//底部往下拉翻页
-                        ListFooterComponent={this.renderFooter}
-                        ListEmptyComponent={<NoDataView />}
+                        onEndReached={this.loadMore}//底部往下拉翻页 
+                        ListEmptyComponent={
+                            <Flex justify={'center'}>
+                                <Text style={{ fontSize: 14, color: '#666', paddingTop: 24, paddingBottom: 15 }}>暂无数据</Text>
+                            </Flex>}
                     />
                     <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
 
@@ -492,6 +598,7 @@ export default class WeixiuDetailPage extends BasePage {
                     <OperationRecords communicateClick={this.communicateClick} communicates={communicates} />
 
                 </ScrollView>
+
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
                         imageUrls={this.state.selectimages}
@@ -550,15 +657,15 @@ const styles = StyleSheet.create({
 
     statusred: {
         paddingTop: 10,
-        marginRight: 15,
-        paddingBottom: 5,
+        paddingRight: 10,
+        paddingBottom: 10,
         color: Macro.work_red
     },
 
     statusblue: {
         paddingTop: 10,
-        marginRight: 15,
-        paddingBottom: 5,
+        paddingRight: 10,
+        paddingBottom: 10,
         color: Macro.work_blue
     },
 

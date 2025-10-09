@@ -1,14 +1,15 @@
 import React from 'react';
 import {
+    View,
     Text,
     StyleSheet,
     FlatList,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    ActivityIndicator
+    Keyboard
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Flex, Icon } from '@ant-design/react-native';
+import { Flex, Icon, SearchBar } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
 import { connect } from 'react-redux';
@@ -54,7 +55,8 @@ class TaskUnFinishListPage extends BasePage {
             status,
             time: '全部',
             selectPerson: null,
-            selectedId: ''
+            selectedId: '',
+            btnText: '搜索',
         };
     }
 
@@ -63,7 +65,7 @@ class TaskUnFinishListPage extends BasePage {
         this.viewDidAppear = this.props.navigation.addListener(
             'didFocus',
             (obj) => {
-              this.loadData();
+                this.loadData();
             }
         );
     }
@@ -84,15 +86,15 @@ class TaskUnFinishListPage extends BasePage {
     }
 
     loadData = (isRefreshing = false) => {
-        if (this.state.loading || (!isRefreshing && !this.state.hasMore))  {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) {
             this.setState({ loading: false, refreshing: false });
             return;
         }
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
-        const {data, status, time, selectPerson, pageIndex, pageSize } = this.state;
+        const { data, status, time, selectPerson, pageSize, keyword } = this.state;
         let senderId = selectPerson ? selectPerson.id : '';
-        WorkService.workUnFinishList(status, time, senderId, currentPage, pageSize).then(res => {
+        WorkService.workUnFinishList(status, time, senderId, currentPage, pageSize, keyword).then(res => {
             if (isRefreshing) {
                 this.setState({
                     data: res.data,
@@ -101,7 +103,7 @@ class TaskUnFinishListPage extends BasePage {
                 });
             }
             else {
-                 //合并并去重 使用 reduce
+                //合并并去重 使用 reduce
                 const combinedUniqueArray = [...data, ...res.data].reduce((acc, current) => {
                     if (!acc.some(item => item.id === current.id)) {
                         acc.push(current);
@@ -110,8 +112,8 @@ class TaskUnFinishListPage extends BasePage {
                 }, []);
                 this.setState({
                     data: combinedUniqueArray,
-                    pageIndex: pageIndex,
-                    hasMore: pageIndex * pageSize < res.total ? true : false,
+                    pageIndex: currentPage,
+                    hasMore: currentPage * pageSize < res.total ? true : false,
                     total: res.total
                 });
             }
@@ -128,7 +130,7 @@ class TaskUnFinishListPage extends BasePage {
         });
     };
 
-       //加载更多
+    //加载更多
     loadMore = () => {
         if (this.state.loading) return;//防止快速滚动，产生抖动，多次调用
         const { pageIndex } = this.state;
@@ -260,62 +262,87 @@ class TaskUnFinishListPage extends BasePage {
         })
     }
 
-    renderFooter = () => {
-        if (!this.state.hasMore && this.state.data.length > 0) {
-            return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
-        }
 
-        return this.state.loading ? <ActivityIndicator /> : null;
+    search = () => {
+        Keyboard.dismiss();
+        this.onRefresh();
+        this.setState({ btnText: '取消' });
     };
 
-    render() {
-        const { data, refreshing, total, status, selectPerson } = this.state;
-        return (
-            <CommonView style={{ flex: 1 }}>
-                <ListUnFinishHeader status={status} onChange={(status) => this.setState({ status }, () => {
-                    this.onRefresh();
-                })} />
-                <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
-                    <MyPopover onChange={this.timeChange}
-                        titles={['全部', '今日', '本周', '本月', '上月', '本年']}
-                        visible={true} />
-                    <TouchableWithoutFeedback
-                        onPress={() => this.props.navigation.navigate('selectRolePerson', {
-                            moduleId: 'Repair',
-                            enCode: 'dispatch',
-                            onSelect: this.onSelectPerson
-                        })}>
-                        <Flex justify='between' style={{
-                            paddingTop: 15,
-                            paddingBottom: 15,
-                            marginLeft: 10,
-                            marginRight: 10
-                        }}>
-                            <Text style={[selectPerson ? { fontSize: 16, color: '#404145' } :
-                                { color: '#666' }]}>{selectPerson ? selectPerson.name : "请选择派单人"}</Text>
-                            <LoadImage style={{ width: 6, height: 11, marginLeft: 8 }}
-                                defaultImg={require('../../../static/images/address/right.png')} />
-                        </Flex>
-                    </TouchableWithoutFeedback>
-                </Flex>
+    clear = () => {
+        const { btnText } = this.state;
+        Keyboard.dismiss();
+        if (btnText == '搜索') {
+            this.onRefresh();
+            this.setState({ btnText: '取消' });
+        } else {
+            this.setState({
+                keyword: ''//必须要设置值，再调用方法，否则数据没有更新
+            }, () => {
+                this.onRefresh();
+                this.setState({ btnText: '搜索' });
+            });
+        }
+    };
 
-                <FlatList
-                    data={data}
-                    // ListHeaderComponent={}
-                    renderItem={this._renderItem}
-                    style={styles.list}
-                    keyExtractor={(item) => item.id}
-                    //必须
-                    onEndReachedThreshold={0.2}
-                    refreshing={refreshing}
-                    onRefresh={this.onRefresh}//下拉刷新
-                    onEndReached={this.loadMore}//底部往下拉翻页
-                    //onMomentumScrollBegin={() => this.canLoadMore = true}
-                    ListFooterComponent={this.renderFooter}
-                    ListEmptyComponent={<NoDataView />}
+
+    render() {
+        const { data, refreshing, total, status, selectPerson, btnText } = this.state;
+        return (
+            <View style={{ flex: 1 }}>
+                <SearchBar
+                    placeholder="请输入"
+                    showCancelButton
+                    cancelText={btnText}
+                    value={this.state.keyword}
+                    onChange={keyword => this.setState({ keyword })}
+                    onSubmit={() => this.search()}
+                    onCancel={() => this.clear()}
                 />
-                <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
-            </CommonView>
+                <CommonView style={{ flex: 1 }}>
+                    <ListUnFinishHeader status={status} onChange={(status) => this.setState({ status }, () => {
+                        this.onRefresh();
+                    })} />
+                    <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
+                        <MyPopover onChange={this.timeChange}
+                            titles={['全部', '今日', '本周', '本月', '上月', '本年']}
+                            visible={true} />
+                        <TouchableWithoutFeedback
+                            onPress={() => this.props.navigation.navigate('selectRolePerson', {
+                                moduleId: 'Repair',
+                                enCode: 'dispatch',
+                                onSelect: this.onSelectPerson
+                            })}>
+                            <Flex justify='between' style={{
+                                paddingTop: 15,
+                                paddingBottom: 15,
+                                marginLeft: 10,
+                                marginRight: 10
+                            }}>
+                                <Text style={[selectPerson ? { fontSize: 16, color: '#404145' } :
+                                    { color: '#666' }]}>{selectPerson ? selectPerson.name : "请选择派单人"}</Text>
+                                <LoadImage style={{ width: 6, height: 11, marginLeft: 8 }}
+                                    defaultImg={require('../../../static/images/address/right.png')} />
+                            </Flex>
+                        </TouchableWithoutFeedback>
+                    </Flex>
+
+                    <FlatList
+                        data={data}
+                        // ListHeaderComponent={}
+                        renderItem={this._renderItem}
+                        style={styles.list}
+                        keyExtractor={(item) => item.id}
+                        //必须
+                        onEndReachedThreshold={0.2}
+                        refreshing={refreshing}
+                        onRefresh={this.onRefresh}//下拉刷新
+                        onEndReached={this.loadMore}//底部往下拉翻页 
+                        ListEmptyComponent={<NoDataView />}
+                    />
+                    <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
+                </CommonView>
+            </View>
 
         );
     }

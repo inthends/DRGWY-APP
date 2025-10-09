@@ -7,7 +7,7 @@ import {
     ScrollView,
     Modal,
     Platform,
-    Alert,CameraRoll
+    Alert, CameraRoll
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Button, Icon, Flex } from '@ant-design/react-native';
@@ -21,7 +21,7 @@ import ListImages from '../../../components/list-images';
 import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import RNFetchBlob from 'rn-fetch-blob'; 
+import RNFetchBlob from 'rn-fetch-blob';
 
 //抢单
 export default class RobDetailPage extends BasePage {
@@ -137,7 +137,7 @@ export default class RobDetailPage extends BasePage {
         });
     };
 
-    savePhoto = (uri) => { 
+    savePhoto = (uri) => {
         try {
             if (Platform.OS == 'android') { //远程文件需要先下载 
                 // 下载网络图片到本地
@@ -171,19 +171,19 @@ export default class RobDetailPage extends BasePage {
                     //     //console.log('Image saved to docs://image.png'); // 或者使用你的路径
                     //     // 在这里你可以做其他事情，比如显示一个提示或者加载图片等 
                     // })
-                    .catch((err) => { 
+                    .catch((err) => {
                     });
 
             }
             else {
                 //ios
                 let promise = CameraRoll.saveToCameraRoll(uri);
-                promise.then(function (result) { 
-                }).catch(function (err) { 
+                promise.then(function (result) {
+                }).catch(function (err) {
                 });
             }
 
-        } catch (error) { 
+        } catch (error) {
         }
     }
 
@@ -212,13 +212,18 @@ export default class RobDetailPage extends BasePage {
                     </Flex>
                     <Text style={styles.desc}>{detail.repairContent}</Text>
                     <ListImages images={images} lookImage={this.lookImage} />
+ 
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>紧急程度：{detail.emergencyLevel}</Text>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.right}>重要程度：{detail.importance}</Text>
+                        <Text style={styles.left}>重要程度：{detail.importance}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>预约维修时间：{detail.reservationTime}</Text>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
@@ -231,7 +236,7 @@ export default class RobDetailPage extends BasePage {
 
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
-                            <Text style={styles.left}>关联单：</Text>
+                            <Text style={styles.left}>关联单据：</Text>
                             <Text
                                 onPress={() => {
                                     if (detail.sourceType === '服务总台') {
@@ -289,10 +294,10 @@ export default class RobDetailPage extends BasePage {
 
                 <Modal visible={this.state.visible} onRequestClose={this.cancel} transparent={true}>
                     <ImageViewer index={this.state.lookImageIndex} onCancel={this.cancel} onClick={this.cancel}
-                        imageUrls={this.state.images} 
+                        imageUrls={this.state.images}
                         menuContext={{ "saveToLocal": "保存到相册", "cancel": "取消" }}
                         onSave={(url) => this.savePhoto(url)}
-                        />
+                    />
                 </Modal>
             </CommonView>
         );

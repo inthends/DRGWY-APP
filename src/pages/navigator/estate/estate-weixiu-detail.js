@@ -7,8 +7,7 @@ import {
     ScrollView,
     FlatList,
     Platform,
-    Modal, CameraRoll,
-    ActivityIndicator
+    Modal, CameraRoll
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Icon, Flex } from '@ant-design/react-native';
@@ -24,7 +23,6 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import moment from 'moment';
 import RNFetchBlob from 'rn-fetch-blob';
 import UDToast from '../../../utils/UDToast';
-import NoDataView from '../../../components/no-data-view';
 
 //统计里面，仅查看
 export default class EweixiuDetailPage extends BasePage {
@@ -54,7 +52,7 @@ export default class EweixiuDetailPage extends BasePage {
             communicates: [],
             lookImageIndex: 0,
             visible: false,
-            
+
             //费用明细
             pageIndex: 1,
             pageSize: 10,
@@ -206,7 +204,7 @@ export default class EweixiuDetailPage extends BasePage {
         });
     };
 
-       //加载更多
+    //加载更多
     loadMore = () => {
         if (this.state.loading) return;//防止快速滚动，产生抖动，多次调用
         const { pageIndex } = this.state;
@@ -219,13 +217,13 @@ export default class EweixiuDetailPage extends BasePage {
 
     //费用明细
     loadData = (isRefreshing = false) => {
-        if (this.state.loading || (!isRefreshing && !this.state.hasMore))  {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) {
             this.setState({ loading: false, refreshing: false });
             return;
         }
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
-        const {data, detail, pageIndex, pageSize } = this.state;
+        const { data, detail, pageSize } = this.state;
         WorkService.serverFeeList(currentPage, pageSize, detail.relationId).then(res => {
             if (isRefreshing) {
                 this.setState({
@@ -235,7 +233,7 @@ export default class EweixiuDetailPage extends BasePage {
                 });
             }
             else {
-                  //合并并去重 使用 reduce
+                //合并并去重 使用 reduce
                 const combinedUniqueArray = [...data, ...res.data].reduce((acc, current) => {
                     if (!acc.some(item => item.id === current.id)) {
                         acc.push(current);
@@ -244,8 +242,8 @@ export default class EweixiuDetailPage extends BasePage {
                 }, []);
                 this.setState({
                     data: combinedUniqueArray,
-                    pageIndex: pageIndex,
-                    hasMore: pageIndex * pageSize < res.total ? true : false,
+                    pageIndex: currentPage,
+                    hasMore: currentPage * pageSize < res.total ? true : false,
                     total: res.total
                 });
             }
@@ -265,33 +263,26 @@ export default class EweixiuDetailPage extends BasePage {
                 </Flex>
                 <Flex style={styles.line} />
                 <Flex align={'start'} direction={'column'}>
-                    <Flex justify='between'
-                        style={{ width: '100%', paddingTop: 5, paddingLeft: 15, paddingRight: 15 }}>
+                    <Flex justify='between' style={{ width: '100%', paddingTop: 5, paddingLeft: 10 }}>
                         <Text style={{ lineHeight: 20 }}>应收金额：{item.amount}
                             ，减免金额：{item.reductionAmount}
                             ，已收金额：{item.receiveAmount}
                             ，未收金额：{item.lastAmount}</Text>
                     </Flex>
-                    <Flex justify='between'
-                        style={{ width: '100%', paddingTop: 5, paddingBottom: 5, paddingLeft: 15, paddingRight: 15 }}>
+                    <Flex justify='between' style={{ width: '100%', paddingTop: 5, paddingBottom: 5, paddingLeft: 10 }}>
                         {item.beginDate ?
-                            <Text>{moment(item.beginDate).format('YYYY-MM-DD') + '至' + moment(item.endDate).format('YYYY-MM-DD')}</Text> : null
+                            <Text>计费期间：{moment(item.beginDate).format('YYYY-MM-DD') + '至' + moment(item.endDate).format('YYYY-MM-DD')}</Text> : null
                         }
-                        <Text>账单是否推送：{item.noticeId ? '是' : '否'} </Text>
-                        <Text>是否退款：{item.payStatus && item.payStatus == -1 ? '是' : '否'}</Text>
+                    </Flex>
+                    <Flex justify='between' style={{ width: '100%', paddingBottom: 5, paddingLeft: 10 }}>
+                        <Text>账单是否推送：{item.noticeId ? '是' : '否'}，是否退款：{item.payStatus && item.payStatus == -1 ? '是' : '否'}</Text>
                     </Flex>
                 </Flex>
             </Flex>
         );
     };
 
-    renderFooter = () => {
-        if (!this.state.hasMore && this.state.data.length > 0) {
-            return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
-        }
 
-        return this.state.loading ? <ActivityIndicator /> : null;
-    };
 
     render() {
         const { images, startimages, finishimages, checkimages, detail, communicates,
@@ -321,7 +312,11 @@ export default class EweixiuDetailPage extends BasePage {
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.right}>重要程度：{detail.importance}</Text>
+                        <Text style={styles.left}>重要程度：{detail.importance}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>预约维修时间：{detail.reservationTime}</Text>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
@@ -334,7 +329,7 @@ export default class EweixiuDetailPage extends BasePage {
 
                     {detail.relationId && <TouchableWithoutFeedback>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
-                            <Text style={styles.left}>关联单：</Text>
+                            <Text style={styles.left}>关联单据：</Text>
                             <Text onPress={() => {
                                 if (detail.sourceType === '服务总台') {
                                     this.props.navigation.navigate('serverDeskView', { id: detail.relationId });
@@ -411,7 +406,7 @@ export default class EweixiuDetailPage extends BasePage {
                                 <Text style={styles.left}>检验人：{detail.testerName}</Text>
                             </Flex>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                                <Text style={styles.right}>检验结果：{detail.testResult == 1 ? '合格' : '不合格'}</Text>
+                                <Text style={styles.left}>检验结果：{detail.testResult == 1 ? '合格' : '不合格'}</Text>
                             </Flex>
                             <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                                 <Text style={styles.left}>检验说明：{detail.testRemark}</Text>
@@ -433,10 +428,11 @@ export default class EweixiuDetailPage extends BasePage {
                         onEndReachedThreshold={0.2}
                         refreshing={refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
-                        onEndReached={this.loadMore}//底部往下拉翻页
-                        //onMomentumScrollBegin={() => this.canLoadMore = true}
-                        ListFooterComponent={this.renderFooter}
-                        ListEmptyComponent={<NoDataView />}
+                        onEndReached={this.loadMore}//底部往下拉翻页 
+                        ListEmptyComponent={
+                            <Flex justify={'center'}>
+                                <Text style={{ fontSize: 14, color: '#666', paddingTop: 24, paddingBottom: 15 }}>暂无数据</Text>
+                            </Flex>}
                     />
                     <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
 
@@ -503,15 +499,15 @@ const styles = StyleSheet.create({
 
     statusred: {
         paddingTop: 10,
-        marginRight: 15,
-        paddingBottom: 5,
+        paddingRight: 10,
+        paddingBottom: 10,
         color: Macro.work_red
     },
 
     statusblue: {
         paddingTop: 10,
-        marginRight: 15,
-        paddingBottom: 5,
+        paddingRight: 10,
+        paddingBottom: 10,
         color: Macro.work_blue
     },
 

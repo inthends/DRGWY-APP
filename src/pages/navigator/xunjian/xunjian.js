@@ -332,7 +332,7 @@ class XunJianPage extends BasePage {
                                                 this.props.navigation.push('xunjianPointDetail', {
                                                     data: {
                                                         lineId: item.lineId,
-                                                        pointId: it.id
+                                                        pointId: it.id//点位表id
                                                     }
                                                 });
                                             }}
@@ -344,8 +344,7 @@ class XunJianPage extends BasePage {
                                                 <Text style={it.counts == 0 ? styles.itemtextfinish : styles.itemtext}>
                                                     {it.sort + ' ' + it.name}
                                                 </Text>
-                                            </List.Item>
-
+                                            </List.Item> 
                                         </TouchableWithoutFeedback>
                                     ))}
                                 </List>

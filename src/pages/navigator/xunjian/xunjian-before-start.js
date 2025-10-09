@@ -63,13 +63,12 @@ class XunjianBeforeStart extends BasePage {
                 }
             });
         }
-        else {
-            //const items = this.props.xunJianData.scanLists.filter(item => item.pointId === pointId);
+        else { 
             const { xunJianData, xunJianAction } = this.props;
             //过滤已经完成的，任务id存在巡检结果里面的数据属于完成的 
             if (Object.keys(xunJianAction).length === 0) {//{}
                 const items = xunJianData.scanLists.filter(item =>
-                    item.pointId === pointId
+                    item.pointId === pointId//点位id，房产表
                 );
                 this.setState({ items });
             } else {

@@ -113,7 +113,7 @@ export default class DispatchDetailPage extends BasePage {
             }
         );
         this.getData();
-        
+
     }
 
     //add new
@@ -319,12 +319,17 @@ export default class DispatchDetailPage extends BasePage {
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
+                    
                     <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.address} {detail.contactName}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
                             <Flex><LoadImage defaultImg={require('../../../static/images/phone.png')}
                                 style={{ width: 16, height: 16 }} /></Flex>
                         </TouchableWithoutFeedback>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>预约维修时间：{detail.reservationTime}</Text>
                     </Flex>
 
                     <Text style={[styles.desc]}>{detail.repairContent}</Text>
@@ -341,7 +346,7 @@ export default class DispatchDetailPage extends BasePage {
 
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
-                            <Text style={styles.left}>关联单：</Text>
+                            <Text style={styles.left}>关联单据：</Text>
                             <Text onPress={() => {
                                 if (detail.sourceType === '服务总台') {
                                     this.props.navigation.navigate('service', { id: detail.relationId });

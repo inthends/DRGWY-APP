@@ -1,8 +1,7 @@
 import React from 'react';
 import {
     View, StyleSheet, FlatList,
-    TouchableOpacity, TouchableWithoutFeedback, Text,
-    ActivityIndicator
+    TouchableOpacity, TouchableWithoutFeedback, Text 
 } from 'react-native';
 import BasePage from '../base/base';
 import Macro from '../../utils/macro';
@@ -63,7 +62,7 @@ class NewsList extends BasePage {
         }
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
-        const { data,status, pageIndex, pageSize } = this.state;
+        const { data,status,  pageSize } = this.state;
         WorkService.getNewsList(status, currentPage, pageSize).then(res => {
             if (isRefreshing) {
                 this.setState({
@@ -82,8 +81,8 @@ class NewsList extends BasePage {
                 }, []);
                 this.setState({
                     data: combinedUniqueArray,
-                    pageIndex: pageIndex,
-                    hasMore: pageIndex * pageSize < res.total ? true : false,
+                    pageIndex: currentPage,
+                    hasMore: currentPage * pageSize < res.total ? true : false,
                     total: res.total
                 });
             }
@@ -110,13 +109,7 @@ class NewsList extends BasePage {
             this.loadData();
         });
     };
-
-    renderFooter = () => {
-        if (!this.state.hasMore && this.state.data.length > 0) {
-            return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
-        } 
-        return this.state.loading ? <ActivityIndicator /> : null;
-    };
+ 
 
     _renderItem = ({ item }) => {
         return (
@@ -195,9 +188,7 @@ class NewsList extends BasePage {
                     onEndReachedThreshold={0.2}
                     refreshing={refreshing}
                     onRefresh={this.onRefresh}//下拉刷新
-                    onEndReached={this.loadMore}//底部往下拉翻页
-                    //onMomentumScrollBegin={() => this.canLoadMore = true}
-                    ListFooterComponent={this.renderFooter}
+                    onEndReached={this.loadMore}//底部往下拉翻页 
                     ListEmptyComponent={<NoDataView />}
                 />
                 <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>

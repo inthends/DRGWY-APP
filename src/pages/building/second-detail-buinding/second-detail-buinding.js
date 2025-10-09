@@ -68,7 +68,9 @@ class SecondDetailBuildingPage extends BasePage {
                 room: {
                     ...room.entity,
                     statusName: room.statusName,
-                    investment: room.investment,
+                    ownerPhone: room.ownerPhone,
+                    tenantPhone: room.tenantPhone
+                    //investment: room.investment
                 },
                 image: room.entity.mainPic
             });
@@ -511,7 +513,7 @@ class SecondDetailBuildingPage extends BasePage {
                 <TouchableWithoutFeedback onPress={() => {
                     this.selectImages();
                 }}>
-                    <ImageBackground style={{ height: 150 }} source={image ? { uri: image } : require('../../../static/images/home/default.png')}>
+                    <ImageBackground style={{ height: 130 }} source={image ? { uri: image } : require('../../../static/images/home/default.png')}>
                         {/* <Flex justify='between' align='start' direction='column'
                         style={{ height: 90, paddingLeft: 15, paddingRight: 15, marginTop: 44 }}> 
                         <TouchableWithoutFeedback onPress={() => this.props.navigation.goBack()}>

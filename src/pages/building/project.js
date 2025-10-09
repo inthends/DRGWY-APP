@@ -182,16 +182,14 @@ class ProjectPage extends BasePage {
       this.setState({ loading: false, refreshing: false });
       return;
     }
-
     const currentPage = isRefreshing ? 1 : this.state.pageIndex;
     this.setState({ loading: true });
-    const { data, pageIndex, pageSize } = this.state;
+    const { data, pageSize } = this.state;
     BuildingService.getStatistics(
       currentPage,
       pageSize,
       this.selectBuilding.key
     ).then(res => {
-
       if (isRefreshing) {
         this.setState({
           data: res.data,
@@ -209,8 +207,8 @@ class ProjectPage extends BasePage {
 
         this.setState({
           data: combinedUniqueArray,
-          pageIndex: pageIndex,
-          hasMore: pageIndex * pageSize < res.total ? true : false
+          pageIndex: currentPage,
+          hasMore: currentPage * pageSize < res.total ? true : false
         });
       }
     }).catch(err => UDToast.showError(err)
@@ -280,14 +278,7 @@ class ProjectPage extends BasePage {
   //     });
   //   }
   // };
-
-  // renderFooter = () => {
-  //   if (!this.state.hasMore && this.state.data.length > 0) {
-  //     return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
-  //   }
-  //   return this.state.loading ? <ActivityIndicator /> : null;
-  // };
-
+ 
 
   render() {
     const { statistics, data, refreshing } = this.state;
@@ -334,8 +325,7 @@ class ProjectPage extends BasePage {
               //onMomentumScrollBegin={() => this.canLoadMore = true}
               //ListFooterComponent={this.renderFooter}
               ListEmptyComponent={<NoDataView />}
-            />
-            {/* <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {dataInfo.data.length}, 共 {dataInfo.total} 条</Text> */}
+            /> 
           </View>
         </CommonView>
       </View>

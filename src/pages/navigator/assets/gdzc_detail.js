@@ -3,7 +3,7 @@ import BasePage from '../../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
 import {
     StyleSheet, Text, TouchableOpacity, Modal, FlatList,
-    Platform, CameraRoll, ActivityIndicator
+    Platform, CameraRoll
 } from 'react-native';
 import ScreenUtil from '../../../utils/screen-util';
 import NoDataView from '../../../components/no-data-view';
@@ -97,14 +97,14 @@ export default class GdzcDetailPage extends BasePage {
 
 
     loadData = (isRefreshing = false) => {
-        if (this.state.loading || (!isRefreshing && !this.state.hasMore))  {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) {
             this.setState({ loading: false, refreshing: false });
             return;
         }
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
 
-        const { data, indexType, pageIndex, pageSize, id } = this.state;
+        const { data, indexType, pageSize, id } = this.state;
         if (indexType === 0) {
             GdzcService.gdzcBaseInfo(id).then(res => {
                 this.setState({
@@ -143,8 +143,8 @@ export default class GdzcDetailPage extends BasePage {
                     }, []);
                     this.setState({
                         data: combinedUniqueArray,
-                        pageIndex: pageIndex,
-                        hasMore: pageIndex * pageSize < res.total ? true : false,
+                        pageIndex: currentPage,
+                        hasMore: currentPage * pageSize < res.total ? true : false,
                         total: res.total
                     });
                 }
@@ -171,8 +171,8 @@ export default class GdzcDetailPage extends BasePage {
                     }, []);
                     this.setState({
                         data: combinedUniqueArray,
-                        pageIndex: pageIndex,
-                        hasMore: pageIndex * pageSize < res.total ? true : false,
+                        pageIndex: currentPage,
+                        hasMore: currentPage * pageSize < res.total ? true : false,
                         total: res.total
                     });
                 }
@@ -198,8 +198,8 @@ export default class GdzcDetailPage extends BasePage {
                     }, []);
                     this.setState({
                         data: combinedUniqueArray,
-                        pageIndex: pageIndex,
-                        hasMore: pageIndex * pageSize < res.total ? true : false,
+                        pageIndex: currentPage,
+                        hasMore: currentPage * pageSize < res.total ? true : false,
                         total: res.total
                     });
                 }
@@ -309,12 +309,7 @@ export default class GdzcDetailPage extends BasePage {
         </Flex>
     }
 
-    renderFooter = () => {
-        if (!this.state.hasMore && this.state.datasList.length > 0) {
-            return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
-        }
-        return this.state.loading ? <ActivityIndicator /> : null;
-    };
+
 
     contentView = () => {
         const { indexType, data, imageDatas, datasList, total, refreshing } = this.state
@@ -377,10 +372,11 @@ export default class GdzcDetailPage extends BasePage {
                         onEndReachedThreshold={0.2}
                         refreshing={refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
-                        onEndReached={this.loadMore}//底部往下拉翻页
-                        //onMomentumScrollBegin={() => this.canLoadMore = true}
-                        ListFooterComponent={this.renderFooter}
-                        ListEmptyComponent={<NoDataView />}
+                        onEndReached={this.loadMore}//底部往下拉翻页 
+                        ListEmptyComponent={
+                            <Flex justify={'center'}>
+                                <Text style={{ fontSize: 14, color: '#666', paddingTop: 24, paddingBottom: 15 }}>暂无数据</Text>
+                            </Flex>}
                     />
                     <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {datasList.length}, 共 {total} 条</Text>
                 </>

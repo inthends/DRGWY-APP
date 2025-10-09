@@ -87,8 +87,9 @@ class SettingPage extends BasePage {
                 Promise.all(items.map(item => XunJianService.xunjianIndexDetail(item.lineId).then(res => ({
                     ...item,
                     items: res
-                })))).then(rea => { 
-                    XunJianService.xunjianPointTasks(item.lineId, rea.pointId).then(r => {
+                })))).then(rea => {
+                    //获取巡检任务明细
+                    XunJianService.xunjianPointTasksOffline().then(r => {
                         UDToast.hiddenLoading(this.loading);
                         const tasks = {
                             allData: resp || {},//巡检任务数量统计
@@ -103,6 +104,7 @@ class SettingPage extends BasePage {
                             }
                         }
                         UDToast.showInfo('同步完成');
+
                     }).catch(err => {
                         UDToast.hiddenLoading(this.loading);
                     });

@@ -5,9 +5,7 @@ import {
     StyleSheet,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    FlatList,
-    ActivityIndicator
-    //Alert
+    FlatList
 } from 'react-native';
 import { Flex, Icon, Button, Modal } from '@ant-design/react-native';
 import BasePage from '../../base/base';
@@ -79,8 +77,7 @@ class EstateCheckPage extends BasePage {
     }
 
 
-    componentDidMount() {
-
+    componentDidMount() { 
         //加载有现场检查权限的角色
         WorkService.getCheckRoles().then(roles => {
             this.setState({
@@ -95,7 +92,7 @@ class EstateCheckPage extends BasePage {
             'didFocus',
             (obj) => {
                 this.props.saveSelectDrawerType(DrawerType.organize);
-                this.loadData();
+                this.loadData(true);
             }
         );
 
@@ -123,13 +120,13 @@ class EstateCheckPage extends BasePage {
     }
 
     loadData = (isRefreshing = false) => {
-        if (this.state.loading || (!isRefreshing && !this.state.hasMore))  {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) {
             this.setState({ loading: false, refreshing: false });
             return;
         }
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
-        const { data,billStatus, selectBuilding, billType, time, pageIndex, pageSize } = this.state;
+        const { data, billStatus, selectBuilding, billType, time, pageSize } = this.state;
         let organizeId;
         if (selectBuilding) {
             //treeType = selectBuilding.type;
@@ -161,8 +158,8 @@ class EstateCheckPage extends BasePage {
                     }, []);
                     this.setState({
                         data: combinedUniqueArray,
-                        pageIndex: pageIndex,
-                        hasMore: pageIndex * pageSize < res.total ? true : false,
+                        pageIndex: currentPage,
+                        hasMore: currentPage * pageSize < res.total ? true : false,
                         total: res.total
                     });
                 }
@@ -186,7 +183,7 @@ class EstateCheckPage extends BasePage {
         this.setState({
             pageIndex: pageIndex + 1
         }, () => {
-            this.loadData();
+            this.loadData();//加载分页更多，不需要重新刷新
         });
     };
 
@@ -222,7 +219,7 @@ class EstateCheckPage extends BasePage {
                 {
                     text: '确定', onPress: () => {
                         WorkService.deleteCheck(id).then(res => {
-                            this.loadData();
+                            this.loadData(true);
                         });
                     }
                 }
@@ -243,7 +240,7 @@ class EstateCheckPage extends BasePage {
                         {
                             text: '确定', onPress: () => {
                                 WorkService.closeCheck(id).then(res => {
-                                    this.loadData();
+                                    this.loadData(true);
                                 });
                             }
                         }
@@ -260,7 +257,7 @@ class EstateCheckPage extends BasePage {
                         {
                             text: '确定', onPress: () => {
                                 WorkService.closeCheck(id).then(res => {
-                                    this.loadData();
+                                    this.loadData(true);
                                 });
                             }
                         }
@@ -367,7 +364,7 @@ class EstateCheckPage extends BasePage {
             billStatus,
             pageIndex: 1
         }, () => {
-            this.loadData();
+            this.loadData(true);
         });
 
     };
@@ -376,7 +373,7 @@ class EstateCheckPage extends BasePage {
             time,
             pageIndex: 1
         }, () => {
-            this.loadData();
+            this.loadData(true);
         });
     };
     billType = (billType) => {
@@ -384,18 +381,10 @@ class EstateCheckPage extends BasePage {
             billType,
             pageIndex: 1
         }, () => {
-            this.loadData();
+            this.loadData(true);
         });
-    };
-
-    renderFooter = () => {
-        if (!this.state.hasMore && this.state.data.length > 0) {
-            return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
-        }
-
-        return this.state.loading ? <ActivityIndicator /> : null;
-    };
-
+    }; 
+ 
     render() {
         const { data, refreshing, total, roles, checkRole, checkRoleId } = this.state;
         return (
@@ -423,9 +412,7 @@ class EstateCheckPage extends BasePage {
                     onEndReachedThreshold={0.2}
                     refreshing={refreshing}
                     onRefresh={this.onRefresh}//下拉刷新
-                    onEndReached={this.loadMore}//底部往下拉翻页
-                    //onMomentumScrollBegin={() => this.canLoadMore = true}
-                    ListFooterComponent={this.renderFooter}
+                    onEndReached={this.loadMore}//底部往下拉翻页 
                     ListEmptyComponent={<NoDataView />}
                 />
                 <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
@@ -466,7 +453,6 @@ class EstateCheckPage extends BasePage {
                                             visible={true} />
                                     </Flex>
                                 </CommonView>
-
                                 <Flex style={{ marginTop: 10 }}>
                                     <Button
                                         type={'primary'}
@@ -475,7 +461,7 @@ class EstateCheckPage extends BasePage {
                                                 return;
                                             }
                                             this.setState({ showAdd: false });
-                                            this.loadData();
+                                            this.loadData(true);
                                         }}
                                         activeStyle={{ backgroundColor: Macro.work_blue }}
                                         style={{

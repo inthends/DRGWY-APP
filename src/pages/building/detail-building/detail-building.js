@@ -158,8 +158,8 @@ export default class DetailBuildingPage extends BasePage {
                 paddingRight: 15
               }}
             >
-              <Text style={styles.name}>{detail.name ? detail.name : ''}</Text>
-              <Text style={styles.name}> 
+              <Text style={styles.name}>{detail.allName ? detail.allName : ''}</Text>
+              <Text style={styles.name}>
                 {detail.areasum ? numeral(detail.areasum).format('0,0.00') : ''}{Macro.meter_square}
               </Text>
             </Flex>
@@ -365,8 +365,7 @@ export default class DetailBuildingPage extends BasePage {
                         //   height: 24,
                         //   backgroundColor: '#eee',
                         //   borderRadius: 12
-                        // }}
-
+                        // }} 
                         align="start" direction="column"
                       >
                         <Text style={{ color: '#666' }}>
@@ -428,8 +427,11 @@ export default class DetailBuildingPage extends BasePage {
                                       >
                                         <Flex align="start" direction="column">
                                           <Text style={styles.color_top}>
-                                            {it.name} {it.area}{Macro.meter_square}
+                                            {it.name}
                                           </Text>
+                                          <Text style={styles.color_top}>
+                                            {it.area}{Macro.meter_square}
+                                          </Text> 
                                           <Text style={styles.color_top}>
                                             {it.tenantName}
                                           </Text>
@@ -455,7 +457,7 @@ export default class DetailBuildingPage extends BasePage {
                                       onPress={() =>
                                         this.props.navigation.navigate(
                                           'SecondDetail',
-                                          { data: it },
+                                          { data: it }
                                         )
                                       }>
                                       <Flex
@@ -502,7 +504,10 @@ export default class DetailBuildingPage extends BasePage {
                                       ]}>
                                       <Flex align="start" direction="column">
                                         <Text style={styles.color_top}>
-                                          {it.name} {it.area}{Macro.meter_square}
+                                          {it.name}
+                                        </Text>
+                                        <Text style={styles.color_top}>
+                                          {it.area}{Macro.meter_square}
                                         </Text>
                                         <Text style={styles.color_top}>
                                           {it.tenantName}
@@ -582,7 +587,7 @@ const styles = StyleSheet.create({
   },
   color_top: {
     //color: 'white',
-    fontSize: 12,
+    fontSize: 11,
     paddingTop: 5
   },
   dash: {

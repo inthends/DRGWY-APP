@@ -53,7 +53,7 @@ class Jixiao extends BasePage {
             this.setState({
                 data: res
             })
-        })
+        });
     }
  
     render() {

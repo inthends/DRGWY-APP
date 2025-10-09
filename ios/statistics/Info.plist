@@ -41,6 +41,10 @@
 		</dict>
 	</dict>
 
+	<key>LSApplicationQueriesSchemes</key>
+ 	<array>
+    	<string>tel</string>
+   </array>
 
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
  	<string>需要您同意，才能访问位置信息</string>

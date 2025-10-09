@@ -1,14 +1,15 @@
 import React from 'react';
 import {
+    View,
     Text,
     StyleSheet,
     FlatList,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    ActivityIndicator
+    Keyboard
 } from 'react-native';
 import BasePage from '../../base/base';
-import { Flex, Icon } from '@ant-design/react-native';
+import { Flex, Icon, SearchBar } from '@ant-design/react-native';
 import Macro from '../../../utils/macro';
 import ScreenUtil from '../../../utils/screen-util';
 import { connect } from 'react-redux';
@@ -53,7 +54,8 @@ class ServicedeskUnFinishListPage extends BasePage {
 
             type,
             time: '全部',
-            selectedId: ''
+            selectedId: '',
+            btnText: '搜索',
         };
     }
 
@@ -81,14 +83,14 @@ class ServicedeskUnFinishListPage extends BasePage {
     }
 
     loadData = (isRefreshing = false) => {
-        if (this.state.loading || (!isRefreshing && !this.state.hasMore))  {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) {
             this.setState({ loading: false, refreshing: false });
             return;
         }
         const currentPage = isRefreshing ? 1 : this.state.pageIndex;
         this.setState({ loading: true });
-        const {data, type, time, pageIndex, pageSize } = this.state;
-        WorkService.servicedeskUnFinishList(type, time, pageIndex, pageSize).then(res => {
+        const { data, type, time, pageSize, keyword } = this.state;
+        WorkService.servicedeskUnFinishList(type, time, currentPage, pageSize, keyword).then(res => {
             if (isRefreshing) {
                 this.setState({
                     data: res.data,
@@ -97,7 +99,7 @@ class ServicedeskUnFinishListPage extends BasePage {
                 });
             }
             else {
-                  //合并并去重 使用 reduce
+                //合并并去重 使用 reduce
                 const combinedUniqueArray = [...data, ...res.data].reduce((acc, current) => {
                     if (!acc.some(item => item.id === current.id)) {
                         acc.push(current);
@@ -106,8 +108,8 @@ class ServicedeskUnFinishListPage extends BasePage {
                 }, []);
                 this.setState({
                     data: combinedUniqueArray,
-                    pageIndex: pageIndex,
-                    hasMore: pageIndex * pageSize < res.total ? true : false,
+                    pageIndex: currentPage,
+                    hasMore: currentPage * pageSize < res.total ? true : false,
                     total: res.total
                 });
             }
@@ -124,7 +126,7 @@ class ServicedeskUnFinishListPage extends BasePage {
         });
     };
 
-       //加载更多
+    //加载更多
     loadMore = () => {
         if (this.state.loading) return;//防止快速滚动，产生抖动，多次调用
         const { pageIndex } = this.state;
@@ -202,46 +204,92 @@ class ServicedeskUnFinishListPage extends BasePage {
         });
     };
 
-    renderFooter = () => {
-        if (!this.state.hasMore && this.state.data.length > 0) {
-            return <Text style={{ fontSize: 14, alignSelf: 'center' }}>没有更多数据了</Text>;
-        } 
-        return this.state.loading ? <ActivityIndicator /> : null;
+
+    timeChange = (time) => {
+        this.setState({
+            time,
+            pageIndex: 1
+        }, () => {
+            this.onRefresh();
+        });
     };
 
+    billType = (billType) => {
+        this.setState({
+            billType,
+            pageIndex: 1
+        }, () => {
+            this.onRefresh();
+        });
+    };
+
+
+    search = () => {
+        Keyboard.dismiss();
+        this.onRefresh();
+        this.setState({ btnText: '取消' });
+    };
+
+    clear = () => {
+        const { btnText } = this.state;
+        Keyboard.dismiss();
+        if (btnText == '搜索') {
+            this.onRefresh();
+            this.setState({ btnText: '取消' });
+        } else {
+            this.setState({
+                keyword: ''//必须要设置值，再调用方法，否则数据没有更新
+            }, () => {
+                this.onRefresh();
+                this.setState({ btnText: '搜索' });
+            });
+        }
+    };
+
+
     render() {
-        const { data, total, refreshing, type } = this.state;
+        const { data, total, refreshing, type, btnText } = this.state;
         return (
-            <CommonView style={{ flex: 1 }}>
-                <ListHeader type={type} onChange={(type) => this.setState({ type }, () => {
-                    this.onRefresh();
-                })} />
-                <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
-                    <MyPopover onChange={this.timeChange}
-                        titles={['全部', '今日', '本周', '本月', '上月', '本年']}
-                        visible={true} />
-                </Flex>
-                <FlatList
-                    data={data}
-                    renderItem={this._renderItem}
-                    style={styles.list}
-                    keyExtractor={(item) => item.id}
-                    //必须
-                    onEndReachedThreshold={0.2}
-                    refreshing={this.state.refreshing}//在等待加载新数据时将此属性设为 true，列表就会显示出一个正在加载的符号
-                    onRefresh={this.onRefresh}//下拉刷新
-                    onEndReached={this.loadMore}//底部往下拉翻页 
-                    ListFooterComponent={this.renderFooter}
-                    //onMomentumScrollBegin={() => this.canLoadMore = true}
-                    //防止上拉加载更多onReached被触发两次，造成重复请求资源，性能浪费
-                    //开始滑动，当第一次触发完毕之后，将这个flag设置为false，避免重复去执行我们需要做的action操作
-                    //onMomentumScrollEnd={() => this.canLoadMore = true}//结束滑动
-                    //onScrollBeginDrag={() => this.canLoadMore = false}//开始拖拽的时候
-                    //onScrollEndDrag={() => this.canLoadMore = true}//结束拖拽的时候 
-                    ListEmptyComponent={<NoDataView />}
+            <View style={{ flex: 1 }}>
+                <SearchBar
+                    placeholder="请输入"
+                    showCancelButton
+                    cancelText={btnText}
+                    value={this.state.keyword}
+                    onChange={keyword => this.setState({ keyword })}
+                    onSubmit={() => this.search()}
+                    onCancel={() => this.clear()}
                 />
-                <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
-            </CommonView>
+
+                <CommonView style={{ flex: 1 }}>
+                    <ListHeader type={type} onChange={(type) => this.setState({ type }, () => {
+                        this.onRefresh();
+                    })} />
+                    <Flex justify={'between'} style={{ paddingLeft: 15, marginTop: 15, paddingRight: 15, height: 30 }}>
+                        <MyPopover onChange={this.timeChange}
+                            titles={['全部', '今日', '本周', '本月', '上月', '本年']}
+                            visible={true} />
+                    </Flex>
+                    <FlatList
+                        data={data}
+                        renderItem={this._renderItem}
+                        style={styles.list}
+                        keyExtractor={(item) => item.id}
+                        //必须
+                        onEndReachedThreshold={0.2}
+                        refreshing={refreshing}
+                        onRefresh={this.onRefresh}//下拉刷新
+                        onEndReached={this.loadMore}//底部往下拉翻页   
+                        //防止上拉加载更多onReached被触发两次，造成重复请求资源，性能浪费
+                        //开始滑动，当第一次触发完毕之后，将这个flag设置为false，避免重复去执行我们需要做的action操作
+                        //onMomentumScrollEnd={() => this.canLoadMore = true}//结束滑动
+                        //onScrollBeginDrag={() => this.canLoadMore = false}//开始拖拽的时候
+                        //onScrollEndDrag={() => this.canLoadMore = true}//结束拖拽的时候 
+                        ListEmptyComponent={<NoDataView />}
+                    />
+                    <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
+                </CommonView>
+            </View>
         );
     }
 }

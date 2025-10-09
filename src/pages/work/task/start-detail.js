@@ -8,7 +8,9 @@ import {
     ScrollView,
     Modal,
     Platform,
-    Keyboard, CameraRoll
+    Keyboard,
+    CameraRoll,
+    FlatList
 } from 'react-native';
 import BasePage from '../../base/base';
 import { Icon, Flex, Button, TextareaItem } from '@ant-design/react-native';
@@ -24,6 +26,8 @@ import Macro from '../../../utils/macro';
 import CommonView from '../../../components/CommonView';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import RNFetchBlob from 'rn-fetch-blob';
+import moment from 'moment';
+import ActionPopover from '../../../components/action-popover';
 
 export default class StartDetailPage extends BasePage {
     static navigationOptions = ({ navigation }) => {
@@ -57,7 +61,15 @@ export default class StartDetailPage extends BasePage {
             KeyboardShown: false,
             selectPersons: [],
             isMustStartFile: false,
-            isMustJudgement: false
+            isMustJudgement: false,
+
+            pageIndex: 1,
+            pageSize: 10,
+            total: 0,
+            data: [],
+            refreshing: false,//刷新
+            loading: false,//加载完成 
+            hasMore: true,//更多
         };
         this.keyboardDidShowListener = null;
         this.keyboardDidHideListener = null;
@@ -146,6 +158,8 @@ export default class StartDetailPage extends BasePage {
                     communicates: res
                 });
             });
+
+            this.loadData();
         });
 
         // WorkService.weixiuExtra(id).then(images => {
@@ -157,7 +171,7 @@ export default class StartDetailPage extends BasePage {
 
     click = () => {
         const { id, isUpload, images, value, isMustStartFile, isMustJudgement, selectPersons } = this.state;
-        
+
         WorkService.checkStartWork(id).then(res => {
             if (res == true) {
                 UDToast.showError('维修人员有开工没有完成的维修单，不允许再开工新的维修单');
@@ -188,8 +202,8 @@ export default class StartDetailPage extends BasePage {
                 WorkService.startRepair(id, value, reinforceId).then(res => {
                     UDToast.showInfo('操作成功');
                     this.props.navigation.goBack();
-                }); 
-            }); 
+                });
+            });
         });
 
     };
@@ -316,8 +330,245 @@ export default class StartDetailPage extends BasePage {
         })
     }
 
+    //费用明细
+    loadData = (isRefreshing = false) => {
+        if (this.state.loading || (!isRefreshing && !this.state.hasMore)) {
+            this.setState({ loading: false, refreshing: false });
+            return;
+        }
+        const currentPage = isRefreshing ? 1 : this.state.pageIndex;
+        this.setState({ loading: true });
+        const { data, detail, pageSize } = this.state;
+        //服务单id
+        WorkService.serverFeeList(currentPage, pageSize, detail.relationId).then(res => {
+            if (isRefreshing) {
+                this.setState({
+                    data: res.data,
+                    pageIndex: 2,
+                    total: res.total
+                });
+            }
+            else {
+                //合并并去重 使用 reduce
+                const combinedUniqueArray = [...data, ...res.data].reduce((acc, current) => {
+                    if (!acc.some(item => item.id === current.id)) {
+                        acc.push(current);
+                    }
+                    return acc;
+                }, []);
+                this.setState({
+                    data: combinedUniqueArray,
+                    pageIndex: currentPage,
+                    hasMore: currentPage * pageSize < res.total ? true : false,
+                    total: res.total
+                });
+            }
+        }).catch(err => UDToast.showError(err)
+        ).finally(() => this.setState({ loading: false, refreshing: false }))
+    };
+
+
+    //刷新
+    onRefresh = () => {
+        this.setState({
+            refreshing: true,
+            pageIndex: 1
+        }, () => {
+            this.loadData(true);
+        });
+    };
+
+    //加载更多
+    loadMore = () => {
+        if (this.state.loading) return;//防止快速滚动，产生抖动，多次调用
+        const { pageIndex } = this.state;
+        this.setState({
+            pageIndex: pageIndex + 1
+        }, () => {
+            this.loadData();
+        });
+    };
+
+    //作废
+    doInvalid = (item) => {
+        WorkService.checkBillFee(item.id).then((res) => {
+            if (res == 0) {
+                // Alert.alert(
+                //     '请确认',
+                //     `您确定要作废${item.feeName}？`,
+                //     [{ text: '取消', tyle: 'cancel' },
+                //     {
+                //         text: '确定',
+                //         onPress: () => {
+                //             WorkService.invalidDetailForm(item.id).then(res => {
+                //                 UDToast.showInfo('作废成功');
+                //                 this.loadData();
+                //             }).catch(err => {
+                //                 UDToast.showError(err);
+                //             });
+                //         }
+                //     }
+                //     ], { cancelable: false });
+
+                AntModal.alert(
+                    '请确认',
+                    `您确定要作废${item.feeName}？`,
+                    [
+                        {
+                            text: '取消', onPress: () => {
+                            }, style: 'cancel'
+                        },
+                        {
+                            text: '确定', onPress: () => {
+                                WorkService.invalidDetailForm(item.id).then(res => {
+                                    UDToast.showInfo('作废成功');
+                                    this.loadData();
+                                }).catch(err => {
+                                    UDToast.showError(err);
+                                });
+                            }
+                        }
+                    ]
+                )
+            }
+            else {
+                if (res == 1) {
+                    UDToast.showError('该费用已经生成了通知单，不允许作废');
+                } else if (res == 2) {
+                    UDToast.showError('该费用已经生成了减免单，不允许作废');
+                } else if (res == 3) {
+                    UDToast.showError('该费用已经生成了冲抵单，不允许作废');
+                }
+                else {
+                    UDToast.showError('该费用已经生成了优惠单，不允许作废');
+                }
+            }
+        });
+    }
+
+    //推送账单
+    send = (item) => {
+        AntModal.alert(
+            '请确认',
+            `您确定要推送${item.feeName}账单？`,
+            [
+                {
+                    text: '取消', onPress: () => {
+                    }, style: 'cancel'
+                },
+                {
+                    text: '确定', onPress: () => {
+                        WorkService.sendServiceDeskFee(item.id).then(res => {
+                            UDToast.showInfo('推送账单成功');
+                            this.loadData();
+                        }).catch(err => {
+                            UDToast.showError(err);
+                        });
+                    }
+                }
+            ]
+        )
+    };
+
+    //退款
+    refund = (item) => {
+        if (!item.payId) {
+            UDToast.showError('非在线支付的费用，无法在线退款');
+            return;
+        }
+        AntModal.alert(
+            '请确认',
+            `您确定要退款${item.feeName}？`,
+            [
+                {
+                    text: '取消', onPress: () => {
+                    }, style: 'cancel'
+                },
+                {
+                    text: '确定', onPress: () => {
+                        WorkService.refundForm(item.receiveId, item.payId).then(res => {
+                            UDToast.showInfo('退款成功');
+                            this.loadData();
+                        });
+                    }
+                }
+            ]
+        )
+    }
+
+    _renderItem = ({ item, index }) => {
+        return (
+            <Flex
+                direction='column' align={'start'}
+                style={[styles.card, index % 2 == 0 ? styles.blue : styles.orange]}>
+                <Flex justify='between' style={{ width: '100%' }}>
+                    <Text style={styles.title}>{item.feeName}</Text>
+                    <Flex>
+                        {item.status == 0 ? <Text style={styles.statusred}>未收</Text> : <Text style={styles.statusblue}>已收</Text>}
+                        {item.status == 0 ?
+                            <ActionPopover
+                                textStyle={{ fontSize: 14 }}
+                                //hiddenImage={true}
+                                onChange={(title) => {
+                                    if (title === '作废') {
+                                        this.doInvalid(item);
+                                    } else if (title === '推送') {
+                                        if (item.noticeId) {
+                                            UDToast.showError('该费用已经推送');
+                                            return;
+                                        }
+                                        this.send(item);
+                                    }
+                                }}
+                                titles={['推送', '作废']}
+                                visible={true} /> :
+
+                            (item.payStatus && item.payStatus == -1 ? null :
+                                <ActionPopover
+                                    textStyle={{ fontSize: 14 }}
+                                    //hiddenImage={true}
+                                    onChange={() => {
+                                        this.refund(item);
+                                    }}
+                                    titles={['退款']}
+                                    visible={true} />)
+                        }
+                    </Flex>
+                </Flex>
+
+                <Flex style={styles.line} />
+                <Flex align={'start'} direction={'column'}>
+                    <Flex justify='between' style={{ width: '100%', paddingTop: 5, paddingLeft: 10 }}>
+                        <Text style={{ lineHeight: 20 }}>应收金额：{item.amount}
+                            ，减免金额：{item.reductionAmount}
+                            ，已收金额：{item.receiveAmount}
+                            ，未收金额：{item.lastAmount}</Text>
+                    </Flex>
+                    <Flex justify='between' style={{ width: '100%', paddingTop: 5, paddingBottom: 5, paddingLeft: 10 }}>
+                        {item.beginDate ?
+                            <Text>计费期间：{moment(item.beginDate).format('YYYY-MM-DD') + ' 至 ' + moment(item.endDate).format('YYYY-MM-DD')}</Text> : null
+                        }
+                    </Flex>
+                    <Flex justify='between' style={{ width: '100%', paddingBottom: 5, paddingLeft: 10 }}>
+                        <Text>账单是否推送：{item.noticeId ? '是' : '否'}，是否退款：{item.payStatus && item.payStatus == -1 ? '是' : '否'}</Text>
+                    </Flex>
+                </Flex>
+            </Flex>
+        );
+    };
+
+
     render() {
-        const { preimages, detail, communicates, selectPersons } = this.state;
+        const {
+            preimages,
+            detail,
+            communicates,
+            selectPersons,
+            data,
+            refreshing,
+            total
+        } = this.state;
+
         // let personNames = selectPersons.map(item => {
         //     return item.name;
         // });
@@ -330,10 +581,12 @@ export default class StartDetailPage extends BasePage {
         return (
             <CommonView style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 10 }}>
                 <ScrollView style={{ marginTop: this.state.KeyboardShown ? - 200 : 0, height: '100%' }}>
+
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.billCode}</Text>
                         <Text style={styles.right}>{detail.statusName}</Text>
                     </Flex>
+
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>{detail.address} {detail.contactName}</Text>
                         <TouchableWithoutFeedback onPress={() => common.call(detail.contactLink)}>
@@ -341,6 +594,7 @@ export default class StartDetailPage extends BasePage {
                                 style={{ width: 16, height: 16 }} /></Flex>
                         </TouchableWithoutFeedback>
                     </Flex>
+
                     <Text style={styles.desc}>{detail.repairContent}</Text>
 
                     <ListImages images={preimages} lookImage={(lookImageIndex) => this.lookImage(lookImageIndex, preimages)} />
@@ -350,7 +604,15 @@ export default class StartDetailPage extends BasePage {
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
-                        <Text style={styles.right}>重要程度：{detail.importance}</Text>
+                        <Text style={styles.left}>重要程度：{detail.importance}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>是否有偿：{detail.isPaid}</Text>
+                    </Flex>
+
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>预约维修时间：{detail.reservationTime}</Text>
                     </Flex>
 
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
@@ -363,7 +625,7 @@ export default class StartDetailPage extends BasePage {
 
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
-                            <Text style={styles.left}>关联单：</Text>
+                            <Text style={styles.left}>关联单据：</Text>
                             <Text
                                 onPress={() => {
                                     if (detail.sourceType === '服务总台') {
@@ -420,12 +682,34 @@ export default class StartDetailPage extends BasePage {
                         </Flex>
                     </TouchableWithoutFeedback>
 
+                    <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
+                        <Text style={styles.left}>费用明细</Text>
+                    </Flex>
+
+                    <FlatList
+                        data={data}
+                        renderItem={this._renderItem}
+                        style={styles.list}
+                        keyExtractor={(item) => 'flatList' + item.id}
+                        //必须
+                        onEndReachedThreshold={0.2}
+                        refreshing={refreshing}
+                        onRefresh={this.onRefresh}//下拉刷新
+                        onEndReached={this.loadMore}//底部往下拉翻页 
+                        ListEmptyComponent={
+                            <Flex justify={'center'}>
+                                <Text style={{ fontSize: 14, color: '#666', paddingTop: 24, paddingBottom: 15 }}>暂无数据</Text>
+                            </Flex>}
+                    />
+                    <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>
+
                     <UploadImageView
                         style={{ marginTop: 10 }}
                         linkId={this.state.id}
                         reload={this.reload}
                         type='开工'
                     />
+
                     <View style={{ margin: 15 }}>
                         <TextareaItem
                             rows={4}
@@ -545,6 +829,71 @@ export default class StartDetailPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
+
+    list: {
+        backgroundColor: Macro.color_white,
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 10
+    },
+
+    card: {
+        borderTopWidth: 1,
+        borderRightWidth: 1,
+        borderBottomWidth: 1,
+        borderTopColor: '#c8c8c8',
+        borderBottomColor: '#c8c8c8',
+        borderRightColor: '#c8c8c8',
+        borderRadius: 5,
+        marginBottom: 10,
+        backgroundColor: 'white',
+        shadowColor: '#00000033',
+        shadowOffset: { h: 10, w: 10 },
+        shadowRadius: 5,
+        shadowOpacity: 0.8
+    },
+
+
+    title: {
+        paddingTop: 10,
+        color: '#404145',
+        fontSize: 14,
+        paddingBottom: 5,
+        marginLeft: 10,
+        marginRight: 10
+    },
+
+    blue: {
+        borderLeftColor: Macro.work_blue,
+        borderLeftWidth: 5,
+    },
+
+    orange: {
+        borderLeftColor: Macro.work_orange,
+        borderLeftWidth: 5,
+    },
+
+    statusred: {
+        paddingTop: 10,
+        paddingRight: 10,
+        paddingBottom: 10,
+        color: Macro.work_red
+    },
+
+    statusblue: {
+        paddingTop: 10,
+        paddingRight: 10,
+        paddingBottom: 10,
+        color: Macro.work_blue
+    },
+    
+    line: {
+        width: ScreenUtil.deviceWidth() - 30 - 10 * 2,
+        marginLeft: 10,
+        backgroundColor: '#eee',
+        height: 1
+    },
+
     mengceng: {
         position: 'absolute',
         left: 0,
@@ -559,6 +908,7 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         paddingTop: 10
     },
+
     left: {
         fontSize: 16,
         color: '#404145'
