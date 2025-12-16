@@ -118,7 +118,8 @@ class EstateFuwuPage extends BasePage {
         const { data, type,
             billStatus,
             selectBuilding,
-            billType, time,
+            billType, 
+            time,
             keyword, 
             pageSize
         } = this.state;
@@ -352,11 +353,10 @@ class EstateFuwuPage extends BasePage {
                             visible={true}
                             index={index}
                         />
-                    </Flex>
-
+                    </Flex> 
                     <FlatList
                         data={data}
-                        // ListHeaderComponent={}
+                        //ListHeaderComponent={}
                         renderItem={this._renderItem}
                         style={styles.list}
                         keyExtractor={(item) => item.id}
@@ -364,7 +364,7 @@ class EstateFuwuPage extends BasePage {
                         onEndReachedThreshold={0.2}
                         refreshing={refreshing}
                         onRefresh={this.onRefresh}//下拉刷新
-                        onEndReached={this.loadMore}//底部往下拉翻页 
+                        onEndReached={this.loadMore}//底部往上拉翻页 
                         ListEmptyComponent={<NoDataView />}
                     />
                     <Text style={{ fontSize: 14, alignSelf: 'center' }}>当前 1 - {data.length}, 共 {total} 条</Text>

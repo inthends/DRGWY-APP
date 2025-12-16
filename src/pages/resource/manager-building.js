@@ -6,19 +6,19 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import BasePage from '../../base/base';
+import BasePage from '../base/base';
 import { Flex, Icon } from '@ant-design/react-native';
-import Macro from '../../../utils/macro';
-import ManagerBuildingService from './manager-building-service';
+import Macro from '../../utils/macro';
+import Service from './resource-service'; 
 import { connect } from 'react-redux';
 import {
   saveSelectBuilding,
   saveSelectDrawerType
   //saveSelectTask,
   //saveSelectDepartment
-} from '../../../utils/store/actions/actions';
-import CommonView from '../../../components/CommonView';
-import { DrawerType } from '../../../utils/store/action-types/action-types';
+} from '../../utils/store/actions/actions';
+import CommonView from '../../components/CommonView';
+import { DrawerType } from '../../utils/store/action-types/action-types';
 
 //机构、项目、流程分类树
 const SectionHeader = (props) => {
@@ -128,7 +128,7 @@ class ManagerBuildingPage extends BasePage {
     //默认机构
     this.selectDrawerType = DrawerType.organize;
     props.saveSelectDrawerType(DrawerType.organize);
-    ManagerBuildingService.getOrg().then((buildingAllData) => {
+    Service.getOrg().then((buildingAllData) => {
       this.setState({
         buildingAllData,
         allData: buildingAllData
@@ -153,7 +153,7 @@ class ManagerBuildingPage extends BasePage {
 
       if (nextProps.selectDrawerType === DrawerType.organize) {
         //机构管理处
-        ManagerBuildingService.getOrg().then((data) => {
+        Service.getOrg().then((data) => {
           this.setState({
             //buildingAllData,
             allData: data
@@ -162,7 +162,7 @@ class ManagerBuildingPage extends BasePage {
       }
       else if (nextProps.selectDrawerType === DrawerType.building) {
         //项目
-        ManagerBuildingService.getBuilding().then((data) => {
+        Service.getBuilding().then((data) => {
           this.setState({
             allData: data
           });
@@ -170,7 +170,7 @@ class ManagerBuildingPage extends BasePage {
 
       } else if (nextProps.selectDrawerType === DrawerType.task) {
         //流程分类
-        ManagerBuildingService.getFlowType().then((data) => {
+        Service.getFlowType().then((data) => {
           this.setState({
             allData: data
           });
@@ -188,7 +188,7 @@ class ManagerBuildingPage extends BasePage {
     //       allData: departmentAllData
     //     });
     //   } else {
-    //     ManagerBuildingService.getDep().then((departmentAllData) => {
+    //     Service.getDep().then((departmentAllData) => {
     //       this.setState({
     //         departmentAllData,
     //         allData: departmentAllData
@@ -204,7 +204,7 @@ class ManagerBuildingPage extends BasePage {
     //       allData: taskAllData
     //     });
     //   } else {
-    //     ManagerBuildingService.getFlowType().then((taskAllData) => {
+    //     Service.getFlowType().then((taskAllData) => {
     //       this.setState({
     //         taskAllData,
     //         allData: taskAllData

@@ -156,8 +156,7 @@ export default class SelectAreaPage extends BasePage {
                 roleId
             };
 
-        } else {
-
+        } else { 
             this.props.navigation.setParams({
                 title: '选择项目',
             });

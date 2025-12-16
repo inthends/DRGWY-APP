@@ -7,14 +7,14 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
 } from 'react-native';
-import BasePage from '../../base/base';
+import BasePage from '../base/base';
 import { Flex,WhiteSpace } from '@ant-design/react-native';
-import Macro from '../../../utils/macro';
-import DetailBuildingService from './detail-parking-service';
-import ScreenUtil from '../../../utils/screen-util';
-import common from '../../../utils/common';
-import BackTitleNavigationBar from '../../../components/back-title-navigation-bar';
-import CommonView from '../../../components/CommonView';
+import Macro from '../../utils/macro';
+import Service from './resource-service'; 
+import ScreenUtil from '../../utils/screen-util';
+import common from '../../utils/common';
+import BackTitleNavigationBar from '../../components/back-title-navigation-bar';
+import CommonView from '../../components/CommonView';
 import numeral from 'numeral';
 
 export default class DetailParkingPage extends BasePage {
@@ -39,18 +39,18 @@ export default class DetailParkingPage extends BasePage {
   componentDidMount() {
     let id = this.state.item.id; 
     //获取车位
-    DetailBuildingService.getPStructs(id, 9).then((res) => {
+    Service.getPStructs(id, 9).then((res) => {
       this.setState({ data: res });
       //console.log(res);
     });
 
     //获取状态
-    DetailBuildingService.getPropertyStatus().then((status) => {
+    Service.getPropertyStatus().then((status) => {
       this.setState({ status });
     });
 
     //详情
-    DetailBuildingService.getBuildingDetail(id).then((detail) => {
+    Service.getBuildingDetail(id).then((detail) => {
       this.setState({ detail });
     });
   }
@@ -100,7 +100,6 @@ export default class DetailParkingPage extends BasePage {
             >
               <Text style={styles.name}>{detail.name}</Text>
               <Text style={styles.name}>
-                {/* {detail.rentareasum} / {detail.areasum} */}
                 {numeral(detail.areasum).format('0,0.00')}{Macro.meter_square}
               </Text>
             </Flex>
@@ -244,7 +243,7 @@ export default class DetailParkingPage extends BasePage {
                             <TouchableWithoutFeedback
                               onPress={() =>
                                 this.props.navigation.navigate(
-                                  'SecondDetail',
+                                  'DetailUnit',
                                   { data: it },
                                 )
                               }>

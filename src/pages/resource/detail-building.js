@@ -9,14 +9,13 @@ import {
   TouchableWithoutFeedback,
   Keyboard
 } from 'react-native';
-import BasePage from '../../base/base';
+import BasePage from '../base/base';
 import { Flex, Icon, SearchBar } from '@ant-design/react-native';
-import Macro from '../../../utils/macro';
-import DetailBuildingService from './detail-building-service';
-import ScreenUtil from '../../../utils/screen-util';
-import common from '../../../utils/common';
-// import BackTitleNavigationBar from '../../../components/back-title-navigation-bar';
-import CommonView from '../../../components/CommonView';
+import Macro from '../../utils/macro';
+import Service from './resource-service'; 
+import ScreenUtil from '../../utils/screen-util';
+import common from '../../utils/common'; 
+import CommonView from '../../components/CommonView';
 import numeral from 'numeral';
 
 export default class DetailBuildingPage extends BasePage {
@@ -49,18 +48,19 @@ export default class DetailBuildingPage extends BasePage {
       item,
       status: [],
       detail: {},
-      btnText: '搜索'
+      btnText: '搜索',
+      keyword:''
     };
   }
 
   componentDidMount() {
     //获取资产状态
-    DetailBuildingService.getPropertyStatus().then((status) => {
+    Service.getPropertyStatus().then((status) => {
       this.setState({ status });
     });
 
     let id = this.state.item.id;
-    DetailBuildingService.getBuildingDetail(id).then((detail) => {
+    Service.getBuildingDetail(id).then((detail) => {
       this.setState({ detail });
       if (detail.id) {
         this.searchData();
@@ -117,12 +117,12 @@ export default class DetailBuildingPage extends BasePage {
     let id = this.state.item.id;
     const { keyword } = this.state;
     //获取楼层
-    DetailBuildingService.getPStructs(id, 4).then((res) => {
+    Service.getPStructs(id, 4).then((res) => {
       const floors = res || [];
       //循环楼层
       const promises = floors.map((item) => {
         //获取房产
-        return DetailBuildingService.getSearchPStructs(item.id, keyword).then((res) => {
+        return Service.getSearchPStructs(item.id, keyword).then((res) => {
           const allRooms = res || [];
           const rooms = common.convertArrayToSmallArray(allRooms);
           return {
@@ -374,7 +374,7 @@ export default class DetailBuildingPage extends BasePage {
                       </Flex>
                       <Text
                         style={{
-                          //paddingLeft: 10,
+                          paddingLeft: 10,
                           color: '#404145'
                         }}>{numeral(item.area).format('0,0.00')}{Macro.meter_square}
                       </Text>
@@ -456,7 +456,7 @@ export default class DetailBuildingPage extends BasePage {
                                     <TouchableWithoutFeedback
                                       onPress={() =>
                                         this.props.navigation.navigate(
-                                          'SecondDetail',
+                                          'DetailUnit',
                                           { data: it }
                                         )
                                       }>

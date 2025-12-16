@@ -8,16 +8,21 @@ import {
 } from 'react-navigation';
 import { Icon } from '@ant-design/react-native';
 import Macro from '../../utils/macro';
-import ProjectPage from '../building/project';
+import ProjectPage from '../resource/project';
 import WorkPage from '../work/work';
 import MinePage from '../mine/mine';
 import StatisticsPage from '../navigator/statistics';
 import HomePage from '../home/home';
-import SecondDetailBuildingPage from '../building/second-detail-buinding/second-detail-buinding';
-import ManagerBuildingPage from '../../pages/building/manager-building/manager-building';
-import DetailBuildingPage from '../building/detail-building/detail-building';
-import DetailParkingPage from '../building/detail-parking/detail-parking';
-import BuildingsPage from '../building/buildings/buildings';
+
+
+
+import BuildingsPage from '../resource/buildings';
+import ManagerBuildingPage from '../resource/manager-building';
+import DetailBuildingPage from '../resource/detail-building';
+import DetailParkingPage from '../resource/detail-parking';
+import DetailUnitPage from '../resource/detail-unit';
+
+
 import FeeStatisticPage from '../navigator/fee-statistic/fee-statistic';
 import AddWorkPage from '../work/add-work';
 import VisitPage from '../work/visit';
@@ -76,7 +81,7 @@ import NewsList from '../work/news-list';
 import FeeChargeDetail from '../navigator/fee/fee-charge-detail';
 
 import SelectAddressPage from '../work/select-address';
-import SelectRolePerson from '../work/select-role-person'; 
+import SelectRolePerson from '../work/select-role-person';
 import SelectReceivePerson from '../work/select-receive-person';
 
 
@@ -183,18 +188,13 @@ const BuildingNavigator = createStackNavigator(
         header: null
       })
     },
+    Home: HomePage,
+    Buildings: BuildingsPage,
     DetailBuilding: DetailBuildingPage,
     DetailParking: DetailParkingPage,
-    SecondDetail: SecondDetailBuildingPage,
-    Buildings: BuildingsPage,
-    Home: HomePage,
-    //yiqing: YiQingPage,
-    //yiqinginfo: YiQingInfoPage,
-    //scanForHome: ScanOnly,
-    //newsList: NewsList,
+    DetailUnit: DetailUnitPage, 
     feeAdd: FeeAddPage,
-    feeDetail: FeeDetailPage,
-    //louDetail: LouDetail
+    feeDetail: FeeDetailPage
   },
   {
     containerOptions: (options) => {
@@ -261,7 +261,7 @@ const WorkNavigator = createStackNavigator({
   selectAddress: SelectAddressPage,
   selectArea: SelectAreaPage,
   service: ServiceDeskDetailPage,
-  
+
   weixiuView: WeixiuDetailPage, //工作台里面，待回访点击跳转的维修单，只能查看
   tousuView: TousuDetailPage, //工作台里面，待回访点击跳转的投诉单，只能查看
 
@@ -273,7 +273,7 @@ const WorkNavigator = createStackNavigator({
   paidan: DispatchDetailPage,
   huifang: VisitDetailPage,
   approve: ApproveDetailPage,
-  rob: RobDetailPage, 
+  rob: RobDetailPage,
   //scanonly: ScanOnly,
   //scandemo: ScanSS,
   task: TaskListPage,
@@ -335,11 +335,11 @@ const WorkNavigator = createStackNavigator({
   // orderDetail: OrderDetailPage,
 
 
-  selectRolePerson: SelectRolePerson, 
-  selectReceivePerson: SelectReceivePerson, 
+  selectRolePerson: SelectRolePerson,
+  selectReceivePerson: SelectReceivePerson,
   selectRolePersonInspect: SelectRolePersonInspect,
-  selectRolePersonPolling:SelectRolePersonPolling,
- 
+  selectRolePersonPolling: SelectRolePersonPolling,
+
 
   feeRooms: FeeRoomsPage, //房间
   feeParkings: FeeParkingsPage, //车位
@@ -369,7 +369,7 @@ const FlowNavigator = createStackNavigator({
   chuzunew,
   chuzuchange,
   chuzutui,
-  wuyenew, 
+  wuyenew,
   wuyetui,
   wuyechange,
   zulinplan,
@@ -450,7 +450,7 @@ const tabbar = createBottomTabNavigator(
     Mine: {
       screen: MineNavigator,
       navigationOptions: () => ({
-        title: '我',
+        title: '我的',
         headerBackTitle: null
       })
     }
@@ -517,19 +517,19 @@ const tabbar = createBottomTabNavigator(
         tabBarIcon: ({ focused }) => {
           const { routeName } = navigation.state;
           let name;
-          switch (routeName) { 
+          switch (routeName) {
             case 'Building':
               name = 'bank';
-              break; 
+              break;
             case 'Work':
               name = 'desktop';
-              break; 
+              break;
             case 'Flow':
               name = 'form';
-              break; 
+              break;
             case 'Statistics':
               name = 'bar-chart';//统计
-              break; 
+              break;
             case 'Mine':
               name = 'user';
               break;
@@ -568,7 +568,7 @@ const Drawer = createDrawerNavigator(
     useNativeAnimations: true,
     overlayColor: '#000000b3',
 
-    contentComponent: (props) => { 
+    contentComponent: (props) => {
       return <ManagerBuildingPage {...props} />;
     }
   }

@@ -101,7 +101,13 @@ class ApprovePage extends BasePage {
     this.setState(
       {
         refreshing: true,
-        pageIndex: 1
+        pageIndex: 1,
+        
+        //由于是Ta切换，需要重置参数，防止干扰查询
+        loading: false,//加载完成 
+        hasMore: true,//更多
+        pageSize: 10,
+        total: 0
       },
       () => {
         this.loadData(true);
@@ -414,7 +420,6 @@ class ApprovePage extends BasePage {
             </Flex>
           </TouchableWithoutFeedback>
         </Flex>
-
         <FlatList
           data={data}
           renderItem={({ item }) => (
@@ -467,7 +472,7 @@ class ApprovePage extends BasePage {
           onEndReachedThreshold={0.2}
           refreshing={refreshing}
           onRefresh={this.onRefresh}//下拉刷新
-          onEndReached={this.loadMore}//底部往下拉翻页
+          onEndReached={this.loadMore}//底部往上拉翻页
           //onMomentumScrollBegin={() => this.canLoadMore = true} 
           ListEmptyComponent={<NoDataView />}
         />

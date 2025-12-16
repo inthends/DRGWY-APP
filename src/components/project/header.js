@@ -5,7 +5,7 @@ import Macro from '../../utils/macro';
 import { Icon, Flex } from '@ant-design/react-native';
 import numeral from 'numeral';
 
-export default class BuildingHeader extends BasePage {
+export default class Header extends BasePage {
     constructor(props) {
         super(props);
     }
@@ -48,7 +48,7 @@ export default class BuildingHeader extends BasePage {
                     <Flex justify='start'
                     //style={{ flex: 4 }}
                     >
-                        <Text style={[styles.text, styles.big]}>总计费面积 {numeral(statistics.areasum).format('0,0.00')}{Macro.meter_square}</Text>
+                        <Text style={[styles.text, styles.big]}>计费面积 {numeral(statistics.areasum).format('0,0.00')}{Macro.meter_square}</Text>
                     </Flex>
                     <Flex justify='end'
                     //style={{ flex: 1 }}

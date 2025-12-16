@@ -8,28 +8,20 @@ import {
     TouchableWithoutFeedback,
     Animated
 } from 'react-native';
-import BasePage from '../../base/base';
+import BasePage from '../base/base';
 import { Flex, Icon, Checkbox } from '@ant-design/react-native';
-import Macro from '../../../utils/macro';
-import BuildingService from '../building_service';
-// import LoadImage from '../../../components/load-image';
+import Macro from '../../utils/macro';
+import Service from './resource-service'; 
 import { connect } from 'react-redux';
-import { saveSelectBuilding } from '../../../utils/store/actions/actions';
-import ScreenUtil from '../../../utils/screen-util';
-import common from '../../../utils/common';
-import CommonView from '../../../components/CommonView';
-import SelectImage from '../../../utils/select-image';
+import { saveSelectBuilding } from '../../utils/store/actions/actions';
+import ScreenUtil from '../../utils/screen-util';
+import common from '../../utils/common';
+import CommonView from '../../components/CommonView';
+import SelectImage from '../../utils/select-image';
 const lineWidth = 30;
 
-class SecondDetailBuildingPage extends BasePage {
-
-    // static navigationOptions = ({ navigation }) => {
-    //     return {
-    //         tabBarVisible: false,
-    //         header: null
-    //     };
-    // };
-
+class DetailUnitPage extends BasePage {
+ 
     static navigationOptions = ({ navigation }) => {
         return {
             title: '资产详情',
@@ -63,7 +55,7 @@ class SecondDetailBuildingPage extends BasePage {
 
     componentDidMount() {
         //详情
-        BuildingService.roomDetail(this.state.item.id).then(room => {
+        Service.roomDetail(this.state.item.id).then(room => {
             this.setState({
                 room: {
                     ...room.entity,
@@ -77,35 +69,35 @@ class SecondDetailBuildingPage extends BasePage {
         });
 
         //获取合同
-        BuildingService.getContractList(this.state.item.id).then(res => {
+        Service.getContractList(this.state.item.id).then(res => {
             this.setState({
                 contracts: res || []
             });
         });
 
         //获取客户
-        BuildingService.getCustomerList(this.state.item.id, this.state.isShow).then(res => {
+        Service.getCustomerList(this.state.item.id, this.state.isShow).then(res => {
             this.setState({
                 customers: res || []
             });
         });
 
         //获取服务单
-        BuildingService.getServerDeskList(this.state.item.id).then(res => {
+        Service.getServerDeskList(this.state.item.id).then(res => {
             this.setState({
                 servers: res || []
             });
         });
 
         //获取未缴费用
-        BuildingService.getRoomNotChargeList(this.state.item.id).then(res => {
+        Service.getRoomNotChargeList(this.state.item.id).then(res => {
             this.setState({
                 noCharges: res || []
             });
         });
 
         //获取已缴费用
-        BuildingService.getRoomChargeList(this.state.item.id).then(res => {
+        Service.getRoomChargeList(this.state.item.id).then(res => {
             this.setState({
                 charges: res || []
             });
@@ -513,7 +505,7 @@ class SecondDetailBuildingPage extends BasePage {
                 <TouchableWithoutFeedback onPress={() => {
                     this.selectImages();
                 }}>
-                    <ImageBackground style={{ height: 130 }} source={image ? { uri: image } : require('../../../static/images/home/default.png')}>
+                    <ImageBackground style={{ height: 130 }} source={image ? { uri: image } : require('../../static/images/home/default.png')}>
                         {/* <Flex justify='between' align='start' direction='column'
                         style={{ height: 90, paddingLeft: 15, paddingRight: 15, marginTop: 44 }}> 
                         <TouchableWithoutFeedback onPress={() => this.props.navigation.goBack()}>
@@ -618,4 +610,5 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         }
     };
 };
-export default connect(null, mapDispatchToProps)(SecondDetailBuildingPage);
+
+export default connect(null, mapDispatchToProps)(DetailUnitPage);

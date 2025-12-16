@@ -34,8 +34,14 @@ export default class JianFei extends BasePage {
     in = () => {
         const { money, memo, reductionType } = this.state;
         const { item } = this.props;
+        
         if (!money) {
             UDToast.showError('请输入金额');
+            return;
+        }
+
+        if (!memo) {
+            UDToast.showError('请输入减免原因');
             return;
         }
 
@@ -92,7 +98,7 @@ export default class JianFei extends BasePage {
                         <WhiteSpace size={'lg'} /> */}
                         <TextareaItem
                             //style={styles.area}
-                            placeholder={'请输入说明'}
+                            placeholder={'请输入减免原因'}
                             style={{
                                 width: ScreenUtil.deviceWidth() - 150
                             }}

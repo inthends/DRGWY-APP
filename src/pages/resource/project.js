@@ -4,28 +4,27 @@ import {
   StyleSheet,
   FlatList,
   NativeModules,
-  Alert
+  Alert,
+  Keyboard
 } from 'react-native';
+import { SearchBar } from '@ant-design/react-native';
 import BasePage from '../base/base';
-import BuildingHeader from '../../components/building/building-header';
-import BuildingCell from '../../components/building/build-cell';
+import Header from '../../components/project/header';
+import Item from '../../components/project/item';
+import UnitItem from '../../components/project/unit-item';
 import Macro from '../../utils/macro';
-import BuildingService from './building_service';
+import Service from './resource-service';
 import { connect } from 'react-redux';
 import NoDataView from '../../components/no-data-view';
 import CommonView from '../../components/CommonView';
 import { saveUser, saveXunJian } from '../../utils/store/actions/actions';
-//import JPush from 'jpush-react-native';
 import {
   upgrade,
   addDownListener
-  //checkUpdate,
 } from 'rn-app-upgrade';
 import UDToast from '../../utils/UDToast';
 import common from '../../utils/common';
 import api from '../../utils/api';
-// import XunJianService from '../navigator/xunjian/xunjian-service';
-// import HomePage from '../home/home';
 import { saveSelectBuilding, saveSelectDrawerType } from '../../utils/store/actions/actions';
 import { DrawerType } from '../../utils/store/action-types/action-types';
 
@@ -36,15 +35,26 @@ class ProjectPage extends BasePage {
       key: null
     };
     this.state = {
+      statistics: {},
+
+
       pageIndex: 1,
       pageSize: 10,
       data: [],
       refreshing: false,//刷新
       loading: false,//加载完成 
       hasMore: true,//更多
-      statistics: {}
-      //btnText: '搜索',
-      //keyword: ''
+
+
+
+      btnText: '搜索',
+      keyword: '',
+      pageIndex2: 1,
+      pageSize2: 10,
+      refreshing2: false,//刷新
+      loading2: false,//加载完成 
+      hasMore2: true,//更多
+      data2: []//搜索结果
     };
 
     addDownListener((progress) => {
@@ -84,7 +94,7 @@ class ProjectPage extends BasePage {
                   ],
                   { cancelable: false }
                 );
-              } 
+              }
               // else {
               //   this.initUI();
               // }
@@ -148,7 +158,7 @@ class ProjectPage extends BasePage {
 
   initUI() {
     //用户信息
-    BuildingService.getUserInfo().then((res) => {
+    Service.getUserInfo().then((res) => {
       this.props.saveUser(res);
     });
     this.loadTotal();
@@ -168,7 +178,7 @@ class ProjectPage extends BasePage {
   }
 
   loadTotal = () => {
-    BuildingService.getStatisticsTotal(this.selectBuilding.key).then((res) => {
+    Service.getStatisticsTotal(this.selectBuilding.key).then((res) => {
       if (res && res.length > 0) {
         this.setState({ statistics: res[0] });
       }
@@ -176,28 +186,27 @@ class ProjectPage extends BasePage {
   };
 
   //加载数据
-  loadData = (isRefreshing = false) => {
+  loadData = (isReload = false) => {//是否重新加载
     //加载中，且不是刷新，没有更多
-    if (this.state.loading || (!isRefreshing && !this.state.hasMore)) {
+    if (this.state.loading || (!isReload && !this.state.hasMore)) {
       this.setState({ loading: false, refreshing: false });
       return;
     }
-    const currentPage = isRefreshing ? 1 : this.state.pageIndex;
+    const currentPage = isReload ? 1 : this.state.pageIndex;
     this.setState({ loading: true });
     const { data, pageSize } = this.state;
-    BuildingService.getStatistics(
+    Service.getStatistics(
       currentPage,
       pageSize,
       this.selectBuilding.key
     ).then(res => {
-      if (isRefreshing) {
+      if (isReload) {
         this.setState({
           data: res.data,
           pageIndex: 2
         });
       }
       else {
-
         const combinedUniqueArray = [...data, ...res.data].reduce((acc, current) => {
           if (!acc.some(item => item.id === current.id)) {
             acc.push(current);
@@ -257,43 +266,116 @@ class ProjectPage extends BasePage {
     }
   }
 
-  // search = () => {
-  //   Keyboard.dismiss();
-  //   this.getList();
-  //   this.setState({ btnText: '取消' });
-  // };
 
-  // clear = () => {
-  //   const { btnText } = this.state;
-  //   Keyboard.dismiss();
-  //   if (btnText == '搜索') {
-  //     this.getList();
-  //     this.setState({ btnText: '取消' });
-  //   } else {
-  //     this.setState({
-  //       keyword: ''//必须要设置值，再调用方法，否则数据没有更新
-  //     }, () => {
-  //       this.getList();
-  //       this.setState({ btnText: '搜索' });
-  //     });
-  //   }
-  // };
- 
+
+  search = () => {
+    const { keyword } = this.state;
+    if (keyword == '') {
+      return;
+    }
+    Keyboard.dismiss();
+    this.searchData(true);
+    this.setState({ btnText: '取消' });//直接搜索房产 
+
+  };
+
+  clear = () => {
+    const { btnText, keyword } = this.state;
+    if (keyword == '') {
+      return;
+    }
+    Keyboard.dismiss();
+    if (btnText == '搜索') {
+      this.searchData(true);
+      this.setState({ btnText: '取消' });
+    } else {
+      this.setState({
+        keyword: '',//必须要设置值，再调用方法，否则数据没有更新
+        data2: []
+      }, () => { 
+        this.setState({ btnText: '搜索' });
+      });
+    }
+  };
+
+  onSearchRefresh = () => {
+    this.setState(
+      {
+        refreshing2: true
+      },
+      () => {
+        this.searchData(true);
+      }
+    );
+  };
+
+  //加载更多
+  loadSearchMore = () => {
+    if (this.state.loading2) return;//防止快速滚动，产生抖动，多次调用
+    const { pageIndex2 } = this.state;
+    this.setState({
+      pageIndex2: pageIndex2 + 1
+    }, () => {
+      this.searchData();
+    });
+  };
+
+  //搜索房产
+  searchData = (isReload = false) => {
+    //加载中，且不是刷新，没有更多
+    if (this.state.loading2 || (!isReload && !this.state.hasMore2)) {
+      this.setState({ loading2: false, refreshing2: false });
+      return;
+    }
+    const currentPage = isReload ? 1 : this.state.pageIndex2;
+    this.setState({ loading2: true });
+    const { data2, pageSize2, keyword } = this.state;
+    Service.searchUnit(
+      keyword,
+      currentPage,
+      pageSize2,
+      this.selectBuilding.key
+    ).then(res => {
+      if (isReload) {
+        this.setState({
+          data2: res.data,
+          pageIndex2: 2
+        });
+      }
+      else {
+        const combinedUniqueArray = [...data2, ...res.data].reduce((acc, current) => {
+          if (!acc.some(item => item.id === current.id)) {
+            acc.push(current);
+          }
+          return acc;
+        }, []);
+
+        this.setState({
+          data2: combinedUniqueArray,
+          pageIndex2: currentPage,
+          hasMore2: currentPage * pageSize2 < res.total ? true : false
+        });
+      }
+    }).catch(err => UDToast.showError(err))
+      .finally(() => this.setState({ loading2: false, refreshing2: false }))
+  };
+
 
   render() {
-    const { statistics, data, refreshing } = this.state;
+    const { statistics, data, refreshing, btnText, data2, refreshing2 } = this.state;
     return (
       <View style={styles.all}>
         <CommonView style={{ flex: 1 }}>
           <View style={styles.content}>
-            <BuildingHeader
+            <Header
               title={this.selectBuilding.title}
               statistics={statistics}
               //openDrawer={this.openDrawer}
               {...this.props}
             />
-            {/* <SearchBar
-              placeholder="搜索房号或客户"
+
+            <SearchBar
+              placeholder="搜索房号"
               showCancelButton
               cancelText={btnText}
               value={this.state.keyword}
@@ -304,28 +386,48 @@ class ProjectPage extends BasePage {
               }}
               onSubmit={() => this.search()}
               onCancel={() => this.clear()}
-            /> */}
-            <FlatList
-              data={data}
-              //ListHeaderComponent={}
-              renderItem={({ item }) => (
-                <BuildingCell
-                  nextRouteName="Buildings"
-                  {...this.props}
-                  item={item}
-                />
-              )}
-              style={styles.list}
-              keyExtractor={(item) => item.id}
-              //必须
-              onEndReachedThreshold={0.2}
-              refreshing={refreshing}
-              onRefresh={this.onRefresh}//下拉刷新
-              onEndReached={this.loadMore}//底部往下拉翻页
-              //onMomentumScrollBegin={() => this.canLoadMore = true}
-              //ListFooterComponent={this.renderFooter}
-              ListEmptyComponent={<NoDataView />}
-            /> 
+            />
+
+            {data2.length == 0 ?
+              <FlatList
+                data={data}
+                //ListHeaderComponent={}
+                renderItem={({ item }) => (
+                  <Item
+                    nextRouteName="Buildings"
+                    {...this.props}
+                    item={item}
+                  />
+                )}
+                style={styles.list}
+                keyExtractor={(item) => item.id}
+                //必须
+                onEndReachedThreshold={0.2}
+                refreshing={refreshing}
+                onRefresh={this.onRefresh}//下拉刷新
+                onEndReached={this.loadMore}//底部往下拉翻页
+                //onMomentumScrollBegin={() => this.canLoadMore = true}
+                //ListFooterComponent={this.renderFooter}
+                ListEmptyComponent={<NoDataView />}
+              /> :
+              <FlatList
+                data={data2}
+                renderItem={({ item }) => (
+                  <UnitItem
+                    {...this.props}
+                    item={item}
+                  />
+                )}
+                style={styles.list}
+                keyExtractor={(item) => item.id}
+                //必须
+                onEndReachedThreshold={0.2}
+                refreshing={refreshing2}
+                onRefresh={this.onSearchRefresh}//下拉刷新
+                onEndReached={this.loadSearchMore}//底部往下拉翻页 
+                ListEmptyComponent={<NoDataView />}
+              />
+            }
           </View>
         </CommonView>
       </View>

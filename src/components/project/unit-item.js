@@ -1,30 +1,29 @@
-import React//, {Fragment} 
-    from 'react';
+
+import React from 'react';
 import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import BasePage from '../../pages/base/base';
 import Macro from '../../utils/macro';
 import {
-    Flex,
-    //Button, WhiteSpace, WingBlank
+    Flex
 } from '@ant-design/react-native';
 import LoadImage from '../load-image';
 import ScreenUtil from '../../utils/screen-util';
 import numeral from 'numeral';
-//楼栋
-export default class BuildingCell extends BasePage {
+
+//房产或者车位
+export default class UnitItem extends BasePage {
     constructor(props) {
         super(props);
     }
-    //louDetail shebeiDetail
-    //<TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('feeDetail',{})}>
-    //DetailBuilding
 
     render() {
         const { item } = this.props;
         return (
-            //<TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('feeDetail',{})}>
-            //<TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('louDetail',{})}> 
-            <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate(this.props.nextRouteName, { data: item })}>
+            <TouchableWithoutFeedback onPress={() => 
+                this.props.navigation.navigate(
+                    'DetailUnit',
+                    { data: item }
+                )}>
                 <View style={styles.content}>
                     <Flex direction="row">
                         <Flex style={styles.left}>
@@ -36,13 +35,11 @@ export default class BuildingCell extends BasePage {
                                 <Text style={styles.area}>{item.code}</Text>
                             </Flex>
                             <Flex justify="between" style={[styles.item, { marginTop: 10 }]}>
-                                <Text style={styles.complete}>{item.buildingformat == '住宅' ? '入住率' : '出租率'} {item.rentarearate}%</Text>
-                                <Text style={styles.number}>{numeral(item.areasum).format('0,0.00')}{Macro.meter_square}</Text>
+                                <Text style={styles.complete}>{item.state}</Text>
+                                <Text style={styles.number}>{numeral(item.billarea).format('0,0.00')}{Macro.meter_square}</Text>
                             </Flex>
                             <Flex style={[styles.item, { marginTop: 12 }]}>
-                                <Text style={styles.desc}>在租 {numeral(item.rentareasum).format('0,0.00')}{Macro.meter_square}</Text>
-                                <View style={styles.line} />
-                                <Text style={[styles.desc, { marginRight: 10 }]}>可招商 {numeral(item.investmentareasum).format('0,0.00')}{Macro.meter_square}</Text>
+                                <Text style={styles.desc}>{item.allname}</Text>
                             </Flex>
                         </Flex>
                     </Flex>

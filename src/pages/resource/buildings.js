@@ -3,20 +3,19 @@ import React//, {Fragment}
 import {
     Text, View, StyleSheet, FlatList, TouchableOpacity
 } from 'react-native';
-import BasePage from '../../base/base';
-import Macro from '../../../utils/macro';
-import BuildingsService from './buildings-service';
-import ScreenUtil from '../../../utils/screen-util';
+import BasePage from '../base/base';
+import Macro from '../../utils/macro'; 
+import Service from './resource-service'; 
+import ScreenUtil from '../../utils/screen-util';
 import { connect } from 'react-redux';
 import { Icon } from '@ant-design/react-native';
-import common from '../../../utils/common';
+import common from '../../utils/common';
 // import BackTitleNavigationBar from '../../../components/back-title-navigation-bar';
-import NoDataView from '../../../components/no-data-view';
-import CommonView from '../../../components/CommonView';
-import BuildingCell from '../../../components/building/build-cell';
+import NoDataView from '../../components/no-data-view';
+import CommonView from '../../components/CommonView';
+import Item from '../../components/project/item';
 
-class BuildingsPage extends BasePage {
-
+class BuildingsPage extends BasePage { 
     // static navigationOptions = ({ navigation }) => {
     //     return {
     //         tabBarVisible: false,
@@ -52,19 +51,18 @@ class BuildingsPage extends BasePage {
 
     getInitData = () => {
         //获取楼栋和车库
-        BuildingsService.getAsynChildBuildings(this.state.item.id).then(res => {
+        Service.getAsynChildBuildings(this.state.item.id).then(res => {
             this.setState({ data: res.data });
         });
     };
 
     _renderItem = ({ item }) => {
-        if (item.type == 2) { 
-            //楼栋详情
-            return <BuildingCell nextRouteName='DetailBuilding' {...this.props} item={item} />; 
+        if (item.type == 2) {  
+            return <Item nextRouteName='DetailBuilding' {...this.props} item={item} />; 
         }
         else
             //车库详情
-            return <BuildingCell nextRouteName='DetailParking' {...this.props} item={item} />;
+            return <Item nextRouteName='DetailParking' {...this.props} item={item} />;
     };
 
     render() {

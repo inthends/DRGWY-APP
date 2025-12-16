@@ -95,7 +95,7 @@ class FeeDetailPage extends BasePage {
             },
             isCIBLife: false,
             type: '未收',
-            isShow: true,
+            isShow: true,//是否按户显示
             out_trade_no: null,
             visible: false,
             code: '',
