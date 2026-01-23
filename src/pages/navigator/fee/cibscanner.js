@@ -130,6 +130,7 @@ export default class CIBScanScreen extends BasePage {
                         }, 5000);
                     }
                 }).catch(res => {
+                    UDToast.showError(res.msg);
                     UDToast.hiddenLoading(this.showLoadingNumber);
                     this.setState({
                         result: null,
@@ -161,6 +162,7 @@ export default class CIBScanScreen extends BasePage {
                         }, 5000);
                     }
                 }).catch(res => {
+                    UDToast.showError(res.msg);
                     UDToast.hiddenLoading(this.showLoadingNumber);
                     this.setState({
                         result: null,

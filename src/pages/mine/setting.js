@@ -167,8 +167,7 @@ class SettingPage extends BasePage {
                     const { keyvalue, userId, userName, inspectData } = item;
                     let arrStr = JSON.stringify(inspectData);
                     XunJianService.xunjianExecute(keyvalue, userId, userName, arrStr, false);
-                })).then(res => {
-
+                })).then(res => { 
                     //巡检关联工单
                     // this.uploadWork(works).then(res => { 
                     //     this.uploadImages(imageObjs).then(res => { 
@@ -188,19 +187,16 @@ class SettingPage extends BasePage {
                         if (xunJianAction.hasOwnProperty(taskId)) {
                             Reflect.deleteProperty(xunJianAction, taskId);
                         }
-                    }
-
+                    } 
                     UDToast.hiddenLoading(this.loading);
-                    UDToast.showSuccess('上传成功');
-
+                    UDToast.showSuccess('上传成功'); 
                 }).catch(err => {
                     UDToast.hiddenLoading(this.loading);
-                    UDToast.showError('上传巡检数据失败：' + err);
-                });
-
+                    UDToast.showError('上传巡检数据失败：' + err.msg);
+                }); 
             }).catch(myerr => {
                 UDToast.hiddenLoading(this.loading);
-                UDToast.showError('上传图片失败：' + myerr);
+                UDToast.showError(myerr.msg);
             });
 
         } else {

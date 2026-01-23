@@ -133,7 +133,7 @@ class TaskQDListPage extends BasePage {
                     total: res.total
                 });
             }
-        }).catch(err => UDToast.showError(err)
+        }).catch(err => UDToast.showError(err.msg)
         ).finally(() => this.setState({ loading: false, refreshing: false }))
     };
 
@@ -163,9 +163,8 @@ class TaskQDListPage extends BasePage {
             if (res.flag == true) {
                 UDToast.showInfo('抢单成功');
             } else {
-                UDToast.showError('抢单失败，' + res.msg);
+                UDToast.showError(res.msg);
             }
-
             this.onRefresh();
         });
     };

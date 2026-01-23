@@ -135,7 +135,7 @@ class ServicedeskListPage extends BasePage {
             // }, () => {
             // });
 
-        }).catch(err => UDToast.showError(err)
+        }).catch(err => UDToast.showError(err.msg)
         ).finally(() => this.setState({ loading: false, refreshing: false }))
     };
 

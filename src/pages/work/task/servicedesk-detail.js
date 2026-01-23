@@ -212,7 +212,7 @@ export default class ServiceDeskDetailPage extends BasePage {
         WorkService.serviceHandle('回复', id, value).then(res => {
             this.props.navigation.goBack();
         }).catch(err => {
-            UDToast.showError(err);
+            UDToast.showError(err.msg);
         });
     };
 
@@ -232,7 +232,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                     WorkService.serviceHandle(handle, id, memo).then(res => {
                         this.props.navigation.goBack();
                     }).catch(err => {
-                        UDToast.showError(err);
+                        UDToast.showError(err.msg);
                     });
                 }
             }
@@ -279,7 +279,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                     ).then(res => {
                         this.props.navigation.goBack();
                     }).catch(err => {
-                        UDToast.showError(err);
+                        UDToast.showError(err.msg);
                     });
                 }
             }
@@ -303,7 +303,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                     WorkService.changeToComplaint(id, convertMemo).then(res => {
                         this.props.navigation.goBack();
                     }).catch(err => {
-                        UDToast.showError(err);
+                        UDToast.showError(err.msg);
                     });
                 }
             }
@@ -351,7 +351,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                     ).then(res => {
                         this.props.navigation.goBack();
                     }).catch(err => {
-                        UDToast.showError(err);
+                        UDToast.showError(err.msg);
                     });
                 }
             }
@@ -506,7 +506,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                     total: res.total
                 });
             }
-        }).catch(err => UDToast.showError(err)
+        }).catch(err => UDToast.showError(err.msg)
         ).finally(() => this.setState({ loading: false, refreshing: false }))
     };
 
@@ -526,7 +526,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                 //                 UDToast.showInfo('作废成功');
                 //                 this.loadData();
                 //             }).catch(err => {
-                //                 UDToast.showError(err);
+                //                 UDToast.showError(err.msg);
                 //             });
                 //         }
                 //     }
@@ -546,7 +546,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                                     UDToast.showInfo('作废成功');
                                     this.loadData();
                                 }).catch(err => {
-                                    UDToast.showError(err);
+                                    UDToast.showError(err.msg);
                                 });
                             }
                         }
@@ -584,7 +584,7 @@ export default class ServiceDeskDetailPage extends BasePage {
                             UDToast.showInfo('推送账单成功');
                             this.loadData();
                         }).catch(err => {
-                            UDToast.showError(err);
+                            UDToast.showError(err.msg);
                         });
                     }
                 }

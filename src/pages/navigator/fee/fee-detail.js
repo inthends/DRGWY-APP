@@ -198,7 +198,7 @@ class FeeDetailPage extends BasePage {
                 case '扫码': {
                     service.createOrder(ids, isML, mlType, mlScale, 1).then(res => {
                         if (!res.posType) {
-                            UDToast.showError(res);
+                            UDToast.showError(res.msg);
                             return;
                         }
                         let posType = res.posType;
@@ -321,14 +321,14 @@ class FeeDetailPage extends BasePage {
                             default:
                                 break;
                         }
-                    }).catch(err => { UDToast.showError(err); });
+                    }).catch(err => { UDToast.showError(err.msg); });
                     break;
                 }
 
                 case '收款码': {
                     service.createOrder(ids, isML, mlType, mlScale, 2).then(res => {
                         if (!res.posType) {
-                            UDToast.showError(res);
+                            UDToast.showError(res.msg);
                             return;
                         }
                         let posType = res.posType;
@@ -513,7 +513,7 @@ class FeeDetailPage extends BasePage {
 
                         }
 
-                    }).catch(err => { UDToast.showError(err); });
+                    }).catch(err => { UDToast.showError(err.msg); });
                     break;
                 }
 

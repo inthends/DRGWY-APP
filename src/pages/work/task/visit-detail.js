@@ -56,8 +56,7 @@ export default class VisitDetailPage extends BasePage {
             star: 3,
             lookImageIndex: 0,
             visible: false,
-            KeyboardShown: false,
-
+            KeyboardShown: false, 
             //费用明细
             pageIndex: 1,
             pageSize: 10,
@@ -302,7 +301,7 @@ export default class VisitDetailPage extends BasePage {
                     total: res.total
                 });
             }
-        }).catch(err => UDToast.showError(err)
+        }).catch(err => UDToast.showError(err.msg)
         ).finally(() => this.setState({ loading: false, refreshing: false }))
     };
 

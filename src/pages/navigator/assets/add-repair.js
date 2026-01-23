@@ -240,6 +240,7 @@ class AddRepairPage extends BasePage {
                 }, 2000);
             }).catch(res => {
                 this.canSubmit = true;
+                UDToast.showError(res.msg);
             });
         } else {
             const { taskId } = this.state;

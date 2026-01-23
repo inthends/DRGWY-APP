@@ -220,7 +220,7 @@ class ProjectPage extends BasePage {
           hasMore: currentPage * pageSize < res.total ? true : false
         });
       }
-    }).catch(err => UDToast.showError(err)
+    }).catch(err => UDToast.showError(err.msg)
     ).finally(() => this.setState({ loading: false, refreshing: false }))
   };
 
@@ -356,7 +356,7 @@ class ProjectPage extends BasePage {
           hasMore2: currentPage * pageSize2 < res.total ? true : false
         });
       }
-    }).catch(err => UDToast.showError(err))
+    }).catch(err => UDToast.showError(err.msg))
       .finally(() => this.setState({ loading2: false, refreshing2: false }))
   };
 

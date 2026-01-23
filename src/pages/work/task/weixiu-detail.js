@@ -231,7 +231,7 @@ export default class WeixiuDetailPage extends BasePage {
                     total: res.total
                 });
             }
-        }).catch(err => UDToast.showError(err)
+        }).catch(err => UDToast.showError(err.msg)
         ).finally(() => this.setState({ loading: false, refreshing: false }))
     };
 
@@ -272,7 +272,7 @@ export default class WeixiuDetailPage extends BasePage {
                 //                 UDToast.showInfo('作废成功');
                 //                 this.loadData();
                 //             }).catch(err => {
-                //                 UDToast.showError(err);
+                //                 UDToast.showError(err.msg);
                 //             });
                 //         }
                 //     }
@@ -292,7 +292,7 @@ export default class WeixiuDetailPage extends BasePage {
                                     UDToast.showInfo('作废成功');
                                     this.loadData();
                                 }).catch(err => {
-                                    UDToast.showError(err);
+                                    UDToast.showError(err.msg);
                                 });
                             }
                         }
@@ -330,7 +330,7 @@ export default class WeixiuDetailPage extends BasePage {
                             UDToast.showInfo('推送账单成功');
                             this.loadData();
                         }).catch(err => {
-                            UDToast.showError(err);
+                            UDToast.showError(err.msg);
                         });
                     }
                 }

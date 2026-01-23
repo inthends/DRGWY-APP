@@ -132,7 +132,7 @@ export default class EcheckDetailPage extends BasePage {
                     total: res.total
                 });
             }
-        }).catch(err => UDToast.showError(err)
+        }).catch(err => UDToast.showError(err.msg)
         ).finally(() => this.setState({ loading: false, refreshing: false }))
     };
 

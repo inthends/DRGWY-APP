@@ -20,14 +20,13 @@ export default {
                 'Content-Type': 'application/x-www-form-urlencoded',
             };
             axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-            axios.defaults.headers['Authorization'] = 'Bearer ' + ManualAction.getTokenBYStore();
-            // axios.defaults.headers['Authorization'] = 'Bearer ' + ''
+            axios.defaults.headers['Authorization'] = 'Bearer ' + ManualAction.getTokenBYStore(); 
             if (url.includes('/api/Mobile/GetServerUrl') || url.includes('/api/Mobile/GetVersion')) {
                 axios.defaults.baseURL = 'http://hf.jslesoft.com:8008';
             } else {
                 axios.defaults.baseURL = ManualAction.getUrl();
             }
-
+ 
             // if (Object.keys(params).length > 0) { 
             // }
 

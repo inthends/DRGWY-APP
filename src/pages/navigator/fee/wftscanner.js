@@ -1,10 +1,10 @@
 //威富通扫码
-import React  from 'react'; 
+import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Animated, Easing } from 'react-native';
 import BasePage from '../../base/base';
-import { Icon } from '@ant-design/react-native'; 
+import { Icon } from '@ant-design/react-native';
 import common from '../../../utils/common';
-import service from '../statistics-service'; 
+import service from '../statistics-service';
 import Macro from '../../../utils/macro';
 import { RNCamera } from 'react-native-camera';
 import UDToast from '../../../utils/UDToast';
@@ -139,6 +139,7 @@ export default class WFTScanScreen extends BasePage {
                         }, 5000);
                     }
                 }).catch(res => {
+                    UDToast.showError(res.msg);
                     UDToast.hiddenLoading(this.showLoadingNumber);
                     this.setState({
                         result: null,
@@ -146,7 +147,7 @@ export default class WFTScanScreen extends BasePage {
                     });
                 });
             }
-             else {
+            else {
                 //支付不成功，冲正
                 service.wftScanPayReserve(out_trade_no);
                 setTimeout(() => {

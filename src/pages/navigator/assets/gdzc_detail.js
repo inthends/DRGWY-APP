@@ -149,7 +149,7 @@ export default class GdzcDetailPage extends BasePage {
                     });
                 }
 
-            }).catch(err => UDToast.showError(err)
+            }).catch(err => UDToast.showError(err.msg)
             ).finally(() => this.setState({ loading: false, refreshing: false }))
         }
         else if (indexType === 2) {
@@ -176,7 +176,7 @@ export default class GdzcDetailPage extends BasePage {
                         total: res.total
                     });
                 }
-            }).catch(err => UDToast.showError(err)
+            }).catch(err => UDToast.showError(err.msg)
             ).finally(() => this.setState({ loading: false, refreshing: false }))
         }
         else if (indexType === 3) {
@@ -203,7 +203,7 @@ export default class GdzcDetailPage extends BasePage {
                         total: res.total
                     });
                 }
-            }).catch(err => UDToast.showError(err)
+            }).catch(err => UDToast.showError(err.msg)
             ).finally(() => this.setState({ loading: false, refreshing: false }))
         }
     }
@@ -239,7 +239,6 @@ export default class GdzcDetailPage extends BasePage {
                 // }
 
                 //上面方法一样可以
-
                 RNFetchBlob.config({
                     // 接收类型，这里是必须的，否则Android会报错
                     fileCache: true,
@@ -257,7 +256,6 @@ export default class GdzcDetailPage extends BasePage {
                     // })
                     .catch((err) => {
                     });
-
             }
             else {
                 //ios
@@ -265,8 +263,7 @@ export default class GdzcDetailPage extends BasePage {
                 promise.then(function (result) {
                 }).catch(function (err) {
                 });
-            }
-
+            } 
         } catch (error) {
             UDToast.showError(error);
         }
