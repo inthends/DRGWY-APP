@@ -58,6 +58,7 @@ export default class CompleteDetailPage extends BasePage {
             isUpload: false,
             showClose: false,
             stopDateBegin: new Date(),
+            reStartDate: new Date(),
             pauseMemo: '',
             isMustFinishFile: false,
             backMemo: '',
@@ -258,12 +259,12 @@ export default class CompleteDetailPage extends BasePage {
 
     pause = () => {
         //this.setState({ showClose: false });
-        const { id, pauseMemo, stopDateBegin } = this.state;
+        const { id, pauseMemo, stopDateBegin, reStartDate } = this.state;
         if (!(pauseMemo && pauseMemo.length > 0)) {
             UDToast.showError('请输入暂停原因');
             return;
         }
-        WorkService.pause(id, stopDateBegin, pauseMemo).then(res => {
+        WorkService.pause(id, stopDateBegin, reStartDate, pauseMemo).then(res => {
             UDToast.showInfo('暂停成功');
             this.props.navigation.goBack();
         });
@@ -316,7 +317,7 @@ export default class CompleteDetailPage extends BasePage {
                     <Flex style={[styles.every, ScreenUtil.borderBottom()]} justify='between'>
                         <Text style={styles.left}>转单人：{detail.createUserName}，{detail.createDate}</Text>
                     </Flex>
- 
+
                     <TouchableWithoutFeedback>
                         <Flex style={[styles.every, ScreenUtil.borderBottom()]}>
                             <Text style={styles.left}>关联单据：</Text>
@@ -455,7 +456,7 @@ export default class CompleteDetailPage extends BasePage {
                             <Flex direction={'column'} justify={'center'} align={'center'}
                                 style={{ flex: 1, padding: 25, backgroundColor: 'rgba(178,178,178,0.5)' }}>
                                 <Flex direction={'column'} style={{ backgroundColor: 'white', borderRadius: 10, padding: 15 }}>
-                                    <CommonView style={{ height: 150, width: 300 }}>
+                                    <CommonView style={{ height: 180, width: 300 }}>
                                         <List style={{
                                             marginLeft: 10,
                                             marginRight: 10,
@@ -464,13 +465,23 @@ export default class CompleteDetailPage extends BasePage {
                                         }}>
                                             <DatePicker
                                                 mode="date"
-                                                title="选择时间"
+                                                title="选择暂停开始时间"
                                                 value={this.state.stopDateBegin}
                                                 onChange={stopDateBegin => this.setState({ stopDateBegin })}
                                                 style={{ backgroundColor: 'white' }}
                                             >
                                                 <List.Item arrow="horizontal"><Text style={{ marginLeft: -10, color: '#666' }}>暂停开始时间</Text></List.Item>
+                                            </DatePicker> 
+                                            <DatePicker
+                                                mode="date"
+                                                title="选择再次开工时间"
+                                                value={this.state.reStartDate}
+                                                onChange={reStartDate => this.setState({ reStartDate })}
+                                                style={{ backgroundColor: 'white' }}
+                                            >
+                                                <List.Item arrow="horizontal"><Text style={{ marginLeft: -10, color: '#666' }}>再次开工时间</Text></List.Item>
                                             </DatePicker>
+
                                         </List>
                                         <Flex style={[styles.every2, ScreenUtil.borderBottom()]} justify='between'>
                                             <TextInput

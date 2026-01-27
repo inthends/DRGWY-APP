@@ -165,14 +165,14 @@ export default {
   collectionRate(page, estateId, type, startTime, endTime) {
     let url;
     switch (page) {
-      case 1: {
-        url = '/api/MobileMethod/MGetCollectionRate';
-        break;
-      }
-      case 2: {
-        url = '/api/MobileMethod/MGetCashFlow';
-        break;
-      }
+      // case 1: {
+      //   url = '/api/MobileMethod/MGetCollectionRate';
+      //   break;
+      // }
+      // case 2: {
+      //   url = '/api/MobileMethod/MGetCashFlow';
+      //   break;
+      // }
       case 3: {
         url = '/api/MobileMethod/MGetArrearsAge';
         break;
@@ -199,6 +199,25 @@ export default {
       endTime
     });
   },
+
+  getCollectionRate(estateId, type, dataType) {
+    let url = '/api/MobileMethod/MGetCollectionRate';
+    return api.postData(url, {
+      estateId,
+      type,
+      dataType
+    });
+  },
+
+  getCashFlow(estateId, type, year) {
+    let url = '/api/MobileMethod/MGetCashFlow';
+    return api.postData(url, {
+      estateId,
+      type,
+      year
+    });
+  },
+
 
   //创建预订单号 type 支付类型，1扫码、2被扫、3刷卡
   createOrder(linkId, isML, mlType, mlScale, type) {
@@ -529,7 +548,7 @@ export default {
     });
   },
   //固定资产列表
-  gdzcList(pageIndex,pageSize, estateId, keyword, showLoading) {
+  gdzcList(pageIndex, pageSize, estateId, keyword, showLoading) {
     return api.postData('/api/MobileMethod/MGetAssetsListJson',
       { pageIndex, pageSize, estateId, keyword }, showLoading);
   },

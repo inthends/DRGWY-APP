@@ -232,8 +232,7 @@ class QianFeiZhangLingPage extends BasePage {
     //         "bottom": "3%",
     //         "containLabel": true
     //       },
-    //       "legend": null
-
+    //       "legend": null 
     //   }
     // tableData = [
     //     ['0-12个月', '100', '100'],
@@ -256,7 +255,6 @@ class QianFeiZhangLingPage extends BasePage {
               justify={'between'}
               style={{ paddingLeft: 10, width: ScreenUtil.deviceWidth() - 30 }}
             >
-              {/* <Text style={styles.name}>入住率：{rate}</Text> */}
               <MyPopover
                 textStyle={{ fontSize: 14 }}
                 onChange={this.typeChange}

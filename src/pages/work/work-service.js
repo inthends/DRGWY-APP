@@ -271,8 +271,8 @@ export default {
     },
 
     //暂停
-    pause(keyvalue, stopDateBegin, pauseMemo) {
-        let params = { keyvalue, stopDateBegin, pauseMemo };
+    pause(keyvalue, stopDateBegin, reStartDate, pauseMemo) {
+        let params = { keyvalue, stopDateBegin, reStartDate, pauseMemo };
         return api.postData('/api/MobileMethod/MRepairPause', params);
     },
 

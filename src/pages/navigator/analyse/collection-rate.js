@@ -41,14 +41,15 @@ class CollectionRatePage extends BasePage {
     super(props);
     this.state = {
       selectBuilding: this.props.selectBuilding || {},
-      //estateId: null,
       type: '',
       index: 0,
       res: {
         option: null,
         tableData: [],
       },
-      titles: []
+      titles: [],
+      dataTypes: ['按金额', '按户'],
+      dataType: '按金额',
     };
   }
 
@@ -72,7 +73,7 @@ class CollectionRatePage extends BasePage {
         service.GetReceiveFeeItems().then((res) => {
           const titles = (res || []).map((item) => item.title);
           this.setState({
-            titles: ['全部', ...titles],
+            titles: ['全部', ...titles]
           });
         });
         this.getStatustics();
@@ -120,12 +121,12 @@ class CollectionRatePage extends BasePage {
   // };
 
   getStatustics = () => {
-    const { selectBuilding, type } = this.state;
+    const { selectBuilding, type, dataType } = this.state;
     let organizeId;
     if (selectBuilding) {
       organizeId = selectBuilding.key;
     }
-    service.collectionRate(1, organizeId, type, '', '').then((res) => {
+    service.getCollectionRate(organizeId, type, dataType).then((res) => {
       this.setState({ res });
     });
   };
@@ -162,7 +163,7 @@ class CollectionRatePage extends BasePage {
   };
 
   render() {
-    const { titles = [] } = this.state;
+    const { titles = [], dataTypes } = this.state;
     let { option, tableData } = this.state.res;
     // option = {
     //     "xAxis":{
@@ -249,6 +250,16 @@ class CollectionRatePage extends BasePage {
     //     }
     // }
 
+    dataTypeChange = (dataType) => {
+      this.setState({
+        dataType,
+        pageIndex: 1
+      }, () => {
+        this.getStatustics();
+      });
+    };
+
+
     return (
       <CommonView style={{ flex: 1 }}>
         <ScrollView style={{ flex: 1 }}>
@@ -260,13 +271,13 @@ class CollectionRatePage extends BasePage {
               justify={'between'}
               style={{ paddingLeft: 10, width: ScreenUtil.deviceWidth() - 30 }}
             >
-              {/* <Text style={styles.name}>入住率：{rate}</Text> */}
               <MyPopover
                 textStyle={{ fontSize: 14 }}
                 onChange={this.typeChange}
                 titles={titles}
                 visible={true}
               />
+              <MyPopover onChange={this.dataTypeChange} titles={dataTypes} visible={true} />
             </Flex>
           </Flex>
           <DashLine style={{ marginTop: -10, marginLeft: 5, marginRight: 5 }} />

@@ -44,6 +44,8 @@ class ZiJinLiuPage extends BasePage {
   constructor(props) {
     super(props);
     this.state = {
+      years: this.getYears(),
+      year: this.getYear(),
       selectBuilding: this.props.selectBuilding || {},
       //statistics: [],
       res: {
@@ -57,7 +59,7 @@ class ZiJinLiuPage extends BasePage {
       'didFocus',
       (obj) => {
         this.props.saveBuilding({});//加载页面清除别的页面选中的数据
-        this.props.saveSelectDrawerType(DrawerType.building); 
+        this.props.saveSelectDrawerType(DrawerType.building);
         service.GetReceiveFeeItems().then((res) => {
           const titles = (res || []).map((item) => item.title);
           this.setState({
@@ -96,6 +98,23 @@ class ZiJinLiuPage extends BasePage {
     this.viewDidAppear.remove();
   }
 
+  getYear = () => {
+    let date = new Date();
+    let year = date.getFullYear();
+    return year;
+  }
+
+  getYears = () => {
+    //加载年
+    let date = new Date();
+    let year = date.getFullYear();
+    var min = year - 8;
+    let yearData = [];
+    for (let i = year; i >= min; i--) {
+      yearData.push(i);
+    }
+    return yearData;
+  }
 
   // initData = () => {
   //   service.getFeeStatistics(
@@ -110,12 +129,12 @@ class ZiJinLiuPage extends BasePage {
   // };
 
   getStatustics = () => {
-    const { selectBuilding, type } = this.state;
+    const { selectBuilding, type, year } = this.state;
     let organizeId;
     if (selectBuilding) {
       organizeId = selectBuilding.key;
     }
-    service.collectionRate(2, organizeId, type, '', '').then((res) => {
+    service.getCashFlow(organizeId, type, year).then((res) => {
       this.setState({ res });
     });
   };
@@ -143,7 +162,7 @@ class ZiJinLiuPage extends BasePage {
     //const titles = this.state.titles || [];
     this.setState(
       {
-        type: index == 0 ? '' : title,
+        type: index == 0 ? '' : title
       },
       () => {
         this.getStatustics();
@@ -151,8 +170,17 @@ class ZiJinLiuPage extends BasePage {
     );
   };
 
+  timeChange = (year) => {
+    this.setState({
+      year,
+      pageIndex: 1
+    }, () => {
+      this.getStatustics();
+    });
+  };
+
   render() {
-    const { titles = [] } = this.state;
+    const { titles = [], years } = this.state;
     let { option, tableData = [] } = this.state.res;
     // option = { xAxis:
     //     { type: 'category',
@@ -188,19 +216,18 @@ class ZiJinLiuPage extends BasePage {
               justify={'between'}
               style={{ paddingLeft: 10, width: ScreenUtil.deviceWidth() - 30 }}
             >
-              {/* <Text style={styles.name}>入住率：{rate}</Text> */}
               <MyPopover
                 textStyle={{ fontSize: 14 }}
                 onChange={this.typeChange}
                 titles={titles}
                 visible={true}
               />
+              <MyPopover onChange={this.timeChange} titles={years} visible={true} />
             </Flex>
           </Flex>
           <DashLine
             style={{ marginTop: -10, marginLeft: 15, marginRight: 15 }}
           />
-
           <Echarts option={option || {}} height={300} />
           <Table
             style={{ margin: 15 }}

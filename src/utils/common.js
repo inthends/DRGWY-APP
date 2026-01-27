@@ -170,7 +170,6 @@ export default {
         var ends = end.split('-');
         var staYear = parseInt(starts[0]);
         var staMon = parseInt(starts[1]);
-
         var endYear = parseInt(ends[0]);
         var endMon = parseInt(ends[1]);
         result.push(staYear + '-' + starts[1]);

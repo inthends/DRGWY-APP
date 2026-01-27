@@ -72,7 +72,7 @@ export default class MyPopover extends Component {
                     isVisible={this.state.isVisible}>
                     <ScrollView style={{ maxHeight: 400 }}>
                         {titles.map((item, index) => (
-                            <TouchableWithoutFeedback key={item + index} onPress={() => this.select(index)}>
+                            <TouchableWithoutFeedback key={item + '_' + index} onPress={() => this.select(index)}>
                                 <Text style={[{
                                     padding: 15,
                                     color: '#666',
